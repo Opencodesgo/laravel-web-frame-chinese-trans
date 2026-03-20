@@ -68,8 +68,10 @@ interface EnvironmentInterface
 
     /**
      * Regex which matches any character which doesn't indicate an inline element
+	 * 匹配任何不表示内联元素的字符的Regex
      *
      * This allows us to parse multiple non-special characters at once
+	 * 这允许我们一次解析多个非特殊字符
      *
      * @return string
      */
@@ -77,6 +79,7 @@ interface EnvironmentInterface
 
     /**
      * Dispatches the given event to listeners
+	 * 将给定事件发送给侦听器
      *
      * @param AbstractEvent $event
      *

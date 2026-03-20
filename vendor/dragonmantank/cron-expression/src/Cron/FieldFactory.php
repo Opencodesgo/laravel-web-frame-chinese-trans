@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，字段工厂
+ */
 
 namespace Cron;
 
@@ -17,6 +20,7 @@ class FieldFactory
 
     /**
      * Get an instance of a field object for a cron expression position
+	 * 获取cron表达式位置的字段对象实例
      *
      * @param int $position CRON expression position value to retrieve
      *

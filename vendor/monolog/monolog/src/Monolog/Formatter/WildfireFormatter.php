@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Wildfire 格式化程序
+ * Monolog，Formatter，Wildfire 格式化程序
  */
 
 /*
@@ -101,6 +101,7 @@ class WildfireFormatter extends NormalizerFormatter
         }
 
         // Create JSON object describing the appearance of the message in the console
+		// 创建JSON对象,描述控制台中消息的外观
         $json = $this->toJson([
             [
                 'Type'  => $type,
@@ -112,6 +113,7 @@ class WildfireFormatter extends NormalizerFormatter
         ], $handleError);
 
         // The message itself is a serialization of the above JSON object + it's length
+		// 消息本身是上述JSON对象的序列化,它的长度是长度
         return sprintf(
             '%d|%s|',
             strlen($json),

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Event，文档预解析事件
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -16,6 +19,7 @@ use League\CommonMark\Input\MarkdownInputInterface;
 
 /**
  * Event dispatched when the document is about to be parsed
+ * 即将解析文档时分派的事件
  */
 final class DocumentPreParsedEvent extends AbstractEvent
 {

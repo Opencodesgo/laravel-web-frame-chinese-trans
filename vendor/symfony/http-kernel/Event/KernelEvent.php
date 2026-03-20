@@ -65,6 +65,7 @@ class KernelEvent extends Event
 
     /**
      * Returns the request type the kernel is currently processing.
+	 * 返回内核当前正在处理的请求类型
      *
      * @return int One of HttpKernelInterface::MAIN_REQUEST and
      *             HttpKernelInterface::SUB_REQUEST
@@ -76,6 +77,7 @@ class KernelEvent extends Event
 
     /**
      * Checks if this is the main request.
+	 * 检查这是否是主请求
      */
     public function isMainRequest(): bool
     {

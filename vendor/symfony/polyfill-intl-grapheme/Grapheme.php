@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Intl，字母，字母
+ */
 
 /*
  * This file is part of the Symfony package.

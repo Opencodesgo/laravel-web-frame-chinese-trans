@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，进程，Php可执行文件查找器
+ * Symfony，Component，Process，Php可执行文件查找器
  */
 
 /*

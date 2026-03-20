@@ -24,6 +24,7 @@ interface ConsoleOutputInterface extends OutputInterface
 {
     /**
      * Gets the OutputInterface for errors.
+	 * 获取错误的OutputInterface
      *
      * @return OutputInterface
      */

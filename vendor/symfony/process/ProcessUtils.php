@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，进程，可执行的发现者
+ * Symfony，Component，进程，进行工具包
  */
 
 /*

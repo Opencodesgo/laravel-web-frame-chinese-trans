@@ -29,7 +29,7 @@ return [
     | Here you may specify the configuration options that should be used when
     | passwords are hashed using the Bcrypt algorithm. This will allow you
     | to control the amount of time it takes to hash the given password.
-	| 在这里，您可以指定在以下情况下应该使用的配置选项密码使用Bcrypt算法散列。
+	| 在这里，你可以指定在以下情况下应该使用的配置选项密码使用Bcrypt算法散列。
     |
     */
 
@@ -45,7 +45,7 @@ return [
     | Here you may specify the configuration options that should be used when
     | passwords are hashed using the Argon algorithm. These will allow you
     | to control the amount of time it takes to hash the given password.
-	| 在这里，您可以指定应该使用的配置选项密码使用Argon算法散列。
+	| 在这里，你可以指定应该使用的配置选项密码使用Argon算法散列。
     |
     */
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，播种机
+ * Illuminate，数据库，Seeder
  */
 
 namespace Illuminate\Database;
@@ -129,7 +129,7 @@ abstract class Seeder
 
     /**
      * Run the database seeds.
-	 * 运行数据库播种
+	 * 运行数据库种子
      *
      * @return mixed
      *

@@ -60,6 +60,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         $this->dumper = $dumper;
 
         // All clones share these properties by reference:
+		// 所有克隆通过引用共享这些属性：
         $this->rootRefs = [
             &$this->data,
             &$this->dataCount,

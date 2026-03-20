@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @final
  */
-class   implements EventSubscriberInterface
+class ValidateRequestListener implements EventSubscriberInterface
 {
     /**
      * Performs the validation.

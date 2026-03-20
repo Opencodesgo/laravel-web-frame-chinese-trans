@@ -109,6 +109,7 @@ final class DocParser implements DocParserInterface
 
         // What remains at the offset is a text line.  Add the text to the appropriate container.
         // First check for a lazy paragraph continuation:
+		// 在偏移处仍然存在的是一条文本线。将文本添加到适当的容器中。
         if ($this->handleLazyParagraphContinuation($context, $cursor)) {
             return;
         }
@@ -150,6 +151,7 @@ final class DocParser implements DocParserInterface
 
     /**
      * Sets the container to the last open child (or its parent)
+	 * 将容器设置为最后打开的子容器（或其父容器）
      *
      * @param ContextInterface $context
      * @param Cursor           $cursor

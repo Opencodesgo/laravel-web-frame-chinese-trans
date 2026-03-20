@@ -22,6 +22,7 @@ class Terminal
 
     /**
      * Gets the terminal width.
+	 * 获取终端宽度
      *
      * @return int
      */
@@ -41,6 +42,7 @@ class Terminal
 
     /**
      * Gets the terminal height.
+	 * 获取终端高度
      *
      * @return int
      */

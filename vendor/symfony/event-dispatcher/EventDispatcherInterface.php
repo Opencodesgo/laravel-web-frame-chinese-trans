@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，事件调度接口
+ * Symfony，Component，EventDispatcher，事件调度接口
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEvent
  * The EventDispatcherInterface is the central point of Symfony's event listener system.
  * Listeners are registered on the manager and events are dispatched through the
  * manager.
+ * EventDispatcherInterface是Symfony事件监听器系统的中心点
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

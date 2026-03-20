@@ -16,6 +16,7 @@ namespace Symfony\Component\EventDispatcher;
 
 /**
  * A read-only proxy for an event dispatcher.
+ * 事件调度程序的只读代理
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

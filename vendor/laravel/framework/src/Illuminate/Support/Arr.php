@@ -443,7 +443,7 @@ class Arr
             // If the key is "null", we will just append the value to the array and keep
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
-			// 从给定数组中获取项的子集。
+			// 如果键值为"null"，我们将把该值附加到数组中。否则，我们将使用我们收到的键值作为数组的键。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {
@@ -561,6 +561,7 @@ class Arr
 	 * 使用"点"表示法将数组项设置为给定值
      *
      * If no key is given to the method, the entire array will be replaced.
+	 * 如果没有给方法提供键，整个数组将被替换。
      *
      * @param  array  $array
      * @param  string|null  $key

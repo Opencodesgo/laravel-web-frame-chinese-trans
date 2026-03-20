@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，请求上下文感知接口
+ */
 
 /*
  * This file is part of the Symfony package.

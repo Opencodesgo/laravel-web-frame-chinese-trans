@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，双端队列接口
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -19,6 +22,7 @@ use RuntimeException;
 
 /**
  * A linear collection that supports element insertion and removal at both ends.
+ * 支持在两端插入和移除元素的线性集合。
  *
  * Most `DoubleEndedQueueInterface` implementations place no fixed limits on the
  * number of elements they may contain, but this interface supports

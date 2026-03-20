@@ -100,6 +100,7 @@ class ControllerResolver implements ControllerResolverInterface
 
     /**
      * Returns a callable for the given controller.
+	 * 返回给定控制器的可调用对象
      *
      * @return callable
      *
@@ -142,6 +143,7 @@ class ControllerResolver implements ControllerResolverInterface
 
     /**
      * Returns an instantiated controller.
+	 * 返回实例化的控制器
      *
      * @return object
      */

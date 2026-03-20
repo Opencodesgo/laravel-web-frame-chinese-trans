@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Fluentd 格式化
+ * Monolog，Formatter，Fluentd 格式化
  */
 
 /*

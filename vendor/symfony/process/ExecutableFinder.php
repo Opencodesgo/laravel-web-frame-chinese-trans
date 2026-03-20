@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，进程，执行程序查找程序
+ * Symfony，Component，Process，执行程序查找程序
  */
 
 /*

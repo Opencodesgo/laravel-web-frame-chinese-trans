@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * BinaryFileResponse represents an HTTP response delivering a file.
+ * BinaryFileResponse表示传递文件的HTTP响应
  *
  * @author Niklas Fiekas <niklas.fiekas@tu-clausthal.de>
  * @author stealth35 <stealth35-php@live.fr>

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Util，Html5 的实体
+ */
 
 /*
  * This file is part of the league/commonmark package.

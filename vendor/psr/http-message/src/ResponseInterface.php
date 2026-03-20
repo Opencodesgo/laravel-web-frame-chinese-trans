@@ -7,6 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Representation of an outgoing, server-side response.
+ * 表示传出的服务器端响应
  *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:

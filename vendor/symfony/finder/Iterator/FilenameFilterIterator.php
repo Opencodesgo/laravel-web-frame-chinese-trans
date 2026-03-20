@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，文件名过滤迭代器
+ */
 
 /*
  * This file is part of the Symfony package.

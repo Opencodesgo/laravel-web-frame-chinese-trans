@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Stores all completion suggestions for the current input.
+ * 存储当前输入的所有补全建议
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */

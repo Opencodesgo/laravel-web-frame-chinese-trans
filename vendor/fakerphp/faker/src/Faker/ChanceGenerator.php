@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，机会生成器
+ */
 
 namespace Faker;
 
@@ -7,6 +10,7 @@ use Faker\Extension\Extension;
 /**
  * This generator returns a default value for all called properties
  * and methods. It works with Faker\Generator::optional().
+ * 此生成器为所有调用的属性和方法返回默认值
  *
  * @mixin Generator
  */
@@ -33,6 +37,7 @@ class ChanceGenerator
 
     /**
      * Catch and proxy all generator calls but return only valid values
+	 * 捕获并代理所有生成器调用，但只返回有效值。
      *
      * @param string $attribute
      *

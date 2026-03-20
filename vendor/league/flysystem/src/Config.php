@@ -30,6 +30,7 @@ class Config
 
     /**
      * Get a setting.
+	 * 得到设置
      *
      * @param string $key
      * @param mixed  $default
@@ -47,6 +48,7 @@ class Config
 
     /**
      * Check if an item exists by key.
+	 * 检查项是否按键存在
      *
      * @param string $key
      *
@@ -97,6 +99,7 @@ class Config
 
     /**
      * Set the fallback.
+	 * 设置回调 
      *
      * @param Config $fallback
      *

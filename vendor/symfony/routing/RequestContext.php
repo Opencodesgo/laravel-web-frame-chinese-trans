@@ -1,8 +1,10 @@
 <?php
+/**
+ * Symfony，Component，Routing，请求上下文
+ */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *

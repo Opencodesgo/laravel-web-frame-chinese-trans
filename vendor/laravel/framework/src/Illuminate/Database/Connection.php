@@ -192,7 +192,7 @@ class Connection implements ConnectionInterface
         // First we will setup the default properties. We keep track of the DB
         // name we are connected to since it is needed when some reflective
         // type commands are run such as checking whether a table exists.
-		// 首先，我们将设置默认属性。
+		// 首先，我们将设置默认属性。我们跟踪DB我们连接到的名称，因为它是需要的。
         $this->database = $database;
 
         $this->tablePrefix = $tablePrefix;
@@ -202,7 +202,7 @@ class Connection implements ConnectionInterface
         // We need to initialize a query grammar and the query post processors
         // which are both very important parts of the database abstractions
         // so we initialize these to their default values while starting.
-		// 我们需要初始化查询语法和查询后置处理器
+		// 我们需要初始化查询语法和查询后置处理器，这两个都是数据库抽象中非常重要的部分。
         $this->useDefaultQueryGrammar();
 
         $this->useDefaultPostProcessor();

@@ -1,6 +1,7 @@
 <?php
 /**
  * App，Http，中间件，信任代理
+ * 使用 Fideloper\Proxy\TrustProxies 扩展包
  */
 
 namespace App\Http\Middleware;

@@ -17,6 +17,7 @@ trait InteractsWithPivotTable
 	 * 从父模型切换一个（或多个）模型
      *
      * Each existing model is detached, and non existing ones are attached.
+	 * 每个现有的模型是分离的，而不存在的模型是附加的。
      *
      * @param  mixed  $ids
      * @param  bool  $touch
@@ -270,7 +271,7 @@ trait InteractsWithPivotTable
             // Here we will insert the attachment records into the pivot table. Once we have
             // inserted the records, we will touch the relationships if necessary and the
             // function will return. We can parse the IDs before inserting the records.
-			// 这里，我们将把附件记录插入数据透视表。
+			// 这里，我们将把附件记录插入数据透视表。一旦我们插入记录后，我们会在必要时触摸到与记录的关系。
             $this->newPivotStatement()->insert($this->formatAttachRecords(
                 $this->parseIds($id), $attributes
             ));

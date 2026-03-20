@@ -39,6 +39,7 @@ class ResponseListener implements EventSubscriberInterface
 
     /**
      * Filters the Response.
+	 * 过滤响应
      */
     public function onKernelResponse(ResponseEvent $event)
     {

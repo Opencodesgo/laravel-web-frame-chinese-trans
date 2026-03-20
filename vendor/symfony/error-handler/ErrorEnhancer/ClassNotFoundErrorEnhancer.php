@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorHandler，错误增强，类未找到错误增强程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -57,6 +60,7 @@ class ClassNotFoundErrorEnhancer implements ErrorEnhancerInterface
 
     /**
      * Tries to guess the full namespace for a given class name.
+	 * 尝试猜测给定类名的完整名称空间
      *
      * By default, it looks for PSR-0 and PSR-4 classes registered via a Symfony or a Composer
      * autoloader (that should cover all common cases).

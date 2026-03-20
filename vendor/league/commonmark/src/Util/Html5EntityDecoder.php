@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Util，Html5 实体解码器
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -41,6 +44,7 @@ final class Html5EntityDecoder
     private static function fromDecimal($number): string
     {
         // Only convert code points within planes 0-2, excluding NULL
+		// 只转换平面0-2内的代码点，不包括NULL。
         if (empty($number) || $number > 0x2FFFF) {
             return self::fromHex('fffd');
         }

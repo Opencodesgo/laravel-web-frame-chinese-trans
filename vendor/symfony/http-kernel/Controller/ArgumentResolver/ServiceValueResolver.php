@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，参数解析器，服务值解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Yields a service keyed by _controller and argument name.
+ * 产生一个以_controller和参数名为键的服务
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，Polyfill，流式读特性
+ * League，Flysystem，Adapter，Polyfill，流式读特性
  */
 
 namespace League\Flysystem\Adapter\Polyfill;
@@ -12,6 +12,7 @@ trait StreamedReadingTrait
 {
     /**
      * Reads a file as a stream.
+	 * 将文件作为流读取
      *
      * @param string $path
      *
@@ -36,6 +37,7 @@ trait StreamedReadingTrait
 
     /**
      * Reads a file.
+	 * 读取文件
      *
      * @param string $path
      *

@@ -28,7 +28,7 @@ trait ManagesTransactions
             // We'll simply execute the given callback within a try / catch block and if we
             // catch any exception we can rollback this transaction so that none of this
             // gets actually persisted to a database or stored in a permanent fashion.
-			// 我们将简单地在try / catch块中执行给定的回调捕获任何异常，我们可以回滚这个事务，
+			// 我们将简单地在try/catch块中执行给定的回调捕获任何异常，我们可以回滚这个事务，
 			// 这样这些都不会发生实际持久化到数据库或以永久方式存储。
             try {
                 $callbackResult = $callback($this);

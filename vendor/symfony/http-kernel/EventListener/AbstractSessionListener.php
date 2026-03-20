@@ -90,6 +90,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
                      * cookie needs to be read from the cookie bag and set on the session storage.
                      *
                      * Do not set it when a native php session is active.
+					 * 不要在本地php会话处于活动状态时设置它
                      */
                     if ($sess && !$sess->isStarted() && \PHP_SESSION_ACTIVE !== session_status()) {
                         $sessionId = $sess->getId() ?: $request->cookies->get($sess->getName(), '');

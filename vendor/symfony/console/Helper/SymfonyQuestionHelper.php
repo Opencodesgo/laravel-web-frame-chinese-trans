@@ -23,6 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Symfony Style Guide compliant question helper.
+ * Symfony风格指南兼容的问题帮助
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

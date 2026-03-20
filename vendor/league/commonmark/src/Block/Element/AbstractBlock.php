@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Block，要素，抽象块
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -27,6 +30,7 @@ abstract class AbstractBlock extends Node
 {
     /**
      * Used for storage of arbitrary data.
+	 * 用于存储任意数据
      *
      * @var array<string, mixed>
      */
@@ -76,6 +80,7 @@ abstract class AbstractBlock extends Node
 
     /**
      * Returns true if this block can contain the given block as a child node
+	 * 如果此块可以包含给定块作为子节点，则返回true。
      *
      * @param AbstractBlock $block
      *

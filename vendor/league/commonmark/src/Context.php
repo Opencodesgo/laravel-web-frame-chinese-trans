@@ -160,6 +160,7 @@ class Context implements ContextInterface
         }
 
         // This should always be true
+		// 这应该总是正确的
         if ($this->tip !== null) {
             $this->tip->appendChild($block);
         }

@@ -24,6 +24,7 @@ interface HttpExceptionInterface extends \Throwable
 {
     /**
      * Returns the status code.
+	 * 返回状态码
      *
      * @return int
      */
@@ -31,6 +32,7 @@ interface HttpExceptionInterface extends \Throwable
 
     /**
      * Returns response headers.
+	 * 返回响应头
      *
      * @return array
      */

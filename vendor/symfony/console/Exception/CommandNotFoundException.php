@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect command name typed in the console.
+ * 表示在控制台中键入的错误命令名称
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */

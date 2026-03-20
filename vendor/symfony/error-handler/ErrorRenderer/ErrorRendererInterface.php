@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorRenderer，错误渲染器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
 
 /**
  * Formats an exception to be used as response content.
+ * 格式化一个异常以用作响应内容
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  */

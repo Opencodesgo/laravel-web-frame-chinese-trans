@@ -13,7 +13,7 @@ class RouteCollection extends AbstractRouteCollection
 {
     /**
      * An array of the routes keyed by method.
-	 * 方法键值的路由数组
+	 * 一种由方法控制的路由数组
      *
      * @var array
      */
@@ -21,7 +21,7 @@ class RouteCollection extends AbstractRouteCollection
 
     /**
      * A flattened array of all of the routes.
-	 * 所有路线的平面化排列
+	 * 所有的路线都是扁平的
      *
      * @var \Illuminate\Routing\Route[]
      */

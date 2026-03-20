@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Logstash 格式化器
+ * Monolog，Formatter，Logstash 格式化器
  */
 
 /*

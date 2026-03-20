@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，Http 有期限的接口
+ * Symfony，Component，HttpKernel，有期限的接口
  */
 
 /*
@@ -28,6 +28,7 @@ interface TerminableInterface
 {
     /**
      * Terminates a request/response cycle.
+	 * 终止请求/响应周期
      *
      * Should be called after sending the response and before shutting down the kernel.
      */

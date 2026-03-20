@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * NullOutput suppresses all output.
+ * NullOutput抑制所有输出
  *
  *     $output = new NullOutput();
  *

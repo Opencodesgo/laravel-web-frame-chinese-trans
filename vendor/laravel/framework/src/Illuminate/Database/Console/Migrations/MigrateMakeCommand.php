@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，make:migration 迁移Make命令
+ * Illuminate，数据库，控制台，迁移，make:migration 迁移Make命令
  */
 
 namespace Illuminate\Database\Console\Migrations;

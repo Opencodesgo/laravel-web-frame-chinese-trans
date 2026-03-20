@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Completion;
 
 /**
  * Represents a single suggested value.
+ * 表示单个建议值
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */

@@ -73,6 +73,7 @@ class Store implements StoreInterface
 
     /**
      * Tries to lock the cache for a given Request, without blocking.
+	 * 尝试锁定给定请求的缓存，而不阻塞。
      *
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
@@ -100,6 +101,7 @@ class Store implements StoreInterface
 
     /**
      * Releases the lock for the given Request.
+	 * 释放给定请求的锁
      *
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
@@ -140,6 +142,7 @@ class Store implements StoreInterface
 
     /**
      * Locates a cached Response for the Request provided.
+	 * 定位所提供请求的缓存响应
      *
      * @return Response|null
      */
@@ -178,6 +181,7 @@ class Store implements StoreInterface
 
     /**
      * Writes a cache entry to the store for the given Request and Response.
+	 * 将给定请求和响应的缓存项写入存储区
      *
      * Existing entries are read and any that match the response are removed. This
      * method calls write with the new list of cache entries.
@@ -216,6 +220,7 @@ class Store implements StoreInterface
         }
 
         // read existing cache entries, remove non-varying, and add this one to the list
+		// 读取现有的缓存项，删除非变化项，并将此项添加到列表中。
         $entries = [];
         $vary = $response->headers->get('vary');
         foreach ($this->getMetadata($key) as $entry) {
@@ -246,6 +251,7 @@ class Store implements StoreInterface
 
     /**
      * Returns content digest for $response.
+	 * 返回$response的内容摘要
      *
      * @return string
      */
@@ -478,6 +484,7 @@ class Store implements StoreInterface
 
     /**
      * Restores a Response from the HTTP headers and body.
+	 * 从HTTP报头和正文中恢复响应
      */
     private function restoreResponse(array $headers, ?string $path = null): ?Response
     {

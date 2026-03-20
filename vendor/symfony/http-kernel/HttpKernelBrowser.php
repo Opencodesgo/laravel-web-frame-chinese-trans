@@ -51,6 +51,7 @@ class HttpKernelBrowser extends AbstractBrowser
 
     /**
      * Sets whether to catch exceptions when the kernel is handling a request.
+	 * 设置内核处理请求时是否捕获异常
      */
     public function catchExceptions(bool $catchExceptions)
     {

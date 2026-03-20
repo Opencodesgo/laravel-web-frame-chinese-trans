@@ -9,6 +9,7 @@ interface UploadedFileFactoryInterface
 {
     /**
      * Create a new uploaded file.
+	 * 创建新的上传文件
      *
      * If a size is not provided it will be determined by checking the size of
      * the file.

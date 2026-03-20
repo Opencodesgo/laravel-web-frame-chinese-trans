@@ -1,9 +1,13 @@
 <?php
+/**
+ * ralouphie，getallheaders，get all headers
+ */
 
 if (!function_exists('getallheaders')) {
 
     /**
      * Get all HTTP header key/values as an associative array for the current request.
+	 * 获取当前请求的所有HTTP头键/值作为关联数组。
      *
      * @return string[string] The HTTP header key/value pairs.
      */

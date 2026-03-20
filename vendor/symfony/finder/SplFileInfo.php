@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，发现者，Spl文件信息
+ * Symfony，Component，Finder，Spl 文件信息
  */
 
 /*
@@ -17,6 +16,7 @@ namespace Symfony\Component\Finder;
 
 /**
  * Extends \SplFileInfo to support relative paths.
+ * 扩展\SplFileInfo以支持相对路径
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -39,6 +39,7 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the relative path.
+	 * 返回相对路径
      *
      * This path does not contain the file name.
      *
@@ -51,6 +52,7 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the relative path name.
+	 * 返回相对路径名
      *
      * This path contains the file name.
      *

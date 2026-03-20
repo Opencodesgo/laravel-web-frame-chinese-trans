@@ -312,7 +312,7 @@ class Message
         // First we will check for a MIME type on the message, which instructs the
         // mail client on what type of attachment the file is so that it may be
         // downloaded correctly by the user. The MIME option is not required.
-		// 首先，我们将检查消息上的MIME类型。
+		// 首先，我们将检查消息上的MIME类型，指导邮件客户端上的附件类型的文件。
         if (isset($options['mime'])) {
             $attachment->setContentType($options['mime']);
         }

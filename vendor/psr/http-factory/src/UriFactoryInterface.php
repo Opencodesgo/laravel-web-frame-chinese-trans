@@ -9,6 +9,7 @@ interface UriFactoryInterface
 {
     /**
      * Create a new URI.
+	 * 创建新的URI
      *
      * @param string $uri
      *

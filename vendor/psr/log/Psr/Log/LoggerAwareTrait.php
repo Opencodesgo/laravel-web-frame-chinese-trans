@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Psr，日志，Log，记录器感知特性
+ * Psr，Log，记录器感知特性
  */
 
 namespace Psr\Log;
@@ -21,6 +20,7 @@ trait LoggerAwareTrait
 
     /**
      * Sets a logger.
+	 * 设置记录器
      *
      * @param LoggerInterface $logger
      */

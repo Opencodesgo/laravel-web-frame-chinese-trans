@@ -27,6 +27,7 @@ interface InputInterface
 {
     /**
      * Returns the first argument from the raw parameters (not parsed).
+	 * 返回原始参数中的第一个参数（未解析）
      *
      * @return string|null
      */
@@ -67,6 +68,7 @@ interface InputInterface
 
     /**
      * Binds the current Input instance with the given arguments and options.
+	 * 用给定的参数和选项绑定当前的Input实例
      *
      * @throws RuntimeException
      */

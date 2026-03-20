@@ -5,7 +5,6 @@
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -228,6 +227,7 @@ class Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法
      *
      * Example:
      *
@@ -247,6 +247,7 @@ class Response
 
     /**
      * Returns the Response as an HTTP string.
+	 * 以HTTP字符串的形式返回响应
      *
      * The string representation of the Response is the same as the
      * one that will be sent to the client only if the prepare() method
@@ -274,6 +275,7 @@ class Response
 
     /**
      * Prepares the Response before it is sent to the client.
+	 * 在发送到客户端之前准备响应
      *
      * This method tweaks the Response to ensure that it is
      * compliant with RFC 2616. Most of the changes are based on
@@ -379,6 +381,7 @@ class Response
 
     /**
      * Sends content for the current web response.
+	 * 为当前web响应发送内容
      *
      * @return $this
      */
@@ -391,6 +394,7 @@ class Response
 
     /**
      * Sends HTTP headers and content.
+	 * 发送HTTP头和内容
      *
      * @return $this
      */

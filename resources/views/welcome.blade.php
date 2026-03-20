@@ -94,6 +94,9 @@
                     <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+				<div class="links">
+					Laravel Version: 7.30.7
+				</div>
             </div>
         </div>
     </body>

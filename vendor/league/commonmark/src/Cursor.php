@@ -37,6 +37,7 @@ class Cursor
      *
      * It's possible for this to be 1 char past the end, meaning we've parsed all chars and have
      * reached the end.  In this state, any character-returning method MUST return null.
+	 * 这有可能是结束后的1个字符，这意味着我们已经解析了所有字符。
      */
     private $currentPosition = 0;
 
@@ -130,6 +131,7 @@ class Cursor
 
     /**
      * Returns the next character which isn't a space (or tab)
+	 * 返回一个不是空格(或选项卡)的下一个字符
      *
      * @return string
      */
@@ -140,6 +142,7 @@ class Cursor
 
     /**
      * Calculates the current indent (number of spaces after current position)
+	 * 计算当前缩进(当前位置后空间的数量)
      *
      * @return int
      */
@@ -154,6 +157,7 @@ class Cursor
 
     /**
      * Whether the cursor is indented to INDENT_LEVEL
+	 * 游标是否缩进INDENT_LEVEL
      *
      * @return bool
      */
@@ -191,6 +195,7 @@ class Cursor
 
     /**
      * Returns the next character (or null, if none) without advancing forwards
+	 * 返回下一个字符(如果没有),不向前推进
      *
      * @param int $offset
      *
@@ -294,6 +299,7 @@ class Cursor
 
     /**
      * Advances the cursor by a single space or tab, if present
+	 * 将光标移动一个空格或制表符(如果存在)
      *
      * @return bool
      */
@@ -438,6 +444,7 @@ class Cursor
 
     /**
      * Encapsulates the current state of this cursor in case you need to rollback later.
+	 * 封装该光标的当前状态,以防稍后需要回滚
      *
      * WARNING: Do not parse or use the return value for ANYTHING except for
      * passing it back into restoreState(), as the number of values and their
@@ -459,6 +466,7 @@ class Cursor
 
     /**
      * Restore the cursor to a previous state.
+	 * 将光标恢复到以前的状态
      *
      * Pass in the value previously obtained by calling saveState().
      *

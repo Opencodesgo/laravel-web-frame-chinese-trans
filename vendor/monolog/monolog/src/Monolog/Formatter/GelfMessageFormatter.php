@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Gelf 消息格式化器
+ * Monolog，Formatter，Gelf 消息格式化器
  */
 
 /*

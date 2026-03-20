@@ -38,7 +38,8 @@ class SqlServerConnection extends Connection
             // We'll simply execute the given callback within a try / catch block
             // and if we catch any exception we can rollback the transaction
             // so that none of the changes are persisted to the database.
-			// 我们将简单地在一个try / catch块中执行给定的回调
+			// 我们将简单地在一个try/catch块中执行给定的回调。
+			// 如果我们捕捉到任何异常，我们可以回滚事务，这样就不会将任何更改持久化到数据库中。
             try {
                 $result = $callback($this);
 
@@ -49,6 +50,7 @@ class SqlServerConnection extends Connection
             // up in the database. Then we'll re-throw the exception so it can
             // be handled how the developer sees fit for their applications.
 			// 如果我们捕捉到一个异常，我们将回滚，这样就不会出错。
+			// 然后我们将重新抛出异常，这样它就可以处理开发人员认为适合其应用程序的方式。
             catch (Throwable $e) {
                 $this->getPdo()->exec('ROLLBACK TRAN');
 

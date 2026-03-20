@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，Polyfill，流式复制特性
+ * League，Flysystem，Adapter，Polyfill，流式复制特性
  */
 
 namespace League\Flysystem\Adapter\Polyfill;
@@ -11,6 +11,7 @@ trait StreamedCopyTrait
 {
     /**
      * Copy a file.
+	 * 复制文件
      *
      * @param string $path
      * @param string $newpath

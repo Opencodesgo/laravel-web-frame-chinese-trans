@@ -159,6 +159,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter value converted to integer.
+	 * 返回转换为整数的参数值
      *
      * @return int
      */
@@ -169,6 +170,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter value converted to boolean.
+	 * 返回转换为布尔值的参数值
      *
      * @return bool
      */
@@ -212,6 +214,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns an iterator for parameters.
+	 * 返回参数的迭代器
      *
      * @return \ArrayIterator<string, mixed>
      */
@@ -223,6 +226,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the number of parameters.
+	 * 返回参数的个数
      *
      * @return int
      */

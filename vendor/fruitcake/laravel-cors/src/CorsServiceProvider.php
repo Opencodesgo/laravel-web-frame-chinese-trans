@@ -1,4 +1,7 @@
 <?php
+/**
+ * Fruitcake，Cors，Cors 服务提供者
+ */
 
 namespace Fruitcake\Cors;
 
@@ -12,6 +15,7 @@ class CorsServiceProvider extends BaseServiceProvider
 {
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -26,6 +30,7 @@ class CorsServiceProvider extends BaseServiceProvider
 
     /**
      * Register the config for publishing
+	 * 注册要发布的配置
      *
      */
     public function boot()
@@ -37,6 +42,7 @@ class CorsServiceProvider extends BaseServiceProvider
         }
 
         // Add the headers on the Request Handled event as fallback in case of exceptions
+		// 在请求处理事件上添加标头，作为发生异常时的回退。
         if (class_exists(RequestHandled::class) && $this->app->bound('events')) {
             $this->app->make('events')->listen(RequestHandled::class, function (RequestHandled $event) {
                 $this->app->make(HandleCors::class)->onRequestHandled($event);
@@ -46,6 +52,7 @@ class CorsServiceProvider extends BaseServiceProvider
 
     /**
      * Set the config path
+	 * 设置配置路径
      *
      * @return string
      */
@@ -96,6 +103,7 @@ class CorsServiceProvider extends BaseServiceProvider
 
     /**
      * Create a pattern for a wildcard, based on Str::is() from Laravel
+	 * 基于Laravel中的Str::is（）为通配符创建一个模式
      *
      * @see https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Str.php
      * @param string $pattern

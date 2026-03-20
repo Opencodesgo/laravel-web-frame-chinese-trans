@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，Mime，Mime类型
+ * Symfony，Component，Mime，Mime 类型
  */
 
 /*

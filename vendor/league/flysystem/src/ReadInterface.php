@@ -29,6 +29,7 @@ interface ReadInterface
 
     /**
      * Read a file as a stream.
+	 * 读取文件为流
      *
      * @param string $path
      *
@@ -38,6 +39,7 @@ interface ReadInterface
 
     /**
      * List contents of a directory.
+	 * 列表目录的内容
      *
      * @param string $directory
      * @param bool   $recursive
@@ -48,6 +50,7 @@ interface ReadInterface
 
     /**
      * Get all the meta data of a file or directory.
+	 * 获取文件或目录的所有元数据
      *
      * @param string $path
      *
@@ -84,6 +87,7 @@ interface ReadInterface
 
     /**
      * Get the visibility of a file.
+	 * 获得文件的可见性
      *
      * @param string $path
      *

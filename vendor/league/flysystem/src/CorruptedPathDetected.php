@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，检测到路径损坏
+ */
 
 namespace League\Flysystem;
 

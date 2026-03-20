@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，控制器参数事件
+ * Symfony，Component，HttpKernel，依赖注入，请求事件
  */
 
 /*
@@ -43,6 +43,7 @@ class RequestEvent extends KernelEvent
 
     /**
      * Sets a response and stops event propagation.
+	 * 设置响应并停止事件传播
      */
     public function setResponse(Response $response)
     {

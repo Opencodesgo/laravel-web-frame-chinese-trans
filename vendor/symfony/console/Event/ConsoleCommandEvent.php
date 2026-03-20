@@ -17,6 +17,7 @@ namespace Symfony\Component\Console\Event;
 /**
  * Allows to do things before the command is executed, like skipping the command or executing code before the command is
  * going to be executed.
+ * 允许在命令执行之前做一些事情，比如跳过命令或在命令执行之前执行代码。
  *
  * Changing the input arguments will have no effect.
  *
@@ -26,6 +27,7 @@ final class ConsoleCommandEvent extends ConsoleEvent
 {
     /**
      * The return code for skipped commands, this will also be passed into the terminate event.
+	 * 跳过命令的返回代码，这也将被传递到terminate事件。
      */
     public const RETURN_CODE_DISABLED = 113;
 

@@ -109,6 +109,7 @@ class ErrorHandler
 
     /**
      * Registers the error handler.
+	 * 注册错误处理程序
      */
     public static function register(?self $handler = null, bool $replace = true): self
     {
@@ -159,6 +160,7 @@ class ErrorHandler
 
     /**
      * Calls a function and turns any PHP error into \ErrorException.
+	 * 调用一个函数并将任何PHP错误转换为\ErrorException
      *
      * @return mixed What $function(...$arguments) returns
      *
@@ -207,6 +209,7 @@ class ErrorHandler
 
     /**
      * Sets a logger to non assigned errors levels.
+	 * 将记录器设置为未分配的错误级别
      *
      * @param LoggerInterface $logger  A PSR-3 logger to put as default for the given levels
      * @param array|int|null  $levels  An array map of E_* to LogLevel::* or an integer bit field of E_* constants
@@ -239,6 +242,7 @@ class ErrorHandler
 
     /**
      * Sets a logger for each error level.
+	 * 为每个错误级别设置记录器
      *
      * @param array $loggers Error levels to [LoggerInterface|null, LogLevel::*] map
      *
@@ -292,6 +296,7 @@ class ErrorHandler
 
     /**
      * Sets a user exception handler.
+	 * 设置用户异常处理程序
      *
      * @param callable(\Throwable $e)|null $handler
      *
@@ -307,6 +312,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels that throw an exception when a PHP error occurs.
+	 * 设置发生PHP错误时抛出异常的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for thrown errors
      * @param bool $replace Replace or amend the previous value
@@ -327,6 +333,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels for which local variables are preserved.
+	 * 设置保留局部变量的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for scoped errors
      * @param bool $replace Replace or amend the previous value
@@ -346,6 +353,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels for which the stack trace is preserved.
+	 * 设置为其保留堆栈跟踪的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for traced errors
      * @param bool $replace Replace or amend the previous value
@@ -365,6 +373,7 @@ class ErrorHandler
 
     /**
      * Sets the error levels where the @-operator is ignored.
+	 * 设置忽略@-操作符的错误级别
      *
      * @param int  $levels  A bit field of E_* constants for screamed errors
      * @param bool $replace Replace or amend the previous value
@@ -404,6 +413,7 @@ class ErrorHandler
 
     /**
      * Handles errors by filtering then logging them according to the configured bit fields.
+	 * 通过过滤然后根据配置的位字段记录错误来处理错误
      *
      * @return bool Returns false when no handling happens so that the PHP engine can handle the error itself
      *
@@ -807,6 +817,7 @@ class ErrorHandler
     /**
      * Parse the error message by removing the anonymous class notation
      * and using the parent class instead if possible.
+	 * 通过删除匿名类符号来解析错误消息
      */
     private function parseAnonymousClass(string $message): string
     {

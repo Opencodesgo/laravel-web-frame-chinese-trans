@@ -38,6 +38,7 @@ class UriSigner
 
     /**
      * Signs a URI.
+	 * 对URI进行签名
      *
      * The given URI is signed by adding the query string parameter
      * which value depends on the URI and the secret.
@@ -61,6 +62,7 @@ class UriSigner
 
     /**
      * Checks that a URI contains the correct hash.
+	 * 检查URI是否包含正确的散列
      *
      * @return bool
      */

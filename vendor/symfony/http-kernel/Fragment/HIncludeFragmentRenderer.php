@@ -46,6 +46,7 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
 
     /**
      * Checks if a templating engine has been set.
+	 * 检查是否设置了模板引擎
      *
      * @return bool
      */

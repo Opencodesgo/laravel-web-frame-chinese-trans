@@ -225,6 +225,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Send a new message with only a raw text part.
+	 * 发送一个只有原始文本部分的新消息
      *
      * @param  string  $text
      * @param  mixed  $callback
@@ -237,6 +238,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Send a new message with only a plain part.
+	 * 发送一条只包含普通部分的新消息
      *
      * @param  string  $view
      * @param  array  $data
@@ -287,6 +289,7 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
+		// 首先，我们需要解析视图，它可以是字符串也可以是数组，两者都有。
         [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $message = $this->createMessage();
@@ -294,6 +297,7 @@ class Mailer implements MailerContract, MailQueueContract
         // Once we have retrieved the view content for the e-mail we will set the body
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
+		// 一旦我们检索了电子邮件的视图内容，我们将使用HTML类型设置主体。
         $callback($message);
 
         $this->addContent($message, $view, $plain, $raw, $data);
@@ -301,6 +305,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If a global "to" address has been set, we will set that address on the mail
         // message. This is primarily useful during local development in which each
         // message should be delivered into a single mail address for inspection.
+		// 如果设置了全局"to"地址，我们将在邮件中设置该地址。
         if (isset($this->to['address'])) {
             $this->setGlobalToAndRemoveCcAndBcc($message);
         }
@@ -308,6 +313,8 @@ class Mailer implements MailerContract, MailQueueContract
         // Next we will determine if the message should be sent. We give the developer
         // one final chance to stop this message and then we will send it to all of
         // its recipients. We will then fire the sent event for the sent message.
+		// 接下来，我们将确定是否应该发送消息。
+		// 我们给开发者最后一次阻止这条消息的机会，我们会把它发给它的所有接收者。
         $swiftMessage = $message->getSwiftMessage();
 
         if ($this->shouldSendMessage($swiftMessage, $data)) {
@@ -349,6 +356,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If the given view is an array with numeric keys, we will just assume that
         // both a "pretty" and "plain" view were provided, so we will return this
         // array as is, since it should contain both views with numerical keys.
+		// 如果给定视图是一个带有数字键的数组，我们就这样假设提供了"漂亮"和"普通"的视图。
         if (is_array($view) && isset($view[0])) {
             return [$view[0], $view[1], null];
         }
@@ -356,6 +364,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If this view is an array but doesn't contain numeric keys, we will assume
         // the views are being explicitly specified and will extract them via the
         // named keys instead, allowing the developers to use one or the other.
+		// 如果这个视图是一个数组但不包含数字键，我们将假设视图被显式指定。
         if (is_array($view)) {
             return [
                 $view['html'] ?? null,
@@ -428,6 +437,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Queue a new e-mail message for sending.
+	 * 将要发送的新电子邮件排队
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  string|null  $queue
@@ -450,6 +460,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Queue a new e-mail message for sending on the given queue.
+	 * 将要在给定队列上发送的新电子邮件放入队列
      *
      * @param  string  $queue
      * @param  \Illuminate\Contracts\Mail\Mailable  $view
@@ -462,8 +473,10 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Queue a new e-mail message for sending on the given queue.
+	 * 将要在给定队列上发送的新电子邮件放入队列
      *
      * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
+	 * 这个方法与框架的"onQueue"措辞不匹配。添加"onQueue"。
      *
      * @param  string  $queue
      * @param  \Illuminate\Contracts\Mail\Mailable  $view
@@ -476,6 +489,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Queue a new e-mail message for sending after (n) seconds.
+	 * 等待(n)秒后发送新的电子邮件
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable  $view
@@ -497,6 +511,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Queue a new e-mail message for sending after (n) seconds on the given queue.
+	 * 在给定队列上等待(n)秒后发送的新电子邮件消息
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
@@ -521,6 +536,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If a global from address has been specified we will set it on every message
         // instance so the developer does not have to repeat themselves every time
         // they create a new message. We'll just go ahead and push this address.
+		// 如果指定了全局from地址，我们将在每条消息上设置它。
         if (! empty($this->from['address'])) {
             $message->from($this->from['address'], $this->from['name']);
         }
@@ -528,6 +544,7 @@ class Mailer implements MailerContract, MailQueueContract
         // When a global reply address was specified we will set this on every message
         // instance so the developer does not have to repeat themselves every time
         // they create a new message. We will just go ahead and push this address.
+		// 当指定一个全局应答地址时，我们将在每个消息上设置实例。
         if (! empty($this->replyTo['address'])) {
             $message->replyTo($this->replyTo['address'], $this->replyTo['name']);
         }
@@ -608,6 +625,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Get the array of failed recipients.
+	 * 获取失败收件人的数组
      *
      * @return array
      */

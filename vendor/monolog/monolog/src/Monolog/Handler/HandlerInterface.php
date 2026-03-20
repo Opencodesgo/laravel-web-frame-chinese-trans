@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，处理程序接口
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Interface that all Monolog Handlers must implement
+ * 所有独白处理程序必须实现的接口
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *

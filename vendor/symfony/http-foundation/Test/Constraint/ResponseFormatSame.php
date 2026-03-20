@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Asserts that the response is in the given format.
+ * 断言响应是否是给定的格式
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */

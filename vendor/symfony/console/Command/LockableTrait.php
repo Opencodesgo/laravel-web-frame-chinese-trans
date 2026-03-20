@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，命令，命令核心类
+ * Symfony，Component，Console，命令，可锁定的特质
  */
 
 /*
@@ -33,6 +33,7 @@ trait LockableTrait
 
     /**
      * Locks a command.
+	 * 锁定命令
      */
     private function lock(?string $name = null, bool $blocking = false): bool
     {
@@ -62,6 +63,7 @@ trait LockableTrait
 
     /**
      * Releases the command lock if there is one.
+	 * 如果有命令锁，则释放命令锁。
      */
     private function release()
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，参数解析器，可跟踪值解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Provides timing information via the stopwatch.
+ * 通过秒表提供计时信息
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

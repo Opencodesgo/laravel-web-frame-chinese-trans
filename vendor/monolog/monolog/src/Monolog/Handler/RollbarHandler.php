@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，Rollbar 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends errors to Rollbar
+ * 将错误发送到滚动条
  *
  * If the context data contains a `payload` key, that is used as an array
  * of payload options to RollbarLogger's log method.

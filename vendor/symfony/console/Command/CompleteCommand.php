@@ -26,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Responsible for providing the values to the shell completion.
+ * 负责向shell完成提供值
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */

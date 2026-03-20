@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，属性，作为 Monolog 处理员
+ * Monolog，Attribute，作为 Monolog 处理员
  */
 
 /*
@@ -17,6 +17,7 @@ namespace Monolog\Attribute;
 
 /**
  * A reusable attribute to help configure a class or a method as a processor.
+ * 帮助将类或方法配置为处理器的可重用属性
  * 
  * Using it offers no guarantee: it needs to be leveraged by a Monolog third-party consumer.
  * 

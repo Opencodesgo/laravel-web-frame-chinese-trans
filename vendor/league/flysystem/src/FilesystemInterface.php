@@ -56,6 +56,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's metadata.
+	 * 获取文件的元数据
      *
      * @param string $path The path to the file.
      *
@@ -67,6 +68,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's size.
+	 * 得到文件大小
      *
      * @param string $path The path to the file.
      *
@@ -78,6 +80,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's mime-type.
+	 * 得到文件 mime-type
      *
      * @param string $path The path to the file.
      *
@@ -202,6 +205,7 @@ interface FilesystemInterface
 
     /**
      * Delete a directory.
+	 * 删除目录
      *
      * @param string $dirname
      *
@@ -213,6 +217,7 @@ interface FilesystemInterface
 
     /**
      * Create a directory.
+	 * 创建目录
      *
      * @param string $dirname The name of the new directory.
      * @param array  $config  An optional configuration array.
@@ -223,6 +228,7 @@ interface FilesystemInterface
 
     /**
      * Set the visibility for a file.
+	 * 设置文件的可见性
      *
      * @param string $path       The path to the file.
      * @param string $visibility One of 'public' or 'private'.
@@ -270,6 +276,7 @@ interface FilesystemInterface
 
     /**
      * Get a file/directory handler.
+	 * 获取文件/目录处理程序
      *
      * @deprecated
      *

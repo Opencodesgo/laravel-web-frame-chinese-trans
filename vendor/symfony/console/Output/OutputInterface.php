@@ -61,6 +61,7 @@ interface OutputInterface
 
     /**
      * Gets the current verbosity of the output.
+	 * 获取当前输出的详细信息
      *
      * @return int
      */

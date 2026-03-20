@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，日志，Log，抽象记录器
+ * Psr，Log，抽象记录器
  */
 
 namespace Psr\Log;
@@ -17,6 +17,7 @@ abstract class AbstractLogger implements LoggerInterface
 {
     /**
      * System is unusable.
+	 * 系统不可用
      *
      * @param string  $message
      * @param mixed[] $context
@@ -30,6 +31,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Action must be taken immediately.
+	 * 必须立即采取行动
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.

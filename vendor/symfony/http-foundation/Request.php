@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 // Help opcache.preload discover always-needed symbols
+// 帮助opcache。预加载发现总是需要的符号
 class_exists(AcceptHeader::class);
 class_exists(FileBag::class);
 class_exists(HeaderBag::class);
@@ -35,6 +36,7 @@ class_exists(ServerBag::class);
  * Request表示HTTP请求
  *
  * The methods dealing with URL accept / return a raw path (% encoded):
+ * 处理URL接收/返回原始路径(%编码)的方法:
  *   * getBasePath
  *   * getBaseUrl
  *   * getPathInfo
@@ -278,6 +280,7 @@ class Request
 	 * 设置此请求的参数
      *
      * This method also re-initializes all properties.
+	 * 此方法还会重新初始化所有属性。
      *
      * @param array                $query      The GET parameters
      * @param array                $request    The POST parameters
@@ -470,6 +473,7 @@ class Request
 
     /**
      * Clones a request and overrides some of its parameters.
+	 * 克隆请求并覆盖它的一些参数
      *
      * @param array|null $query      The GET parameters
      * @param array|null $request    The POST parameters
@@ -526,6 +530,7 @@ class Request
 
     /**
      * Clones the current request.
+	 * 克隆当前请求。
      *
      * Note that the session is not cloned as duplicated requests
      * are most of the time sub-requests of the main one.
@@ -543,6 +548,7 @@ class Request
 
     /**
      * Returns the request as a string.
+	 * 以字符串形式返回请求。
      *
      * @return string
      */
@@ -570,6 +576,7 @@ class Request
 
     /**
      * Overrides the PHP global variables according to this request instance.
+	 * 根据这个请求实例覆盖PHP全局变量。
      *
      * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
      * $_FILES is never overridden, see rfc1867
@@ -608,6 +615,7 @@ class Request
 
     /**
      * Sets a list of trusted proxies.
+	 * 设置一个可信代理列表。
      *
      * You should only list the reverse proxies that you manage directly.
      *
@@ -633,6 +641,7 @@ class Request
 
     /**
      * Gets the list of trusted proxies.
+	 * 获取可信代理列表
      *
      * @return array
      */
@@ -643,6 +652,7 @@ class Request
 
     /**
      * Gets the set of trusted headers from trusted proxies.
+	 * 从可信代理获取信任头的集合
      *
      * @return int A bit field of Request::HEADER_* that defines which headers are trusted from your proxies
      */
@@ -653,6 +663,7 @@ class Request
 
     /**
      * Sets a list of trusted host patterns.
+	 * 设置可信主机模式列表。
      *
      * You should only list the hosts you manage using regexs.
      *
@@ -669,6 +680,7 @@ class Request
 
     /**
      * Gets the list of trusted host patterns.
+	 * 获取可信主机模式的列表
      *
      * @return array
      */
@@ -679,6 +691,7 @@ class Request
 
     /**
      * Normalizes a query string.
+	 * 将查询字符串规范化。
      *
      * It builds a normalized query string, where keys/value pairs are alphabetized,
      * have consistent escaping and unneeded delimiters are removed.
@@ -716,6 +729,7 @@ class Request
 
     /**
      * Checks whether support for the _method request parameter is enabled.
+	 * 检查是否启用了_method请求参数的支持
      *
      * @return bool
      */
@@ -758,6 +772,7 @@ class Request
 
     /**
      * Gets the Session.
+	 * 参加会议
      *
      * @return SessionInterface
      */
@@ -789,6 +804,7 @@ class Request
 
     /**
      * Whether the request contains a Session object.
+	 * 请求是否包含会话对象。
      *
      * This method does not give any information about the state of the session object,
      * like whether the session is started or not. It is just a way to check if this Request
@@ -846,6 +862,7 @@ class Request
 
     /**
      * Returns the client IP address.
+	 * 返回客户机IP地址。
      *
      * This method can read the client IP address from the "X-Forwarded-For" header
      * when trusted proxies were set via "setTrustedProxies()". The "X-Forwarded-For"
@@ -2188,6 +2205,7 @@ class Request
 
     /**
      * Is this IIS with UrlRewriteModule?
+	 * 这个IIS是否有UrlRewriteModule ?
      *
      * This method consumes, caches and removed the IIS_WasUrlRewritten env var,
      * so we don't inherit it to sub-requests.

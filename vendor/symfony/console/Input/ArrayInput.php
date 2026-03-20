@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * ArrayInput represents an input provided as an array.
+ * ArrayInput表示作为数组提供的输入
  *
  * Usage:
  *
@@ -103,6 +104,7 @@ class ArrayInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
+	 * 返回传递给命令的参数的字符串化表示形式
      *
      * @return string
      */

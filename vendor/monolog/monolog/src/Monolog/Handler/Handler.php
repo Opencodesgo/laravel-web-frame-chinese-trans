@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Base Handler class providing basic close() support as well as handleBatch
+ * 基Handler类提供基本的close()支持以及handleBatch
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */

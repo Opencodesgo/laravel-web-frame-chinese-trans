@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，日志，Log，日志级别
+ * Psr，Log，日志级别
  */
 
 namespace Psr\Log;

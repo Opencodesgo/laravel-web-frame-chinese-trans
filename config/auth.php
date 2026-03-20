@@ -30,7 +30,7 @@ return [
     | Next, you may define every authentication guard for your application.
     | Of course, a great default configuration has been defined for you
     | here which uses session storage and the Eloquent user provider.
-	| 接下来，您可以为您的应用定义每个身份验证保护。
+	| 接下来，你可以为你的应用定义每个身份验证保护。
     |
     | All authentication drivers have a user provider. This defines how the
     | users are actually retrieved out of your database or other storage
@@ -67,7 +67,7 @@ return [
     | If you have multiple user tables or models you may configure multiple
     | sources which represent each model / table. These sources may then
     | be assigned to any extra authentication guards you have defined.
-	| 如果您有多个用户表或模型，您可以配置多个源，表示每个模型/表。
+	| 如果你有多个用户表或模型，您可以配置多个源，表示每个模型/表。
     |
     | Supported: "database", "eloquent"
 	| 支持："数据库"，"eloquent"
@@ -120,7 +120,7 @@ return [
     | Here you may define the amount of seconds before a password confirmation
     | times out and the user is prompted to re-enter their password via the
     | confirmation screen. By default, the timeout lasts for three hours.
-	| 在这里，您可以定义密码确认前的秒数，并提示用户通过屏幕确认。
+	| 在这里，你可以定义密码确认前的秒数，并提示用户通过屏幕确认。
     |
     */
 

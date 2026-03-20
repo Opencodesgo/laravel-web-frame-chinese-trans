@@ -1,7 +1,6 @@
 <?php
-
 /**
- * TijsVerkoyen，Css，Css到内联样式
+ * TijsVerkoyen，CssToInlineStyles，Css，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css;
@@ -13,6 +12,7 @@ class Processor
 {
     /**
      * Get the rules from a given CSS-string
+	 * 从给定的css字符串中获取规则
      *
      * @param string $css
      * @param Rule[] $existingRules

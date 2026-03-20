@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，事件，信已发送
+ * Illuminate，邮件，事件，消息已发送
  */
 
 namespace Illuminate\Mail\Events;

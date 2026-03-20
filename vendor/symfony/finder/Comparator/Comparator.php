@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，比较器，比较器
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -19,6 +19,7 @@ use Symfony\Component\String\UnicodeString;
 
 /**
  * Helper is the base class for all helper classes.
+ * Helper是所有Helper类的基类
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

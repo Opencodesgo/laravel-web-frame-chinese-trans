@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 /**
  * A controller resolver searching for a controller in a psr-11 container when using the "service::method" notation.
+ * 当使用“service::method”表示法时，在psr-11容器中搜索控制器的控制器解析器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>

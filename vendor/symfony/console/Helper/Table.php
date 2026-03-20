@@ -44,6 +44,7 @@ class Table
 
     /**
      * Table headers.
+	 * 表格头
      */
     private $headers = [];
 

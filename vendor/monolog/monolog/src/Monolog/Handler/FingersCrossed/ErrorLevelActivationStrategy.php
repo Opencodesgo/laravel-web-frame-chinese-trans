@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，指针交叉，错误级激活策略
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Error level based activation strategy.
+ * 基于错误的激活策略
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *

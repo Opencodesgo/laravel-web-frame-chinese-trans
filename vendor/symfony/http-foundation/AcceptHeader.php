@@ -19,6 +19,7 @@ class_exists(AcceptHeaderItem::class);
 
 /**
  * Represents an Accept-* header.
+ * 表示Accept-*报头
  *
  * An accept header is compound with a list of items,
  * sorted by descending quality.
@@ -49,6 +50,7 @@ class AcceptHeader
 
     /**
      * Builds an AcceptHeader instance from a string.
+	 * 从字符串生成一个AcceptHeader实例
      *
      * @return self
      */

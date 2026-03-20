@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * A InputDefinition represents a set of valid command line arguments and options.
+ * InputDefinition表示一组有效的命令行参数和选项
  *
  * Usage:
  *
@@ -49,6 +50,7 @@ class InputDefinition
 
     /**
      * Sets the definition of the input.
+	 * 设置输入的定义
      */
     public function setDefinition(array $definition)
     {

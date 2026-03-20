@@ -16,6 +16,8 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
 
 /**
  * Builds {@see ArgumentMetadata} objects based on the given Controller.
+ * 基于给定的控制器构建{@see ArgumentMetadata}对象
+ * 
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
@@ -59,6 +61,7 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface
 
     /**
      * Returns an associated type to the given parameter if available.
+	 * 如果可用，则返回给定参数的关联类型。
      */
     private function getType(\ReflectionParameter $parameter, ?string $class): ?string
     {

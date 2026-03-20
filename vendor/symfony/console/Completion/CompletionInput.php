@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * An input specialized for shell completion.
+ * 专门用于shell完成的输入
  *
  * This input allows unfinished option names or values and exposes what kind of
  * completion is expected.

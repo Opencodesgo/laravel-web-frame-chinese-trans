@@ -56,6 +56,7 @@ class SingleCommandApplication extends Command
         }
 
         // We use the command name as the application name
+		// 我们使用命令名作为应用程序名
         $application = new Application($this->getName() ?: 'UNKNOWN', $this->version);
         $application->setAutoExit($this->autoExit);
         // Fix the usage of the command displayed with "--help"

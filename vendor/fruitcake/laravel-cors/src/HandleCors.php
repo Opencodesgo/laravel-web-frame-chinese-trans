@@ -1,4 +1,7 @@
 <?php
+/**
+ * Fruitcake，Cors，处理 Cors
+ */
 
 namespace Fruitcake\Cors;
 
@@ -26,6 +29,7 @@ class HandleCors
 
     /**
      * Handle an incoming request. Based on Asm89\Stack\Cors by asm89
+	 * 处理传入请求。基于Asm89\Stack\Cors
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -126,6 +130,7 @@ class HandleCors
 
     /**
      * Paths by given host or string values in config by default
+	 * 默认情况下，路径由给定的主机或配置中的字符串值指定。
      *
      * @param string $host
      * @return array

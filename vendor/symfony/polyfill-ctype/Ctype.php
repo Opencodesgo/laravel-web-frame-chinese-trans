@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，函数，Ctype
+ */
 
 /*
  * This file is part of the Symfony package.

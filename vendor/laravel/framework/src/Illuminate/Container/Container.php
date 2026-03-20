@@ -921,7 +921,8 @@ class Container implements ArrayAccess, ContainerContract
         // Once we have all the constructor's parameters we can create each of the
         // dependency instances and then use the reflection instances to make a
         // new instance of this class, injecting the created dependencies in.
-		// 一旦我们有了构造函数的所有参数
+		// 一旦我们有了构造函数的所有参数，我们可以创建每一个依赖实例。
+		// 然后使用反射实例来创建使用反射实例，将创建的依赖项注入。
         try {
             $instances = $this->resolveDependencies($dependencies);
         } catch (BindingResolutionException $e) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，工具，文档类型
+ * League，Flysystem，Util，Mime 类型
  */
 
 namespace League\Flysystem\Util;
@@ -54,6 +54,7 @@ class MimeType
 
     /**
      * Detects MIME Type based on file extension.
+	 * 根据文件扩展名检测MIME类型
      *
      * @param string $extension
      *

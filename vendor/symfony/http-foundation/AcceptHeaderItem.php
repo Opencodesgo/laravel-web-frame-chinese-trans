@@ -69,6 +69,7 @@ class AcceptHeaderItem
 
     /**
      * Set the item value.
+	 * 设置项目值
      *
      * @return $this
      */
@@ -81,6 +82,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item value.
+	 * 返回项值
      *
      * @return string
      */
@@ -91,6 +93,7 @@ class AcceptHeaderItem
 
     /**
      * Set the item quality.
+	 * 设置项目质量
      *
      * @return $this
      */
@@ -157,6 +160,7 @@ class AcceptHeaderItem
 
     /**
      * Returns all attributes.
+	 * 返回所有属性
      *
      * @return array
      */

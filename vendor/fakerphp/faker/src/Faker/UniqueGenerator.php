@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，唯一生成器
+ */
 
 namespace Faker;
 
@@ -6,6 +9,7 @@ use Faker\Extension\Extension;
 
 /**
  * Proxy for other generators that returns only unique values.
+ * 仅返回唯一值的其他生成器的代理
  *
  * Instantiated through @see Generator::unique().
  *

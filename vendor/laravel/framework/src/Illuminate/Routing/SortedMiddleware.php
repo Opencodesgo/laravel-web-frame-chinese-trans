@@ -31,6 +31,7 @@ class SortedMiddleware extends Collection
 	 * 根据给定的优先级映射对中间件进行排序
      *
      * Each call to this method makes one discrete middleware movement if necessary.
+	 * 如果有必要，对该方法的每次调用都会进行一次离散的中间件移动。
      *
      * @param  array  $priorityMap
      * @param  array  $middlewares

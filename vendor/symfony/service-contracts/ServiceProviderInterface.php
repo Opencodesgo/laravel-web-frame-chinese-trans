@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Contracts，服务，服务提供者接口
+ * Symfony，Component，Service，服务提供者接口
  */
 
 /*
@@ -26,6 +26,7 @@ interface ServiceProviderInterface extends ContainerInterface
 {
     /**
      * Returns an associative array of service types keyed by the identifiers provided by the current container.
+	 * 返回由当前容器提供的标识符作为键值的服务类型的关联数组。
      *
      * Examples:
      *

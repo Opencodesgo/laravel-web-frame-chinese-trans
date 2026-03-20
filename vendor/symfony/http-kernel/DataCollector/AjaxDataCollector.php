@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，Ajax数据收集器
+ * Symfony，Component，HttpKernel，数据采集，Ajax 数据收集器
  */
 
 /*

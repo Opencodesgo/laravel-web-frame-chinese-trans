@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Elastica 格式化器
+ * Monolog，Formatter，Elastica 格式化器
  */
 
 /*
@@ -75,6 +75,7 @@ class ElasticaFormatter extends NormalizerFormatter
 
     /**
      * Convert a log message into an Elastica Document
+	 * 将日志消息转换为弹性文档
      *
      * @phpstan-param Record $record
      */

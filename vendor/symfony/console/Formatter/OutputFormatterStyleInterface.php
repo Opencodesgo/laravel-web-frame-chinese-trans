@@ -24,11 +24,13 @@ interface OutputFormatterStyleInterface
 {
     /**
      * Sets style foreground color.
+	 * 设置风格前景色
      */
     public function setForeground(?string $color = null);
 
     /**
      * Sets style background color.
+	 * 设置风格背景颜色
      */
     public function setBackground(?string $color = null);
 

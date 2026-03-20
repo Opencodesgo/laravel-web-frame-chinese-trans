@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由集合生成器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ trigger_deprecation('symfony/routing', '5.1', 'The "%s" class is deprecated, use
 
 /**
  * Helps add and import routes into a RouteCollection.
+ * 帮助在RouteCollection中添加和导入路由
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  *

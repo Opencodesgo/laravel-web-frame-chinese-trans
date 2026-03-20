@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，New Relic 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -19,6 +23,7 @@ use Monolog\Formatter\FormatterInterface;
 /**
  * Class to record a log on a NewRelic application.
  * Enabling New Relic High Security mode may prevent capture of useful information.
+ * 类来记录NewRelic应用程序上的日志
  *
  * This handler requires a NormalizerFormatter to function and expects an array in $record['formatted']
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorRenderer，Html 错误渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -83,6 +86,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     /**
      * Gets the HTML content associated with the given exception.
+	 * 获取与给定异常关联的HTML内容
      */
     public function getBody(FlattenException $exception): string
     {
@@ -91,6 +95,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     /**
      * Gets the stylesheet associated with the given exception.
+	 * 获取与给定异常关联的样式表
      */
     public function getStylesheet(): string
     {
@@ -158,6 +163,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     /**
      * Formats an array as a string.
+	 * 将数组格式化为字符串
      */
     private function formatArgs(array $args): string
     {
@@ -216,6 +222,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     /**
      * Returns the link for a given file/line pair.
+	 * 返回给定文件/行对的链接
      *
      * @return string|false
      */
@@ -260,6 +267,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     /**
      * Returns an excerpt of a code file around the given line number.
+	 * 返回给定行号周围代码文件的摘录
      *
      * @param string $file       A file path
      * @param int    $line       The selected line number
@@ -369,6 +377,7 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 
     /**
      * Allows overriding the default non-debug template.
+	 * 允许重写默认的非调试模板
      *
      * @param string $template path to the custom template file to render
      */

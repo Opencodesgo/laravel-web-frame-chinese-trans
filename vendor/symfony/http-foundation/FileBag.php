@@ -102,6 +102,7 @@ class FileBag extends ParameterBag
 
     /**
      * Fixes a malformed PHP $_FILES array.
+	 * 修复了一个错误的PHP $_FILES数组
      *
      * PHP has a bug that the format of the $_FILES array differs, depending on
      * whether the uploaded file fields had normal field names or array-like

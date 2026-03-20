@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Symfony，Component，Mime，主体渲染器接口
  */

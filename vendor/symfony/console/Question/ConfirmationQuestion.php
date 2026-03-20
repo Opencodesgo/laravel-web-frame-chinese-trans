@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，问题，确认问题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Question;
 
 /**
  * Represents a yes/no question.
+ * 代表一个是的/毫无疑问
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

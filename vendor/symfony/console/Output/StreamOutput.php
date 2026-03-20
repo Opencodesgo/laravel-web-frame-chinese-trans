@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * StreamOutput writes the output to a given stream.
+ * StreamOutput将输出写入给定流
  *
  * Usage:
  *
@@ -59,6 +60,7 @@ class StreamOutput extends Output
 
     /**
      * Gets the stream attached to this StreamOutput instance.
+	 * 获取附加到此StreamOutput实例的流
      *
      * @return resource
      */

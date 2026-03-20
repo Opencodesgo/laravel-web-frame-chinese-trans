@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Line 格式化器
+ * Monolog，Formatter，Line 格式化器
  */
 
 /*

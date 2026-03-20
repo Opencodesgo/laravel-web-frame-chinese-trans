@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Json响应
+ * Symfony，Component，HttpFoundation，Json 响应
  */
 
 /*
@@ -84,6 +84,7 @@ class JsonResponse extends Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法
      *
      * Example:
      *
@@ -191,6 +192,7 @@ class JsonResponse extends Response
 
     /**
      * Sets options used while encoding data to JSON.
+	 * 设置将数据编码为JSON时使用的选项
      *
      * @return $this
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorHandler，致命错误，Cli错误渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Formats an exception using Serializer for rendering.
+ * 使用Serializer格式化异常以进行呈现
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

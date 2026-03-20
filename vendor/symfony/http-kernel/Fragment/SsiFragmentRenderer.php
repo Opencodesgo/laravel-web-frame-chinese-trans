@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 /**
  * Implements the SSI rendering strategy.
+ * 实现SSI呈现策略
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */

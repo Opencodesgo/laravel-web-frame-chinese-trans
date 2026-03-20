@@ -97,7 +97,7 @@ trait BuildsQueries
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
-			// 我们将执行给定页面的查询并获得结果。
+			// 我们将执行给定页面的查询并获得结果。没有结果，我们可以从这里中断并返回。
             $results = $clone->forPageAfterId($count, $lastId, $column)->get();
 
             $countResults = $results->count();

@@ -9,7 +9,7 @@ interface ConnectionResolverInterface
 {
     /**
      * Get a database connection instance.
-	 * 获取数据库连接实例
+	 * 得到数据库连接实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Database\ConnectionInterface
@@ -18,7 +18,7 @@ interface ConnectionResolverInterface
 
     /**
      * Get the default connection name.
-	 * 获取默认连接名称
+	 * 得到默认连接名称
      *
      * @return string
      */

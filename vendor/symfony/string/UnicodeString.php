@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts，String，统一码字符串
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\String\Exception\InvalidArgumentException;
 
 /**
  * Represents a string of Unicode grapheme clusters encoded as UTF-8.
+ * 表示编码为UTF-8的Unicode字形簇的字符串
  *
  * A letter followed by combining characters (accents typically) form what Unicode defines
  * as a grapheme cluster: a character as humans mean it in written texts. This class knows

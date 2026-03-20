@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，抽象域
+ */
 
 namespace Cron;
 
@@ -226,6 +229,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Checks to see if a value is valid for the field
+	 * 检查一个值是否对该字段有效
      *
      * @param string $value
      * @return bool
@@ -279,6 +283,7 @@ abstract class AbstractField implements FieldInterface
         }
 
         // We should have a numeric by now, so coerce this into an integer
+		// 我们现在应该有一个数字，所以把它强制转换成一个整数。
         $value = (int) $value;
 
         return in_array($value, $this->fullRange, true);

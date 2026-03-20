@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，Ajax数据收集器
+ * Symfony，Component，HttpKernel，数据采集，数据采集器接口
  */
 
 /*
@@ -27,11 +27,13 @@ interface DataCollectorInterface extends ResetInterface
 {
     /**
      * Collects data for the given Request and Response.
+	 * 收集给定请求和响应的数据
      */
     public function collect(Request $request, Response $response, ?\Throwable $exception = null);
 
     /**
      * Returns the name of the collector.
+	 * 返回收集器的名称
      *
      * @return string
      */

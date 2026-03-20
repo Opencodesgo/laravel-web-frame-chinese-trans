@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * Input is the base class for all concrete Input classes.
+ * Input是所有具体Input类的基类
  *
  * Three concrete classes are provided by default:
  *

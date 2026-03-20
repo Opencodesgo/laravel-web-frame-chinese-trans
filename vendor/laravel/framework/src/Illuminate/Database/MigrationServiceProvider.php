@@ -82,6 +82,8 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
         // files in the application. We'll pass in our database connection resolver
         // so the migrator can resolve any of these connections when it needs to.
 		// 迁移器负责实际运行和回滚迁移。
+		// 我们将传入数据库连接解析器。
+		// 因此，迁移器可以在需要时解析任何这些连接。
         $this->app->singleton('migrator', function ($app) {
             $repository = $app['migration.repository'];
 

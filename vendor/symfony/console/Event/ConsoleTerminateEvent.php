@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Allows to manipulate the exit code of a command after its execution.
+ * 允许在命令执行后操作命令的退出代码
  *
  * @author Francesco Levorato <git@flevour.net>
  */

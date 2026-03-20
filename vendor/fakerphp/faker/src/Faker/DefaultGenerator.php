@@ -1,10 +1,14 @@
 <?php
+/**
+ * Faker，默认生成器
+ */
 
 namespace Faker;
 
 /**
  * This generator returns a default value for all called properties
  * and methods.
+ * 此生成器为所有调用的属性和方法返回默认值
  *
  * @mixin Generator
  *

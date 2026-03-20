@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，配置 Url解析器
+ * Illuminate，支持，配置 Url解析器，用来解析数据库连接
  */
 
 namespace Illuminate\Support;

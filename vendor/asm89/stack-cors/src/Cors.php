@@ -1,4 +1,7 @@
 <?php
+/**
+ * Asm89，Stack，CORS，跨域资源共享
+ */
 
 /*
  * This file is part of asm89/stack-cors.

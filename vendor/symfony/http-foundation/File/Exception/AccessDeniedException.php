@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，文件，异常，拒绝访问异常
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -7,6 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Describes a data stream.
+ * 描述数据流
  *
  * Typically, an instance will wrap a PHP stream; this interface provides
  * a wrapper around the most common operations, including serialization of
@@ -16,6 +17,7 @@ interface StreamInterface
 {
     /**
      * Reads all data from the stream into a string, from the beginning to end.
+	 * 将流中的所有数据从头到尾读入字符串
      *
      * This method MUST attempt to seek to the beginning of the stream before
      * reading data and read the stream until the end is reached.

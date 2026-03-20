@@ -18,6 +18,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * ArgvInput represents an input coming from the CLI arguments.
+ * ArgvInput表示来自CLI参数的输入
  *
  * Usage:
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Markdown转换接口
+ * League，CommonMark，Markdown 转换接口
  */
 
 /*

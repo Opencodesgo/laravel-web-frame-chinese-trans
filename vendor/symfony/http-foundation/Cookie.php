@@ -184,6 +184,7 @@ class Cookie
 
     /**
      * Creates a cookie copy with a new path on the server in which the cookie will be available on.
+	 * 在服务器上创建一个具有新路径的cookie副本，cookie将在该服务器上可用。
      *
      * @return static
      */
@@ -197,6 +198,7 @@ class Cookie
 
     /**
      * Creates a cookie copy that only be transmitted over a secure HTTPS connection from the client.
+	 * 创建一个cookie副本，该副本只能通过安全的HTTPS连接从客户端传输。
      *
      * @return static
      */
@@ -210,6 +212,7 @@ class Cookie
 
     /**
      * Creates a cookie copy that be accessible only through the HTTP protocol.
+	 * 创建一个只能通过HTTP协议访问的cookie副本
      *
      * @return static
      */
@@ -223,6 +226,7 @@ class Cookie
 
     /**
      * Creates a cookie copy that uses no url encoding.
+	 * 创建一个不使用url编码的cookie副本
      *
      * @return static
      */
@@ -413,6 +417,7 @@ class Cookie
 
     /**
      * Gets the SameSite attribute.
+	 * 获取相同的站点属性
      *
      * @return string|null
      */

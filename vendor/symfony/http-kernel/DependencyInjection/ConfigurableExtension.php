@@ -40,6 +40,7 @@ abstract class ConfigurableExtension extends Extension
 
     /**
      * Configures the passed container according to the merged configuration.
+	 * 根据合并的配置配置传入的容器
      */
     abstract protected function loadInternal(array $mergedConfig, ContainerBuilder $container);
 }

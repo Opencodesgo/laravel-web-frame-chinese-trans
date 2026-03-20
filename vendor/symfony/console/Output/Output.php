@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * Base class for output classes.
+ * 输出类的基类
  *
  * There are five levels of verbosity:
  *

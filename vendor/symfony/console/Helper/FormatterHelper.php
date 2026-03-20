@@ -18,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * The Formatter class provides helpers to format messages.
+ * Formatter类提供了格式化消息的帮助程序
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

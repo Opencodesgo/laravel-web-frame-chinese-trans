@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，遗留事件分派器代理
+ * Symfony，Component，EventDispatcher，遗留事件分派器代理
  */
 
 /*
@@ -20,6 +20,7 @@ trigger_deprecation('symfony/event-dispatcher', '5.1', '%s is deprecated, use th
 
 /**
  * A helper class to provide BC/FC with the legacy signature of EventDispatcherInterface::dispatch().
+ * 一个帮助类，为BC/FC提供EventDispatcherInterface::dispatch()的遗留签名。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

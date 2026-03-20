@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，调试格式化助手
+ * Symfony，Component，Console，助手，调试格式化助手
  */
 
 /*
@@ -19,6 +19,7 @@ namespace Symfony\Component\Console\Helper;
  * 在从命令运行外部程序时帮助输出调试信息
  *
  * An external program can be a Process, an HTTP request, or anything else.
+ * 外部程序可以是进程、HTTP请求或其他任何东西。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

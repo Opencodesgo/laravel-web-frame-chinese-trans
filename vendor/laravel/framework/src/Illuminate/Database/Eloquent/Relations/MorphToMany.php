@@ -32,6 +32,7 @@ class MorphToMany extends BelongsToMany
 	 * 指示我们是否连接关系的逆
      *
      * This primarily affects the morphClass constraint.
+	 * 这主要影响morphClass约束
      *
      * @var bool
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，EventDispatcher，调试，包装的侦听器
+ */
 
 /*
  * This file is part of the Symfony package.

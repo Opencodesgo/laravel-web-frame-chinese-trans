@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，MongoDB 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -20,6 +24,7 @@ use Monolog\Formatter\MongoDBFormatter;
 
 /**
  * Logs to a MongoDB database.
+ * MongoDB数据库的日志
  *
  * Usage example:
  *

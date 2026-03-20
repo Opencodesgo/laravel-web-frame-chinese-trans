@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，Plugin，得到元数据
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -9,6 +12,7 @@ class GetWithMetadata extends AbstractPlugin
 {
     /**
      * Get the method name.
+	 * 得到方法名
      *
      * @return string
      */

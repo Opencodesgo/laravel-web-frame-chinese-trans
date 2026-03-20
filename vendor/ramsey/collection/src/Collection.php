@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，抽象的数组
+ */
 
 /**
  * This file is part of the ramsey/collection library

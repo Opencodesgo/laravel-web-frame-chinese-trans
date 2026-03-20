@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，错误处理器，调试
+ * Symfony，Component，ErrorHandler，调试
  */
 
 /*

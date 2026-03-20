@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts，String，码点字符串
+ */
 
 /*
  * This file is part of the Symfony package.

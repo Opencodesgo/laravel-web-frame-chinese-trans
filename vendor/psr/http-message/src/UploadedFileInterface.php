@@ -7,6 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Value object representing a file uploaded through an HTTP request.
+ * 值对象，表示通过HTTP请求上传的文件。
  *
  * Instances of this interface are considered immutable; all methods that
  * might change state MUST be implemented such that they retain the internal

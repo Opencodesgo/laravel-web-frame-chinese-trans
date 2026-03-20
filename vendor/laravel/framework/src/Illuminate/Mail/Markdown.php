@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，Markdown
+ * Illuminate，邮件，Markdown 编辑器 
  */
 
 namespace Illuminate\Mail;

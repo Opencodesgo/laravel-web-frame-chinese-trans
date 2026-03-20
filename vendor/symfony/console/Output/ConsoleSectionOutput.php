@@ -43,6 +43,7 @@ class ConsoleSectionOutput extends StreamOutput
 
     /**
      * Clears previous output for this section.
+	 * 清除此部分以前的输出
      *
      * @param int $lines Number of lines to clear. If null, then the entire output of this section is cleared
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，EventDispatcher，依赖注入组件，注册监听器
+ */
 
 /*
  * This file is part of the Symfony package.

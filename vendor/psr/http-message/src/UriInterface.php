@@ -7,6 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Value object representing a URI.
+ * 表示URI的值对象
  *
  * This interface is meant to represent URIs according to RFC 3986 and to
  * provide methods for most common operations. Additional functionality for
@@ -29,6 +30,7 @@ interface UriInterface
 {
     /**
      * Retrieve the scheme component of the URI.
+	 * 检索URI的模式组件
      *
      * If no scheme is present, this method MUST return an empty string.
      *

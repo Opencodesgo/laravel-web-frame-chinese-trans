@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Util，Regex 助手
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -18,6 +21,7 @@ use League\CommonMark\Block\Element\HtmlBlock;
 
 /**
  * Provides regular expressions and utilities for parsing Markdown
+ * 提供用于解析Markdown的正则表达式和实用程序
  */
 final class RegexHelper
 {
@@ -73,6 +77,7 @@ final class RegexHelper
 
     /**
      * Attempt to match a regex in string s at offset offset
+	 * 尝试匹配字符串s中的正则表达式
      *
      * @param string $regex
      * @param string $string
@@ -96,6 +101,7 @@ final class RegexHelper
 
     /**
      * Functional wrapper around preg_match_all
+	 * preg_match_all 的功能包装
      *
      * @param string $pattern
      * @param string $subject
@@ -131,6 +137,7 @@ final class RegexHelper
 
     /**
      * Functional wrapper around preg_match_all which only returns the first set of matches
+	 * preg_match_all的功能包装，它只返回第一组匹配。
      *
      * @return string[]|null
      *
@@ -153,6 +160,7 @@ final class RegexHelper
 
     /**
      * Replace backslash escapes with literal characters
+	 * 用文字字符替换反斜杠转义
      *
      * @param string $string
      *

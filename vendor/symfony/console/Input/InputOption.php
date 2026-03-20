@@ -27,6 +27,7 @@ class InputOption
 {
     /**
      * Do not accept input for the option (e.g. --yell). This is the default behavior of options.
+	 * 不接受选项的输入（例如——yell）。这是选项的默认行为。
      */
     public const VALUE_NONE = 1;
 

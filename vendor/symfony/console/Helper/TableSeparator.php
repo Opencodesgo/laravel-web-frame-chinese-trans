@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * Marks a row as being a separator.
+ * 将一行标记为分隔符
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

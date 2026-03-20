@@ -214,6 +214,7 @@ final class LazyCommand extends Command
             ->setDescription($this->getDescription());
 
         // Will throw if the command is not correctly initialized.
+		// 如果命令未正确初始化，将抛出。
         $command->getDefinition();
 
         return $command;

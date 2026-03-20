@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，Vcs忽略过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -61,6 +64,7 @@ final class VcsIgnoredFilterIterator extends \FilterIterator
         foreach ($this->parentsDirectoryDownward($fileRealPath) as $parentDirectory) {
             if ($this->isIgnored($parentDirectory)) {
                 // rules in ignored directories are ignored, no need to check further.
+				// 忽略目录中的规则将被忽略，不需要进一步检查。
                 break;
             }
 

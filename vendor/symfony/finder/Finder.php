@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，发现者，发现者核心类
+ * Symfony，Component，Finder，发现者核心类
  */
 
 /*

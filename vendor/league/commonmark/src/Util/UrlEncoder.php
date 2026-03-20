@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Util，Url 编码器
+ */
 
 /*
  * This file is part of the league/commonmark package.

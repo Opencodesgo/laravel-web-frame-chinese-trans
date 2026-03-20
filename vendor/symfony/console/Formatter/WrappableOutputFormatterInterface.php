@@ -24,6 +24,7 @@ interface WrappableOutputFormatterInterface extends OutputFormatterInterface
 {
     /**
      * Formats a message according to the given styles, wrapping at `$width` (0 means no wrapping).
+	 * 根据给定的样式格式化消息，以‘ $width ’换行（0表示不换行）。
      */
     public function formatAndWrap(?string $message, int $width);
 }

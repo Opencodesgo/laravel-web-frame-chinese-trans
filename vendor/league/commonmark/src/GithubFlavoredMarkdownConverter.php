@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Github风味的Markdown转换器
+ * League，CommonMark，Github 风味的Markdown转换器
  */
 
 /*
@@ -16,11 +16,13 @@ namespace League\CommonMark;
 
 /**
  * Converts Github Flavored Markdown to HTML.
+ * 转换Github风味Markdown到HTML
  */
 class GithubFlavoredMarkdownConverter extends CommonMarkConverter
 {
     /**
      * Create a new commonmark converter instance.
+	 * 创建一个新的commonmark转换器实例
      *
      * @param array<string, mixed>      $config
      * @param EnvironmentInterface|null $environment

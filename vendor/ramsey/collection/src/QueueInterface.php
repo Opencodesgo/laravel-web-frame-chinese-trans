@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，队列接口
+ */
 
 /**
  * This file is part of the ramsey/collection library

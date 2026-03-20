@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由Url生成器
+ * Illuminate，路由，路由Url 生成器
  */
 
 namespace Illuminate\Routing;
@@ -215,6 +215,7 @@ class RouteUrlGenerator
 
         $path = preg_replace_callback('/\{.*?\}/', function ($match) use (&$parameters) {
             // Reset only the numeric keys...
+			// 只重置数字键...
             $parameters = array_merge($parameters);
 
             return (! isset($parameters[0]) && ! Str::endsWith($match[0], '?}'))

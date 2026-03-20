@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，浏览器控制台处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Logs to a Redis key using rpush
+ * 使用rpush将日志记录到Redis密钥
  *
  * usage example:
  *

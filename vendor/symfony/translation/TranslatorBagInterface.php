@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts， 翻译，翻译包接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ interface TranslatorBagInterface
 {
     /**
      * Gets the catalogue by locale.
+	 * 按区域设置获取目录
      *
      * @param string|null $locale The locale or null to use the default
      *

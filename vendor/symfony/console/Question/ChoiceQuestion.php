@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，问题，选择题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Represents a choice question.
+ * 代表一个选择问题
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

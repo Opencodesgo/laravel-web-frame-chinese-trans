@@ -322,6 +322,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      * Gets the route name.
      *
      * The _route request attributes is automatically set by the Router Matcher.
+	 * _route请求属性是由Router Matcher自动设置的。
      */
     public function getRoute(): string
     {

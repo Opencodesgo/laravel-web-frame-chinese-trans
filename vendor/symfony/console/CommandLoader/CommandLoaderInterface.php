@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，命令加载，命令加载接口
+ */
 
 /*
  * This file is part of the Symfony package.

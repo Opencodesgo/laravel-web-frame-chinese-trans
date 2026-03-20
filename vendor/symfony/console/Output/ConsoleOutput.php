@@ -18,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * ConsoleOutput is the default class for all CLI output. It uses STDOUT and STDERR.
+ * ConsoleOutput是所有CLI输出的默认类。它使用STDOUT和STDERR。
  *
  * This class is a convenient wrapper around `StreamOutput` for both STDOUT and STDERR.
  *

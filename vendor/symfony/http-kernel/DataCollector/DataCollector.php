@@ -25,6 +25,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
  * DataCollector.
  *
  * Children of this class must store the collected data in the data property.
+ * 此类的子类必须将收集的数据存储在data属性中
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@symfony.com>
@@ -43,6 +44,7 @@ abstract class DataCollector implements DataCollectorInterface
 
     /**
      * Converts the variable into a serializable Data instance.
+	 * 将变量转换为可序列化的数据实例
      *
      * This array can be displayed in the template using
      * the VarDumper component.

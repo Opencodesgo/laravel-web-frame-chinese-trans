@@ -981,6 +981,7 @@ class Router implements BindingRegistrar, RegistrarContract
 	 * 在中间件组的末尾添加一个中间件
      *
      * If the middleware is already in the group, it will not be added again.
+	 * 如果中间件已经在组中,则不会再次添加。
      *
      * @param  string  $group
      * @param  string  $middleware

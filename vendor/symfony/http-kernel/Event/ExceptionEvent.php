@@ -57,6 +57,7 @@ final class ExceptionEvent extends RequestEvent
 	 * 替换引发的异常
      *
      * This exception will be thrown if no response is set in the event.
+	 * 如果事件中没有设置响应，则会引发此异常。
      */
     public function setThrowable(\Throwable $exception): void
     {

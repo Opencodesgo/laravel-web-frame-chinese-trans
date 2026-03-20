@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，Fleep Hook 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends logs to Fleep.io using Webhook integrations
+ * 向Fleep发送日志。使用Webhook集成。
  *
  * You'll need a Fleep.io account to use this handler.
  *
@@ -76,6 +81,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Returns the default formatter to use with this handler
+	 * 返回与此处理程序一起使用的默认格式化程序
      *
      * Overloaded to remove empty context and extra arrays from the end of the log message.
      *
@@ -121,6 +127,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Builds the body of API call
+	 * 构建API调用的主体
      *
      * @phpstan-param FormattedRecord $record
      */

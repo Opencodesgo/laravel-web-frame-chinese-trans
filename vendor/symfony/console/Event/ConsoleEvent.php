@@ -21,6 +21,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Allows to inspect input and output of a command.
+ * 允许检查命令的输入和输出
  *
  * @author Francesco Levorato <git@flevour.net>
  */

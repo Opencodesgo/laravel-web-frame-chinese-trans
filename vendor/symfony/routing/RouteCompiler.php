@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由编译器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * RouteCompiler compiles Route instances to CompiledRoute instances.
+ * outecomcompiler将Route实例编译为CompiledRoute实例
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>

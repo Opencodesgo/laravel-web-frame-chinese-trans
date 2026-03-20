@@ -175,7 +175,7 @@ class Filesystem
 
     /**
      * Prepend to a file.
-	 * 添加到文件中
+	 * 追加到文件中
      *
      * @param  string  $path
      * @param  string  $data

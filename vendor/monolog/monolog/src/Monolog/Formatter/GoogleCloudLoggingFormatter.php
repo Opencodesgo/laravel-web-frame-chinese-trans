@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，谷歌云日志格式化程序
+ * Monolog，Formatter，谷歌云日志格式化程序
  */
 
 /*

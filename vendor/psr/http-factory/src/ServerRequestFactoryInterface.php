@@ -9,6 +9,7 @@ interface ServerRequestFactoryInterface
 {
     /**
      * Create a new server request.
+	 * 创建一个新的服务器请求
      *
      * Note that server-params are taken precisely as given - no parsing/processing
      * of the given values is performed, and, in particular, no attempt is made to

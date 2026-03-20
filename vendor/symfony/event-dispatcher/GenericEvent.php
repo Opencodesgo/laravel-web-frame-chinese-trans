@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，普通事件
+ * Symfony，Component，EventDispatcher，普通事件
  */
 
 /*
@@ -18,8 +18,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event encapsulation class.
+ * 事件封装类
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
+ * 封装事件，从而将观察者与其封装的主题解耦。
  *
  * @author Drak <drak@zikula.org>
  *
@@ -33,6 +35,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Encapsulate an event with $subject and $arguments.
+	 * 用$subject和$arguments封装一个事件
      *
      * @param mixed $subject   The subject of the event, usually an object or a callable
      * @param array $arguments Arguments to store in the event

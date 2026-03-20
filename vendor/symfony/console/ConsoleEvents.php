@@ -21,6 +21,7 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
 /**
  * Contains all events dispatched by an Application.
+ * 包含应用程序分派的所有事件
  *
  * @author Francesco Levorato <git@flevour.net>
  */
@@ -63,6 +64,7 @@ final class ConsoleEvents
 
     /**
      * Event aliases.
+	 * 事件别名
      *
      * These aliases can be consumed by RegisterListenersPass.
      */

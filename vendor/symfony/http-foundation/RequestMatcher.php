@@ -98,6 +98,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the URL port.
+	 * 增加对URL端口的检查
      *
      * @param int|null $port The port number to connect to
      */
@@ -108,6 +109,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the URL path info.
+	 * 添加对URL路径信息的检查
      */
     public function matchPath(?string $regexp)
     {

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，抽象 Syslog 处理程序
+ * Monolog，Handler，抽象 Syslog 处理程序
  */
 
 /*
@@ -21,6 +21,7 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * Common syslog functionality
+ * 共同的syslog功能
  *
  * @phpstan-import-type Level from \Monolog\Logger
  */

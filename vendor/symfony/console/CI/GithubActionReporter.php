@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，CI，Github 动作报告
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Utility class for Github actions.
+ * 用于Github操作的实用程序类
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，重复数据删除处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Simple handler wrapper that deduplicates log records across multiple requests
+ * 跨多个请求删除重复日志记录的简单处理程序包装器
  *
  * It also includes the BufferHandler functionality and will buffer
  * all messages until the end of the request or flush() is called.
@@ -96,6 +101,7 @@ class DeduplicationHandler extends BufferHandler
         }
 
         // default of null is valid as well as if no record matches duplicationLevel we just pass through
+		// null的默认是有效的,如果没有记录匹配复制级别,我们就会通过
         if ($passthru === true || $passthru === null) {
             $this->handler->handleBatch($this->buffer);
         }

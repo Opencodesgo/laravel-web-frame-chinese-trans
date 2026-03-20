@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，翻译者身份
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Contracts\Translation\TranslatorTrait;
 
 /**
  * IdentityTranslator does not translate anything.
+ * IdentityTranslator不翻译任何东西
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

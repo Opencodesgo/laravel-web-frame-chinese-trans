@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，描述符助手
+ * Symfony，Component，Console，助手，描述符助手
  *
 
 /*
@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This class adds helper method to describe objects in various formats.
+ * 这个类添加了帮助器方法来描述各种格式的对象
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */

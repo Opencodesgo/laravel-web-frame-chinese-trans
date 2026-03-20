@@ -70,6 +70,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Initializes console output formatter.
+	 * 初始化控制台输出格式化程序
      *
      * @param OutputFormatterStyleInterface[] $styles Array of "name => FormatterStyle" instances
      */

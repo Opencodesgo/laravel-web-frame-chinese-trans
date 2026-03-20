@@ -21,6 +21,7 @@ interface MessageInterface
 {
     /**
      * Retrieves the HTTP protocol version as a string.
+	 * 作为字符串检索HTTP协议版本
      *
      * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
      *

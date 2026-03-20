@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，日星期字段
+ */
 
 namespace Cron;
 
@@ -144,6 +147,7 @@ class DayOfWeekField extends AbstractField
         }
 
         // Test to see which Sunday to use -- 0 == 7 == Sunday
+		// 测试看看要使用哪个星期日——0 == 7 ==星期日
         $format = in_array(7, str_split($value)) ? 'N' : 'w';
         $fieldValue = $date->format($format);
 

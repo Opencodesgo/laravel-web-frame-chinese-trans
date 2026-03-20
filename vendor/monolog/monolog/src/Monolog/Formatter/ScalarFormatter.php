@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Scalar 格式化程序
+ * Monolog，Formatter，Scalar 格式化程序
  */
 
 /*
@@ -18,6 +18,7 @@ namespace Monolog\Formatter;
 /**
  * Formats data into an associative array of scalar values.
  * Objects and arrays will be JSON encoded.
+ * 将数据格式化为标量值的关联数组
  *
  * @author Andrew Lawson <adlawson@gmail.com>
  */

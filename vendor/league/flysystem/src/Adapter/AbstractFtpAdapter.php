@@ -1,7 +1,7 @@
 <?php
 
 /**
- * League，Flysystem，适配器，Ftp适配器抽象类
+ * League，Flysystem，Adapter，Ftp 适配器抽象类
  */
 
 namespace League\Flysystem\Adapter;
@@ -90,6 +90,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param array $config
      */
@@ -101,6 +102,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the config.
+	 * 设置配置
      *
      * @param array $config
      *
@@ -125,6 +127,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the host.
+	 * 返回主机
      *
      * @return string
      */
@@ -135,6 +138,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the host.
+	 * 设置主机
      *
      * @param string $host
      *

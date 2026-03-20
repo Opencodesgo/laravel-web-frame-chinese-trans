@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，发送队列可发送
+ * Illuminate，邮件，发送队列可邮寄
  */
 
 namespace Illuminate\Mail;
@@ -12,7 +12,7 @@ class SendQueuedMailable
 {
     /**
      * The mailable message instance.
-	 * 可邮件消息实例
+	 * 可邮寄消息实例
      *
      * @var \Illuminate\Contracts\Mail\Mailable
      */
@@ -36,7 +36,7 @@ class SendQueuedMailable
 
     /**
      * Create a new job instance.
-	 * 创建新的任务实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return void
@@ -50,7 +50,7 @@ class SendQueuedMailable
 
     /**
      * Handle the queued job.
-	 * 处理队列任务
+	 * 处理队列作业
      *
      * @param  \Illuminate\Contracts\Mail\Factory  $factory
      * @return void
@@ -62,7 +62,7 @@ class SendQueuedMailable
 
     /**
      * Get the display name for the queued job.
-	 * 获取排队任务的显示名称
+	 * 获取排队作业的显示名称
      *
      * @return string
      */

@@ -24,6 +24,7 @@ use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 
 /**
  * Renders a parsed AST to HTML
+ * 将一个解析的AST呈现给HTML
  */
 final class HtmlRenderer implements ElementRendererInterface
 {

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Json 格式化
+ * Monolog，Formatter，Json 格式化
  */
 
 /*
@@ -68,6 +68,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * True if newlines are appended to every formatted record
+	 * 如果新行被附加到每个格式化的记录
      */
     public function isAppendingNewlines(): bool
     {

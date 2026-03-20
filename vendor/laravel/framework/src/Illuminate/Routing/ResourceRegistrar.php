@@ -101,7 +101,8 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
-		// 我们需要从资源名中提取基本资源。
+		// 我们需要从资源名中提取基本资源。嵌套资源在框架中得到支持，
+		// 但我们需要知道在路线参数上的定位器,使用什么名字，这应该是基础资源。
         $base = $this->getResourceWildcard(last(explode('.', $name)));
 
         $defaults = $this->resourceDefaults;

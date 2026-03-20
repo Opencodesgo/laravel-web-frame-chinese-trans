@@ -435,6 +435,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      * @return string
      *
      * @deprecated This method is deprecated and will be removed in a future Laravel version.
+	 * 此方法已被弃用，并将在未来的Laravel版本中删除。
      */
     protected function removeTableFromKey($key)
     {
@@ -454,7 +455,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
         // This method just provides a convenient way for us to generate fresh model
         // instances of this current model. It is particularly useful during the
         // hydration of new objects via the Eloquent query builder instances.
-		// 该方法为我们生成新的模型提供了一种方便的方法
+		// 该方法为我们生成新的模型提供了一种方便的方法。
         $model = new static((array) $attributes);
 
         $model->exists = $exists;

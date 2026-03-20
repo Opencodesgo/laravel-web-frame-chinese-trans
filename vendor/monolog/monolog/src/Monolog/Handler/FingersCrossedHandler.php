@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，Fingers Crossed 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -20,6 +24,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Buffers all records until a certain level is reached
+ * 缓冲所有记录，直到达到某个级别。
  *
  * The advantage of this approach is that you don't get any clutter in your log files.
  * Only requests which actually trigger an error (or whatever your actionLevel is) will be
@@ -173,6 +178,7 @@ class FingersCrossedHandler extends Handler implements ProcessableHandlerInterfa
 
     /**
      * Clears the buffer without flushing any messages down to the wrapped handler.
+	 * 清除缓冲区，而不将任何消息刷新到包装的处理程序。
      *
      * It also resets the handler to its initial buffering state.
      */

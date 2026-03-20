@@ -157,6 +157,7 @@ class ErrorListener implements EventSubscriberInterface
 
     /**
      * Logs an exception.
+	 * 记录异常
      */
     protected function logException(\Throwable $exception, string $message, ?string $logLevel = null): void
     {
@@ -173,6 +174,7 @@ class ErrorListener implements EventSubscriberInterface
 
     /**
      * Clones the request for the exception.
+	 * 克隆异常的请求
      */
     protected function duplicateRequest(\Throwable $exception, Request $request): Request
     {

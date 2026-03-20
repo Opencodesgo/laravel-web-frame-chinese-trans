@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Util，优先级列表
+ */
 
 /*
  * This file is part of the league/commonmark package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，Cron 表达式
+ */
 
 namespace Cron;
 
@@ -53,6 +56,7 @@ class CronExpression
 
     /**
      * Factory method to create a new CronExpression.
+	 * 工厂方法创建新的CronExpression
      *
      * @param string $expression The CRON expression to create.  There are
      *                           several special predefined values which can be used to substitute the
@@ -87,6 +91,7 @@ class CronExpression
 
     /**
      * Validate a CronExpression.
+	 * 验证CronExpression
      *
      * @param string $expression The CRON expression to validate.
      *
@@ -164,6 +169,7 @@ class CronExpression
 
     /**
      * Set max iteration count for searching next run dates
+	 * 设置搜索下一个运行日期的最大迭代计数
      *
      * @param int $maxIterationCount Max iteration count when searching for next run date
      *
@@ -392,6 +398,7 @@ class CronExpression
 
     /**
      * Workout what timeZone should be used.
+	 * 练习应该使用哪个时区
      *
      * @param string|\DateTimeInterface $currentTime      Relative calculation date
      * @param string|null               $timeZone         TimeZone to use instead of the system default

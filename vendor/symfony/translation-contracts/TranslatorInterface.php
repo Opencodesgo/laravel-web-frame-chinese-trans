@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts，翻译，语言环境感知接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ interface TranslatorInterface
 {
     /**
      * Translates the given message.
+	 * 翻译给定的消息
      *
      * When a number is provided as a parameter named "%count%", the message is parsed for plural
      * forms and a translation is chosen according to this number using the following rules:

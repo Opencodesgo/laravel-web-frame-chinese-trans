@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，别名
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -109,6 +112,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets options.
+	 * 设置选项
      *
      * Available options:
      *

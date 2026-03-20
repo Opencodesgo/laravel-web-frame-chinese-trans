@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存清除器，Psr6 缓存清除器
+ * Symfony，Component，HttpKernel，缓存清除器，缓存清除器接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
 
 /**
  * CacheClearerInterface.
+ * 缓存清除器接口
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */

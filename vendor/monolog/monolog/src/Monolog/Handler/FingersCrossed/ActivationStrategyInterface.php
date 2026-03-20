@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，指针交叉，激活策略接口
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Handler\FingersCrossed;
 
 /**
  * Interface for activation strategies for the FingersCrossedHandler.
+ * 激活FingersCrossedHandler策略接口
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -22,6 +27,7 @@ interface ActivationStrategyInterface
 {
     /**
      * Returns whether the given record activates the handler.
+	 * 返回给定记录是否激活处理程序
      *
      * @phpstan-param Record $record
      */

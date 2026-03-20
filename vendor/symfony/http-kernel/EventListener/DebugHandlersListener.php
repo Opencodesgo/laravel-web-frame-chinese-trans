@@ -76,6 +76,7 @@ class DebugHandlersListener implements EventSubscriberInterface
 
     /**
      * Configures the error handler.
+	 * 配置错误处理程序
      */
     public function configure(?object $event = null)
     {

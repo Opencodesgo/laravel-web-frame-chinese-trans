@@ -63,6 +63,7 @@ class TableCellStyle
 
     /**
      * Gets options we need for tag for example fg, bg.
+	 * 获取标签所需的选项，例如fg， bg。
      *
      * @return string[]
      */

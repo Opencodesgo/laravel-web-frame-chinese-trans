@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，设置
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -16,6 +19,7 @@ namespace Ramsey\Collection;
 
 /**
  * A set is a collection that contains no duplicate elements.
+ * 集合是不包含重复元素的集合。
  *
  * Great care must be exercised if mutable objects are used as set elements.
  * The behavior of a set is not specified if the value of an object is changed

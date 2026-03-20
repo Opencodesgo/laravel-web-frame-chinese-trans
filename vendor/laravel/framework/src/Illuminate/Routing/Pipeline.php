@@ -16,6 +16,7 @@ use Throwable;
  * 这个扩展管道捕获每个切片期间发生的任何异常。
  *
  * The exceptions are converted to HTTP responses for proper middleware handling.
+ * 对适当的中间件处理转换为HTTP响应。
  */
 class Pipeline extends BasePipeline
 {

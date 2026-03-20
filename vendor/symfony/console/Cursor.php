@@ -135,6 +135,7 @@ final class Cursor
 
     /**
      * Clears all the output from the current line.
+	 * 清除当前行的所有输出
      *
      * @return $this
      */
@@ -147,6 +148,7 @@ final class Cursor
 
     /**
      * Clears all the output from the current line after the current position.
+	 * 清除当前行在当前位置之后的所有输出
      */
     public function clearLineAfter(): self
     {
@@ -181,6 +183,7 @@ final class Cursor
 
     /**
      * Returns the current cursor position as x,y coordinates.
+	 * 返回当前光标位置为x，y坐标。
      */
     public function getCurrentPosition(): array
     {

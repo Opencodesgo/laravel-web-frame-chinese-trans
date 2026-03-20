@@ -198,7 +198,7 @@ class Store implements Session
 
     /**
      * Checks if a key exists.
-	 * 检查是否存在密钥
+	 * 检查是密钥否存在
      *
      * @param  string|array  $key
      * @return bool

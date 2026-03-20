@@ -296,7 +296,7 @@ class BelongsToMany extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
-	 * 把急切的结果与他们的父母相匹配
+	 * 将急切加载的结果与他们的父母匹配
      *
      * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
@@ -491,6 +491,7 @@ class BelongsToMany extends Relation
 	 * 为主表列设置where子句
      *
      * In addition, new pivot records will receive this value.
+	 * 此外，新的枢轴记录将接收此值。
      *
      * @param  string|array  $column
      * @param  mixed  $value
@@ -867,6 +868,7 @@ class BelongsToMany extends Relation
 	 * 得到关系的主列
      *
      * "pivot_" is prefixed ot each column for easy removal later.
+	 * "pivot t_"是预先固定的,在每一列中,稍后都可以轻松删除。
      *
      * @return array
      */

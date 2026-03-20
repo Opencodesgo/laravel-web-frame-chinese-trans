@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Chrome PHP 格式化器
+ * Monolog，Formatter，Chrome PHP 格式化器
  */
 
 /*
@@ -27,6 +27,7 @@ class ChromePHPFormatter implements FormatterInterface
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
+	 * 把Monolog的日志级别转化为野火的水平
      *
      * @var array<int, 'log'|'info'|'warn'|'error'>
      */

@@ -1,13 +1,13 @@
 <?php
-
 /**
- * Psr，日志，Log，记录器感知接口
+ * Psr，Log，记录器感知接口
  */
 
 namespace Psr\Log;
 
 /**
  * Describes a logger-aware instance.
+ * 描述可感知记录器的实例
  */
 interface LoggerAwareInterface
 {

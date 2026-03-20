@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，消息目录
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -295,6 +298,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
 
     /**
      * Adds current values with the new values.
+	 * 用新值添加当前值
      *
      * @param array $values Values to add
      */

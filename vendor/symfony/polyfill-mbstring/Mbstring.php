@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Mbstring，Mbstring
+ */
 
 /*
  * This file is part of the Symfony package.

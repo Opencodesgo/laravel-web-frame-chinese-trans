@@ -57,6 +57,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
             // routing system will use them to populate the Request attributes. We don't
             // want that as we want to preserve objects (so we manually set Request attributes
             // below instead)
+			// 从生成的URI中删除属性，因为如果没有，Symfony路由系统将使用它们来填充请求属性。
             $attributes = $reference->attributes;
             $reference->attributes = [];
 
@@ -92,6 +93,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
             }
 
             // let's clean up the output buffers that were created by the sub-request
+			// 让我们清理由子请求创建的输出缓冲区
             Response::closeOutputBuffers($level, false);
 
             if (isset($options['alt'])) {

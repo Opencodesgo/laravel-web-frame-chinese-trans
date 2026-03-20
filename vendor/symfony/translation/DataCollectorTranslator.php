@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，数据采集器翻译
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -99,6 +102,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @return array
      */
@@ -113,6 +117,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
 
     /**
      * Passes through all unknown calls onto the translator object.
+	 * 将所有未知调用传递给translator对象
      */
     public function __call(string $method, array $args)
     {

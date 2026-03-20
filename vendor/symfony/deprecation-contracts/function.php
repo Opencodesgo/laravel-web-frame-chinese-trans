@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，trigger_deprecation
+ */
 
 /*
  * This file is part of the Symfony package.

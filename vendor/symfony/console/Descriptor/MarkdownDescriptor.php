@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符，Markdown 描述
+ */
 
 /*
  * This file is part of the Symfony package.

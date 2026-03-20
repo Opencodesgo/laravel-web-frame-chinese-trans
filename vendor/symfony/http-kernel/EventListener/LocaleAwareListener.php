@@ -63,6 +63,7 @@ class LocaleAwareListener implements EventSubscriberInterface
     {
         return [
             // must be registered after the Locale listener
+			// 必须在Locale侦听器之后注册
             KernelEvents::REQUEST => [['onKernelRequest', 15]],
             KernelEvents::FINISH_REQUEST => [['onKernelFinishRequest', -15]],
         ];

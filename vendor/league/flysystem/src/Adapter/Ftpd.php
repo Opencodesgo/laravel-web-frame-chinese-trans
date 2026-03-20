@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，Ftpd
+ * League，Flysystem，Adapter，Ftpd
  */
 
 namespace League\Flysystem\Adapter;

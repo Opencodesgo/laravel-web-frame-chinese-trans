@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，Mime，Mime类型
+ * Symfony，Component，Mime，Mime 类型
  */
 
 /*
@@ -151,6 +150,7 @@ final class MimeTypes implements MimeTypesInterface
 
     /**
      * A map of MIME types and their default extensions.
+	 * MIME类型及其默认扩展的映射
      *
      * Updated from upstream on 2021-09-03
      *

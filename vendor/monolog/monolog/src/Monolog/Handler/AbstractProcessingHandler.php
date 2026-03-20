@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，抽象处理处理者
+ * Monolog，Handler，抽象处理处理者
  */
 
 /*
@@ -56,6 +56,7 @@ abstract class AbstractProcessingHandler extends AbstractHandler implements Proc
 
     /**
      * Writes the record down to the log of the implementing handler
+	 * 将记录写入实现处理程序的日志
      *
      * @phpstan-param FormattedRecord $record
      */

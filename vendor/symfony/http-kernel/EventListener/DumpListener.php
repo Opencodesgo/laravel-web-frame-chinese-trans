@@ -61,6 +61,7 @@ class DumpListener implements EventSubscriberInterface
         }
 
         // Register early to have a working dump() as early as possible
+		// 尽早注册，以便尽早拥有一个可用的dump()
         return [ConsoleEvents::COMMAND => ['configure', 1024]];
     }
 }

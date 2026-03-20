@@ -109,6 +109,7 @@ class RouterListener implements EventSubscriberInterface
         }
 
         // add attributes based on the request (routing)
+		// 根据请求添加属性（路由）
         try {
             // matching a request is more powerful than matching a URL path + context, so try that first
             if ($this->matcher instanceof RequestMatcherInterface) {

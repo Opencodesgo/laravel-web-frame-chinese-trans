@@ -33,6 +33,7 @@ class TableCell
         $this->value = $value;
 
         // check option names
+		// 检查选项名称
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
             throw new InvalidArgumentException(sprintf('The TableCell does not support the following options: \'%s\'.', implode('\', \'', $diff)));
         }
@@ -66,6 +67,7 @@ class TableCell
 
     /**
      * Gets number of rowspan.
+	 * 获取行跨度的数目
      *
      * @return int
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，通用标记变换器
+ * League，CommonMark，通用标记转换器
  */
 
 /*

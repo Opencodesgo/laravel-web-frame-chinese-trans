@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，MongoDB 格式化
+ * Monolog，Formatter，MongoDB 格式化
  */
 
 /*
@@ -148,6 +148,7 @@ class MongoDBFormatter implements FormatterInterface
 
     /**
      * This is needed to support MongoDB Driver v1.19 and below
+	 * 需要支持MongoDB驱动程序v1.19和以下
      *
      * See https://github.com/mongodb/mongo-php-driver/issues/426
      *

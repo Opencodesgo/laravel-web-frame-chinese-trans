@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Util，数组集合
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -20,6 +23,7 @@ final class LinkParserHelper
 {
     /**
      * Attempt to parse link destination
+	 * 尝试解析链接目的地
      *
      * @param Cursor $cursor
      *
@@ -66,6 +70,7 @@ final class LinkParserHelper
 
     /**
      * Attempt to parse link title (sans quotes)
+	 * 尝试解析链接标题(无引号)
      *
      * @param Cursor $cursor
      *

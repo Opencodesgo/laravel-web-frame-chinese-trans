@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，元数据感知接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ interface MetadataAwareInterface
 {
     /**
      * Gets metadata for the given domain and key.
+	 * 获取给定域和键的元数据
      *
      * Passing an empty domain will return an array with all metadata indexed by
      * domain and then by key. Passing an empty key will return an array with all

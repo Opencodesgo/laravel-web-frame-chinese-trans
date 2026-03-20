@@ -30,6 +30,7 @@ interface SignalableCommandInterface
 
     /**
      * The method will be called when the application is signaled.
+	 * 该方法将在应用程序收到信号时调用
      */
     public function handleSignal(int $signal): void;
 }

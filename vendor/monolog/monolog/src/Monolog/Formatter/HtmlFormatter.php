@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Html 格式化
+ * Monolog，Formatter，Html 格式化
  */
 
 /*
@@ -30,6 +30,7 @@ class HtmlFormatter extends NormalizerFormatter
 {
     /**
      * Translates Monolog log levels to html color priorities.
+	 * 翻译Monolog日志级别的html颜色优先级
      *
      * @var array<int, string>
      */
@@ -118,6 +119,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Formats a set of log records.
+	 * 格式化一组日志记录
      *
      * @return string The formatted set of records
      */

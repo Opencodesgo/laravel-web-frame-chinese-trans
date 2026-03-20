@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts，翻译，语言环境感知接口
+ */
 
 /*
  * This file is part of the Symfony package.

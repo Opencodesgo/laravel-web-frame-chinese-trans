@@ -23,6 +23,7 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * The ProgressBar provides helpers to display progress output.
+ * ProgressBar提供了显示进度输出的帮助程序
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Chris Jones <leeked@gmail.com>

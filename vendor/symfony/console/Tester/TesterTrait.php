@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，测试员，测试人员特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -34,6 +37,7 @@ trait TesterTrait
 
     /**
      * Gets the display returned by the last execution of the command or application.
+	 * 获取命令或应用程序最后一次执行时返回的显示
      *
      * @return string
      *
@@ -58,6 +62,7 @@ trait TesterTrait
 
     /**
      * Gets the output written to STDERR by the application.
+	 * 获取由应用程序写入STDERR的输出
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *

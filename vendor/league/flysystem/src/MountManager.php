@@ -36,6 +36,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -48,6 +49,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * 安装文件系统
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -66,6 +68,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * 安装文件系统
      *
      * @param string              $prefix
      * @param FilesystemInterface $filesystem
@@ -87,6 +90,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get the filesystem with the corresponding prefix.
+	 * 用相应的前缀获取文件系统
      *
      * @param string $prefix
      *
@@ -105,6 +109,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Retrieve the prefix from an arguments array.
+	 * 从参数数组中检索前缀
      *
      * @param array $arguments
      *
@@ -204,6 +209,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * List with plugin adapter.
+	 * 带有插件适配器的列表
      *
      * @param array  $keys
      * @param string $directory
@@ -261,6 +267,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Invoke a plugin on a filesystem mounted on a given prefix.
+	 * 在挂载在给定前缀上的文件系统上调用插件
      *
      * @param string $method
      * @param array  $arguments
