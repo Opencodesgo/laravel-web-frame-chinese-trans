@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，工厂
+ */
 
 namespace Faker;
 
@@ -10,6 +13,7 @@ class Factory
 
     /**
      * Create a new generator
+	 * 创建新的生成器
      *
      * @param string $locale
      *

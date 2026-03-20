@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，生成器
+ */
 
 namespace Faker;
 
@@ -929,6 +932,7 @@ class Generator
 
     /**
      * Get a version number in semantic versioning syntax 2.0.0. (https://semver.org/spec/v2.0.0.html)
+	 * 在语义版本控制语法2.0.0中获取版本号。
      *
      * @param bool $preRelease Pre release parts may be randomly included
      * @param bool $build      Build parts may be randomly included

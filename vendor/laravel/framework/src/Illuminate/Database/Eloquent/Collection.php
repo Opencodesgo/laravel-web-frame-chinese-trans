@@ -299,6 +299,7 @@ class Collection extends BaseCollection implements QueueableCollection
 	 * 在每个项目上运行一个关联映射
      *
      * The callback should return an associative array with a single key / value pair.
+	 * 回调函数应该返回一个具有单个键/值对的关联数组。
      *
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection|static

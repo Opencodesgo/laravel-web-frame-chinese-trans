@@ -46,7 +46,7 @@ trait QueriesRelationships
         // If we only need to check for the existence of the relation, then we can optimize
         // the subquery to only run a "where exists" clause instead of this full "count"
         // clause. This will make these queries run much faster compared with a count.
-		// 如果我们只需要检查关系是否存在。
+		// 如果我们只需要检查关系是否存在，我们可以优化子查询只运行"where exists"子句，而不是完整的"count"子句。
         $method = $this->canUseExistsForExistenceCheck($operator, $count)
                         ? 'getRelationExistenceQuery'
                         : 'getRelationExistenceCountQuery';
@@ -410,6 +410,8 @@ trait QueriesRelationships
             // as a sub-select. First, we'll get the "has" query and use that to get the relation
             // count query. We will normalize the relation name then append _count as the name.
 			// 这里我们将获得关系计数查询，并准备将其添加到主查询中。
+			// 首先，我们将获取"has"查询并使用它来获取关系。
+			// 我们将使关系名称正常化,然后将_count作为名称。
             $query = $relation->getRelationExistenceCountQuery(
                 $relation->getRelated()->newQuery(), $this
             );

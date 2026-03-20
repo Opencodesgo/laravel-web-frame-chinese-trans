@@ -15,7 +15,7 @@ return [
     | Here you may specify which of the database connections below you wish
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
-	| 在这里，您可以指定您希望下面的哪个数据库连接作为所有数据库工作的默认连接。
+	| 在这里，你可以指定您希望下面的哪个数据库连接作为所有数据库工作的默认连接。
     |
     */
 
@@ -29,14 +29,14 @@ return [
     | Here are each of the database connections setup for your application.
     | Of course, examples of configuring each database platform that is
     | supported by Laravel is shown below to make development simple.
-	| 这里是为您的应用程序设置的每个数据库连接。
+	| 这里是为你的应用程序设置的每个数据库连接。
     |
     |
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
 	| Laravel中的所有数据库工作都是通过PHP PDO工具完成的，
-	| 所以请确保您有特定数据库的驱动程序，在开始开发之前在您的机器上安装。
+	| 所以请确保你有特定数据库的驱动程序，在开始开发之前在您的机器上安装。
     |
     */
 

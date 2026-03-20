@@ -691,6 +691,7 @@ class Builder
         // the given top-level relationship. We will just check for any relations
         // that start with the given top relations and adds them to our arrays.
 		// 我们基本上是在寻找任何比给定的顶级关系嵌套更深的关系。
+		// 我们来看看有没有关系，这从给定的高级关系开始,并将它们添加到我们的数组中。
         foreach ($this->eagerLoad as $name => $constraints) {
             if ($this->isNestedUnder($relation, $name)) {
                 $nested[substr($name, strlen($relation.'.'))] = $constraints;
@@ -946,6 +947,7 @@ class Builder
 	 * 在构建器上运行默认的删除函数
      *
      * Since we do not apply scopes here, the row will actually be deleted.
+	 * 由于我们在这里没有应用作用域，因此该行实际上将被删除。
      *
      * @return mixed
      */

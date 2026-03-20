@@ -74,7 +74,7 @@ return [
     | Here you may specify the default timezone for your application, which
     | will be used by the PHP date and date-time functions. We have gone
     | ahead and set this to a sensible default for you out of the box.
-	| 在这里，您可以为应用指定默认时区，将被PHP日期和日期-时间函数使用。
+	| 在这里，你可以为应用指定默认时区，将被PHP日期和日期-时间函数使用。
 	| 我们将其设置为一个合理的默认值，以便您开箱即用。
     |
     */
@@ -105,7 +105,7 @@ return [
     | is not available. You may change the value to correspond to any of
     | the language folders that are provided through your application.
 	| 备用区域设置确定当前区域设置时要使用的区域设置。
-	| 您可以更改该值以对应于其中的任何值通过应用程序提供的语言文件夹。
+	| 你可以更改该值以对应于其中的任何值通过应用程序提供的语言文件夹。
     |
     */
 

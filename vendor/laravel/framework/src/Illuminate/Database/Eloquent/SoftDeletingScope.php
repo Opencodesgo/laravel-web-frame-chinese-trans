@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，软删除范围
+ * Illuminate，数据库，Eloquent，软删除作用域
  */
 
 namespace Illuminate\Database\Eloquent;

@@ -33,8 +33,8 @@ return [
     | Here you may specify the number of minutes that you wish the session
     | to be allowed to remain idle before it expires. If you want them
     | to immediately expire on the browser closing, set that option.
-	| 您可以在这里指定您希望会话在过期之前保持空闲状态的分钟数。
-	| 如果您想要在浏览器关闭时立即过期，请设置该选项。
+	| 你可以在这里指定您希望会话在过期之前保持空闲状态的分钟数。
+	| 如果你想要在浏览器关闭时立即过期，请设置该选项。
     |
     */
 
@@ -50,8 +50,8 @@ return [
     | This option allows you to easily specify that all of your session data
     | should be encrypted before it is stored. All encryption will be run
     | automatically by Laravel and you can use the Session like normal.
-	| 此选项允许您轻松地指定所有会话数据。所有加密都将由框架自动运行
-	| 您可以像平常一样使用会话。
+	| 此选项允许你轻松地指定所有会话数据。所有加密都将由框架自动运行
+	| 你可以像平常一样使用会话。
     |
     */
 
@@ -117,7 +117,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Sweeping Lottery 	Session会话
+    | Session Sweeping Lottery 	会话 Lottery		表示每次请求时有 2/100（即 2%）
     |--------------------------------------------------------------------------
     |
     | Some session drivers must manually sweep their storage location to get
@@ -168,7 +168,7 @@ return [
     | Here you may change the domain of the cookie used to identify a session
     | in your application. This will determine which domains the cookie is
     | available to in your application. A sensible default has been set.
-	| 在这里，您可以更改用于识别会话的cookie的域。
+	| 在这里，你可以更改用于识别会话的cookie的域。
     |
     */
 
@@ -210,7 +210,7 @@ return [
     | This option determines how your cookies behave when cross-site requests
     | take place, and can be used to mitigate CSRF attacks. By default, we
     | will set this value to "lax" since this is a secure default value.
-	| 此选项决定您的cookie在跨站点请求时的行为。
+	| 此选项决定你的cookie在跨站点请求时的行为。
     |
     | Supported: "lax", "strict", "none", null
 	| 支持："lax", "strict", "none", null

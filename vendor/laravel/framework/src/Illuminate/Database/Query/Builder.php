@@ -93,6 +93,7 @@ class Builder
 	 * 指示查询返回不同的结果
      *
      * Occasionally contains the columns that should be distinct.
+	 * 偶尔包含应该不同的列
      *
      * @var bool|array
      */
