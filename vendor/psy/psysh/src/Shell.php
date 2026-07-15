@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Shell
+ */
 
 /*
  * This file is part of Psy Shell.

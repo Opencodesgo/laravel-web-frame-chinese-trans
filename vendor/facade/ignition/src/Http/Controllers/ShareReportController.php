@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，Http，控制器，分享报告控制器
+ */
 
 namespace Facade\Ignition\Http\Controllers;
 

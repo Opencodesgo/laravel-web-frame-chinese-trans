@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，是否均衡实例
+ */
+
 namespace Hamcrest\Text;
 
 /*

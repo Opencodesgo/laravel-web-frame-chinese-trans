@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，中间件，Censor 请求本体
+ */
 
 namespace Facade\FlareClient\Middleware;
 

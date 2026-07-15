@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，警告，域文字
+ */
 
 namespace Egulias\EmailValidator\Warning;
 

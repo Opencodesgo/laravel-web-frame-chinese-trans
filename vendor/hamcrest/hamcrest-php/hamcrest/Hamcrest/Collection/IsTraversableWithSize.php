@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，采集，可遍历的大小
+ */
+
 namespace Hamcrest\Collection;
 
 /*

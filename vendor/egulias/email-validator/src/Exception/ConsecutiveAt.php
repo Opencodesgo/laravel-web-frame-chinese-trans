@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，异常，Consecutive At
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，插件未发现异常
+ */
 
 namespace League\Flysystem\Plugin;
 

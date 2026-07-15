@@ -1,11 +1,11 @@
 <?php
 /**
- * 路由，信道
+ * 路由，通道
  */
 
 /*
 |--------------------------------------------------------------------------
-| Broadcast Channels 	广播信道
+| Broadcast Channels 	广播频道
 |--------------------------------------------------------------------------
 |
 | Here you may register all of the event broadcasting channels that your

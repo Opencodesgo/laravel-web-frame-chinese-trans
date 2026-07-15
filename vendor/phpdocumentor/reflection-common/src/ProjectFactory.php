@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，反射，项目工厂
+ */
 
 declare(strict_types=1);
 

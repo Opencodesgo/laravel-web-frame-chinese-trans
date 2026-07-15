@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，Frame 集合
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -17,6 +21,7 @@ use UnexpectedValueException;
 /**
  * Exposes a fluent interface for dealing with an ordered list
  * of stack-trace frames.
+ * 提供了一个流畅的接口，用于处理有序的堆栈跟踪帧列表。
  */
 class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, Countable
 {

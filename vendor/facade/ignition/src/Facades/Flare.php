@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，门面，Flare
+ */
 
 namespace Facade\Ignition\Facades;
 
@@ -6,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * Class Flare.
+ * 类Flare
  *
  * @method static void glow(string $name, string $messageLevel = \Facade\FlareClient\Enums\MessageLevels::INFO, array $metaData = [])
  * @method static void context($key, $value)

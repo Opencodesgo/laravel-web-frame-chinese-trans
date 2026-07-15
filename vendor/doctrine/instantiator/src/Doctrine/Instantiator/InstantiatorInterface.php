@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，实例化器，实例器接口
+ */
 
 namespace Doctrine\Instantiator;
 
@@ -6,6 +9,7 @@ use Doctrine\Instantiator\Exception\ExceptionInterface;
 
 /**
  * Instantiator provides utility methods to build objects without invoking their constructors
+ * 实例化器提供了在不调用构造函数的情况下构建对象的实用方法。
  */
 interface InstantiatorInterface
 {

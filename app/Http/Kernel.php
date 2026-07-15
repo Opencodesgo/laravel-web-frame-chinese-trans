@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
 	 * 应用的路由中间件
      *
      * These middleware may be assigned to groups or used individually.
+	 * 这些中间件可以被分配到组或单独使用。
      *
      * @var array
      */
@@ -72,9 +73,10 @@ class Kernel extends HttpKernel
 
     /**
      * The priority-sorted list of middleware.
-	 * 中间件的优先级排序
+	 * 中间件的优先级排序。
      *
      * This forces non-global middleware to always be in the given order.
+	 * 这迫使非全局中间件始终处于给定的顺序。
      *
      * @var array
      */

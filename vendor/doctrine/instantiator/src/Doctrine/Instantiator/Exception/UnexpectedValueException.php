@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，偏转器，异常，意外值异常
+ */
 
 namespace Doctrine\Instantiator\Exception;
 

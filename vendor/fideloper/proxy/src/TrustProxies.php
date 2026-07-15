@@ -1,4 +1,7 @@
 <?php
+/**
+ * Fideloper，代理，可信代理
+ */
 
 namespace Fideloper\Proxy;
 
@@ -10,6 +13,7 @@ class TrustProxies
 {
     /**
      * The config repository instance.
+	 * 配置存储库实例。
      *
      * @var \Illuminate\Contracts\Config\Repository
      */

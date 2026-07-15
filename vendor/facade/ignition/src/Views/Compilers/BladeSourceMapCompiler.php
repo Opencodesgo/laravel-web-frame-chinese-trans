@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，Views，编译器，Blade 源映射编译器
+ */
 
 namespace Facade\Ignition\Views\Compilers;
 

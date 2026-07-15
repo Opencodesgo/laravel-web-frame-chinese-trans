@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，支持，字符串比较器
+ */
 
 namespace Facade\Ignition\Support;
 

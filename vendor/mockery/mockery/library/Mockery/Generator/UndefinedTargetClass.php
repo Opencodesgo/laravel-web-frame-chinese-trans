@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，发生器，未定义的目标类
+ */
+
+/**
  * Mockery
  *
  * LICENSE

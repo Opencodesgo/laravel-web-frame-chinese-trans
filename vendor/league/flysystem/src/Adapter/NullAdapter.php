@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，零适配器
+ */
 
 namespace League\Flysystem\Adapter;
 
@@ -13,6 +16,7 @@ class NullAdapter extends AbstractAdapter
 
     /**
      * Check whether a file is present.
+	 * 检查文件是否存在
      *
      * @param string $path
      *

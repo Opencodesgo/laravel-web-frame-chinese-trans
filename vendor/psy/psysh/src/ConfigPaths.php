@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，配置路径
+ */
 
 /*
  * This file is part of Psy Shell.

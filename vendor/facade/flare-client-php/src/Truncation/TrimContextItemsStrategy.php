@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，截断，修剪项目策略
+ */
 
 namespace Facade\FlareClient\Truncation;
 

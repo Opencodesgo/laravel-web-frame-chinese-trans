@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，实体填充器
+ */
 
 namespace Faker\ORM\Spot;
 

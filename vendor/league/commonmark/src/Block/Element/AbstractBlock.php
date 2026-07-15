@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，块，元素，抽象块
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -20,6 +23,7 @@ use League\CommonMark\Node\Node;
 
 /**
  * Block-level element
+ * 块级元素
  *
  * @method parent() ?AbstractBlock
  */
@@ -27,6 +31,7 @@ abstract class AbstractBlock extends Node
 {
     /**
      * Used for storage of arbitrary data.
+	 * 用于存储任意数据
      *
      * @var array<string, mixed>
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，Http，中间件，启用了点火配置值
+ */
 
 namespace Facade\Ignition\Http\Middleware;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，块，元素，抽象字符串容器块
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -35,6 +38,7 @@ abstract class AbstractStringContainerBlock extends AbstractBlock implements Str
 
     /**
      * Constructor
+	 * 构造函数
      */
     public function __construct()
     {

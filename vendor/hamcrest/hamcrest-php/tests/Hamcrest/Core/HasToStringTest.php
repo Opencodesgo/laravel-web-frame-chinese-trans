@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，Php表单
+ */
+
 namespace Hamcrest\Core;
 
 class PhpForm

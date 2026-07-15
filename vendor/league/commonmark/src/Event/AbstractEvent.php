@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，事件，抽象事件
+ */
 
 /**
  * This file is part of the league/commonmark package.
@@ -16,6 +19,7 @@ namespace League\CommonMark\Event;
 
 /**
  * Base class for classes containing event data.
+ * 包含事件数据的类的基类。
  *
  * This class contains no event data. It is used by events that do not pass
  * state information to an event handler when an event is raised.
@@ -30,6 +34,7 @@ abstract class AbstractEvent
 
     /**
      * Returns whether further event listeners should be triggered.
+	 * 返回是否应该触发进一步的事件侦听器
      */
     final public function isPropagationStopped(): bool
     {

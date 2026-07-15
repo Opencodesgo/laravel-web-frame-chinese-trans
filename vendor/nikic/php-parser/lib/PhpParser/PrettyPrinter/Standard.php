@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，漂亮打印机，标准
+ */
+
 namespace PhpParser\PrettyPrinter;
 
 use PhpParser\Node;

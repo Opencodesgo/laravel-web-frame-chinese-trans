@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，异常，用逗号域
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

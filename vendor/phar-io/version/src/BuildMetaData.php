@@ -1,4 +1,8 @@
 <?php declare(strict_types = 1);
+/**
+ * PharIo，版本，构建元数据
+ */
+
 /*
  * This file is part of PharIo\Version.
  *

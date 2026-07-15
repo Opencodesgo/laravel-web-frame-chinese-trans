@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型安全诊断匹配器
+ */
+
 namespace Hamcrest;
 
 /**

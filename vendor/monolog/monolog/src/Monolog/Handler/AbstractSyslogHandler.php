@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，抽象 Syslog 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *

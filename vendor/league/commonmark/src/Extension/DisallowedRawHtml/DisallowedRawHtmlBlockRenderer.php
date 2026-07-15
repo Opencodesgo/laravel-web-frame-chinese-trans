@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，扩展，禁用原始Html，禁用原始Html块渲染器
+ */
 
 /*
  * This file is part of the league/commonmark package.

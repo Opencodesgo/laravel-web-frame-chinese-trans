@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，Flare Client，Glow，记录器
+ */
 
 namespace Facade\FlareClient\Glows;
 

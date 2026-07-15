@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，当地的
+ */
 
 namespace League\Flysystem\Adapter;
 
@@ -63,6 +66,7 @@ class Local extends AbstractAdapter
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string $root
      * @param int    $writeFlags

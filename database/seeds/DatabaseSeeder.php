@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，数据库播种机
+ * 数据库，数据库，播种机，数据库播种机
  */
 
 use Illuminate\Database\Seeder;

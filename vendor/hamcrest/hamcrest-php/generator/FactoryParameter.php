@@ -1,4 +1,7 @@
 <?php
+/**
+ * 工厂参数
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org
@@ -24,6 +27,7 @@ class FactoryParameter
 
     /**
      * Compute the declaration code.
+	 * 计算声明代码
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，容器，容器异常接口
+ */
 
 namespace Psr\Container;
 

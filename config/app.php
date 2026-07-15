@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置，app
+ */
 
 return [
 
@@ -11,6 +14,7 @@ return [
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
 	| 这个值是应用程序的名称。
+	| 当框架需要将应用程序的名称放置在通知或应用程序或其包所需的任何其他位置时,使用此值。
     |
     */
 
@@ -24,7 +28,8 @@ return [
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
     | services the application utilizes. Set this in your ".env" file.
-	| 这个值决定了应用程序的"环境"。
+	| 这个值决定了当前应用程序正在运行的“环境”。
+	| 这可能决定如何配置应用程序使用的各种服务。把这个设置在你的".env"文件。
     |
     */
 
@@ -32,13 +37,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode Debug模式
+    | Application Debug Mode 应用Debug模式
     |--------------------------------------------------------------------------
     |
     | When your application is in debug mode, detailed error messages with
     | stack traces will be shown on every error that occurs within your
     | application. If disabled, a simple generic error page is shown.
 	| 当您的应用处于调试模式时，详细的错误消息堆栈跟踪将显示在你的每个应用错误中。
+	| 如果禁用,显示一个简单的通用错误页面。
     |
     */
 
@@ -52,7 +58,8 @@ return [
     | This URL is used by the console to properly generate URLs when using
     | the Artisan command line tool. You should set this to the root of
     | your application so that it is used when running Artisan tasks.
-	| URL被控制台使用,以正确生成URL。
+	| 当使用Artisan命令行工具时,控制台使用这个URL来正确地生成URL。
+	| 您应该将其设置为应用程序的根,以便在运行Artisan任务时使用它。
     |
     */
 
@@ -68,7 +75,8 @@ return [
     | Here you may specify the default timezone for your application, which
     | will be used by the PHP date and date-time functions. We have gone
     | ahead and set this to a sensible default for you out of the box.
-	| 在这里,您可以为您的应用程序指定默认的时区。
+	| 在这里,您可以为您的应用程序指定默认的时区，它将被PHP日期和数据时间函数使用。
+	| 我们已经前进,把它设置为一个合理的默认,让你离开这个盒子。
     |
     */
 

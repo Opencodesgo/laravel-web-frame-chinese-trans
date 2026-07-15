@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer
+ */
+
 namespace PhpParser;
 
 use PhpParser\Parser\Tokens;

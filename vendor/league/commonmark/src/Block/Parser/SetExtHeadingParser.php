@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，块，分析程序，设置文本标题解析器
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -53,6 +56,7 @@ final class SetExtHeadingParser implements BlockParserInterface
 
     /**
      * Resolve reference link definition
+	 * 解析引用链接定义
      *
      * @see https://github.com/commonmark/commonmark.js/commit/993bbe335931af847460effa99b2411eb643577d
      *

@@ -1,9 +1,13 @@
 <?php
+/**
+ * Cron，抽象字段
+ */
 
 namespace Cron;
 
 /**
  * Abstract CRON expression field
+ * 抽象的CRON表达式字段
  */
 abstract class AbstractField implements FieldInterface
 {

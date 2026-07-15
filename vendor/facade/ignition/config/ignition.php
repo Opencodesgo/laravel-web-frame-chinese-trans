@@ -1,10 +1,13 @@
 <?php
+/**
+ * Facade，Ignition，配置，Ignition
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Editor
+    | Editor	编辑
     |--------------------------------------------------------------------------
     |
     | Choose your preferred editor to use when clicking any edit button.

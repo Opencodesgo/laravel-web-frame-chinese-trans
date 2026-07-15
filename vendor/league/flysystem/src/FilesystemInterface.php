@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，文件系统接口
+ */
 
 namespace League\Flysystem;
 
@@ -8,6 +11,7 @@ interface FilesystemInterface
 {
     /**
      * Check whether a file exists.
+	 * 检查文件是否存在
      *
      * @param string $path
      *

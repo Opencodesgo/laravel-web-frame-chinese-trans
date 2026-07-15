@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，超级全局Env
+ */
 
 /*
  * This file is part of Psy Shell.

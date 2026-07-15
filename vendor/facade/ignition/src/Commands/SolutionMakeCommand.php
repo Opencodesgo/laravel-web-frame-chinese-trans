@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，命令，解决方案编译命令
+ */
 
 namespace Facade\Ignition\Commands;
 

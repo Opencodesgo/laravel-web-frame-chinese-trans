@@ -1,2 +1,4 @@
 ﻿
 Laravel Version：v6.18.35
+
+Foundation/Application.php	

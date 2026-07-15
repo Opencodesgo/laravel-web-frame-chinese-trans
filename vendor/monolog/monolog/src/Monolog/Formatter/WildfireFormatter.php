@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，格式化程序，Wildfire 格式化器
+ */
+
 /*
  * This file is part of the Monolog package.
  *

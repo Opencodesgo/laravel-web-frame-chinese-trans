@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，块，元素，字符串容器接口
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -19,6 +22,7 @@ use League\CommonMark\Cursor;
 
 /**
  * Interface for a block which can contain line(s) of strings
+ * 一个可以包含字符串的行(s)的块的接口
  */
 interface StringContainerInterface
 {

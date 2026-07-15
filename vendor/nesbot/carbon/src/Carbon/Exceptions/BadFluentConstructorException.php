@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，不良流利构造异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class BadFluentConstructorException extends BaseBadMethodCallException implement
 {
     /**
      * The method.
+	 * 方法
      *
      * @var string
      */

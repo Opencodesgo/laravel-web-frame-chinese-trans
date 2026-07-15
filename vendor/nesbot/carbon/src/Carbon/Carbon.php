@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon
+ */
 
 /**
  * This file is part of the Carbon package.

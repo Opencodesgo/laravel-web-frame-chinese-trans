@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，查询记录器，Query Recorder
+ */
 
 namespace Facade\Ignition\QueryRecorder;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，构建器，类常量
+ */
 
 declare(strict_types=1);
 

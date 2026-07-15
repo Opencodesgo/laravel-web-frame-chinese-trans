@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，Github风格的标记转换器
+ */
 
 /*
  * This file is part of the league/commonmark package.

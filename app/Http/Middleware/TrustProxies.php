@@ -20,7 +20,7 @@ class TrustProxies extends Middleware
 
     /**
      * The headers that should be used to detect proxies.
-     * 应该被用来检测代理头。
+     * 应该被用来检测代理头
      *
      * @var int
      */

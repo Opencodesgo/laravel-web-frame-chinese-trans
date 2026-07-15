@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，匹配程序
+ */
+
 namespace Hamcrest;
 
 /*

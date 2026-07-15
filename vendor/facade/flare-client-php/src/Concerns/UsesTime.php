@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，Flare Client，关注，使用时间
+ */
 
 namespace Facade\FlareClient\Concerns;
 

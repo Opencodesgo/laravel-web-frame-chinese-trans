@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，Stacktrace，Codesnippet
+ */
 
 namespace Facade\FlareClient\Stacktrace;
 

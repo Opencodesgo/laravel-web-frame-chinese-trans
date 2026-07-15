@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHP Stan，宏扫描器
+ */
 
 /**
  * This file is part of the Carbon package.

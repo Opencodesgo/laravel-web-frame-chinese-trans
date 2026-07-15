@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，中间件，添加 Glow
+ */
 
 namespace Facade\FlareClient\Middleware;
 

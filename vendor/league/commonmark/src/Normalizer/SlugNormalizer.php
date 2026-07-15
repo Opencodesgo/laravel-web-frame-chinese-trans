@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，标准化器，Slug 标准化器
+ */
 
 declare(strict_types=1);
 

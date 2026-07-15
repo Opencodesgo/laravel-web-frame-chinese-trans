@@ -1,4 +1,8 @@
 <?php
+/**
+ * JakubOnderka，Php控制台颜色，控制台颜色
+ */
+
 namespace JakubOnderka\PhpConsoleColor;
 
 class ConsoleColor

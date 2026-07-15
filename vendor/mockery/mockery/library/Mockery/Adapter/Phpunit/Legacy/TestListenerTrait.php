@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，适配器，Php单元，Legacy，测试监听器特征
+ */
+
+/**
  * Mockery
  *
  * LICENSE

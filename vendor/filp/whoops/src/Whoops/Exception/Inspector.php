@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，检查员
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -86,6 +90,7 @@ class Inspector
 
     /**
      * Returns a url to the php-manual related to the underlying error - when available.
+	 * 返回与底层错误相关的php手册的url -当可用时
      *
      * @return string|null
      */

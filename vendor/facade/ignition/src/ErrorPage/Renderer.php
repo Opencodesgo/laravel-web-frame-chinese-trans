@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，错误页面，Renderer
+ */
 
 namespace Facade\Ignition\ErrorPage;
 

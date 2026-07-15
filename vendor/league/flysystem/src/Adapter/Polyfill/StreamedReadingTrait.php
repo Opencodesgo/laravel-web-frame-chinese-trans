@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，Polyfill，流式阅读特征
+ */
 
 namespace League\Flysystem\Adapter\Polyfill;
 

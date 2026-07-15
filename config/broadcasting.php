@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置，广播
+ */
 
 return [
 
@@ -10,7 +13,8 @@ return [
     | This option controls the default broadcaster that will be used by the
     | framework when an event needs to be broadcast. You may set this to
     | any of the connections defined in the "connections" array below.
-	| 该选项控制将被使用的默认广播机。
+	| 这个选项控制默认的广播机,当一个事件需要广播时,它将被框架使用。
+	| 您可以将此设置到下面的“连接”数组中定义的任何连接。
     |
     | Supported: "pusher", "redis", "log", "null"
     |
@@ -26,7 +30,8 @@ return [
     | Here you may define all of the broadcast connections that will be used
     | to broadcast events to other systems or over websockets. Samples of
     | each available type of connection are provided inside this array.
-	| 在这里，您可以定义所有将要使用的广播连接。
+	| 在这里,您可以定义所有的广播连接,这些连接将被用来将事件传播到其他系统或网络接口。
+	| 在这个数组中提供了每个可用类型的连接的示例。
     |
     */
 

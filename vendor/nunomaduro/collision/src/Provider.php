@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，提供商
+ */
 
 /**
  * This file is part of Collision.

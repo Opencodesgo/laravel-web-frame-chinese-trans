@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，处理程序
+ */
 
 namespace League\Flysystem;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，截断，截取字符串
+ */
 
 namespace Facade\FlareClient\Truncation;
 

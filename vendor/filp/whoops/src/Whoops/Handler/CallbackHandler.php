@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理程序，回调处理程序
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -12,6 +16,7 @@ use InvalidArgumentException;
  * Wrapper for Closures passed as handlers. Can be used
  * directly, or will be instantiated automagically by Whoops\Run
  * if passed to Run::pushHandler
+ * 闭包的包装作为处理程序。可直接使用，或在传递给 Run::pushHandler 时由 Whoops\Run 自动实例化。
  */
 class CallbackHandler extends Handler
 {

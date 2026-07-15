@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHP Stan，抽象的宏观
+ */
 
 declare(strict_types=1);
 

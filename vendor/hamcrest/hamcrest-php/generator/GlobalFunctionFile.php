@@ -1,4 +1,7 @@
 <?php
+/**
+ * 全局函数文件
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

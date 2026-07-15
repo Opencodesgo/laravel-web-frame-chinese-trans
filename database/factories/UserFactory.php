@@ -1,4 +1,7 @@
 <?php
+/**
+ * 数据库，用户工厂
+ */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 

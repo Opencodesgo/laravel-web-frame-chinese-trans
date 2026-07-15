@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，集合，是否可遍历大小测试
+ */
+
 namespace Hamcrest\Collection;
 
 class IsTraversableWithSizeTest extends \Hamcrest\AbstractMatcherTest

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，确认，异常，空验证列表
+ */
 
 namespace Egulias\EmailValidator\Validation\Exception;
 

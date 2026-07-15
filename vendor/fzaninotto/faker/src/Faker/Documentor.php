@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，文件处理机
+ */
 
 namespace Faker;
 

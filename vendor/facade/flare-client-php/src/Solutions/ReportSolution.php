@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，解决方案，报告解决方案
+ */
 
 namespace Facade\FlareClient\Solutions;
 

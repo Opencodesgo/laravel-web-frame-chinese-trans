@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，列类型猜测器
+ */
 
 namespace Faker\ORM\Spot;
 

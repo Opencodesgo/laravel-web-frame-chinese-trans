@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理程序，漂亮页面处理程序
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */

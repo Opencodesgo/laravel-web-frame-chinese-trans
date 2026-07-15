@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，Util，流式哈希
+ */
 
 namespace League\Flysystem\Util;
 

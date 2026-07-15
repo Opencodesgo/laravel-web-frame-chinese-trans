@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，Html渲染器
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -21,6 +24,7 @@ use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 
 /**
  * Renders a parsed AST to HTML
+ * 将解析后的AST呈现为HTML
  */
 final class HtmlRenderer implements ElementRendererInterface
 {

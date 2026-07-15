@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，解决方案提供者，不良方法调用解决方案提供者
+ */
 
 namespace Facade\Ignition\SolutionProviders;
 

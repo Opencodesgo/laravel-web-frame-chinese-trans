@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，编辑器转换器
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，助手
+ */
 
 use Mockery\Matcher\AndAnyOtherArgs;
 use Mockery\Matcher\AnyArgs;

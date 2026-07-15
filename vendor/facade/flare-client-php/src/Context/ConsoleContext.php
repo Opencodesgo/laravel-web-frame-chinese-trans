@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，Flare Client，上下文，控制台上下文
+ */
 
 namespace Facade\FlareClient\Context;
 

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，错误处理程序，收集
+ */
+
 namespace PhpParser\ErrorHandler;
 
 use PhpParser\Error;

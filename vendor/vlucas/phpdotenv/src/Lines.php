@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，行
+ */
 
 namespace Dotenv;
 

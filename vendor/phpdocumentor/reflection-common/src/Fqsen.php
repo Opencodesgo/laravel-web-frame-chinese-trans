@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，反射，Fqsen
+ */
 
 declare(strict_types=1);
 

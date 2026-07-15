@@ -1,4 +1,7 @@
 <?php
+/**
+ * Highlight，终端
+ */
 
 namespace Highlight;
 

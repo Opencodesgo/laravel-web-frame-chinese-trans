@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，游标
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，基本匹配器测试
+ */
+
 namespace Hamcrest;
 
 /* Test-specific subclass only */

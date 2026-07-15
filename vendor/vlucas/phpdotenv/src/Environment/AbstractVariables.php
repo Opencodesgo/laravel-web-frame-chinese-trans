@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，环境，抽象变量
+ */
 
 namespace Dotenv\Environment;
 

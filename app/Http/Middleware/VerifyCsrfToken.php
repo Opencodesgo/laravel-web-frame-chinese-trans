@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，验证CSRF令牌
+ * App，Http，中间件，验证 CSRF令牌
  */
 
 namespace App\Http\Middleware;

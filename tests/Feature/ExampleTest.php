@@ -1,6 +1,6 @@
 <?php
 /**
- * 测试，测试用例
+ * 测试，特征，测试用例
  */
 
 namespace Tests\Feature;

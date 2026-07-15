@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置，数据库
+ */
 
 use Illuminate\Support\Str;
 
@@ -12,7 +15,8 @@ return [
     | Here you may specify which of the database connections below you wish
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
-	| 在这里,您可以指定您所希望的数据库连接哪一个。
+	| 在这里,您可以指定您希望在所有数据库工作中使用的数据库连接哪一个。
+	| 当然,您可以使用数据库库使用许多连接。
     |
     */
 
@@ -27,11 +31,13 @@ return [
     | Of course, examples of configuring each database platform that is
     | supported by Laravel is shown below to make development simple.
 	| 这里是您的应用程序的每个数据库连接设置。
-    |
+	| 当然,配置Laravel支持的每个数据库平台的例子都是简单的。
     |
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
+	| 在Laravel中的所有数据库工作都是通过PHP PDO设备完成的,
+	| 所以要确保在开始开发之前,您的机器上安装了特定的选择数据库。
     |
     */
 
@@ -103,7 +109,8 @@ return [
     | This table keeps track of all the migrations that have already run for
     | your application. Using this information, we can determine which of
     | the migrations on disk haven't actually been run in the database.
-	| 这张表记录了已经运行的所有迁移。
+	| 此表跟踪已经运行的所有应用程序的迁移。
+	| 使用这些信息,我们可以确定磁盘上的迁移实际上还没有在数据库中运行。
     |
     */
 
@@ -117,6 +124,8 @@ return [
     | Redis is an open source, fast, and advanced key-value store that also
     | provides a richer body of commands than a typical key-value system
     | such as APC or Memcached. Laravel makes it easy to dig right in.
+	| Redis是一个开源的、快速的、高级的键值存储库,它还提供了比典型的密钥值系统(如APC或Memcached)更丰富的命令。
+	| Laravel很容易就能找到。
     |
     */
 

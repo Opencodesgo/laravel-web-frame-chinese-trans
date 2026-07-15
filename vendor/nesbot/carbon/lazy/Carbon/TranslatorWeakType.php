@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，翻译程周类型
+ */
 
 /**
  * This file is part of the Carbon package.

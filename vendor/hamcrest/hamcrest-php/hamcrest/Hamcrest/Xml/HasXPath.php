@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Xml，有X路径
+ */
+
 namespace Hamcrest\Xml;
 
 /*

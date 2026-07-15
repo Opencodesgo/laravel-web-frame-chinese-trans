@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，公共，Lexer，抽象Lexer
+ */
 
 declare(strict_types=1);
 
@@ -18,6 +21,7 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 
 /**
  * Base class for writing simple lexers, i.e. for creating small DSLs.
+ * 基类编写简单的词典,即创建小DSLs。
  *
  * @psalm-type Token = array{value: int|string, type:string|int|null, position:int}
  */

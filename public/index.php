@@ -1,4 +1,7 @@
 <?php
+/**
+ * 公共，index
+ */
 
 /**
  * Laravel - A PHP Framework For Web Artisans
@@ -16,7 +19,7 @@ define('LARAVEL_START', microtime(true));
  
 /*
 |--------------------------------------------------------------------------
-| Register The Auto Loader
+| Register The Auto Loader	注册自动装载机
 |--------------------------------------------------------------------------
 |
 | Composer provides a convenient, automatically generated class loader for
@@ -33,7 +36,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
-| Turn On The Lights
+| Turn On The Lights	点亮灯
 |--------------------------------------------------------------------------
 |
 | We need to illuminate PHP development, so let us turn on the lights.
@@ -53,7 +56,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
-| Run The Application
+| Run The Application	运行应用程序
 |--------------------------------------------------------------------------
 |
 | Once we have the application, we can handle the incoming request

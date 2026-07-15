@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，抽象适配器
+ */
 
 namespace League\Flysystem\Adapter;
 

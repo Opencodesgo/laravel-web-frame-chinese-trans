@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，错误处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *

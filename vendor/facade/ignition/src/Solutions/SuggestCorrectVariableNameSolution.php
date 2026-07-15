@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，解决方案提供者，建议正确的变量名解决方案
+ */
 
 namespace Facade\Ignition\Solutions;
 

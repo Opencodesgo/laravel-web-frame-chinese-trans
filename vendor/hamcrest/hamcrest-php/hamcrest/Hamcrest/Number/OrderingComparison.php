@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数字，排序比较
+ */
+
 namespace Hamcrest\Number;
 
 /*

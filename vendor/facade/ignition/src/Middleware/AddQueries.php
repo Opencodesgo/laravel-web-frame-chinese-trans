@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，中间件，添加查询
+ */
 
 namespace Facade\Ignition\Middleware;
 

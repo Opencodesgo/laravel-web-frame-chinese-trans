@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，电子邮件解析器
+ */
 
 namespace Egulias\EmailValidator;
 
@@ -10,6 +13,7 @@ use Egulias\EmailValidator\Warning\EmailTooLong;
 
 /**
  * EmailParser
+ * 电子邮件解析器
  *
  * @author Eduardo Gulias Davis <me@egulias.com>
  */

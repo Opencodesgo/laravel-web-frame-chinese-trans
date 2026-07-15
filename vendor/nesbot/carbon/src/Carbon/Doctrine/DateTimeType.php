@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Doctrine，日期和时间类型
+ */
 
 /**
  * Thanks to https://github.com/flaushi for his suggestion:

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，文件存在异常
+ */
 
 namespace League\Flysystem;
 

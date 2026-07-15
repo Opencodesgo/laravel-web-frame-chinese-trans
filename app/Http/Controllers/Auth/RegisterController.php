@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，注册控制器
+ * App，Http，控制器，授权，注册控制器
  */
 
 namespace App\Http\Controllers\Auth;

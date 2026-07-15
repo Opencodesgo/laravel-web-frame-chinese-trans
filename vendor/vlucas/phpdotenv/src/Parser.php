@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，分析程序
+ */
 
 namespace Dotenv;
 

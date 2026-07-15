@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，实例化器，Instantiator
+ */
 
 namespace Doctrine\Instantiator;
 

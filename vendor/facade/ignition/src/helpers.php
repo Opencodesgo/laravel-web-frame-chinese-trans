@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，助手
+ */
 
 if (! function_exists('ddd')) {
     function ddd()

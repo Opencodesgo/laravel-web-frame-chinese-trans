@@ -1,6 +1,6 @@
 <?php
 /**
- * App，用户类
+ * App，用户
  */
 
 namespace App;

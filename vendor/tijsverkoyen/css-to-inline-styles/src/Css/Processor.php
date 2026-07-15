@@ -1,4 +1,7 @@
 <?php
+/**
+ * TijsVerkoyen，Css内联样式，Css，处理器
+ */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css;
 

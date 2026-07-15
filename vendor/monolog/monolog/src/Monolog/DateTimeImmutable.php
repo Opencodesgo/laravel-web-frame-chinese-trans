@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，日期时间不可变
+ */
+
 /*
  * This file is part of the Monolog package.
  *

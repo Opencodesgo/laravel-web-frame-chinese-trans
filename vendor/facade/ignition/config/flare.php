@@ -1,10 +1,13 @@
 <?php
+/**
+ * Facade，Ignition，配置，flare
+ */
 
 return [
     /*
     |
     |--------------------------------------------------------------------------
-    | Flare API key
+    | Flare API key	Flare API密钥
     |--------------------------------------------------------------------------
     |
     | Specify Flare's API key below to enable error reporting to the service.

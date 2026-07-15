@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，工厂
+ */
 
 namespace Faker;
 

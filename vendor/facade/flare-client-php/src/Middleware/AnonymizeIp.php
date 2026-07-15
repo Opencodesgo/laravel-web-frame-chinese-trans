@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，中间件，匿名 Ip
+ */
 
 namespace Facade\FlareClient\Middleware;
 

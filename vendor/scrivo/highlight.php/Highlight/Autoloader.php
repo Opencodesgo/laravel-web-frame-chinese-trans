@@ -1,4 +1,7 @@
 <?php
+/**
+ * Highlight，自动加载器
+ */
 
 /* Copyright (c) 2013-2019 Geert Bergman (geert@scrivo.nl), highlight.php
  *

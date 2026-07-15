@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，使用元数据
+ */
 
 namespace League\Flysystem\Plugin;
 

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，异常
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -31,6 +35,7 @@ class Expectation implements ExpectationInterface
 {
     /**
      * Mock object to which this expectation belongs
+	 * 期望所属的模拟对象
      *
      * @var \Mockery\LegacyMockInterface
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，Util，内容列表格式化程序
+ */
 
 namespace League\Flysystem\Util;
 
@@ -30,6 +33,7 @@ class ContentListingFormatter
 
     /**
      * Format contents listing.
+	 * 格式内容列表
      *
      * @param array $listing
      *

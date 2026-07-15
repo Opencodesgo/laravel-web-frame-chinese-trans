@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，命令加载器，命令加载器接口
+ */
 
 /*
  * This file is part of the Symfony package.

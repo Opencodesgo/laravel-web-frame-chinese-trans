@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，异常，运行时异常
+ */
+
+/**
  * Mockery
  *
  * LICENSE

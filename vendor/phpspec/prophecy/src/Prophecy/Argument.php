@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，参数
+ */
 
 /*
  * This file is part of the Prophecy.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，期望接口
+ */
 
 /**
  * Mockery

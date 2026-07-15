@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * TheSeer，Tokenizer，XML序列化器
+ */
+
 namespace TheSeer\Tokenizer;
 
 use DOMDocument;

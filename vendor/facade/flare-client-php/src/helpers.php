@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Flare Client，助手
+ */
 
 if (! function_exists('array_merge_recursive_distinct')) {
     function array_merge_recursive_distinct(array &$array1, array &$array2)

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，列表文件
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -6,6 +9,7 @@ class ListFiles extends AbstractPlugin
 {
     /**
      * Get the method name.
+	 * 获取方法名
      *
      * @return string
      */

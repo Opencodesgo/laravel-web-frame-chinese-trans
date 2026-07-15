@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，匹配程序，类型
+ */
+
+/**
  * Mockery
  *
  * LICENSE

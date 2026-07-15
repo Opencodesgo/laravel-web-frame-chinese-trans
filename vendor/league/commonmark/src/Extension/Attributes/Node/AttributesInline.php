@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，扩展，属性，节点，属性行
+ */
 
 /*
  * This file is part of the league/commonmark package.

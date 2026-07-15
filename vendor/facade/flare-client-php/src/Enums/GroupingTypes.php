@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，Flare Client，枚举，分组类型
+ */
 
 namespace Facade\FlareClient\Enums;
 

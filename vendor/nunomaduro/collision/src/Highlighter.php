@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，高光色
+ */
 
 /**
  * This file is part of Collision.

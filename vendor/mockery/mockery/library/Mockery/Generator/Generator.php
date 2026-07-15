@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，发生器，Generator
+ */
+
+/**
  * Mockery
  *
  * LICENSE

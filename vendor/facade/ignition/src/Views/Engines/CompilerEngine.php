@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，Views，引擎，编译程序
+ */
 
 namespace Facade\Ignition\Views\Engines;
 

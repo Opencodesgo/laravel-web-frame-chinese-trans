@@ -1,4 +1,7 @@
 <?php
+/**
+ * Webmozart，断言，Assert
+ */
 
 /*
  * This file is part of the webmozart/assert package.

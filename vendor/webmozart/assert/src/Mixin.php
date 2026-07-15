@@ -1,4 +1,7 @@
 <?php
+/**
+ * Webmozart，断言，Mixin
+ */
 
 /**
  * provides type inference and auto-completion for magic static methods of Assert.

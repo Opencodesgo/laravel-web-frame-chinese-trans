@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，元素渲染器接口
+ */
 
 /*
  * This file is part of the league/commonmark package.

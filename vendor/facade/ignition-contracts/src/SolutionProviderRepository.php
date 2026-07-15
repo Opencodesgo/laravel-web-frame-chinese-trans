@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition 契约，解决方案提供商存储库
+ */
 
 namespace Facade\IgnitionContracts;
 

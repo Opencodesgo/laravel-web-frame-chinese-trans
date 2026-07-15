@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器助手
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\ComplexType;

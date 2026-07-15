@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，引导
+ */
 
 error_reporting(E_ALL | E_STRICT);
 

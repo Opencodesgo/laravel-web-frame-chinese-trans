@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，错误页面，Ignition Whoops 处理程序
+ */
 
 namespace Facade\Ignition\ErrorPage;
 

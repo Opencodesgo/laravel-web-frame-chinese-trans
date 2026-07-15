@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，Dump 记录器，Dump Recorder
+ */
 
 namespace Facade\Ignition\DumpRecorder;
 

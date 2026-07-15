@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点遍历接口
+ */
+
 namespace PhpParser;
 
 interface NodeTraverserInterface

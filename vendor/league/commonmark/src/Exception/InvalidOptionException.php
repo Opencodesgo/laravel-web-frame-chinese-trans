@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，普通标记，异常，无效选项异常
+ */
 
 /*
  * This file is part of the league/commonmark package.

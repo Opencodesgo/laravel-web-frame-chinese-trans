@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Zend 监控器处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *

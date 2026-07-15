@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，确认密码控制器
+ * App，Http，控制器，授权，确认密码控制器
  */
 
 namespace App\Http\Controllers\Auth;
@@ -19,7 +19,8 @@ class ConfirmPasswordController extends Controller
     | This controller is responsible for handling password confirmations and
     | uses a simple trait to include the behavior. You're free to explore
     | this trait and override any functions that require customization.
-	| 这个控制器确认一个简单的包括行为特征。
+	| 这个控制器负责处理密码确认,并使用一个简单的特性来包括行为。
+	| 您可以自由地探索此特性并覆盖任何需要定制的功能。
     |
     */
 

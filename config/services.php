@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置，服务
+ */
 
 return [
 
@@ -11,7 +14,8 @@ return [
     | as Mailgun, Postmark, AWS and more. This file provides the de facto
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
-	| 此文件用于存储第三方服务的凭证。
+	| 该文件用于存储第三方服务的凭证,如Mailgun、邮戳、AWS等。
+	| 这个文件为这种类型的信息提供了实际的位置,允许包有一个传统文件来定位各种服务凭证。
     |
     */
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，中间件，添加 Git信息
+ */
 
 namespace Facade\Ignition\Middleware;
 

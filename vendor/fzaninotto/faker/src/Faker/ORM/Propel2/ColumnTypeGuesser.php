@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Propel2，列类型猜测器
+ */
 
 namespace Faker\ORM\Propel2;
 

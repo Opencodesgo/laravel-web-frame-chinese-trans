@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * League，Flysystem，适配器，可以覆盖文件
+ */
 
 namespace League\Flysystem\Adapter;
 

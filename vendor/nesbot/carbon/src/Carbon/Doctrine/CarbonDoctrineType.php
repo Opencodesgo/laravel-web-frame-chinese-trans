@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Doctrine，Carbon Doctrine 类型
+ */
 
 /**
  * This file is part of the Carbon package.

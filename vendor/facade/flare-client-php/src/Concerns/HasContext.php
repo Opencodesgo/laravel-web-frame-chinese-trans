@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，Flare Client，关注，有上下文
+ */
 
 namespace Facade\FlareClient\Concerns;
 

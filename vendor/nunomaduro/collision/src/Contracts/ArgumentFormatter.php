@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，契约，参数格式化程序
+ */
 
 /*
  * This file is part of Collision.

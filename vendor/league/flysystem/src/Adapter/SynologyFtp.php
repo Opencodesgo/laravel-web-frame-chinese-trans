@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，Synology Ftp
+ */
 
 namespace League\Flysystem\Adapter;
 

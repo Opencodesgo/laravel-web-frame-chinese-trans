@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，Ftp
+ */
 
 namespace League\Flysystem\Adapter;
 
@@ -62,6 +65,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set the transfer mode.
+	 * 设置传输模式
      *
      * @param int $mode
      *
@@ -76,6 +80,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set if Ssl is enabled.
+	 * 设置是否启用Ssl
      *
      * @param bool $ssl
      *

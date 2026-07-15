@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，命令行，调用者
+ */
 
 /**
  * This file is part of the Carbon package.

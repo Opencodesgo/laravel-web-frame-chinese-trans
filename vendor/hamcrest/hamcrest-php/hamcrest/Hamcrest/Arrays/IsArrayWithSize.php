@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是数组大小
+ */
+
 namespace Hamcrest\Arrays;
 
 /*
@@ -12,6 +16,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if array size satisfies a nested matcher.
+ * 如果数组大小满足嵌套匹配器，则匹配。
  */
 class IsArrayWithSize extends FeatureMatcher
 {

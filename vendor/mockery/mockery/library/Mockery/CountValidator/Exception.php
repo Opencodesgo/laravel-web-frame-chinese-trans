@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，计数验证器，异常
+ */
+
+/**
  * Mockery
  *
  * LICENSE

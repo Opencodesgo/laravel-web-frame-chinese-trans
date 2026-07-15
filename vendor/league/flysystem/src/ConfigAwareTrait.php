@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，配置感知特性
+ */
 
 namespace League\Flysystem;
 

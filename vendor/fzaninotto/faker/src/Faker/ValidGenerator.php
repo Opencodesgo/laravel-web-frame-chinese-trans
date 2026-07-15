@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，有效的发生器
+ */
 
 namespace Faker;
 

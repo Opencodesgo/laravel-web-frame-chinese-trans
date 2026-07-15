@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，是否相同测试
+ */
+
 namespace Hamcrest\Core;
 
 class IsSameTest extends \Hamcrest\AbstractMatcherTest

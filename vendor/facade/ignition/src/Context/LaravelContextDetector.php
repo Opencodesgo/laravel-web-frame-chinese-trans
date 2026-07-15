@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，上下文，Laravel 上下文探测器
+ */
 
 namespace Facade\Ignition\Context;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * DummyNamespace，虚拟类
+ */
 
 namespace DummyNamespace;
 

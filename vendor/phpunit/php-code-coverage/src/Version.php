@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，代码覆盖率，版本
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *

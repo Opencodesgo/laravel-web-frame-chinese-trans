@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，验证器
+ */
 
 namespace Dotenv;
 

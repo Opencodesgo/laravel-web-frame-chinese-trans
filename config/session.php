@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置，session
+ */
 
 use Illuminate\Support\Str;
 
@@ -12,7 +15,8 @@ return [
     | This option controls the default session "driver" that will be used on
     | requests. By default, we will use the lightweight native driver but
     | you may specify any of the other wonderful drivers provided here.
-	| 此选项控制将使用的默认会话"驱动程序"
+	| 该选项控制将在请求上使用的默认会话“驱动程序”。
+	| 默认情况下,我们将使用轻量级本机驱动程序,但您可以指定在这里提供的其他优秀驱动程序。
     |
     | Supported: "file", "cookie", "database", "apc",
     |            "memcached", "redis", "dynamodb", "array"
@@ -29,7 +33,8 @@ return [
     | Here you may specify the number of minutes that you wish the session
     | to be allowed to remain idle before it expires. If you want them
     | to immediately expire on the browser closing, set that option.
-    | 您可以在这里指定您希望会议的分钟数。
+    | 在这里,你可以指定你希望会议在它到期之前保持空闲的时间。
+	| 如果您希望它们立即在浏览器关闭时过期,设置该选项。
     |
     */
 
@@ -45,6 +50,8 @@ return [
     | This option allows you to easily specify that all of your session data
     | should be encrypted before it is stored. All encryption will be run
     | automatically by Laravel and you can use the Session like normal.
+	| 这个选项允许您轻松地指定所有会话数据应该在存储之前加密。
+	| 所有的加密将由Laravel自动运行,您可以像正常的那样使用会话。
     |
     */
 
@@ -58,6 +65,8 @@ return [
     | When using the native session driver, we need a location where session
     | files may be stored. A default has been set for you but a different
     | location may be specified. This is only needed for file sessions.
+	| 在使用本机会话驱动程序时,我们需要一个可以存储会话文件的位置。
+	| 默认设置为您,但可以指定不同的位置。这只需要文件会话。
     |
     */
 
@@ -71,6 +80,8 @@ return [
     | When using the "database" or "redis" session drivers, you may specify a
     | connection that should be used to manage these sessions. This should
     | correspond to a connection in your database configuration options.
+	| 在使用“数据库”或“redis”会话驱动程序时,您可以指定应该用于管理这些会话的连接。
+	| 这应该对应于数据库配置选项中的连接。
     |
     */
 
@@ -84,6 +95,8 @@ return [
     | When using the "database" session driver, you may specify the table we
     | should use to manage the sessions. Of course, a sensible default is
     | provided for you; however, you are free to change this as needed.
+	| 在使用“数据库”会话驱动程序时,您可以指定我们应该使用的表来管理会话。
+	| 当然,为您提供了一个合理的默认值;但是,您可以自由地在需要的时候更改它。
     |
     */
 
@@ -191,7 +204,7 @@ return [
     | This option determines how your cookies behave when cross-site requests
     | take place, and can be used to mitigate CSRF attacks. By default, we
     | do not enable this as other CSRF protection services are in place.
-    | 此选项决定您的cookie在跨站点请求时的行为。
+    | 这个选项决定了您的cookie在跨站点请求发生时如何行为,并可以用于减轻CSRF攻击。
     |
     | Supported: "lax", "strict", "none"
     |

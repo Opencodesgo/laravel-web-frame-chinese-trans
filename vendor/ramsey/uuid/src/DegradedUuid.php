@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，退化 Uuid
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

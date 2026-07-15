@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，反射，反射辅助
+ */
 
 namespace DeepCopy\Reflection;
 

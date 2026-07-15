@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，是否空字符串
+ */
+
 namespace Hamcrest\Text;
 
 /*

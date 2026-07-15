@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Carbon，翻译程序强类型
+ */
+ 
 /**
  * This file is part of the Carbon package.
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，制表符，Tab
+ */
 
 namespace Facade\Ignition\Tabs;
 

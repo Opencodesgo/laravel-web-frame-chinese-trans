@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Dotenv
+ */
 
 namespace Dotenv;
 
@@ -16,6 +19,7 @@ class Dotenv
 {
     /**
      * The loader instance.
+	 * 加载器实例
      *
      * @var \Dotenv\Loader
      */

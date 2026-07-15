@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Regex，错误
+ */
 
 namespace Dotenv\Regex;
 

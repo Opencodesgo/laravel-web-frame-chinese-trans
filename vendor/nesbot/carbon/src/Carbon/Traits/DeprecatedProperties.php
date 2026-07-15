@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，弃用属性
+ */
 
 declare(strict_types=1);
 
