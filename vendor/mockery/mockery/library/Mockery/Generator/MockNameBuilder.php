@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，发生器，模拟名称构建器
+ */
+
+/**
  * Mockery
  *
  * LICENSE

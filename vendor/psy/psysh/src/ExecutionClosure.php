@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，执行关闭
+ */
 
 /*
  * This file is part of Psy Shell.

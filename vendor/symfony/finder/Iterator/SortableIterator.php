@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，迭代器，合适的迭代器
+ */
 
 /*
  * This file is part of the Symfony package.

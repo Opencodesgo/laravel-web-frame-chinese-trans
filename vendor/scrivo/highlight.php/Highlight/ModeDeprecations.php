@@ -1,4 +1,7 @@
 <?php
+/**
+ * Highlight，模式反对
+ */
 
 /* Copyright (c) 2019 Geert Bergman (geert@scrivo.nl), highlight.php
  *

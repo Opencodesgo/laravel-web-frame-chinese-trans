@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，目录，翻译包接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * TranslatorBagInterface.
+ * 翻译包接口
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，模拟
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -31,6 +35,7 @@ class Mock implements MockInterface
 {
     /**
      * Stores an array of all expectation directors for this mock
+	 * 为这个模拟存储一系列期望的目录
      *
      * @var array
      */

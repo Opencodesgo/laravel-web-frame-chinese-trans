@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，比较器，Comparator
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，名称生成器
+ */
 
 /*
  * This file is part of the Prophecy.

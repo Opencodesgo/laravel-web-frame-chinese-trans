@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Sudo
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -14,11 +17,13 @@ namespace Psy;
 /**
  * Helpers for bypassing visibility restrictions, mostly used in code generated
  * by the `sudo` command.
+ * 用于绕过可见性限制,主要用于由“sudo”命令生成的代码。
  */
 class Sudo
 {
     /**
      * Fetch a property of an object, bypassing visibility restrictions.
+	 * 获取对象的属性,绕过能见度限制。
      *
      * @param object $object
      * @param string $property property name

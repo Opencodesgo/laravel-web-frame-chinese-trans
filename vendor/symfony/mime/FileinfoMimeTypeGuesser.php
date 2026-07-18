@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，Fileinfo Mime 类型猜测器
+ */
 
 /*
  * This file is part of the Symfony package.

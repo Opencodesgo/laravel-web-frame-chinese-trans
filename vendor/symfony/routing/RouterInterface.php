@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，路由器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
  * RouterInterface is the interface that all Router classes must implement.
+ * RouterInterface是所有路由器类都必须实现的接口。
  *
  * This interface is the concatenation of UrlMatcherInterface and UrlGeneratorInterface.
  *

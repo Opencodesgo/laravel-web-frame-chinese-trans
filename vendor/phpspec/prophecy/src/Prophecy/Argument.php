@@ -18,6 +18,7 @@ use Prophecy\Argument\Token;
 
 /**
  * Argument tokens shortcuts.
+ * 参数标记快捷键。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

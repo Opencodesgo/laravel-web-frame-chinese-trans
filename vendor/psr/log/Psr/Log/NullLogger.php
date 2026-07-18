@@ -1,9 +1,13 @@
 <?php
+/**
+ * Psy，日志，零记录器
+ */
 
 namespace Psr\Log;
 
 /**
  * This Logger can be used to avoid conditional log calls.
+ * 这个Logger可以用于避免有条件的日志调用。
  *
  * Logging should always be optional, and if no logger is provided to your
  * library creating a NullLogger instance to have something to throw logs at

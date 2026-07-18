@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，承诺，回调承诺
+ */
 
 /*
  * This file is part of the Prophecy.

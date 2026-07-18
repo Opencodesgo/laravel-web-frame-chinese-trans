@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，跟踪格式化程序
+ */
 
 /*
  * This file is part of Psy Shell.

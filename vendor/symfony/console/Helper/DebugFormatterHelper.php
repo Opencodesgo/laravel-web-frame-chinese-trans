@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，调试格式化助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * Helps outputting debug information when running an external program from a command.
+ * 在从命令运行外部程序时帮助排除调试信息。
  *
  * An external program can be a Process, an HTTP request, or anything else.
  *
@@ -26,6 +30,7 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Starts a debug formatting session.
+	 * 启动调试格式化会话
      *
      * @param string $id      The id of the formatting session
      * @param string $message The message to display

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，依赖注入组件，增加控制台命令通道
+ */
 
 /*
  * This file is part of the Symfony package.

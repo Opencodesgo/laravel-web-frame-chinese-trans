@@ -11,6 +11,7 @@ use ReturnTypeWillChange;
 
 /**
  * This is the abstract variables implementation.
+ * 这是抽象变量的实现。
  *
  * Extend this as required, implementing "get", "set", and "clear".
  */

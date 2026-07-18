@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，类型，可变类型测试
+ */
+
 /*
  * This file is part of sebastian/type.
  *

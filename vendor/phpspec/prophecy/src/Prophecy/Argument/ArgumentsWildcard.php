@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，参数，参数Wildcard
+ * Prophecy，参数，参数 Wildcard
  */
 
 /*

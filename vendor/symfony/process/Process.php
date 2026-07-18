@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，进程，Process
+ */
 
 /*
  * This file is part of the Symfony package.

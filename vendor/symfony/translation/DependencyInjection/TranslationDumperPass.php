@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，依赖注入，翻译转储通过
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Adds tagged translation.formatter services to translation writer.
+ * 添加标记翻译。格式化程序服务给翻译作者。
  */
 class TranslationDumperPass implements CompilerPassInterface
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，命令，描述符号，Html 描述符号
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 /**
  * Describe collected data clones for html output.
+ * 描述为html输出收集的数据克隆。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *

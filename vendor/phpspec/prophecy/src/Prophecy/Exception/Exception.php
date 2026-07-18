@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，Exception
+ */
 
 /*
  * This file is part of the Prophecy.

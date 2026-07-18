@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Args 存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents a list of function arguments.
+ * 表示函数参数列表。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

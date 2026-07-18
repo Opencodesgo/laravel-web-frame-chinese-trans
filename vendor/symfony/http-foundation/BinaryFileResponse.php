@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，二进制文件响应
+ */
 
 /*
  * This file is part of the Symfony package.

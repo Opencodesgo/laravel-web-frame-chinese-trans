@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Php文件编制程序，类和接口标记检索器
+ */
 
 /*
  * This file is part of the Prophecy.

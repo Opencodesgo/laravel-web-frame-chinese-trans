@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Var Dumper，克隆
+ */
 
 /*
  * This file is part of Psy Shell.

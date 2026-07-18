@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，容器，容器接口
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,8 @@ namespace Psr\Container;
 
 /**
  * Describes the interface of a container that exposes methods to read its entries.
+ * 描述一个容器的接口,它公开方法读取其条目。
+ * 
  */
 interface ContainerInterface
 {

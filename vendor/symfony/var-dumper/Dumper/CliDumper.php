@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，转储，客户端转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * CliDumper dumps variables for command line output.
+ * 命令行输出的变量转储变量。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

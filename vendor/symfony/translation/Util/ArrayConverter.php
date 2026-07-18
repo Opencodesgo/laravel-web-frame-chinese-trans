@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，Util，数组变换器
+ */
 
 /*
  * This file is part of the Symfony package.

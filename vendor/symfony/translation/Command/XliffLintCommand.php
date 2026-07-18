@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，依赖注入，XliffLint 命令
+ */
 
 /*
  * This file is part of the Symfony package.

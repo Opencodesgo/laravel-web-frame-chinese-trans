@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，转储，数据转储接口
+ */
 
 /*
  * This file is part of the Symfony package.

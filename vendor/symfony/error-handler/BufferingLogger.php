@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，错误处理器，缓冲日志记录器
+ */
 
 /*
  * This file is part of the Symfony package.

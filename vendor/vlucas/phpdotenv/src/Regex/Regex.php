@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Regex，Regex
+ */
 
 namespace Dotenv\Regex;
 
@@ -6,6 +9,7 @@ class Regex
 {
     /**
      * Perform a preg match, wrapping up the result.
+	 * 执行preg匹配,完成结果。
      *
      * @param string $pattern
      * @param string $subject

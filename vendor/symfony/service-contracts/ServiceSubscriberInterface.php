@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，服务订阅者特征
+ */
 
 /*
  * This file is part of the Symfony package.

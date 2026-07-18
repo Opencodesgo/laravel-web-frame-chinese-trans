@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，异常，无效的Uuid字符串异常
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,6 +22,7 @@ use InvalidArgumentException;
 
 /**
  * Thrown to indicate that the parsed UUID string is invalid.
+ * 被抛出,以指示解析的UUID字符串无效。
  */
 class InvalidUuidStringException extends InvalidArgumentException
 {

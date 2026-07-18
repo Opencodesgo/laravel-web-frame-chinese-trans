@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，反射类常数
+ */
 
 /*
  * This file is part of Psy Shell.

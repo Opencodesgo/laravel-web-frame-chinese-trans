@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，缓存的倍频器
+ */
 
 /*
  * This file is part of the Prophecy.

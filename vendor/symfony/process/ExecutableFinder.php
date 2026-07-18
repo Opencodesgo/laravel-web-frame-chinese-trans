@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，进程，可执行的查找器
+ */
 
 /*
  * This file is part of the Symfony package.

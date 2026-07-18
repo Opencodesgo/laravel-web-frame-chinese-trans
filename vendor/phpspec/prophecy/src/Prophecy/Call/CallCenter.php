@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，呼叫，呼叫中心
+ */
 
 /*
  * This file is part of the Prophecy.

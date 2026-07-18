@@ -17,6 +17,7 @@ class Error extends Result
 
     /**
      * Internal constructor for an error value.
+	 * 一个错误值的内部构造函数
      *
      * @param string $value
      *

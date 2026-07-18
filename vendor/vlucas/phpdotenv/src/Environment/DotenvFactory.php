@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，环境，Dotenv 工厂
+ */
 
 namespace Dotenv\Environment;
 
@@ -10,11 +13,13 @@ use Dotenv\Environment\Adapter\ServerConstAdapter;
 
 /**
  * The default implementation of the environment factory interface.
+ * 环境工厂接口的默认实现。
  */
 class DotenvFactory implements FactoryInterface
 {
     /**
      * The set of adapters to use.
+	 * 要使用的适配器集
      *
      * @var \Dotenv\Environment\Adapter\AdapterInterface[]
      */

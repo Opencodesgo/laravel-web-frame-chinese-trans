@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，翻译器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * TranslatorInterface.
+ * 翻译器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

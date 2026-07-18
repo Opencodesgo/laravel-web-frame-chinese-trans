@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Prophecy，探测器的接口
+ */
 
 /*
  * This file is part of the Prophecy.

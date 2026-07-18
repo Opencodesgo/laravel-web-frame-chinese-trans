@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，预言，回调的预测
+ */
 
 /*
  * This file is part of the Prophecy.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，Spl 文件信息
+ */
 
 /*
  * This file is part of the Symfony package.

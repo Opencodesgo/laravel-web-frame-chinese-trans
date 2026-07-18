@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，配置
+ */
+
+/**
  * Mockery
  *
  * LICENSE

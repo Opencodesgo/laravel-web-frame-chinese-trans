@@ -52,6 +52,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * An Application is the container for a collection of commands.
+ * 应用程序是收集命令的容器。
  *
  * It is the main entry point of a Console application.
  *

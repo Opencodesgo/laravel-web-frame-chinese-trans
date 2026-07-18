@@ -48,6 +48,7 @@ use Psy\Exception\ParseErrorException;
 /**
  * A service to clean up user input, detect parse errors before they happen,
  * and generally work around issues with the PHP code evaluation experience.
+ * 一种清理用户输入的服务,在它们发生之前检测解析错误,而且通常在PHP代码评估经验的问题上工作。
  */
 class CodeCleaner
 {

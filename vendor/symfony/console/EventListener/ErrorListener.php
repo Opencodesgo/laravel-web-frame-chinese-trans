@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，事件监听器，错误监听器
+ */
 
 /*
  * This file is part of the Symfony package.

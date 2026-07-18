@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，函数
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，异常，头文件冲突异常
+ */
 
 /*
  * This file is part of the Symfony package.

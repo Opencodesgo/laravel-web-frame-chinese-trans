@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，Terminal
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ class Terminal
 
     /**
      * Gets the terminal width.
+	 * 得到终端宽度
      *
      * @return int
      */

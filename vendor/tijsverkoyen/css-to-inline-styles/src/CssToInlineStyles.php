@@ -25,6 +25,7 @@ class CssToInlineStyles
 
     /**
      * Will inline the $css into the given $html
+	 * 将$ css内联到给定$ html中
      *
      * Remark: if the html contains <style>-tags those will be used, the rules
      * in $css will be appended.

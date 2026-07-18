@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，密码学，Dkim 选项
+ */
 
 /*
  * This file is part of the Symfony package.

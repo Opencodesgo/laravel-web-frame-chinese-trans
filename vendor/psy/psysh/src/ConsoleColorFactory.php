@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，控制台彩色工厂
+ */
 
 /*
  * This file is part of Psy Shell.

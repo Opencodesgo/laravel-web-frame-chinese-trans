@@ -10,13 +10,16 @@ use Dotenv\Regex\Regex;
 
 /**
  * This is the validator class.
+ * 这是验证器类。
  *
  * It's responsible for applying validations against a number of variables.
+ * 它负责对一些变量进行有效的验证。
  */
 class Validator
 {
     /**
      * The variables to validate.
+	 * 验证的变量
      *
      * @var string[]
      */
@@ -24,6 +27,7 @@ class Validator
 
     /**
      * The loader instance.
+	 * 加载实例
      *
      * @var \Dotenv\Loader
      */

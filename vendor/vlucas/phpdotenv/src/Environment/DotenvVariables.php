@@ -1,14 +1,19 @@
 <?php
+/**
+ * Dotenv，环境，Dotenv 变量
+ */
 
 namespace Dotenv\Environment;
 
 /**
  * The default implementation of the environment variables interface.
+ * 环境变量接口的默认实现。
  */
 class DotenvVariables extends AbstractVariables
 {
     /**
      * The set of adapters to use.
+	 * 要使用的适配器集
      *
      * @var \Dotenv\Environment\Adapter\AdapterInterface[]
      */
@@ -16,6 +21,7 @@ class DotenvVariables extends AbstractVariables
 
     /**
      * Create a new dotenv environment variables instance.
+	 * 创建一个新的dotenv环境变量实例
      *
      * @param \Dotenv\Environment\Adapter\AdapterInterface[] $adapters
      * @param bool                                           $immutable

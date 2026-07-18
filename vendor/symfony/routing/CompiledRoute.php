@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，已编译的路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
+ * CompiledRoutes由RouteCompiler类返回。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,9 +1,13 @@
 <?php
+/**
+ * Psy，日志，抽象记录器
+ */
 
 namespace Psr\Log;
 
 /**
  * This is a simple Logger implementation that other Loggers can inherit from.
+ * 这是一个简单的Logger实现,其他日志记录器可以继承。
  *
  * It simply delegates all log-level-specific methods to the `log` method to
  * reduce boilerplate code that a simple Logger that does the same thing with

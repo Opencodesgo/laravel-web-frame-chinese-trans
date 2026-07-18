@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，版本
+ */
+
 /*
  * This file is part of the Version package.
  *

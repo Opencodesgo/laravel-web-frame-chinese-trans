@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，加载器，Loader
+ */
+
+/**
  * Mockery
  *
  * LICENSE

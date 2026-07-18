@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，测试，服务定位测试
+ */
 
 /*
  * This file is part of the Symfony package.

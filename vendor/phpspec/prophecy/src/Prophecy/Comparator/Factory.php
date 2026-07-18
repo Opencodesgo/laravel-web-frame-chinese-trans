@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，比较器，工厂
+ */
 
 /*
  * This file is part of the Prophecy.

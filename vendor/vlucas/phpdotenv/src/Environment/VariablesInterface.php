@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，环境，变量接口
+ */
 
 namespace Dotenv\Environment;
 
@@ -6,11 +9,13 @@ use ArrayAccess;
 
 /**
  * This environment variables interface.
+ * 这个环境变量接口。
  */
 interface VariablesInterface extends ArrayAccess
 {
     /**
      * Determine if the environment is immutable.
+	 * 确定环境是否不可变
      *
      * @return bool
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，测试，Var Dumper 测试特性
+ */
 
 /*
  * This file is part of the Symfony package.

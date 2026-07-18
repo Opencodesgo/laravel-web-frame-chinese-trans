@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Readline，GNU Readline
+ */
 
 /*
  * This file is part of Psy Shell.

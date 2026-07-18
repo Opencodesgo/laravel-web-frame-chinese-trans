@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，翻译特点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * A trait to help implement TranslatorInterface and LocaleAwareInterface.
+ * 一个帮助实现翻译接口和LocaleAwareInterface的特性。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

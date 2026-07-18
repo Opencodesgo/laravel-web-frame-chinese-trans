@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Http内核浏览器
+ */
 
 /*
  * This file is part of the Symfony package.

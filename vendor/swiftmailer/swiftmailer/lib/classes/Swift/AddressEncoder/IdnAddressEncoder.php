@@ -1,4 +1,7 @@
 <?php
+/**
+ * Swift_AddressEncoder_IdnAddressEncoder
+ */
 
 /*
  * This file is part of SwiftMailer.

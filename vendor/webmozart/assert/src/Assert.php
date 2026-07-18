@@ -28,6 +28,7 @@ use Traversable;
 
 /**
  * Efficient assertions to validate the input/output of your methods.
+ * 有效的断言来验证方法的输入/输出。
  *
  * @since  1.0
  *

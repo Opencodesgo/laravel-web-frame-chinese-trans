@@ -42,6 +42,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell application.
+ * Psy Shell应用。
  *
  * Usage:
  *
@@ -83,6 +84,7 @@ class Shell extends Application
 
     /**
      * Create a new Psy Shell.
+	 * 创建一个新的Psy Shell
      *
      * @param Configuration|null $config (default: null)
      */

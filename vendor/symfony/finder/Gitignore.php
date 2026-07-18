@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，Gitignore
+ */
 
 /*
  * This file is part of the Symfony package.

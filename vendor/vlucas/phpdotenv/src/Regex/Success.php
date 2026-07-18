@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Regex，成功
+ */
 
 namespace Dotenv\Regex;
 
@@ -14,6 +17,7 @@ class Success extends Result
 
     /**
      * Internal constructor for a success value.
+	 * 成功值的内部构造函数
      *
      * @param string|int $value
      *

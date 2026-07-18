@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，多元规则
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Translation;
 
 /**
  * Returns the plural rules for a given locale.
+ * 返回给定区域的复数规则。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -24,6 +28,7 @@ class PluralizationRules
 
     /**
      * Returns the plural position to use for the given locale and number.
+	 * 返回指定区域和数字的复数位置
      *
      * @param float  $number The number
      * @param string $locale The locale

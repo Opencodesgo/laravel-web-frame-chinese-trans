@@ -9,8 +9,10 @@ class Lines
 {
     /**
      * Process the array of lines of environment variables.
+	 * 处理环境变量行的数组。
      *
      * This will produce an array of entries, one per variable.
+	 * 这将产生一个数组,一个每个变量。
      *
      * @param string[] $lines
      *

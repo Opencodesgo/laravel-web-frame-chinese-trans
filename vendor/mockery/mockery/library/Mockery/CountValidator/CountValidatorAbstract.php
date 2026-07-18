@@ -28,6 +28,7 @@ abstract class CountValidatorAbstract
 {
     /**
      * Expectation for which this validator is assigned
+	 * 该验证器被分配的期望
      *
      * @var \Mockery\Expectation
      */

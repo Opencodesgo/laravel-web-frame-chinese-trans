@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，环境，适配器，适配器接口
+ */
 
 namespace Dotenv\Environment\Adapter;
 
@@ -6,6 +9,7 @@ interface AdapterInterface
 {
     /**
      * Determines if the adapter is supported.
+	 * 确定适配器是否被支持
      *
      * @return bool
      */

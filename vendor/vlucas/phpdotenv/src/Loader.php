@@ -23,6 +23,7 @@ class Loader
 {
     /**
      * The file paths.
+	 * 文件路径
      *
      * @var string[]
      */
@@ -30,6 +31,7 @@ class Loader
 
     /**
      * The environment factory instance.
+	 * 环境工厂实例
      *
      * @var \Dotenv\Environment\FactoryInterface
      */

@@ -19,6 +19,7 @@ class Parser
 
     /**
      * Parse the given environment variable entry into a name and value.
+	 * 解析给定的环境变量输入名称和值
      *
      * @param string $entry
      *

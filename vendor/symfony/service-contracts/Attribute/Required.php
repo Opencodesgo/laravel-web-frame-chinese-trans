@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，属性，必需的
+ */
 
 /*
  * This file is part of the Symfony package.

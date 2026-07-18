@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，配置，文件定位器
+ */
 
 /*
  * This file is part of the Symfony package.

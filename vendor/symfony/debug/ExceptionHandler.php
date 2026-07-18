@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常处理程序
+ */
 
 /*
  * This file is part of the Symfony package.

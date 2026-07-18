@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，供应者，时间，固定时间供应商
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

@@ -12,6 +12,7 @@ class Processor
 {
     /**
      * Get the rules from a given CSS-string
+	 * 从给定的css字符串获取规则
      *
      * @param string $css
      * @param Rule[] $existingRules

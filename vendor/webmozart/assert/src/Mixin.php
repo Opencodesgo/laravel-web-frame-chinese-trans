@@ -5,6 +5,7 @@
 
 /**
  * provides type inference and auto-completion for magic static methods of Assert.
+ * 为维护维护的静态方法提供类型推断和自动完成。
  */
 
 namespace Webmozart\Assert;
@@ -17,6 +18,7 @@ use Throwable;
 /**
  * This trait aids static analysis tooling in introspecting assertion magic methods.
  * Do not use this trait directly: it will change, and is not designed for reuse.
+ * 这种特性有助于静态分析工具在内省断言的魔术方法。
  */
 trait Mixin
 {

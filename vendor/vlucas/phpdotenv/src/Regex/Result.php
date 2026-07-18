@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Regex，结果
+ */
 
 namespace Dotenv\Regex;
 
@@ -6,6 +9,7 @@ abstract class Result
 {
     /**
      * Get the success option value.
+	 * 获得成功的选项值
      *
      * @return \PhpOption\Option
      */

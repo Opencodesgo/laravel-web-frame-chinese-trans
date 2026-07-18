@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，格式化程序，选择消息格式化程序接口
+ */
 
 /*
  * This file is part of the Symfony package.

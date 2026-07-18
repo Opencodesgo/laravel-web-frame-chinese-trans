@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，样式，输出样式
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Decorates output to add console style guide helpers.
+ * 装饰输出以添加控制台风格的向导助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

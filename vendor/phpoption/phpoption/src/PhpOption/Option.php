@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpOption，Option
+ */
 
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -30,6 +33,7 @@ abstract class Option implements IteratorAggregate
 {
     /**
      * Creates an option given a return value.
+	 * 创建一个返回值的选项。
      *
      * This is intended for consuming existing APIs and allows you to easily
      * convert them to an option. By default, we treat ``null`` as the None

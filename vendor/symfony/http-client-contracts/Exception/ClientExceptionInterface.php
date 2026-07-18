@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，异常，客户端异常接口
+ */
 
 /*
  * This file is part of the Symfony package.

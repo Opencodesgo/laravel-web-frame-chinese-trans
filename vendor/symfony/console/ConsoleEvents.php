@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，控制台事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console;
 
 /**
  * Contains all events dispatched by an Application.
+ * 包含应用程序发送的所有事件。
  *
  * @author Francesco Levorato <git@flevour.net>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，环境识别接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ interface LocaleAwareInterface
 {
     /**
      * Sets the current locale.
+	 * 设置当前区域
      *
      * @param string $locale The locale
      *
@@ -24,6 +28,7 @@ interface LocaleAwareInterface
 
     /**
      * Returns the current locale.
+	 * 返回当前区域
      *
      * @return string
      */

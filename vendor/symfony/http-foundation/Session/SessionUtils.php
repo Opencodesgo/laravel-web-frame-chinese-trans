@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，会话，Session
+ */
 
 /*
  * This file is part of the Symfony package.

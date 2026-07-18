@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，编辑命令
+ */
 
 /*
  * This file is part of Psy Shell.
