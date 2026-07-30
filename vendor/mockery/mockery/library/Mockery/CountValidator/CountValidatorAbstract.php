@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，计数验证器，计数验证器抽象
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -16,6 +19,7 @@ abstract class CountValidatorAbstract implements CountValidatorInterface
 {
     /**
      * Expectation for which this validator is assigned
+	 * 分配此验证器的期望
      *
      * @var Expectation
      */
@@ -23,6 +27,7 @@ abstract class CountValidatorAbstract implements CountValidatorInterface
 
     /**
      * Call count limit
+	 * 呼叫计数限制
      *
      * @var int
      */

@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，应用
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，代理片段渲染器
+ * Symfony，Component，HttpKernel，片段，抽象的代理片段渲染器
  */
 
 /*

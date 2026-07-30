@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，兼容性令牌
+ */
+
 namespace PhpParser;
 
 if (!\function_exists('PhpParser\defineCompatibilityTokens')) {

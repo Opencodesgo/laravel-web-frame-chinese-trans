@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，无效邮件异常
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

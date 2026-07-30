@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，可通过参考通道
+ */
 
 /*
  * This file is part of Psy Shell.

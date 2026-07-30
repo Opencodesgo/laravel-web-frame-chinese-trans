@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，类型过滤器，Spl，Spl 双链表过滤器
+ */
 
 namespace DeepCopy\TypeFilter\Spl;
 

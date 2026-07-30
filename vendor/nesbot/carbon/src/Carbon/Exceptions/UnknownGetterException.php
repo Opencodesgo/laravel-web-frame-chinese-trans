@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，未知Getter异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class UnknownGetterException extends BaseInvalidArgumentException implements Inv
 {
     /**
      * The getter.
+	 * getter
      *
      * @var string
      */
@@ -25,6 +29,7 @@ class UnknownGetterException extends BaseInvalidArgumentException implements Inv
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string         $getter   getter name
      * @param int            $code

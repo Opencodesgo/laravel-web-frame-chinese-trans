@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，适配器，单元测试，测试监听器特质
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

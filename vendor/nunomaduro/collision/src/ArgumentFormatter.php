@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，参数格式化程序
+ */
 
 /**
  * This file is part of Collision.
@@ -15,6 +18,7 @@ use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContrac
 
 /**
  * This is an Collision Argument Formatter implementation.
+ * 这是一个冲突参数格式化器实现。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

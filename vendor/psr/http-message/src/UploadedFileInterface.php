@@ -18,6 +18,7 @@ interface UploadedFileInterface
 {
     /**
      * Retrieve a stream representing the uploaded file.
+	 * 检索表示上传文件的流。
      *
      * This method MUST return a StreamInterface instance, representing the
      * uploaded file. The purpose of this method is to allow utilizing native PHP
@@ -36,6 +37,7 @@ interface UploadedFileInterface
 
     /**
      * Move the uploaded file to a new location.
+	 * 将上传的文件移动到一个新位置。
      *
      * Use this method as an alternative to move_uploaded_file(). This method is
      * guaranteed to work in both SAPI and non-SAPI environments.
@@ -70,6 +72,7 @@ interface UploadedFileInterface
     
     /**
      * Retrieve the file size.
+	 * 检索文件大小。
      *
      * Implementations SHOULD return the value stored in the "size" key of
      * the file in the $_FILES array if available, as PHP calculates this based

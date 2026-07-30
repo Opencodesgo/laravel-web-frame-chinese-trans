@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Finder，比较器，比较器
+ * Symfony，Component，Finder，比较器，Comparator
  */
 
 /*
@@ -34,6 +34,7 @@ class Comparator
 
     /**
      * Gets the target value.
+	 * 获取目标值
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储，文件，路径
+ */
 
 namespace Dotenv\Store\File;
 
@@ -6,6 +9,7 @@ class Paths
 {
     /**
      * Returns the full paths to the files.
+	 * 返回文件的完整路径
      *
      * @param string[] $paths
      * @param string[] $names

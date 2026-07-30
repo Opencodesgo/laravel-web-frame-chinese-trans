@@ -44,6 +44,7 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Adds progress to a formatting session.
+	 * 添加到格式化会话的进度
      *
      * @return string
      */

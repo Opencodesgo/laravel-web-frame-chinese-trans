@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件，文件
+ * Symfony，Component，HttpFoundation，文件，File
  */
 
 /*

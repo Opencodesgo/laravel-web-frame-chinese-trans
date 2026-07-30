@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器，声明
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -11,6 +15,7 @@ abstract class Declaration implements PhpParser\Builder {
 
     /**
      * Adds a statement.
+	 * 添加语句。
      *
      * @param PhpParser\Node\Stmt|PhpParser\Builder $stmt The statement to add
      *
@@ -20,6 +25,7 @@ abstract class Declaration implements PhpParser\Builder {
 
     /**
      * Adds multiple statements.
+	 * 添加多个语句
      *
      * @param (PhpParser\Node\Stmt|PhpParser\Builder)[] $stmts The statements to add
      *

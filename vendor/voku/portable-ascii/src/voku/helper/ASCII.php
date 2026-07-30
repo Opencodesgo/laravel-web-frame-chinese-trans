@@ -1,4 +1,7 @@
 <?php
+/**
+ * voku，助手，ASCII
+ */
 
 declare(strict_types=1);
 
@@ -224,6 +227,7 @@ final class ASCII
 
     /**
      * Returns an replacement array for ASCII methods.
+	 * 返回ASCII方法的替换数组
      *
      * EXAMPLE: <code>
      * $array = ASCII::charsArray();

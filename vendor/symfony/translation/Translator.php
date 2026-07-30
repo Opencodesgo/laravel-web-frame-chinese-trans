@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，数据采集器翻译
+ * Symfony，Component，Translation，翻译器
  */
 
 /*

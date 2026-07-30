@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，转储，Html 转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * HtmlDumper dumps variables as HTML.
+ * HtmlDumper转储变量作为HTML。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

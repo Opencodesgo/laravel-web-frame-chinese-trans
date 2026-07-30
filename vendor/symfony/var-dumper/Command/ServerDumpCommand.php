@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，命令，服务转储命令
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -29,6 +32,7 @@ use Symfony\Component\VarDumper\Server\DumpServer;
 
 /**
  * Starts a dump server to collect and output dumps on a single place with multiple formats support.
+ * 在一个具有多个格式支持的单一位置上,启动一个转储服务器来收集和输出转储。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *

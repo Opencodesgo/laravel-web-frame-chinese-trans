@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，凑整
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,6 +19,7 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Rounding.
+ * 特征凑整。
  *
  * Round, ceil, floor units.
  *
@@ -30,6 +34,7 @@ trait Rounding
 
     /**
      * Round the current instance at the given unit with given precision if specified and the given function.
+	 * 如果指定并使用给定函数，则以给定精度四舍五入当前实例的给定单元。
      *
      * @param string    $unit
      * @param float|int $precision

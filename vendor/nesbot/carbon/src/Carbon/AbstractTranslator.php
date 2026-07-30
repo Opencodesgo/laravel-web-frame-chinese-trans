@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，抽象翻译
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -23,6 +26,7 @@ abstract class AbstractTranslator extends Translation\Translator
 {
     /**
      * Translator singletons for each language.
+	 * 翻译每种语言的单例
      *
      * @var array
      */
@@ -30,6 +34,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of custom localized messages.
+	 * 自定义本地化消息列表
      *
      * @var array
      */

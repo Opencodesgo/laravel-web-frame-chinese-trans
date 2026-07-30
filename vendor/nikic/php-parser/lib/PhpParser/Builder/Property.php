@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器，属性
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -28,6 +32,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Creates a property builder.
+	 * 创建属性构建器
      *
      * @param string $name Name of the property
      */
@@ -37,6 +42,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property public.
+	 * 使属性公开
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -48,6 +54,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property protected.
+	 * 使属性受保护
      *
      * @return $this The builder instance (for fluid interface)
      */

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，TextUI，Cli参数，配置
+ */
+
 /*
  * This file is part of PHPUnit.
  *

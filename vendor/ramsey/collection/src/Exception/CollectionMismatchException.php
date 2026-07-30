@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，异常，集合不匹配异常
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -18,6 +21,7 @@ use RuntimeException;
 
 /**
  * Thrown when attempting to operate on collections of differing types.
+ * 试图操作不同类型的集合时抛出。
  */
 class CollectionMismatchException extends RuntimeException
 {

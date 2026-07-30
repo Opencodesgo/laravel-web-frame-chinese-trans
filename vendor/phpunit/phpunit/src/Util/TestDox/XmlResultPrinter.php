@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，TestDox，Xml 结果打印机
+ */
+
 /*
  * This file is part of PHPUnit.
  *

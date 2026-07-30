@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Runner，异常，扩展处理程序
+ */
+
 /*
  * This file is part of PHPUnit.
  *

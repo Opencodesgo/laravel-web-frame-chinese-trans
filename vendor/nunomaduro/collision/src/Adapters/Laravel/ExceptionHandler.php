@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，Laravel，异常处理程序
+ */
 
 /**
  * This file is part of Collision.
@@ -19,6 +22,7 @@ use Throwable;
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
+ * 这是一个Collision Laravel Adapter ExceptionHandler实现。
  *
  * Registers the Error Handler on Laravel.
  *
@@ -28,6 +32,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 {
     /**
      * Holds an instance of the application exception handler.
+	 * 保存应用程序异常处理程序的实例
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler
      */
@@ -35,6 +40,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Holds an instance of the container.
+	 * 保存容器的实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */

@@ -1,10 +1,15 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，编辑器
+ */
+
 namespace PhpParser;
 
 /**
  * Modifiers used (as a bit mask) by various flags subnodes, for example on classes, functions,
  * properties and constants.
+ * 由各种标志子节点（例如类、函数、属性和常量）使用的修饰符（作为位掩码）。
  */
 final class Modifiers {
     public const PUBLIC    =  1;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，不可变的异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class ImmutableException extends BaseRuntimeException implements RuntimeExceptio
 {
     /**
      * The value.
+	 * 值
      *
      * @var string
      */
@@ -25,6 +29,7 @@ class ImmutableException extends BaseRuntimeException implements RuntimeExceptio
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string         $value    the immutable type/value
      * @param int            $code
@@ -38,6 +43,7 @@ class ImmutableException extends BaseRuntimeException implements RuntimeExceptio
 
     /**
      * Get the value.
+	 * 得到值
      *
      * @return string
      */

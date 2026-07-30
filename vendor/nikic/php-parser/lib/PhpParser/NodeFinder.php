@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点发现者
+ */
+
 namespace PhpParser;
 
 use PhpParser\NodeVisitor\FindingVisitor;
@@ -8,6 +12,7 @@ use PhpParser\NodeVisitor\FirstFindingVisitor;
 class NodeFinder {
     /**
      * Find all nodes satisfying a filter callback.
+	 * 查找满足过滤器回调的所有节点
      *
      * @param Node|Node[] $nodes Single node or array of nodes to search in
      * @param callable $filter Filter callback: function(Node $node) : bool
@@ -33,6 +38,7 @@ class NodeFinder {
 
     /**
      * Find all nodes that are instances of a certain class.
+	 * 查找作为某个类实例的所有节点
 
      * @template TNode as Node
      *
@@ -49,6 +55,7 @@ class NodeFinder {
 
     /**
      * Find first node satisfying a filter callback.
+	 * 查找满足过滤器回调的第一个节点
      *
      * @param Node|Node[] $nodes Single node or array of nodes to search in
      * @param callable $filter Filter callback: function(Node $node) : bool

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Opis，关闭，安全供应商
+ */
+
 /* ===========================================================================
  * Copyright (c) 2018-2021 Zindex Software
  *
@@ -14,6 +18,7 @@ class SecurityProvider implements ISecurityProvider
 
     /**
      * SecurityProvider constructor.
+	 * SecurityProvider 构造函数
      * @param string $secret
      */
     public function __construct($secret)

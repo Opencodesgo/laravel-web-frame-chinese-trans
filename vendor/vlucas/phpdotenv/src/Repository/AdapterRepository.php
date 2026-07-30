@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储库，适配器存储库
+ */
 
 namespace Dotenv\Repository;
 
@@ -6,6 +9,7 @@ class AdapterRepository extends AbstractRepository
 {
     /**
      * The set of readers to use.
+	 * 要使用的读卡器集
      *
      * @var \Dotenv\Repository\Adapter\ReaderInterface[]
      */

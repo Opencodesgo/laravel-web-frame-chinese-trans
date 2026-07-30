@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，文件系统
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -21,6 +26,7 @@ final class Filesystem
 {
     /**
      * Maps class names to source file names.
+	 * 将类名映射到源文件名。
      *
      *   - PEAR CS:   Foo_Bar_Baz -> Foo/Bar/Baz.php
      *   - Namespace: Foo\Bar\Baz -> Foo/Bar/Baz.php

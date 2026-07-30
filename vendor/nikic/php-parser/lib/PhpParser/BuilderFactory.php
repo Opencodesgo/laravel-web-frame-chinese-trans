@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，生成器工厂
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Arg;
@@ -13,6 +17,7 @@ use PhpParser\Node\Stmt\Use_;
 class BuilderFactory {
     /**
      * Creates an attribute node.
+	 * 创建属性节点
      *
      * @param string|Name $name Name of the attribute
      * @param array $args Attribute named arguments
@@ -26,6 +31,7 @@ class BuilderFactory {
 
     /**
      * Creates a namespace builder.
+	 * 创建名称空间构建器
      *
      * @param null|string|Node\Name $name Name of the namespace
      *

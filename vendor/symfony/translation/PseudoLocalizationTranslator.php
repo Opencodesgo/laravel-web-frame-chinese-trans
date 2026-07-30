@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，伪定位转换器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This translator should only be used in a development environment.
+ * 该翻译只能在开发环境中使用。
  */
 final class PseudoLocalizationTranslator implements TranslatorInterface
 {

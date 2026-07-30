@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，属性，控制器
+ * Symfony，Component，HttpKernel，属性，作为控制器
  */
 
 /*

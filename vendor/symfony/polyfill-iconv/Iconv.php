@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Polyfill，编码，Iconv
+ * Symfony，Polyfill，Iconv
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Polyfill\Iconv;
 
 /**
  * iconv implementation in pure PHP, UTF-8 centric.
+ * iconv在纯PHP、UTF-8中心的实现。
  *
  * Implemented:
  * - iconv              - Convert string to requested character encoding

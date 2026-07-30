@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，作者
+ */
 
 /**
  * This file is part of Collision.
@@ -23,6 +26,7 @@ use Whoops\Exception\Inspector;
 
 /**
  * This is an Collision Writer implementation.
+ * 这是一个Collision Writer实现。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -30,11 +34,13 @@ class Writer implements WriterContract
 {
     /**
      * The number of frames if no verbosity is specified.
+	 * 如果没有指定详细信息，则为帧数。
      */
     const VERBOSITY_NORMAL_FRAMES = 1;
 
     /**
      * Holds an instance of the solutions repository.
+	 * 保存解决方案存储库的实例
      *
      * @var \NunoMaduro\Collision\Contracts\SolutionsRepository
      */

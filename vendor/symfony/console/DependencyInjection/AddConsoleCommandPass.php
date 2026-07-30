@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，完成，依赖注入
+ * Symfony，Component，Console，依赖注入，添加控制台命令传递
  */
 
 /*

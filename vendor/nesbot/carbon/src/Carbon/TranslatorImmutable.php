@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，翻译不可变的
+ */
 
 /**
  * This file is part of the Carbon package.

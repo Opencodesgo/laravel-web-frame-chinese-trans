@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，TextUI，XML配置，代码覆盖，Code Coverage
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon周期
+ */
 
 /**
  * This file is part of the Carbon package.

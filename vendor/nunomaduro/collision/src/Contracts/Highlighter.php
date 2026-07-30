@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，契约，高光色
+ */
 
 /**
  * This file is part of Collision.
@@ -13,6 +16,7 @@ namespace NunoMaduro\Collision\Contracts;
 
 /**
  * This is the Collision Highlighter contract.
+ * 这是碰撞高光色合同。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -20,6 +24,8 @@ interface Highlighter
 {
     /**
      * Highlights the provided content.
+	 * 突出显示所提供的内容
+	 * 
      */
     public function highlight(string $content, int $line): string;
 }

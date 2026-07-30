@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * TheSeer，Tokenizer，XML 序列化器
+ */
+
 namespace TheSeer\Tokenizer;
 
 use DOMDocument;
@@ -16,6 +21,7 @@ class XMLSerializer {
 
     /**
      * XMLSerializer constructor.
+	 * XMLSerializer构造函数
      *
      * @param NamespaceUri $xmlns
      */

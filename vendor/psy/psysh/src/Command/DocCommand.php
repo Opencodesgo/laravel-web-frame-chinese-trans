@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Doc 命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Read the documentation for an object, class, constant, method or property.
+ * 象、类、常量、方法或属性的文档。
  */
 class DocCommand extends ReflectingCommand
 {

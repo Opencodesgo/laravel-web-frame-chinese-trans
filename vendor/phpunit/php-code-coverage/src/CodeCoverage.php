@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，代码覆盖率，Code Coverage
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -35,6 +40,7 @@ use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 
 /**
  * Provides collection functionality for PHP code coverage information.
+ * 提供PHP代码覆盖率信息的收集功能。
  */
 final class CodeCoverage
 {
@@ -82,6 +88,7 @@ final class CodeCoverage
 
     /**
      * Code coverage data.
+	 * 代码覆盖率数据
      *
      * @var ProcessedCodeCoverageData
      */

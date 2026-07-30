@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -19,6 +22,7 @@ use DateTimeZone;
 
 /**
  * A simple API extension for DateTime.
+ * DateTime的简单API扩展。
  *
  * @mixin DeprecatedProperties
  *
@@ -513,6 +517,7 @@ class Carbon extends DateTime implements CarbonInterface
 
     /**
      * Returns true if the current class/instance is mutable.
+	 * 如果当前类/实例是可变的，则返回true。
      *
      * @return bool
      */

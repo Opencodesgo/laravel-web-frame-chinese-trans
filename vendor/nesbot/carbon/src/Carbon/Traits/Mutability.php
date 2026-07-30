@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，易变性
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,8 +19,10 @@ use Carbon\CarbonImmutable;
 
 /**
  * Trait Mutability.
+ * 可变性特征。
  *
  * Utils to know if the current object is mutable or immutable and convert it.
+ * Utils用于了解当前对象是可变的还是不可变的，并对其进行转换。
  */
 trait Mutability
 {
@@ -25,6 +30,7 @@ trait Mutability
 
     /**
      * Returns true if the current class/instance is mutable.
+	 * 如果当前类/实例是可变的，则返回true。
      *
      * @return bool
      */
@@ -35,6 +41,7 @@ trait Mutability
 
     /**
      * Returns true if the current class/instance is immutable.
+	 * 如果当前类/实例是不可变的，则返回true。
      *
      * @return bool
      */

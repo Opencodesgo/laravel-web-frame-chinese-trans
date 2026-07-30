@@ -29,6 +29,7 @@ interface RequestInterface extends MessageInterface
 {
     /**
      * Retrieves the message's request target.
+	 * 检索消息的请求目标。
      *
      * Retrieves the message's request-target either as it will appear (for
      * clients), as it appeared at request (for servers), or as it was
@@ -47,6 +48,7 @@ interface RequestInterface extends MessageInterface
 
     /**
      * Return an instance with the specific request-target.
+	 * 返回具有特定请求目标的实例。
      *
      * If the request needs a non-origin-form request-target — e.g., for
      * specifying an absolute-form, authority-form, or asterisk-form —
@@ -67,6 +69,7 @@ interface RequestInterface extends MessageInterface
 
     /**
      * Retrieves the HTTP method of the request.
+	 * 检索请求的HTTP方法
      *
      * @return string Returns the request method.
      */
@@ -74,6 +77,7 @@ interface RequestInterface extends MessageInterface
 
     /**
      * Return an instance with the provided HTTP method.
+	 * 返回具有提供的HTTP方法的实例。
      *
      * While HTTP method names are typically all uppercase characters, HTTP
      * method names are case-sensitive and thus implementations SHOULD NOT

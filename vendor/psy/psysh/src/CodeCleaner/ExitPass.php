@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，入出境通行
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ class ExitPass extends CodeCleanerPass
 {
     /**
      * Converts exit calls to BreakExceptions.
+	 * 将退出调用转换为breakexception
      *
      * @param \PhpParser\Node $node
      *

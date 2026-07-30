@@ -35,6 +35,7 @@ abstract class AbstractArray implements ArrayInterface
 {
     /**
      * The items of this array.
+	 * 此数组的项
      *
      * @var array<array-key, T>
      */

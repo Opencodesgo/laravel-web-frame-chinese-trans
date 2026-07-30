@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，编码器，地址编码器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ interface AddressEncoderInterface
 {
     /**
      * Encodes an email address.
+	 * 编码电子邮件地址
      *
      * @throws AddressEncoderException if the email cannot be represented in
      *                                 the encoding implemented by this class

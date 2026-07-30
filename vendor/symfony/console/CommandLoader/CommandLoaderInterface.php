@@ -24,6 +24,7 @@ interface CommandLoaderInterface
 {
     /**
      * Loads a command.
+	 * 加载命令
      *
      * @return Command
      *
@@ -33,6 +34,7 @@ interface CommandLoaderInterface
 
     /**
      * Checks if a command exists.
+	 * 检查是否存在命令
      *
      * @return bool
      */

@@ -68,6 +68,7 @@ class RequestContext
 
     /**
      * Updates the RequestContext information based on a HttpFoundation Request.
+	 * 根据HttpFoundation请求更新RequestContext信息
      *
      * @return $this
      */

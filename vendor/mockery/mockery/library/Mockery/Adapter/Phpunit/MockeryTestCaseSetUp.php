@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，适配器，单元测试，模拟测试用例设置
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

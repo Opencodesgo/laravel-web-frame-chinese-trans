@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，转字符串格式
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -15,8 +18,10 @@ use Closure;
 
 /**
  * Trait ToStringFormat.
+ * Trait ToStringFormat.
  *
  * Handle global format customization for string cast of the object.
+ * 处理对象的字符串强制转换的全局格式定制。
  */
 trait ToStringFormat
 {

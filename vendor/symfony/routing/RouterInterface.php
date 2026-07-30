@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Routing，别名
+ * Symfony，Component，Routing，路由器接口
  */
 
 /*

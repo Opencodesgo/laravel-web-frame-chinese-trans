@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，无效时区异常
+ */
 
 /**
  * This file is part of the Carbon package.

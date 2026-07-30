@@ -20,6 +20,7 @@ use Monolog\Utils;
 
 /**
  * Logs to Cube.
+ * 日志到Cube
  *
  * @link https://github.com/square/cube/wiki
  * @author Wan Chen <kami@kamisama.me>

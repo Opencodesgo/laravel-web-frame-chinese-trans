@@ -22,6 +22,7 @@ use Monolog\Utils;
 
 /**
  * Stores to PHP error_log() handler.
+ * 存储到PHP error_log（）处理程序。
  *
  * @author Elan Ruusamäe <glen@delfi.ee>
  */

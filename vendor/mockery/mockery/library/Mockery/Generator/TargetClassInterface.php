@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，目标类接口
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -14,6 +17,7 @@ interface TargetClassInterface
 {
     /**
      * Returns a new instance of the current TargetClassInterface's implementation.
+	 * 返回当前TargetClassInterface实现的新实例
      *
      * @param class-string $name
      *
@@ -23,6 +27,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's attributes.
+	 * 返回targetClass的属性
      *
      * @return array<class-string>
      */
@@ -30,6 +35,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's interfaces.
+	 * 返回targetClass的接口
      *
      * @return array<TargetClassInterface>
      */

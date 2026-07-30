@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer，令牌模拟器，关键字模拟器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
 use PhpParser\Token;

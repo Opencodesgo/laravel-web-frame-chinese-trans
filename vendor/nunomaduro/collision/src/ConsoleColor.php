@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，控制台颜色
+ */
 
 /**
  * This file is part of Collision.
@@ -15,6 +18,7 @@ use NunoMaduro\Collision\Exceptions\ShouldNotHappen;
 
 /**
  * This is an Collision Console Color implementation.
+ * 这是一个碰撞控制台颜色实现。
  *
  * Code originally from { JakubOnderka\\PhpConsoleColor }. But the package got deprecated.
  *

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部的，PrintableNewAnonClassNode
+ */
+
 namespace PhpParser\Internal;
 
 use PhpParser\Node;

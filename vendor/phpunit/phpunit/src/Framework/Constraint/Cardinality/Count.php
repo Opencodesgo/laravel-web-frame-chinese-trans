@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，限制，Count
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -47,6 +52,7 @@ class Count extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @throws Exception
      */

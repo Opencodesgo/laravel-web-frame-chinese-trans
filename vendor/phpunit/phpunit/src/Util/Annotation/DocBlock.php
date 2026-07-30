@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，Annotation，DocBlock
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -151,6 +156,7 @@ final class DocBlock
 
     /**
      * Note: we do not preserve an instance of the reflection object, since it cannot be safely (de-)serialized.
+	 * 注意：我们不保留反射对象的实例，因为它不能被安全（反）序列化。
      *
      * @param array<string, array<int, string>> $symbolAnnotations
      *

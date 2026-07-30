@@ -40,6 +40,7 @@ class Alias
 
     /**
      * Returns the target name of this alias.
+	 * 返回此别名的目标名称
      *
      * @return string The target name
      */
@@ -50,6 +51,7 @@ class Alias
 
     /**
      * Whether this alias is deprecated, that means it should not be referenced anymore.
+	 * 是否使用此别名被弃用,这意味着它不再应该被引用。
      *
      * @param string $package The name of the composer package that is triggering the deprecation
      * @param string $version The version of the package that introduced the deprecation

@@ -18,11 +18,13 @@ use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 
 /**
  * Allows providing hooks on domain-specific lifecycles by dispatching events.
+ * 允许通过调度事件在特定领域的生命周期中提供钩子。
  */
 interface EventDispatcherInterface extends PsrEventDispatcherInterface
 {
     /**
      * Dispatches an event to all registered listeners.
+	 * 将事件发送给所有注册侦听器
      *
      * @param object      $event     The event to pass to the event handlers/listeners
      * @param string|null $eventName The name of the event to dispatch. If not supplied,

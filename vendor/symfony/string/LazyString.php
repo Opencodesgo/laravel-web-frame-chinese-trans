@@ -16,6 +16,7 @@ namespace Symfony\Component\String;
 
 /**
  * A string whose value is computed lazily by a callback.
+ * 一个由回调来延迟计算的字符串。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

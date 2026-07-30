@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储，字符串存储
+ */
 
 namespace Dotenv\Store;
 
@@ -6,6 +9,7 @@ final class StringStore implements StoreInterface
 {
     /**
      * The file content.
+	 * 文件内容
      *
      * @var string
      */
@@ -13,6 +17,7 @@ final class StringStore implements StoreInterface
 
     /**
      * Create a new string store instance.
+	 * 创建一个新的字符串存储实例
      *
      * @param string $content
      *

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，可格式化的处理程序Trait
+ * Monolog，Handler，可格式化的处理程序 Trait
  */
 
 /*

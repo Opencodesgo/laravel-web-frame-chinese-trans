@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpOption，None
+ */
 
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>

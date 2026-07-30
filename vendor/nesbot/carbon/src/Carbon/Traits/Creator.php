@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，创造者
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -28,8 +31,10 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Creator.
+ * 特征的创造者。
  *
  * Static creators.
+ * 静态的创造者。
  *
  * Depends on the following methods:
  *
@@ -41,6 +46,7 @@ trait Creator
 
     /**
      * The errors that can occur.
+	 * 可能发生的错误
      *
      * @var array
      */
@@ -48,6 +54,7 @@ trait Creator
 
     /**
      * Create a new Carbon instance.
+	 * 创建一个新的Carbon实例。
      *
      * Please see the testing aids section (specifically static::setTestNow())
      * for more on the possibility of this constructor returning a test instance.
@@ -102,6 +109,7 @@ trait Creator
 
     /**
      * Get timezone from a datetime instance.
+	 * 从datetime实例获取时区
      *
      * @param DateTimeInterface        $date
      * @param DateTimeZone|string|null $tz
@@ -127,6 +135,7 @@ trait Creator
 
     /**
      * Update constructedObjectId on cloned.
+	 * 更新克隆上的constructedobjecid
      */
     public function __clone()
     {

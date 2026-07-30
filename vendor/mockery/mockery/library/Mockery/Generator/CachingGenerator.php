@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，缓存发生器
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

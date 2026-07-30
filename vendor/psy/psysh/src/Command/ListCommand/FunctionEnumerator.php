@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，函数枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Function Enumerator class.
+ * 函数枚举器类。
  */
 class FunctionEnumerator extends Enumerator
 {

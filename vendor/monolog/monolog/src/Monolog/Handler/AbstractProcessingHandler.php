@@ -17,6 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Base Handler class providing the Handler structure, including processors and formatters
+ * 基Handler类，提供Handler结构，包括处理器和格式化程序。
  *
  * Classes extending it should (in most cases) only implement write($record)
  *

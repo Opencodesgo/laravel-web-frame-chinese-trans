@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer，Emulative
+ */
+
 namespace PhpParser\Lexer;
 
 use PhpParser\Error;

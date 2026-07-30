@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，边界
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -15,6 +18,7 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Boundaries.
+ * 特征边界。
  *
  * startOf, endOf and derived method for each unit.
  *

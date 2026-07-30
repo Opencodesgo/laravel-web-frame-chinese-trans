@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，未知 Setter异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class UnknownSetterException extends BaseInvalidArgumentException implements Bad
 {
     /**
      * The setter.
+	 * setter
      *
      * @var string
      */
@@ -25,6 +29,7 @@ class UnknownSetterException extends BaseInvalidArgumentException implements Bad
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string         $setter   setter name
      * @param int            $code

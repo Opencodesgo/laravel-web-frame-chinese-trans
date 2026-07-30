@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，消息格式化程序，消息格式化器映射器
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -27,6 +30,7 @@ final class MessageFormatterMapper extends LazyMessageFormatter
 {
     /**
      * Wrapped formatter.
+	 * 格式化程序
      *
      * @var MessageFormatterInterface
      */

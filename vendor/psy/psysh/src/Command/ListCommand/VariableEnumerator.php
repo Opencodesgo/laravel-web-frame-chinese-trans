@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，变量枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Variable Enumerator class.
+ * 变量枚举器类。
  */
 class VariableEnumerator extends Enumerator
 {

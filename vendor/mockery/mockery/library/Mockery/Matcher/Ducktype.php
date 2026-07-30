@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，Ducktype
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -18,6 +21,7 @@ class Ducktype extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */

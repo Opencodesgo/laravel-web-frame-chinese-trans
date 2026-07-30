@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，严格类型通过
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Provide implicit strict types declarations for for subsequent execution.
+ * 为后续执行提供隐式严格类型声明。
  *
  * The strict types pass remembers the last strict types declaration:
  *

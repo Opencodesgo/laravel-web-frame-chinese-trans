@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，应用程序名称无效
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

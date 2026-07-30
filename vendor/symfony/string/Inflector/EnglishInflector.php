@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，String，偏转器，英语偏转器
+ */
 
 /*
  * This file is part of the Symfony package.

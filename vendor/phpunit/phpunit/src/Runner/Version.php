@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Runner，版本
+ */
+
 /*
  * This file is part of PHPUnit.
  *

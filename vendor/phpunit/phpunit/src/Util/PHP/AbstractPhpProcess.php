@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，PHP，抽象 Php进程
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -91,6 +96,7 @@ abstract class AbstractPhpProcess
 
     /**
      * Defines if should use STDERR redirection or not.
+	 * 定义是否应该使用STDERR重定向。
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
      */
@@ -101,6 +107,7 @@ abstract class AbstractPhpProcess
 
     /**
      * Returns TRUE if uses STDERR redirection or FALSE if not.
+	 * 如果使用STDERR重定向则返回TRUE，否则返回FALSE。
      */
     public function useStderrRedirection(): bool
     {
@@ -109,6 +116,7 @@ abstract class AbstractPhpProcess
 
     /**
      * Sets the input string to be sent via STDIN.
+	 * 设置通过STDIN发送的输入字符串
      */
     public function setStdin(string $stdin): void
     {
@@ -117,6 +125,7 @@ abstract class AbstractPhpProcess
 
     /**
      * Returns the input string to be sent via STDIN.
+	 * 返回通过STDIN发送的输入字符串
      */
     public function getStdin(): string
     {
@@ -125,6 +134,7 @@ abstract class AbstractPhpProcess
 
     /**
      * Sets the string of arguments to pass to the php job.
+	 * 设置要传递给php作业的参数字符串
      */
     public function setArgs(string $args): void
     {

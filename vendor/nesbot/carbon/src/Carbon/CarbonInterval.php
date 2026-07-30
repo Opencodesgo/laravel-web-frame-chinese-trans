@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 间隔
+ */
 
 /**
  * This file is part of the Carbon package.

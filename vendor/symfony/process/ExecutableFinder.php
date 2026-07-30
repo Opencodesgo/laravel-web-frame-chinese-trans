@@ -35,6 +35,7 @@ class ExecutableFinder
 
     /**
      * Replaces default suffixes of executable.
+	 * 替换可执行文件的默认后缀
      */
     public function setSuffixes(array $suffixes)
     {
@@ -43,6 +44,7 @@ class ExecutableFinder
 
     /**
      * Adds new possible suffix to check for executable.
+	 * 添加新的可能的后缀来检查可执行文件
      */
     public function addSuffix(string $suffix)
     {

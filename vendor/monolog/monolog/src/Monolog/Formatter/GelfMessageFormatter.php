@@ -58,6 +58,7 @@ class GelfMessageFormatter extends NormalizerFormatter
 
     /**
      * Translates Monolog log levels to Graylog2 log priorities.
+	 * 将独白日志级别转换为Graylog2日志优先级
      *
      * @var array<int, int>
      *

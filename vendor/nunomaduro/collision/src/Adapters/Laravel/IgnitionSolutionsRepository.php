@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，Laravel，点火解决方案库
+ */
 
 /**
  * This file is part of Collision.
@@ -17,6 +20,7 @@ use Throwable;
 
 /**
  * This is an Collision Laravel Adapter Solutions Provider implementation.
+ * 这是一个Collision Laravel Adapter Solutions Provider的实现。
  *
  * Registers the Error Handler on Laravel.
  *
@@ -26,6 +30,7 @@ class IgnitionSolutionsRepository implements SolutionsRepository
 {
     /**
      * Holds an instance of ignition solutions provider repository.
+	 * 保存一个点火解决方案提供商存储库的实例
      *
      * @var \Facade\IgnitionContracts\SolutionProviderRepository
      */

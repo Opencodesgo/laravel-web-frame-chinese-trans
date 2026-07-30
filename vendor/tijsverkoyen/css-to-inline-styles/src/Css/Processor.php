@@ -30,6 +30,7 @@ class Processor
 
     /**
      * Get the CSS from the style-tags in the given HTML-string
+	 * 在给定的htm - string中从样式标签中获取CSS
      *
      * @param string $html
      *

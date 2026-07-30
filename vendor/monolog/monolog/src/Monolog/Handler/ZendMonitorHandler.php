@@ -21,6 +21,8 @@ use Monolog\Logger;
 
 /**
  * Handler sending logs to Zend Monitor
+ * 处理程序向Zend Monitor发送日志
+ * 
  *
  * @author  Christian Bergau <cbergau86@gmail.com>
  * @author  Jason Davis <happydude@jasondavis.net>
@@ -31,6 +33,7 @@ class ZendMonitorHandler extends AbstractProcessingHandler
 {
     /**
      * Monolog level / ZendMonitor Custom Event priority map
+	 * Monolog级别/ ZendMonitor自定义事件优先级图
      *
      * @var array<int, int>
      */

@@ -43,6 +43,7 @@ final class CompletionInput extends ArgvInput
 
     /**
      * Converts a terminal string into tokens.
+	 * 将终端字符串转换为令牌。
      *
      * This is required for shell completions without COMP_WORDS support.
      */

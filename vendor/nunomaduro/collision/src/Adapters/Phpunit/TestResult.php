@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，单元测试，测试结果
+ */
 
 /**
  * This file is part of Collision.
@@ -63,6 +66,7 @@ final class TestResult
 
     /**
      * Test constructor.
+	 * 测试构造函数
      *
      * @param string $warning
      */
@@ -77,6 +81,7 @@ final class TestResult
 
     /**
      * Creates a new test from the given test case.
+	 * 从给定的测试用例创建一个新的测试
      */
     public static function fromTestCase(TestCase $testCase, string $type, string $warning = null): self
     {
@@ -91,6 +96,7 @@ final class TestResult
 
     /**
      * Get the test case description.
+	 * 获取测试用例描述
      */
     public static function makeDescription(TestCase $testCase): string
     {
@@ -114,6 +120,7 @@ final class TestResult
 
     /**
      * Get the test case icon.
+	 * 获取测试用例图标
      */
     public static function makeIcon(string $type): string
     {

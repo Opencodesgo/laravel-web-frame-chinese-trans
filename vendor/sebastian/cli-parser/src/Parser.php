@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CliParser，分析程序
+ */
+
 /*
  * This file is part of sebastian/cli-parser.
  *

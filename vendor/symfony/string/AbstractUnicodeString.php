@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，String，String
+ * Symfony，Component，String，抽象 Unicode字符串
  */
 
 /*
@@ -80,6 +80,7 @@ abstract class AbstractUnicodeString extends AbstractString
 
     /**
      * Generic UTF-8 to ASCII transliteration.
+	 * 通用UTF-8到ASCII转换。
      *
      * Install the intl extension for best results.
      *

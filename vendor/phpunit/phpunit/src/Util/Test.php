@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，测试
+ */
+
 /*
  * This file is part of PHPUnit.
  *

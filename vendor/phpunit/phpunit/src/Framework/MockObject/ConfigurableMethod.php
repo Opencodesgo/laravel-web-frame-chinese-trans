@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，模拟对象，可配置的方法
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，数据头，抽象数据头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Mime\Encoder\QpMimeHeaderEncoder;
 
 /**
  * An abstract base MIME Header.
+ * 一个抽象的基础MIME头。
  *
  * @author Chris Corbyn
  */

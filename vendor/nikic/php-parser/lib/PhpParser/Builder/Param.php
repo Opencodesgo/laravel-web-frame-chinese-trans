@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器，参数
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -20,6 +24,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Creates a parameter builder.
+	 * 创建参数构建器
      *
      * @param string $name Name of the parameter
      */

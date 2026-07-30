@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，TestDox，命令行测试 Dox打印机
+ */
+
 /*
  * This file is part of PHPUnit.
  *

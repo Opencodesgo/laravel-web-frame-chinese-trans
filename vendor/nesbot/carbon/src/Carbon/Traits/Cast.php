@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，Cast
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,6 +19,7 @@ use DateTimeInterface;
 
 /**
  * Trait Cast.
+ * 特质
  *
  * Utils to cast into an other class.
  */
@@ -23,6 +27,7 @@ trait Cast
 {
     /**
      * Cast the current instance into the given class.
+	 * 将当前实例强制转换为给定的类
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *

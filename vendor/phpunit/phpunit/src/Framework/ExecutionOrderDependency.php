@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，执行顺序依赖性
+ */
+
 /*
  * This file is part of PHPUnit.
  *

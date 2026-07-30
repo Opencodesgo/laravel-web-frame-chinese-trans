@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，主机处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Injects value of gethostname in all records
+ * 在所有记录中注入gethostname的值
  */
 class HostnameProcessor implements ProcessorInterface
 {

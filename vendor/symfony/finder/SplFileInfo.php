@@ -72,6 +72,7 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the contents of the file.
+	 * 返回文件的内容
      *
      * @return string
      *

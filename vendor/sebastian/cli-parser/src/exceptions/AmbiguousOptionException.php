@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CliParser，模棱两可的选项异常
+ */
+
 /*
  * This file is part of sebastian/cli-parser.
  *

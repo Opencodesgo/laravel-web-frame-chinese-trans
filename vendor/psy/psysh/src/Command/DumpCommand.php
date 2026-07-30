@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，转储命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -22,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Dump an object or primitive.
+ * 转储对象或原语。
  *
  * This is like var_dump but *way* awesomer.
  */

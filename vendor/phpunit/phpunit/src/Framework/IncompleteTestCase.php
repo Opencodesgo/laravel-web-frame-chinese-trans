@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，不完整的测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -50,6 +55,7 @@ final class IncompleteTestCase extends TestCase
 
     /**
      * Returns a string representation of the test case.
+	 * 返回测试用例的字符串表示形式
      *
      * @throws InvalidArgumentException
      */

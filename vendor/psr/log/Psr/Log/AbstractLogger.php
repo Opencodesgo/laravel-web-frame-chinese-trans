@@ -48,6 +48,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Critical conditions.
+	 * 临界状态
      *
      * Example: Application component unavailable, unexpected exception.
      *

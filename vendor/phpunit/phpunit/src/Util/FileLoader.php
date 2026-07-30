@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，文件加载器
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -24,6 +29,7 @@ final class FileLoader
 {
     /**
      * Checks if a PHP sourcecode file is readable. The sourcecode file is loaded through the load() method.
+	 * 检查PHP源代码文件是否可读。源代码文件通过load（）方法加载。
      *
      * As a fallback, PHP looks in the directory of the file executing the stream_resolve_include_path function.
      * We do not want to load the Test.php file here, so skip it if it found that.
@@ -53,6 +59,7 @@ final class FileLoader
 
     /**
      * Loads a PHP sourcefile.
+	 * 加载PHP源文件
      */
     public static function load(string $filename): void
     {

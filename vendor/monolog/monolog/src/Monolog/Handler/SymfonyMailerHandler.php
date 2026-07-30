@@ -25,6 +25,7 @@ use Symfony\Component\Mime\Email;
 
 /**
  * SymfonyMailerHandler uses Symfony's Mailer component to send the emails
+ * SymfonyMailerHandler使用Symfony的Mailer组件来发送邮件
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *

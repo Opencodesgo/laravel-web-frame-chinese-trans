@@ -34,6 +34,7 @@ interface StreamInterface
 
     /**
      * Closes the stream and any underlying resources.
+	 * 关闭流和任何底层资源
      *
      * @return void
      */
@@ -41,6 +42,7 @@ interface StreamInterface
 
     /**
      * Separates any underlying resources from the stream.
+	 * 从流中分离任何底层资源。
      *
      * After the stream has been detached, the stream is in an unusable state.
      *
@@ -50,6 +52,7 @@ interface StreamInterface
 
     /**
      * Get the size of the stream if known.
+	 * 如果已知，获取流的大小。
      *
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */

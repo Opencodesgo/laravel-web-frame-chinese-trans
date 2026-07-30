@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，单元测试，样式
+ */
 
 /**
  * This file is part of Collision.
@@ -82,6 +85,7 @@ final class Style
     /**
      * Prints the content similar too on the footer. Where
      * we are updating the current test.
+	 * 在页脚打印类似的内容。我们正在更新当前的测试。
      *
      * ```
      *    Runs  Unit\ExampleTest
@@ -135,6 +139,7 @@ final class Style
 
     /**
      * Writes the final recap.
+	 * 写最后的总结
      */
     public function writeRecap(Timer $timer): void
     {

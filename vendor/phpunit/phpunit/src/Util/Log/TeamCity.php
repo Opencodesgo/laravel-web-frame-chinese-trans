@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，日志，Team City
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -84,6 +89,7 @@ final class TeamCity extends DefaultResultPrinter
 
     /**
      * A warning occurred.
+	 * 出现警告
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {

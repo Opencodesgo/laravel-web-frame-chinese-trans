@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，解析错误异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class ParseErrorException extends BaseInvalidArgumentException implements Invali
 {
     /**
      * The expected.
+	 * 期望值
      *
      * @var string
      */
@@ -25,6 +29,7 @@ class ParseErrorException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The actual.
+	 * 实际状况
      *
      * @var string
      */
@@ -32,6 +37,7 @@ class ParseErrorException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The help message.
+	 * 辅助信息
      *
      * @var string
      */
@@ -39,6 +45,7 @@ class ParseErrorException extends BaseInvalidArgumentException implements Invali
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string         $expected
      * @param string         $actual

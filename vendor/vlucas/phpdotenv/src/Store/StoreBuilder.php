@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储，存储构建器
+ */
 
 namespace Dotenv\Store;
 
@@ -8,6 +11,7 @@ class StoreBuilder
 {
     /**
      * The paths to search within.
+	 * 寻找内在的路径
      *
      * @var string[]
      */

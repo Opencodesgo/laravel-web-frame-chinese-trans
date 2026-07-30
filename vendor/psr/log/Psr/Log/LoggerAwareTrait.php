@@ -7,6 +7,7 @@ namespace Psr\Log;
 
 /**
  * Basic Implementation of LoggerAwareInterface.
+ * LoggerAwareInterface的基本实现。
  */
 trait LoggerAwareTrait
 {

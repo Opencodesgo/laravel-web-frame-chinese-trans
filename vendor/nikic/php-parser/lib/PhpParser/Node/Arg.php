@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，Arg
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
@@ -16,6 +20,7 @@ class Arg extends NodeAbstract {
 
     /**
      * Constructs a function call argument node.
+	 * 构造函数调用参数节点
      *
      * @param Expr $value Value to pass
      * @param bool $byRef Whether to pass by ref

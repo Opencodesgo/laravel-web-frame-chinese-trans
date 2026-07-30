@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，文件迭代器，工厂
+ */
+
 /*
  * This file is part of phpunit/php-file-iterator.
  *

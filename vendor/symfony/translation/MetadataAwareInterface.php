@@ -16,6 +16,7 @@ namespace Symfony\Component\Translation;
 
 /**
  * MetadataAwareInterface.
+ * 元数据感知接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -35,6 +36,7 @@ interface MetadataAwareInterface
 
     /**
      * Adds metadata to a message domain.
+	 * 将元数据添加到消息域
      *
      * @param mixed $value
      */

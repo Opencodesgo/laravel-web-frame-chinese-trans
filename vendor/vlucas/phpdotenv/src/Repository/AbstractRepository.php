@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储库，抽象存储库
+ */
 
 namespace Dotenv\Repository;
 
@@ -10,6 +13,7 @@ abstract class AbstractRepository implements RepositoryInterface
 {
     /**
      * Are we immutable?
+	 * 我们是不可变的吗?
      *
      * @var bool
      */
@@ -17,6 +21,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * The record of loaded variables.
+	 * 加载变量的记录
      *
      * @var \Dotenv\Repository\Adapter\ArrayAdapter
      */
@@ -24,6 +29,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * Create a new repository instance.
+	 * 创建一个新的存储库实例
      *
      * @param bool $immutable
      *
@@ -37,6 +43,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * Get an environment variable.
+	 * 获取环境变量
      *
      * @param string $name
      *
@@ -55,6 +62,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * Get an environment variable.
+	 * 获取环境变量
      *
      * @param non-empty-string $name
      *
@@ -64,6 +72,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * Set an environment variable.
+	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -90,6 +99,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * Set an environment variable.
+	 * 设置环境变量
      *
      * @param non-empty-string $name
      * @param string|null      $value

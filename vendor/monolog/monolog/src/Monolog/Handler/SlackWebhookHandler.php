@@ -22,6 +22,7 @@ use Monolog\Handler\Slack\SlackRecord;
 
 /**
  * Sends notifications through Slack Webhooks
+ * 通过Slack Webhooks发送通知
  *
  * @author Haralan Dobrev <hkdobrev@gmail.com>
  * @see    https://api.slack.com/incoming-webhooks
@@ -30,6 +31,7 @@ class SlackWebhookHandler extends AbstractProcessingHandler
 {
     /**
      * Slack Webhook token
+	 * Slack Webhook令牌
      * @var string
      */
     private $webhookUrl;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储，文件，阅读器
+ */
 
 namespace Dotenv\Store\File;
 
@@ -8,6 +11,7 @@ class Reader
 {
     /**
      * Read the file(s), and return their raw content.
+	 * 读取文件，并返回其原始内容。
      *
      * We provide the file path as the key, and its content as the value. If
      * short circuit mode is enabled, then the returned array with have length
@@ -37,6 +41,7 @@ class Reader
 
     /**
      * Read the given file.
+	 * 读取给定的文件
      *
      * @param string $filePath
      *

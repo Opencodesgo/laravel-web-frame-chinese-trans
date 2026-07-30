@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，高光色
+ */
 
 /**
  * This file is part of Collision.
@@ -15,6 +18,7 @@ use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 
 /**
  * This is an Collision Highlighter implementation.
+ * 这是一个碰撞高亮实现。
  *
  * Code originally from { JakubOnderka\\PhpConsoleColor }. But the package got deprecated.
  *
@@ -26,6 +30,7 @@ class Highlighter implements HighlighterContract
 {
     /**
      * Holds the theme.
+	 * 保持主题
      *
      * @var array
      */
@@ -65,6 +70,7 @@ class Highlighter implements HighlighterContract
 
     /**
      * Creates an instance of the Highlighter.
+	 * 创建荧光笔的实例
      */
     public function __construct(ConsoleColor $color = null)
     {

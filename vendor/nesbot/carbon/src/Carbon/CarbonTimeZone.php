@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon时区
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -57,6 +60,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Cast the current instance into the given class.
+	 * 将当前实例强制转换为给定的类
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -77,6 +81,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from mixed input.
+	 * 从混合输入创建一个CarbonTimeZone
      *
      * @param DateTimeZone|string|int|null $object     original value to get CarbonTimeZone from it.
      * @param DateTimeZone|string|int|null $objectDump dump of the object for error messages.

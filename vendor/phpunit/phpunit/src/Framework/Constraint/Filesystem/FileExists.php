@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，限制，文件存在
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -19,6 +24,7 @@ final class FileExists extends Constraint
 {
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示形式
      */
     public function toString(): string
     {

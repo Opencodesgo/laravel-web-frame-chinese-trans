@@ -15,6 +15,7 @@
 if (!function_exists('trigger_deprecation')) {
     /**
      * Triggers a silenced deprecation notice.
+	 * 触发一个沉默的反对通知
      *
      * @param string $package The name of the Composer package that is triggering the deprecation
      * @param string $version The version of the package that introduced the deprecation

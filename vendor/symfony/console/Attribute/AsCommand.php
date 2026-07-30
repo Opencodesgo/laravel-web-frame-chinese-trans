@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，属性，当作命令
+ * Symfony，Component，Console，属性，作为命令
  */
 
 /*

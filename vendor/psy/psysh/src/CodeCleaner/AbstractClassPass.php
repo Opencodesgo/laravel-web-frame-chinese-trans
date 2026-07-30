@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，抽象类通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * The abstract class pass handles abstract classes and methods, complaining if there are too few or too many of either.
+ * 抽象类传递处理抽象类和方法，如果其中任何一个太少或太多，都会发出警告。
  */
 class AbstractClassPass extends CodeCleanerPass
 {

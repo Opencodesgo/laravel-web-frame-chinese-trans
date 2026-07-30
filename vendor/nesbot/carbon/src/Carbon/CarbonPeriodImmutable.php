@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，不可变Carbon周期
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -15,6 +18,7 @@ class CarbonPeriodImmutable extends CarbonPeriod
 {
     /**
      * Default date class of iteration items.
+	 * 迭代项的默认日期类
      *
      * @var string
      */
@@ -22,6 +26,7 @@ class CarbonPeriodImmutable extends CarbonPeriod
 
     /**
      * Date class of iteration items.
+	 * 迭代项的日期类
      *
      * @var string
      */

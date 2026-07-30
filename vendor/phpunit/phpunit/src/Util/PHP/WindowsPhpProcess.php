@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，PHP，Windows Php 进程
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This pass allows bundles to extend the list of event aliases.
+ * 这个传递允许包扩展事件别名的列表。
  *
  * @author Alexander M. Turek <me@derrabus.de>
  */

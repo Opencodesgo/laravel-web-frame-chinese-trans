@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，解析器工厂
+ */
+
 namespace PhpParser;
 
 use PhpParser\Parser\Php7;

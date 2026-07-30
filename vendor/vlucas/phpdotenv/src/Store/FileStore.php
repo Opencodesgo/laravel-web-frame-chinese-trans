@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储，文件存储
+ */
 
 namespace Dotenv\Store;
 
@@ -9,6 +12,7 @@ class FileStore implements StoreInterface
 {
     /**
      * The file paths.
+	 * 文件路径
      *
      * @var string[]
      */
@@ -16,6 +20,7 @@ class FileStore implements StoreInterface
 
     /**
      * Should file loading short circuit?
+	 * 文件加载应该短路吗？
      *
      * @var bool
      */
@@ -23,6 +28,7 @@ class FileStore implements StoreInterface
 
     /**
      * Create a new file store instance.
+	 * 创建一个新的文件存储实例
      *
      * @param string[] $filePaths
      * @param bool     $shortCircuit

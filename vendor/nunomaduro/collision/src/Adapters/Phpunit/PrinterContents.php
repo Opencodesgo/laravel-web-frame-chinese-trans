@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，单元测试，打印内容
+ */
 
 namespace NunoMaduro\Collision\Adapters\Phpunit;
 
@@ -17,8 +20,10 @@ trait PrinterContents
 {
     /**
      * Holds an instance of the style.
+	 * 保存样式的实例。
      *
      * Style is a class we use to interact with output.
+	 * Style是一个我们用来与输出交互的类。
      *
      * @var Style
      */
@@ -26,6 +31,7 @@ trait PrinterContents
 
     /**
      * Holds the duration time of the test suite.
+	 * 保存测试套件的持续时间
      *
      * @var Timer
      */
@@ -34,6 +40,7 @@ trait PrinterContents
     /**
      * Holds the state of the test
      * suite. The number of tests, etc.
+	 * 保存测试套件的状态，包括测试数量等信息。
      *
      * @var State
      */

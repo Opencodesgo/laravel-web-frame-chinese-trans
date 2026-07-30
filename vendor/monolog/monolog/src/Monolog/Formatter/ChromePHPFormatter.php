@@ -48,6 +48,7 @@ class ChromePHPFormatter implements FormatterInterface
     public function format(array $record)
     {
         // Retrieve the line and file if set and remove them from the formatted extra
+		// 如果设置了行和文件，则检索它们，并将它们从格式化的extra中删除。
         $backtrace = 'unknown';
         if (isset($record['extra']['file'], $record['extra']['line'])) {
             $backtrace = $record['extra']['file'].' : '.$record['extra']['line'];

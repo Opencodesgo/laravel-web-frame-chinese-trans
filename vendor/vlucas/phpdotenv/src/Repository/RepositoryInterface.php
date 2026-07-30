@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，知识库，知识库接口
+ */
 
 namespace Dotenv\Repository;
 
@@ -11,6 +14,7 @@ interface RepositoryInterface extends ArrayAccess
 {
     /**
      * Tells whether environment variable has been defined.
+	 * 说明是否已经定义了环境变量
      *
      * @param string $name
      *
@@ -20,6 +24,7 @@ interface RepositoryInterface extends ArrayAccess
 
     /**
      * Get an environment variable.
+	 * 获取环境变量
      *
      * @param string $name
      *
@@ -31,6 +36,7 @@ interface RepositoryInterface extends ArrayAccess
 
     /**
      * Set an environment variable.
+	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -43,6 +49,7 @@ interface RepositoryInterface extends ArrayAccess
 
     /**
      * Clear an environment variable.
+	 * 清除一个环境变量
      *
      * @param string $name
      *

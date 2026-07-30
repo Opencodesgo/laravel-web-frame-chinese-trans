@@ -29,6 +29,7 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * An implementation of a Symfony HTTP kernel using a "real" HTTP client.
+ * 使用“real”HTTP客户机实现Symfony HTTP内核。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

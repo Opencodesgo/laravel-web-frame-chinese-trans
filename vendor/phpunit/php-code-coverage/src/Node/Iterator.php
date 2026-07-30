@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，代码覆盖率，节点，Iterator
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *

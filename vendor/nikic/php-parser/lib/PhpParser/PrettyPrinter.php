@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，美化打印
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Expr;
@@ -7,6 +11,7 @@ use PhpParser\Node\Expr;
 interface PrettyPrinter {
     /**
      * Pretty prints an array of statements.
+	 * Pretty输出语句数组
      *
      * @param Node[] $stmts Array of statements
      *
@@ -16,6 +21,7 @@ interface PrettyPrinter {
 
     /**
      * Pretty prints an expression.
+	 * Pretty打印了一个表达式
      *
      * @param Expr $node Expression node
      *

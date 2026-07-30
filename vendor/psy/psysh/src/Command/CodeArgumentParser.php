@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，代码参数解析器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,8 @@ use Psy\ParserFactory;
 
 /**
  * Class CodeArgumentParser.
+ * 类码论解析器。
+	 * 
  */
 class CodeArgumentParser
 {
@@ -29,6 +34,7 @@ class CodeArgumentParser
 
     /**
      * Lex and parse a string of code into statements.
+	 * Lex并将代码字符串解析为语句。
      *
      * This is intended for code arguments, so the code string *should not* start with <?php
      *

@@ -87,6 +87,7 @@ abstract class AbstractHandler extends Handler implements ResettableInterface
 
     /**
      * Sets the bubbling behavior.
+	 * 设置冒泡行为
      *
      * @param  bool $bubble true means that this handler allows bubbling.
      *                      false means that bubbling is not permitted.

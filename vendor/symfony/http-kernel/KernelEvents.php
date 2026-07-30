@@ -34,6 +34,7 @@ final class KernelEvents
     /**
      * The REQUEST event occurs at the very beginning of request
      * dispatching.
+	 * 请求事件发生在请求调度的开始阶段。
      *
      * This event allows you to create a response for a request before any
      * other code in the framework is executed.

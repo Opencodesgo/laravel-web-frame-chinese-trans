@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，TextUI，测试套件映射器
+ */
+
 /*
  * This file is part of PHPUnit.
  *

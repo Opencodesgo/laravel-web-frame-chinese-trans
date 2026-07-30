@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，契约，处理程序
+ */
 
 /*
  * This file is part of Collision.
@@ -16,6 +19,7 @@ use Whoops\Handler\HandlerInterface;
 
 /**
  * This is an Collision Handler contract.
+ * 这是一个冲突处理程序契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -23,6 +27,7 @@ interface Handler extends HandlerInterface
 {
     /**
      * Sets the output.
+	 * 设置输出
      *
      * @return \NunoMaduro\Collision\Contracts\Handler
      */

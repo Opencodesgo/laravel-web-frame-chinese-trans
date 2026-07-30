@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，选项
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,8 +20,10 @@ use Throwable;
 
 /**
  * Trait Options.
+ * 特征选项。
  *
  * Embed base methods to change settings of Carbon classes.
+ * 嵌入基方法以更改Carbon类的设置。
  *
  * Depends on the following methods:
  *
@@ -30,6 +35,7 @@ trait Options
 
     /**
      * Customizable PHP_INT_SIZE override.
+	 * 可定制的PHP_INT_SIZE覆盖
      *
      * @var int
      */
@@ -37,6 +43,7 @@ trait Options
 
     /**
      * First day of week.
+	 * 一周第一天
      *
      * @var int|string
      */

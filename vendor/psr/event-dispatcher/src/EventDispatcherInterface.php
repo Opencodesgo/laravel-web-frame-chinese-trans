@@ -15,6 +15,7 @@ interface EventDispatcherInterface
 {
     /**
      * Provide all relevant listeners with an event to process.
+	 * 为所有相关的侦听器提供要处理的事件。
      *
      * @param object $event
      *   The object to process.

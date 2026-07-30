@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，错误处理器，收集
+ */
+
 namespace PhpParser\ErrorHandler;
 
 use PhpParser\Error;
@@ -7,6 +11,7 @@ use PhpParser\ErrorHandler;
 
 /**
  * Error handler that collects all errors into an array.
+ * 将所有错误收集到数组中的错误处理程序。
  *
  * This allows graceful handling of errors.
  */
@@ -20,6 +25,7 @@ class Collecting implements ErrorHandler {
 
     /**
      * Get collected errors.
+	 * 收集错误
      *
      * @return Error[]
      */

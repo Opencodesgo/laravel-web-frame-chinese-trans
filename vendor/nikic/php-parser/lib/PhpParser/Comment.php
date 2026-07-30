@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，注释
+ */
+
 namespace PhpParser;
 
 class Comment implements \JsonSerializable {
@@ -13,6 +17,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Constructs a comment node.
+	 * 构造注释节点
      *
      * @param string $text Comment text (including comment delimiters like /*)
      * @param int $startLine Line number the comment started on

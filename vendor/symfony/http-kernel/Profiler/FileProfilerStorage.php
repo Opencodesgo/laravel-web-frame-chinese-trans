@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * Storage for profiler using files.
+ * 用于profiler使用文件的存储。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -23,6 +24,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 {
     /**
      * Folder where profiler data are stored.
+	 * 存储原始数据的文件夹
      *
      * @var string
      */

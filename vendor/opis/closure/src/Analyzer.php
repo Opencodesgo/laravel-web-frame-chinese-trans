@@ -1,4 +1,8 @@
 <?php
+/**
+ * Opis，关闭，分析器
+ */
+
 /* ===========================================================================
  * Copyright (c) 2018-2021 Zindex Software
  *
@@ -17,6 +21,7 @@ class Analyzer extends ClosureAnalyzer
 {
     /**
      * Analyzer a given closure.
+	 * 分析器给定的闭包
      *
      * @param Closure $closure
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，单元测试，状态
+ */
 
 /**
  * This file is part of Collision.
@@ -21,6 +24,7 @@ final class State
 {
     /**
      * The complete test suite number of tests.
+	 * 测试的完整测试套件数量
      *
      * @var int|null
      */
@@ -28,6 +32,7 @@ final class State
 
     /**
      * The complete test suite tests.
+	 * 完整的测试套件测试
      *
      * @var array<int, TestResult>
      */
@@ -35,6 +40,7 @@ final class State
 
     /**
      * The current test case class.
+	 * 当前测试用例类
      *
      * @var string
      */
@@ -42,6 +48,7 @@ final class State
 
     /**
      * The current test case tests.
+	 * 当前测试用例进行测试
      *
      * @var array<int, TestResult>
      */

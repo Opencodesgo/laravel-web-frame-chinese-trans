@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，克隆，抽象克隆
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Exception\ThrowingCasterException;
 
 /**
  * AbstractCloner implements a generic caster mechanism for objects and resources.
+ * 抽象程序实现了对象和资源的通用施法者机制。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

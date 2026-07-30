@@ -48,6 +48,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for subject property.
+	 * 主体属性的Getter
      *
      * @return mixed
      */

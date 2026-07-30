@@ -1,8 +1,10 @@
 <?php
+/**
+ * Symfony，Component，Routing，匹配程序，编译的 Url匹配程序
+ */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *

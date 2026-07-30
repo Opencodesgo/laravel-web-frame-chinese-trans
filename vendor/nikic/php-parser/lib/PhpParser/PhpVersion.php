@@ -1,9 +1,14 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Php 版本
+ */
+
 namespace PhpParser;
 
 /**
  * A PHP version, representing only the major and minor version components.
+ * 一个PHP版本，只表示主版本和次版本组件。
  */
 class PhpVersion {
     /** @var int Version ID in PHP_VERSION_ID format */
@@ -33,6 +38,7 @@ class PhpVersion {
 
     /**
      * Create a PhpVersion object from major and minor version components.
+	 * 从主版本和次版本组件创建一个PhpVersion对象
      */
     public static function fromComponents(int $major, int $minor): self {
         return new self($major * 10000 + $minor * 100);

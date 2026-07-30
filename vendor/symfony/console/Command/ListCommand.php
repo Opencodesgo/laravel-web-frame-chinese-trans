@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，命令，命令列表
+ * Symfony，Component，Console，命令，列表命令
  */
 
 /*

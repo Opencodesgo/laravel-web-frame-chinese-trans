@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，有效的函数名
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that function calls will succeed.
+ * 验证函数调用是否成功。
  *
  * This pass throws a FatalErrorException rather than letting PHP run
  * headfirst into a real fatal error and die.

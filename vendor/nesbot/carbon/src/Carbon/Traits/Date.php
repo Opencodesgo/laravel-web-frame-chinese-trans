@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，日期
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -38,6 +41,7 @@ use Throwable;
 
 /**
  * A simple API extension for DateTime.
+ * DateTime的简单API扩展
  *
  * @mixin DeprecatedProperties
  *
@@ -546,6 +550,7 @@ trait Date
 
     /**
      * Names of days of the week.
+	 * 一周中每一天的名称。
      *
      * @var array
      */
@@ -568,6 +573,7 @@ trait Date
 
     /**
      * Will UTF8 encoding be used to print localized date/time ?
+	 * UTF8编码会被用来打印本地化的日期/时间吗?
      *
      * @var bool
      */
@@ -575,6 +581,7 @@ trait Date
 
     /**
      * List of unit and magic methods associated as doc-comments.
+	 * 作为文档注释关联的单元方法和魔法方法列表
      *
      * @var array
      */

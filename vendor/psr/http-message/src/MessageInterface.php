@@ -31,6 +31,7 @@ interface MessageInterface
 
     /**
      * Return an instance with the specified HTTP protocol version.
+	 * 返回具有指定HTTP协议版本的实例。
      *
      * The version string MUST contain only the HTTP version number (e.g.,
      * "1.1", "1.0").
@@ -46,6 +47,7 @@ interface MessageInterface
 
     /**
      * Retrieves all message header values.
+	 * 检索所有消息头值。
      *
      * The keys represent the header name as it will be sent over the wire, and
      * each value is an array of strings associated with the header.

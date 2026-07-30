@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部的，令牌 Polyfill
+ */
+
 namespace PhpParser\Internal;
 
 if (\PHP_VERSION_ID >= 80000) {
@@ -38,6 +42,7 @@ class TokenPolyfill {
 
     /**
      * Create a Token with the given ID and text, as well optional line and position information.
+	 * 使用给定的ID和文本以及可选的行和位置信息创建Token
      */
     final public function __construct(int $id, string $text, int $line = -1, int $pos = -1) {
         $this->id = $id;

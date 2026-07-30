@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，任何一个
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -16,6 +19,7 @@ class AnyOf extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */
@@ -27,6 +31,7 @@ class AnyOf extends MatcherAbstract
     /**
      * Check if the actual value does not match the expected (in this
      * case it's specifically NOT expected).
+	 * 检查实际值是否与预期值不符（在此情况下，特别不期望匹配）
      *
      * @template TMixed
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，ErrorHandler，抽象的记录器
+ * Symfony，Component，ErrorHandler，缓冲记录器
  */
 
 /*

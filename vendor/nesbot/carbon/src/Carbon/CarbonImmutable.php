@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 不可改变的
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -19,6 +22,7 @@ use DateTimeZone;
 
 /**
  * A simple API extension for DateTimeImmutable.
+ * DateTimeImmutable的简单API扩展。
  *
  * @mixin DeprecatedProperties
  *

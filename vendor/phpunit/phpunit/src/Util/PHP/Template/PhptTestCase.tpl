@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，Util，PHP 测试用例
+ */
+
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;

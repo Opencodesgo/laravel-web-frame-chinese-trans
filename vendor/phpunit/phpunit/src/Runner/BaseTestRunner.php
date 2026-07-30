@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Runner，基础测试运行
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -70,6 +75,7 @@ abstract class BaseTestRunner
 
     /**
      * Returns the loader to be used.
+	 * 返回要使用的加载程序
      */
     public function getLoader(): TestSuiteLoader
     {

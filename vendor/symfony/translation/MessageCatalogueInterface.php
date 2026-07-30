@@ -18,6 +18,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * MessageCatalogueInterface.
+ * 消息目录接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -27,6 +28,7 @@ interface MessageCatalogueInterface
 
     /**
      * Gets the catalogue locale.
+	 * 获取目录区域
      *
      * @return string
      */
@@ -34,6 +36,7 @@ interface MessageCatalogueInterface
 
     /**
      * Gets the domains.
+	 * 获取域名
      *
      * @return array
      */

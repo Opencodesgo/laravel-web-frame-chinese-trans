@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，TextUI，帮助
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -69,6 +74,7 @@ final class Help
 
     /**
      * Write the help file to the CLI, adapting width and colors to the console.
+	 * 将帮助文件写入CLI，根据控制台调整宽度和颜色。
      */
     public function writeToConsole(): void
     {

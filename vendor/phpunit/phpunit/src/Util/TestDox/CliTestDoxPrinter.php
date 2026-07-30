@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，TestDox，命令行测试 Dox打印机
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -42,6 +47,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 {
     /**
      * The default Testdox left margin for messages is a vertical line.
+	 * Testdox默认的消息左边距是一条竖线
      */
     private const PREFIX_SIMPLE = [
         'default' => '│',

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，加载器，Value
+ */
 
 namespace Dotenv\Loader;
 
@@ -6,6 +9,7 @@ class Value
 {
     /**
      * The string representation of the parsed value.
+	 * 解析值的字符串表示
      *
      * @var string
      */
@@ -13,6 +17,7 @@ class Value
 
     /**
      * The locations of the variables in the value.
+	 * 值的变量的位置
      *
      * @var int[]
      */
@@ -20,6 +25,7 @@ class Value
 
     /**
      * Internal constructor for a value.
+	 * 一个值的内部构造函数
      *
      * @param string $chars
      * @param int[]  $vars
@@ -34,6 +40,7 @@ class Value
 
     /**
      * Create an empty value instance.
+	 * 创建一个空值实例
      *
      * @return \Dotenv\Loader\Value
      */

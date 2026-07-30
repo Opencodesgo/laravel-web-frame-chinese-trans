@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，测试套件迭代器
+ */
+
 /*
  * This file is part of PHPUnit.
  *

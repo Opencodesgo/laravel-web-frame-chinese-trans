@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css，Rule，Rule规则
+ * TijsVerkoyen，CssToInlineStyles，Css，Rule，规则
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;
@@ -32,6 +32,7 @@ final class Rule
 
     /**
      * Rule constructor.
+	 * 规则的构造函数
      *
      * @param string      $selector
      * @param Property[]  $properties

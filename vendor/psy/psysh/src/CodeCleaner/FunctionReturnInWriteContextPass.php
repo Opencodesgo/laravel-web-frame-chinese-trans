@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，FunctionReturnInWriteContextPass
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -24,6 +27,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that the functions are used correctly.
+ * 验证函数是否被正确使用。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
@@ -34,6 +38,7 @@ class FunctionReturnInWriteContextPass extends CodeCleanerPass
 
     /**
      * Validate that the functions are used correctly.
+	 * 验证函数是否被正确使用
      *
      * @throws FatalErrorException if a function is passed as an argument reference
      * @throws FatalErrorException if a function is used as an argument in the isset

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器，Class_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -28,6 +32,7 @@ class Class_ extends Declaration {
 
     /**
      * Creates a class builder.
+	 * 创建一个类构建器
      *
      * @param string $name Name of the class
      */
@@ -37,6 +42,7 @@ class Class_ extends Declaration {
 
     /**
      * Extends a class.
+	 * 扩展一个类
      *
      * @param Name|string $class Name of class to extend
      *
@@ -50,6 +56,7 @@ class Class_ extends Declaration {
 
     /**
      * Implements one or more interfaces.
+	 * 实现一个或多个接口
      *
      * @param Name|string ...$interfaces Names of interfaces to implement
      *

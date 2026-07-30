@@ -31,6 +31,7 @@ trait LoggerTrait
 
     /**
      * Action must be taken immediately.
+	 * 必须立即采取行动。
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
@@ -47,6 +48,7 @@ trait LoggerTrait
 
     /**
      * Critical conditions.
+	 * 临界状态。
      *
      * Example: Application component unavailable, unexpected exception.
      *

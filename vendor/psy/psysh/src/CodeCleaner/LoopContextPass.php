@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，循环上下文传递
+ */
 
 /*
  * This file is part of Psy Shell.

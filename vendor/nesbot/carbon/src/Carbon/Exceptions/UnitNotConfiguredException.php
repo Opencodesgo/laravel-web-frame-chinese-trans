@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，单位未配置异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,6 +20,7 @@ class UnitNotConfiguredException extends UnitException
 {
     /**
      * The unit.
+	 * 单位
      *
      * @var string
      */
@@ -24,6 +28,7 @@ class UnitNotConfiguredException extends UnitException
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string         $unit
      * @param int            $code
@@ -38,6 +43,7 @@ class UnitNotConfiguredException extends UnitException
 
     /**
      * Get the unit.
+	 * 得到单位
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，契约，Writer
+ */
 
 /**
  * This file is part of Collision.
@@ -16,6 +19,7 @@ use Whoops\Exception\Inspector;
 
 /**
  * This is the Collision Writer contract.
+ * 这是Collision Writer合同。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -24,6 +28,7 @@ interface Writer
     /**
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
+	 * 忽略文件字符串与提供的正则表达式匹配的痕迹
      *
      * @param string[] $ignore the regex expressions
      *
@@ -33,6 +38,7 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the trace.
+	 * 声明Writer是否应该显示跟踪
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -40,6 +46,7 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the title.
+	 * 声明Writer是否应该显示标题
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -47,6 +54,7 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the editor.
+	 * 声明Writer是否应该显示编辑器
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */

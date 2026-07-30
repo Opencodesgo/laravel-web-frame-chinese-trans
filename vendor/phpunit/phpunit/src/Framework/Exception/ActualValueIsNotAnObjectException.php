@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，ActualValueIsNotAnObjectException
+ */
+
 /*
  * This file is part of PHPUnit.
  *

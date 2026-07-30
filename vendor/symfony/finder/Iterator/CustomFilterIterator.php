@@ -49,6 +49,7 @@ class CustomFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool
      */

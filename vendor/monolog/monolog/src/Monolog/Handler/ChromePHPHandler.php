@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /**
  * Monolog，Handler，Chrome PHP 处理程序
  */
@@ -41,6 +42,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Header name
+	 * 主机标识名
      */
     protected const HEADER_NAME = 'X-ChromeLogger-Data';
 

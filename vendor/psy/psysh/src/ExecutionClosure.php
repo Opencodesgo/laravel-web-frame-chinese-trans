@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，执行关闭
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * The Psy Shell's execution scope.
+ * Psy Shell的执行范围。
  */
 class ExecutionClosure
 {

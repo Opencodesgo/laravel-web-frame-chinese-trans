@@ -31,6 +31,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * WildFire JSON header message format
+	 * WildFire JSON报头消息格式
      */
     protected const PROTOCOL_URI = 'http://meta.wildfirehq.org/Protocol/JsonStream/0.2';
 

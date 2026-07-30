@@ -85,6 +85,7 @@ class PhpExecutableFinder
 
     /**
      * Finds the PHP executable arguments.
+	 * 找到PHP可执行的参数
      *
      * @return array
      */

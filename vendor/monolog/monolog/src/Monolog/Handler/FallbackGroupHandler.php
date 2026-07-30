@@ -19,6 +19,7 @@ use Throwable;
 
 /**
  * Forwards records to at most one handler
+ * 最多将记录转发给一个处理程序。
  *
  * If a handler fails, the exception is suppressed and the record is forwarded to the next handler.
  *

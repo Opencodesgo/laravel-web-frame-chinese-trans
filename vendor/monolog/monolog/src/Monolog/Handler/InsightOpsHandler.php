@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，洞察力行动处理程序
+ * Monolog，Handler，Insight Ops 处理器
  */
 
 /*

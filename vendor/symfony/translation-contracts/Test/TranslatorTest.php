@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts，翻译，测试，翻译测试
+ */
 
 /*
  * This file is part of the Symfony package.

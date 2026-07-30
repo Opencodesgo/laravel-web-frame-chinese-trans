@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，参数
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -37,6 +40,7 @@ class Parameter
 
     /**
      * Proxy all method calls to the reflection parameter.
+	 * 将所有方法调用代理到反射参数
      *
      * @template TMixed
      * @template TResult
@@ -54,6 +58,7 @@ class Parameter
 
     /**
      * Get the reflection class for the parameter type, if it exists.
+	 * 获取参数类型的反射类（如果存在）。
      *
      * This will be null if there was no type, or it was a scalar or a union.
      *
@@ -70,6 +75,7 @@ class Parameter
 
     /**
      * Get the name of the parameter.
+	 * 获取参数的名称。
      *
      * Some internal classes have funny looking definitions!
      *

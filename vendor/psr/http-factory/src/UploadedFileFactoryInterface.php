@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，Http，消息，上传文件工厂界面
+ * Psr，Http，消息，上传文件工厂借口
  */
 
 namespace Psr\Http\Message;

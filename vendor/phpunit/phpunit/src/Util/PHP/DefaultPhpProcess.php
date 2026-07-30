@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，PHP，默认 Php进程
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -40,6 +45,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
     /**
      * Runs a single job (PHP code) using a separate PHP process.
+	 * 使用单独的PHP进程运行单个作业（PHP代码）
      *
      * @throws Exception
      */
@@ -61,6 +67,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
     /**
      * Returns an array of file handles to be used in place of pipes.
+	 * 返回将用于代替管道的文件句柄数组
      */
     protected function getHandles(): array
     {
@@ -69,6 +76,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
     /**
      * Handles creating the child process and returning the STDOUT and STDERR.
+	 * 处理创建子进程并返回STDOUT和STDERR
      *
      * @throws Exception
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，问题，选择题
+ * Symfony，Component，Console，问题，选择问题
  */
 
 /*
@@ -49,6 +49,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns available choices.
+	 * 返回可用选项
      *
      * @return array
      */
@@ -59,6 +60,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets multiselect option.
+	 * 设置多选择选项。
      *
      * When multiselect is set to true, multiple choices can be answered.
      *
@@ -74,6 +76,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns whether the choices are multiselect.
+	 * 返回选择是多选择
      *
      * @return bool
      */

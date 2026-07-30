@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，测试，供应商工厂测试用例
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * A test case to ease testing a translation provider factory.
+ * 一个测试用例来轻松测试一个翻译提供者工厂。
  *
  * @author Mathieu Santostefano <msantostefano@protonmail.com>
  *

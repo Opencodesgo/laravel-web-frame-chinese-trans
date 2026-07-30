@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，String，Slugger，Ascii Slugger
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -61,6 +64,7 @@ class AsciiSlugger implements SluggerInterface, LocaleAwareInterface
 
     /**
      * Cache of transliterators per locale.
+	 * 每个地区的转换器缓存
      *
      * @var \Transliterator[]
      */

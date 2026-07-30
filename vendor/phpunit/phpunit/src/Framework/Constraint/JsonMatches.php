@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，限制，Json 匹配
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -34,6 +39,7 @@ final class JsonMatches extends Constraint
 
     /**
      * Returns a string representation of the object.
+	 * 返回对象的字符串表示形式
      */
     public function toString(): string
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，二进制 Utils
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -16,6 +19,7 @@ namespace Ramsey\Uuid;
 
 /**
  * Provides binary math utilities
+ * 提供二进制数学实用程序
  */
 class BinaryUtils
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Contracts， 翻译，翻译包接口
+ * Symfony，组件，翻译，翻译包接口
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * TranslatorBagInterface.
+ * 翻译包接口
  *
  * @method MessageCatalogueInterface[] getCatalogues() Returns all catalogues of the instance
  *

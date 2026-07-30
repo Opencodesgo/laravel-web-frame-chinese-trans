@@ -19,6 +19,7 @@ use Monolog\Logger;
 
 /**
  * Stores to STDIN of any process, specified by a command.
+ * 存储任何进程的STDIN，由命令指定。
  *
  * Usage example:
  * <pre>
@@ -32,6 +33,7 @@ class ProcessHandler extends AbstractProcessingHandler
 {
     /**
      * Holds the process to receive data on its STDIN.
+	 * 保存进程以接收其STDIN上的数据
      *
      * @var resource|bool|null
      */

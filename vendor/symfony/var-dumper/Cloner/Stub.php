@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，克隆，Stub
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * Represents the main properties of a PHP variable.
+ * 表示PHP变量的主要属性。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

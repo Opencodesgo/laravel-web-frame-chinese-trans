@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，无效参数组异常
+ */
+
 /*
  * This file is part of PHPUnit.
  *

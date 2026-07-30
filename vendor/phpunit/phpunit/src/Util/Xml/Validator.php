@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，Xml，验证程序
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，版本比较运算符
+ */
+
 /*
  * This file is part of PHPUnit.
  *

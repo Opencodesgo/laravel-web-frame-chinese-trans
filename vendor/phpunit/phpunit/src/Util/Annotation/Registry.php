@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，Annotation，注册
+ */
+
 /*
  * This file is part of PHPUnit.
  *

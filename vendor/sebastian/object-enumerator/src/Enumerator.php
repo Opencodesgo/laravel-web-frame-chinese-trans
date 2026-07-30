@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，对象计数器，Enumerator
+ */
+
 /*
  * This file is part of sebastian/object-enumerator.
  *

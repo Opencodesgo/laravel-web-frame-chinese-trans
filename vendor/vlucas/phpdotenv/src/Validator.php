@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，验证程序
+ */
 
 namespace Dotenv;
 
@@ -10,6 +13,7 @@ class Validator
 {
     /**
      * The environment repository instance.
+	 * 环境存储库实例
      *
      * @var \Dotenv\Repository\RepositoryInterface
      */
@@ -17,6 +21,7 @@ class Validator
 
     /**
      * The variables to validate.
+	 * 要验证的变量
      *
      * @var string[]
      */
@@ -24,6 +29,7 @@ class Validator
 
     /**
      * Create a new validator instance.
+	 * 创建一个新的验证器实例
      *
      * @param \Dotenv\Repository\RepositoryInterface $repository
      * @param string[]                               $variables
@@ -50,6 +56,7 @@ class Validator
 
     /**
      * Assert that each variable is not empty.
+	 * 断言每个变量不为空
      *
      * @throws \Dotenv\Exception\ValidationException
      *

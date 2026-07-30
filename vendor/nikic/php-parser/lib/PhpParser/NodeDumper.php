@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点转储
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Expr\Array_;
@@ -32,6 +36,7 @@ class NodeDumper {
 
     /**
      * Constructs a NodeDumper.
+	 * 构造一个nodedump
      *
      * Supported options:
      *  * bool dumpComments: Whether comments should be dumped.

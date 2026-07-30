@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，配置路径
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * A Psy Shell configuration path helper.
+ * 一个Psy Shell配置路径助手。
  */
 class ConfigPaths
 {

@@ -33,6 +33,7 @@ final class ConsoleCommandEvent extends ConsoleEvent
 
     /**
      * Indicates if the command should be run or skipped.
+	 * 指示该命令是否应该运行或跳过
      */
     private $commandShouldRun = true;
 

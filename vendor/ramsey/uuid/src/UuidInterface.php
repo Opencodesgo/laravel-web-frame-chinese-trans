@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，Uuid 接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library

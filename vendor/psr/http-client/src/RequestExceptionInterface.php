@@ -9,7 +9,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Exception for when a request failed.
- * 请求失败时的异常
+ * 请求失败时的异常。
  *
  * Examples:
  *      - Request is invalid (e.g. method is missing)

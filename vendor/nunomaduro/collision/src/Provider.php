@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，供应者
+ */
 
 /**
  * This file is part of Collision.
@@ -18,6 +21,7 @@ use Whoops\RunInterface;
 
 /**
  * This is an Collision Provider implementation.
+ * 这是一个冲突提供程序实现。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -25,6 +29,7 @@ class Provider implements ProviderContract
 {
     /**
      * Holds an instance of the Run.
+	 * 保存Run的实例
      *
      * @var \Whoops\RunInterface
      */
@@ -32,6 +37,7 @@ class Provider implements ProviderContract
 
     /**
      * Holds an instance of the handler.
+	 * 保存处理程序的实例
      *
      * @var \NunoMaduro\Collision\Contracts\Handler
      */
@@ -39,6 +45,7 @@ class Provider implements ProviderContract
 
     /**
      * Creates a new instance of the Provider.
+	 * 创建提供程序的新实例
      */
     public function __construct(RunInterface $run = null, HandlerContract $handler = null)
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpOption，选项
+ */
 
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -30,6 +33,7 @@ abstract class Option implements IteratorAggregate
 {
     /**
      * Creates an option given a return value.
+	 * 创建一个给定返回值的选项。
      *
      * This is intended for consuming existing APIs and allows you to easily
      * convert them to an option. By default, we treat ``null`` as the None
@@ -54,6 +58,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Creates an option from an array's value.
+	 * 从数组的值创建一个选项。
      *
      * If the key does not exist in the array, the array is not actually an
      * array, or the array's value at the given key is null, None is returned.
@@ -77,6 +82,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Creates a lazy-option with the given callback.
+	 * 使用给定的回调创建一个惰性选项。
      *
      * This is also a helper constructor for lazy-consuming existing APIs where
      * the return value is not yet an option. By default, we treat ``null`` as
@@ -107,6 +113,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Option factory, which creates new option based on passed value.
+	 * 选项工厂，它根据传递的值创建新的选项。
      *
      * If value is already an option, it simply returns. If value is callable,
      * LazyOption with passed callback created and returned. If Option
@@ -143,6 +150,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Lift a function so that it accepts Option as parameters.
+	 * 提升一个函数，使其接受Option作为参数。
      *
      * We return a new closure that wraps the original callback. If any of the
      * parameters passed to the lifted function is empty, the function will
@@ -193,6 +201,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns the value if available, or throws an exception otherwise.
+	 * 如果可用则返回值，否则抛出异常。
      *
      * @throws \RuntimeException If value is not available.
      *

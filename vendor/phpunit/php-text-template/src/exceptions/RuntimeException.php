@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，模板，运行时异常
+ */
+
 /*
  * This file is part of phpunit/php-text-template.
  *

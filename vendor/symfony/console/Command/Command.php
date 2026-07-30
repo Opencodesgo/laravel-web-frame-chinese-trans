@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，命令，命令核心类
+ * Symfony，Component，Console，命令，Command
  */
 
 /*
@@ -156,6 +156,7 @@ class Command
 
     /**
      * Gets the helper set.
+	 * 获取助手集合
      *
      * @return HelperSet|null
      */

@@ -23,6 +23,7 @@ interface CacheInterface
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
+	 * 将数据保存在缓存中，由具有可选过期TTL时间的键唯一引用。
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store, must be serializable.

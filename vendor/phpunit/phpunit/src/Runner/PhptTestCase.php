@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Runner，php 测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -84,6 +89,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * Constructs a test case with the given filename.
+	 * 用给定的文件名构造一个测试用例
      *
      * @throws Exception
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，命令，平移指令
+ */
 
 /*
  * This file is part of the Symfony package.

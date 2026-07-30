@@ -29,6 +29,7 @@ use Elastic\Elasticsearch\Client as Client8;
 
 /**
  * Elasticsearch handler
+ * Elasticsearch处理程序
  *
  * @link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/index.html
  *

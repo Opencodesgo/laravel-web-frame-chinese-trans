@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，对象初始化
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -15,6 +18,7 @@ trait ObjectInitialisation
 {
     /**
      * True when parent::__construct has been called.
+	 * 当parent::__construct被调用时为True
      *
      * @var string
      */

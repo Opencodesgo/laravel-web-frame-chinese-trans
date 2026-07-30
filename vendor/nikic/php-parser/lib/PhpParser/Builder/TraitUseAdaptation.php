@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器，特征使用适应性
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser\Builder;
@@ -23,6 +27,7 @@ class TraitUseAdaptation implements Builder {
 
     /**
      * Creates a trait use adaptation builder.
+	 * 创建一个特征使用适应构建器
      *
      * @param Node\Name|string|null $trait Name of adapted trait
      * @param Node\Identifier|string $method Name of adapted method
@@ -36,6 +41,7 @@ class TraitUseAdaptation implements Builder {
 
     /**
      * Sets alias of method.
+	 * 设置方法的别名
      *
      * @param Node\Identifier|string $alias Alias for adapted method
      *

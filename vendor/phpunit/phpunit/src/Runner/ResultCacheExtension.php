@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Runner，结果缓存扩展
+ */
+
 /*
  * This file is part of PHPUnit.
  *

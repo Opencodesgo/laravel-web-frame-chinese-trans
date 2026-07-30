@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，格式化程序，Intl 格式化程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -29,6 +32,7 @@ class IntlFormatter implements IntlFormatterInterface
     public function formatIntl(string $message, string $locale, array $parameters = []): string
     {
         // MessageFormatter constructor throws an exception if the message is empty
+		// 如果消息是空的,消息格式化器构造器抛出异常。
         if ('' === $message) {
             return '';
         }

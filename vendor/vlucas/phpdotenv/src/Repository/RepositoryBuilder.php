@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，存储库，存储库构建器
+ */
 
 namespace Dotenv\Repository;
 
@@ -12,6 +15,7 @@ class RepositoryBuilder
 {
     /**
      * The set of readers to use.
+	 * 要使用的读卡器集
      *
      * @var \Dotenv\Repository\Adapter\ReaderInterface[]|null
      */

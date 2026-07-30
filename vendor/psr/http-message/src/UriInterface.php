@@ -47,6 +47,7 @@ interface UriInterface
 
     /**
      * Retrieve the authority component of the URI.
+	 * 检索URI的权限组件。
      *
      * If no authority information is present, this method MUST return an empty
      * string.
@@ -67,6 +68,7 @@ interface UriInterface
 
     /**
      * Retrieve the user information component of the URI.
+	 * 检索URI的用户信息组件。
      *
      * If no user information is present, this method MUST return an empty
      * string.

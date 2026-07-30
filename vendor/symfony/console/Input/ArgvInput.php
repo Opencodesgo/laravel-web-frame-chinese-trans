@@ -95,6 +95,7 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option.
+	 * 替换一个简短的选项
      */
     private function parseShortOption(string $token)
     {

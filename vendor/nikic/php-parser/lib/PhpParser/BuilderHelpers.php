@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Builder 助手
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\ComplexType;
@@ -13,12 +17,14 @@ use PhpParser\Node\Stmt;
 
 /**
  * This class defines helpers used in the implementation of builders. Don't use it directly.
+ * 该类定义了在构建器的实现中使用的帮助程序。不要直接使用。
  *
  * @internal
  */
 final class BuilderHelpers {
     /**
      * Normalizes a node: Converts builder objects to nodes.
+	 * 规范化节点：将构建器对象转换为节点。
      *
      * @param Node|Builder $node The node to normalize
      *
@@ -38,8 +44,10 @@ final class BuilderHelpers {
 
     /**
      * Normalizes a node to a statement.
+	 * 将节点规范化为语句。
      *
      * Expressions are wrapped in a Stmt\Expression node.
+	 * 表达式被封装在Stmt\Expression节点中。
      *
      * @param Node|Builder $node The node to normalize
      *
@@ -60,6 +68,7 @@ final class BuilderHelpers {
 
     /**
      * Normalizes strings to Identifier.
+	 * 将字符串规范化为标识符
      *
      * @param string|Identifier $name The identifier to normalize
      *
@@ -79,6 +88,7 @@ final class BuilderHelpers {
 
     /**
      * Normalizes strings to Identifier, also allowing expressions.
+	 * 将字符串规范化为标识符，也允许表达式。
      *
      * @param string|Identifier|Expr $name The identifier to normalize
      *
@@ -98,6 +108,7 @@ final class BuilderHelpers {
 
     /**
      * Normalizes a name: Converts string names to Name nodes.
+	 * 规范化名称：将字符串名称转换为名称节点。
      *
      * @param Name|string $name The name to normalize
      *
@@ -129,6 +140,7 @@ final class BuilderHelpers {
 
     /**
      * Normalizes a name: Converts string names to Name nodes, while also allowing expressions.
+	 * 规范化名称：将字符串名称转换为name节点，同时也允许表达式。
      *
      * @param Expr|Name|string $name The name to normalize
      *

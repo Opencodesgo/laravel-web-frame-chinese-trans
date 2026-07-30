@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，Json
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -28,6 +33,7 @@ final class Json
 {
     /**
      * Prettify json string.
+	 * 美化json字符串
      *
      * @throws Exception
      */

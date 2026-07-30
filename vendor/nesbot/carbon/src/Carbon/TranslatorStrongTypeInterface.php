@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Translator 强类型接口
+ */
 
 /**
  * This file is part of the Carbon package.

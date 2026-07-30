@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，加载器，Lines
+ */
 
 namespace Dotenv\Loader;
 
@@ -6,8 +9,10 @@ class Lines
 {
     /**
      * Process the array of lines of environment variables.
+	 * 处理环境变量行的数组。
      *
      * This will produce an array of entries, one per variable.
+	 * 这将产生一个数组,一个每个变量。
      *
      * @param string[] $lines
      *
@@ -32,6 +37,7 @@ class Lines
 
     /**
      * Used to make all multiline variable process.
+	 * 用于使所有的多行变量进程
      *
      * @param bool     $multiline
      * @param string   $line
@@ -63,6 +69,7 @@ class Lines
 
     /**
      * Determine if the given line can be the start of a multiline variable.
+	 * 确定给定的行是否可以成为多行变量的开始
      *
      * @param string $line
      *
@@ -79,6 +86,7 @@ class Lines
 
     /**
      * Determine if the given line can be the start of a multiline variable.
+	 * 确定给定的行是否可以成为多行变量的开始
      *
      * @param string $line
      * @param bool   $started

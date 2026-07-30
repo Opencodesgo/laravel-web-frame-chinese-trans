@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，弃用属性
+ */
 
 declare(strict_types=1);
 
@@ -17,6 +20,7 @@ trait DeprecatedProperties
 {
     /**
      * the day of week in current locale LC_TIME
+	 * 当前区域设置中的星期几LC_T
      *
      * @var string
      *
@@ -28,6 +32,7 @@ trait DeprecatedProperties
 
     /**
      * the abbreviated day of week in current locale LC_TIME
+	 * 当前语言环境中星期的缩写LC_TIME
      *
      * @var string
      *

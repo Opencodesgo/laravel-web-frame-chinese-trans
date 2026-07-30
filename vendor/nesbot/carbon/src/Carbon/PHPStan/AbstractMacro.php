@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHPStan，抽象的宏观
+ */
 
 declare(strict_types=1);
 
@@ -34,6 +37,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 {
     /**
      * The reflection function/method.
+	 * 反射函数/方法
      *
      * @var ReflectionFunction|ReflectionMethod
      */
@@ -41,6 +45,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * The class name.
+	 * 类名称
      *
      * @var class-string
      */
@@ -48,6 +53,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * The method name.
+	 * 方法
      *
      * @var string
      */

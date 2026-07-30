@@ -21,6 +21,7 @@ use Monolog\Utils;
 
 /**
  * Handler send logs to Telegram using Telegram Bot API.
+ * 处理程序发送日志到Telegram使用Telegram Bot API。
  *
  * How to use:
  *  1) Create telegram bot with https://telegram.me/BotFather
@@ -41,6 +42,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
 
     /**
      * The available values of parseMode according to the Telegram api documentation
+	 * 根据Telegram api文档，parseMode的可用值。
      */
     private const AVAILABLE_PARSE_MODES = [
         'HTML',

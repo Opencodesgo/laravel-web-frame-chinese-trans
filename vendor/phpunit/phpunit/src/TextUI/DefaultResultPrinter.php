@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，TextUI，默认结果打印机
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -129,6 +134,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param null|resource|string $out
      * @param int|string           $numberOfColumns

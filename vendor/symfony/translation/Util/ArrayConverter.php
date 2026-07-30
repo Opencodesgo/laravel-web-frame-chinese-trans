@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，Util，数组转换器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Translation\Util;
 
 /**
  * ArrayConverter generates tree like structure from a message catalogue.
+ * ArrayConverter从消息目录中生成类似结构的树。
  * e.g. this
  *   'foo.bar1' => 'test1',
  *   'foo.bar2' => 'test2'

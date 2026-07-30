@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，名称上下文
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Name;
@@ -21,6 +25,7 @@ class NameContext {
 
     /**
      * Create a name context.
+	 * 创建名称上下问
      *
      * @param ErrorHandler $errorHandler Error handling used to report errors
      */

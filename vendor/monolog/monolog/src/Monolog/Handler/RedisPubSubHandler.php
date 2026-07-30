@@ -21,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends the message to a Redis Pub/Sub channel using PUBLISH
+ * 使用PUBLISH将消息发送到Redis Pub/Sub通道
  *
  * usage example:
  *

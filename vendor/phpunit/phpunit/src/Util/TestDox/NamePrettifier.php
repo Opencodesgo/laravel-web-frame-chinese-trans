@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，TestDox，名字修饰
+ */
+
 /*
  * This file is part of PHPUnit.
  *

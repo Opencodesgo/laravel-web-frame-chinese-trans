@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，编辑器
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,13 +19,16 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Modifiers.
+ * 特征编辑器。
  *
  * Returns dates relative to current date using modifier short-hand.
+ * 使用简写修饰符返回相对于当前日期的日期。
  */
 trait Modifiers
 {
     /**
      * Midday/noon hour.
+	 * 中午/小时。
      *
      * @var int
      */

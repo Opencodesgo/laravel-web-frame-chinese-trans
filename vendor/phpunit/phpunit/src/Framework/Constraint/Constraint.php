@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，限制，Constraint
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -29,6 +34,7 @@ abstract class Constraint implements Countable, SelfDescribing
 
     /**
      * Evaluates the constraint for parameter $other.
+	 * 计算参数$other的约束。
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.

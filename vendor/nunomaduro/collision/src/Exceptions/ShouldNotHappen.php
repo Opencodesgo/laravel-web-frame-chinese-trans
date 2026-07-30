@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，异常，不应该发生
+ */
 
 /**
  * This file is part of Collision.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，单元测试，配置输入输出
+ */
 
 /**
  * This file is part of Collision.
@@ -24,6 +27,7 @@ final class ConfigureIO
     /**
      * Configures both given input and output with
      * options from the enviroment.
+	 * 根据环境中的选项配置给定的输入和输出
      *
      * @throws \ReflectionException
      */

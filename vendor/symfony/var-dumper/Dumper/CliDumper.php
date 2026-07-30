@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，转储，Cli 转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * CliDumper dumps variables for command line output.
+ * 命令行输出的变量转储变量。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -88,6 +92,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Enables/disables colored output.
+	 * 启用/禁用彩色输出
      */
     public function setColors(bool $colors)
     {
@@ -96,6 +101,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Sets the maximum number of characters per line for dumped strings.
+	 * 为丢弃的字符串设置每个行的最大字符数
      */
     public function setMaxStringWidth(int $maxStringWidth)
     {
@@ -104,6 +110,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Configures styles.
+	 * 配置样式
      *
      * @param array $styles A map of style names to style definitions
      */

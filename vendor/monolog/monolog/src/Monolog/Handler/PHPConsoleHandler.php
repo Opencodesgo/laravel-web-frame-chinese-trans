@@ -25,6 +25,7 @@ use PhpConsole\Helper;
 
 /**
  * Monolog handler for Google Chrome extension "PHP Console"
+ * 谷歌Chrome扩展“PHP控制台”的独白处理程序
  *
  * Display PHP error/debug log messages in Google Chrome console and notification popups, executes PHP code remotely
  *

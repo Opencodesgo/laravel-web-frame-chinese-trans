@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，克隆，Cursor
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * Represents the current state of a dumper while dumping.
+ * 表示在倾倒时的当前状态。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

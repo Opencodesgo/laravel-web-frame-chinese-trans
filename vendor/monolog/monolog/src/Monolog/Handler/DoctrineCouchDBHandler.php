@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，浏览器控制台处理程序
+ * Monolog，Handler，Doctrine Couch 数据库处理程序
  */
 
 /*

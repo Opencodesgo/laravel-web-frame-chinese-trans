@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，最终类通行
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * The final class pass handles final classes.
+ * final类传递处理final类。
  */
 class FinalClassPass extends CodeCleanerPass
 {

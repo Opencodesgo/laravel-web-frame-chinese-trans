@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，Color
+ */
+
 /*
  * This file is part of PHPUnit.
  *

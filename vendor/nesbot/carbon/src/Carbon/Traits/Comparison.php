@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，比较
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,9 +21,11 @@ use InvalidArgumentException;
 
 /**
  * Trait Comparison.
+ * 特征的比较。
  *
  * Comparison utils and testers. All the following methods return booleans.
  * nowWithSameTz
+ * 比较工具和测试器。以下所有方法均返回布尔值。nowWithSameTz
  *
  * Depends on the following methods:
  *
@@ -40,6 +45,7 @@ trait Comparison
 
     /**
      * Determines if the instance is equal to another
+	 * 确定实例是否等于另一个实例
      *
      * @example
      * ```
@@ -61,6 +67,7 @@ trait Comparison
 
     /**
      * Determines if the instance is equal to another
+	 * 确定实例是否等于另一个实例
      *
      * @example
      * ```

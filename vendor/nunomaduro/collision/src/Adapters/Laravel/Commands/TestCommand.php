@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，碰撞，适配器，Laravel，命令，测试命令
+ */
 
 namespace NunoMaduro\Collision\Adapters\Laravel\Commands;
 
@@ -14,6 +17,7 @@ class TestCommand extends Command
 {
     /**
      * The name and signature of the console command.
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -21,6 +25,7 @@ class TestCommand extends Command
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -28,6 +33,7 @@ class TestCommand extends Command
 
     /**
      * The arguments to be used while calling phpunit.
+	 * 调用phpunit时要使用的参数
      *
      * @var array
      */
@@ -38,6 +44,7 @@ class TestCommand extends Command
 
     /**
      * Create a new command instance.
+	 * 创建一个新的命令实例
      *
      * @return void
      */

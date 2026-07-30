@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，魔法常数通行证
+ */
 
 /*
  * This file is part of Psy Shell.

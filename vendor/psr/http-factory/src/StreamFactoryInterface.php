@@ -21,6 +21,7 @@ interface StreamFactoryInterface
 
     /**
      * Create a stream from an existing file.
+	 * 从现有文件创建流。
      *
      * The file MUST be opened using the given mode, which may be any mode
      * supported by the `fopen` function.

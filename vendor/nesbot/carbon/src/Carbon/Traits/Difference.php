@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，差异
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -24,6 +27,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Difference.
+ * 形态差异
  *
  * Depends on the following methods:
  *

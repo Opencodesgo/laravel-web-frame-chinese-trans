@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，深度复制
+ */
 
 namespace DeepCopy;
 
@@ -7,6 +10,7 @@ use function function_exists;
 if (false === function_exists('DeepCopy\deep_copy')) {
     /**
      * Deep copies the given value.
+	 * 深度复制给定的值
      *
      * @param mixed $value
      * @param bool  $useCloneMethod

@@ -1,9 +1,14 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部的，Differ
+ */
+
 namespace PhpParser\Internal;
 
 /**
  * Implements the Myers diff algorithm.
+ * 实现Myers diff算法。
  *
  * Myers, Eugene W. "An O (ND) difference algorithm and its variations."
  * Algorithmica 1.1 (1986): 251-266.
@@ -17,6 +22,7 @@ class Differ {
 
     /**
      * Create differ over the given equality relation.
+	 * 创建不同于给定相等关系
      *
      * @param callable(T, T): bool $isEqual Equality relation
      */

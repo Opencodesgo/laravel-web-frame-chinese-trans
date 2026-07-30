@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHPStan，宏扫描仪
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -25,6 +28,7 @@ final class MacroScanner
 
     /**
      * MacroScanner constructor.
+	 * MacroScanner构造函数
      *
      * @param \PHPStan\Reflection\ReflectionProvider $reflectionProvider
      */
@@ -35,6 +39,7 @@ final class MacroScanner
 
     /**
      * Return true if the given pair class-method is a Carbon macro.
+	 * 如果给定的pair类方法是一个Carbon宏，则返回true。
      *
      * @param class-string $className
      * @param string       $methodName
@@ -58,6 +63,7 @@ final class MacroScanner
 
     /**
      * Return the Macro for a given pair class-method.
+	 * 返回给定pair类方法的宏
      *
      * @param class-string $className
      * @param string       $methodName

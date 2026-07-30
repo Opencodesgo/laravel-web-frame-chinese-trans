@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，异常，无效排序异常
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

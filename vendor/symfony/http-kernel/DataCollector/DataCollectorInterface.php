@@ -20,6 +20,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * DataCollectorInterface.
+ * 数据采集器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css，属性，属性
+ * TijsVerkoyen，CssToInlineStyles，Css，属性，Property
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Property;
@@ -26,6 +26,7 @@ final class Property
 
     /**
      * Property constructor.
+	 * 属性构造函数
      * @param string           $name
      * @param string           $value
      * @param Specificity|null $specificity

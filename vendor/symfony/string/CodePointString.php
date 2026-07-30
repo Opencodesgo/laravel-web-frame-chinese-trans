@@ -19,6 +19,7 @@ use Symfony\Component\String\Exception\InvalidArgumentException;
 
 /**
  * Represents a string of Unicode code points encoded as UTF-8.
+ * 表示一串编码为UTF-8的Unicode代码点。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Hugo Hamon <hugohamon@neuf.fr>

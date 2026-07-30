@@ -20,6 +20,7 @@ use Monolog\Utils;
 
 /**
  * Stores to any stream resource
+ * 存储到任何流资源
  *
  * Can be used to store into php://stderr, remote and local files, etc.
  *

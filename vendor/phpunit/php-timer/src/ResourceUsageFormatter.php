@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，计时器，资源使用格式化程序
+ */
+
 /*
  * This file is part of phpunit/php-timer.
  *

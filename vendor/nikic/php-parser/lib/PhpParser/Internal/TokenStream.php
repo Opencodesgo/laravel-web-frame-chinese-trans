@@ -1,11 +1,16 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部的，令牌流
+ */
+
 namespace PhpParser\Internal;
 
 use PhpParser\Token;
 
 /**
  * Provides operations on token streams, for use by pretty printer.
+ * 提供令牌流的操作，供漂亮的打印机使用。
  *
  * @internal
  */
@@ -17,6 +22,7 @@ class TokenStream {
 
     /**
      * Create token stream instance.
+	 * 创建令牌流实例
      *
      * @param Token[] $tokens Tokens in PhpToken::tokenize() format
      */
@@ -27,6 +33,7 @@ class TokenStream {
 
     /**
      * Whether the given position is immediately surrounded by parenthesis.
+	 * 给定的位置是否立即被括号包围
      *
      * @param int $startPos Start position
      * @param int $endPos End position

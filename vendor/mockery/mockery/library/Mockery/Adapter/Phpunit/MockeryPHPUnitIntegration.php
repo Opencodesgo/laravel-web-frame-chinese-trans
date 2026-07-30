@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，适配器，单元测试，PHP单元集成
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -19,6 +22,7 @@ use function method_exists;
 /**
  * Integrates Mockery into PHPUnit. Ensures Mockery expectations are verified
  * for each test and are included by the assertion counter.
+ * 将 Mockery 集成到 PHPUnit 中，确保每次测试时都会验证 Mockery 的预期，并将其计入断言计数器。
  */
 trait MockeryPHPUnitIntegration
 {

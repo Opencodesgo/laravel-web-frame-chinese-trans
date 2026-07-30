@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，结果，Result
+ */
 
 namespace Dotenv\Result;
 
@@ -10,6 +13,7 @@ abstract class Result
 {
     /**
      * Get the success option value.
+	 * 获得成功的期权价值
      *
      * @return \PhpOption\Option<T>
      */
@@ -17,6 +21,7 @@ abstract class Result
 
     /**
      * Get the success value, if possible.
+	 * 如果可能的话,获得成功的价值。
      *
      * @throws \RuntimeException
      *
@@ -29,6 +34,7 @@ abstract class Result
 
     /**
      * Map over the success value.
+	 * 映射到成功值
      *
      * @template S
      *
@@ -40,6 +46,7 @@ abstract class Result
 
     /**
      * Get the error option value.
+	 * 获取错误选项值
      *
      * @return \PhpOption\Option<E>
      */

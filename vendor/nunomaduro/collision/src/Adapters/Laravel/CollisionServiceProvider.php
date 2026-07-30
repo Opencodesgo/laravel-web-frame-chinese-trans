@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，碰撞，适配器，Laravel，碰撞服务提供商
+ */
 
 /**
  * This file is part of Collision.
@@ -22,6 +25,7 @@ use NunoMaduro\Collision\Writer;
 
 /**
  * This is an Collision Laravel Adapter Service Provider implementation.
+ * 这是一个Collision Laravel Adapter Service Provider的实现。
  *
  * Registers the Error Handler on Laravel.
  *
@@ -38,6 +42,7 @@ class CollisionServiceProvider extends ServiceProvider
 
     /**
      * Boots application services.
+	 * 启动应用程序服务
      *
      * @return void
      */

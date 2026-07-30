@@ -1,4 +1,8 @@
 <?php
+/**
+ * Opis，关闭，闭包范围
+ */
+
 /* ===========================================================================
  * Copyright (c) 2018-2021 Zindex Software
  *
@@ -9,6 +13,7 @@ namespace Opis\Closure;
 
 /**
  * Closure scope class
+ * 闭包范围类
  * @internal
  */
 class ClosureScope extends \SplObjectStorage

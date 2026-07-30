@@ -1,4 +1,8 @@
 <?php
+/**
+ * Opis，关闭，反射关闭
+ */
+
 /* ===========================================================================
  * Copyright (c) 2018-2021 Zindex Software
  *
@@ -34,6 +38,7 @@ class ReflectionClosure extends ReflectionFunction
 
     /**
      * ReflectionClosure constructor.
+	 * ReflectionClosure构造函数
      * @param Closure $closure
      * @param string|null $code This is ignored. Do not use it
      * @throws \ReflectionException

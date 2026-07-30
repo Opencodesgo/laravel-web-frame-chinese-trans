@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，TextUI，命令
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -165,6 +170,7 @@ class Command
 
     /**
      * Create a TestRunner, override in subclasses.
+	 * 创建一个TestRunner，在子类中重写。
      */
     protected function createRunner(): TestRunner
     {

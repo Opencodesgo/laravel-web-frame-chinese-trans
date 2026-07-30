@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，Annotation 类加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * AnnotationClassLoader loads routing information from a PHP class and its methods.
+ * 注释类加载器从PHP类和它的方法加载路由信息。
  *
  * You need to define an implementation for the configureRoute() method. Most of the
  * time, this method should define some PHP callable to be called for the route

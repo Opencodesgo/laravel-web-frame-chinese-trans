@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Signs URIs.
+ * Uri 签名者
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

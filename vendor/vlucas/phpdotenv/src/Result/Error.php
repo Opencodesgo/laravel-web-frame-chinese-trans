@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，结果，错误
+ */
 
 namespace Dotenv\Result;
 
@@ -19,6 +22,7 @@ class Error extends Result
 
     /**
      * Internal constructor for an error value.
+	 * 一个错误值的内部构造函数
      *
      * @param E $value
      *
@@ -31,6 +35,7 @@ class Error extends Result
 
     /**
      * Create a new error value.
+	 * 创建一个新的错误值
      *
      * @template F
      *
@@ -45,6 +50,7 @@ class Error extends Result
 
     /**
      * Get the success option value.
+	 * 获得成功的期权价值
      *
      * @return \PhpOption\Option<T>
      */
@@ -55,6 +61,7 @@ class Error extends Result
 
     /**
      * Map over the success value.
+	 * 映射到成功值
      *
      * @template S
      *

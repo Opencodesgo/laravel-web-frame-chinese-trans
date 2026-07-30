@@ -43,6 +43,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Construct a new Fleep.io Handler.
+	 * 构造一个新的Fleep.io处理程序。
      *
      * For instructions on how to create a new web hook in your conversations
      * see https://fleep.io/integrations/webhooks/
@@ -94,6 +95,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Handles a log record
+	 * 处理日志记录
      */
     public function write(array $record): void
     {
@@ -113,6 +115,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Builds the header of the API Call
+	 * 生成API调用的头
      */
     private function buildHeader(string $content): string
     {

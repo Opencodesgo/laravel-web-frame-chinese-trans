@@ -48,6 +48,7 @@ interface ServerRequestInterface extends RequestInterface
 {
     /**
      * Retrieve server parameters.
+	 * 检索服务器参数。
      *
      * Retrieves data related to the incoming request environment,
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
@@ -59,6 +60,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Retrieve cookies.
+	 * 检索cookie。
      *
      * Retrieves cookies sent by the client to the server.
      *
@@ -71,6 +73,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Return an instance with the specified cookies.
+	 * 返回具有指定cookie的实例。
      *
      * The data IS NOT REQUIRED to come from the $_COOKIE superglobal, but MUST
      * be compatible with the structure of $_COOKIE. Typically, this data will

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，模拟配置
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -37,11 +40,13 @@ use function trait_exists;
 /**
  * This class describes the configuration of mocks and hides away some of the
  * reflection implementation
+ * 本类描述了模拟对象的配置，并隐藏了部分反射实现。
  */
 class MockConfiguration
 {
     /**
      * Instance cache of all methods
+	 * 所有方法的实例缓存
      *
      * @var list<Method>
      */
@@ -49,6 +54,7 @@ class MockConfiguration
 
     /**
      * Methods that should specifically not be mocked
+	 * 不应该被模拟的方法。
      *
      * This is currently populated with stuff we don't know how to deal with, should really be somewhere else
      */

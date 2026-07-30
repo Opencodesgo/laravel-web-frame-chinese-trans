@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，错误测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -48,6 +53,7 @@ final class ErrorTestCase extends TestCase
 
     /**
      * Returns a string representation of the test case.
+	 * 返回测试用例的字符串表示形式
      */
     public function toString(): string
     {

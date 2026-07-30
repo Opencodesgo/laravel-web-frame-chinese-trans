@@ -25,6 +25,7 @@ use Stringable;
 
 /**
  * Monolog log channel
+ * Monolog日志通道
  *
  * It contains a stack of Handlers and a stack of Processors,
  * and uses them to store records that are added to it.
@@ -68,11 +69,13 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Runtime errors
+	 * 运行时错误
      */
     public const ERROR = 400;
 
     /**
      * Critical conditions
+	 * 临界状态
      *
      * Example: Application component unavailable, unexpected exception.
      */
@@ -80,6 +83,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Action must be taken immediately
+	 * 必须立即采取行动
      *
      * Example: Entire website down, database unavailable, etc.
      * This should trigger the SMS alerts and wake you up.
@@ -93,6 +97,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Monolog API version
+	 * Monolog API 版本
      *
      * This is only bumped when API breaks are done and should
      * follow the major version of the library

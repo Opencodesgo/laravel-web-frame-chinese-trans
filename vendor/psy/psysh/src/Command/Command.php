@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Command
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -20,11 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell base command.
+ * Psy Shell基地命令。
  */
 abstract class Command extends BaseCommand
 {
     /**
      * Sets the application instance for this command.
+	 * 为该命令设置应用实例
      *
      * @param Application|null $application An Application instance
      *

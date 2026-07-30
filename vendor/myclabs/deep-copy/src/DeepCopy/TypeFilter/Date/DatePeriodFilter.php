@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，类型过滤器，日期，日期间隔过滤器
+ */
 
 namespace DeepCopy\TypeFilter\Date;
 

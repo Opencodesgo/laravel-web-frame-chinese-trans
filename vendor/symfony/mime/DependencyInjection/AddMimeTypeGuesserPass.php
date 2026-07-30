@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Registers custom mime types guessers.
+ * 注册自定义mime类型猜测器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

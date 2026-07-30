@@ -219,6 +219,7 @@ class Application implements ResetInterface
 
     /**
      * Runs the current application.
+	 * 运行当前应用程序
      *
      * @return int 0 if everything went fine, or an error code
      */

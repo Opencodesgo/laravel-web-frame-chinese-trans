@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，超出范围异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -21,6 +24,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 {
     /**
      * The unit or name of the value.
+	 * 值的单位或名称
      *
      * @var string
      */
@@ -28,6 +32,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The range minimum.
+	 * 最小范围范围
      *
      * @var mixed
      */
@@ -35,6 +40,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The range maximum.
+	 * 最大范围
      *
      * @var mixed
      */
@@ -42,6 +48,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The invalid value.
+	 * 无效值
      *
      * @var mixed
      */

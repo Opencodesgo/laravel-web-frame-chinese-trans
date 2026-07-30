@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，日志，JUnit
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -121,6 +126,7 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * Flush buffer and close output.
+	 * 刷新缓冲区并关闭输出
      */
     public function flush(): void
     {
@@ -131,6 +137,7 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * An error occurred.
+	 * 发生错误
      */
     public function addError(Test $test, Throwable $t, float $time): void
     {

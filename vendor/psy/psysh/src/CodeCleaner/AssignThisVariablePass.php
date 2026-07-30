@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理器，分配这个变量通过
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that the user input does not assign the `$this` variable.
+ * 验证用户输入没有分配‘ $this ’变量。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */

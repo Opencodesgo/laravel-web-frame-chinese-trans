@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /**
  * Monolog，Handler，缓冲处理程序
  */
