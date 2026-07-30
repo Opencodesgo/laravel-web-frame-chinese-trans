@@ -63,6 +63,7 @@ class CorsServiceProvider extends BaseServiceProvider
 
     /**
      * Get options for CorsService
+	 * 获取CorsService的选项
      *
      * @return array
      */

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，重试中间件
  */
@@ -14,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Middleware that retries requests based on the boolean result of
  * invoking the provided "decider" function.
+ * 根据调用提供的“决策函数”返回的布尔值，重新尝试请求的中间件。
  *
  * @final
  */

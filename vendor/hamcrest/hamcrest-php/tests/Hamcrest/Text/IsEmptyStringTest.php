@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否空字符串测试
+ */
+
 namespace Hamcrest\Text;
 
 class IsEmptyStringTest extends \Hamcrest\AbstractMatcherTest

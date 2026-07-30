@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，大的小数
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
+ * 不可变的,任意性的十进制数字。
  *
  * @psalm-immutable
  */
@@ -18,6 +22,7 @@ final class BigDecimal extends BigNumber
 {
     /**
      * The unscaled value of this decimal number.
+	 * 这个小数的未按比例值。
      *
      * This is a string of digits with an optional leading minus sign.
      * No leading zero must be present.
@@ -29,6 +34,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * The scale (number of digits after the decimal point) of this decimal number.
+	 * 十进制数的比例（小数点后的位数）。
      *
      * This must be zero or more.
      *

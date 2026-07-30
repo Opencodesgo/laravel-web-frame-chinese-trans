@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Utils
+ */
 
 declare(strict_types=1);
 
@@ -13,6 +16,7 @@ final class Utils
 {
     /**
      * Remove the items given by the keys, case insensitively from the data.
+	 * 从数据中不区分大小写地删除键给出的项
      *
      * @param (string|int)[] $keys
      */

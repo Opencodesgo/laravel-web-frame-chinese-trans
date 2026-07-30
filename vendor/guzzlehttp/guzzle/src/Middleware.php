@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，中间件
  */
 
 namespace GuzzleHttp;
@@ -16,6 +15,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Functions used to create and wrap handlers with handler middleware.
+ * 用于用处理程序中间件创建和包装处理程序的函数。
  */
 final class Middleware
 {

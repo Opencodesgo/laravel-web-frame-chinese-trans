@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，准备主体中间件
  */
@@ -12,6 +11,7 @@ use Psr\Http\Message\RequestInterface;
 /**
  * Prepares requests that contain a body, adding the Content-Length,
  * Content-Type, and Expect headers.
+ * 准备包含请求体的请求，并添加 Content-Length、Content-Type 和 Expect 头部。
  *
  * @final
  */
@@ -72,6 +72,7 @@ class PrepareBodyMiddleware
 
     /**
      * Add expect header
+	 * 添加expect标头
      */
     private function addExpectHeader(RequestInterface $request, array $options, array &$modify): void
     {

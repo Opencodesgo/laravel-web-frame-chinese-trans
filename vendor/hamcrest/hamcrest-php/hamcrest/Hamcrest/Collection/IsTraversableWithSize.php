@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，收集，可遍历的大小
+ */
+
 namespace Hamcrest\Collection;
 
 /*
@@ -10,6 +14,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if traversable size satisfies a nested matcher.
+ * 如果可遍历的大小满足嵌套匹配器，则匹配。
  */
 class IsTraversableWithSize extends FeatureMatcher
 {
@@ -37,6 +42,7 @@ class IsTraversableWithSize extends FeatureMatcher
 
     /**
      * Does traversable size satisfy a given matcher?
+	 * 可遍历的大小是否满足给定的匹配器？
      *
      * @factory
      */

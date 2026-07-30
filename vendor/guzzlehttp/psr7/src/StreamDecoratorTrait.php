@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，流装饰者特征
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Stream decorator trait
+ * 流装饰者特征
  *
  * @property StreamInterface $stream
  */

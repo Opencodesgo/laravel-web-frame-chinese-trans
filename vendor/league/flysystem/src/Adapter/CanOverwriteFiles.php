@@ -1,7 +1,6 @@
 <?php
-
 /**
- * League，Flysystem，Adapter，可以覆盖文件
+ * League，Flysystem，适配器，可以覆盖文件
  */
 
 

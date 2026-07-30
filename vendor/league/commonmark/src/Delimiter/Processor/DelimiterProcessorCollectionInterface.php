@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，分隔符，处理器，分隔符处理器集合接口
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -21,6 +24,7 @@ interface DelimiterProcessorCollectionInterface
 {
     /**
      * Add the given delim processor to the collection
+	 * 将给定的delim处理器添加到集合中
      *
      * @param DelimiterProcessorInterface $processor The delim processor to add
      *

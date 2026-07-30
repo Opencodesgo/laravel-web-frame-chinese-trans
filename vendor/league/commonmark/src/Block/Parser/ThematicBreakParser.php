@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Block，分析程序，主题中断分析器
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -33,6 +36,7 @@ final class ThematicBreakParser implements BlockParserInterface
         }
 
         // Advance to the end of the string, consuming the entire line (of the thematic break)
+		// 前进到字符串的末尾，占用整行（主题断行）
         $cursor->advanceToEnd();
 
         $context->addBlock(new ThematicBreak());

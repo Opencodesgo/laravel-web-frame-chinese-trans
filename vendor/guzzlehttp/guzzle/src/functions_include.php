@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，包含函数
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，点火契约，方案
+ */
 
 namespace Facade\IgnitionContracts;
 

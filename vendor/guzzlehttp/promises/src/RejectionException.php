@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，承诺，拒绝异常
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,7 @@ namespace GuzzleHttp\Promise;
 
 /**
  * A special exception that is thrown when waiting on a rejected promise.
+ * 等待被拒绝的承诺时抛出的特殊异常。
  *
  * The reason value is available via the getReason() method.
  */

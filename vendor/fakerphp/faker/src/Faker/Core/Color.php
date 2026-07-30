@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，Color
+ */
 
 declare(strict_types=1);
 

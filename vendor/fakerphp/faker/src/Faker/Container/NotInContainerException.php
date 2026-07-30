@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，容器，不在容器中异常
+ */
 
 declare(strict_types=1);
 

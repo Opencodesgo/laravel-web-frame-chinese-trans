@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，重定向的中间件
  */
 
 namespace GuzzleHttp;
@@ -125,6 +124,7 @@ class RedirectMiddleware
 
     /**
      * Enable tracking on promise.
+	 * 重定向的中间件
      */
     private function withTracking(PromiseInterface $promise, string $uri, int $statusCode): PromiseInterface
     {

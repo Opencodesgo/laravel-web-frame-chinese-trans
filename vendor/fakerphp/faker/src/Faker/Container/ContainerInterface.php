@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，容器，容器接口
+ */
 
 namespace Faker\Container;
 

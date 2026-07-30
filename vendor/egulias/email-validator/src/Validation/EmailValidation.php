@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，确认，电子邮件验证
+ */
 
 namespace Egulias\EmailValidator\Validation;
 
@@ -10,6 +13,7 @@ interface EmailValidation
 {
     /**
      * Returns true if the given email is valid.
+	 * 如果给定的电子邮件有效，则返回true。
      *
      * @param string     $email      The email you want to validate.
      * @param EmailLexer $emailLexer The email lexer.
@@ -20,6 +24,7 @@ interface EmailValidation
 
     /**
      * Returns the validation error.
+	 * 返回验证错误
      *
      * @return InvalidEmail|null
      */

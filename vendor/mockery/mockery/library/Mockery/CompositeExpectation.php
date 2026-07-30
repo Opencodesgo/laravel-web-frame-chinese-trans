@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，复合的期望
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

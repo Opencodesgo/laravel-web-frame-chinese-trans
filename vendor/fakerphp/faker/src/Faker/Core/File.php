@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，File
+ */
 
 declare(strict_types=1);
 

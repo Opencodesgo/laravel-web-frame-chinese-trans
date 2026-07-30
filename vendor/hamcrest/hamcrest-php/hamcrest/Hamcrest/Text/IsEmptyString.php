@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Text，是空字符串
+ */
+
 namespace Hamcrest\Text;
 
 /*
@@ -11,6 +15,7 @@ use Hamcrest\Description;
 
 /**
  * Matches empty Strings (and null).
+ * 匹配空字符串。
  */
 class IsEmptyString extends BaseMatcher
 {

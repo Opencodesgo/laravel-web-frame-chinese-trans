@@ -9,6 +9,7 @@ use InvalidArgumentException;
 
 /**
  * CRON field factory implementing a flyweight factory
+ * CRON现场工厂实现了一个轻量级工厂
  * @link http://en.wikipedia.org/wiki/Cron
  */
 class FieldFactory

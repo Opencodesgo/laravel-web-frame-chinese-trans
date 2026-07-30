@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，分隔符，处理器，分隔符处理器接口
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -27,6 +30,7 @@ interface DelimiterProcessorInterface
 {
     /**
      * Returns the character that marks the beginning of a delimited node.
+	 * 返回标志节点节点开头的字符。
      *
      * This must not clash with any other processors being added to the environment.
      *

@@ -13,7 +13,8 @@ return [
     | Here you may configure your settings for cross-origin resource sharing
     | or "CORS". This determines what cross-origin operations may execute
     | in web browsers. You are free to adjust these settings as needed.
-	| 这里你可以配置cross-origin。
+	| 在这里,您可以为跨源资源共享或“CORS”配置您的设置。
+	| 这决定了跨源操作可以在web浏览器中执行什么。您可以自由地根据需要调整这些设置。
     |
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |

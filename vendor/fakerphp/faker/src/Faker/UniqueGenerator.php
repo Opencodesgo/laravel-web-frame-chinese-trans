@@ -22,6 +22,7 @@ class UniqueGenerator
 
     /**
      * Maps from method names to a map with serialized result keys.
+	 * 将方法名映射到具有序列化结果键的映射。
      *
      * @example [
      *   'phone' => ['0123' => null],

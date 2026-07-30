@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Uri 解析器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Resolves a URI reference in the context of a base URI and the opposite way.
+ * 在基URI上下文中解析URI引用，反之亦然。
  *
  * @author Tobias Schultze
  *

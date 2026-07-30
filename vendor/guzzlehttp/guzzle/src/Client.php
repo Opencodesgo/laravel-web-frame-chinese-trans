@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，客户端
  */
 
 namespace GuzzleHttp;
@@ -133,6 +132,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * The HttpClient PSR (PSR-18) specify this method.
+	 * HttpClient PSR （PSR-18）指定了这个方法
      *
      * {@inheritDoc}
      */
@@ -147,6 +147,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Create and send an asynchronous HTTP request.
+	 * 创建并发送异步HTTP请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can

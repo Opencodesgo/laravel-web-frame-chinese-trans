@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，Mockery
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -48,6 +51,7 @@ class Mockery
 
     /**
      * Global configuration handler containing configuration options.
+	 * 包含配置选项的全局配置处理程序
      *
      * @var Configuration
      */
@@ -55,6 +59,7 @@ class Mockery
 
     /**
      * Global container to hold all mocks for the current unit test running.
+	 * 全局容器，用于保存正在运行的当前单元测试的所有模拟。
      *
      * @var null|Container
      */

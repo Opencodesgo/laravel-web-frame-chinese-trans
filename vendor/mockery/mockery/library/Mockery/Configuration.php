@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，配置
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

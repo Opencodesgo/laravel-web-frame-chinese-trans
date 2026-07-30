@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，关注，使用时间
+ */
 
 namespace Facade\FlareClient\Concerns;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，承诺，满全的许诺
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，承诺，协同程序
+ */
 
 declare(strict_types=1);
 
@@ -77,6 +80,7 @@ final class Coroutine implements PromiseInterface
 
     /**
      * Create a new coroutine.
+	 * 创建一个新的coroutine
      */
     public static function of(callable $generatorFn): self
     {

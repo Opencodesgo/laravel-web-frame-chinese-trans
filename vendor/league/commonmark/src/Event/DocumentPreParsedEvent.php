@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Event，文档预解析事件
+ * League，CommonMark，事件，文档预解析事件
  */
 
 /*

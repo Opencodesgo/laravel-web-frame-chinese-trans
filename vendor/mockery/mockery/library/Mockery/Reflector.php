@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，反射器
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -39,6 +42,7 @@ class Reflector
 {
     /**
      * List of built-in types.
+	 * 内置类型列表
      *
      * @var list<string>
      */

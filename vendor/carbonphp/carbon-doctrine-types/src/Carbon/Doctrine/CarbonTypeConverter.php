@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Doctrine，Carbon 类型转换器
+ */
 
 namespace Carbon\Doctrine;
 

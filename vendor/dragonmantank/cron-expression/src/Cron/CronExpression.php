@@ -111,6 +111,7 @@ class CronExpression
 
     /**
      * Parse a CRON expression
+	 * 解析CRON表达式
      *
      * @param string       $expression   CRON expression (e.g. '8 * * * *')
      * @param FieldFactory|null $fieldFactory Factory to create cron fields

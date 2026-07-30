@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Block，分析程序，隔离代码解析器
+ */
 
 /*
  * This file is part of the league/commonmark package.

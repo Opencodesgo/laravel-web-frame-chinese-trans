@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，扩展接口
+ */
 
 /*
  * This file is part of the league/commonmark package.

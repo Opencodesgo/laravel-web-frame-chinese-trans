@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，常用工具
  */
@@ -118,6 +117,7 @@ final class Utils
 
     /**
      * Get the default User-Agent string to use with Guzzle.
+	 * 获取用于Guzzle的默认User-Agent字符串
      */
     public static function defaultUserAgent(): string
     {

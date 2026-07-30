@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，附加流
+ */
 
 declare(strict_types=1);
 

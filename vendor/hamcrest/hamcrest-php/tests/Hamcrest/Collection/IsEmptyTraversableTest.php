@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否空可遍历测试
+ */
+
 namespace Hamcrest\Collection;
 
 use Hamcrest\AbstractMatcherTest;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，承诺，创建
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ final class Create
 {
     /**
      * Creates a promise for a value if the value is not a promise.
+	 * 如果值不是承诺，则为该值创建承诺。
      *
      * @param mixed $value Promise or value.
      */

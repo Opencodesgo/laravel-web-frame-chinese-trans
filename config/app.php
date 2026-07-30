@@ -120,6 +120,7 @@ return [
     | data for your database seeds. For example, this will be used to get
     | localized telephone numbers, street address information and more.
 	| Faker PHP库在生成fake时将使用该区域设置数据库种子数据。
+	| 例如,这将被用来获取本地化的电话号码,街道地址信息等。
     |
     */
 
@@ -134,6 +135,7 @@ return [
     | to a random, 32 character string, otherwise these encrypted strings
     | will not be safe. Please do this before deploying an application!
 	| 这个密钥被用作加密服务，应该被设置为随机的32位字符。
+	| 否则,这些加密的字符串将不安全。在部署应用程序之前请进行此操作!
     |
     */
 
@@ -150,6 +152,7 @@ return [
     | request to your application. Feel free to add your own services to
     | this array to grant expanded functionality to your applications.
 	| 这些服务提供者将被自动加载到你的应用。
+	| 可以自由地将自己的服务添加到这个数组中,以向应用程序扩展功能。
     |
     */
 

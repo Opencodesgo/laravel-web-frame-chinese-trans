@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，计算器，TCNo
+ */
 
 namespace Faker\Calculator;
 
@@ -11,6 +14,7 @@ class TCNo
     /**
      * Generates Turkish Identity Number Checksum
      * Gets first 9 digit as prefix and calculates checksum
+	 * 生成Turkish身份号码校验和。
      *
      * https://en.wikipedia.org/wiki/Turkish_Identification_Number
      *

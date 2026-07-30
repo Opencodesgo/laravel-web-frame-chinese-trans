@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理程序，Curl 工厂
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -15,6 +18,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Creates curl resources from a request
+ * 从请求创建curl资源
  *
  * @final
  */
@@ -143,6 +147,7 @@ class CurlFactory implements CurlFactoryInterface
     /**
      * Completes a cURL transaction, either returning a response promise or a
      * rejected promise.
+	 * 完成 cURL 交易，返回响应 Promise 或被拒绝的 Promise。
      *
      * @param callable(RequestInterface, array): PromiseInterface $handler
      * @param CurlFactoryInterface                                $factory Dictates how the handle is released

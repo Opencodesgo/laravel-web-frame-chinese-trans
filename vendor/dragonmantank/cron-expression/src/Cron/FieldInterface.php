@@ -9,6 +9,7 @@ use DateTimeInterface;
 
 /**
  * CRON field interface
+ * CRON字段接口
  */
 interface FieldInterface
 {

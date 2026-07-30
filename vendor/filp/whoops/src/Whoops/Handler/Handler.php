@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理程序，Handler
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -11,6 +15,7 @@ use Whoops\RunInterface;
 
 /**
  * Abstract implementation of a Handler.
+ * 处理程序的抽象实现。
  */
 abstract class Handler implements HandlerInterface
 {

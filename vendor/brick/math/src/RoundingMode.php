@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，舍入模式
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,7 @@ namespace Brick\Math;
 
 /**
  * Specifies a rounding behavior for numerical operations capable of discarding precision.
+ * 指定能够丢弃精度的数字操作的舍入行为。
  *
  * Each rounding mode indicates how the least significant returned digit of a rounded result
  * is to be calculated. If fewer digits are returned than the digits needed to represent the
@@ -17,6 +21,7 @@ final class RoundingMode
 {
     /**
      * Private constructor. This class is not instantiable.
+	 * 私有构造函数。这个类不能实例化。
      *
      * @codeCoverageIgnore
      */
@@ -26,6 +31,7 @@ final class RoundingMode
 
     /**
      * Asserts that the requested operation has an exact result, hence no rounding is necessary.
+	 * 断言所请求的操作有一个确切的结果，因此不需要舍入。
      *
      * If this rounding mode is specified on an operation that yields a result that
      * cannot be represented at the requested scale, a RoundingNecessaryException is thrown.
@@ -34,6 +40,7 @@ final class RoundingMode
 
     /**
      * Rounds away from zero.
+	 * 四舍五入到零。
      *
      * Always increments the digit prior to a nonzero discarded fraction.
      * Note that this rounding mode never decreases the magnitude of the calculated value.

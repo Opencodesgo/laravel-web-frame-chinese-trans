@@ -28,6 +28,7 @@ return [
     | is used by your application. A default configuration has been added
     | for each back-end shipped with Laravel. You are free to add more.
 	| 在这里，您可以为每个服务器配置连接信息。
+	| 每个后端与Laravel一起添加了一个默认配置。你可以自由添加更多。
     |
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
     |

@@ -36,6 +36,7 @@ return [
 
     /*
      * Which headers to use to detect proxy related data (For, Host, Proto, Port)
+	 * 用于检测代理相关数据的头(For,Host,Proto,Port)
      *
      * Options include:
      *

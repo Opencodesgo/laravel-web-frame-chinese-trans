@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Doctrine，Carbon 主义类型
+ */
 
 namespace Carbon\Doctrine;
 

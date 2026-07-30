@@ -161,6 +161,7 @@ class Util
 
     /**
      * Normalize prefix.
+	 * 正常化前缀
      *
      * @param string $prefix
      * @param string $separator

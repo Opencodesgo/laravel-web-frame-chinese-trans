@@ -1,4 +1,7 @@
 <?php
+/**
+ * 服务，server
+ */
 
 /**
  * Laravel - A PHP Framework For Web Artisans

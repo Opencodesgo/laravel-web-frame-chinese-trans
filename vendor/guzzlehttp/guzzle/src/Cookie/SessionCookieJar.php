@@ -1,9 +1,13 @@
 <?php
+/**
+ * GuzzleHttp，Cookie，会话 Cookie Jar
+ */
 
 namespace GuzzleHttp\Cookie;
 
 /**
  * Persists cookies in the client session
+ * 在客户端会话中持久化cookie
  */
 class SessionCookieJar extends CookieJar
 {
@@ -19,6 +23,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Create a new SessionCookieJar object
+	 * 创建一个新的SessionCookieJar对象
      *
      * @param string $sessionKey          Session key name to store the cookie
      *                                    data in session
@@ -35,6 +40,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Saves cookies to session when shutting down
+	 * 关机时保存cookie到会话
      */
     public function __destruct()
     {

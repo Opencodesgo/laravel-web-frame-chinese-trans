@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，消息格式化程序
  */
@@ -13,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Formats log messages using variable substitutions for requests, responses,
  * and other transactional data.
+ * 使用变量替换格式化请求、响应及其他事务数据的日志消息。
  *
  * The following variable substitutions are supported:
  *
@@ -43,6 +43,7 @@ class MessageFormatter implements MessageFormatterInterface
 {
     /**
      * Apache Common Log Format.
+	 * Apache通用日志格式
      *
      * @see https://httpd.apache.org/docs/2.4/logs.html#common
      *

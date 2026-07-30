@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，容器，Container
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Faker\Extension\Extension;
 
 /**
  * A simple implementation of a container.
+ * 一个容器的简单实现。
  *
  * @experimental This class is experimental and does not fall under our BC promise
  */
@@ -23,6 +27,7 @@ final class Container implements ContainerInterface
     /**
      * Create a container object with a set of definitions. The array value MUST
      * produce an object that implements Extension.
+	 * 创建一个包含一组定义的容器对象。数组值必须生成一个实现 Extension 接口的对象。
      *
      * @param array<string, callable|object|string> $definitions
      */
@@ -33,6 +38,7 @@ final class Container implements ContainerInterface
 
     /**
      * Retrieve a definition from the container.
+	 * 从容器中检索定义
      *
      * @param string $id
      *
@@ -80,6 +86,7 @@ final class Container implements ContainerInterface
 
     /**
      * Get the service from a definition.
+	 * 从定义中获取服务
      *
      * @param callable|object|string $definition
      */

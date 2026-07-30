@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，内部的，计算器
+ */
 
 declare(strict_types=1);
 
@@ -9,6 +12,7 @@ use Brick\Math\RoundingMode;
 
 /**
  * Performs basic operations on arbitrary size integers.
+ * 对任意大小的整数执行基本操作。
  *
  * Unless otherwise specified, all parameters must be validated as non-empty strings of digits,
  * without leading zero, and with an optional leading minus sign if the number is not zero.
@@ -24,11 +28,13 @@ abstract class Calculator
 {
     /**
      * The maximum exponent value allowed for the pow() method.
+	 * pow（）方法允许的最大指数值
      */
     public const MAX_POWER = 1000000;
 
     /**
      * The alphabet for converting from and to base 2 to 36, lowercase.
+	 * 用于从基数2转换到基数36（小写）的字母表
      */
     public const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 

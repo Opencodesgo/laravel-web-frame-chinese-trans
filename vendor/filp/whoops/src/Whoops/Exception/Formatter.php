@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，格式化程序
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -13,6 +17,7 @@ class Formatter
     /**
      * Returns all basic information about the exception in a simple array
      * for further convertion to other languages
+	 * 返回一个包含异常所有基本信息的简单数组，以便进一步转换为其他语言。
      * @param  InspectorInterface $inspector
      * @param  bool               $shouldAddTrace
      * @param  array<callable>    $frameFilters

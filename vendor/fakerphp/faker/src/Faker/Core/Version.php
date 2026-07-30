@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，版本
+ */
 
 declare(strict_types=1);
 

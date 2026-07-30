@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，点火，命令，方案编译命令
+ */
 
 namespace Facade\Ignition\Commands;
 
@@ -9,6 +12,7 @@ class SolutionMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -16,6 +20,7 @@ class SolutionMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
+	 * 控制台命令描述
      *
      * @var string
      */

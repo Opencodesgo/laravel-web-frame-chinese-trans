@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，配置
+ */
 
 return [
     /*

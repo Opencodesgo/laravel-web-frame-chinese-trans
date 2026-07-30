@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，承诺，Promise 接口
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，扩展，Blood 扩展
+ */
 
 namespace Faker\Extension;
 
@@ -9,6 +12,7 @@ interface BloodExtension extends Extension
 {
     /**
      * Get an actual blood type
+	 * 找一个真正的blood类型
      *
      * @example 'AB'
      */

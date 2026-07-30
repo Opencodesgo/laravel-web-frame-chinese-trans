@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，消息格式化接口
  */

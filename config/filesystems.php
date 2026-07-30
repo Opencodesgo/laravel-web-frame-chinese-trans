@@ -14,6 +14,7 @@ return [
     | by the framework. The "local" disk, as well as a variety of cloud
     | based disks are available to your application. Just store away!
 	| 这里您可以指定在框架里应该被使用的默认文件系统磁盘。
+	| “本地”磁盘,以及各种基于云的磁盘可以应用于您的应用程序。
     |
     */
 
@@ -43,6 +44,7 @@ return [
     | may even configure multiple disks of the same driver. Defaults have
     | been setup for each driver as an example of the required options.
 	| 在这里，您可以根据需要配置尽可能多的文件系统"磁盘"，你甚至可以配置相同驱动程序的多个磁盘。
+	| 为每个驱动程序设置了默认设置,作为所需选项的示例。
     |
     | Supported Drivers: "local", "ftp", "sftp", "s3"
 	| 支持的驱动：local，ftp, sftp, s3。

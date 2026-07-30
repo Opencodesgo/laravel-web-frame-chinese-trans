@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，消息
+ */
 
 declare(strict_types=1);
 
@@ -12,6 +15,7 @@ final class Message
 {
     /**
      * Returns the string representation of an HTTP message.
+	 * 返回HTTP消息的字符串表示形式
      *
      * @param MessageInterface $message Message to convert to a string.
      */

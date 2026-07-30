@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Cookie，Cookie Jar 接口
+ */
 
 namespace GuzzleHttp\Cookie;
 
@@ -7,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Stores HTTP cookies.
+ * 存储HTTP cookie。
  *
  * It extracts cookies from HTTP requests, and returns them in HTTP responses.
  * CookieJarInterface instances automatically expire contained cookies when
@@ -21,6 +25,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 {
     /**
      * Create a request with added cookie headers.
+	 * 创建一个添加了cookie头的请求。
      *
      * If no matching cookies are found in the cookie jar, then no Cookie
      * header is added to the request and the same request is returned.
@@ -33,6 +38,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Extract cookies from an HTTP response and store them in the CookieJar.
+	 * 从HTTP响应中提取cookie并将其存储在CookieJar中
      *
      * @param RequestInterface  $request  Request that was sent
      * @param ResponseInterface $response Response that was received
@@ -41,6 +47,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Sets a cookie in the cookie jar.
+	 * 设置cookie至cookie jar
      *
      * @param SetCookie $cookie Cookie to set.
      *

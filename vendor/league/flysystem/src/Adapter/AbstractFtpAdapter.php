@@ -1,7 +1,6 @@
 <?php
-
 /**
- * League，Flysystem，Adapter，Ftp 适配器抽象类
+ * League，Flysystem，适配器，抽象 Ftp适配器
  */
 
 namespace League\Flysystem\Adapter;
@@ -153,6 +152,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the public permission value.
+	 * 设置公共权限值
      *
      * @param int $permPublic
      *
@@ -167,6 +167,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the private permission value.
+	 * 设置私有权限值
      *
      * @param int $permPrivate
      *

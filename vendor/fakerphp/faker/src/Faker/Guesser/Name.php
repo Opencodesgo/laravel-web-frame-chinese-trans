@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，猜测者，Name
+ */
 
 namespace Faker\Guesser;
 

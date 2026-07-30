@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，内部的，计算器，本机计算器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Calculator implementation using only native PHP code.
+ * 计算器实现仅使用本地PHP代码。
  *
  * @internal
  *

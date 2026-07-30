@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，坐标
+ */
 
 declare(strict_types=1);
 

@@ -67,6 +67,7 @@ class Config
 
     /**
      * Try to retrieve a default setting from a config fallback.
+	 * 尝试从配置回退中检索默认设置
      *
      * @param string $key
      * @param mixed  $default

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，异常，不公开的评论
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

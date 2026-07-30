@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，大的数
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * Common interface for arbitrary-precision rational numbers.
+ * 通用接口的任意精度合理数字。
  *
  * @psalm-immutable
  */
@@ -18,6 +22,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
+	 * 用于解析整数、十进制和有理数字的正则表达式。
      */
     private const PARSE_REGEXP =
         '/^' .

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，大的整数
+ */
 
 declare(strict_types=1);
 
@@ -13,9 +16,11 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * An arbitrary-size integer.
+ * 任意大小的整数。
  *
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
+ * 所有接受数字作为参数的方法均可接受 BigInteger 实例、整数，或表示任意大小整数的字符串。
  *
  * @psalm-immutable
  */
@@ -23,6 +28,7 @@ final class BigInteger extends BigNumber
 {
     /**
      * The value, as a string of digits with optional leading minus sign.
+	 * 值，作为带有可选前导减号的数字字符串。
      *
      * No leading zeros must be present.
      * No leading minus sign must be present if the number is zero.
@@ -33,6 +39,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
+	 * 受保护的构造函数。使用工厂方法获取实例。
      *
      * @param string $value A string of digits, with optional leading minus sign.
      */
@@ -43,6 +50,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Creates a BigInteger of the given value.
+	 * 创建给定值的BigInteger
      *
      * @param BigNumber|int|float|string $value
      *

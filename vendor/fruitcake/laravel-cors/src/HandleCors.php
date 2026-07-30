@@ -38,6 +38,7 @@ class HandleCors
     public function handle($request, Closure $next)
     {
         // Check if we're dealing with CORS and if we should handle it
+		// 检查一下是否要处理CORS,如果我们应该处理它
         if (! $this->shouldRun($request)) {
             return $next($request);
         }
@@ -53,6 +54,7 @@ class HandleCors
 
 
         // Handle the request
+		// 处理请求
         $response = $next($request);
 
         if ($request->getMethod() === 'OPTIONS') {
@@ -64,6 +66,7 @@ class HandleCors
 
     /**
      * Add the headers to the Response, if they don't exist yet.
+	 * 如果报头还不存在，将它们添加到响应中。
      *
      * @param Request $request
      * @param Response $response
@@ -81,6 +84,7 @@ class HandleCors
 
     /**
      * Add the headers to the Response, if they don't exist yet.
+	 * 如果它们还不存在的话,将标题添加到响应中。
      *
      * @param RequestHandled $event
      * @deprecated

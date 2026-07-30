@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，客户端接口
  */
@@ -14,6 +13,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Client interface for sending HTTP requests.
+ * 发送HTTP请求的客户端接口。
  */
 interface ClientInterface
 {
@@ -25,6 +25,7 @@ interface ClientInterface
 
     /**
      * Send an HTTP request.
+	 * 发送HTTP请求
      *
      * @param RequestInterface $request Request to send
      * @param array            $options Request options to apply to the given
@@ -36,6 +37,7 @@ interface ClientInterface
 
     /**
      * Asynchronously send an HTTP request.
+	 * 异步发送HTTP请求
      *
      * @param RequestInterface $request Request to send
      * @param array            $options Request options to apply to the given
@@ -45,6 +47,7 @@ interface ClientInterface
 
     /**
      * Create and send an HTTP request.
+	 * 创建并发送HTTP请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can

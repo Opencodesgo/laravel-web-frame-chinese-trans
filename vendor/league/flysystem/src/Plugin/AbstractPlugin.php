@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，Plugin，抽象插件
+ * League，Flysystem，插件，抽象插件
  */
 
 namespace League\Flysystem\Plugin;

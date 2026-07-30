@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，异常，不允许的字符
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

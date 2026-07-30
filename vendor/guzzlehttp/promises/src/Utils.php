@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，承诺，Utils
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ final class Utils
 {
     /**
      * Get the global task queue used for promise resolution.
+	 * 获取用于承诺解析的全局任务队列。
      *
      * This task queue MUST be run in an event loop in order for promises to be
      * settled asynchronously. It will be automatically run when synchronously

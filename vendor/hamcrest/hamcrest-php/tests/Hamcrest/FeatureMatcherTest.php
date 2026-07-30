@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，结果匹配程序测试
+ */
+
 namespace Hamcrest;
 
 class Thingy

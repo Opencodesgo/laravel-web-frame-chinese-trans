@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，断言错误
+ */
+
 namespace Hamcrest;
 
 /*

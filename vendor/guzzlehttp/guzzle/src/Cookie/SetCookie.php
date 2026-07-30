@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Cookie，Set Cookie
+ */
 
 namespace GuzzleHttp\Cookie;
 
@@ -29,6 +32,7 @@ class SetCookie
 
     /**
      * Create a new SetCookie object from a string.
+	 * 从字符串创建一个新的SetCookie对象
      *
      * @param string $cookie Set-Cookie header string
      */
@@ -155,6 +159,7 @@ class SetCookie
 
     /**
      * Get the cookie name.
+	 * 获取cookie的名称
      *
      * @return string
      */

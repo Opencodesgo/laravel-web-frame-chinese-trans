@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否数组测试
+ */
+
 namespace Hamcrest\Type;
 
 class IsArrayTest extends \Hamcrest\AbstractMatcherTest

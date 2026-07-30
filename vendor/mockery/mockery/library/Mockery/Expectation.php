@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，预期
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -52,6 +55,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Actual count of calls to this expectation
+	 * 达到此期望的实际调用数
      *
      * @var int
      */
@@ -59,6 +63,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Exception message
+	 * 异常信息
      *
      * @var null|string
      */

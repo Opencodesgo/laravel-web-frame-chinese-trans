@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，点火契约，有可行的解决方案吗
+ */
 
 namespace Facade\IgnitionContracts;
 

@@ -58,6 +58,7 @@ abstract class Handler
 
     /**
      * Retrieve the entree type (file|dir).
+	 * 检索条目类型（文件|dir）
      *
      * @return string file or dir
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Cookie，Cookie Jar
+ */
 
 namespace GuzzleHttp\Cookie;
 
@@ -7,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Cookie jar that stores cookies as an array
+ * 将Cookie存储为数组的Cookie jar
  */
 class CookieJar implements CookieJarInterface
 {
@@ -41,6 +45,7 @@ class CookieJar implements CookieJarInterface
 
     /**
      * Create a new Cookie jar from an associative array and domain.
+	 * 从关联数组和域创建一个新的Cookie jar
      *
      * @param array  $cookies Cookies to create the jar from
      * @param string $domain  Domain to set the cookies to
@@ -63,6 +68,7 @@ class CookieJar implements CookieJarInterface
     /**
      * Evaluate if this cookie should be persisted to storage
      * that survives between requests.
+	 * 评估此 cookie 是否应持久化存储，以便在请求之间保留。
      *
      * @param SetCookie $cookie              Being evaluated.
      * @param bool      $allowSessionCookies If we should persist session cookies

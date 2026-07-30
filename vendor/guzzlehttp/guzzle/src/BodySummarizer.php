@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，主体缩写器
+ * GuzzleHttp，主体摘录者
  */
 
 namespace GuzzleHttp;

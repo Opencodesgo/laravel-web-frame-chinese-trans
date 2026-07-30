@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，异常，整数溢出异常
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Brick\Math\BigInteger;
 
 /**
  * Exception thrown when an integer overflow occurs.
+ * 当发生整数溢出时抛出异常。
  */
 class IntegerOverflowException extends MathException
 {

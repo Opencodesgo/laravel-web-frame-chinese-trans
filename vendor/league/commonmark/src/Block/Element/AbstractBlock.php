@@ -23,6 +23,7 @@ use League\CommonMark\Node\Node;
 
 /**
  * Block-level element
+ * 块级元素
  *
  * @method parent() ?AbstractBlock
  */
@@ -90,6 +91,7 @@ abstract class AbstractBlock extends Node
 
     /**
      * Whether this is a code block
+	 * 是否是代码块
      *
      * Code blocks are extra-greedy - they'll try to consume all subsequent
      * lines of content without calling matchesNextLine() each time.

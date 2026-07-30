@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，Mock
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -33,6 +36,7 @@ class Mock implements MockInterface
 {
     /**
      * Stores an array of all expectation directors for this mock
+	 * 存储此模拟的所有期望董事的数组
      *
      * @var array
      */
@@ -41,6 +45,7 @@ class Mock implements MockInterface
     /**
      * Stores an initial number of expectations that can be manipulated
      * while using the getter method.
+	 * 存储初始数量的期望值，可通过获取方法进行修改。
      *
      * @var int
      */

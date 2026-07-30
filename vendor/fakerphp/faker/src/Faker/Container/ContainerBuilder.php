@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，容器，容器构建器
+ */
 
 declare(strict_types=1);
 

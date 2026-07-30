@@ -16,6 +16,7 @@ return [
     | using this caching library. This connection is used when another is
     | not explicitly specified when executing a given caching function.
 	| 此选项控制默认缓存连接，运行时使用这个缓存库。
+	| 当在执行给定的缓存函数时没有显式地指定此连接。
     |
     | Supported: "apc", "array", "database", "file",
     |            "memcached", "redis", "dynamodb"
@@ -33,6 +34,7 @@ return [
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
 	| 在这里，你可以为定用定义所有缓存"存储"和他们的驱动。
+	| 您甚至可以为存储在缓存中的项目组类型的相同的缓存驱动程序定义多个存储。
     |
     */
 
@@ -102,6 +104,7 @@ return [
     | be other applications utilizing the same cache. So, we'll specify a
     | value to get prefixed to all our keys so we can avoid collisions.
 	| 当使用基于内存的存储（如APC或Memcached）时，这可能被使用相同缓存的其他应用。
+	| 因此,我们将指定一个值来预先固定所有的键,这样我们就可以避免碰撞。
     |
     */
 

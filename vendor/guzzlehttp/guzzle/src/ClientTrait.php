@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，客户端特征
  */
@@ -13,6 +12,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Client interface for sending HTTP requests.
+ * 发送HTTP请求的客户端接口。
  */
 trait ClientTrait
 {
@@ -34,6 +34,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP GET request.
+	 * 创建并发送HTTP GET请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -51,6 +52,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP HEAD request.
+	 * 创建并发送HTTP HEAD请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can

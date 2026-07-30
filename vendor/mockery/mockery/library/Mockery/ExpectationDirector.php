@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，期望主管
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -23,6 +26,7 @@ class ExpectationDirector
 {
     /**
      * Stores an array of all default expectations for this mock
+	 * 存储此模拟的所有默认期望的数组
      *
      * @var list<ExpectationInterface>
      */
@@ -30,6 +34,7 @@ class ExpectationDirector
 
     /**
      * Stores an array of all expectations for this mock
+	 * 存储此模拟的所有期望数组
      *
      * @var list<ExpectationInterface>
      */
@@ -37,6 +42,7 @@ class ExpectationDirector
 
     /**
      * The expected order of next call
+	 * 下一次呼叫的预期顺序
      *
      * @var int
      */

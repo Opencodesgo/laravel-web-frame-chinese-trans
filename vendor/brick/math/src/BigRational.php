@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，大的有理数
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * An arbitrarily large rational number.
+ * 任意大的有理数。
  *
  * This class is immutable.
  *
@@ -20,6 +24,7 @@ final class BigRational extends BigNumber
 {
     /**
      * The numerator.
+	 * 分子。
      *
      * @var BigInteger
      */
@@ -27,6 +32,7 @@ final class BigRational extends BigNumber
 
     /**
      * The denominator. Always strictly positive.
+	 * 分母。总是非常积极。
      *
      * @var BigInteger
      */

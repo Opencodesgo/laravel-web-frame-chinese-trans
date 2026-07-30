@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，数学，内部的，计算器，BcMath 计算器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Calculator implementation built around the bcmath library.
+ * 计算器实现在bcmath库中。
  *
  * @internal
  *

@@ -1,13 +1,13 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，请求选项
  */
 
 namespace GuzzleHttp;
 
 /**
  * This class contains a list of built-in Guzzle request options.
+ * 该类包含一个内置的Guzzle请求选项列表。
  *
  * @see https://docs.guzzlephp.org/en/latest/request-options.html
  */

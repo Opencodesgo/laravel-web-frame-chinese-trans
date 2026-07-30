@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，报表
+ */
 
 namespace Facade\FlareClient;
 

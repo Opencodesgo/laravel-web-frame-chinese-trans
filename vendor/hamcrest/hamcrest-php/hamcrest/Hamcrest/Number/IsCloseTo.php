@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数字，IsCloseTo
+ */
+
 namespace Hamcrest\Number;
 
 /*
@@ -10,6 +14,7 @@ use Hamcrest\TypeSafeMatcher;
 /**
  * Is the value a number equal to a value within some range of
  * acceptable error?
+ * 该值是否等于某个可接受误差范围内的数值？
  */
 class IsCloseTo extends TypeSafeMatcher
 {

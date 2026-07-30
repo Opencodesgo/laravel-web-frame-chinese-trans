@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，MimeTypeDetection，覆盖扩展到 Mime类型映射
+ */
 
 namespace League\MimeTypeDetection;
 

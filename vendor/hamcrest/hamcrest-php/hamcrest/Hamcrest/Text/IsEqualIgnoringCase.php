@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Text，是否等于忽略大小写
+ */
+
 namespace Hamcrest\Text;
 
 /*

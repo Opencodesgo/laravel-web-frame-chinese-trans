@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Exception，无效选项异常
+ * League，CommonMark，异常，无效选项异常
  */
 
 /*

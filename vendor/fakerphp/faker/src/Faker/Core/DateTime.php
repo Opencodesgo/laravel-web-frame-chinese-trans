@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，日期时间
+ */
 
 namespace Faker\Core;
 

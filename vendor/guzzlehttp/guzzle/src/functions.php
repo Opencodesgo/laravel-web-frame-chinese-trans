@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，函数
  */
@@ -8,6 +7,7 @@ namespace GuzzleHttp;
 
 /**
  * Debug function used to describe the provided value type and class.
+ * 用于描述所提供的值类型和类的调试函数。
  *
  * @param mixed $input Any type of variable to describe the type of. This
  *                     parameter misses a typehint because of that.
@@ -24,6 +24,7 @@ function describe_type($input): string
 
 /**
  * Parses an array of header lines into an associative array of headers.
+ * 将标题行数组解析成一个关联数组的头
  *
  * @param iterable $lines Header lines array of strings in the following
  *                        format: "Name: Value"

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理程序，流处理程序
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -17,6 +20,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * HTTP handler that uses PHP's HTTP stream wrapper.
+ * 使用PHP的HTTP流包装器的HTTP处理程序。
  *
  * @final
  */
@@ -29,6 +33,7 @@ class StreamHandler
 
     /**
      * Sends an HTTP request.
+	 * 发送HTTP请求
      *
      * @param RequestInterface $request Request to send.
      * @param array            $options Request transfer options.
@@ -142,6 +147,7 @@ class StreamHandler
 
         // Do not drain when the request is a HEAD request because they have
         // no body.
+		// 当请求为 HEAD 请求时，请不要发送响应体，因为它们没有内容。
         if ($sink !== $stream) {
             $this->drain($stream, $sink, $response->getHeaderLine('Content-Length'));
         }

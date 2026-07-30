@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，栈处理器
  */
@@ -13,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Creates a composed Guzzle handler function by stacking middlewares on top of
  * an HTTP handler function.
+ * 通过在 HTTP 处理器函数上叠加中间件，创建一个组合的 Guzzle 处理器函数。
  *
  * @final
  */
@@ -70,6 +70,7 @@ class HandlerStack
 
     /**
      * Invokes the handler stack as a composed handler
+	 * 调用处理程序堆栈作为一个组合的处理程序
      *
      * @return ResponseInterface|PromiseInterface
      */

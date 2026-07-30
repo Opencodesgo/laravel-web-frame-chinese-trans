@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Block，要素，代码块
+ * League，CommonMark，Block，要素，围栏式代码
  */
 
 /*

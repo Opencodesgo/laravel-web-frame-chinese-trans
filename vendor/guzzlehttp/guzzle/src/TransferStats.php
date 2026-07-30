@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，传输数据统计
+ * GuzzleHttp，传输数据
  */
 
 namespace GuzzleHttp;
@@ -13,6 +12,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Represents data at the point after it was transferred either successfully
  * or after a network error.
+ * 表示数据在成功传输或发生网络错误后的时间点。
  */
 final class TransferStats
 {

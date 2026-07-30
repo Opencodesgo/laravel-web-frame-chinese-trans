@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，集中
  */
@@ -74,6 +73,7 @@ class Pool implements PromisorInterface
 
     /**
      * Get promise
+	 * 获得承诺
      */
     public function promise(): PromiseInterface
     {
