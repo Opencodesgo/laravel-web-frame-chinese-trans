@@ -11,7 +11,6 @@ return [
     |--------------------------------------------------------------------------
     |
     | The allowed_methods and allowed_headers options are case-insensitive.
-	| allowed_methods和allowed_headers选项不区分大小写。
     |
     | You don't need to provide both allowed_origins and allowed_origins_patterns.
     | If one of the strings passed matches, it is considered a valid origin.

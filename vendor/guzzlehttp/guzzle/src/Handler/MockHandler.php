@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，模拟处理程序
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -14,6 +17,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Handler that returns responses or throw exceptions from a queue.
+ * 返回响应或从队列抛出异常的处理程序。
  *
  * @final
  */
@@ -47,6 +51,7 @@ class MockHandler implements \Countable
     /**
      * Creates a new MockHandler that uses the default handler stack list of
      * middlewares.
+	 * 创建一个新的模型处理程序,它使用默认的中间件处理程序堆栈列表。
      *
      * @param array|null    $queue       Array of responses, callables, or exceptions.
      * @param callable|null $onFulfilled Callback to invoke when the return value is fulfilled.
@@ -167,6 +172,7 @@ class MockHandler implements \Countable
 
     /**
      * Get the last received request.
+	 * 得到最后收到的请求
      */
     public function getLastRequest(): ?RequestInterface
     {
@@ -175,6 +181,7 @@ class MockHandler implements \Countable
 
     /**
      * Get the last received request options.
+	 * 获取最后收到的请求选项
      */
     public function getLastOptions(): array
     {
@@ -183,6 +190,7 @@ class MockHandler implements \Countable
 
     /**
      * Returns the number of remaining items in the queue.
+	 * 返回队列中剩余项的数量
      */
     public function count(): int
     {

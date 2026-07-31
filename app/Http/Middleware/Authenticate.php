@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，身份验证
+ * app，Http，中间件，验证
  */
 
 namespace App\Http\Middleware;

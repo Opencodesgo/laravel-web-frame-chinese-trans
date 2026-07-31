@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，延迟显示值
+ * Illuminate，契约，支持，延迟显示可显示值
  */
 
 namespace Illuminate\Contracts\Support;

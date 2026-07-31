@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，信息特征
+ */
 
 declare(strict_types=1);
 
@@ -9,6 +12,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Trait implementing functionality common to requests and responses.
+ * 实现请求和响应通用功能的特征。
  */
 trait MessageTrait
 {
@@ -183,6 +187,7 @@ trait MessageTrait
 
     /**
      * Trims whitespace from the header values.
+	 * 从标头值中裁剪空白。
      *
      * Spaces and tabs ought to be excluded by parsers when extracting the field value from a header field.
      *

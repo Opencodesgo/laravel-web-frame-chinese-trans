@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，路由，控制台，存根，需要根据实际修改
+ * Illuminate，路由，存根，中间件，需要根据实际修改
  */
 
 namespace {{ namespace }};
 
 use Closure;
+use Illuminate\Http\Request;
 
 class {{ class }}
 {
@@ -14,10 +15,10 @@ class {{ class }}
 	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         return $next($request);
     }

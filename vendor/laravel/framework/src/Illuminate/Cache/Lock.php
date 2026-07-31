@@ -16,7 +16,7 @@ abstract class Lock implements LockContract
 
     /**
      * The name of the lock.
-	 * 锁的名称
+	 * 锁名称
      *
      * @var string
      */
@@ -118,7 +118,7 @@ abstract class Lock implements LockContract
      *
      * @param  int  $seconds
      * @param  callable|null  $callback
-     * @return bool
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Cache\LockTimeoutException
      */
@@ -168,7 +168,7 @@ abstract class Lock implements LockContract
     }
 
     /**
-     * Specify the number of milliseconds to sleep in between blocked lock aquisition attempts.
+     * Specify the number of milliseconds to sleep in between blocked lock acquisition attempts.
 	 * 指定被阻塞的锁获取尝试之间的睡眠毫秒数
      *
      * @param  int  $milliseconds

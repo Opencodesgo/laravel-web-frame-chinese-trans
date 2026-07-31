@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，事件，信息传送
+ * Illuminate，邮件，事件，信息传送中
  */
 
 namespace Illuminate\Mail\Events;
@@ -25,7 +25,7 @@ class MessageSending
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \Swift_Message  $message
      * @param  array  $data

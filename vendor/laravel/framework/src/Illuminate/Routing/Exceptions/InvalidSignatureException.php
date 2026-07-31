@@ -11,7 +11,7 @@ class InvalidSignatureException extends HttpException
 {
     /**
      * Create a new exception instance.
-	 * 创建新的异常实例
+	 * 创建一个新的异常实例
      *
      * @return void
      */

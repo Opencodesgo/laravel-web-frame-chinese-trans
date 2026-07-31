@@ -6,7 +6,7 @@
 namespace Illuminate\Broadcasting;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\Broadcaster;
+use Illuminate\Contracts\Broadcasting\Factory as BroadcastingFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
@@ -27,7 +27,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该作业的次数
+	 * 可能尝试该任务的次数
      *
      * @var int
      */
@@ -35,7 +35,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * The number of seconds the job can run before timing out.
-	 * 作业在超时之前可以运行的秒数
+	 * 任务在超时之前可以运行的秒数
      *
      * @var int
      */
@@ -43,7 +43,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * Create a new job handler instance.
-	 * 创建新的作业处理实例
+	 * 创建新的任务处理程序实例
      *
      * @param  mixed  $event
      * @return void
@@ -53,24 +53,38 @@ class BroadcastEvent implements ShouldQueue
         $this->event = $event;
         $this->tries = property_exists($event, 'tries') ? $event->tries : null;
         $this->timeout = property_exists($event, 'timeout') ? $event->timeout : null;
+        $this->afterCommit = property_exists($event, 'afterCommit') ? $event->afterCommit : null;
     }
 
     /**
      * Handle the queued job.
-	 * 处理排队作业
+	 * 处理队列任务
      *
-     * @param  \Illuminate\Contracts\Broadcasting\Broadcaster  $broadcaster
+     * @param  \Illuminate\Contracts\Broadcasting\Factory  $manager
      * @return void
      */
-    public function handle(Broadcaster $broadcaster)
+    public function handle(BroadcastingFactory $manager)
     {
         $name = method_exists($this->event, 'broadcastAs')
                 ? $this->event->broadcastAs() : get_class($this->event);
 
-        $broadcaster->broadcast(
-            Arr::wrap($this->event->broadcastOn()), $name,
-            $this->getPayloadFromEvent($this->event)
-        );
+        $channels = Arr::wrap($this->event->broadcastOn());
+
+        if (empty($channels)) {
+            return;
+        }
+
+        $connections = method_exists($this->event, 'broadcastConnections')
+                            ? $this->event->broadcastConnections()
+                            : [null];
+
+        $payload = $this->getPayloadFromEvent($this->event);
+
+        foreach ($connections as $connection) {
+            $manager->connection($connection)->broadcast(
+                $channels, $name, $payload
+            );
+        }
     }
 
     /**
@@ -82,10 +96,9 @@ class BroadcastEvent implements ShouldQueue
      */
     protected function getPayloadFromEvent($event)
     {
-        if (method_exists($event, 'broadcastWith')) {
-            return array_merge(
-                $event->broadcastWith(), ['socket' => data_get($event, 'socket')]
-            );
+        if (method_exists($event, 'broadcastWith') &&
+            ! is_null($payload = $event->broadcastWith())) {
+            return array_merge($payload, ['socket' => data_get($event, 'socket')]);
         }
 
         $payload = [];

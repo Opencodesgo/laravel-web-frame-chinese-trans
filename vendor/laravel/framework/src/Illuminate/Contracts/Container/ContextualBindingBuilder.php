@@ -20,8 +20,17 @@ interface ContextualBindingBuilder
      * Define the implementation for the contextual binding.
 	 * 定义上下文绑定的实现
      *
-     * @param  \Closure|string  $implementation
+     * @param  \Closure|string|array  $implementation
      * @return void
      */
     public function give($implementation);
+
+    /**
+     * Define tagged services to be used as the implementation for the contextual binding.
+	 * 定义标记的服务，用作上下文绑定的实现。
+     *
+     * @param  string  $tag
+     * @return void
+     */
+    public function giveTagged($tag);
 }

@@ -10,7 +10,11 @@ use Illuminate\Contracts\Bus\QueueingDispatcher;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingChain;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Jobs\SyncJob;
+use Illuminate\Support\Collection;
 use RuntimeException;
 
 class Dispatcher implements QueueingDispatcher
@@ -79,16 +83,36 @@ class Dispatcher implements QueueingDispatcher
      */
     public function dispatch($command)
     {
-        if ($this->queueResolver && $this->commandShouldBeQueued($command)) {
-            return $this->dispatchToQueue($command);
-        }
-
-        return $this->dispatchNow($command);
+        return $this->queueResolver && $this->commandShouldBeQueued($command)
+                        ? $this->dispatchToQueue($command)
+                        : $this->dispatchNow($command);
     }
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
 	 * 将命令分派给当前进程中相应的处理程序
+     *
+     * Queueable jobs will be dispatched to the "sync" queue.
+	 * 可排队作业将被分配到"同步"队列
+     *
+     * @param  mixed  $command
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    public function dispatchSync($command, $handler = null)
+    {
+        if ($this->queueResolver &&
+            $this->commandShouldBeQueued($command) &&
+            method_exists($command, 'onConnection')) {
+            return $this->dispatchToQueue($command->onConnection('sync'));
+        }
+
+        return $this->dispatchNow($command, $handler);
+    }
+
+    /**
+     * Dispatch a command to its appropriate handler in the current process without using the synchronous queue.
+	 * 在不使用同步队列的情况下，将命令分派给当前进程中相应的处理程序。
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -96,17 +120,67 @@ class Dispatcher implements QueueingDispatcher
      */
     public function dispatchNow($command, $handler = null)
     {
+        $uses = class_uses_recursive($command);
+
+        if (in_array(InteractsWithQueue::class, $uses) &&
+            in_array(Queueable::class, $uses) &&
+            ! $command->job) {
+            $command->setJob(new SyncJob($this->container, json_encode([]), 'sync', 'sync'));
+        }
+
         if ($handler || $handler = $this->getCommandHandler($command)) {
             $callback = function ($command) use ($handler) {
-                return $handler->handle($command);
+                $method = method_exists($handler, 'handle') ? 'handle' : '__invoke';
+
+                return $handler->{$method}($command);
             };
         } else {
             $callback = function ($command) {
-                return $this->container->call([$command, 'handle']);
+                $method = method_exists($command, 'handle') ? 'handle' : '__invoke';
+
+                return $this->container->call([$command, $method]);
             };
         }
 
         return $this->pipeline->send($command)->through($this->pipes)->then($callback);
+    }
+
+    /**
+     * Attempt to find the batch with the given ID.
+	 * 尝试查找具有给定ID的批处理
+     *
+     * @param  string  $batchId
+     * @return \Illuminate\Bus\Batch|null
+     */
+    public function findBatch(string $batchId)
+    {
+        return $this->container->make(BatchRepository::class)->find($batchId);
+    }
+
+    /**
+     * Create a new batch of queueable jobs.
+	 * 创建新的批处理可排队任务
+     *
+     * @param  \Illuminate\Support\Collection|array|mixed  $jobs
+     * @return \Illuminate\Bus\PendingBatch
+     */
+    public function batch($jobs)
+    {
+        return new PendingBatch($this->container, Collection::wrap($jobs));
+    }
+
+    /**
+     * Create a new chain of queueable jobs.
+	 * 创建一个新的可排队作业链
+     *
+     * @param  \Illuminate\Support\Collection|array  $jobs
+     * @return \Illuminate\Foundation\Bus\PendingChain
+     */
+    public function chain($jobs)
+    {
+        $jobs = Collection::wrap($jobs);
+
+        return new PendingChain($jobs->shift(), $jobs->toArray());
     }
 
     /**
@@ -155,6 +229,8 @@ class Dispatcher implements QueueingDispatcher
      *
      * @param  mixed  $command
      * @return mixed
+     *
+     * @throws \RuntimeException
      */
     public function dispatchToQueue($command)
     {

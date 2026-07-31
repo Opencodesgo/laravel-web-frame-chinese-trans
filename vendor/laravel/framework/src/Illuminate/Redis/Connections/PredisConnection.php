@@ -1,15 +1,12 @@
 <?php
 /**
  * Illuminate，Redis，连接，Predis 连接
- * Predis 需要自己安装
  */
 
 namespace Illuminate\Redis\Connections;
 
 use Closure;
 use Illuminate\Contracts\Redis\Connection as ConnectionContract;
-use Predis\Command\ServerFlushDatabase;
-use Predis\Connection\Aggregate\ClusterInterface;
 
 /**
  * @mixin \Predis\Client
@@ -18,7 +15,7 @@ class PredisConnection extends Connection implements ConnectionContract
 {
     /**
      * The Predis client.
-	 * Predis客户端
+	 * Predisp客户端
      *
      * @var \Predis\Client
      */
@@ -58,22 +55,5 @@ class PredisConnection extends Connection implements ConnectionContract
         }
 
         unset($loop);
-    }
-
-    /**
-     * Flush the selected Redis database.
-	 * 刷新所选Redis数据库
-     *
-     * @return void
-     */
-    public function flushdb()
-    {
-        if (! $this->client->getConnection() instanceof ClusterInterface) {
-            return $this->command('flushdb');
-        }
-
-        foreach ($this->getConnection() as $node) {
-            $node->executeCommand(new ServerFlushDatabase);
-        }
     }
 }

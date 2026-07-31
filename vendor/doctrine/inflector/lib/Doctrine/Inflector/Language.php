@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Inflector，语言
+ */
 
 declare(strict_types=1);
 

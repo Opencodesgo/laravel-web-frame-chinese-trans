@@ -22,7 +22,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Create a new fluent instance.
-	 * 创建一个新的流畅实例
+	 * 创建新的流畅实例
      *
      * @param  array|object  $attributes
      * @return void
@@ -64,7 +64,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Convert the fluent instance to an array.
-	 * 将fluent实例转换为数组
+	 * 转换流畅实例为数组
      *
      * @return array
      */
@@ -79,6 +79,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -98,11 +99,12 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Determine if the given offset exists.
-	 * 确定给定偏移量是否存在
+	 * 确定给定的偏移量是否存在
      *
      * @param  string  $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->attributes[$offset]);
@@ -115,6 +117,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * @param  string  $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -128,6 +131,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * @param  mixed  $value
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->attributes[$offset] = $value;
@@ -140,6 +144,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * @param  string  $offset
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->attributes[$offset]);

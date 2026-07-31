@@ -20,7 +20,7 @@ class Cache extends AbstractCache
 
     /**
      * The cache key.
-	 * 缓存键
+	 * 缓存主键
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class Cache extends AbstractCache
 
     /**
      * Create a new cache instance.
-	 * 创建新的缓存实例
+	 * 创建一个新的缓存实例
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $repository
      * @param  string  $key
@@ -52,7 +52,7 @@ class Cache extends AbstractCache
 
     /**
      * Load the cache.
-	 * 导入缓存
+	 * 加载缓存
      *
      * @return void
      */

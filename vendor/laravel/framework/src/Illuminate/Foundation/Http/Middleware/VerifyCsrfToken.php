@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，验证CSRF令牌
+ * Illuminate，基础，Http，中间件，检查维护模式
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -38,7 +38,7 @@ class VerifyCsrfToken
 
     /**
      * The URIs that should be excluded from CSRF verification.
-	 * 该uri应该被排除在CSRF验证之外
+	 * 应该从CSRF验证中排除的URI
      *
      * @var array
      */
@@ -46,7 +46,7 @@ class VerifyCsrfToken
 
     /**
      * Indicates whether the XSRF-TOKEN cookie should be set on the response.
-	 * 指示是否应该在响应上设置xsrf令牌cookie
+	 * 指示是否应该在响应上设置XSRF-TOKEN cookie
      *
      * @var bool
      */
@@ -96,7 +96,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the HTTP request uses a ‘read’ verb.
-	 * 确定HTTP请求是否使用"read"谓词
+	 * 确定HTTP请求是否使用'read'谓词
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -119,7 +119,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the request has a URI that should pass through CSRF verification.
-	 * 确定请求是否有一个URI,该URI应该通过CSRF验证
+	 * 确定请求是否具有应该通过CSRF验证的URI
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool

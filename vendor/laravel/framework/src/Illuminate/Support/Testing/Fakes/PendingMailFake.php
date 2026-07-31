@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，待处理邮件假装
+ * Illuminate，支持，测试，假装，待处理邮件
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -27,25 +27,11 @@ class PendingMailFake extends PendingMail
 	 * 发送一个新的可邮件消息实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     * @return mixed
+     * @return void
      */
     public function send(Mailable $mailable)
     {
-        return $this->mailer->send($this->fill($mailable));
-    }
-
-    /**
-     * Send a mailable message immediately.
-	 * 立即发送可发送的消息
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     * @return mixed
-     *
-     * @deprecated Use send() instead.
-     */
-    public function sendNow(Mailable $mailable)
-    {
-        return $this->send($mailable);
+        $this->mailer->send($this->fill($mailable));
     }
 
     /**

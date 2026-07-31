@@ -17,7 +17,7 @@ class MemcachedLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建一个新的锁实例
+	 * 创建新的锁实例
      *
      * @param  \Memcached  $memcached
      * @param  string  $name

@@ -6,11 +6,23 @@
 namespace Illuminate\Database\Concerns;
 
 use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\MultipleRecordsFoundException;
+use Illuminate\Database\RecordsNotFoundException;
+use Illuminate\Pagination\Cursor;
+use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Traits\Conditionable;
+use InvalidArgumentException;
+use RuntimeException;
 
 trait BuildsQueries
 {
+    use Conditionable;
+
     /**
      * Chunk the results of the query.
 	 * 将查询的结果分块
@@ -29,7 +41,7 @@ trait BuildsQueries
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
-			// 我们将执行给定页面的查询并获得结果。如果没有结果，我们可以从这里中断并返回。
+			// 我们将执行给定页面的查询并获得结果。
             $results = $this->forPage($page, $count)->get();
 
             $countResults = $results->count();
@@ -55,12 +67,35 @@ trait BuildsQueries
     }
 
     /**
+     * Run a map over each item while chunking.
+	 * 在分块时，在每个项目上运行一个地图。
+     *
+     * @param  callable  $callback
+     * @param  int  $count
+     * @return \Illuminate\Support\Collection
+     */
+    public function chunkMap(callable $callback, $count = 1000)
+    {
+        $collection = Collection::make();
+
+        $this->chunk($count, function ($items) use ($collection, $callback) {
+            $items->each(function ($item) use ($collection, $callback) {
+                $collection->push($callback($item));
+            });
+        });
+
+        return $collection;
+    }
+
+    /**
      * Execute a callback over each item while chunking.
 	 * 在分块时对每个项执行回调
      *
      * @param  callable  $callback
      * @param  int  $count
      * @return bool
+     *
+     * @throws \RuntimeException
      */
     public function each(callable $callback, $count = 1000)
     {
@@ -91,13 +126,15 @@ trait BuildsQueries
 
         $lastId = null;
 
+        $page = 1;
+
         do {
             $clone = clone $this;
 
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
-			// 我们将执行给定页面的查询并获得结果。没有结果，我们可以从这里中断并返回。
+			// 我们将执行给定页面的查询并获得结果。
             $results = $clone->forPageAfterId($count, $lastId, $column)->get();
 
             $countResults = $results->count();
@@ -110,13 +147,19 @@ trait BuildsQueries
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
 			// 对于每个数据块结果集，我们将它们传递给回调函数，然后让开发者负责回调中的一切。
-            if ($callback($results) === false) {
+            if ($callback($results, $page) === false) {
                 return false;
             }
 
             $lastId = $results->last()->{$alias};
 
+            if ($lastId === null) {
+                throw new RuntimeException("The chunkById operation was aborted because the [{$alias}] column is not present in the query result.");
+            }
+
             unset($results);
+
+            $page++;
         } while ($countResults == $count);
 
         return true;
@@ -134,13 +177,126 @@ trait BuildsQueries
      */
     public function eachById(callable $callback, $count = 1000, $column = null, $alias = null)
     {
-        return $this->chunkById($count, function ($results) use ($callback) {
+        return $this->chunkById($count, function ($results, $page) use ($callback, $count) {
             foreach ($results as $key => $value) {
-                if ($callback($value, $key) === false) {
+                if ($callback($value, (($page - 1) * $count) + $key) === false) {
                     return false;
                 }
             }
         }, $column, $alias);
+    }
+
+    /**
+     * Query lazily, by chunks of the given size.
+	 * 按给定大小的块惰性查询
+     *
+     * @param  int  $chunkSize
+     * @return \Illuminate\Support\LazyCollection
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function lazy($chunkSize = 1000)
+    {
+        if ($chunkSize < 1) {
+            throw new InvalidArgumentException('The chunk size should be at least 1');
+        }
+
+        $this->enforceOrderBy();
+
+        return LazyCollection::make(function () use ($chunkSize) {
+            $page = 1;
+
+            while (true) {
+                $results = $this->forPage($page++, $chunkSize)->get();
+
+                foreach ($results as $result) {
+                    yield $result;
+                }
+
+                if ($results->count() < $chunkSize) {
+                    return;
+                }
+            }
+        });
+    }
+
+    /**
+     * Query lazily, by chunking the results of a query by comparing IDs.
+	 * 惰性查询，通过比较id将查询结果分块。
+     *
+     * @param  int  $chunkSize
+     * @param  string|null  $column
+     * @param  string|null  $alias
+     * @return \Illuminate\Support\LazyCollection
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function lazyById($chunkSize = 1000, $column = null, $alias = null)
+    {
+        return $this->orderedLazyById($chunkSize, $column, $alias);
+    }
+
+    /**
+     * Query lazily, by chunking the results of a query by comparing IDs in descending order.
+	 * 惰性查询，通过按降序比较id来将查询结果分块。
+     *
+     * @param  int  $chunkSize
+     * @param  string|null  $column
+     * @param  string|null  $alias
+     * @return \Illuminate\Support\LazyCollection
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function lazyByIdDesc($chunkSize = 1000, $column = null, $alias = null)
+    {
+        return $this->orderedLazyById($chunkSize, $column, $alias, true);
+    }
+
+    /**
+     * Query lazily, by chunking the results of a query by comparing IDs in a given order.
+	 * 惰性查询，通过按给定顺序比较id来将查询结果分块。
+     *
+     * @param  int  $chunkSize
+     * @param  string|null  $column
+     * @param  string|null  $alias
+     * @param  bool  $descending
+     * @return \Illuminate\Support\LazyCollection
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function orderedLazyById($chunkSize = 1000, $column = null, $alias = null, $descending = false)
+    {
+        if ($chunkSize < 1) {
+            throw new InvalidArgumentException('The chunk size should be at least 1');
+        }
+
+        $column = $column ?? $this->defaultKeyName();
+
+        $alias = $alias ?? $column;
+
+        return LazyCollection::make(function () use ($chunkSize, $column, $alias, $descending) {
+            $lastId = null;
+
+            while (true) {
+                $clone = clone $this;
+
+                if ($descending) {
+                    $results = $clone->forPageBeforeId($chunkSize, $lastId, $column)->get();
+                } else {
+                    $results = $clone->forPageAfterId($chunkSize, $lastId, $column)->get();
+                }
+
+                foreach ($results as $result) {
+                    yield $result;
+                }
+
+                if ($results->count() < $chunkSize) {
+                    return;
+                }
+
+                $lastId = $results->last()->{$alias};
+            }
+        });
     }
 
     /**
@@ -156,55 +312,146 @@ trait BuildsQueries
     }
 
     /**
-     * Apply the callback's query changes if the given "value" is true.
-	 * 如果给定的"value"为真，则应用回调的查询更改。
+     * Execute the query and get the first result if it's the sole matching record.
+	 * 如果查询是唯一匹配的记录，则执行查询并获得第一个结果。
      *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  callable|null  $default
-     * @return mixed|$this
+     * @param  array|string  $columns
+     * @return \Illuminate\Database\Eloquent\Model|object|static|null
+     *
+     * @throws \Illuminate\Database\RecordsNotFoundException
+     * @throws \Illuminate\Database\MultipleRecordsFoundException
      */
-    public function when($value, $callback, $default = null)
+    public function sole($columns = ['*'])
     {
-        if ($value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
+        $result = $this->take(2)->get($columns);
+
+        if ($result->isEmpty()) {
+            throw new RecordsNotFoundException;
         }
 
-        return $this;
+        if ($result->count() > 1) {
+            throw new MultipleRecordsFoundException;
+        }
+
+        return $result->first();
     }
 
     /**
-     * Pass the query to a given callback.
-	 * 将查询传递给给定的回调
+     * Paginate the given query using a cursor paginator.
+	 * 使用游标分页器对给定查询进行分页
      *
-     * @param  callable  $callback
-     * @return $this
+     * @param  int  $perPage
+     * @param  array  $columns
+     * @param  string  $cursorName
+     * @param  \Illuminate\Pagination\Cursor|string|null  $cursor
+     * @return \Illuminate\Contracts\Pagination\CursorPaginator
      */
-    public function tap($callback)
+    protected function paginateUsingCursor($perPage, $columns = ['*'], $cursorName = 'cursor', $cursor = null)
     {
-        return $this->when(true, $callback);
+        if (! $cursor instanceof Cursor) {
+            $cursor = is_string($cursor)
+                ? Cursor::fromEncoded($cursor)
+                : CursorPaginator::resolveCurrentCursor($cursorName, $cursor);
+        }
+
+        $orders = $this->ensureOrderForCursorPagination(! is_null($cursor) && $cursor->pointsToPreviousItems());
+
+        if (! is_null($cursor)) {
+            $addCursorConditions = function (self $builder, $previousColumn, $i) use (&$addCursorConditions, $cursor, $orders) {
+                $unionBuilders = isset($builder->unions) ? collect($builder->unions)->pluck('query') : collect();
+
+                if (! is_null($previousColumn)) {
+                    $builder->where(
+                        $this->getOriginalColumnNameForCursorPagination($this, $previousColumn),
+                        '=',
+                        $cursor->parameter($previousColumn)
+                    );
+
+                    $unionBuilders->each(function ($unionBuilder) use ($previousColumn, $cursor) {
+                        $unionBuilder->where(
+                            $this->getOriginalColumnNameForCursorPagination($this, $previousColumn),
+                            '=',
+                            $cursor->parameter($previousColumn)
+                        );
+
+                        $this->addBinding($unionBuilder->getRawBindings()['where'], 'union');
+                    });
+                }
+
+                $builder->where(function (self $builder) use ($addCursorConditions, $cursor, $orders, $i, $unionBuilders) {
+                    ['column' => $column, 'direction' => $direction] = $orders[$i];
+
+                    $builder->where(
+                        $this->getOriginalColumnNameForCursorPagination($this, $column),
+                        $direction === 'asc' ? '>' : '<',
+                        $cursor->parameter($column)
+                    );
+
+                    if ($i < $orders->count() - 1) {
+                        $builder->orWhere(function (self $builder) use ($addCursorConditions, $column, $i) {
+                            $addCursorConditions($builder, $column, $i + 1);
+                        });
+                    }
+
+                    $unionBuilders->each(function ($unionBuilder) use ($column, $direction, $cursor, $i, $orders, $addCursorConditions) {
+                        $unionBuilder->where(function ($unionBuilder) use ($column, $direction, $cursor, $i, $orders, $addCursorConditions) {
+                            $unionBuilder->where(
+                                $this->getOriginalColumnNameForCursorPagination($this, $column),
+                                $direction === 'asc' ? '>' : '<',
+                                $cursor->parameter($column)
+                            );
+
+                            if ($i < $orders->count() - 1) {
+                                $unionBuilder->orWhere(function (self $builder) use ($addCursorConditions, $column, $i) {
+                                    $addCursorConditions($builder, $column, $i + 1);
+                                });
+                            }
+
+                            $this->addBinding($unionBuilder->getRawBindings()['where'], 'union');
+                        });
+                    });
+                });
+            };
+
+            $addCursorConditions($this, null, 0);
+        }
+
+        $this->limit($perPage + 1);
+
+        return $this->cursorPaginator($this->get($columns), $perPage, $cursor, [
+            'path' => Paginator::resolveCurrentPath(),
+            'cursorName' => $cursorName,
+            'parameters' => $orders->pluck('column')->toArray(),
+        ]);
     }
 
     /**
-     * Apply the callback's query changes if the given "value" is false.
-	 * 如果给定的"value"为false，则应用回调的查询更改。
+     * Get the original column name of the given column, without any aliasing.
+	 * 获取给定列的原始列名，没有任何混叠。
      *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  callable|null  $default
-     * @return mixed|$this
+     * @param  \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder  $builder
+     * @param  string  $parameter
+     * @return string
      */
-    public function unless($value, $callback, $default = null)
+    protected function getOriginalColumnNameForCursorPagination($builder, string $parameter)
     {
-        if (! $value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
+        $columns = $builder instanceof Builder ? $builder->getQuery()->columns : $builder->columns;
+
+        if (! is_null($columns)) {
+            foreach ($columns as $column) {
+                if (($position = stripos($column, ' as ')) !== false) {
+                    $as = substr($column, $position, 4);
+
+                    [$original, $alias] = explode($as, $column);
+
+                    if ($parameter === $alias) {
+                        return $original;
+                    }
+                }
+            }
         }
 
-        return $this;
+        return $parameter;
     }
 
     /**
@@ -240,5 +487,34 @@ trait BuildsQueries
         return Container::getInstance()->makeWith(Paginator::class, compact(
             'items', 'perPage', 'currentPage', 'options'
         ));
+    }
+
+    /**
+     * Create a new cursor paginator instance.
+	 * 创建一个新的游标分页器实例
+     *
+     * @param  \Illuminate\Support\Collection  $items
+     * @param  int  $perPage
+     * @param  \Illuminate\Pagination\Cursor  $cursor
+     * @param  array  $options
+     * @return \Illuminate\Pagination\CursorPaginator
+     */
+    protected function cursorPaginator($items, $perPage, $cursor, $options)
+    {
+        return Container::getInstance()->makeWith(CursorPaginator::class, compact(
+            'items', 'perPage', 'cursor', 'options'
+        ));
+    }
+
+    /**
+     * Pass the query to a given callback.
+	 * 将查询传递给给定的回调
+     *
+     * @param  callable  $callback
+     * @return $this|mixed
+     */
+    public function tap($callback)
+    {
+        return $this->when(true, $callback);
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，事件
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -13,13 +13,13 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DummyClass
+class {{ class }}
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
-	 * 创建事件实例
+	 * 创建新的事件实例
      *
      * @return void
      */
@@ -30,7 +30,7 @@ class DummyClass
 
     /**
      * Get the channels the event should broadcast on.
-	 * 获取事件应该播放的频道
+	 * 获取该事件应该播放的频道
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */

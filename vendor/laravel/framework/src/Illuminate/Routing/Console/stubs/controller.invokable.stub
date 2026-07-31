@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制台，存根，需要根据实际修改
+ * Illuminate，路由，存根，控制器，需要根据实际修改
  */
 
 namespace {{ namespace }};

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，消息，简单信息
+ * Illuminate，通知，消息，简单消息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -12,7 +12,7 @@ class SimpleMessage
 {
     /**
      * The "level" of the notification (info, success, error).
-	 * 通知的"级别" (info, success, error)
+	 * 通知的"级别"（info, success, error）
      *
      * @var string
      */
@@ -97,7 +97,7 @@ class SimpleMessage
 
     /**
      * Indicate that the notification gives information about an error.
-	 * 指明通知提供有关错误的信息
+	 * 指示通知提供有关错误的信息
      *
      * @return $this
      */
@@ -110,7 +110,7 @@ class SimpleMessage
 
     /**
      * Set the "level" of the notification (success, error, etc.).
-	 * 设置通知的"级别"(成功、错误等)
+	 * 设置通知的"级别"（成功、错误等）
      *
      * @param  string  $level
      * @return $this
@@ -177,6 +177,22 @@ class SimpleMessage
     }
 
     /**
+     * Add lines of text to the notification.
+	 * 向通知添加文本行
+     *
+     * @param  iterable  $lines
+     * @return $this
+     */
+    public function lines($lines)
+    {
+        foreach ($lines as $line) {
+            $this->line($line);
+        }
+
+        return $this;
+    }
+
+    /**
      * Add a line of text to the notification.
 	 * 向通知添加一行文本
      *
@@ -213,7 +229,7 @@ class SimpleMessage
             return implode(' ', array_map('trim', $line));
         }
 
-        return trim(implode(' ', array_map('trim', preg_split('/\\r\\n|\\r|\\n/', $line))));
+        return trim(implode(' ', array_map('trim', preg_split('/\\r\\n|\\r|\\n/', $line ?? ''))));
     }
 
     /**
@@ -263,7 +279,7 @@ class SimpleMessage
             'outroLines' => $this->outroLines,
             'actionText' => $this->actionText,
             'actionUrl' => $this->actionUrl,
-            'displayableActionUrl' => str_replace(['mailto:', 'tel:'], '', $this->actionUrl),
+            'displayableActionUrl' => str_replace(['mailto:', 'tel:'], '', $this->actionUrl ?? ''),
         ];
     }
 }

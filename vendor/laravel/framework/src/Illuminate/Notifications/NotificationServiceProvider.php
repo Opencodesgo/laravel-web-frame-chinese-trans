@@ -13,7 +13,7 @@ class NotificationServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application services.
-	 * 启动应用服务
+	 * 引导应用程序服务
      *
      * @return void
      */

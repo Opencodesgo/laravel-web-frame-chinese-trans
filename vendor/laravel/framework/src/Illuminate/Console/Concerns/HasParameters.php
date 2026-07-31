@@ -21,7 +21,7 @@ trait HasParameters
         // We will loop through all of the arguments and options for the command and
         // set them all on the base command instance. This specifies what can get
         // passed into these commands as "parameters" to control the execution.
-		// 我们将遍历该命令的所有参数和选项
+		// 我们将遍历命令和的所有参数和选项并在基本命令实例中设置它们。
         foreach ($this->getArguments() as $arguments) {
             if ($arguments instanceof InputArgument) {
                 $this->getDefinition()->addArgument($arguments);
@@ -41,7 +41,7 @@ trait HasParameters
 
     /**
      * Get the console command arguments.
-	 * 获取控制台命令参数
+	 * 得到控制台命令参数
      *
      * @return array
      */
@@ -52,7 +52,7 @@ trait HasParameters
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

@@ -1,12 +1,40 @@
 <?php
 /**
- * Illuminate，数据库，模式，Postgres 生成器
+ * Illuminate，数据库，架构，Postgres 构建者
  */
 
 namespace Illuminate\Database\Schema;
 
 class PostgresBuilder extends Builder
 {
+    /**
+     * Create a database in the schema.
+	 * 在模式中创建数据库
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function createDatabase($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileCreateDatabase($name, $this->connection)
+        );
+    }
+
+    /**
+     * Drop a database from the schema if the database exists.
+	 * 如果数据库存在，则从模式中删除该数据库。
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileDropDatabaseIfExists($name)
+        );
+    }
+
     /**
      * Determine if the given table exists.
 	 * 确定给定的表是否存在
@@ -147,7 +175,7 @@ class PostgresBuilder extends Builder
 
     /**
      * Get the column listing for a given table.
-	 * 获取给定表的列列表
+	 * 获取给定表的列清单
      *
      * @param  string  $table
      * @return array

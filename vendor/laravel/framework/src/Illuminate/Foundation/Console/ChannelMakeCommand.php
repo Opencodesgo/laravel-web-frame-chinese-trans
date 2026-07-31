@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:channel 生成通道命令
+ * Illuminate，基础，控制台，make:channel 通道创建命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -27,7 +27,7 @@ class ChannelMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 获取类的默认名称空间
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -43,7 +43,7 @@ class ChannelMakeCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         return str_replace(
-            'DummyUser',
+            ['DummyUser', '{{ userModel }}'],
             class_basename($this->userProviderModel()),
             parent::buildClass($name)
         );
@@ -62,7 +62,7 @@ class ChannelMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

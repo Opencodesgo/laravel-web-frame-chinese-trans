@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，外键定义
+ * Illuminate，数据库，架构，外键定义
  */
 
 namespace Illuminate\Database\Schema;
@@ -29,14 +29,36 @@ class ForeignKeyDefinition extends Fluent
     }
 
     /**
+     * Indicate that updates should be restricted.
+	 * 指示应该限制更新
+     *
+     * @return $this
+     */
+    public function restrictOnUpdate()
+    {
+        return $this->onUpdate('restrict');
+    }
+
+    /**
      * Indicate that deletes should cascade.
-	 * 表明删除应该是级联
+	 * 指示删除应该级联
      *
      * @return $this
      */
     public function cascadeOnDelete()
     {
         return $this->onDelete('cascade');
+    }
+
+    /**
+     * Indicate that deletes should be restricted.
+	 * 指示应该限制删除
+     *
+     * @return $this
+     */
+    public function restrictOnDelete()
+    {
+        return $this->onDelete('restrict');
     }
 
     /**

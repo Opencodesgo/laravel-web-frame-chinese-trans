@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，大浮点数
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
+ * 不可变的,任意性的十进制数字。
  *
  * @psalm-immutable
  */
@@ -18,6 +22,7 @@ final class BigDecimal extends BigNumber
 {
     /**
      * The unscaled value of this decimal number.
+	 * 这个小数的未按比例值。
      *
      * This is a string of digits with an optional leading minus sign.
      * No leading zero must be present.
@@ -29,6 +34,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * The scale (number of digits after the decimal point) of this decimal number.
+	 * 小数点后小数点后的数字(数点小数)。
      *
      * This must be zero or more.
      *
@@ -38,6 +44,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
+	 * 保护构造函数。使用工厂方法获取实例。
      *
      * @param string $value The unscaled value, validated.
      * @param int    $scale The scale, validated.
@@ -50,6 +57,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Creates a BigDecimal of the given value.
+	 * 创建一个大数点的给定值
      *
      * @param BigNumber|int|float|string $value
      *
@@ -66,6 +74,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Creates a BigDecimal from an unscaled value and a scale.
+	 * 从未缩放的值和规模创建一个大数点。
      *
      * Example: `(12345, 3)` will result in the BigDecimal `12.345`.
      *
@@ -89,6 +98,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a BigDecimal representing zero, with a scale of zero.
+	 * 返回一个大写为0的大数点,规模为零。
      *
      * @return BigDecimal
      *
@@ -133,6 +143,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a BigDecimal representing ten, with a scale of zero.
+	 * 返回一个大写小数,代表10,规模为零。
      *
      * @return BigDecimal
      *
@@ -186,6 +197,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the difference of this number and the given one.
+	 * 返回这个数字和给定的值的差值。
      *
      * The result has a scale of `max($this->scale, $that->scale)`.
      *
@@ -213,6 +225,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the product of this number and the given one.
+	 * 返回这个数字和给定的乘积。
      *
      * The result has a scale of `$this->scale + $that->scale`.
      *
@@ -242,6 +255,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the result of the division of this number by the given one, at the given scale.
+	 * 根据给定的刻度返回这个数字的除法的结果
      *
      * @param BigNumber|int|float|string $that         The divisor.
      * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
@@ -280,6 +294,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the exact result of the division of this number by the given one.
+	 * 返回这个数字的确切结果。
      *
      * The scale of the result is automatically calculated to fit all the fraction digits.
      *
@@ -653,6 +668,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a string representing the fractional part of this decimal number.
+	 * 返回代表小数部分的字符串的字符串
      *
      * If the scale is zero, an empty string is returned.
      *
@@ -673,6 +689,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns whether this decimal number has a non-zero fractional part.
+	 * 返回这个十进制数是否有一个非零小数部分
      *
      * @return bool
      */
@@ -754,6 +771,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * This method is required for serializing the object and SHOULD NOT be accessed directly.
+	 * 该方法需要序列化对象,不应该直接访问。
      *
      * @internal
      *
@@ -800,6 +818,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * This method is only here to implement interface Serializable and cannot be accessed directly.
+	 * 此方法仅在这里实现接口序列化,不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
@@ -824,6 +843,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Puts the internal values of the given decimal numbers on the same scale.
+	 * 将给定十进制数的内部值放在相同的尺度上
      *
      * @param BigDecimal $x The first decimal number.
      * @param BigDecimal $y The second decimal number.
@@ -862,6 +882,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Adds leading zeros if necessary to the unscaled value to represent the full decimal number.
+	 * 如果有必要的未缩放值来表示完整的十进制数,则添加引导零。
      *
      * @return string
      */

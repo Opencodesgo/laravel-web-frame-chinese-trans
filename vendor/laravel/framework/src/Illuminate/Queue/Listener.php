@@ -21,7 +21,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 工作进程工作的环境
+	 * 工作者工作的环境
      *
      * @var string
      */
@@ -53,7 +53,7 @@ class Listener
 
     /**
      * Create a new queue listener.
-	 * 创建一个新的队列侦听器
+	 * 创建一个新的队列监听器
      *
      * @param  string  $commandPath
      * @return void
@@ -65,7 +65,7 @@ class Listener
 
     /**
      * Get the PHP binary.
-	 * 得到PHP类
+	 * 得到PHP二进制文件
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Listener
 
     /**
      * Get the Artisan binary.
-	 * 得到工具类
+	 * 得到Artisan二进制文件
      *
      * @return string
      */
@@ -123,7 +123,7 @@ class Listener
         // If the environment is set, we will append it to the command array so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
-		// 如果设置了环境，我们将把它附加到命令数组中，工人将在指定的环境下运行。
+		// 如果设置了环境，我们将把它附加到命令数组中，这样工作者将在指定的环境下运行。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -152,7 +152,7 @@ class Listener
 
     /**
      * Create the command with the listener options.
-	 * 使用侦听器选项创建命令
+	 * 使用监听器选项创建命令
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -167,8 +167,9 @@ class Listener
             'queue:work',
             $connection,
             '--once',
+            "--name={$options->name}",
             "--queue={$queue}",
-            "--delay={$options->delay}",
+            "--backoff={$options->backoff}",
             "--memory={$options->memory}",
             "--sleep={$options->sleep}",
             "--tries={$options->maxTries}",
@@ -179,7 +180,7 @@ class Listener
 
     /**
      * Run the given process.
-	 * 运行给定进程
+	 * 运行给定的进程
      *
      * @param  \Symfony\Component\Process\Process  $process
      * @param  int  $memory
@@ -194,7 +195,7 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
-		// 一旦我们运行了作业，我们将检查内存限制是否已超过。
+		// 一旦我们运行了作业，我们将检查内存限制是否已超过脚本。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Mandango，实体普及器
+ */
 
 namespace Faker\ORM\Mandango;
 
@@ -7,6 +10,7 @@ use Mandango\Mandango;
 
 /**
  * Service class for populating a table through a Mandango ActiveRecord class.
+ * 服务类通过一个Mandango ActiveRecord类填充一个表。
  */
 class EntityPopulator
 {
@@ -94,6 +98,7 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
+	 * 使用实体类插入一个新记录
      */
     public function execute(Mandango $mandango, $insertedEntities)
     {

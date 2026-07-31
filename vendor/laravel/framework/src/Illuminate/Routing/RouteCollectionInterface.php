@@ -11,7 +11,7 @@ interface RouteCollectionInterface
 {
     /**
      * Add a Route instance to the collection.
-	 * 向集合添加路由实例
+	 * 向集合添加一个Route实例
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return \Illuminate\Routing\Route
@@ -23,7 +23,7 @@ interface RouteCollectionInterface
 	 * 刷新名称查找表
      *
      * This is done in case any names are fluently defined or if routes are overwritten.
-	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖。
+	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖
      *
      * @return void
      */
@@ -98,7 +98,7 @@ interface RouteCollectionInterface
 
     /**
      * Get all of the routes keyed by their HTTP verb / method.
-	 * 获取所有由HTTP动词/方法指定的路由
+	 * 得到所有由HTTP动词/方法指定的路由
      *
      * @return array
      */
@@ -106,7 +106,7 @@ interface RouteCollectionInterface
 
     /**
      * Get all of the routes keyed by their name.
-	 * 通过名称获取所有路由
+	 * 把所有的路线按名字标记
      *
      * @return \Illuminate\Routing\Route[]
      */

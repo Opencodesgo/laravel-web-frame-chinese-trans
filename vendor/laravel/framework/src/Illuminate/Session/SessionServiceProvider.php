@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，会话服务提供者
- * 服务容器绑定session
+ * Illuminate，Session，会话服务提供者
  */
 
 namespace Illuminate\Session;
@@ -24,16 +23,16 @@ class SessionServiceProvider extends ServiceProvider
 
         $this->registerSessionDriver();
 
-        $this->app->singleton(StartSession::class, function () {
-            return new StartSession($this->app->make(SessionManager::class), function () {
-                return $this->app->make(CacheFactory::class);
+        $this->app->singleton(StartSession::class, function ($app) {
+            return new StartSession($app->make(SessionManager::class), function () use ($app) {
+                return $app->make(CacheFactory::class);
             });
         });
     }
 
     /**
      * Register the session manager instance.
-	 * 注册会话管理实例
+	 * 注册会话管理器实例
      *
      * @return void
      */
@@ -46,7 +45,7 @@ class SessionServiceProvider extends ServiceProvider
 
     /**
      * Register the session driver instance.
-	 * 注册会话驱动实例
+	 * 注册会话驱动程序实例
      *
      * @return void
      */
@@ -56,7 +55,7 @@ class SessionServiceProvider extends ServiceProvider
             // First, we will create the session manager which is responsible for the
             // creation of the various session drivers when they are needed by the
             // application instance, and will resolve them on a lazy load basis.
-			// 首先，我们将创建会话管理器，它负责控件需要时创建各种会话驱动程序。
+			// 首先，我们将创建会话管理器，它负责创建各种会话驱动程序。
             return $app->make('session')->driver();
         });
     }

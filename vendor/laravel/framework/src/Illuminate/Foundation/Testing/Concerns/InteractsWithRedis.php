@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，与Redis交互
+ * Illuminate，基础，测试，问题，与 Redis交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -14,7 +14,7 @@ trait InteractsWithRedis
 {
     /**
      * Indicate connection failed if redis is not available.
-	 * 如果redis不可用,则表示连接失败
+	 * 如果redis不可用，则表明连接失败。
      *
      * @var bool
      */
@@ -22,7 +22,7 @@ trait InteractsWithRedis
 
     /**
      * Redis manager instance.
-	 * Redis manager 实例
+	 * Redis管理器实例
      *
      * @var \Illuminate\Redis\RedisManager[]
      */
@@ -30,27 +30,23 @@ trait InteractsWithRedis
 
     /**
      * Setup redis connection.
-	 * 安装redis连接
+	 * 建立redis连接
      *
      * @return void
      */
     public function setUpRedis()
     {
-        $app = $this->app ?? new Application;
-        $host = Env::get('REDIS_HOST', '127.0.0.1');
-        $port = Env::get('REDIS_PORT', 6379);
-
         if (! extension_loaded('redis')) {
             $this->markTestSkipped('The redis extension is not installed. Please install the extension to enable '.__CLASS__);
-
-            return;
         }
 
         if (static::$connectionFailedOnceWithDefaultsSkip) {
             $this->markTestSkipped('Trying default host/port failed, please set environment variable REDIS_HOST & REDIS_PORT to enable '.__CLASS__);
-
-            return;
         }
+
+        $app = $this->app ?? new Application;
+        $host = Env::get('REDIS_HOST', '127.0.0.1');
+        $port = Env::get('REDIS_PORT', 6379);
 
         foreach ($this->redisDriverProvider() as $driver) {
             $this->redis[$driver[0]] = new RedisManager($app, $driver[0], [
@@ -63,6 +59,7 @@ trait InteractsWithRedis
                     'port' => $port,
                     'database' => 5,
                     'timeout' => 0.5,
+                    'name' => 'default',
                 ],
             ]);
         }
@@ -72,6 +69,7 @@ trait InteractsWithRedis
         } catch (Exception $e) {
             if ($host === '127.0.0.1' && $port === 6379 && Env::get('REDIS_HOST') === null) {
                 static::$connectionFailedOnceWithDefaultsSkip = true;
+
                 $this->markTestSkipped('Trying default host/port failed, please set environment variable REDIS_HOST & REDIS_PORT to enable '.__CLASS__);
             }
         }
@@ -79,7 +77,7 @@ trait InteractsWithRedis
 
     /**
      * Teardown redis connection.
-	 * 关闭redis连接
+	 * 拆除redis连接
      *
      * @return void
      */
@@ -94,7 +92,7 @@ trait InteractsWithRedis
 
     /**
      * Get redis driver provider.
-	 * 获得redis驱动程序提供商
+	 * 获取redis驱动程序提供程序
      *
      * @return array
      */

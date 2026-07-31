@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，总线，调度器
+ * Illuminate，契约，总线，调度程序
  */
 
 namespace Illuminate\Contracts\Bus;
@@ -9,7 +9,7 @@ interface Dispatcher
 {
     /**
      * Dispatch a command to its appropriate handler.
-	 * 将命令分派给相应的处理者
+	 * 分派命令给相应的处理程序
      *
      * @param  mixed  $command
      * @return mixed
@@ -18,7 +18,19 @@ interface Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
-	 * 将命令分派给当前进程中相应的处理程序
+	 * 分派命令给当前进程中相应的处理程序
+     *
+     * Queueable jobs will be dispatched to the "sync" queue.
+     *
+     * @param  mixed  $command
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    public function dispatchSync($command, $handler = null);
+
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+	 * 分派命令给当前进程中相应的处理程序
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -55,7 +67,7 @@ interface Dispatcher
 
     /**
      * Map a command to a handler.
-	 * 映射命令给处理程序
+	 * 映射命令到处理程序
      *
      * @param  array  $map
      * @return $this

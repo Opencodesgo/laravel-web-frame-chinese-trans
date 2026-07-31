@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，极限流
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Decorator used to return only a subset of a stream.
+ * 装饰器，用于只返回流的子集。
  */
 final class LimitStream implements StreamInterface
 {
@@ -56,6 +60,7 @@ final class LimitStream implements StreamInterface
 
     /**
      * Returns the size of the limited subset of data
+	 * 返回有限数据子集的大小
      */
     public function getSize(): ?int
     {
@@ -70,6 +75,7 @@ final class LimitStream implements StreamInterface
 
     /**
      * Allow for a bounded seek on the read limited stream
+	 * 允许在有读限制的流上进行有界查找
      */
     public function seek($offset, $whence = SEEK_SET): void
     {
@@ -102,6 +108,7 @@ final class LimitStream implements StreamInterface
 
     /**
      * Set the offset to start limiting from
+	 * 设置开始限制的偏移量
      *
      * @param int $offset Offset to seek to and begin byte limiting from
      *
@@ -128,6 +135,7 @@ final class LimitStream implements StreamInterface
     /**
      * Set the limit of bytes that the decorator allows to be read from the
      * stream.
+	 * 设置装饰器允许从控件读取的字节数限制
      *
      * @param int $limit Number of bytes to allow to be read from the stream.
      *                   Use -1 for no limit.

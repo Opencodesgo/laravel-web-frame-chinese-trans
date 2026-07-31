@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Cache缓存
+ * Illuminate，支持，门面，缓存
  */
 
 namespace Illuminate\Support\Facades;
@@ -9,9 +9,10 @@ namespace Illuminate\Support\Facades;
  * @method static \Illuminate\Cache\TaggedCache tags(array|mixed $names)
  * @method static \Illuminate\Contracts\Cache\Lock lock(string $name, int $seconds = 0, mixed $owner = null)
  * @method static \Illuminate\Contracts\Cache\Lock restoreLock(string $name, string $owner)
- * @method static \Illuminate\Contracts\Cache\Repository  store(string|null $name = null)
+ * @method static \Illuminate\Contracts\Cache\Repository store(string|null $name = null)
  * @method static \Illuminate\Contracts\Cache\Store getStore()
  * @method static bool add(string $key, $value, \DateTimeInterface|\DateInterval|int $ttl = null)
+ * @method static bool flush()
  * @method static bool forever(string $key, $value)
  * @method static bool forget(string $key)
  * @method static bool has(string $key)

@@ -5,11 +5,13 @@
 
 namespace Illuminate\Contracts\Support;
 
-interface MessageBag extends Arrayable
+use Countable;
+
+interface MessageBag extends Arrayable, Countable
 {
     /**
      * Get the keys present in the message bag.
-	 * 把密钥放在留言袋里
+	 * 得到信使包的当前密钥
      *
      * @return array
      */
@@ -112,12 +114,4 @@ interface MessageBag extends Arrayable
      * @return bool
      */
     public function isNotEmpty();
-
-    /**
-     * Get the number of messages in the container.
-	 * 获取容器中的消息数
-     *
-     * @return int
-     */
-    public function count();
 }

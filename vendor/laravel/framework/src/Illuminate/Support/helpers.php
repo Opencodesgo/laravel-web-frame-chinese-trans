@@ -1,12 +1,11 @@
 <?php
 /**
- * Illuminate，支持，帮助方法
+ * Illuminate，支持，帮助
  */
 
 use Illuminate\Contracts\Support\DeferringDisplayableValue;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Env;
 use Illuminate\Support\HigherOrderTapProxy;
 use Illuminate\Support\Optional;
@@ -105,159 +104,12 @@ if (! function_exists('class_uses_recursive')) {
     }
 }
 
-if (! function_exists('collect')) {
-    /**
-     * Create a collection from the given value.
-	 * 从给定的值创建一个集合
-     *
-     * @param  mixed  $value
-     * @return \Illuminate\Support\Collection
-     */
-    function collect($value = null)
-    {
-        return new Collection($value);
-    }
-}
-
-if (! function_exists('data_fill')) {
-    /**
-     * Fill in data where it's missing.
-	 * 在缺少的地方填写数据
-     *
-     * @param  mixed  $target
-     * @param  string|array  $key
-     * @param  mixed  $value
-     * @return mixed
-     */
-    function data_fill(&$target, $key, $value)
-    {
-        return data_set($target, $key, $value, false);
-    }
-}
-
-if (! function_exists('data_get')) {
-    /**
-     * Get an item from an array or object using "dot" notation.
-	 * 使用"点"表示法从数组或对象中获取项
-     *
-     * @param  mixed  $target
-     * @param  string|array|int|null  $key
-     * @param  mixed  $default
-     * @return mixed
-     */
-    function data_get($target, $key, $default = null)
-    {
-        if (is_null($key)) {
-            return $target;
-        }
-
-        $key = is_array($key) ? $key : explode('.', $key);
-
-        foreach ($key as $i => $segment) {
-            unset($key[$i]);
-
-            if (is_null($segment)) {
-                return $target;
-            }
-
-            if ($segment === '*') {
-                if ($target instanceof Collection) {
-                    $target = $target->all();
-                } elseif (! is_array($target)) {
-                    return value($default);
-                }
-
-                $result = [];
-
-                foreach ($target as $item) {
-                    $result[] = data_get($item, $key);
-                }
-
-                return in_array('*', $key) ? Arr::collapse($result) : $result;
-            }
-
-            if (Arr::accessible($target) && Arr::exists($target, $segment)) {
-                $target = $target[$segment];
-            } elseif (is_object($target) && isset($target->{$segment})) {
-                $target = $target->{$segment};
-            } else {
-                return value($default);
-            }
-        }
-
-        return $target;
-    }
-}
-
-if (! function_exists('data_set')) {
-    /**
-     * Set an item on an array or object using dot notation.
-	 * 使用点表示法在数组或对象上设置项
-     *
-     * @param  mixed  $target
-     * @param  string|array  $key
-     * @param  mixed  $value
-     * @param  bool  $overwrite
-     * @return mixed
-     */
-    function data_set(&$target, $key, $value, $overwrite = true)
-    {
-        $segments = is_array($key) ? $key : explode('.', $key);
-
-        if (($segment = array_shift($segments)) === '*') {
-            if (! Arr::accessible($target)) {
-                $target = [];
-            }
-
-            if ($segments) {
-                foreach ($target as &$inner) {
-                    data_set($inner, $segments, $value, $overwrite);
-                }
-            } elseif ($overwrite) {
-                foreach ($target as &$inner) {
-                    $inner = $value;
-                }
-            }
-        } elseif (Arr::accessible($target)) {
-            if ($segments) {
-                if (! Arr::exists($target, $segment)) {
-                    $target[$segment] = [];
-                }
-
-                data_set($target[$segment], $segments, $value, $overwrite);
-            } elseif ($overwrite || ! Arr::exists($target, $segment)) {
-                $target[$segment] = $value;
-            }
-        } elseif (is_object($target)) {
-            if ($segments) {
-                if (! isset($target->{$segment})) {
-                    $target->{$segment} = [];
-                }
-
-                data_set($target->{$segment}, $segments, $value, $overwrite);
-            } elseif ($overwrite || ! isset($target->{$segment})) {
-                $target->{$segment} = $value;
-            }
-        } else {
-            $target = [];
-
-            if ($segments) {
-                data_set($target[$segment], $segments, $value, $overwrite);
-            } elseif ($overwrite) {
-                $target[$segment] = $value;
-            }
-        }
-
-        return $target;
-    }
-}
-
 if (! function_exists('e')) {
     /**
      * Encode HTML special characters in a string.
 	 * 在字符串中编码HTML特殊字符
      *
-     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|string  $value
+     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|string|null  $value
      * @param  bool  $doubleEncode
      * @return string
      */
@@ -271,7 +123,7 @@ if (! function_exists('e')) {
             return $value->toHtml();
         }
 
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', $doubleEncode);
+        return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8', $doubleEncode);
     }
 }
 
@@ -304,34 +156,6 @@ if (! function_exists('filled')) {
     }
 }
 
-if (! function_exists('head')) {
-    /**
-     * Get the first element of an array. Useful for method chaining.
-	 * 获取数组的第一个元素。用于方法链接。
-     *
-     * @param  array  $array
-     * @return mixed
-     */
-    function head($array)
-    {
-        return reset($array);
-    }
-}
-
-if (! function_exists('last')) {
-    /**
-     * Get the last element from an array.
-	 * 从数组中获取最后一个元素
-     *
-     * @param  array  $array
-     * @return mixed
-     */
-    function last($array)
-    {
-        return end($array);
-    }
-}
-
 if (! function_exists('object_get')) {
     /**
      * Get an item from an object using "dot" notation.
@@ -344,7 +168,7 @@ if (! function_exists('object_get')) {
      */
     function object_get($object, $key, $default = null)
     {
-        if (is_null($key) || trim($key) == '') {
+        if (is_null($key) || trim($key) === '') {
             return $object;
         }
 
@@ -406,13 +230,13 @@ if (! function_exists('retry')) {
      *
      * @param  int  $times
      * @param  callable  $callback
-     * @param  int  $sleep
+     * @param  int|\Closure  $sleepMilliseconds
      * @param  callable|null  $when
      * @return mixed
      *
      * @throws \Exception
      */
-    function retry($times, callable $callback, $sleep = 0, $when = null)
+    function retry($times, callable $callback, $sleepMilliseconds = 0, $when = null)
     {
         $attempts = 0;
 
@@ -427,8 +251,8 @@ if (! function_exists('retry')) {
                 throw $e;
             }
 
-            if ($sleep) {
-                usleep($sleep * 1000);
+            if ($sleepMilliseconds) {
+                usleep(value($sleepMilliseconds, $attempts) * 1000);
             }
 
             goto beginning;
@@ -464,15 +288,19 @@ if (! function_exists('throw_if')) {
      *
      * @param  mixed  $condition
      * @param  \Throwable|string  $exception
-     * @param  array  ...$parameters
+     * @param  mixed  ...$parameters
      * @return mixed
      *
      * @throws \Throwable
      */
-    function throw_if($condition, $exception, ...$parameters)
+    function throw_if($condition, $exception = 'RuntimeException', ...$parameters)
     {
         if ($condition) {
-            throw (is_string($exception) ? new $exception(...$parameters) : $exception);
+            if (is_string($exception) && class_exists($exception)) {
+                $exception = new $exception(...$parameters);
+            }
+
+            throw is_string($exception) ? new RuntimeException($exception) : $exception;
         }
 
         return $condition;
@@ -486,16 +314,14 @@ if (! function_exists('throw_unless')) {
      *
      * @param  mixed  $condition
      * @param  \Throwable|string  $exception
-     * @param  array  ...$parameters
+     * @param  mixed  ...$parameters
      * @return mixed
      *
      * @throws \Throwable
      */
-    function throw_unless($condition, $exception, ...$parameters)
+    function throw_unless($condition, $exception = 'RuntimeException', ...$parameters)
     {
-        if (! $condition) {
-            throw (is_string($exception) ? new $exception(...$parameters) : $exception);
-        }
+        throw_if(! $condition, $exception, ...$parameters);
 
         return $condition;
     }
@@ -511,7 +337,7 @@ if (! function_exists('trait_uses_recursive')) {
      */
     function trait_uses_recursive($trait)
     {
-        $traits = class_uses($trait);
+        $traits = class_uses($trait) ?: [];
 
         foreach ($traits as $trait) {
             $traits += trait_uses_recursive($trait);
@@ -545,20 +371,6 @@ if (! function_exists('transform')) {
     }
 }
 
-if (! function_exists('value')) {
-    /**
-     * Return the default value of the given value.
-	 * 返回给定值的默认值
-     *
-     * @param  mixed  $value
-     * @return mixed
-     */
-    function value($value)
-    {
-        return $value instanceof Closure ? $value() : $value;
-    }
-}
-
 if (! function_exists('windows_os')) {
     /**
      * Determine whether the current environment is Windows based.
@@ -575,7 +387,7 @@ if (! function_exists('windows_os')) {
 if (! function_exists('with')) {
     /**
      * Return the given value, optionally passed through the given callback.
-	 * 返回给定的值，可选地通过给定的回调传递。
+	 * 返回给定的值，可选地通过给定的回调传递
      *
      * @param  mixed  $value
      * @param  callable|null  $callback

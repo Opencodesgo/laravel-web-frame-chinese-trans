@@ -27,7 +27,7 @@ class TagSet
 
     /**
      * Create a new TagSet instance.
-	 * 创建新的TagSet实例
+	 * 创建新的标签集实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @param  array  $names
@@ -62,6 +62,28 @@ class TagSet
         $this->store->forever($this->tagKey($name), $id = str_replace('.', '', uniqid('', true)));
 
         return $id;
+    }
+
+    /**
+     * Flush all the tags in the set.
+	 * 清除集合中的所有标记
+     *
+     * @return void
+     */
+    public function flush()
+    {
+        array_walk($this->names, [$this, 'flushTag']);
+    }
+
+    /**
+     * Flush the tag from the cache.
+	 * 从缓存中刷新标记
+     *
+     * @param  string  $name
+     */
+    public function flushTag($name)
+    {
+        $this->store->forget($this->tagKey($name));
     }
 
     /**

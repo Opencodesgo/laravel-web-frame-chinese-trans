@@ -5,14 +5,13 @@
 
 namespace Illuminate\Support;
 
-use Countable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\MessageBag as MessageBagContract;
 use Illuminate\Contracts\Support\MessageProvider;
 use JsonSerializable;
 
-class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, MessageBagContract, MessageProvider
+class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, MessageProvider
 {
     /**
      * All of the registered messages.
@@ -48,7 +47,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the keys present in the message bag.
-	 * 把钥匙放在留言袋里
+	 * 把密钥放在留言袋里
      *
      * @return array
      */
@@ -203,7 +202,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
         // If the message exists in the message bag, we will transform it and return
         // the message. Otherwise, we will check if the key is implicit & collect
         // all the messages that match the given key and output it as an array.
-		// 如果消息包中存在该消息，我们将对其进行转换并返回。
+		// 如果邮件存在于邮件包中，我们将改造它，然后返回消息。
         if (array_key_exists($key, $this->messages)) {
             return $this->transform(
                 $this->messages[$key], $this->checkFormat($format), $key
@@ -286,7 +285,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
                 // We will simply spin through the given messages and transform each one
                 // replacing the :message place holder with the real message allowing
                 // the messages to be easily formatted to each developer's desires.
-				// 我们将简单地浏览给定的消息并对每个消息进行转换
+				// 我们将简单地浏览给定的消息。
                 return str_replace([':message', ':key'], [$message, $messageKey], $format);
             })->all();
     }
@@ -400,6 +399,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->messages, COUNT_RECURSIVE) - count($this->messages);
@@ -422,6 +422,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();

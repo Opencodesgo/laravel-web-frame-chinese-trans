@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Cookie，文件 Cookie 压缩
+ */
 
 namespace GuzzleHttp\Cookie;
 
@@ -6,6 +9,7 @@ use GuzzleHttp\Utils;
 
 /**
  * Persists non-session cookies using a JSON formatted file
+ * 使用JSON格式文件持久化非会话cookie。
  */
 class FileCookieJar extends CookieJar
 {
@@ -41,6 +45,7 @@ class FileCookieJar extends CookieJar
 
     /**
      * Saves the file when shutting down
+	 * 关闭时保存文件
      */
     public function __destruct()
     {
@@ -49,6 +54,7 @@ class FileCookieJar extends CookieJar
 
     /**
      * Saves the cookies to a file.
+	 * 将cookie保存到一个文件
      *
      * @param string $filename File to save
      *
@@ -72,6 +78,7 @@ class FileCookieJar extends CookieJar
 
     /**
      * Load cookies from a JSON formatted file.
+	 * 从JSON格式的文件中加载cookie。
      *
      * Old cookies are kept unless overwritten by newly loaded ones.
      *

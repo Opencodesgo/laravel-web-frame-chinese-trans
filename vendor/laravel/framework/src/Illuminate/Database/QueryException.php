@@ -13,7 +13,7 @@ class QueryException extends PDOException
 {
     /**
      * The SQL for the query.
-	 * 查询SQL
+	 * 用于查询的SQL
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class QueryException extends PDOException
 
     /**
      * The bindings for the query.
-	 * 绑定查询
+	 * 查询的绑定
      *
      * @var array
      */
@@ -52,7 +52,7 @@ class QueryException extends PDOException
 
     /**
      * Format the SQL error message.
-	 * 格式化SQL错误信息
+	 * 格式化SQL错误消息
      *
      * @param  string  $sql
      * @param  array  $bindings
@@ -66,7 +66,7 @@ class QueryException extends PDOException
 
     /**
      * Get the SQL for the query.
-	 * 得到SQL查询
+	 * 获取查询的SQL
      *
      * @return string
      */

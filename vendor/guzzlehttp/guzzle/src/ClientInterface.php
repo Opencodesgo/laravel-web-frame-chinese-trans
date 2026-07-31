@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GuzzleHttp，客户端接口
  */
@@ -14,17 +13,19 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Client interface for sending HTTP requests.
+ * 发送HTTP请求的客户端接口。
  */
 interface ClientInterface
 {
     /**
      * The Guzzle major version.
-	 * Guzzle的主要版本
+	 * 这是主要的版本
      */
     public const MAJOR_VERSION = 7;
 
     /**
      * Send an HTTP request.
+	 * 发送一个HTTP请求
      *
      * @param RequestInterface $request Request to send
      * @param array            $options Request options to apply to the given
@@ -36,6 +37,7 @@ interface ClientInterface
 
     /**
      * Asynchronously send an HTTP request.
+	 * 异步发送HTTP请求
      *
      * @param RequestInterface $request Request to send
      * @param array            $options Request options to apply to the given
@@ -45,6 +47,7 @@ interface ClientInterface
 
     /**
      * Create and send an HTTP request.
+	 * 创建并发送HTTP请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -60,6 +63,7 @@ interface ClientInterface
 
     /**
      * Create and send an asynchronous HTTP request.
+	 * 创建并发送一个异步HTTP请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -74,6 +78,7 @@ interface ClientInterface
 
     /**
      * Get a client configuration option.
+	 * 获取客户端配置选项
      *
      * These options include default request options of the client, a "handler"
      * (if utilized by the concrete client), and a "base_uri" if utilized by

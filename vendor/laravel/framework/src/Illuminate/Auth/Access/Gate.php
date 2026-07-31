@@ -5,10 +5,13 @@
 
 namespace Illuminate\Auth\Access;
 
+use Closure;
 use Exception;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -110,7 +113,7 @@ class Gate implements GateContract
 
     /**
      * Determine if a given ability has been defined.
-	 * 确定给定的能力是否已被定义了
+	 * 确定是否已经定义了给定的能力
      *
      * @param  string|array  $ability
      * @return bool
@@ -129,8 +132,69 @@ class Gate implements GateContract
     }
 
     /**
+     * Perform an on-demand authorization check. Throw an authorization exception if the condition or callback is false.
+	 * 按需执行授权检查。如果条件或回调为false，则抛出授权异常。
+     *
+     * @param  \Illuminate\Auth\Access\Response|\Closure|bool  $condition
+     * @param  string|null  $message
+     * @param  string|null  $code
+     * @return \Illuminate\Auth\Access\Response
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function allowIf($condition, $message = null, $code = null)
+    {
+        return $this->authorizeOnDemand($condition, $message, $code, true);
+    }
+
+    /**
+     * Perform an on-demand authorization check. Throw an authorization exception if the condition or callback is true.
+	 * 按需执行授权检查。如果条件或回调为真，则抛出授权异常。
+     *
+     * @param  \Illuminate\Auth\Access\Response|\Closure|bool  $condition
+     * @param  string|null  $message
+     * @param  string|null  $code
+     * @return \Illuminate\Auth\Access\Response
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function denyIf($condition, $message = null, $code = null)
+    {
+        return $this->authorizeOnDemand($condition, $message, $code, false);
+    }
+
+    /**
+     * Authorize a given condition or callback.
+	 * 授权给定的条件或回调
+     *
+     * @param  \Illuminate\Auth\Access\Response|\Closure|bool  $condition
+     * @param  string|null  $message
+     * @param  string|null  $code
+     * @param  bool  $allowWhenResponseIs
+     * @return \Illuminate\Auth\Access\Response
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    protected function authorizeOnDemand($condition, $message, $code, $allowWhenResponseIs)
+    {
+        $user = $this->resolveUser();
+
+        if ($condition instanceof Closure) {
+            $response = $this->canBeCalledWithUser($user, $condition)
+                            ? $condition($user)
+                            : new Response(false, $message, $code);
+        } else {
+            $response = $condition;
+        }
+
+        return with($response instanceof Response ? $response : new Response(
+            (bool) $response === $allowWhenResponseIs, $message, $code
+        ))->authorize();
+    }
+
+    /**
      * Define a new ability.
-	 * 定义一个新能力
+	 * 定义新的能力
      *
      * @param  string  $ability
      * @param  callable|string  $callback
@@ -170,10 +234,10 @@ class Gate implements GateContract
     {
         $abilities = $abilities ?: [
             'viewAny' => 'viewAny',
-            'view'    => 'view',
-            'create'  => 'create',
-            'update'  => 'update',
-            'delete'  => 'delete',
+            'view' => 'view',
+            'create' => 'create',
+            'update' => 'update',
+            'delete' => 'delete',
         ];
 
         foreach ($abilities as $ability => $method) {
@@ -237,7 +301,7 @@ class Gate implements GateContract
 
     /**
      * Register a callback to run before all Gate checks.
-	 * 定义一个回调，以便所有大门运行前检查
+	 * 注册一个回调，以便在所有Gate检查之前运行。
      *
      * @param  callable  $callback
      * @return $this
@@ -251,7 +315,7 @@ class Gate implements GateContract
 
     /**
      * Register a callback to run after all Gate checks.
-	 * 定义一个回调，以便所有大门运行后检查
+	 * 注册一个回调，在所有Gate检查之后运行。
      *
      * @param  callable  $callback
      * @return $this
@@ -278,7 +342,7 @@ class Gate implements GateContract
 
     /**
      * Determine if the given ability should be denied for the current user.
-	 * 确定给定的能力是否应该被当前用户拒绝
+	 * 确定当前用户是否应该拒绝给定的能力
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
@@ -291,7 +355,7 @@ class Gate implements GateContract
 
     /**
      * Determine if all of the given abilities should be granted for the current user.
-	 * 确定所有给定的能力是否应该被当前用户授予
+	 * 确定是否应该为当前用户授予所有给定的能力
      *
      * @param  iterable|string  $abilities
      * @param  array|mixed  $arguments
@@ -334,7 +398,7 @@ class Gate implements GateContract
 
     /**
      * Determine if the given ability should be granted for the current user.
-	 * 确定给定的能力是否应该被当前用户授予
+	 * 确定是否应该为当前用户授予给定的能力
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
@@ -389,8 +453,8 @@ class Gate implements GateContract
         // First we will call the "before" callbacks for the Gate. If any of these give
         // back a non-null response, we will immediately return that result in order
         // to let the developers override all checks for some authorization cases.
-		// 首先，我们将调用Gate的"before"回调。如果其中任何一个返回非宛的响应，
-		// 我们将立即按顺序返回结果以便让开发人员覆盖某些授权用例的所有检查。
+		// 首先，我们将调用Gate的“before”回调。如果其中任何一个返回非空响应，
+		// 我们将立即返回该结果，以便让开发人员覆盖某些授权情况的所有检查。
         $result = $this->callBeforeCallbacks(
             $user, $ability, $arguments
         );
@@ -402,10 +466,12 @@ class Gate implements GateContract
         // After calling the authorization callback, we will call the "after" callbacks
         // that are registered with the Gate, which allows a developer to do logging
         // if that is required for this application. Then we'll return the result.
-		// 在调用授权回调之后，我们将调用"After"回调。
-        return $this->callAfterCallbacks(
+		// 在调用授权回调之后，我们将调用“After”回调，这些都是在Gate上注册的，它允许开发人员进行日志记录。
+        return tap($this->callAfterCallbacks(
             $user, $ability, $arguments, $result
-        );
+        ), function ($result) use ($user, $ability, $arguments) {
+            $this->dispatchGateEvaluatedEvent($user, $ability, $arguments, $result);
+        });
     }
 
     /**
@@ -556,6 +622,25 @@ class Gate implements GateContract
     }
 
     /**
+     * Dispatch a gate evaluation event.
+	 * 分派大门评估事件
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
+     * @param  string  $ability
+     * @param  array  $arguments
+     * @param  bool|null  $result
+     * @return void
+     */
+    protected function dispatchGateEvaluatedEvent($user, $ability, array $arguments, $result)
+    {
+        if ($this->container->bound(Dispatcher::class)) {
+            $this->container->make(Dispatcher::class)->dispatch(
+                new Events\GateEvaluated($user, $ability, $result, $arguments)
+            );
+        }
+    }
+
+    /**
      * Resolve the callable for the given ability and arguments.
 	 * 解析给定能力和参数的可调用对象
      *
@@ -639,7 +724,15 @@ class Gate implements GateContract
 
         $classDirname = str_replace('/', '\\', dirname(str_replace('\\', '/', $class)));
 
-        return [$classDirname.'\\Policies\\'.class_basename($class).'Policy'];
+        $classDirnameSegments = explode('\\', $classDirname);
+
+        return Arr::wrap(Collection::times(count($classDirnameSegments), function ($index) use ($class, $classDirnameSegments) {
+            $classDirname = implode('\\', array_slice($classDirnameSegments, 0, $index));
+
+            return $classDirname.'\\Policies\\'.class_basename($class).'Policy';
+        })->reverse()->values()->first(function ($class) {
+            return class_exists($class);
+        }) ?: [$classDirname.'\\Policies\\'.class_basename($class).'Policy']);
     }
 
     /**
@@ -690,7 +783,7 @@ class Gate implements GateContract
             // This callback will be responsible for calling the policy's before method and
             // running this policy method if necessary. This is used to when objects are
             // mapped to policy objects in the user's configurations or on this class.
-			// 这个回调将负责调用策略的before方法并在必要时运行此策略方法。
+			// 此回调将负责调用策略的before方法，并在必要时运行此策略方法。
             $result = $this->callPolicyBefore(
                 $policy, $user, $ability, $arguments
             );
@@ -698,7 +791,7 @@ class Gate implements GateContract
             // When we receive a non-null result from this before method, we will return it
             // as the "final" results. This will allow developers to override the checks
             // in this policy to return the result for all rules defined in the class.
-			// 当我们从这个before方法收到一个非空的结果时，我们将返回它作为"最后"的结果。
+			// 当我们从这个before方法接收到一个非空的结果时，我们将返回"最终"结果。
             if (! is_null($result)) {
                 return $result;
             }
@@ -711,7 +804,7 @@ class Gate implements GateContract
 
     /**
      * Call the "before" method on the given policy, if applicable.
-	 * 在给定策略上调用"before"方法（如果适用）
+	 * 在给定策略上调用"before"方法（如果适用）。
      *
      * @param  mixed  $policy
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
@@ -745,7 +838,7 @@ class Gate implements GateContract
         // If this first argument is a string, that means they are passing a class name
         // to the policy. We will remove the first argument from this argument array
         // because this policy already knows what type of models it can authorize.
-		// 如果第一个参数是字符串，这意味着它们传递了一个类名。
+		// 如果第一个参数是字符串，这意味着它们传递给策略一个类名。
         if (isset($arguments[0]) && is_string($arguments[0])) {
             array_shift($arguments);
         }
@@ -761,7 +854,7 @@ class Gate implements GateContract
 
     /**
      * Format the policy ability into a method name.
-	 * 将策略功能格式化为方法名称
+	 * 格式化策略功能为方法名称
      *
      * @param  string  $ability
      * @return string
@@ -822,5 +915,19 @@ class Gate implements GateContract
     public function policies()
     {
         return $this->policies;
+    }
+
+    /**
+     * Set the container instance used by the gate.
+	 * 设置大门使用的容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 }

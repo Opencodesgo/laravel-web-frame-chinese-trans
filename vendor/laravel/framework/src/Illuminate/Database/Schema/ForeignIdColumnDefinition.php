@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，ForeignId 列定义
+ * Illuminate，数据库，架构，ForeignId 列定义
  */
 
 namespace Illuminate\Database\Schema;
@@ -19,7 +19,7 @@ class ForeignIdColumnDefinition extends ColumnDefinition
 
     /**
      * Create a new foreign ID column definition.
-	 * 创建一个新的外键ID列定义
+	 * 创建一个新的外部ID列定义
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  array  $attributes
@@ -34,11 +34,11 @@ class ForeignIdColumnDefinition extends ColumnDefinition
 
     /**
      * Create a foreign key constraint on this column referencing the "id" column of the conventionally related table.
-	 * 在这一列上创建一个外部键约束，引用传统相关表的"id"列。
+	 * 在这个列上创建一个外键约束，引用常规相关表的"id"列。
      *
      * @param  string|null  $table
      * @param  string  $column
-     * @return \Illuminate\Support\Fluent|\Illuminate\Database\Schema\ForeignKeyDefinition
+     * @return \Illuminate\Database\Schema\ForeignKeyDefinition
      */
     public function constrained($table = null, $column = 'id')
     {
@@ -50,7 +50,7 @@ class ForeignIdColumnDefinition extends ColumnDefinition
 	 * 指定此外部ID在另一个表上引用的列
      *
      * @param  string  $column
-     * @return \Illuminate\Support\Fluent|\Illuminate\Database\Schema\ForeignKeyDefinition
+     * @return \Illuminate\Database\Schema\ForeignKeyDefinition
      */
     public function references($column)
     {

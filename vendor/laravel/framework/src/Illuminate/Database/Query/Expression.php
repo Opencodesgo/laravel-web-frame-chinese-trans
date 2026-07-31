@@ -40,7 +40,7 @@ class Expression
 
     /**
      * Get the value of the expression.
-	 * 获取表达式的
+	 * 获取表达式的值
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，扩展，未找到的扩展
+ */
 
 declare(strict_types=1);
 

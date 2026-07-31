@@ -12,7 +12,7 @@ class ForgetCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称，cache:forget
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -20,7 +20,7 @@ class ForgetCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class ForgetCommand extends Command
 
     /**
      * Create a new cache clear command instance.
-	 * 创建新的缓存清除命令实例
+	 * 创建一个新的缓存清除命令实例
      *
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @return void

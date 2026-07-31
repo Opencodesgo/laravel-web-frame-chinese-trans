@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，流包装器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Converts Guzzle streams into PHP stream resources.
+ * 将流转换成PHP流资源。
  *
  * @see https://www.php.net/streamwrapper
  */
@@ -24,6 +28,7 @@ final class StreamWrapper
 
     /**
      * Returns a resource representing the stream.
+	 * 返回代表流的资源
      *
      * @param StreamInterface $stream The stream to get a resource for
      *
@@ -49,6 +54,7 @@ final class StreamWrapper
 
     /**
      * Creates a stream context that can be used to open a stream as a php stream resource.
+	 * 创建一个流上下文,可以用来作为php流资源打开一个流
      *
      * @return resource
      */
@@ -61,6 +67,7 @@ final class StreamWrapper
 
     /**
      * Registers the stream wrapper if needed
+	 * 如果需要,请注册流包装器
      */
     public static function register(): void
     {

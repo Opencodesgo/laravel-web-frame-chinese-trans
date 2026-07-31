@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，Curl 工厂
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -15,6 +18,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Creates curl resources from a request
+ * 从请求中创建curl资源
  *
  * @final
  */
@@ -417,6 +421,7 @@ class CurlFactory implements CurlFactoryInterface
 
     /**
      * Remove a header from the options array.
+	 * 从选项数组中删除一个头
      *
      * @param string $name    Case-insensitive header to remove
      * @param array  $options Array of options to modify
@@ -638,6 +643,7 @@ class CurlFactory implements CurlFactoryInterface
      * stream, and then encountered a "necessary data rewind wasn't possible"
      * error, causing the request to be sent through curl_multi_info_read()
      * without an error status.
+	 * 这个函数确保在事务上设置响应。
      *
      * @param callable(RequestInterface, array): PromiseInterface $handler
      */

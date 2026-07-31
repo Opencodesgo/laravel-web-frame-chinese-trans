@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，无效参数异常
+ * Illuminate，队列，无效负载异常
  */
 
 namespace Illuminate\Queue;

@@ -33,20 +33,13 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register the authenticator services.
-	 * 注册认证器服务
+	 * 注册验证器服务
      *
      * @return void
      */
     protected function registerAuthenticator()
     {
         $this->app->singleton('auth', function ($app) {
-            // Once the authentication service has actually been requested by the developer
-            // we will set a variable in the application indicating such. This helps us
-            // know that we need to set any queued cookies in the after event later.
-			// 一旦验证服务实际上被开发人员请求了，我们将在应用程序中设置一个变量。
-			// 这将帮助我们知道我们需要在以后的事件中设置任何排队的cookie。
-            $app['auth.loaded'] = true;
-
             return new AuthManager($app);
         });
 
@@ -63,11 +56,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerUserResolver()
     {
-        $this->app->bind(
-            AuthenticatableContract::class, function ($app) {
-                return call_user_func($app['auth']->userResolver());
-            }
-        );
+        $this->app->bind(AuthenticatableContract::class, function ($app) {
+            return call_user_func($app['auth']->userResolver());
+        });
     }
 
     /**
@@ -93,15 +84,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerRequirePassword()
     {
-        $this->app->bind(
-            RequirePassword::class, function ($app) {
-                return new RequirePassword(
-                    $app[ResponseFactory::class],
-                    $app[UrlGenerator::class],
-                    $app['config']->get('auth.password_timeout')
-                );
-            }
-        );
+        $this->app->bind(RequirePassword::class, function ($app) {
+            return new RequirePassword(
+                $app[ResponseFactory::class],
+                $app[UrlGenerator::class],
+                $app['config']->get('auth.password_timeout')
+            );
+        });
     }
 
     /**
@@ -128,11 +117,8 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerEventRebindHandler()
     {
         $this->app->rebinding('events', function ($app, $dispatcher) {
-            if (! $app->resolved('auth')) {
-                return;
-            }
-
-            if ($app['auth']->hasResolvedGuards() === false) {
+            if (! $app->resolved('auth') ||
+                $app['auth']->hasResolvedGuards() === false) {
                 return;
             }
 

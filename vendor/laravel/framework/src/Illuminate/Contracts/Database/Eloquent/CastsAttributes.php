@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，数据库，Eloquent，类型转换属性
+ * Illuminate，契约，数据库，Eloquent，投下属性
  */
 
 namespace Illuminate\Contracts\Database\Eloquent;

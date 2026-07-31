@@ -11,7 +11,7 @@ class GenericUser implements UserContract
 {
     /**
      * All of the user's attributes.
-	 * 所有的用户属性
+	 * 所有用户属性
      *
      * @var array
      */
@@ -19,7 +19,7 @@ class GenericUser implements UserContract
 
     /**
      * Create a new generic User object.
-	 * 创建新的通用User对象
+	 * 创建一个新的通用User对象
      *
      * @param  array  $attributes
      * @return void
@@ -31,7 +31,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the name of the unique identifier for the user.
-	 * 获取用户的唯一标识符名称
+	 * 获取用户的唯一标识符的名称
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the unique identifier for the user.
-	 * 获取用户的唯一标识符
+	 * 得到用户的唯一标识符
      *
      * @return mixed
      */
@@ -123,7 +123,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically check if a value is set on the user.
-	 * 动态检查是否在用户上设置值
+	 * 动态检查是否在用户上设置了值
      *
      * @param  string  $key
      * @return bool

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，异常，零除异常
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,7 @@ namespace Brick\Math\Exception;
 
 /**
  * Exception thrown when a division by zero occurs.
+ * 当一个分区发生时,异常会发生。
  */
 class DivisionByZeroException extends MathException
 {

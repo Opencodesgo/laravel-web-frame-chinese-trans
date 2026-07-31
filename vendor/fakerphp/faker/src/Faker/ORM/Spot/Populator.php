@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，普及者
+ */
 
 namespace Faker\ORM\Spot;
 
@@ -6,6 +9,7 @@ use Spot\Locator;
 
 /**
  * Service class for populating a database using the Spot ORM.
+ * 使用点ORM填充数据库的服务类。
  */
 class Populator
 {
@@ -16,6 +20,7 @@ class Populator
 
     /**
      * Populator constructor.
+	 * 填充构造函数
      */
     public function __construct(\Faker\Generator $generator, ?Locator $locator = null)
     {
@@ -25,6 +30,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$实体的生成值的生成添加一个订单
      *
      * @param string $entityName             Name of Entity object to generate
      * @param int    $number                 The number of entities to populate
@@ -59,6 +65,7 @@ class Populator
 
     /**
      * Populate the database using all the Entity classes previously added.
+	 * 使用之前添加的所有实体类填充数据库
      *
      * @param Locator $locator A Spot locator
      *

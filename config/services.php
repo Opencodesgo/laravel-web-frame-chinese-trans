@@ -14,8 +14,8 @@ return [
     | as Mailgun, Postmark, AWS and more. This file provides the de facto
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
-	| 此文件用于存储第三方服务的凭据，例如作为Mailgun，邮戳，AWS等。
-	| 这个文件提供了对于这类信息的事实位置，允许包有定位各种服务凭据的常规文件。
+	| 此文件用于存储第三方服务的凭据，例如Mailgun，邮戳，AWS等。
+	| 该文件为此类信息提供了默认位置，使软件包能够通过一个常规文件来查找各种服务凭据。
     |
     */
 

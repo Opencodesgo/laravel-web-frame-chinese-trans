@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，许诺，任务队列
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,7 @@ namespace GuzzleHttp\Promise;
 
 /**
  * A task queue that executes tasks in a FIFO order.
+ * 在FIFO顺序中执行任务的任务队列。
  *
  * This task queue class is used to settle promises asynchronously and
  * maintains a constant stack size. You can use the task queue asynchronously

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，客户端，连接异常，待完善类
+ * Illuminate，Http，客户端，连接异常
  */
 
 namespace Illuminate\Http\Client;

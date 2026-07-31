@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，无向流
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Stream decorator that prevents a stream from being seeked.
+ * 流装饰器,可以防止流被看到。
  */
 final class NoSeekStream implements StreamInterface
 {

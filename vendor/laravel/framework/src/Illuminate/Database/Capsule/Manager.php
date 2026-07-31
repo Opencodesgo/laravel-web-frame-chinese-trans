@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，压缩，管理者
+ * Illuminate，数据库，压缩，管理器
  */
 
 namespace Illuminate\Database\Capsule;
@@ -27,7 +27,7 @@ class Manager
 
     /**
      * Create a new database capsule manager.
-	 * 创建新的数据库压缩管理器
+	 * 创建一个新的数据库压缩管理器
      *
      * @param  \Illuminate\Container\Container|null  $container
      * @return void
@@ -39,8 +39,7 @@ class Manager
         // Once we have the container setup, we will setup the default configuration
         // options in the container "config" binding. This will make the database
         // manager work correctly out of the box without extreme configuration.
-		// 容器设置完成后，我们将设置容器"config"绑定中默认配置选项的选项。
-		// 这将使数据库管理工作正确开箱即用，没有极端的配置。
+		// 容器设置完成后，我们将设置在容器绑定中的选项的默认配置。
         $this->setupDefaultConfiguration();
 
         $this->setupManager();
@@ -141,7 +140,7 @@ class Manager
 
     /**
      * Bootstrap Eloquent so it is ready for usage.
-	 * 引导雄辩，所以它是准备使用。
+	 * 引导Eloquent，所以它是准备使用。
      *
      * @return void
      */
@@ -152,7 +151,7 @@ class Manager
         // If we have an event dispatcher instance, we will go ahead and register it
         // with the Eloquent ORM, allowing for model callbacks while creating and
         // updating "model" instances; however, it is not necessary to operate.
-		// 如果我们有一个事件调度程序实例，我们将继续在ORM注册它，在创建和时允许模型回调。
+		// 如果我们有一个事件调度程序实例，我们将继续使用Eloquent ORM注册它。
         if ($dispatcher = $this->getEventDispatcher()) {
             Eloquent::setEventDispatcher($dispatcher);
         }

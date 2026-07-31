@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，工具包
+ */
 
 declare(strict_types=1);
 
@@ -13,6 +16,7 @@ final class Utils
 {
     /**
      * Remove the items given by the keys, case insensitively from the data.
+	 * 删除密钥给出的项,从数据中不敏感的情况。
      *
      * @param (string|int)[] $keys
      */
@@ -109,6 +113,7 @@ final class Utils
 
     /**
      * Calculate a hash of a stream.
+	 * 计算一条流的哈希。
      *
      * This method reads the entire stream to calculate a rolling hash, based
      * on PHP's `hash_init` functions.
@@ -140,6 +145,7 @@ final class Utils
 
     /**
      * Clone and modify a request with the given changes.
+	 * 克隆和修改给定更改的请求。
      *
      * This method is useful for reducing the number of clones needed to mutate
      * a message.
@@ -227,6 +233,7 @@ final class Utils
 
     /**
      * Read a line from the stream up to the maximum allowed buffer length.
+	 * 从流读取一条线到最大允许的缓冲区长度
      *
      * @param StreamInterface $stream    Stream to read from
      * @param int|null        $maxLength Maximum buffer length
@@ -252,6 +259,7 @@ final class Utils
 
     /**
      * Redact the password in the user info part of a URI.
+	 * 在URI的用户信息部分中编辑密码
      */
     public static function redactUserInfo(UriInterface $uri): UriInterface
     {
@@ -266,6 +274,7 @@ final class Utils
 
     /**
      * Create a new stream based on the input type.
+	 * 基于输入类型创建一个新的流。
      *
      * Options is an associative array that can contain the following keys:
      * - metadata: Array of custom metadata.
@@ -357,6 +366,7 @@ final class Utils
 
     /**
      * Safely opens a PHP stream resource using a filename.
+	 * 安全地使用文件名打开PHP流资源。
      *
      * When fopen fails, PHP normally raises a warning. This function adds an
      * error handler that checks for errors and throws an exception instead.
@@ -406,6 +416,7 @@ final class Utils
 
     /**
      * Safely gets the contents of a given stream.
+	 * 安全地获取给定流的内容。
      *
      * When stream_get_contents fails, PHP normally raises a warning. This
      * function adds an error handler that checks for errors and throws an
@@ -453,6 +464,7 @@ final class Utils
 
     /**
      * Returns a UriInterface for the given value.
+	 * 返回给定值的UriInterface。
      *
      * This function accepts a string or UriInterface and returns a
      * UriInterface for the given value. If the value is already a

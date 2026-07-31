@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，框架
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -104,6 +108,7 @@ class Frame implements Serializable
     /**
      * Returns the full contents of the file for this frame,
      * if it's known.
+	 * 返回该框架文件的完整内容，如果知道的话。
      * @return string|null
      */
     public function getFileContents()
@@ -169,6 +174,7 @@ class Frame implements Serializable
     /**
      * Returns the array containing the raw frame data from which
      * this Frame object was built
+	 * 返回包含原始框架数据的数组，建立了这个框架对象。
      *
      * @return array
      */
@@ -278,6 +284,7 @@ class Frame implements Serializable
 
     /**
      * Compares Frame against one another
+	 * 比较框架
      * @param  Frame $frame
      * @return bool
      */
@@ -291,6 +298,7 @@ class Frame implements Serializable
 
     /**
      * Returns whether this frame belongs to the application or not.
+	 * 返回此帧是否属于应用程序
      *
      * @return boolean
      */
@@ -301,6 +309,7 @@ class Frame implements Serializable
 
     /**
      * Mark as an frame belonging to the application.
+	 * 标记为属于应用程序的框架
      *
      * @param boolean $application
      */

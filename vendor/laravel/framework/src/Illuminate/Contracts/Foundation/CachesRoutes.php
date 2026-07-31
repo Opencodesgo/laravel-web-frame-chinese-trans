@@ -9,7 +9,7 @@ interface CachesRoutes
 {
     /**
      * Determine if the application routes are cached.
-	 * 确定是否缓存了应用路由
+	 * 确定是否缓存了应用程序路由
      *
      * @return bool
      */

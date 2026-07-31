@@ -54,7 +54,7 @@ class Parser
 
     /**
      * Extract all of the parameters from the tokens.
-	 * 从标记中提取所有参数
+	 * 从令牌中提取所有参数
      *
      * @param  array  $tokens
      * @return array

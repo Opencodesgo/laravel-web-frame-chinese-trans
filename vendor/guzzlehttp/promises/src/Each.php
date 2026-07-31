@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，许诺，每个
+ */
 
 declare(strict_types=1);
 
@@ -35,6 +38,7 @@ final class Each
     /**
      * Like of, but only allows a certain number of outstanding promises at any
      * given time.
+	 * 就像,但只允许有一定数量的杰出承诺。
      *
      * $concurrency may be an integer or a function that accepts the number of
      * pending promises and returns a numeric concurrency limit value to allow

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Uri
+ */
 
 declare(strict_types=1);
 
@@ -9,6 +12,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * PSR-7 URI implementation.
+ * PSR-7 URI 实现
  *
  * @author Michael Dowling
  * @author Tobias Schultze
@@ -40,6 +44,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Unreserved characters for use in a regex.
+	 * 在regex中使用的未保留字符
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3986#section-2.3
      */
@@ -148,6 +153,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Composes a URI reference string from its various components.
+	 * 从其各种组件中编写URI引用字符串。
      *
      * Usually this method does not need to be called manually but instead is used indirectly via
      * `Psr\Http\Message\UriInterface::__toString`.
@@ -196,6 +202,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Whether the URI has the default port of the current scheme.
+	 * URI是否有当前方案的默认端口。
      *
      * `Psr\Http\Message\UriInterface::getPort` may return null or the standard port. This method can be used
      * independently of the implementation.
@@ -228,6 +235,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Whether the URI is a network-path reference.
+	 * URI是否为网络路径引用。
      *
      * A relative reference that begins with two slash characters is termed an network-path reference.
      *
@@ -240,6 +248,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Whether the URI is a absolute-path reference.
+	 * URI是否是绝对路径引用。
      *
      * A relative reference that begins with a single slash character is termed an absolute-path reference.
      *
@@ -255,6 +264,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Whether the URI is a relative-path reference.
+	 * URI是否为辅助路径引用。
      *
      * A relative reference that does not begin with a slash character is termed a relative-path reference.
      *
@@ -269,6 +279,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Whether the URI is a same-document reference.
+	 * URI是否为相同文档引用。
      *
      * A same-document reference refers to a URI that is, aside from its fragment
      * component, identical to the base URI. When no base URI is given, only an empty
@@ -295,6 +306,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Creates a new URI with a specific query string value removed.
+	 * 创建一个带有特定查询字符串值的新URI。
      *
      * Any existing query string values that exactly match the provided key are
      * removed.
@@ -311,6 +323,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Creates a new URI with a specific query string value.
+	 * 创建一个具有特定查询字符串值的新URI。
      *
      * Any existing query string values that exactly match the provided key are
      * removed and replaced with the given key value pair.
@@ -333,6 +346,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Creates a new URI with multiple specific query string values.
+	 * 创建一个具有多个特定查询字符串值的新URI。
      *
      * It has the same behavior as withQueryValue() but for an associative array of key => value.
      *
@@ -352,6 +366,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Creates a URI from a hash of `parse_url` components.
+	 * 从“parse_url”组件的哈希创建URI。
      *
      * @see https://www.php.net/manual/en/function.parse-url.php
      *
@@ -682,6 +697,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Filters the path of a URI
+	 * 过滤URI的路径
      *
      * @param mixed $path
      *
@@ -702,6 +718,7 @@ class Uri implements UriInterface, \JsonSerializable
 
     /**
      * Filters the query string or fragment of a URI.
+	 * 返回给定值的UriInterface。
      *
      * @param mixed $str
      *

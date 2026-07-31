@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，投射
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class DummyClass implements CastsAttributes
+class {{ class }} implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -19,22 +19,22 @@ class DummyClass implements CastsAttributes
      * @param  array  $attributes
      * @return mixed
      */
-    public function get($model, $key, $value, $attributes)
+    public function get($model, string $key, $value, array $attributes)
     {
         return $value;
     }
 
     /**
      * Prepare the given value for storage.
-	 * 准备存储的给定值
+	 * 为存储准备给定的值
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  array  $value
+     * @param  mixed  $value
      * @param  array  $attributes
      * @return mixed
      */
-    public function set($model, $key, $value, $attributes)
+    public function set($model, string $key, $value, array $attributes)
     {
         return $value;
     }

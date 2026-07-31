@@ -1,10 +1,14 @@
 <?php
+/**
+ * Faker，ORM，推进，聚居者
+ */
 
 namespace Faker\ORM\Propel;
 
 /**
  * Service class for populating a database using the Propel ORM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 使用驱动ORM填充数据库的服务类。
  */
 class Populator
 {
@@ -19,6 +23,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$entity添加生成$number记录的订单
      *
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel\EntityPopulator instance
      * @param int   $number The number of entities to populate
@@ -45,6 +50,7 @@ class Populator
 
     /**
      * Populate the database using all the Entity classes previously added.
+	 * 使用前面添加的所有Entity类填充数据库
      *
      * @param PropelPDO $con A Propel connection object
      *

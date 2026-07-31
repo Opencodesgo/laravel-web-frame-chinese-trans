@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，计算器，Iban
+ */
 
 namespace Faker\Calculator;
 
@@ -6,6 +9,7 @@ class Iban
 {
     /**
      * Generates IBAN Checksum
+	 * 生成IBAN校验和
      *
      * @return string Checksum (numeric string)
      */
@@ -31,6 +35,7 @@ class Iban
 
     /**
      * Converts letter to number
+	 * 转换字母到数字
      *
      * @return int
      */
@@ -41,6 +46,7 @@ class Iban
 
     /**
      * Calculates mod97 on a numeric string
+	 * 在数字字符串上计算mod97
      *
      * @param string $number Numeric string
      *
@@ -59,6 +65,7 @@ class Iban
 
     /**
      * Checks whether an IBAN has a valid checksum
+	 * 检查IBAN是否有有效的校验和
      *
      * @return bool
      */

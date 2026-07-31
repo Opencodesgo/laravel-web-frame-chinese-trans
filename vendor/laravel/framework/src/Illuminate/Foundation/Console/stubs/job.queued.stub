@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，任务队列
  */
 
 namespace {{ namespace }};
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,7 +18,7 @@ class {{ class }} implements ShouldQueue
 
     /**
      * Create a new job instance.
-	 * 创建新的实例
+	 * 创建新的任务实例
      *
      * @return void
      */

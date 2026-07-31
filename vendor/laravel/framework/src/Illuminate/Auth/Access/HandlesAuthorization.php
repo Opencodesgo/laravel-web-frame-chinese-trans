@@ -22,7 +22,7 @@ trait HandlesAuthorization
 
     /**
      * Throws an unauthorized exception.
-	 * 抛出未授权异常
+	 * 抛出未经授权的异常
      *
      * @param  string|null  $message
      * @param  mixed|null  $code

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，中间件，添加发光
+ */
 
 namespace Facade\FlareClient\Middleware;
 

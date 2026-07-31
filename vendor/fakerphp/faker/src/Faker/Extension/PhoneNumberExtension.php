@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，扩展，电话号码扩展
+ */
 
 namespace Faker\Extension;
 

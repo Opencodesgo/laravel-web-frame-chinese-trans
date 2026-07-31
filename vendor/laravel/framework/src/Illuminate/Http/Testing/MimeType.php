@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，测试，文档类型
+ * Illuminate，Http，测试，MIME 类型
  */
 
 namespace Illuminate\Http\Testing;
@@ -20,14 +20,14 @@ class MimeType
 
     /**
      * Get the mime types instance.
-	 * 获取mime类型实例
+	 * 得到mime类型实例
      *
      * @return \Symfony\Component\Mime\MimeTypesInterface
      */
     public static function getMimeTypes()
     {
         if (self::$mime === null) {
-            self::$mime = new MimeTypes();
+            self::$mime = new MimeTypes;
         }
 
         return self::$mime;

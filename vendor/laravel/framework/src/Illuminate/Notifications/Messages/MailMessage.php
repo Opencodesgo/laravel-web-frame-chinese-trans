@@ -9,10 +9,12 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Mail\Markdown;
-use Traversable;
+use Illuminate\Support\Traits\Conditionable;
 
 class MailMessage extends SimpleMessage implements Renderable
 {
+    use Conditionable;
+
     /**
      * The view to be rendered.
 	 * 要呈现的视图
@@ -71,7 +73,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * The "bcc" information for the message.
-	 * 邮件的"密送"信息
+	 * 消息的"密件"信息
      *
      * @var array
      */
@@ -147,7 +149,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Set the default markdown template.
-	 * 设置默认markdown模板
+	 * 设置默认降价模板
      *
      * @param  string  $template
      * @return $this
@@ -281,6 +283,7 @@ class MailMessage extends SimpleMessage implements Renderable
 	 * 设置此消息的优先级
      *
      * The value is an integer where 1 is the highest priority and 5 is the lowest.
+	 * 整数形式，优先级为1最高，优先级为5最低。
      *
      * @param  int  $level
      * @return $this
@@ -294,7 +297,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Get the data array for the mail message.
-	 * 获取邮件消息的数据数组
+	 * 得到邮件消息的数据数组
      *
      * @return array
      */
@@ -326,9 +329,7 @@ class MailMessage extends SimpleMessage implements Renderable
      */
     protected function arrayOfAddresses($address)
     {
-        return is_array($address) ||
-               $address instanceof Arrayable ||
-               $address instanceof Traversable;
+        return is_iterable($address) || $address instanceof Arrayable;
     }
 
     /**
@@ -345,9 +346,10 @@ class MailMessage extends SimpleMessage implements Renderable
             );
         }
 
-        return Container::getInstance()
-            ->make(Markdown::class)
-            ->render($this->markdown, $this->data());
+        $markdown = Container::getInstance()->make(Markdown::class);
+
+        return $markdown->theme($this->theme ?: $markdown->getTheme())
+                ->render($this->markdown, $this->data());
     }
 
     /**

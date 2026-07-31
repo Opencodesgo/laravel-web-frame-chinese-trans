@@ -7,6 +7,7 @@ namespace Illuminate\Cache;
 
 use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Contracts\Redis\Factory as Redis;
+use Illuminate\Redis\Connections\PhpRedisConnection;
 
 class RedisStore extends TaggableStore implements LockProvider
 {
@@ -27,16 +28,24 @@ class RedisStore extends TaggableStore implements LockProvider
     protected $prefix;
 
     /**
-     * The Redis connection that should be used.
-	 * 应该使用的Redis连接
+     * The Redis connection instance that should be used to manage locks.
+	 * 应该用来管理锁的Redis连接实例
      *
      * @var string
      */
     protected $connection;
 
     /**
+     * The name of the connection that should be used for locks.
+	 * 应该用于锁的连接的名称
+     *
+     * @var string
+     */
+    protected $lockConnection;
+
+    /**
      * Create a new Redis store.
-	 * 创建新的Redis存储
+	 * 创建一个新的Redis存储
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string  $prefix
@@ -69,6 +78,7 @@ class RedisStore extends TaggableStore implements LockProvider
 	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
+	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array
@@ -197,7 +207,15 @@ class RedisStore extends TaggableStore implements LockProvider
      */
     public function lock($name, $seconds = 0, $owner = null)
     {
-        return new RedisLock($this->connection(), $this->prefix.$name, $seconds, $owner);
+        $lockName = $this->prefix.$name;
+
+        $lockConnection = $this->lockConnection();
+
+        if ($lockConnection instanceof PhpRedisConnection) {
+            return new PhpRedisLock($lockConnection, $lockName, $seconds, $owner);
+        }
+
+        return new RedisLock($lockConnection, $lockName, $seconds, $owner);
     }
 
     /**
@@ -264,8 +282,19 @@ class RedisStore extends TaggableStore implements LockProvider
     }
 
     /**
-     * Set the connection name to be used.
-	 * 设置要使用的连接名称
+     * Get the Redis connection instance that should be used to manage locks.
+	 * 获取应该用于管理锁的Redis连接实例
+     *
+     * @return \Illuminate\Redis\Connections\Connection
+     */
+    public function lockConnection()
+    {
+        return $this->redis->connection($this->lockConnection ?? $this->connection);
+    }
+
+    /**
+     * Specify the name of the connection that should be used to store data.
+	 * 指定应用于存储数据的连接的名称
      *
      * @param  string  $connection
      * @return void
@@ -276,8 +305,22 @@ class RedisStore extends TaggableStore implements LockProvider
     }
 
     /**
+     * Specify the name of the connection that should be used to manage locks.
+	 * 指定应用于管理锁的连接的名称
+     *
+     * @param  string  $connection
+     * @return $this
+     */
+    public function setLockConnection($connection)
+    {
+        $this->lockConnection = $connection;
+
+        return $this;
+    }
+
+    /**
      * Get the Redis database instance.
-	 * 获取Redis数据库实例
+	 * 得到Redis数据库实例
      *
      * @return \Illuminate\Contracts\Redis\Factory
      */

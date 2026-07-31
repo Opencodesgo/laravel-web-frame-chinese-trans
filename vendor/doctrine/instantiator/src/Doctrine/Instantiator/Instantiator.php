@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Instantiator，实例化器
+ */
 
 namespace Doctrine\Instantiator;
 
@@ -38,6 +41,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Used to instantiate specific classes, indexed by class name.
+	 * 用于实例化按类名索引的特定类。
      *
      * @var callable[]
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，扩展，地址扩展
+ */
 
 namespace Faker\Extension;
 
@@ -34,6 +37,7 @@ interface AddressExtension extends Extension
 
     /**
      * Randomly return a building number.
+	 * 随机返回建筑号
      */
     public function buildingNumber(): string;
 }

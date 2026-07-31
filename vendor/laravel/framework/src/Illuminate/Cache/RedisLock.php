@@ -9,7 +9,7 @@ class RedisLock extends Lock
 {
     /**
      * The Redis factory implementation.
-	 * Redis 工厂实现
+	 * Redis工厂实现
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -71,12 +71,23 @@ class RedisLock extends Lock
 
     /**
      * Returns the owner value written into the driver for this lock.
-	 * 释放此锁，而不考虑所有权。
+	 * 返回写入此锁的驱动程序的所有者值
      *
      * @return string
      */
     protected function getCurrentOwner()
     {
         return $this->redis->get($this->name);
+    }
+
+    /**
+     * Get the name of the Redis connection being used to manage the lock.
+	 * 获取用于管理锁的Redis连接的名称
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return $this->redis->getName();
     }
 }

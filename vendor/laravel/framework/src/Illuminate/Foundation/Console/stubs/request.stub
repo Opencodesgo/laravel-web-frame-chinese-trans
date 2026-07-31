@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，请求
  */
 
 namespace {{ namespace }};
@@ -11,7 +11,7 @@ class {{ class }} extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-	 * 确定用户是否被授权进行此请求
+	 * 确定用户是否被授权发出此请求
      *
      * @return bool
      */

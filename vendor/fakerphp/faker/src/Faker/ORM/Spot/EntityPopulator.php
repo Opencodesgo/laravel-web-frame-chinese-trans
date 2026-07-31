@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，实体普及器
+ */
 
 namespace Faker\ORM\Spot;
 
@@ -10,11 +13,13 @@ use Spot\Relation\BelongsTo;
 
 /**
  * Service class for populating a table through a Spot Entity class.
+ * 服务类通过一个Spot实体类填充表
  */
 class EntityPopulator
 {
     /**
      * When fetching existing data - fetch only few first rows.
+	 * 当获取现有数据时,只获取很少的第一行
      */
     public const RELATED_FETCH_COUNT = 10;
 
@@ -165,6 +170,7 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
+	 * 使用实体类插入一个新记录
      *
      * @return string
      */

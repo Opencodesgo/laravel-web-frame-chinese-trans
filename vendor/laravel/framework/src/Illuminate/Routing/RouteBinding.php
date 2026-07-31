@@ -13,7 +13,7 @@ class RouteBinding
 {
     /**
      * Create a Route model binding for a given callback.
-	 * 为给定的回调创建一个路由模型绑定
+	 * 为给定的回调创建一个Route模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Closure|string  $binder
@@ -53,7 +53,7 @@ class RouteBinding
 
     /**
      * Create a Route model binding for a model.
-	 * 为模型创建一个路由模型绑定
+	 * 为模型创建一个Route模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $class
@@ -72,7 +72,7 @@ class RouteBinding
             // For model binders, we will attempt to retrieve the models using the first
             // method on the model instance. If we cannot retrieve the models we'll
             // throw a not found exception otherwise we will return the instance.
-			// 对于模型绑定器，我们将尝试使用第一个来检索模型实例的方法。
+			// 对于模型绑定器，我们将尝试使用第一个来检索模型。
             $instance = $container->make($class);
 
             if ($model = $instance->resolveRouteBinding($value)) {

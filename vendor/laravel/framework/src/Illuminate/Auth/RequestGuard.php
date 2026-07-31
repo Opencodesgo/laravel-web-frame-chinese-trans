@@ -32,7 +32,7 @@ class RequestGuard implements Guard
 
     /**
      * Create a new authentication guard.
-	 * 创建新的身份验证守卫
+	 * 创建一个新的身份验证保护
      *
      * @param  callable  $callback
      * @param  \Illuminate\Http\Request  $request
@@ -57,7 +57,7 @@ class RequestGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
-		// 如果我们已经检索了当前请求的用户，我们可以立即退回。
+		// 如果我们已经为当前请求检索了用户，我们就可以立即返回。
         if (! is_null($this->user)) {
             return $this->user;
         }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Doctrine，日期时间类型
+ */
 
 namespace Carbon\Doctrine;
 

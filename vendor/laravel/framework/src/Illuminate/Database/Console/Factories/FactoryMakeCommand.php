@@ -6,13 +6,14 @@
 namespace Illuminate\Database\Console\Factories;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class FactoryMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -20,11 +21,12 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
+	 * 
      *
      * @var string
      */
-    protected $description = 'Create a new model factory';
+    protected $description = 'Create a new model factory';			#创建一个新的模型工厂
 
     /**
      * The type of class being generated.
@@ -68,19 +70,30 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
+        $factory = class_basename(Str::ucfirst(str_replace('Factory', '', $name)));
+
         $namespaceModel = $this->option('model')
-                        ? $this->qualifyClass($this->option('model'))
-                        : trim($this->rootNamespace(), '\\').'\\Model';
+                        ? $this->qualifyModel($this->option('model'))
+                        : $this->qualifyModel($this->guessModelName($name));
 
         $model = class_basename($namespaceModel);
 
+        if (Str::startsWith($namespaceModel, $this->rootNamespace().'Models')) {
+            $namespace = Str::beforeLast('Database\\Factories\\'.Str::after($namespaceModel, $this->rootNamespace().'Models\\'), '\\');
+        } else {
+            $namespace = 'Database\\Factories';
+        }
+
         $replace = [
+            '{{ factoryNamespace }}' => $namespace,
             'NamespacedDummyModel' => $namespaceModel,
             '{{ namespacedModel }}' => $namespaceModel,
             '{{namespacedModel}}' => $namespaceModel,
             'DummyModel' => $model,
             '{{ model }}' => $model,
             '{{model}}' => $model,
+            '{{ factory }}' => $factory,
+            '{{factory}}' => $factory,
         ];
 
         return str_replace(
@@ -97,11 +110,35 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = str_replace(
-            ['\\', '/'], '', $this->argument('name')
-        );
+        $name = (string) Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Factory');
 
-        return $this->laravel->databasePath()."/factories/{$name}.php";
+        return $this->laravel->databasePath().'/factories/'.str_replace('\\', '/', $name).'.php';
+    }
+
+    /**
+     * Guess the model name from the Factory name or return a default model name.
+	 * 从Factory名称猜测模型名称，或者返回默认模型名称。
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function guessModelName($name)
+    {
+        if (Str::endsWith($name, 'Factory')) {
+            $name = substr($name, 0, -7);
+        }
+
+        $modelName = $this->qualifyModel(Str::after($name, $this->rootNamespace()));
+
+        if (class_exists($modelName)) {
+            return $modelName;
+        }
+
+        if (is_dir(app_path('Models/'))) {
+            return $this->rootNamespace().'Models\Model';
+        }
+
+        return $this->rootNamespace().'Model';
     }
 
     /**

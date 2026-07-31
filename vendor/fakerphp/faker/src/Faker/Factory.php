@@ -13,7 +13,7 @@ class Factory
 
     /**
      * Create a new generator
-	 * 创建新的生成器
+	 * 创建一个新的生成器
      *
      * @param string $locale
      *

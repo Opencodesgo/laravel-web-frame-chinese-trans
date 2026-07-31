@@ -33,7 +33,7 @@ class BroadcastMessage
 
     /**
      * Set the message data.
-	 * 发送消息数据
+	 * 设置消息数据
      *
      * @param  array  $data
      * @return $this

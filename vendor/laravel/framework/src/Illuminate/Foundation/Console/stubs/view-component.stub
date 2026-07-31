@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，视图组件
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\View\Component;
 
-class DummyClass extends Component
+class {{ class }} extends Component
 {
     /**
      * Create a new component instance.
-	 * 创建组件实例
+	 * 创建新的组件实例
      *
      * @return void
      */
@@ -24,10 +24,10 @@ class DummyClass extends Component
      * Get the view / contents that represent the component.
 	 * 获取表示组件的视图/内容
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\Contracts\View\View|\Closure|string
      */
     public function render()
     {
-        return DummyView;
+        return {{ view }};
     }
 }

@@ -69,6 +69,18 @@ class ClosureCommand extends Command
      * @param  string  $description
      * @return $this
      */
+    public function purpose($description)
+    {
+        return $this->describe($description);
+    }
+
+    /**
+     * Set the description for the command.
+	 * 设置命令的描述信息
+     *
+     * @param  string  $description
+     * @return $this
+     */
     public function describe($description)
     {
         $this->setDescription($description);

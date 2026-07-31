@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，响应工厂
+ * Illuminate，契约，路由，响应工厂接口
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -11,7 +11,7 @@ interface ResponseFactory
      * Create a new response instance.
 	 * 创建新的响应实例
      *
-     * @param  string  $content
+     * @param  array|string  $content
      * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\Response
@@ -20,7 +20,7 @@ interface ResponseFactory
 
     /**
      * Create a new "no content" response.
-	 * 创建新的"无内容"响应
+	 * 创建一个新的"无内容"响应
      *
      * @param  int  $status
      * @param  array  $headers
@@ -112,7 +112,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response to the given path.
-	 * 为给定路径创建新的重定向响应
+	 * 创建对给定路径的新重定向响应
      *
      * @param  string  $path
      * @param  int  $status
@@ -124,7 +124,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response to a named route.
-	 * 为命名路由创建新的重定向响应
+	 * 为命名路由创建一个新的重定向响应
      *
      * @param  string  $route
      * @param  mixed  $parameters

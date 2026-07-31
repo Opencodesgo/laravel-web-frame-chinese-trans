@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特征，前置调用
+ * Illuminate，支持，特性，转发呼叫
  */
 
 namespace Illuminate\Support\Traits;
@@ -39,6 +39,28 @@ trait ForwardsCalls
 
             static::throwBadMethodCallException($method);
         }
+    }
+
+    /**
+     * Forward a method call to the given object, returning $this if the forwarded call returned itself.
+	 * 将方法调用转发给给定对象，如果转发的调用返回自己，则返回$this。
+     *
+     * @param  mixed  $object
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     *
+     * @throws \BadMethodCallException
+     */
+    protected function forwardDecoratedCallTo($object, $method, $parameters)
+    {
+        $result = $this->forwardCallTo($object, $method, $parameters);
+
+        if ($result === $object) {
+            return $this;
+        }
+
+        return $result;
     }
 
     /**

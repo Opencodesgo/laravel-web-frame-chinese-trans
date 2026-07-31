@@ -1,20 +1,20 @@
 <?php
 /**
- * Illuminate，支持，门面，门面，为所有的门面提供继承
+ * Illuminate，支持，门面，门面抽象类
  */
 
 namespace Illuminate\Support\Facades;
 
 use Closure;
 use Mockery;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use RuntimeException;
 
 abstract class Facade
 {
     /**
      * The application instance being facaded.
-	 * 被门面的应用实例
+	 * 正在facade的应用程序实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -30,7 +30,7 @@ abstract class Facade
 
     /**
      * Run a Closure when the facade has been resolved.
-	 * 在门面被解析后运行闭包
+	 * 在解决facade时运行闭包
      *
      * @param  \Closure  $callback
      * @return void
@@ -50,7 +50,7 @@ abstract class Facade
 
     /**
      * Convert the facade into a Mockery spy.
-	 * 转换门面为歪曲间谍
+	 * 把门面变成一个嘲弄间谍
      *
      * @return \Mockery\MockInterface
      */
@@ -138,12 +138,12 @@ abstract class Facade
         $name = static::getFacadeAccessor();
 
         return isset(static::$resolvedInstance[$name]) &&
-               static::$resolvedInstance[$name] instanceof MockInterface;
+               static::$resolvedInstance[$name] instanceof LegacyMockInterface;
     }
 
     /**
      * Get the mockable class for the bound instance.
-	 * 获取绑定实例的可模拟类
+	 * 得到绑定实例的可模拟类
      *
      * @return string|null
      */
@@ -241,7 +241,7 @@ abstract class Facade
 
     /**
      * Get the application instance behind the facade.
-	 * 获取facade后面的应用实例
+	 * 获取facade后面的应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

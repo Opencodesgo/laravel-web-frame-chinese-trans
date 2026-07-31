@@ -21,7 +21,7 @@ class Hub implements HubContract
 
     /**
      * All of the available pipelines.
-	 * 所有可用管道
+	 * 所有可用的管道
      *
      * @var array
      */
@@ -79,5 +79,30 @@ class Hub implements HubContract
         return call_user_func(
             $this->pipelines[$pipeline], new Pipeline($this->container), $object
         );
+    }
+
+    /**
+     * Get the container instance used by the hub.
+	 * 获取中心使用的容器实例
+     *
+     * @return \Illuminate\Contracts\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set the container instance used by the hub.
+	 * 设置中心使用的容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 }

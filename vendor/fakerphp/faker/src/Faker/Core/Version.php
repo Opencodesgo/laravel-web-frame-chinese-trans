@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，版本
+ */
 
 declare(strict_types=1);
 
@@ -55,6 +58,7 @@ final class Version implements Extension\VersionExtension
 
     /**
      * Common random build identifier
+	 * 通用随机构建标识符
      */
     private function semverBuildIdentifier(): string
     {

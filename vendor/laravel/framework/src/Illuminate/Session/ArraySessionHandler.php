@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，数组会话处理程序
+ * Illuminate，Session，数组会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -30,7 +30,7 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new array driven handler instance.
-	 * 创建新的数组驱动处理实例
+	 * 创建一个新的数组驱动处理程序实例
      *
      * @param  int  $minutes
      * @return void
@@ -42,7 +42,10 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         return true;
@@ -50,7 +53,10 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
@@ -58,7 +64,10 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         if (! isset($this->storage[$sessionId])) {
@@ -78,7 +87,10 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         $this->storage[$sessionId] = [
@@ -91,7 +103,10 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         if (isset($this->storage[$sessionId])) {
@@ -103,7 +118,10 @@ class ArraySessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($lifetime)
     {
         $expiration = $this->calculateExpiration($lifetime);

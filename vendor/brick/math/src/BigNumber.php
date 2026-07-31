@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，大数字
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * Common interface for arbitrary-precision rational numbers.
+ * 通用接口的仲裁精度合理数字。
  *
  * @psalm-immutable
  */
@@ -18,6 +22,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
+	 * 用于解析整数、小数和有理数的正则表达式。
      */
     private const PARSE_REGEXP =
         '/^' .
@@ -38,6 +43,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Creates a BigNumber of the given value.
+	 * 创建给定值的bignnumber。
      *
      * The concrete return type is dependent on the given value, with the following rules:
      *
@@ -152,6 +158,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Safely converts float to string, avoiding locale-dependent issues.
+	 * 安全地将float转换为string，避免了与语言环境相关的问题。
      *
      * @see https://github.com/brick/math/pull/20
      *
@@ -176,6 +183,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Proxy method to access protected constructors from sibling classes.
+	 * 代理方法从兄弟类中访问受保护的构造函数
      *
      * @internal
      *
@@ -194,6 +202,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns the minimum of the given values.
+	 * 返回给定值的最小值
      *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
@@ -228,6 +237,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns the maximum of the given values.
+	 * 返回给定值的最大值
      *
      * @param BigNumber|int|float|string ...$values The numbers to compare. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
@@ -262,6 +272,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns the sum of the given values.
+	 * 返回给定值的和
      *
      * @param BigNumber|int|float|string ...$values The numbers to add. All the numbers need to be convertible
      *                                              to an instance of the class this method is called on.
@@ -295,6 +306,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Adds two BigNumber instances in the correct order to avoid a RoundingNecessaryException.
+	 * 在正确的顺序中添加两个BigNumber实例以避免一个rounding必要性异常。
      *
      * @todo This could be better resolved by creating an abstract protected method in BigNumber, and leaving to
      *       concrete classes the responsibility to perform the addition themselves or delegate it to the given number,
@@ -333,6 +345,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Removes optional leading zeros and + sign from the given number.
+	 * 从给定的数字中删除可选的引导零和+符号
      *
      * @param string $number The number, validated as a non-empty string of digits with optional leading sign.
      *
@@ -363,6 +376,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is equal to the given one.
+	 * 检查这个数字是否等于给定的
      *
      * @param BigNumber|int|float|string $that
      *
@@ -399,6 +413,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly greater than the given one.
+	 * 检查这个数字是否比给定的数字要大
      *
      * @param BigNumber|int|float|string $that
      *
@@ -411,6 +426,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is greater than or equal to the given one.
+	 * 检查这个数是否大于或等于给定的数
      *
      * @param BigNumber|int|float|string $that
      *
@@ -423,6 +439,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number equals zero.
+	 * 检查这个数字是否等于0
      *
      * @return bool
      */
@@ -433,6 +450,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly negative.
+	 * 检查这个数字是否严格否定
      *
      * @return bool
      */
@@ -443,6 +461,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is negative or zero.
+	 * 检查这个数字是负还是零
      *
      * @return bool
      */
@@ -453,6 +472,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly positive.
+	 * 检查这个数字是否严格为正
      *
      * @return bool
      */
@@ -463,6 +483,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is positive or zero.
+	 * 检查这个数字是正的还是零的
      *
      * @return bool
      */
@@ -473,6 +494,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns the sign of this number.
+	 * 返回这个数字的符号
      *
      * @return int -1 if the number is negative, 0 if zero, 1 if positive.
      */
@@ -516,6 +538,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Converts this number to a BigDecimal with the given scale, using rounding if necessary.
+	 * 将这个数字转换为有比例的大数点,如有需要,可使用四分四。
      *
      * @param int $scale        The scale of the resulting `BigDecimal`.
      * @param int $roundingMode A `RoundingMode` constant.
@@ -529,6 +552,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns the exact value of this number as a native integer.
+	 * 将这个数字的确切值返回为一个本机整数。
      *
      * If this number cannot be converted to a native integer without losing precision, an exception is thrown.
      * Note that the acceptable range for an integer depends on the platform and differs for 32-bit and 64-bit.
@@ -541,6 +565,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns an approximation of this number as a floating-point value.
+	 * 返回这个数字的近似作为浮点值。
      *
      * Note that this method can discard information as the precision of a floating-point value
      * is inherently limited.
@@ -554,6 +579,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Returns a string representation of this number.
+	 * 返回这个数字的字符串表示。
      *
      * The output of this method can be parsed by the `of()` factory method;
      * this will yield an object equal to this one, without any information loss.

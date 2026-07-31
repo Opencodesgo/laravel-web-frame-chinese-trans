@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，滴流
+ */
 
 declare(strict_types=1);
 
@@ -9,6 +12,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Stream decorator that begins dropping data once the size of the underlying
  * stream becomes too full.
+ * 开始删除数据大小的流装饰器。
  */
 final class DroppingStream implements StreamInterface
 {

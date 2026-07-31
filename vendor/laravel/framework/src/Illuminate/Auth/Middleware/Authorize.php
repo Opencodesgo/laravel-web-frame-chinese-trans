@@ -13,7 +13,7 @@ class Authorize
 {
     /**
      * The gate instance.
-	 * 大门实例
+	 * gate实例
      *
      * @var \Illuminate\Contracts\Auth\Access\Gate
      */
@@ -72,7 +72,7 @@ class Authorize
 
     /**
      * Get the model to authorize.
-	 * 得到授权模型
+	 * 得到模型授权
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $model

@@ -9,7 +9,7 @@ class LocaleUpdated
 {
     /**
      * The new locale.
-	 * 新的区域设置
+	 * 新的语言设置
      *
      * @var string
      */

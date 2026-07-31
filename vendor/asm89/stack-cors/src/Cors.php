@@ -1,6 +1,6 @@
 <?php
 /**
- * Asm89，Stack，CORS，跨域资源共享
+ * Asm89，Stack，跨域资源共享(Cross Origin Resource Sharing)
  */
 
 /*

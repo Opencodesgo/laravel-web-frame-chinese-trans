@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，MIME 类型
+ */
 
 declare(strict_types=1);
 
@@ -1239,6 +1242,7 @@ final class MimeType
 
     /**
      * Determines the mimetype of a file by looking at its extension.
+	 * 通过查看文件的扩展名来确定文件的mime类型
      *
      * @see https://raw.githubusercontent.com/jshttp/mime-db/master/db.json
      */
@@ -1249,6 +1253,7 @@ final class MimeType
 
     /**
      * Maps a file extensions to a mimetype.
+	 * 将文件扩展映射到mimetype
      *
      * @see https://raw.githubusercontent.com/jshttp/mime-db/master/db.json
      */

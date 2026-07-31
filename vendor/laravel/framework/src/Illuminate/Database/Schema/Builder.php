@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，数据库，模式，生成器
+ * Illuminate，数据库，架构，生成器
  */
 
 namespace Illuminate\Database\Schema;
 
 use Closure;
-use Doctrine\DBAL\Types\Type;
+use Illuminate\Container\Container;
 use Illuminate\Database\Connection;
+use InvalidArgumentException;
 use LogicException;
-use RuntimeException;
 
 class Builder
 {
@@ -31,7 +31,7 @@ class Builder
 
     /**
      * The Blueprint resolver callback.
-	 * 蓝图分解器回调
+	 * Blueprint解析器回调
      *
      * @var \Closure
      */
@@ -44,6 +44,14 @@ class Builder
      * @var int
      */
     public static $defaultStringLength = 255;
+
+    /**
+     * The default relationship morph key type.
+	 * 默认的关系变形键类型
+     *
+     * @var string
+     */
+    public static $defaultMorphKeyType = 'int';
 
     /**
      * Create a new database Schema manager.
@@ -71,6 +79,63 @@ class Builder
     }
 
     /**
+     * Set the default morph key type for migrations.
+	 * 为迁移设置默认的变形键类型
+     *
+     * @param  string  $type
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function defaultMorphKeyType(string $type)
+    {
+        if (! in_array($type, ['int', 'uuid'])) {
+            throw new InvalidArgumentException("Morph key type must be 'int' or 'uuid'.");
+        }
+
+        static::$defaultMorphKeyType = $type;
+    }
+
+    /**
+     * Set the default morph key type for migrations to UUIDs.
+	 * 为迁移到uid设置默认的变形键类型
+     *
+     * @return void
+     */
+    public static function morphUsingUuids()
+    {
+        return static::defaultMorphKeyType('uuid');
+    }
+
+    /**
+     * Create a database in the schema.
+	 * 在模式中创建数据库
+     *
+     * @param  string  $name
+     * @return bool
+     *
+     * @throws \LogicException
+     */
+    public function createDatabase($name)
+    {
+        throw new LogicException('This database driver does not support creating databases.');
+    }
+
+    /**
+     * Drop a database from the schema if the database exists.
+	 * 如果数据库存在，则从模式中删除该数据库
+     *
+     * @param  string  $name
+     * @return bool
+     *
+     * @throws \LogicException
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        throw new LogicException('This database driver does not support dropping databases.');
+    }
+
+    /**
      * Determine if the given table exists.
 	 * 确定给定的表是否存在
      *
@@ -88,7 +153,7 @@ class Builder
 
     /**
      * Determine if the given table has a given column.
-	 * 确定给定的表是否有给定的列
+	 * 确定给定表是否有给定列
      *
      * @param  string  $table
      * @param  string  $column
@@ -139,7 +204,7 @@ class Builder
 
     /**
      * Get the column listing for a given table.
-	 * 获取给定表的列列表
+	 * 获取给定表的列清单
      *
      * @param  string  $table
      * @return array
@@ -199,7 +264,7 @@ class Builder
 
     /**
      * Drop a table from the schema if it exists.
-	 * 如果它存在,请从模式中删除一个表
+	 * 从模式中删除存在的表
      *
      * @param  string  $table
      * @return void
@@ -212,8 +277,23 @@ class Builder
     }
 
     /**
+     * Drop columns from a table schema.
+	 * 从表模式中删除列
+     *
+     * @param  string  $table
+     * @param  string|array  $columns
+     * @return void
+     */
+    public function dropColumns($table, $columns)
+    {
+        $this->table($table, function (Blueprint $blueprint) use ($columns) {
+            $blueprint->dropColumn($columns);
+        });
+    }
+
+    /**
      * Drop all tables from the database.
-	 * 删除数据库中所有表
+	 * 从数据库中删除所有表
      *
      * @return void
      *
@@ -226,7 +306,7 @@ class Builder
 
     /**
      * Drop all views from the database.
-	 * 删除数据库中所有视图
+	 * 从数据库中删除所有视图
      *
      * @return void
      *
@@ -239,7 +319,7 @@ class Builder
 
     /**
      * Drop all types from the database.
-	 * 删除数据库所有类型
+	 * 从数据库中删除所有类型
      *
      * @return void
      *
@@ -265,7 +345,7 @@ class Builder
 
     /**
      * Rename a table on the schema.
-	 * 在模式上重命名
+	 * 重命名模式上的表
      *
      * @param  string  $from
      * @param  string  $to
@@ -306,7 +386,7 @@ class Builder
 
     /**
      * Execute the blueprint to build / modify the table.
-	 * 执行构建/修改表的蓝图
+	 * 执行蓝图来构建/修改表
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @return void
@@ -318,7 +398,7 @@ class Builder
 
     /**
      * Create a new command set with a Closure.
-	 * 创建一个关闭的新命令集
+	 * 使用Closure创建一个新的命令集
      *
      * @param  string  $table
      * @param  \Closure|null  $callback
@@ -334,37 +414,21 @@ class Builder
             return call_user_func($this->resolver, $table, $callback, $prefix);
         }
 
-        return new Blueprint($table, $callback, $prefix);
+        return Container::getInstance()->make(Blueprint::class, compact('table', 'callback', 'prefix'));
     }
 
     /**
      * Register a custom Doctrine mapping type.
-	 * 注册自定义原则映射类型
+	 * 注册一个自定义Doctrine映射类型
      *
      * @param  string  $class
      * @param  string  $name
      * @param  string  $type
      * @return void
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \RuntimeException
      */
     public function registerCustomDoctrineType($class, $name, $type)
     {
-        if (! $this->connection->isDoctrineAvailable()) {
-            throw new RuntimeException(
-                'Registering a custom Doctrine type requires Doctrine DBAL (doctrine/dbal).'
-            );
-        }
-
-        if (! Type::hasType($name)) {
-            Type::addType($name, $class);
-
-            $this->connection
-                ->getDoctrineSchemaManager()
-                ->getDatabasePlatform()
-                ->registerDoctrineTypeMapping($type, $name);
-        }
+        $this->connection->registerDoctrineType($class, $name, $type);
     }
 
     /**

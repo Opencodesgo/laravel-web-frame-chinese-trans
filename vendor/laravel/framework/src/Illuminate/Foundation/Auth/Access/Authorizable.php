@@ -23,6 +23,19 @@ trait Authorizable
     }
 
     /**
+     * Determine if the entity has any of the given abilities.
+	 * 确定该实体是否具有任何给定的能力
+     *
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
+     * @return bool
+     */
+    public function canAny($abilities, $arguments = [])
+    {
+        return app(Gate::class)->forUser($this)->any($abilities, $arguments);
+    }
+
+    /**
      * Determine if the entity does not have the given abilities.
 	 * 确定实体是否没有给定的能力
      *

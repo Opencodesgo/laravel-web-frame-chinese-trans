@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Queue\Queue;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Str;
 use Mockery;
 use Mockery\Exception\InvalidCountException;
@@ -23,21 +25,24 @@ abstract class TestCase extends BaseTestCase
         Concerns\InteractsWithAuthentication,
         Concerns\InteractsWithConsole,
         Concerns\InteractsWithDatabase,
+        Concerns\InteractsWithDeprecationHandling,
         Concerns\InteractsWithExceptionHandling,
         Concerns\InteractsWithSession,
+        Concerns\InteractsWithTime,
+        Concerns\InteractsWithViews,
         Concerns\MocksApplicationServices;
 
     /**
      * The Illuminate application instance.
-	 * 点亮应用实例
+	 * Illuminate应用实例
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
     /**
      * The callbacks that should be run after the application is created.
-	 * 在创建应用程序后应该运行的回调
+	 * 创建应用程序后应该运行的回调函数
      *
      * @var array
      */
@@ -45,7 +50,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * The callbacks that should be run before the application is destroyed.
-	 * 在应用程序被销毁之前应该运行的回调
+	 * 在销毁应用程序之前应该运行的回调函数
      *
      * @var array
      */
@@ -61,7 +66,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Indicates if we have made it through the base setUp function.
-	 * 如果我们通过基本设置函数来表示
+	 * 指示我们是否通过了基本setUp函数
      *
      * @var bool
      */
@@ -90,6 +95,8 @@ abstract class TestCase extends BaseTestCase
 
         if (! $this->app) {
             $this->refreshApplication();
+
+            ParallelTesting::callSetUpTestCaseCallbacks($this);
         }
 
         $this->setUpTraits();
@@ -105,7 +112,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Refresh the application instance.
-	 * 刷新应用程序实例
+	 * 刷新应用实例
      *
      * @return void
      */
@@ -116,7 +123,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Boot the testing helper traits.
-	 * 引导测试助手的特性
+	 * 启动测试助手特征
      *
      * @return array
      */
@@ -153,7 +160,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Clean up the testing environment before the next test.
-	 * 在下一次测试前清理测试环境
+	 * 在下次测试前清理测试环境
      *
      * @return void
      *
@@ -163,6 +170,8 @@ abstract class TestCase extends BaseTestCase
     {
         if ($this->app) {
             $this->callBeforeApplicationDestroyedCallbacks();
+
+            ParallelTesting::callTearDownTestCaseCallbacks($this);
 
             $this->app->flush();
 
@@ -206,6 +215,8 @@ abstract class TestCase extends BaseTestCase
 
         Artisan::forgetBootstrappers();
 
+        Queue::createPayloadUsing(null);
+
         if ($this->callbackException) {
             throw $this->callbackException;
         }
@@ -229,7 +240,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Register a callback to be run before the application is destroyed.
-	 * 在应用程序被销毁之前注册回调
+	 * 注册一个回调，以便在销毁应用程序之前运行。
      *
      * @param  callable  $callback
      * @return void
@@ -241,7 +252,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Execute the application's pre-destruction callbacks.
-	 * 执行应用程序预先销毁的回调
+	 * 执行应用程序的预销毁回调
      *
      * @return void
      */

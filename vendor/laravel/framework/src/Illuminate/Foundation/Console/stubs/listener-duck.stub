@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，监听器回避
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class DummyClass
+class {{ class }}
 {
     /**
      * Create the event listener.
-	 * 创建事件侦听器
+	 * 创建事件监听器
      *
      * @return void
      */

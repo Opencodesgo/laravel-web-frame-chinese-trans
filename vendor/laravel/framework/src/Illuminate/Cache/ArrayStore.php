@@ -14,7 +14,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * The array of stored values.
-	 * 存储值的数组
+	 * 数据存储值
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * The array of locks.
-	 * 锁数组
+	 * 数组锁
      *
      * @var array
      */
@@ -30,7 +30,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * Indicates if values are serialized within the store.
-	 * 指示值是否在存储区中序列化
+	 * 指明值是否在存储区中序列化
      *
      * @var bool
      */
@@ -38,7 +38,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * Create a new Array store.
-	 * 创建一个新的Array存储
+	 * 创建新的数组存储
      *
      * @param  bool  $serializesValues
      * @return void
@@ -175,7 +175,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * Get the cache key prefix.
-	 * 获取缓存键前缀
+	 * 得到缓存键前缀
      *
      * @return string
      */
@@ -210,7 +210,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * Get a lock instance.
-	 * 得到锁实例
+	 * 获取一个锁实例
      *
      * @param  string  $name
      * @param  int  $seconds

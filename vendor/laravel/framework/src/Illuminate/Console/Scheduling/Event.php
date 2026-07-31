@@ -13,13 +13,14 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Reflector;
+use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Traits\ReflectsClosures;
 use Psr\Http\Client\ClientExceptionInterface;
 use Symfony\Component\Process\Process;
+use Throwable;
 
 class Event
 {
@@ -67,7 +68,7 @@ class Event
 
     /**
      * Indicates if the command should run in maintenance mode.
-	 * 指示该命令是否在维护模式下运行
+	 * 指明该命令是否在维护模式下运行
      *
      * @var bool
      */
@@ -75,7 +76,7 @@ class Event
 
     /**
      * Indicates if the command should not overlap itself.
-	 * 指示命令是否不应该重叠
+	 * 指明命令是否不应该重叠
      *
      * @var bool
      */
@@ -83,7 +84,7 @@ class Event
 
     /**
      * Indicates if the command should only be allowed to run on one server for each cron expression.
-	 * 指示是否应该只允许对每个cron表达式在一台服务器上运行该命令
+	 * 指明是否应该只允许对每个cron表达式在一台服务器上运行该命令
      *
      * @var bool
      */
@@ -98,8 +99,8 @@ class Event
     public $expiresAt = 1440;
 
     /**
-     * Indicates if the command should run in background.
-	 * 指示该命令是否应该在后台运行
+     * Indicates if the command should run in the background.
+	 * 指明该命令是否应该在后台运行
      *
      * @var bool
      */
@@ -131,7 +132,7 @@ class Event
 
     /**
      * Indicates whether output should be appended.
-	 * 指示是否应追加输出
+	 * 指明是否应追加输出
      *
      * @var bool
      */
@@ -245,11 +246,17 @@ class Event
      */
     protected function runCommandInForeground(Container $container)
     {
-        $this->callBeforeCallbacks($container);
+        try {
+            $this->callBeforeCallbacks($container);
 
-        $this->exitCode = Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
+            $this->exitCode = Process::fromShellCommandline(
+                $this->buildCommand(), base_path(), null, null, null
+            )->run();
 
-        $this->callAfterCallbacks($container);
+            $this->callAfterCallbacks($container);
+        } finally {
+            $this->removeMutex();
+        }
     }
 
     /**
@@ -261,9 +268,15 @@ class Event
      */
     protected function runCommandInBackground(Container $container)
     {
-        $this->callBeforeCallbacks($container);
+        try {
+            $this->callBeforeCallbacks($container);
 
-        Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
+            Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
+        } catch (Throwable $exception) {
+            $this->removeMutex();
+
+            throw $exception;
+        }
     }
 
     /**
@@ -306,7 +319,11 @@ class Event
     {
         $this->exitCode = (int) $exitCode;
 
-        $this->callAfterCallbacks($container);
+        try {
+            $this->callAfterCallbacks($container);
+        } finally {
+            $this->removeMutex();
+        }
     }
 
     /**
@@ -356,13 +373,13 @@ class Event
      */
     protected function expressionPasses()
     {
-        $date = Carbon::now();
+        $date = Date::now();
 
         if ($this->timezone) {
-            $date->setTimezone($this->timezone);
+            $date = $date->setTimezone($this->timezone);
         }
 
-        return CronExpression::factory($this->expression)->isDue($date->toDateTimeString());
+        return (new CronExpression($this->expression))->isDue($date->toDateTimeString());
     }
 
     /**
@@ -480,7 +497,7 @@ class Event
 
     /**
      * E-mail the results of the scheduled operation if it fails.
-	 * 如果计划操作失败，则通过电子邮件发送其结果。
+	 * 如果计划操作失败，则通过电子邮件发送其结果
      *
      * @param  array|mixed  $addresses
      * @return $this
@@ -520,7 +537,7 @@ class Event
      */
     protected function emailOutput(Mailer $mailer, $addresses, $onlyIfOutputExists = false)
     {
-        $text = file_exists($this->output) ? file_get_contents($this->output) : '';
+        $text = is_file($this->output) ? file_get_contents($this->output) : '';
 
         if ($onlyIfOutputExists && empty($text)) {
             return;
@@ -622,7 +639,7 @@ class Event
 
     /**
      * Get the callback that pings the given URL.
-	 * 获取ping给定URL的回调 
+	 * 获取ping给定URL的回调
      *
      * @param  string  $url
      * @return \Closure
@@ -639,7 +656,7 @@ class Event
     }
 
     /**
-     * State that the command should run in background.
+     * State that the command should run in the background.
 	 * 声明该命令应该在后台运行
      *
      * @return $this
@@ -705,9 +722,7 @@ class Event
 
         $this->expiresAt = $expiresAt;
 
-        return $this->then(function () {
-            $this->mutex->forget($this);
-        })->skip(function () {
+        return $this->skip(function () {
             return $this->mutex->exists($this);
         });
     }
@@ -792,6 +807,12 @@ class Event
      */
     public function then(Closure $callback)
     {
+        $parameters = $this->closureParameterTypes($callback);
+
+        if (Arr::get($parameters, 'output') === Stringable::class) {
+            return $this->thenWithOutput($callback);
+        }
+
         $this->afterCallbacks[] = $callback;
 
         return $this;
@@ -821,6 +842,12 @@ class Event
      */
     public function onSuccess(Closure $callback)
     {
+        $parameters = $this->closureParameterTypes($callback);
+
+        if (Arr::get($parameters, 'output') === Stringable::class) {
+            return $this->onSuccessWithOutput($callback);
+        }
+
         return $this->then(function (Container $container) use ($callback) {
             if (0 === $this->exitCode) {
                 $container->call($callback);
@@ -852,6 +879,12 @@ class Event
      */
     public function onFailure(Closure $callback)
     {
+        $parameters = $this->closureParameterTypes($callback);
+
+        if (Arr::get($parameters, 'output') === Stringable::class) {
+            return $this->onFailureWithOutput($callback);
+        }
+
         return $this->then(function (Container $container) use ($callback) {
             if (0 !== $this->exitCode) {
                 $container->call($callback);
@@ -885,11 +918,11 @@ class Event
     protected function withOutputCallback(Closure $callback, $onlyIfOutputExists = false)
     {
         return function (Container $container) use ($callback, $onlyIfOutputExists) {
-            $output = $this->output && file_exists($this->output) ? file_get_contents($this->output) : '';
+            $output = $this->output && is_file($this->output) ? file_get_contents($this->output) : '';
 
             return $onlyIfOutputExists && empty($output)
                             ? null
-                            : $container->call($callback, ['output' => $output]);
+                            : $container->call($callback, ['output' => new Stringable($output)]);
         };
     }
 
@@ -945,14 +978,13 @@ class Event
      */
     public function nextRunDate($currentTime = 'now', $nth = 0, $allowCurrentDate = false)
     {
-        return Date::instance(CronExpression::factory(
-            $this->getExpression()
-        )->getNextRunDate($currentTime, $nth, $allowCurrentDate, $this->timezone));
+        return Date::instance((new CronExpression($this->getExpression()))
+            ->getNextRunDate($currentTime, $nth, $allowCurrentDate, $this->timezone));
     }
 
     /**
      * Get the Cron expression for the event.
-	 * 获取事件的Cron表达式。
+	 * 获取事件的Cron表达式
      *
      * @return string
      */
@@ -973,5 +1005,18 @@ class Event
         $this->mutex = $mutex;
 
         return $this;
+    }
+
+    /**
+     * Delete the mutex for the event.
+	 * 删除事件的互斥锁
+     *
+     * @return void
+     */
+    protected function removeMutex()
+    {
+        if ($this->withoutOverlapping) {
+            $this->mutex->forget($this);
+        }
     }
 }

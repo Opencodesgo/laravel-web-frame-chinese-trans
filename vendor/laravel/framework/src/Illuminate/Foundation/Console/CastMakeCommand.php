@@ -11,7 +11,7 @@ class CastMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名 make:cast
      *
      * @var string
      */
@@ -19,7 +19,7 @@ class CastMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令描述，创建一个新的自定义Eloquent转换类
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class CastMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成的类类型
      *
      * @var string
      */
@@ -35,18 +35,32 @@ class CastMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/cast.stub';
+        return $this->resolveStubPath('/stubs/cast.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

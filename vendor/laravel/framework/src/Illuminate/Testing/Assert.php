@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，Assert
+ * Illuminate，测试，声称
  */
 
 namespace Illuminate\Testing;
@@ -13,11 +13,9 @@ use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\InvalidArgumentException;
-use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
  * @internal This class is not meant to be used or overwritten outside the framework itself.
- * 这个类并不意味着在框架本身之外使用或覆盖
  */
 abstract class Assert extends PHPUnit
 {
@@ -34,19 +32,11 @@ abstract class Assert extends PHPUnit
     public static function assertArraySubset($subset, $array, bool $checkForIdentity = false, string $msg = ''): void
     {
         if (! (is_array($subset) || $subset instanceof ArrayAccess)) {
-            if (class_exists(InvalidArgumentException::class)) {
-                throw InvalidArgumentException::create(1, 'array or ArrayAccess');
-            } else {
-                throw InvalidArgumentHelper::factory(1, 'array or ArrayAccess');
-            }
+            throw InvalidArgumentException::create(1, 'array or ArrayAccess');
         }
 
         if (! (is_array($array) || $array instanceof ArrayAccess)) {
-            if (class_exists(InvalidArgumentException::class)) {
-                throw InvalidArgumentException::create(2, 'array or ArrayAccess');
-            } else {
-                throw InvalidArgumentHelper::factory(2, 'array or ArrayAccess');
-            }
+            throw InvalidArgumentException::create(2, 'array or ArrayAccess');
         }
 
         $constraint = new ArraySubset($subset, $checkForIdentity);

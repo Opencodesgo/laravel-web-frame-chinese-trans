@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，扩展，公司扩展
+ */
 
 namespace Faker\Extension;
 

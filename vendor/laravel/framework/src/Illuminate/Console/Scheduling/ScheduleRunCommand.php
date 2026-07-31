@@ -51,7 +51,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * Check if any events ran.
-	 * 检查是否任务运行
+	 * 检查是否事件运行
      *
      * @var bool
      */
@@ -140,14 +140,14 @@ class ScheduleRunCommand extends Command
 
     /**
      * Run the given event.
-	 * 运行给定的事件
+	 * 运行给定事件
      *
      * @param  \Illuminate\Console\Scheduling\Event  $event
      * @return void
      */
     protected function runEvent($event)
     {
-        $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
+        $this->line('<info>['.date('c').'] Running scheduled command:</info> '.$event->getSummaryForDisplay());
 
         $this->dispatcher->dispatch(new ScheduledTaskStarting($event));
 

@@ -63,7 +63,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
 
     /**
      * Get list of migrations.
-	 * 得到迁移列表
+	 * 获取迁移列表
      *
      * @param  int  $steps
      * @return array
@@ -79,7 +79,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
 
     /**
      * Get the last migration batch.
-	 * 获取最后一个迁移批号
+	 * 获取最后一个迁移批处理
      *
      * @return array
      */
@@ -92,7 +92,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
 
     /**
      * Get the completed migrations with their batch numbers.
-	 * 用他们的批号来完成已完成的迁移
+	 * 获取已完成的迁移及其批号
      *
      * @return array
      */
@@ -133,7 +133,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
 
     /**
      * Get the next migration batch number.
-	 * 获取下一个迁移批数
+	 * 获取下一个迁移批号
      *
      * @return int
      */
@@ -144,7 +144,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
 
     /**
      * Get the last migration batch number.
-	 * 获取最后一个迁移批号
+	 * 获取最后的迁移批号
      *
      * @return int
      */
@@ -167,7 +167,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
             // The migrations table is responsible for keeping track of which of the
             // migrations have actually run for the application. We'll create the
             // table to hold the migration file's path as well as the batch ID.
-			// 迁移表负责跟踪已经为应用程序实际运行了迁移。
+			// 迁移表负责跟踪那个已经为应用程序实际运行了迁移。
             $table->increments('id');
             $table->string('migration');
             $table->integer('batch');
@@ -188,8 +188,21 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
     }
 
     /**
+     * Delete the migration repository data store.
+	 * 删除迁移存储库数据存储
+     *
+     * @return void
+     */
+    public function deleteRepository()
+    {
+        $schema = $this->getConnection()->getSchemaBuilder();
+
+        $schema->drop($this->table);
+    }
+
+    /**
      * Get a query builder for the migration table.
-	 * 为迁移表获取查询生成器
+	 * 获取迁移表的查询生成器
      *
      * @return \Illuminate\Database\Query\Builder
      */

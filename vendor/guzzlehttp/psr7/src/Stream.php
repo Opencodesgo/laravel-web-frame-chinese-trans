@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，流
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * PHP stream implementation.
+ * PHP流实现
  */
 class Stream implements StreamInterface
 {
@@ -68,6 +72,7 @@ class Stream implements StreamInterface
 
     /**
      * Closes the stream when the destructed
+	 * 破坏时关闭流
      */
     public function __destruct()
     {

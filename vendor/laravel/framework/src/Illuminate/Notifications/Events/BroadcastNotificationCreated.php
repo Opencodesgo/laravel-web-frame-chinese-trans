@@ -56,7 +56,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-	 * 获取该事件应该广播的通道
+	 * 得到该事件应该播放的通道
      *
      * @return array
      */
@@ -79,7 +79,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the broadcast channel name for the event.
-	 * 获取事件的广播通道名称
+	 * 得到事件的广播通道名称
      *
      * @return array|string
      */
@@ -96,12 +96,16 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the data that should be sent with the broadcasted event.
-	 * 获取应该随广播事件一起发送的数据
+	 * 得到应该随广播事件一起发送的数据
      *
      * @return array
      */
     public function broadcastWith()
     {
+        if (method_exists($this->notification, 'broadcastWith')) {
+            return $this->notification->broadcastWith();
+        }
+
         return array_merge($this->data, [
             'id' => $this->notification->id,
             'type' => $this->broadcastType(),
@@ -110,7 +114,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the type of the notification being broadcast.
-	 * 获取正在广播的通知类型
+	 * 得到正在广播的通知的类型
      *
      * @return string
      */

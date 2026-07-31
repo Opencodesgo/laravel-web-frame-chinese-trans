@@ -29,7 +29,7 @@ class HandleCors
 
     /**
      * Handle an incoming request. Based on Asm89\Stack\Cors by asm89
-	 * 处理传入请求。基于Asm89\Stack\Cors
+	 * 处理传入请求。基于Asm89\Stack\Cors。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -64,6 +64,7 @@ class HandleCors
 
     /**
      * Add the headers to the Response, if they don't exist yet.
+	 * 如果报头还不存在，将它们添加到响应中。
      *
      * @param Request $request
      * @param Response $response
@@ -81,6 +82,7 @@ class HandleCors
 
     /**
      * Add the headers to the Response, if they don't exist yet.
+	 * 如果报头还不存在，将它们添加到响应中。
      *
      * @param RequestHandled $event
      * @deprecated
@@ -95,6 +97,7 @@ class HandleCors
 
     /**
      * Determine if the request has a URI that should pass through the CORS flow.
+	 * 确定请求是否具有应该通过CORS流的URI
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -106,6 +109,7 @@ class HandleCors
 
     /**
      * The the path from the config, to see if the CORS Service should run
+	 * 从配置中获取路径，以查看是否应该运行CORS服务。
      *
      * @param \Illuminate\Http\Request $request
      * @return bool

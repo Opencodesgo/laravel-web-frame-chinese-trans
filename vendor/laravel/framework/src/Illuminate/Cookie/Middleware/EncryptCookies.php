@@ -17,7 +17,7 @@ class EncryptCookies
 {
     /**
      * The encrypter instance.
-	 * 加密实例
+	 * 加密器实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -25,7 +25,7 @@ class EncryptCookies
 
     /**
      * The names of the cookies that should not be encrypted.
-	 * 不应该加密的cookie的名称
+	 * 不应加密的cookie的名称
      *
      * @var array
      */
@@ -53,7 +53,7 @@ class EncryptCookies
 
     /**
      * Disable encryption for the given cookie name(s).
-	 * 为给定的cookie名称禁用加密
+	 * 禁用给定cookie名称的加密
      *
      * @param  string|array  $name
      * @return void
@@ -86,7 +86,7 @@ class EncryptCookies
     protected function decrypt(Request $request)
     {
         foreach ($request->cookies as $key => $cookie) {
-            if ($this->isDisabled($key)) {
+            if ($this->isDisabled($key) || is_array($cookie)) {
                 continue;
             }
 
@@ -123,7 +123,7 @@ class EncryptCookies
 
     /**
      * Decrypt an array based cookie.
-	 * 解密一个基于数组的cookie
+	 * 解密基于数组的cookie
      *
      * @param  array  $cookie
      * @return array
@@ -143,7 +143,7 @@ class EncryptCookies
 
     /**
      * Encrypt the cookies on an outgoing response.
-	 * 在传出响应时对cookie进行加密
+	 * 对传出响应的cookie进行加密
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return \Symfony\Component\HttpFoundation\Response
@@ -169,7 +169,7 @@ class EncryptCookies
 
     /**
      * Duplicate a cookie with a new value.
-	 * 用一个新的值复制一个cookie
+	 * 用新值复制一个cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Cookie  $cookie
      * @param  mixed  $value
@@ -186,7 +186,7 @@ class EncryptCookies
 
     /**
      * Determine whether encryption has been disabled for the given cookie.
-	 * 确定是否已经禁用了用于给定cookie的加密
+	 * 确定是否对给定的cookie禁用了加密
      *
      * @param  string  $name
      * @return bool

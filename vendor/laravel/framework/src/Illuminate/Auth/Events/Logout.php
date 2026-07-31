@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，事件，退出账户
+ * Illuminate，认证，事件，登出
  */
 
 namespace Illuminate\Auth\Events;
@@ -29,7 +29,7 @@ class Logout
 
     /**
      * Create a new event instance.
-	 * 创建事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user

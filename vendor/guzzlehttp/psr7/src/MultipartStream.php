@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，多域数据流
+ */
 
 declare(strict_types=1);
 
@@ -50,6 +53,7 @@ final class MultipartStream implements StreamInterface
 
     /**
      * Get the headers needed before transferring the content of a POST file
+	 * 在传输POST文件的内容之前获取所需的标头
      *
      * @param string[] $headers
      */
@@ -65,6 +69,7 @@ final class MultipartStream implements StreamInterface
 
     /**
      * Create the aggregate stream that will be used to upload the POST data
+	 * 创建将用于上传POST数据的聚合流
      */
     protected function createStream(array $elements = []): StreamInterface
     {

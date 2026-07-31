@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，队列假装
+ * Illuminate，支持，测试，假装，假队列
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -18,7 +18,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * All of the jobs that have been pushed.
-	 * 所有的工作都被推迟了
+	 * 所以已被推送的任务
      *
      * @var array
      */
@@ -81,7 +81,7 @@ class QueueFake extends QueueManager implements Queue
             [$job, $callback] = [$this->firstClosureParameterType($job), $job];
         }
 
-        return $this->assertPushed($job, function ($job, $pushedQueue) use ($callback, $queue) {
+        $this->assertPushed($job, function ($job, $pushedQueue) use ($callback, $queue) {
             if ($pushedQueue !== $queue) {
                 return false;
             }
@@ -159,7 +159,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed with chained jobs based on a truth-test callback.
-	 * 断言如果基于一个tru- test回调,工作就会被链接的工作所推动
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
      *
      * @param  string  $job
      * @param  array  $expectedChain
@@ -197,7 +197,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Determine if a job was pushed based on a truth-test callback.
-	 * 根据true -test回调确定作业是否被推送
+	 * 根据true-test回调确定作业是否被推送
      *
      * @param  string|\Closure  $job
      * @param  callable|null  $callback
@@ -291,7 +291,7 @@ class QueueFake extends QueueManager implements Queue
      * Push a new job onto the queue.
 	 * 将新作业推送到队列中
      *
-     * @param  string  $job
+     * @param  string|object  $job
      * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
@@ -323,7 +323,7 @@ class QueueFake extends QueueManager implements Queue
 	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  string  $job
+     * @param  string|object  $job
      * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
@@ -338,7 +338,7 @@ class QueueFake extends QueueManager implements Queue
 	 * 将新作业推送到队列中
      *
      * @param  string  $queue
-     * @param  string  $job
+     * @param  string|object  $job
      * @param  mixed  $data
      * @return mixed
      */
@@ -353,7 +353,7 @@ class QueueFake extends QueueManager implements Queue
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  string  $job
+     * @param  string|object  $job
      * @param  mixed  $data
      * @return mixed
      */

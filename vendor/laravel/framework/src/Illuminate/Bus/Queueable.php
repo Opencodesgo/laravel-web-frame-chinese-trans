@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，总线，可排队的：指某事物或任务可以被添加到队列中等待处理
+ * Illuminate，总线，可排队的
  */
 
 namespace Illuminate\Bus;
@@ -45,6 +45,14 @@ trait Queueable
     public $chainQueue;
 
     /**
+     * The callbacks to be executed on chain failure.
+	 * 在链失败时执行的回调函数
+     *
+     * @var array|null
+     */
+    public $chainCatchCallbacks;
+
+    /**
      * The number of seconds before the job should be made available.
 	 * 在作业可用之前的秒数
      *
@@ -53,8 +61,16 @@ trait Queueable
     public $delay;
 
     /**
+     * Indicates whether the job should be dispatched after all database transactions have committed.
+	 * 指明是否应在所有数据库事务提交后分派作业
+     *
+     * @var bool|null
+     */
+    public $afterCommit;
+
+    /**
      * The middleware the job should be dispatched through.
-	 * 作业应该通过的中间件进行分派
+	 * 任务应该通过的中间件进行分派
      *
      * @var array
      */
@@ -70,7 +86,7 @@ trait Queueable
 
     /**
      * Set the desired connection for the job.
-	 * 为作业设置所需的连接
+	 * 为任务设置所需的连接
      *
      * @param  string|null  $connection
      * @return $this
@@ -84,7 +100,7 @@ trait Queueable
 
     /**
      * Set the desired queue for the job.
-	 * 为作业设置所需的队列
+	 * 为任务设置所需的队列
      *
      * @param  string|null  $queue
      * @return $this
@@ -128,7 +144,7 @@ trait Queueable
 
     /**
      * Set the desired delay for the job.
-	 * 为作业设置所需的延迟
+	 * 为任务设置所需的延迟
      *
      * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
@@ -136,6 +152,32 @@ trait Queueable
     public function delay($delay)
     {
         $this->delay = $delay;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should be dispatched after all database transactions have committed.
+	 * 指明应在所有数据库事务提交后分派作业
+     *
+     * @return $this
+     */
+    public function afterCommit()
+    {
+        $this->afterCommit = true;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should not wait until database transactions have been committed before dispatching.
+	 * 指示作业不应等到数据库事务提交后才进行调度
+     *
+     * @return $this
+     */
+    public function beforeCommit()
+    {
+        $this->afterCommit = false;
 
         return $this;
     }
@@ -156,7 +198,7 @@ trait Queueable
 
     /**
      * Set the jobs that should run if this job is successful.
-	 * 设置作业成功时应该运行的作业
+	 * 设置任务成功时应该运行的任务
      *
      * @param  array  $chain
      * @return $this
@@ -176,6 +218,8 @@ trait Queueable
      *
      * @param  mixed  $job
      * @return string
+     *
+     * @throws \RuntimeException
      */
     protected function serializeJob($job)
     {
@@ -209,7 +253,22 @@ trait Queueable
 
                 $next->chainConnection = $this->chainConnection;
                 $next->chainQueue = $this->chainQueue;
+                $next->chainCatchCallbacks = $this->chainCatchCallbacks;
             }));
         }
+    }
+
+    /**
+     * Invoke all of the chain's failed job callbacks.
+	 * 调用链中所有失败的作业回调
+     *
+     * @param  \Throwable  $e
+     * @return void
+     */
+    public function invokeChainCatchCallbacks($e)
+    {
+        collect($this->chainCatchCallbacks)->each(function ($callback) use ($e) {
+            $callback($e);
+        });
     }
 }

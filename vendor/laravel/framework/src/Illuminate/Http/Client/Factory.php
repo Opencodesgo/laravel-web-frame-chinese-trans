@@ -6,17 +6,67 @@
 namespace Illuminate\Http\Client;
 
 use Closure;
-use function GuzzleHttp\Promise\promise_for;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use GuzzleHttp\TransferStats;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use PHPUnit\Framework\Assert as PHPUnit;
 
+/**
+ * @method \Illuminate\Http\Client\PendingRequest accept(string $contentType)
+ * @method \Illuminate\Http\Client\PendingRequest acceptJson()
+ * @method \Illuminate\Http\Client\PendingRequest asForm()
+ * @method \Illuminate\Http\Client\PendingRequest asJson()
+ * @method \Illuminate\Http\Client\PendingRequest asMultipart()
+ * @method \Illuminate\Http\Client\PendingRequest async()
+ * @method \Illuminate\Http\Client\PendingRequest attach(string|array $name, string|resource $contents = '', string|null $filename = null, array $headers = [])
+ * @method \Illuminate\Http\Client\PendingRequest baseUrl(string $url)
+ * @method \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
+ * @method \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
+ * @method \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
+ * @method \Illuminate\Http\Client\PendingRequest dd()
+ * @method \Illuminate\Http\Client\PendingRequest dump()
+ * @method \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleep = 0, ?callable $when = null)
+ * @method \Illuminate\Http\Client\PendingRequest sink(string|resource $to)
+ * @method \Illuminate\Http\Client\PendingRequest stub(callable $callback)
+ * @method \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
+ * @method \Illuminate\Http\Client\PendingRequest withBasicAuth(string $username, string $password)
+ * @method \Illuminate\Http\Client\PendingRequest withBody(resource|string $content, string $contentType)
+ * @method \Illuminate\Http\Client\PendingRequest withCookies(array $cookies, string $domain)
+ * @method \Illuminate\Http\Client\PendingRequest withDigestAuth(string $username, string $password)
+ * @method \Illuminate\Http\Client\PendingRequest withHeaders(array $headers)
+ * @method \Illuminate\Http\Client\PendingRequest withMiddleware(callable $middleware)
+ * @method \Illuminate\Http\Client\PendingRequest withOptions(array $options)
+ * @method \Illuminate\Http\Client\PendingRequest withToken(string $token, string $type = 'Bearer')
+ * @method \Illuminate\Http\Client\PendingRequest withUserAgent(string $userAgent)
+ * @method \Illuminate\Http\Client\PendingRequest withoutRedirecting()
+ * @method \Illuminate\Http\Client\PendingRequest withoutVerifying()
+ * @method array pool(callable $callback)
+ * @method \Illuminate\Http\Client\Response delete(string $url, array $data = [])
+ * @method \Illuminate\Http\Client\Response get(string $url, array|string|null $query = null)
+ * @method \Illuminate\Http\Client\Response head(string $url, array|string|null $query = null)
+ * @method \Illuminate\Http\Client\Response patch(string $url, array $data = [])
+ * @method \Illuminate\Http\Client\Response post(string $url, array $data = [])
+ * @method \Illuminate\Http\Client\Response put(string $url, array $data = [])
+ * @method \Illuminate\Http\Client\Response send(string $method, string $url, array $options = [])
+ *
+ * @see \Illuminate\Http\Client\PendingRequest
+ */
 class Factory
 {
     use Macroable {
         __call as macroCall;
     }
+
+    /**
+     * The event dispatcher implementation.
+	 * 事件分派器实现
+     *
+     * @var \Illuminate\Contracts\Events\Dispatcher|null
+     */
+    protected $dispatcher;
 
     /**
      * The stub callables that will handle requests.
@@ -28,7 +78,7 @@ class Factory
 
     /**
      * Indicates if the factory is recording requests and responses.
-	 * 指明工厂是否正在记录请求和响应
+	 * 指示工厂是否正在记录请求和响应
      *
      * @var bool
      */
@@ -52,18 +102,21 @@ class Factory
 
     /**
      * Create a new factory instance.
-	 * 创建新的工厂实例。
+	 * 创建一个新的工厂实例
      *
+     * @param  \Illuminate\Contracts\Events\Dispatcher|null  $dispatcher
      * @return void
      */
-    public function __construct()
+    public function __construct(Dispatcher $dispatcher = null)
     {
+        $this->dispatcher = $dispatcher;
+
         $this->stubCallbacks = collect();
     }
 
     /**
      * Create a new response instance for use during stubbing.
-	 * 创建一个新的响应实例，以便在存根期间使用
+	 * 创建一个新的响应实例，以便在存根期间使用。
      *
      * @param  array|string  $body
      * @param  int  $status
@@ -78,7 +131,11 @@ class Factory
             $headers['Content-Type'] = 'application/json';
         }
 
-        return promise_for(new Psr7Response($status, $headers, $body));
+        $response = new Psr7Response($status, $headers, $body);
+
+        return class_exists(\GuzzleHttp\Promise\Create::class)
+            ? \GuzzleHttp\Promise\Create::promiseFor($response)
+            : \GuzzleHttp\Promise\promise_for($response);
     }
 
     /**
@@ -104,6 +161,8 @@ class Factory
     {
         $this->record();
 
+        $this->recorded = [];
+
         if (is_null($callback)) {
             $callback = function () {
                 return static::response();
@@ -119,11 +178,20 @@ class Factory
         }
 
         $this->stubCallbacks = $this->stubCallbacks->merge(collect([
-            $callback instanceof Closure
-                    ? $callback
-                    : function () use ($callback) {
-                        return $callback;
-                    },
+            function ($request, $options) use ($callback) {
+                $response = $callback instanceof Closure
+                                ? $callback($request, $options)
+                                : $callback;
+
+                if ($response instanceof PromiseInterface) {
+                    $options['on_stats'](new TransferStats(
+                        $request->toPsrRequest(),
+                        $response->wait(),
+                    ));
+                }
+
+                return $response;
+            },
         ]));
 
         return $this;
@@ -208,6 +276,29 @@ class Factory
     }
 
     /**
+     * Assert that the given request was sent in the given order.
+	 * 断言给定请求是按给定顺序发送的
+     *
+     * @param  array  $callbacks
+     * @return void
+     */
+    public function assertSentInOrder($callbacks)
+    {
+        $this->assertSentCount(count($callbacks));
+
+        foreach ($callbacks as $index => $url) {
+            $callback = is_callable($url) ? $url : function ($request) use ($url) {
+                return $request->url() == $url;
+            };
+
+            PHPUnit::assertTrue($callback(
+                $this->recorded[$index][0],
+                $this->recorded[$index][1]
+            ), 'An expected request (#'.($index + 1).') was not recorded.');
+        }
+    }
+
+    /**
      * Assert that a request / response pair was not recorded matching a given truth test.
 	 * 断言记录的请求/响应对与给定的真值测试不匹配
      *
@@ -271,7 +362,7 @@ class Factory
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function recorded($callback)
+    public function recorded($callback = null)
     {
         if (empty($this->recorded)) {
             return collect();
@@ -284,6 +375,28 @@ class Factory
         return collect($this->recorded)->filter(function ($pair) use ($callback) {
             return $callback($pair[0], $pair[1]);
         });
+    }
+
+    /**
+     * Create a new pending request instance for this factory.
+	 * 为此工厂创建一个新的挂起请求实例
+     *
+     * @return \Illuminate\Http\Client\PendingRequest
+     */
+    protected function newPendingRequest()
+    {
+        return new PendingRequest($this);
+    }
+
+    /**
+     * Get the current event dispatcher implementation.
+	 * 获取当前事件调度程序实现
+     *
+     * @return \Illuminate\Contracts\Events\Dispatcher|null
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
     }
 
     /**
@@ -300,7 +413,7 @@ class Factory
             return $this->macroCall($method, $parameters);
         }
 
-        return tap(new PendingRequest($this), function ($request) {
+        return tap($this->newPendingRequest(), function ($request) {
             $request->stub($this->stubCallbacks);
         })->{$method}(...$parameters);
     }

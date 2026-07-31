@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，CacheAware
+ * Illuminate，控制台，调度，缓存感知
  */
 
 namespace Illuminate\Console\Scheduling;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案提供者，丢失的 Livewire组件解决方案提供者
+ */
 
 namespace Facade\Ignition\SolutionProviders;
 

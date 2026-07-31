@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，内部，计算器
+ */
 
 declare(strict_types=1);
 
@@ -9,6 +12,7 @@ use Brick\Math\RoundingMode;
 
 /**
  * Performs basic operations on arbitrary size integers.
+ * 对任意大小的整数执行基本操作。
  *
  * Unless otherwise specified, all parameters must be validated as non-empty strings of digits,
  * without leading zero, and with an optional leading minus sign if the number is not zero.
@@ -24,16 +28,19 @@ abstract class Calculator
 {
     /**
      * The maximum exponent value allowed for the pow() method.
+	 * pow()方法的最大指数值
      */
     public const MAX_POWER = 1000000;
 
     /**
      * The alphabet for converting from and to base 2 to 36, lowercase.
+	 * 字母表从2到36,小写。
      */
     public const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 
     /**
      * The Calculator instance in use.
+	 * 使用的计算器实例
      *
      * @var Calculator|null
      */
@@ -41,6 +48,7 @@ abstract class Calculator
 
     /**
      * Sets the Calculator instance to use.
+	 * 设置使用的计算器实例。
      *
      * An instance is typically set only in unit tests: the autodetect is usually the best option.
      *
@@ -55,6 +63,7 @@ abstract class Calculator
 
     /**
      * Returns the Calculator instance to use.
+	 * 返回计算器实例使用
      *
      * If none has been explicitly set, the fastest available implementation will be returned.
      *
@@ -75,6 +84,7 @@ abstract class Calculator
 
     /**
      * Returns the fastest available Calculator implementation.
+	 * 返回最快的可用的计算器实现
      *
      * @codeCoverageIgnore
      *
@@ -95,6 +105,7 @@ abstract class Calculator
 
     /**
      * Extracts the sign & digits of the operands.
+	 * 提取操作数的符号和数字
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
@@ -114,6 +125,7 @@ abstract class Calculator
 
     /**
      * Returns the absolute value of a number.
+	 * 返回一个数字的绝对值
      *
      * @param string $n The number.
      *
@@ -210,6 +222,7 @@ abstract class Calculator
 
     /**
      * Returns the quotient of the division of two numbers.
+	 * 返回两个数字的除法
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
@@ -220,6 +233,7 @@ abstract class Calculator
 
     /**
      * Returns the remainder of the division of two numbers.
+	 * 返回两个数字的其余部分
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
@@ -230,6 +244,7 @@ abstract class Calculator
 
     /**
      * Returns the quotient and remainder of the division of two numbers.
+	 * 返回两个数字的除法和除法
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
@@ -240,6 +255,7 @@ abstract class Calculator
 
     /**
      * Exponentiates a number.
+	 * 取一个数字
      *
      * @param string $a The base number.
      * @param int    $e The exponent, validated as an integer between 0 and MAX_POWER.
@@ -261,6 +277,7 @@ abstract class Calculator
 
     /**
      * Returns the modular multiplicative inverse of $x modulo $m.
+	 * 返回模块化乘法逆的x $ m。
      *
      * If $x has no multiplicative inverse mod m, this method must return null.
      *
@@ -296,6 +313,7 @@ abstract class Calculator
 
     /**
      * Raises a number into power with modulo.
+	 * 用模块化提高了一个数字
      *
      * @param string $base The base number; must be positive or zero.
      * @param string $exp  The exponent; must be positive or zero.
@@ -307,6 +325,7 @@ abstract class Calculator
 
     /**
      * Returns the greatest common divisor of the two numbers.
+	 * 返回两个数字中最大的公共除数。
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for GCD calculations.
@@ -351,6 +370,7 @@ abstract class Calculator
 
     /**
      * Returns the square root of the given number, rounded down.
+	 * 返回给定数的平方根,向下。
      *
      * The result is the largest x such that x² ≤ n.
      * The input MUST NOT be negative.
@@ -407,6 +427,7 @@ abstract class Calculator
 
     /**
      * Converts a non-negative number in an arbitrary base using a custom alphabet, to base 10.
+	 * 使用自定义字母表将非负数转换为基本10
      *
      * @param string $number   The number to convert, validated as a non-empty string,
      *                         containing only chars in the given alphabet/base.
@@ -454,6 +475,7 @@ abstract class Calculator
 
     /**
      * Converts a non-negative number to an arbitrary base using a custom alphabet.
+	 * 使用自定义字母表将非负数转换为任意的基础
      *
      * @param string $number   The number to convert, positive or zero, following the Calculator conventions.
      * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
@@ -482,6 +504,7 @@ abstract class Calculator
 
     /**
      * Performs a rounded division.
+	 * 执行一个圆形的除法。
      *
      * Rounding is performed when the remainder of the division is not zero.
      *
@@ -567,6 +590,7 @@ abstract class Calculator
 
     /**
      * Calculates bitwise AND of two numbers.
+	 * 计算位和两个数字。
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
@@ -583,6 +607,7 @@ abstract class Calculator
 
     /**
      * Calculates bitwise OR of two numbers.
+	 * 计算位或两个数字。
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
@@ -599,6 +624,7 @@ abstract class Calculator
 
     /**
      * Calculates bitwise XOR of two numbers.
+	 * 计算位x或2个数。
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
@@ -707,6 +733,7 @@ abstract class Calculator
 
     /**
      * Converts a decimal number to a binary string.
+	 * 将十进制数字转换为二进制字符串
      *
      * @param string $number The number to convert, positive or zero, only digits.
      *
@@ -726,6 +753,7 @@ abstract class Calculator
 
     /**
      * Returns the positive decimal representation of a binary number.
+	 * 返回二进制数的正十进制表示
      *
      * @param string $bytes The bytes representing the number.
      *

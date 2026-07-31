@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，消息格式化接口
+ * GuzzleHttp，消息格式化程序接口
  */
 
 namespace GuzzleHttp;
@@ -13,7 +12,7 @@ interface MessageFormatterInterface
 {
     /**
      * Returns a formatted message string.
-	 * 返回格式化的消息字符串
+	 * 返回一个格式化的消息字符串
      *
      * @param RequestInterface       $request  Request that was sent
      * @param ResponseInterface|null $response Response that was received

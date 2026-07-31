@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，大整数
+ */
 
 declare(strict_types=1);
 
@@ -13,6 +16,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * An arbitrary-size integer.
+ * 一种任意型整数。
  *
  * All methods accepting a number as a parameter accept either a BigInteger instance,
  * an integer, or a string representing an arbitrary size integer.
@@ -23,6 +27,7 @@ final class BigInteger extends BigNumber
 {
     /**
      * The value, as a string of digits with optional leading minus sign.
+	 * 值,作为一串数字,有可选的领先负号。
      *
      * No leading zeros must be present.
      * No leading minus sign must be present if the number is zero.
@@ -33,6 +38,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
+	 * 保护构造函数。使用工厂方法获取实例。
      *
      * @param string $value A string of digits, with optional leading minus sign.
      */
@@ -43,6 +49,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Creates a BigInteger of the given value.
+	 * 创建给定值的一个BigInteger
      *
      * @param BigNumber|int|float|string $value
      *
@@ -59,6 +66,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Creates a number from a string in a given base.
+	 * 在给定的基础上创建一个字符串的数字。
      *
      * The string can optionally be prefixed with the `+` or `-` sign.
      *
@@ -132,6 +140,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Parses a string containing an integer in an arbitrary base, using a custom alphabet.
+	 * 在任意的基础上,使用自定义的字母表来解析包含一个整数的字符串。
      *
      * Because this method accepts an alphabet with any character, including dash, it does not handle negative numbers.
      *
@@ -214,6 +223,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Generates a pseudo-random number in the range 0 to 2^numBits - 1.
+	 * 在0到2 ^ numBits - 1的范围内生成一个伪随机数。
      *
      * Using the default random bytes generator, this method is suitable for cryptographic use.
      *
@@ -297,6 +307,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a BigInteger representing zero.
+	 * 返回代表零的BigInteger
      *
      * @return BigInteger
      *
@@ -319,6 +330,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a BigInteger representing one.
+	 *　返回代表一个的BigInteger
      *
      * @return BigInteger
      *
@@ -341,6 +353,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a BigInteger representing ten.
+	 * 返回代表10的BigInteger
      *
      * @return BigInteger
      *
@@ -363,6 +376,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the sum of this number and the given one.
+	 * 返回这个数字和给定的和
      *
      * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigInteger.
      *
@@ -389,6 +403,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the difference of this number and the given one.
+	 * 返回这个数字和给定的值的差值
      *
      * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigInteger.
      *
@@ -411,6 +426,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the product of this number and the given one.
+	 * 返回这个数字和给定的乘积
      *
      * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigInteger.
      *
@@ -437,6 +453,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the result of the division of this number by the given one.
+	 * 将这个数字的除法返回给给定的
      *
      * @param BigNumber|int|float|string $that         The divisor. Must be convertible to a BigInteger.
      * @param int                        $roundingMode An optional rounding mode.
@@ -465,6 +482,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns this number exponentiated to the given value.
+	 * 将这个指数返回给给定的值
      *
      * @param int $exponent The exponent.
      *
@@ -495,6 +513,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the quotient of the division of this number by the given one.
+	 * 返回这个数字的除法
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
@@ -521,6 +540,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the remainder of the division of this number by the given one.
+	 * 将此数的其余部分返回给给定的。
      *
      * The remainder, when non-zero, has the same sign as the dividend.
      *
@@ -549,6 +569,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the quotient and remainder of the division of this number by the given one.
+	 * 将这个数字的除法和其余部分返回给给定的
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
@@ -574,6 +595,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the modulo of this number and the given one.
+	 * 返回这个数字的模块化和给定的。
      *
      * The modulo operation yields the same result as the remainder operation when both operands are of the same sign,
      * and may differ when signs are different.
@@ -601,6 +623,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the modular multiplicative inverse of this BigInteger modulo $m.
+	 * 返回这个BigInteger调制o $ m的模块化乘法逆。
      *
      * @param BigInteger $m
      *
@@ -636,6 +659,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns this number raised into power with modulo.
+	 * 将这个数字通过模块化将其转化为权力。
      *
      * This operation only works on positive numbers.
      *
@@ -667,6 +691,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the greatest common divisor of this number and the given one.
+	 * 返回这个数字的最常见的除数和给定的。
      *
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
@@ -693,6 +718,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer square root number of this number, rounded down.
+	 * 返回这个数的整数方的根数,向下。
      *
      * The result is the largest x such that x² ≤ n.
      *
@@ -713,6 +739,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the absolute value of this number.
+	 * 返回这个数字的绝对值
      *
      * @return BigInteger
      */
@@ -733,6 +760,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer bitwise-and combined with another integer.
+	 * 返回整数比特线,并与另一个整数相结合。
      *
      * This method returns a negative BigInteger if and only if both operands are negative.
      *
@@ -749,6 +777,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer bitwise-or combined with another integer.
+	 * 返回整数比特币或与另一个整数相结合。
      *
      * This method returns a negative BigInteger if and only if either of the operands is negative.
      *
@@ -765,6 +794,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer bitwise-xor combined with another integer.
+	 * 返回整数位线- xor与另一个整数相结合。
      *
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
@@ -811,6 +841,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the integer right shifted by a given number of bits.
+	 * 返回给定数位的整数右移
      *
      * @param int $distance The distance to shift.
      *
@@ -858,6 +889,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the index of the rightmost (lowest-order) one bit in this BigInteger.
+	 * 在这个BigInteger中返回最右的(最低顺序)的索引
      *
      * Returns -1 if this BigInteger contains no one bits.
      *
@@ -881,6 +913,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns whether this number is even.
+	 * 返回这个数字是否为偶数
      *
      * @return bool
      */
@@ -891,6 +924,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns whether this number is odd.
+	 * 返回这个数字是否奇数
      *
      * @return bool
      */
@@ -901,6 +935,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns true if and only if the designated bit is set.
+	 * 如果和只有指定的位,则返回true。
      *
      * Computes ((this & (1<<n)) != 0).
      *
@@ -997,6 +1032,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a string representation of this number in the given base.
+	 * 返回给定基础上这个数字的字符串表示。
      *
      * The output will always be lowercase for bases greater than 10.
      *
@@ -1021,6 +1057,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a string representation of this number in an arbitrary base with a custom alphabet.
+	 * 在任意基础上以自定义的字母表返回这个数字的字符串表示。
      *
      * Because this method accepts an alphabet with any character, including dash, it does not handle negative numbers;
      * a NegativeNumberException will be thrown when attempting to call this method on a negative number.
@@ -1049,6 +1086,7 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns a string of bytes containing the binary representation of this BigInteger.
+	 * 返回包含这个BigInteger的二进制表示的字符串。
      *
      * The string is in big-endian byte-order: the most significant byte is in the zeroth element.
      *
@@ -1118,6 +1156,7 @@ final class BigInteger extends BigNumber
 
     /**
      * This method is required for serializing the object and SHOULD NOT be accessed directly.
+	 * 该方法需要序列化对象,不应该直接访问
      *
      * @internal
      *
@@ -1130,6 +1169,7 @@ final class BigInteger extends BigNumber
 
     /**
      * This method is only here to allow unserializing the object and cannot be accessed directly.
+	 * 这个方法只是在这里允许不序列化对象,不能直接访问
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
@@ -1151,6 +1191,7 @@ final class BigInteger extends BigNumber
 
     /**
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
+	 * 该方法需要接口序列化,不应该直接访问。
      *
      * @internal
      *
@@ -1163,6 +1204,7 @@ final class BigInteger extends BigNumber
 
     /**
      * This method is only here to implement interface Serializable and cannot be accessed directly.
+	 * 此方法仅在这里实现接口序列化,不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck

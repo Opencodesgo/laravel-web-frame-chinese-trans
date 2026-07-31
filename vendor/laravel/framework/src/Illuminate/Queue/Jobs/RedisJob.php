@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，Redis 作业
+ * Illuminate，队列，作业，Redis作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -21,7 +21,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The Redis raw job payload.
-	 * Redis的原始作业负载
+	 * Redis的原始工作负载
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
-	 * 创建新任务实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Illuminate\Queue\RedisQueue  $redis
@@ -60,7 +60,7 @@ class RedisJob extends Job implements JobContract
         // The $job variable is the original job JSON as it existed in the ready queue while
         // the $reserved variable is the raw JSON in the reserved queue. The exact format
         // of the reserved job is required in order for us to properly delete its data.
-		// $job变量是原始作业JSON，因为它存在于就绪队列中，$reserved变量是保留队列中的原始JSON。
+		// $job变量是原始作业JSON，因为它存在于就绪队列中。
         $this->job = $job;
         $this->redis = $redis;
         $this->queue = $queue;
@@ -73,7 +73,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取作业的原始主体字符串
+	 * 得到工作的原始主体字符串
      *
      * @return string
      */
@@ -97,7 +97,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 从队列中释放作业
+	 * 将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -111,7 +111,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该作业被尝试的次数
+	 * 得到该任务被尝试的次数
      *
      * @return int
      */
@@ -133,7 +133,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying Redis factory implementation.
-	 * 获取底层Redis工厂实现
+	 * 得到底层Redis工厂实现
      *
      * @return \Illuminate\Queue\RedisQueue
      */
@@ -144,7 +144,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying reserved Redis job.
-	 * 获取底层预留的Redis作业
+	 * 得到底层预留的Redis作业
      *
      * @return string
      */

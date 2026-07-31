@@ -5,6 +5,7 @@
 
 namespace Illuminate\Support\Facades;
 
+use Illuminate\Queue\Worker;
 use Illuminate\Support\Testing\Fakes\QueueFake;
 
 /**
@@ -18,10 +19,10 @@ use Illuminate\Support\Testing\Fakes\QueueFake;
  * @method static mixed pushOn(string $queue, string|object $job, mixed $data = '')
  * @method static mixed pushRaw(string $payload, string $queue = null, array $options = [])
  * @method static string getConnectionName()
- * @method static void assertNotPushed(string $job, callable $callback = null)
+ * @method static void assertNotPushed(string|\Closure $job, callable $callback = null)
  * @method static void assertNothingPushed()
- * @method static void assertPushed(string $job, callable|int $callback = null)
- * @method static void assertPushedOn(string $queue, string $job, callable|int $callback = null)
+ * @method static void assertPushed(string|\Closure $job, callable|int $callback = null)
+ * @method static void assertPushedOn(string $queue, string|\Closure $job, callable $callback = null)
  * @method static void assertPushedWithChain(string $job, array $expectedChain = [], callable $callback = null)
  *
  * @see \Illuminate\Queue\QueueManager
@@ -29,6 +30,19 @@ use Illuminate\Support\Testing\Fakes\QueueFake;
  */
 class Queue extends Facade
 {
+    /**
+     * Register a callback to be executed to pick jobs.
+	 * 注册一个要执行的回调函数来选择作业
+     *
+     * @param  string  $workerName
+     * @param  callable  $callback
+     * @return void
+     */
+    public static function popUsing($workerName, $callback)
+    {
+        return Worker::popUsing($workerName, $callback);
+    }
+
     /**
      * Replace the bound instance with a fake.
 	 * 将绑定实例替换为伪实例

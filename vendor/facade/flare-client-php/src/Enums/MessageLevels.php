@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，枚举，信息的水平
+ */
 
 namespace Facade\FlareClient\Enums;
 

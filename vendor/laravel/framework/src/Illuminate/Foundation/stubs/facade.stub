@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，存根，动态类
+ * Illuminate，基础，存根，虚拟类
  */
 
 namespace DummyNamespace;

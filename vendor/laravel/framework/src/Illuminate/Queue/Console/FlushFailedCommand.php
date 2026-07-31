@@ -11,7 +11,7 @@ class FlushFailedCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称 queue:flush
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -23,7 +23,7 @@ class FlushFailedCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Flush all of the failed queue jobs';		#清除所有失败的队列作业
+    protected $description = 'Flush all of the failed queue jobs';
 
     /**
      * Execute the console command.

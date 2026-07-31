@@ -1,6 +1,6 @@
 <?php
 /**
- * Asm89，Stack，CORS 服务
+ * Asm89，Stack，Cors 服务
  */
 
 /*
@@ -143,12 +143,15 @@ class CorsService
     {
         if ($this->options['allowedOrigins'] === true && !$this->options['supportsCredentials']) {
             // Safe+cacheable, allow everything
+			// 安全+可缓存，允许所有
             $response->headers->set('Access-Control-Allow-Origin', '*');
         } elseif ($this->isSingleOriginAllowed()) {
             // Single origins can be safely set
+			// 单源可以安全设置
             $response->headers->set('Access-Control-Allow-Origin', array_values($this->options['allowedOrigins'])[0]);
         } else {
             // For dynamic headers, set the requested Origin header when set and allowed
+			// 对于动态报头，在设置和允许时设置请求的Origin报头。
             if ($this->isCorsRequest($request) && $this->isOriginAllowed($request)) {
                 $response->headers->set('Access-Control-Allow-Origin', $request->headers->get('Origin'));
             }

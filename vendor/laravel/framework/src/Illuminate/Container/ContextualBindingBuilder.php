@@ -91,4 +91,19 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
             return is_array($taggedServices) ? $taggedServices : iterator_to_array($taggedServices);
         });
     }
+
+    /**
+     * Specify the configuration item to bind as a primitive.
+	 * 指定要绑定的配置项作为原语
+     *
+     * @param  string  $key
+     * @param  ?string  $default
+     * @return void
+     */
+    public function giveConfig($key, $default = null)
+    {
+        $this->give(function ($container) use ($key, $default) {
+            return $container->get('config')->get($key, $default);
+        });
+    }
 }

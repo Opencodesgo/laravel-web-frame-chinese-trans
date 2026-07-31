@@ -11,7 +11,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
 {
     /**
      * The default PDO connection options.
-	 * 默认PDO连接器选项
+	 * 默认的PDO连接选项
      *
      * @var array
      */
@@ -34,17 +34,19 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // First we'll create the basic DSN and connection instance connecting to the
         // using the configuration option specified by the developer. We will also
         // set the default character set on the connections to UTF-8 by default.
-		// 首先，我们将创建连接到的基本DSN和连接实例。
+		// 首先，我们将创建连接到的基本DSN和连接实例使用开发者指定的配置选项。
         $connection = $this->createConnection(
             $this->getDsn($config), $config, $this->getOptions($config)
         );
+
+        $this->configureIsolationLevel($connection, $config);
 
         $this->configureEncoding($connection, $config);
 
         // Next, we will check to see if a timezone has been specified in this config
         // and if it has we will issue a statement to modify the timezone with the
         // database. Setting this DB timezone is an optional configuration item.
-		// 接下来，我们将检查是否在该配置中指定了时区。
+		// 接下来，我们将检查此配置中是否指定了时区，如果指定了，我们将发出一条语句，使用数据库修改时区。
         $this->configureTimezone($connection, $config);
 
         $this->configureSchema($connection, $config);
@@ -52,12 +54,27 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // Postgres allows an application_name to be set by the user and this name is
         // used to when monitoring the application with pg_stat_activity. So we'll
         // determine if the option has been specified and run a statement if so.
-		// Postgres允许用户设置application_name，这个名称使用pg_stat_activity监视应用程序时使用。
+		// Postgres允许用户设置application_name，在使用pg_stat_activity监视应用程序时使用此名称。
         $this->configureApplicationName($connection, $config);
 
         $this->configureSynchronousCommit($connection, $config);
 
         return $connection;
+    }
+
+    /**
+     * Set the connection transaction isolation level.
+	 * 设置连接事务隔离级别
+     *
+     * @param  \PDO  $connection
+     * @param  array  $config
+     * @return void
+     */
+    protected function configureIsolationLevel($connection, array $config)
+    {
+        if (isset($config['isolation_level'])) {
+            $connection->prepare("set session characteristics as transaction isolation level {$config['isolation_level']}")->execute();
+        }
     }
 
     /**
@@ -96,7 +113,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
 
     /**
      * Set the schema on the connection.
-	 * 设置连接模式
+	 * 在连接上设置模式
      *
      * @param  \PDO  $connection
      * @param  array  $config
@@ -156,17 +173,17 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
-		// 首先，我们将创建基本的DSN设置以及端口。
+		// 首先，我们将创建基本的DSN设置以及端口，如果它在在配置选项中。
         extract($config, EXTR_SKIP);
 
         $host = isset($host) ? "host={$host};" : '';
 
-        $dsn = "pgsql:{$host}dbname={$database}";
+        $dsn = "pgsql:{$host}dbname='{$database}'";
 
         // If a port was specified, we will add it to this Postgres DSN connections
         // format. Once we have done that we are ready to return this connection
         // string back out for usage, as this has been fully constructed here.
-		// 如果指定了端口，我们将把它添加到这个Postgres DSN连接。
+		// 如果指定了端口，我们将把它添加到这个Postgres DSN连接格式。
         if (isset($config['port'])) {
             $dsn .= ";port={$port}";
         }

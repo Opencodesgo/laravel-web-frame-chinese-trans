@@ -9,7 +9,7 @@ use Faker\Extension\Extension;
 
 /**
  * Proxy for other generators that returns only unique values.
- * 仅返回唯一值的其他生成器的代理
+ * 仅返回唯一值的其他生成器的代理。
  *
  * Instantiated through @see Generator::unique().
  *
@@ -22,6 +22,7 @@ class UniqueGenerator
 
     /**
      * Maps from method names to a map with serialized result keys.
+	 * 将方法名称映射到一个带有序列化结果键的地图
      *
      * @example [
      *   'phone' => ['0123' => null],
@@ -51,6 +52,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls but return only unique values
+	 * 捕获和代理所有生成器调用,但只返回惟一的值
      *
      * @param string $attribute
      *
@@ -65,6 +67,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls with arguments but return only unique values
+	 * 捕获和代理所有使用参数的生成器调用,但只返回惟一的值
      *
      * @param string $name
      * @param array  $arguments

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Factory Class
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

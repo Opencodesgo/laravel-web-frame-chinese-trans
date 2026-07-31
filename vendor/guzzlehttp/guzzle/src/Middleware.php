@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，中间件
  */
 
 namespace GuzzleHttp;
@@ -16,12 +15,13 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Functions used to create and wrap handlers with handler middleware.
+ * 用于用处理程序中间件创建和包装处理程序的函数。
  */
 final class Middleware
 {
     /**
      * Middleware that adds cookies to requests.
-	 * 向请求添加cookie的中间件
+	 * 中间件为请求添加cookie
      *
      * The options array must be set to a CookieJarInterface in order to use
      * cookies. This is typically handled for you by a client.
@@ -127,6 +127,7 @@ final class Middleware
 
     /**
      * Middleware that invokes a callback before and after sending a request.
+	 * 在发送请求之前和之后调用回调的中间件。
      *
      * The provided listener cannot modify or alter the response. It simply
      * "taps" into the chain to be notified before returning the promise. The
@@ -157,6 +158,7 @@ final class Middleware
 
     /**
      * Middleware that handles request redirects.
+	 * 处理请求重定向的中间件
      *
      * @return callable Returns a function that accepts the next handler.
      */
@@ -192,6 +194,7 @@ final class Middleware
     /**
      * Middleware that logs requests, responses, and errors using a message
      * formatter.
+	 * 使用消息记录请求、响应和错误消息格式的中间件。
      *
      * @phpstan-param \Psr\Log\LogLevel::* $logLevel  Level at which to log requests.
      *
@@ -259,7 +262,7 @@ final class Middleware
     /**
      * Middleware that applies a map function to the resolved promise's
      * response.
-	 * 中间件，将映射函数应用于已解析的承诺响应。
+	 * 将映射函数应用于解析承诺的响应中间件
      *
      * @param callable $fn Function that accepts a ResponseInterface and
      *                     returns a ResponseInterface.

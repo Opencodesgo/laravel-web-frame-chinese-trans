@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，内部，计算器，原生计算器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Calculator implementation using only native PHP code.
+ * 仅使用本地PHP代码来实现计算器实现。
  *
  * @internal
  *
@@ -29,6 +33,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Class constructor.
+	 * 类构造函数
      *
      * @codeCoverageIgnore
      */
@@ -306,6 +311,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the addition of two non-signed large integers.
+	 * 执行两个未签署的大型整数的添加
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
@@ -363,6 +369,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the subtraction of two non-signed large integers.
+	 * 执行两个未签署的大型整数的减法
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
@@ -445,6 +452,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the multiplication of two non-signed large integers.
+	 * 执行两个未签署的大型整数的乘法
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
@@ -521,6 +529,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the division of two non-signed large integers.
+	 * 执行两个未签署的大型整数的划分
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
@@ -582,6 +591,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Compares two non-signed large numbers.
+	 * 比较两个非签名的数字
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
@@ -604,6 +614,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Pads the left of one of the given numbers with zeros if necessary to make both numbers the same length.
+	 * 如果有必要,将给定数字中的一个的左边设为一个,以使两个数字相同的长度。
      *
      * The numbers must only consist of digits, without leading minus sign.
      *

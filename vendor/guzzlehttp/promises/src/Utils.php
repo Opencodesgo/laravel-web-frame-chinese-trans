@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，许诺，工具包
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ final class Utils
 {
     /**
      * Get the global task queue used for promise resolution.
+	 * 获取用于承诺解析的全局任务队列。
      *
      * This task queue MUST be run in an event loop in order for promises to be
      * settled asynchronously. It will be automatically run when synchronously
@@ -60,6 +64,7 @@ final class Utils
     /**
      * Synchronously waits on a promise to resolve and returns an inspection
      * state array.
+	 * 同步等待承诺解决并返回检查。
      *
      * Returns a state associative array containing a "state" key mapping to a
      * valid promise state. If the state of the promise is "fulfilled", the
@@ -105,6 +110,7 @@ final class Utils
 
     /**
      * Waits on all of the provided promises and returns the fulfilled values.
+	 * 等待所有提供的承诺并返回实现的值。
      *
      * Returns an array that contains the value of each promise (in the same
      * order the promises were provided). An exception is thrown if any of the

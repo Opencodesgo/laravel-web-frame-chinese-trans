@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，许诺，许诺
+ */
 
 declare(strict_types=1);
 
@@ -180,6 +183,7 @@ class Promise implements PromiseInterface
 
     /**
      * Call a stack of handlers using a specific callback index and value.
+	 * 使用特定的回调索引和值调用一堆处理器
      *
      * @param int   $index   1 (resolve) or 2 (reject).
      * @param mixed $value   Value to pass to the callback.

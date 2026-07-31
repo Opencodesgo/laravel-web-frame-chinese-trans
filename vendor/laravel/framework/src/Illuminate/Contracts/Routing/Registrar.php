@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，注册
+ * Illuminate，契约，路由，注册接口
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -49,7 +49,7 @@ interface Registrar
 
     /**
      * Register a new PATCH route with the router.
-	 * 向路由器注册一条新的PATCH路
+	 * 向路由器注册一条新的PATCH路由
      *
      * @param  string  $uri
      * @param  array|string|callable  $action

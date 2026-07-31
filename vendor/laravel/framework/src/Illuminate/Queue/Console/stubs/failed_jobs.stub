@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，存根，需要根据实际修改
+ * Illuminate，队列，控制台，存根，失败作业
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,7 +18,8 @@ class Create{{tableClassName}}Table extends Migration
     public function up()
     {
         Schema::create('{{table}}', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
+            $table->string('uuid')->unique();
             $table->text('connection');
             $table->text('queue');
             $table->longText('payload');

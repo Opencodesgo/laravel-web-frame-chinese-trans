@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，文件会话处理程序
+ * Illuminate，Session，文件会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -38,7 +38,7 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new file driven handler instance.
-	 * 创建一个新的文件驱动处理实例
+	 * 创建新的文件驱动处理程序实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path
@@ -54,7 +54,10 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         return true;
@@ -62,7 +65,10 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
@@ -70,7 +76,10 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         if ($this->files->isFile($path = $this->path.'/'.$sessionId)) {
@@ -84,7 +93,10 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         $this->files->put($this->path.'/'.$sessionId, $data, true);
@@ -94,7 +106,10 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         $this->files->delete($this->path.'/'.$sessionId);
@@ -104,7 +119,10 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($lifetime)
     {
         $files = Finder::create()

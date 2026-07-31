@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，支持，Livewire 组件解析器
+ */
 
 namespace Facade\Ignition\Support;
 

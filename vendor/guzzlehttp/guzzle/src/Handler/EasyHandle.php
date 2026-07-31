@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，Easy 处理 
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -10,6 +13,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Represents a cURL easy handle and the data it populates.
+ * 表示卷曲的简单处理和它填充的数据。
  *
  * @internal
  */
@@ -62,6 +66,7 @@ final class EasyHandle
 
     /**
      * Attach a response to the easy handle based on the received headers.
+	 * 根据收到的头来附加对容易处理的响应
      *
      * @throws \RuntimeException if no headers have been received or the first
      *                           header line is invalid.

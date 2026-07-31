@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，传输数据统计
+ * GuzzleHttp，传输数据
  */
 
 namespace GuzzleHttp;
@@ -13,6 +12,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Represents data at the point after it was transferred either successfully
  * or after a network error.
+ * 在被转移后,表示数据。
  */
 final class TransferStats
 {
@@ -69,7 +69,7 @@ final class TransferStats
 
     /**
      * Returns the response that was received (if any).
-	 * 返回接收到的响应(如果有的话)
+	 * 返回被接收的响应(如果有的话)
      */
     public function getResponse(): ?ResponseInterface
     {
@@ -78,7 +78,6 @@ final class TransferStats
 
     /**
      * Returns true if a response was received.
-	 * 如果收到响应，则返回true。
      */
     public function hasResponse(): bool
     {

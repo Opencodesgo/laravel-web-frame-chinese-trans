@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，扩展，日期时间扩展
+ */
 
 namespace Faker\Extension;
 
@@ -82,6 +85,7 @@ interface DateTimeExtension
 
     /**
      * Get a date time object somewhere inside the current month.
+	 * 在一个月内找一个日期时间对象
      *
      * @param \DateTime|int|string $until    maximum timestamp, defaults to "now"
      * @param string|null          $timezone timezone for generated date, fallback to `DateTime::$defaultTimezone` and `date_default_timezone_get()`.

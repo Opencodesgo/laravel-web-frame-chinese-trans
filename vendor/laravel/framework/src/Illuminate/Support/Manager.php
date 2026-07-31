@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，管理者抽象类
+ * Illuminate，支持，管理者
  */
 
 namespace Illuminate\Support;
@@ -20,18 +20,8 @@ abstract class Manager
     protected $container;
 
     /**
-     * The container instance.
-	 * 容器实例
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     *
-     * @deprecated Use the $container property instead.
-     */
-    protected $app;
-
-    /**
      * The configuration repository instance.
-	 * 配置存储库实例。
+	 * 配置存储库实例
      *
      * @var \Illuminate\Contracts\Config\Repository
      */
@@ -62,7 +52,6 @@ abstract class Manager
      */
     public function __construct(Container $container)
     {
-        $this->app = $container;
         $this->container = $container;
         $this->config = $container->make('config');
     }
@@ -97,7 +86,7 @@ abstract class Manager
         // If the given driver has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
         // already a driver created by this name, we'll just return that instance.
-		// 如果之前没有创建给定的驱动程序，我们将创建实例把它缓存起来，这样下次我们就可以很快地还给它。
+		// 如果之前没有创建给定的驱动程序，我们将在这里创建实例并缓存它。
         if (! isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }
@@ -119,7 +108,7 @@ abstract class Manager
         // First, we will determine if a custom driver creator exists for the given driver and
         // if it does not we will check for a creator method for the driver. Custom creator
         // callbacks allow developers to build their own "drivers" easily using Closures.
-		// 首先，我们将确定是否存在给定驱动程序和自定义驱动程序创建。
+		// 首先，我们将确定给定驱动程序是否存在自定义驱动程序创建器。
         if (isset($this->customCreators[$driver])) {
             return $this->callCustomCreator($driver);
         } else {
@@ -169,6 +158,44 @@ abstract class Manager
     public function getDrivers()
     {
         return $this->drivers;
+    }
+
+    /**
+     * Get the container instance used by the manager.
+	 * 获取管理器使用的容器实例
+     *
+     * @return \Illuminate\Contracts\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set the container instance used by the manager.
+	 * 设置管理器使用的容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * Forget all of the resolved driver instances.
+	 * 忘记所有已解析的驱动程序实例
+     *
+     * @return $this
+     */
+    public function forgetDrivers()
+    {
+        $this->drivers = [];
+
+        return $this;
     }
 
     /**

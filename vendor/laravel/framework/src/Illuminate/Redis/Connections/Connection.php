@@ -28,7 +28,7 @@ abstract class Connection
 
     /**
      * The Redis connection name.
-	 * Redis连接名称
+	 * Redis连接名
      *
      * @var string|null
      */
@@ -36,7 +36,7 @@ abstract class Connection
 
     /**
      * The event dispatcher instance.
-	 * 事件调度实例
+	 * 事件调度程序实例
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -79,7 +79,7 @@ abstract class Connection
 
     /**
      * Get the underlying Redis client.
-	 * 获取底层Redis客户端
+	 * 得到底层Redis客户端
      *
      * @return mixed
      */
@@ -139,7 +139,7 @@ abstract class Connection
 
     /**
      * Fire the given event if possible.
-	 * 触发给定的事件，如果可能。
+	 * 如果可能，触发给定的事件。
      *
      * @param  mixed  $event
      * @return void
@@ -167,7 +167,7 @@ abstract class Connection
 
     /**
      * Get the connection name.
-	 * 获取连接名称
+	 * 得到连接名称
      *
      * @return string|null
      */

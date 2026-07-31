@@ -32,7 +32,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been deleted.
-	 * 指明任务是否已删除
+	 * 指示作业是否已删除
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been released.
-	 * 指明任务是否已释放
+	 * 指示作业是否已释放
      *
      * @var bool
      */
@@ -48,7 +48,7 @@ abstract class Job
 
     /**
      * Indicates if the job has failed.
-	 * 指明任务是否失败
+	 * 指示作业是否失败
      *
      * @var bool
      */
@@ -72,7 +72,7 @@ abstract class Job
 
     /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 得到工作标识符
      *
      * @return string
      */
@@ -80,7 +80,7 @@ abstract class Job
 
     /**
      * Get the raw body of the job.
-	 * 得到作业的原始主体
+	 * 得到工作的原始主体
      *
      * @return string
      */
@@ -88,7 +88,7 @@ abstract class Job
 
     /**
      * Get the UUID of the job.
-	 * 得到作业的UUID
+	 * 得到作作业的UUID
      *
      * @return string|null
      */
@@ -99,7 +99,7 @@ abstract class Job
 
     /**
      * Fire the job.
-	 * 触发作业
+	 * 辞掉这份工作
      *
      * @return void
      */
@@ -125,7 +125,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted.
-	 * 确定作业是否已被删除
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -181,7 +181,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 把这项工作标记为"失败"
+	 * 标记作业为失败
      *
      * @return void
      */
@@ -209,7 +209,7 @@ abstract class Job
             // If the job has failed, we will delete it, call the "failed" method and then call
             // an event indicating the job has failed so it can be logged if needed. This is
             // to allow every developer to better keep monitor of their failed queue jobs.
-			// 如果作业失败，我们将删除它，调用"failed"方法，然后调用指示作业失败的事件，以便在需要时对其进行记录。
+			// 如果作业失败，我们将删除它，调用"失败"方法，然后调用指示作业失败的事件。
             $this->delete();
 
             $this->failed($e);
@@ -234,7 +234,7 @@ abstract class Job
         [$class, $method] = JobName::parse($payload['job']);
 
         if (method_exists($this->instance = $this->resolve($class), 'failed')) {
-            $this->instance->failed($payload['data'], $e);
+            $this->instance->failed($payload['data'], $e, $payload['uuid'] ?? '');
         }
     }
 
@@ -252,7 +252,7 @@ abstract class Job
 
     /**
      * Get the resolved job handler instance.
-	 * 获取已解析的作业处理程序实例
+	 * 得到已解析的作业处理程序实例
      *
      * @return mixed
      */
@@ -263,7 +263,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 拿到解码后的主体
+	 * 得到解码后的文件
      *
      * @return array
      */
@@ -274,7 +274,7 @@ abstract class Job
 
     /**
      * Get the number of times to attempt a job.
-	 * 获取尝试某项工作的次数
+	 * 得到尝试某项工作的次数
      *
      * @return int|null
      */
@@ -285,7 +285,7 @@ abstract class Job
 
     /**
      * Get the number of times to attempt a job after an exception.
-	 * 获取在发生异常后尝试作业的次数
+	 * 得到在发生异常后尝试作业的次数
      *
      * @return int|null
      */
@@ -295,19 +295,30 @@ abstract class Job
     }
 
     /**
-     * Get the number of seconds to delay a failed job before retrying it.
-	 * 获取在重试失败作业之前延迟该作业的秒数
+     * Determine if the job should fail when it timeouts.
+	 * 确定作业超时时是否应该失败
+     *
+     * @return bool
+     */
+    public function shouldFailOnTimeout()
+    {
+        return $this->payload()['failOnTimeout'] ?? false;
+    }
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+	 * 在重试遇到未捕获异常的作业之前等待的秒数
      *
      * @return int|null
      */
-    public function delaySeconds()
+    public function backoff()
     {
-        return $this->payload()['delay'] ?? null;
+        return $this->payload()['backoff'] ?? $this->payload()['delay'] ?? null;
     }
 
     /**
      * Get the number of seconds the job can run.
-	 * 获取作业可以运行的秒数
+	 * 得到作业可以运行的秒数
      *
      * @return int|null
      */
@@ -318,18 +329,18 @@ abstract class Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 获取指示作业何时应该超时的时间戳
+	 * 得到指示作业何时应该超时的时间戳
      *
      * @return int|null
      */
-    public function timeoutAt()
+    public function retryUntil()
     {
-        return $this->payload()['timeoutAt'] ?? null;
+        return $this->payload()['retryUntil'] ?? $this->payload()['timeoutAt'] ?? null;
     }
 
     /**
      * Get the name of the queued job class.
-	 * 获取排队作业类的名称
+	 * 得到排队作业类的名称
      *
      * @return string
      */
@@ -340,7 +351,7 @@ abstract class Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队作业类的解析名称
+	 * 得到排队作业类的解析名称
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
      *
@@ -353,7 +364,7 @@ abstract class Job
 
     /**
      * Get the name of the connection the job belongs to.
-	 * 获取作业所属的连接的名称
+	 * 得到作业所属的连接的名称
      *
      * @return string
      */
@@ -364,7 +375,7 @@ abstract class Job
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取任务所属队列的名称
+	 * 得到作业所属队列的名称
      *
      * @return string
      */
@@ -375,7 +386,7 @@ abstract class Job
 
     /**
      * Get the service container instance.
-	 * 获取服务容器实例
+	 * 得到服务容器实例
      *
      * @return \Illuminate\Container\Container
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，加密Cookie
+ * app，Http，中间件，加密 Cookie
  */
 
 namespace App\Http\Middleware;
@@ -11,9 +11,9 @@ class EncryptCookies extends Middleware
 {
     /**
      * The names of the cookies that should not be encrypted.
-	 * 不应加密的cookie名称
+	 * 不应加密的cookie的名称
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [
         //

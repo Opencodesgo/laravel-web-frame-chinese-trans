@@ -49,14 +49,15 @@ class PasswordBroker implements PasswordBrokerContract
 	 * 发送密码重置链接给用户
      *
      * @param  array  $credentials
+     * @param  \Closure|null  $callback
      * @return string
      */
-    public function sendResetLink(array $credentials)
+    public function sendResetLink(array $credentials, Closure $callback = null)
     {
         // First we will check to see if we found a user at the given credentials and
         // if we did not we will redirect back to this current URI with a piece of
         // "flash" data in the session to indicate to the developers the errors.
-		// 首先，我们将检查是否在给定凭据上找到了用户。
+		// 首先，我们将检查是否在给定凭据和上找到了用户。
         $user = $this->getUser($credentials);
 
         if (is_null($user)) {
@@ -67,20 +68,25 @@ class PasswordBroker implements PasswordBrokerContract
             return static::RESET_THROTTLED;
         }
 
-        // Once we have the reset token, we are ready to send the message out to this
-        // user with a link to reset their password. We will then redirect back to
-        // the current URI having nothing set in the session to indicate errors.
-		// 一旦我们有了重置令牌，我们就准备好将消息发送到这个带有重置密码链接的用户。
-        $user->sendPasswordResetNotification(
-            $this->tokens->create($user)
-        );
+        $token = $this->tokens->create($user);
+
+        if ($callback) {
+            $callback($user, $token);
+        } else {
+            // Once we have the reset token, we are ready to send the message out to this
+            // user with a link to reset their password. We will then redirect back to
+            // the current URI having nothing set in the session to indicate errors.
+			// 一旦我们有了重置令牌，我们就准备好将消息发送到带有重置密码链接的用户。
+
+            $user->sendPasswordResetNotification($token);
+        }
 
         return static::RESET_LINK_SENT;
     }
 
     /**
      * Reset the password for the given token.
-	 * 为给定的令牌重置密码
+	 * 重置给定令牌的密码
      *
      * @param  array  $credentials
      * @param  \Closure  $callback
@@ -93,7 +99,7 @@ class PasswordBroker implements PasswordBrokerContract
         // If the responses from the validate method is not a user instance, we will
         // assume that it is a redirect and simply return it from this method and
         // the user is properly redirected having an error message on the post.
-		// 如果来自验证方法的响应不是用户实例。
+		// 如果validate方法的响应不是用户实例，我们将假设它是一个重定向，并简单地返回它。
         if (! $user instanceof CanResetPasswordContract) {
             return $user;
         }
@@ -103,8 +109,7 @@ class PasswordBroker implements PasswordBrokerContract
         // Once the reset has been validated, we'll call the given callback with the
         // new password. This gives the user an opportunity to store the password
         // in their persistent storage. Then we'll delete the token and return.
-		// 一旦重置被确认，我们会调用给定的新密码回调。
-		// 这为用户提供了在它们的持久存储中存储密码的机会。然后我们将删除标记并返回。
+		// 一旦重置被确认，我们将使用新密码进行回调。
         $callback($user, $password);
 
         $this->tokens->delete($user);
@@ -156,7 +161,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Create a new password reset token for the given user.
-	 * 为给定用户创建新的密码重置令牌
+	 * 为给定用户创建一个新的密码重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string

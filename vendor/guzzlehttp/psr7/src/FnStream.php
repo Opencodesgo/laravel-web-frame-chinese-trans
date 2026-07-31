@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Fn 流
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Compose stream implementations based on a hash of functions.
+ * 基于函数的散列编写流实现。
  *
  * Allows for easy testing and extension of a provided stream without needing
  * to create a concrete class for a simple extension point.
@@ -39,6 +43,7 @@ final class FnStream implements StreamInterface
 
     /**
      * Lazily determine which methods are not implemented.
+	 * 惰性地确定哪些方法没有实现
      *
      * @throws \BadMethodCallException
      */
@@ -50,6 +55,7 @@ final class FnStream implements StreamInterface
 
     /**
      * The close method is called on the underlying stream only if possible.
+	 * 只有在可能的情况下才在底层流上调用close方法
      */
     public function __destruct()
     {
@@ -60,6 +66,7 @@ final class FnStream implements StreamInterface
 
     /**
      * An unserialize would allow the __destruct to run when the unserialized value goes out of scope.
+	 * 一个未序列化将允许在未序列化值超出范围时运行的__销毁
      *
      * @throws \LogicException
      */

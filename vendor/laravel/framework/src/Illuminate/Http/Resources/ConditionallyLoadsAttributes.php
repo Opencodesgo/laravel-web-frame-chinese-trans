@@ -117,7 +117,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Merge a value into the array.
-	 * 将值合并到数组中
+	 * 合并值到数组中
      *
      * @param  mixed  $value
      * @return \Illuminate\Http\Resources\MergeValue|mixed
@@ -156,7 +156,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Retrieve an accessor when it has been appended.
-	 * 在被追加时检索访问器
+	 * 在追加访问器时检索访问器
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -218,7 +218,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Execute a callback if the given pivot table with a custom accessor has been loaded.
-	 * 如果给定的pivot表带有自定义访问器,则执行回调
+	 * 如果加载了带有自定义访问器的数据透视表，则执行回调。
      *
      * @param  string  $accessor
      * @param  string  $table

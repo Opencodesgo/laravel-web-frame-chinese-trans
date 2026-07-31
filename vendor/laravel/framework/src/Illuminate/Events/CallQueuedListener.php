@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，事件，呼叫队列侦听器
+ * Illuminate，事件，呼叫队列监听器
  */
 
 namespace Illuminate\Events;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class CallQueuedListener implements ShouldQueue
 {
-    use InteractsWithQueue;
+    use InteractsWithQueue, Queueable;
 
     /**
      * The listener class name.
@@ -24,7 +25,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The listener method.
-	 * 监听器方法
+	 * 监听器方法名
      *
      * @var string
      */
@@ -32,7 +33,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The data to be passed to the listener.
-	 * 要传递给侦听器的数据
+	 * 要传递给监听器的数据
      *
      * @var array
      */
@@ -40,19 +41,27 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该作业的次数
+	 * 可能尝试该任务的次数
      *
      * @var int
      */
     public $tries;
 
     /**
-     * The number of seconds to wait before retrying the job.
-	 * 重试作业之前等待的秒数
+     * The maximum number of exceptions allowed, regardless of attempts.
+	 * 允许的最大异常数，无论是否尝试。
      *
      * @var int
      */
-    public $retryAfter;
+    public $maxExceptions;
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+	 * 在重试遇到未捕获异常的作业之前等待的秒数
+     *
+     * @var int
+     */
+    public $backoff;
 
     /**
      * The timestamp indicating when the job should timeout.
@@ -60,7 +69,7 @@ class CallQueuedListener implements ShouldQueue
      *
      * @var int
      */
-    public $timeoutAt;
+    public $retryUntil;
 
     /**
      * The number of seconds the job can run before timing out.
@@ -71,8 +80,16 @@ class CallQueuedListener implements ShouldQueue
     public $timeout;
 
     /**
+     * Indicates if the job should be encrypted.
+	 * 指明任务是否应该加密
+     *
+     * @var bool
+     */
+    public $shouldBeEncrypted = false;
+
+    /**
      * Create a new job instance.
-	 * 创建新的作业实例
+	 * 创建新的任务实例
      *
      * @param  string  $class
      * @param  string  $method
@@ -88,7 +105,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Handle the queued job.
-	 * 处理排队作业
+	 * 处理队列任务
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void

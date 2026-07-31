@@ -26,7 +26,7 @@ class Message
 
     /**
      * CIDs of files embedded in the message.
-	 * 消息中嵌入文件的CIDs
+	 * 消息中嵌入文件的cid
      *
      * @var array
      */
@@ -34,7 +34,7 @@ class Message
 
     /**
      * Create a new message instance.
-	 * 创建新的消息实例
+	 * 创建一个新的消息实例
      *
      * @param  \Swift_Message  $swift
      * @return void
@@ -149,8 +149,8 @@ class Message
     }
 
     /**
-     * Add a reply to address to the message.
-	 * 在邮件中添加回复地址
+     * Add a "reply to" address to the message.
+	 * 在邮件中添加"回复"地址
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -312,7 +312,7 @@ class Message
         // First we will check for a MIME type on the message, which instructs the
         // mail client on what type of attachment the file is so that it may be
         // downloaded correctly by the user. The MIME option is not required.
-		// 首先，我们将检查消息上的MIME类型。
+		// 首先，我们将检查消息上的MIME类型，它指示邮件客户端上什么类型的附件文件。
         if (isset($options['mime'])) {
             $attachment->setContentType($options['mime']);
         }
@@ -320,7 +320,7 @@ class Message
         // If an alternative name was given as an option, we will set that on this
         // attachment so that it will be downloaded with the desired names from
         // the developer, otherwise the default file names will get assigned.
-		// 如果提供了替代名称作为选项，我们将在此设置附件，以便它将从开发者下载所需的名称。
+		// 如果提供了替代名称作为选项，我们将在此附件上设置它。
         if (isset($options['as'])) {
             $attachment->setFilename($options['as']);
         }

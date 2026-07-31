@@ -27,6 +27,8 @@ class BusServiceProvider extends ServiceProvider implements DeferrableProvider
             });
         });
 
+        $this->registerBatchServices();
+
         $this->app->alias(
             Dispatcher::class, DispatcherContract::class
         );
@@ -37,8 +39,27 @@ class BusServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
+     * Register the batch handling services.
+	 * 注册批处理服务
+     *
+     * @return void
+     */
+    protected function registerBatchServices()
+    {
+        $this->app->singleton(BatchRepository::class, DatabaseBatchRepository::class);
+
+        $this->app->singleton(DatabaseBatchRepository::class, function ($app) {
+            return new DatabaseBatchRepository(
+                $app->make(BatchFactory::class),
+                $app->make('db')->connection($app->config->get('queue.batching.database')),
+                $app->config->get('queue.batching.table', 'job_batches')
+            );
+        });
+    }
+
+    /**
      * Get the services provided by the provider.
-	 * 得到提供者提供的服务
+	 * 获取提供者提供的服务
      *
      * @return array
      */
@@ -48,6 +69,7 @@ class BusServiceProvider extends ServiceProvider implements DeferrableProvider
             Dispatcher::class,
             DispatcherContract::class,
             QueueingDispatcherContract::class,
+            BatchRepository::class,
         ];
     }
 }

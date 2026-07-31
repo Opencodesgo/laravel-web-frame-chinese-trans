@@ -14,7 +14,7 @@ class TableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称 queue:table
+	 * 控制台命令名称
      *
      * @var string
      */

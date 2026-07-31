@@ -1,9 +1,13 @@
 <?php
+/**
+ * Faker，计算器，Luhn
+ */
 
 namespace Faker\Calculator;
 
 /**
  * Utility class for generating and validating Luhn numbers.
+ * 用于生成和验证Luhn号的实用程序类
  *
  * Luhn algorithm is used to validate credit card numbers, IMEI numbers, and
  * National Provider Identifier numbers.
@@ -48,6 +52,7 @@ class Luhn
 
     /**
      * Checks whether a number (partial number + check digit) is Luhn compliant
+	 * 检查一个数字(偏号+校验位)是否兼容
      *
      * @return bool
      */
@@ -58,6 +63,7 @@ class Luhn
 
     /**
      * Generate a Luhn compliant number.
+	 * 生成一条兼容的Luhn连接的数字
      *
      * @return string
      */

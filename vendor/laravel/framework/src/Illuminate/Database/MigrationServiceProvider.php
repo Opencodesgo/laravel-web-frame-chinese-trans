@@ -5,6 +5,7 @@
 
 namespace Illuminate\Database;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Database\Console\Migrations\InstallCommand;
@@ -72,7 +73,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the migrator service.
-	 * 注册迁移器服务
+	 * 注册迁移服务
      *
      * @return void
      */
@@ -127,7 +128,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
     protected function registerMigrateCommand()
     {
         $this->app->singleton('command.migrate', function ($app) {
-            return new MigrateCommand($app['migrator']);
+            return new MigrateCommand($app['migrator'], $app[Dispatcher::class]);
         });
     }
 
@@ -169,7 +170,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
             // Once we have the migration creator registered, we will create the command
             // and inject the creator. The creator is responsible for the actual file
             // creation of the migrations, and may be extended by these developers.
-			// 一旦我们完成迁移创建者注册，我们将创建命令并注入创造者。
+			// 注册了迁移创建者之后，我们将创建命令并注入创造者。
             $creator = $app['migration.creator'];
 
             $composer = $app['composer'];

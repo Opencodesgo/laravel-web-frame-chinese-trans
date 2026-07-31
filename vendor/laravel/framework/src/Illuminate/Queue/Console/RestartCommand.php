@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，queue:restart 重启命令
+ * Illuminate，队列，控制台，queue:restart 重置命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -15,7 +15,7 @@ class RestartCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台命令名称 queue:restart
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class RestartCommand extends Command
 
     /**
      * Create a new queue restart command.
-	 * 创建新的队列重启命令
+	 * 创建一个新的队列重启命令
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @return void

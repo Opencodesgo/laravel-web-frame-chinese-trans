@@ -31,7 +31,7 @@ trait GuardHelpers
     protected $provider;
 
     /**
-     * Determine if current user is authenticated. If not, throw an exception.
+     * Determine if the current user is authenticated. If not, throw an exception.
 	 * 确定当前用户是否经过身份验证。如果不是，则抛出异常。
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
@@ -71,7 +71,7 @@ trait GuardHelpers
 
     /**
      * Determine if the current user is a guest.
-	 * 确定当前用户是否为来宾
+	 * 确定当前用户是否是来宾
      *
      * @return bool
      */
@@ -120,7 +120,7 @@ trait GuardHelpers
 
     /**
      * Set the user provider used by the guard.
-	 * 设置守卫使用的用户提供程序
+	 * 设置守卫使用的用户提供者
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @return void

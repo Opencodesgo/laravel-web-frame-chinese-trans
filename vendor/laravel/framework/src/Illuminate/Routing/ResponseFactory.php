@@ -36,7 +36,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new response factory instance.
-	 * 创建新的工厂实例响应
+	 * 创建新的响应工厂实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @param  \Illuminate\Routing\Redirector  $redirector
@@ -52,7 +52,7 @@ class ResponseFactory implements FactoryContract
      * Create a new response instance.
 	 * 创建新的响应实例
      *
-     * @param  string  $content
+     * @param  mixed  $content
      * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\Response

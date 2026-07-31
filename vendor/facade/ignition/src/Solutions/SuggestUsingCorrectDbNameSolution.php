@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案，建议使用正确的 Db名称解决方案
+ */
 
 namespace Facade\Ignition\Solutions;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，基于缓存的会话处理
+ * Illuminate，Session，缓存会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -28,7 +28,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new cache driven handler instance.
-	 * 创建新的缓存驱动处理实例
+	 * 创建一个新的缓存驱动处理程序实例
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @param  int  $minutes
@@ -42,7 +42,10 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         return true;
@@ -50,7 +53,10 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
@@ -58,7 +64,10 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         return $this->cache->get($sessionId, '');
@@ -66,7 +75,10 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         return $this->cache->put($sessionId, $data, $this->minutes * 60);
@@ -74,7 +86,10 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         return $this->cache->forget($sessionId);
@@ -82,7 +97,10 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($lifetime)
     {
         return true;
@@ -90,7 +108,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * Get the underlying cache repository.
-	 * 获取底层缓存存储库
+	 * 得到底层缓存存储库
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */

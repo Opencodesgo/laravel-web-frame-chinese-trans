@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，通知，验证电子邮件
+ * Illuminate，认证，通知，验证电子邮箱
  */
 
 namespace Illuminate\Auth\Notifications;
@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\URL;
 class VerifyEmail extends Notification
 {
     /**
+     * The callback that should be used to create the verify email URL.
+	 * 应该用于创建验证电子邮件URL的回调
+     *
+     * @var \Closure|null
+     */
+    public static $createUrlCallback;
+
+    /**
      * The callback that should be used to build the mail message.
 	 * 应该用于构建邮件消息的回调
      *
@@ -24,7 +32,7 @@ class VerifyEmail extends Notification
 
     /**
      * Get the notification's channels.
-	 * 获取通知的通道
+	 * 得到通知频道
      *
      * @param  mixed  $notifiable
      * @return array|string
@@ -49,10 +57,22 @@ class VerifyEmail extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
 
+        return $this->buildMailMessage($verificationUrl);
+    }
+
+    /**
+     * Get the verify email notification mail message for the given URL.
+	 * 获取给定URL的验证电子邮件通知邮件消息
+     *
+     * @param  string  $url
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    protected function buildMailMessage($url)
+    {
         return (new MailMessage)
             ->subject(Lang::get('Verify Email Address'))
             ->line(Lang::get('Please click the button below to verify your email address.'))
-            ->action(Lang::get('Verify Email Address'), $verificationUrl)
+            ->action(Lang::get('Verify Email Address'), $url)
             ->line(Lang::get('If you did not create an account, no further action is required.'));
     }
 
@@ -65,6 +85,10 @@ class VerifyEmail extends Notification
      */
     protected function verificationUrl($notifiable)
     {
+        if (static::$createUrlCallback) {
+            return call_user_func(static::$createUrlCallback, $notifiable);
+        }
+
         return URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
@@ -73,6 +97,18 @@ class VerifyEmail extends Notification
                 'hash' => sha1($notifiable->getEmailForVerification()),
             ]
         );
+    }
+
+    /**
+     * Set a callback that should be used when creating the email verification URL.
+	 * 设置一个在创建电子邮件验证URL时应该使用的回调
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public static function createUrlUsing($callback)
+    {
+        static::$createUrlCallback = $callback;
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案，建议 Livewire方法名称解决方案
+ */
 
 namespace Facade\Ignition\Solutions;
 

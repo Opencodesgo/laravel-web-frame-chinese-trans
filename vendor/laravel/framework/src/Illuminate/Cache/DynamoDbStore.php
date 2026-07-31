@@ -1,6 +1,7 @@
 <?php
 /**
  * Illuminate，缓存，DynamoDb 存储
+ * Aws\DynamoDb 默认不包含，需要自己安装
  */
 
 namespace Illuminate\Cache;
@@ -20,7 +21,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * The DynamoDB client instance.
-	 * DynamoDB客户端实例
+	 * DynamoDb客户端实例
      *
      * @var \Aws\DynamoDb\DynamoDbClient
      */
@@ -68,7 +69,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Create a new store instance.
-	 * 创建一个新的存储实例
+	 * 创建新的存储实例
      *
      * @param  \Aws\DynamoDb\DynamoDbClient  $dynamo
      * @param  string  $table
@@ -416,7 +417,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Get a lock instance.
-	 * 获取一个锁实例
+	 * 得到锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
@@ -503,7 +504,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Unserialize the value.
-	 * 反序列化该值
+	 * 反序列化值
      *
      * @param  mixed  $value
      * @return mixed
@@ -554,5 +555,16 @@ class DynamoDbStore implements LockProvider, Store
     public function setPrefix($prefix)
     {
         $this->prefix = ! empty($prefix) ? $prefix.':' : '';
+    }
+
+    /**
+     * Get the DynamoDb Client instance.
+	 * 获取DynamoDb客户端实例
+     *
+     * @return DynamoDbClient
+     */
+    public function getClient()
+    {
+        return $this->dynamo;
     }
 }

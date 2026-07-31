@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通知，核心类
+ * Illuminate，通知，通知核心类
  */
 
 namespace Illuminate\Notifications;
@@ -29,7 +29,7 @@ class Notification
 
     /**
      * Get the channels the event should broadcast on.
-	 * 获取该事件应该播放的通道
+	 * 得到该事件应该播放的频道
      *
      * @return array
      */

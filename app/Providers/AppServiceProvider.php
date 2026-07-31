@@ -1,6 +1,6 @@
 <?php
 /**
- * App，提供者，App 服务提供者
+ * app，提供者，App 应用服务提供者
  */
 
 namespace App\Providers;
@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-	 * 启动任何应用服务
+	 * 引导任何应用服务
      *
      * @return void
      */

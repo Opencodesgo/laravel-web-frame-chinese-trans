@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，计算器，Isbn
+ */
 
 namespace Faker\Calculator;
 
@@ -46,6 +49,7 @@ class Isbn
 
     /**
      * Checks whether the provided number is a valid ISBN-10 number
+	 * 检查所提供的号码是否有效
      *
      * @param string $isbn ISBN to check
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案，运行迁移解
+ */
 
 namespace Facade\Ignition\Solutions;
 

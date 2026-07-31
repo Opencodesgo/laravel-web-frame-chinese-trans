@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，扩展，国家扩展
+ */
 
 namespace Faker\Extension;
 

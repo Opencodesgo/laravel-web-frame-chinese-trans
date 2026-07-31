@@ -1,7 +1,9 @@
 <?php
 /**
- * Illuminate，数据库，播种机，播种机，根据实际需要修改
+ * Illuminate，数据库，控制台，播种，存根，虚拟类
  */
+
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 

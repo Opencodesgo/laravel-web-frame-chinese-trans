@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，工作记录器，工作记录器
+ */
 
 namespace Facade\Ignition\JobRecorder;
 

@@ -10,7 +10,6 @@ use Illuminate\Contracts\Redis\Connection as ConnectionContract;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Redis;
-use RedisCluster;
 use RedisException;
 
 /**
@@ -18,6 +17,8 @@ use RedisException;
  */
 class PhpRedisConnection extends Connection implements ConnectionContract
 {
+    use PacksPhpRedisValues;
+
     /**
      * The connection creation callback.
 	 * 连接创建回调
@@ -36,7 +37,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Create a new PhpRedis connection.
-	 * 创建一个新的PhpRedis连接
+	 * 创建新的PhpRedis连接
      *
      * @param  \Redis  $client
      * @param  callable|null  $connector
@@ -66,7 +67,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Get the values of all the given keys.
-	 * 获取所有给定键的值
+	 * 得到所有给定键的值
      *
      * @param  array  $keys
      * @return array
@@ -79,7 +80,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Set the string value in argument as value of the key.
+     * Set the string value in the argument as the value of the key.
 	 * 将参数中的字符串值设置为键的值
      *
      * @param  string  $key
@@ -113,7 +114,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Get the value of the given hash fields.
-	 * 获取给定哈希字段的值
+	 * 得到给定哈希字段的值
      *
      * @param  string  $key
      * @param  mixed  $dictionary
@@ -238,7 +239,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
         $options = [];
 
         foreach (array_slice($dictionary, 0, 3) as $i => $value) {
-            if (in_array($value, ['nx', 'xx', 'ch', 'incr', 'NX', 'XX', 'CH', 'INCR'], true)) {
+            if (in_array($value, ['nx', 'xx', 'ch', 'incr', 'gt', 'lt', 'NX', 'XX', 'CH', 'INCR', 'GT', 'LT'], true)) {
                 $options[] = $value;
 
                 unset($dictionary[$i]);
@@ -527,23 +528,17 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Flush the selected Redis database.
 	 * 刷新所选Redis数据库
      *
-     * @return void
+     * @return mixed
      */
     public function flushdb()
     {
-        if (! $this->client instanceof RedisCluster) {
-            return $this->command('flushdb');
+        $arguments = func_get_args();
+
+        if (strtoupper((string) ($arguments[0] ?? null)) === 'ASYNC') {
+            return $this->command('flushdb', [true]);
         }
 
-        foreach ($this->client->_masters() as [$host, $port]) {
-            $redis = tap(new Redis)->connect($host, $port);
-
-            if (isset($this->config['password']) && ! empty($this->config['password'])) {
-                $redis->auth($this->config['password']);
-            }
-
-            $redis->flushDb();
-        }
+        return $this->command('flushdb');
     }
 
     /**
@@ -593,8 +588,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Apply prefix to the given key if necessary.
-	 * 必要时对给定的键应用prefix
+     * Apply a prefix to the given key if necessary.
+	 * 必要时对给定的键应用前缀
      *
      * @param  string  $key
      * @return string

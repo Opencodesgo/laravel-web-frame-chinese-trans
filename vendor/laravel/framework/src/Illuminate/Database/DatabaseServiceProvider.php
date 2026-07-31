@@ -9,7 +9,6 @@ use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 use Illuminate\Contracts\Queue\EntityResolver;
 use Illuminate\Database\Connectors\ConnectionFactory;
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\QueueEntityResolver;
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +25,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap the application events.
-	 * 启动应用事件
+	 * 引导应用程序事件
      *
      * @return void
      */
@@ -48,9 +47,7 @@ class DatabaseServiceProvider extends ServiceProvider
         Model::clearBootedModels();
 
         $this->registerConnectionServices();
-
         $this->registerEloquentFactory();
-
         $this->registerQueueableEntityResolver();
     }
 
@@ -73,7 +70,7 @@ class DatabaseServiceProvider extends ServiceProvider
         // The database manager is used to resolve various connections, since multiple
         // connections might be managed. It also implements the connection resolver
         // interface which may be used by other components requiring connections.
-		// 数据库管理器用于解析各种连接，因为有多个可能被管理的连接。
+		// 数据库管理器用于解析各种连接，因为有多个连接可能被管理。
         $this->app->singleton('db', function ($app) {
             return new DatabaseManager($app, $app['db.factory']);
         });
@@ -81,11 +78,15 @@ class DatabaseServiceProvider extends ServiceProvider
         $this->app->bind('db.connection', function ($app) {
             return $app['db']->connection();
         });
+
+        $this->app->singleton('db.transactions', function ($app) {
+            return new DatabaseTransactionsManager;
+        });
     }
 
     /**
      * Register the Eloquent factory instance in the container.
-	 * 在容器中注册有说服力的工厂实例
+	 * 在容器中注册Eloquent工厂实例
      *
      * @return void
      */
@@ -101,12 +102,6 @@ class DatabaseServiceProvider extends ServiceProvider
             static::$fakers[$locale]->unique(true);
 
             return static::$fakers[$locale];
-        });
-
-        $this->app->singleton(EloquentFactory::class, function ($app) {
-            return EloquentFactory::construct(
-                $app->make(FakerGenerator::class), $this->app->databasePath('factories')
-            );
         });
     }
 

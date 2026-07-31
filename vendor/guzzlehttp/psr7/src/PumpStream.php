@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，膨胀流
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Provides a read only stream that pumps data from a PHP callable.
+ * 提供从PHP可调用的数据提供的只读流。
  *
  * When invoking the provided callable, the PumpStream will pass the amount of
  * data requested to read to the callable. The callable can choose to ignore

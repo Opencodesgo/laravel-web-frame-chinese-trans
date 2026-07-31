@@ -11,7 +11,7 @@ class RelationNotFoundException extends RuntimeException
 {
     /**
      * The name of the affected Eloquent model.
-	 * 将范围应用于给定的Eloquent查询生成器
+	 * 受影响的Eloquent模型的名称
      *
      * @var string
      */
@@ -27,17 +27,22 @@ class RelationNotFoundException extends RuntimeException
 
     /**
      * Create a new exception instance.
-	 * 创建一个新的异常实例
+	 * 创建新的异常实例
      *
      * @param  object  $model
      * @param  string  $relation
+     * @param  string|null  $type
      * @return static
      */
-    public static function make($model, $relation)
+    public static function make($model, $relation, $type = null)
     {
         $class = get_class($model);
 
-        $instance = new static("Call to undefined relationship [{$relation}] on model [{$class}].");	#调用模型[{$class}]上的未定义关系[{$relation}]
+        $instance = new static(
+            is_null($type)
+                ? "Call to undefined relationship [{$relation}] on model [{$class}]."
+                : "Call to undefined relationship [{$relation}] on model [{$class}] of type [{$type}].",
+        );
 
         $instance->model = $class;
         $instance->relation = $relation;

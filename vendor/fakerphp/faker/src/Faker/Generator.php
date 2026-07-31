@@ -640,6 +640,7 @@ class Generator
 
     /**
      * Get a value only some percentage of the time.
+	 * 只得到一定百分比的值
      *
      * @param float $weight A probability between 0 and 1, 0 means that we always get the default value.
      *
@@ -748,6 +749,7 @@ class Generator
 
     /**
      * Replaces tokens ('{{ tokenName }}') with the result from the token method call
+	 * 用令牌方法调用替换令牌({ tokenName } })
      *
      * @param string $string String that needs to bet parsed
      *
@@ -764,6 +766,7 @@ class Generator
 
     /**
      * Get a random MIME type
+	 * 随机MIME类型
      *
      * @example 'video/avi'
      */
@@ -774,6 +777,7 @@ class Generator
 
     /**
      * Get a random file extension (without a dot)
+	 * 得到一个随机的文件扩展(没有一个点)
      *
      * @example avi
      */
@@ -784,6 +788,7 @@ class Generator
 
     /**
      * Get a full path to a new real file on the system.
+	 * 在系统上得到一个新的真实文件的完整路径
      */
     public function filePath()
     {
@@ -792,6 +797,7 @@ class Generator
 
     /**
      * Get an actual blood type
+	 * 实际血型
      *
      * @example 'AB'
      */
@@ -832,6 +838,7 @@ class Generator
 
     /**
      * Get a random EAN8 barcode.
+	 * 得到一个随机的EAN8条码
      *
      * @example '73513537'
      */
@@ -900,6 +907,7 @@ class Generator
 
     /**
      * Return a random float number
+	 * 返回一个随机浮点数
      *
      * @example 48.8932
      */
@@ -914,6 +922,7 @@ class Generator
 
     /**
      * Returns a random integer with 0 to $nbDigits digits.
+	 * 返回一个随机整数,0到$ nb位数
      *
      * The maximum value returned is mt_getrandmax()
      *
@@ -932,7 +941,6 @@ class Generator
 
     /**
      * Get a version number in semantic versioning syntax 2.0.0. (https://semver.org/spec/v2.0.0.html)
-	 * 在语义版本控制语法2.0.0中获取版本号。
      *
      * @param bool $preRelease Pre release parts may be randomly included
      * @param bool $build      Build parts may be randomly included

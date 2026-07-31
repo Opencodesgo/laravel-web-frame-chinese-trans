@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，Http，Kernel内核
+ * Illuminate，契约，Http，内核
  */
 
 namespace Illuminate\Contracts\Http;
@@ -9,7 +9,7 @@ interface Kernel
 {
     /**
      * Bootstrap the application for HTTP requests.
-	 * 为HTTP请求引导应用
+	 * 为HTTP请求引导应用程序
      *
      * @return void
      */
@@ -36,7 +36,7 @@ interface Kernel
 
     /**
      * Get the Laravel application instance.
-	 * 获取Laravel应用实例
+	 * 得到应用实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

@@ -9,13 +9,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Database Connection Name 	默认数据库连接名 mysql
+    | Default Database Connection Name 	默认数据库连接名
     |--------------------------------------------------------------------------
     |
     | Here you may specify which of the database connections below you wish
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
-	| 在这里，你可以指定您希望下面的哪个数据库连接作为所有数据库工作的默认连接。
+	| 在此处，您可以指定以下数据库连接中哪一个作为所有数据库操作的默认连接。
+	| 当然，您可以使用数据库库同时连接多个连接。
     |
     */
 
@@ -29,15 +30,14 @@ return [
     | Here are each of the database connections setup for your application.
     | Of course, examples of configuring each database platform that is
     | supported by Laravel is shown below to make development simple.
-	| 这里是为你的应用程序设置的每个数据库连接。
-    |
+	| 以下是为您的应用程序设置的各个数据库连接。
+    | 当然，下面展示了 Laravel 支持的每个数据库平台的配置示例，以便简化开发过程。
     |
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
-	| Laravel中的所有数据库工作都是通过PHP PDO工具完成的，
-	| 所以请确保你有特定数据库的驱动程序，在开始开发之前在您的机器上安装。
-    |
+	| Laravel 中的所有数据库操作都通过 PHP 的 PDO 功能完成，因此在开始开发之前，请确保你的机器上已安装了所选数据库的驱动程序。
+    | 
     */
 
     'connections' => [
@@ -102,13 +102,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Migration Repository Table 	迁移资源库表
+    | Migration Repository Table 	迁移存储库表
     |--------------------------------------------------------------------------
     |
     | This table keeps track of all the migrations that have already run for
     | your application. Using this information, we can determine which of
     | the migrations on disk haven't actually been run in the database.
-	| 这个表跟踪应用所有已经运行过的迁移。
+	| 这个表跟踪您的应用程序中所有已经运行过的迁移。
+	| 利用这些信息，我们可以确定磁盘上的哪些迁移实际上并未在数据库中执行。
     |
     */
 
@@ -116,14 +117,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Redis Databases 	Redis数据库
+    | Redis Databases 	Redis 数据库
     |--------------------------------------------------------------------------
     |
     | Redis is an open source, fast, and advanced key-value store that also
     | provides a richer body of commands than a typical key-value system
     | such as APC or Memcached. Laravel makes it easy to dig right in.
-	| Redis是一个开源的、快速的、高级的键值存储，
-	| 提供比典型键值系统更丰富的命令体，如APC或Memcached。
+	| Redis是一个开源的、快速的、高级的键值存储提供了比典型的键值系统更丰富的命令体，如APC或Memcached。
+	| Laravel让你很容易就能深入挖掘。
     |
     */
 

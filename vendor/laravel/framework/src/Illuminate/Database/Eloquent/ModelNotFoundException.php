@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，模型未找到异常
+ * Illuminate，数据库，Eloquent，模型未发现异常
  */
 
 namespace Illuminate\Database\Eloquent;
 
+use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Support\Arr;
-use RuntimeException;
 
-class ModelNotFoundException extends RuntimeException
+class ModelNotFoundException extends RecordsNotFoundException
 {
     /**
      * Name of the affected Eloquent model.
@@ -20,7 +20,7 @@ class ModelNotFoundException extends RuntimeException
 
     /**
      * The affected model IDs.
-	 * 受影响的型号id
+	 * 受影响的模型id
      *
      * @var int|array
      */

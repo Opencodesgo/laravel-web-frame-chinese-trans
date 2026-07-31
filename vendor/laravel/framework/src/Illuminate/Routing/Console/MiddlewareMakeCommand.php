@@ -1,14 +1,17 @@
 <?php
 /**
- * Illuminate，路由，控制台，make:middleware 中间件制造命令
+ * Illuminate，路由，控制台，make:middleware 中间件设置命令
  */
 
 namespace Illuminate\Routing\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 
 class MiddlewareMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
 	 * 控制台命令名
@@ -19,7 +22,7 @@ class MiddlewareMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -27,7 +30,7 @@ class MiddlewareMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -35,7 +38,7 @@ class MiddlewareMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */

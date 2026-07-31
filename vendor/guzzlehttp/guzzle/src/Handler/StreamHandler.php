@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，流处理程序
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -17,6 +20,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * HTTP handler that uses PHP's HTTP stream wrapper.
+ * 使用PHP HTTP流包装器的HTTP处理程序。
  *
  * @final
  */
@@ -29,6 +33,7 @@ class StreamHandler
 
     /**
      * Sends an HTTP request.
+	 * 发送一个HTTP请求
      *
      * @param RequestInterface $request Request to send.
      * @param array            $options Request transfer options.
@@ -198,6 +203,7 @@ class StreamHandler
 
     /**
      * Drains the source stream into the "sink" client option.
+	 * 将源流排放到“sink”客户端选项中。
      *
      * @param string $contentLength Header specifying the amount of
      *                              data to read.
@@ -224,6 +230,7 @@ class StreamHandler
 
     /**
      * Create a resource and check to ensure it was created successfully
+	 * 创建一个资源并检查确保它成功创建
      *
      * @param callable $callback Callable that returns stream resource
      *
@@ -445,6 +452,7 @@ class StreamHandler
 
     /**
      * Parses the given proxy URL to make it compatible with the format PHP's stream context expects.
+	 * 解析给定的代理URL,使它与PHP流上下文所期望的格式兼容。
      */
     private function parse_proxy(string $url): array
     {

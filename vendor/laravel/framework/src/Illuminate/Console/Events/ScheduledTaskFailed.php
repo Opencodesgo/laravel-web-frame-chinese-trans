@@ -20,7 +20,7 @@ class ScheduledTaskFailed
 
     /**
      * The exception that was thrown.
-	 * 被抛出的异常
+	 * 抛出的异常
      *
      * @var \Throwable
      */
@@ -32,6 +32,7 @@ class ScheduledTaskFailed
      *
      * @param  \Illuminate\Console\Scheduling\Event  $task
      * @param  \Throwable  $exception
+     * @return void
      */
     public function __construct(Event $task, Throwable $exception)
     {

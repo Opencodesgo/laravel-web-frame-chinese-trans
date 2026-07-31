@@ -96,7 +96,7 @@ class DatabaseLock extends Lock
 
     /**
      * Get the UNIX timestamp indicating when the lock should expire.
-	 * 获取指示锁何时到期的UNIX时间戳
+	 * 获取指明锁何时到期的UNIX时间戳
      *
      * @return int
      */
@@ -147,5 +147,16 @@ class DatabaseLock extends Lock
     protected function getCurrentOwner()
     {
         return optional($this->connection->table($this->table)->where('key', $this->name)->first())->owner;
+    }
+
+    /**
+     * Get the name of the database connection being used to manage the lock.
+	 * 获取用于管理锁的数据库连接的名称
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return $this->connection->getName();
     }
 }

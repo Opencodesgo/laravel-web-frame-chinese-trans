@@ -5,9 +5,11 @@
 
 namespace Illuminate\Http\Resources;
 
+use Illuminate\Pagination\AbstractCursorPaginator;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 trait CollectsResources
 {
@@ -34,7 +36,7 @@ trait CollectsResources
             ? $resource->mapInto($collects)
             : $resource->toBase();
 
-        return $resource instanceof AbstractPaginator
+        return ($resource instanceof AbstractPaginator || $resource instanceof AbstractCursorPaginator)
                     ? $resource->setCollection($this->collection)
                     : $this->collection;
     }
@@ -52,9 +54,29 @@ trait CollectsResources
         }
 
         if (Str::endsWith(class_basename($this), 'Collection') &&
-            class_exists($class = Str::replaceLast('Collection', '', get_class($this)))) {
+            (class_exists($class = Str::replaceLast('Collection', '', get_class($this))) ||
+             class_exists($class = Str::replaceLast('Collection', 'Resource', get_class($this))))) {
             return $class;
         }
+    }
+
+    /**
+     * Get the JSON serialization options that should be applied to the resource response.
+	 * 获取应该应用于资源响应的JSON序列化选项
+     *
+     * @return int
+     */
+    public function jsonOptions()
+    {
+        $collects = $this->collects();
+
+        if (! $collects) {
+            return 0;
+        }
+
+        return (new ReflectionClass($collects))
+                  ->newInstanceWithoutConstructor()
+                  ->jsonOptions();
     }
 
     /**
@@ -63,6 +85,7 @@ trait CollectsResources
      *
      * @return \ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return $this->collection->getIterator();

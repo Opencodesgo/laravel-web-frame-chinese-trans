@@ -22,8 +22,8 @@ class BroadcastChannel
     protected $events;
 
     /**
-     * Create a new database channel.
-	 * 创建一个新的数据库通道
+     * Create a new broadcast channel.
+	 * 创建一个新的广播通道
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
@@ -35,7 +35,7 @@ class BroadcastChannel
 
     /**
      * Send the given notification.
-	 * 发送给定的通知
+	 * 发送给定通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -77,6 +77,6 @@ class BroadcastChannel
             return $notification->toArray($notifiable);
         }
 
-        throw new RuntimeException('Notification is missing toArray method.');
+        throw new RuntimeException('Notification is missing toArray method.');		#通知缺少toArray方法
     }
 }

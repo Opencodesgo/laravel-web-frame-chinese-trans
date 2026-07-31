@@ -21,7 +21,7 @@ class DatabaseJobRecord
 
     /**
      * Create a new job record instance.
-	 * 创建新的作业记录实例
+	 * 创建一个新的作业记录实例
      *
      * @param  \stdClass  $record
      * @return void

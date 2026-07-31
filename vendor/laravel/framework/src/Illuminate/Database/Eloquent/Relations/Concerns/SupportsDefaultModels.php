@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，支持默认模型特征
+ * Illuminate，数据库，Eloquent，关系，问题，支持默认模型
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -14,6 +14,7 @@ trait SupportsDefaultModels
 	 * 指明是否应使用默认模型实例
      *
      * Alternatively, may be a Closure or array.
+	 * 也可以是闭包或数组
      *
      * @var \Closure|array|bool
      */

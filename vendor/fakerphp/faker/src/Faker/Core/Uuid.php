@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，Uuid
+ */
 
 namespace Faker\Core;
 

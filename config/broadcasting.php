@@ -13,9 +13,9 @@ return [
     | This option controls the default broadcaster that will be used by the
     | framework when an event needs to be broadcast. You may set this to
     | any of the connections defined in the "connections" array below.
-	| 这个选项控制默认广播。
+	| 控件将使用的默认广播器当事件需要广播时，使用框架。
     |
-    | Supported: "pusher", "redis", "log", "null"
+    | Supported: "pusher", "ably", "redis", "log", "null"
     |
     */
 
@@ -29,7 +29,7 @@ return [
     | Here you may define all of the broadcast connections that will be used
     | to broadcast events to other systems or over websockets. Samples of
     | each available type of connection are provided inside this array.
-	| 在这里，你可以定义所有的广播连接。
+	| 在这里，您可以定义所有的广播连接以便将事件广播到其他系统。
     |
     */
 
@@ -44,6 +44,11 @@ return [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
             ],
+        ],
+
+        'ably' => [
+            'driver' => 'ably',
+            'key' => env('ABLY_KEY'),
         ],
 
         'redis' => [

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，已编译的路由集合
+ * Illuminate，路由，编译路由集合
  */
 
 namespace Illuminate\Routing;
@@ -43,7 +43,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * The router instance used by the route.
-	 * 被路由使用的路由器实例
+	 * 路由使用的路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -51,7 +51,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * The container instance used by the route.
-	 * 被路由使用的容器实例
+	 * 路由使用的容器实例
      *
      * @var \Illuminate\Container\Container
      */
@@ -59,7 +59,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * Create a new CompiledRouteCollection instance.
-	 * 创建新的已编译路由集合实例
+	 * 创建一个新的CompiledRouteCollection实例
      *
      * @param  array  $compiled
      * @param  array  $attributes
@@ -74,7 +74,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * Add a Route instance to the collection.
-	 * 添加路由实例至集合
+	 * 向集合添加一个Route实例
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return \Illuminate\Routing\Route
@@ -89,7 +89,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 	 * 刷新名称查找表
      *
      * This is done in case any names are fluently defined or if routes are overwritten.
-	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖。
+	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖
      *
      * @return void
      */
@@ -133,7 +133,6 @@ class CompiledRouteCollection extends AbstractRouteCollection
         $route = null;
 
         try {
-			// Symfony\Component\Routing\Matcher\UrlMatcher
             if ($result = $matcher->matchRequest($trimmedRequest)) {
                 $route = $this->getByName($result['_route']);
             }
@@ -169,7 +168,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
      */
     protected function requestWithoutTrailingSlash(Request $request)
     {
-        $trimmedRequest = Request::createFromBase($request);
+        $trimmedRequest = $request->duplicate();
 
         $parts = explode('?', $request->server->get('REQUEST_URI'), 2);
 
@@ -194,14 +193,13 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * Determine if the route collection contains a given named route.
-	 * 确定路由集合是否包含给定的路由名称
+	 * 确定路由集合是否包含给定的命名路由
      *
      * @param  string  $name
      * @return bool
      */
     public function hasNamedRoute($name)
     {
-		// 先从属性中找再找名称中找
         return isset($this->attributes[$name]) || $this->routes->hasNamedRoute($name);
     }
 
@@ -276,7 +274,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
             })
             ->map(function (Collection $routes) {
                 return $routes->mapWithKeys(function (Route $route) {
-                    return [$route->uri => $route];
+                    return [$route->getDomain().$route->uri => $route];
                 })->all();
             })
             ->all();
@@ -284,7 +282,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * Get all of the routes keyed by their name.
-	 * 把所有的路由按名字标记
+	 * 把所有的路线按名字标记
      *
      * @return \Illuminate\Routing\Route[]
      */
@@ -299,7 +297,7 @@ class CompiledRouteCollection extends AbstractRouteCollection
 
     /**
      * Resolve an array of attributes to a Route instance.
-	 * 将属性数组解析为路由实例
+	 * 将属性数组解析为Route实例
      *
      * @param  array  $attributes
      * @return \Illuminate\Routing\Route
@@ -319,17 +317,18 @@ class CompiledRouteCollection extends AbstractRouteCollection
             ), '/');
         }
 
-        return $this->router->newRoute($attributes['methods'], $baseUri == '' ? '/' : $baseUri, $attributes['action'])
+        return $this->router->newRoute($attributes['methods'], $baseUri === '' ? '/' : $baseUri, $attributes['action'])
             ->setFallback($attributes['fallback'])
             ->setDefaults($attributes['defaults'])
             ->setWheres($attributes['wheres'])
             ->setBindingFields($attributes['bindingFields'])
-            ->block($attributes['lockSeconds'] ?? null, $attributes['waitSeconds'] ?? null);
+            ->block($attributes['lockSeconds'] ?? null, $attributes['waitSeconds'] ?? null)
+            ->withTrashed($attributes['withTrashed'] ?? false);
     }
 
     /**
      * Set the router instance on the route.
-	 * 设置路由上的路由器实例
+	 * 设置路由上的router实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return $this

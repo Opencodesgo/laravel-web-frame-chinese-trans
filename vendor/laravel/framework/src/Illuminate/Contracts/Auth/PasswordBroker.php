@@ -51,12 +51,13 @@ interface PasswordBroker
 
     /**
      * Send a password reset link to a user.
-	 * 发送密码重置链接给用户
+	 * 向用户发送密码重置链接
      *
      * @param  array  $credentials
+     * @param  \Closure|null  $callback
      * @return string
      */
-    public function sendResetLink(array $credentials);
+    public function sendResetLink(array $credentials, Closure $callback = null);
 
     /**
      * Reset the password for the given token.

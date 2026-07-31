@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，附加流
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Reads from multiple streams, one after the other.
+ * 从多个流读取,一个接一个。
  *
  * This is a read-only stream decorator.
  */
@@ -54,6 +58,7 @@ final class AppendStream implements StreamInterface
 
     /**
      * Add a stream to the AppendStream
+	 * 向AppendStream添加一条流
      *
      * @param StreamInterface $stream Stream to append. Must be readable.
      *
@@ -80,6 +85,7 @@ final class AppendStream implements StreamInterface
 
     /**
      * Closes each attached stream.
+	 * 关闭每个附加流
      */
     public function close(): void
     {
@@ -95,6 +101,7 @@ final class AppendStream implements StreamInterface
 
     /**
      * Detaches each attached stream.
+	 * 对每个附加流进行分离
      *
      * Returns null as it's not clear which underlying stream resource to return.
      */
@@ -119,6 +126,7 @@ final class AppendStream implements StreamInterface
 
     /**
      * Tries to calculate the size by adding the size of each stream.
+	 * 试着通过增加每条流的大小来计算大小。
      *
      * If any of the streams do not return a valid number, then the size of the
      * append stream cannot be determined and null is returned.
@@ -152,6 +160,7 @@ final class AppendStream implements StreamInterface
 
     /**
      * Attempts to seek to the given position. Only supports SEEK_SET.
+	 * 试图寻求给定的位置。只支持SEEK_SET。
      */
     public function seek($offset, $whence = SEEK_SET): void
     {
@@ -184,6 +193,7 @@ final class AppendStream implements StreamInterface
 
     /**
      * Reads from all of the appended streams until the length is met or EOF.
+	 * 从所有的附加流读取,直到实现长度
      */
     public function read($length): string
     {

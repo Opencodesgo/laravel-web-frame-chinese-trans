@@ -13,7 +13,7 @@ class NotificationTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称 notifications:table
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -58,7 +58,7 @@ class NotificationTableCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

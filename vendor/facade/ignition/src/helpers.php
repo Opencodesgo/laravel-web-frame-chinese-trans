@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，辅助
+ */
 
 use Facade\FlareClient\Flare;
 

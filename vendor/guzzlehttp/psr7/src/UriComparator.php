@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Uri 比较器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Provides methods to determine if a modified URL should be considered cross-origin.
+ * 提供方法来确定是否应该考虑修改后的URL。
  *
  * @author Graham Campbell
  */

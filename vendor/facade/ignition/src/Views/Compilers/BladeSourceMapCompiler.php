@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，视图，编译器，Blade 源地图编译器
+ */
 
 namespace Facade\Ignition\Views\Compilers;
 

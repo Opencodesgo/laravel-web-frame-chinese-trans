@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，空值队列
+ * Illuminate，队列，零队列
  */
 
 namespace Illuminate\Queue;
@@ -23,7 +23,7 @@ class NullQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 推入新的作业进队列
      *
      * @param  string  $job
      * @param  mixed  $data

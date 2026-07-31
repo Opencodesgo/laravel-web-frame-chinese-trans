@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，标题处理器
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -11,6 +14,7 @@ final class HeaderProcessor
 {
     /**
      * Returns the HTTP version, status code, reason phrase, and headers.
+	 * 返回HTTP版本、状态代码、原因短语和标题。
      *
      * @param string[] $headers
      *

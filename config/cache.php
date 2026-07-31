@@ -15,10 +15,8 @@ return [
     | This option controls the default cache connection that gets used while
     | using this caching library. This connection is used when another is
     | not explicitly specified when executing a given caching function.
-	| 此选项控制默认缓存连接，运行时使用这个缓存库。
-    |
-    | Supported: "apc", "array", "database", "file",
-    |            "memcached", "redis", "dynamodb"
+	| 此选项控制运行时使用的默认缓存连接使用这个缓存库。
+	| 当执行某个缓存函数时，若未明确指定其他连接，则使用此连接。
     |
     */
 
@@ -32,7 +30,11 @@ return [
     | Here you may define all of the cache "stores" for your application as
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
-	| 在这里，你可以为定用定义所有缓存"存储"和他们的驱动。
+	| 在这里，您可以将应用程序的所有缓存"存储"定义并作为他们的驱动。
+	| 您甚至可以为同一个缓存驱动器定义多个商店，以将缓存中存储的各类项目进行分组。
+    |
+    | Supported drivers: "apc", "array", "database", "file",
+    |         "memcached", "redis", "dynamodb", "octane", "null"
     |
     */
 
@@ -51,6 +53,7 @@ return [
             'driver' => 'database',
             'table' => 'cache',
             'connection' => null,
+            'lock_connection' => null,
         ],
 
         'file' => [
@@ -80,6 +83,7 @@ return [
         'redis' => [
             'driver' => 'redis',
             'connection' => 'cache',
+            'lock_connection' => 'default',
         ],
 
         'dynamodb' => [
@@ -91,17 +95,22 @@ return [
             'endpoint' => env('DYNAMODB_ENDPOINT'),
         ],
 
+        'octane' => [
+            'driver' => 'octane',
+        ],
+
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Key Prefix 	缓存前缀
+    | Cache Key Prefix 	缓存键前缀
     |--------------------------------------------------------------------------
     |
     | When utilizing a RAM based store such as APC or Memcached, there might
     | be other applications utilizing the same cache. So, we'll specify a
     | value to get prefixed to all our keys so we can avoid collisions.
-	| 当使用基于内存的存储（如APC或Memcached）时，这可能被使用相同缓存的其他应用。
+	| 当使用基于内存的存储（如APC或Memcached）时，有可能是使用相同缓存的其他应用程序。
+	| 因此，我们将指定一个值，用于为所有键添加前缀，以避免冲突。
     |
     */
 

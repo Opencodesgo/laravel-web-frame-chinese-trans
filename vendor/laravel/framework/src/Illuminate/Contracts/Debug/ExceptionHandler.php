@@ -31,7 +31,7 @@ interface ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
-	 * 呈现异常到HTTP响应
+	 * 将异常呈现到HTTP响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Throwable  $e
@@ -43,7 +43,7 @@ interface ExceptionHandler
 
     /**
      * Render an exception to the console.
-	 * 呈现一个异常至控制台
+	 * 向控制台呈现一个异常
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Throwable  $e

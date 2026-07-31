@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，包含函数
+ * GuzzleHttp，函数
  */
 
 // Don't redefine the functions if included multiple times.

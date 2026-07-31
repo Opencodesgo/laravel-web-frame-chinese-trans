@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，客户端
  */
 
 namespace GuzzleHttp;
@@ -29,7 +28,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Clients accept an array of constructor parameters.
-	 * 客户端接受构造函数参数数组
+	 * 客户端接受一个构造函数参数数组。
      *
      * Here's an example of creating a client using a base_uri and an array of
      * default request options to apply to each request:
@@ -117,7 +116,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Send an HTTP request.
-	 * 发送HTTP请求
+	 * 发送一个HTTP请求
      *
      * @param array $options Request options to apply to the given
      *                       request and to the transfer. See \GuzzleHttp\RequestOptions.
@@ -147,6 +146,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Create and send an asynchronous HTTP request.
+	 * 创建并发送一个异步HTTP请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -178,6 +178,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Create and send an HTTP request.
+	 * 创建并发送HTTP请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -198,6 +199,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Get a client configuration option.
+	 * 获取客户端配置选项
      *
      * These options include default request options of the client, a "handler"
      * (if utilized by the concrete client), and a "base_uri" if utilized by
@@ -232,6 +234,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Configures the default options for a client.
+	 * 为客户配置默认选项
      */
     private function configureDefaults(array $config): void
     {
@@ -284,6 +287,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Merges default options into the array.
+	 * 将默认选项合并到数组中
      *
      * @param array $options Options to modify by reference
      */
@@ -324,6 +328,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Transfers the given request and applies request options.
+	 * 传输给定的请求并应用请求选项。
      *
      * The URI of the request is not modified and the request options are used
      * as-is without merging in default options.
@@ -345,6 +350,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Applies the array of request options to a request.
+	 * 将请求选项数组应用于请求
      */
     private function applyOptions(RequestInterface $request, array &$options): RequestInterface
     {
@@ -478,6 +484,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Return an InvalidArgumentException with pre-set message.
+	 * 用预先设置的消息返回无效达gumentexception
      */
     private function invalidBody(): InvalidArgumentException
     {

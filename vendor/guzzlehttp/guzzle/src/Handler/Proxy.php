@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，代理
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Provides basic proxies for handlers.
+ * 为处理程序提供基本的代理。
  *
  * @final
  */

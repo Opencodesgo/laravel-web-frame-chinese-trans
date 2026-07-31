@@ -12,7 +12,7 @@ class AuthorizationException extends Exception
 {
     /**
      * The response from the gate.
-	 * 从大门的响应
+	 * 大门响应
      *
      * @var \Illuminate\Auth\Access\Response
      */
@@ -36,7 +36,7 @@ class AuthorizationException extends Exception
 
     /**
      * Get the response from the gate.
-	 * 得到大门的回应
+	 * 得到大门响应
      *
      * @return \Illuminate\Auth\Access\Response
      */
@@ -47,7 +47,7 @@ class AuthorizationException extends Exception
 
     /**
      * Set the response from the gate.
-	 * 设置大门的响应
+	 * 设置大门响应
      *
      * @param  \Illuminate\Auth\Access\Response  $response
      * @return $this

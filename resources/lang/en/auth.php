@@ -1,13 +1,10 @@
 <?php
-/**
- * 资源，语言，认证
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines 	认证语言行
+    | Authentication Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are used during authentication for various
@@ -17,6 +14,7 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
+    'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

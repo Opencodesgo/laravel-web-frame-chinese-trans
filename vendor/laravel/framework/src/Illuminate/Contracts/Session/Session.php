@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，Session，Session会话
+ * Illuminate，契约，Session，会话
  */
 
 namespace Illuminate\Contracts\Session;
@@ -14,6 +14,15 @@ interface Session
      * @return string
      */
     public function getName();
+
+    /**
+     * Set the name of the session.
+	 * 设置会话名称
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function setName($name);
 
     /**
      * Get the current session ID.
@@ -34,7 +43,7 @@ interface Session
 
     /**
      * Start the session, reading the data from a handler.
-	 * 启动会话，从处理程序读取数据
+	 * 启动会话，从处理程序读取数据。
      *
      * @return bool
      */
@@ -42,7 +51,7 @@ interface Session
 
     /**
      * Save the session data to storage.
-	 * 保存会话数据至存储中
+	 * 将会话数据保存到存储中。
      *
      * @return void
      */
@@ -76,7 +85,7 @@ interface Session
 
     /**
      * Get an item from the session.
-	 * 从会话中获取一个项
+	 * 从会话中获取一个项目
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -85,8 +94,18 @@ interface Session
     public function get($key, $default = null);
 
     /**
+     * Get the value of a given key and then forget it.
+	 * 获取给定键的值，然后忘记它。
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function pull($key, $default = null);
+
+    /**
      * Put a key / value pair or array of key / value pairs in the session.
-	 * 在会话中放置键/值对或数组的键/值对
+	 * 在会话中放入一个键/值对或键/值对数组
      *
      * @param  string|array  $key
      * @param  mixed  $value
@@ -103,8 +122,16 @@ interface Session
     public function token();
 
     /**
+     * Regenerate the CSRF token value.
+	 * 重新生成CSRF令牌值
+     *
+     * @return void
+     */
+    public function regenerateToken();
+
+    /**
      * Remove an item from the session, returning its value.
-	 * 从会话中删除项，返回其值。
+	 * 从会话中删除项，返回其值
      *
      * @param  string  $key
      * @return mixed
@@ -113,7 +140,7 @@ interface Session
 
     /**
      * Remove one or many items from the session.
-	 * 移除一个或多个项目从会话中
+	 * 从会话中删除一个或多个项目
      *
      * @param  string|array  $keys
      * @return void
@@ -122,11 +149,28 @@ interface Session
 
     /**
      * Remove all of the items from the session.
-	 * 移除所有项目从会话中
+	 * 从会话中删除所有项
      *
      * @return void
      */
     public function flush();
+
+    /**
+     * Flush the session data and regenerate the ID.
+	 * 刷新会话数据并重新生成ID
+     *
+     * @return bool
+     */
+    public function invalidate();
+
+    /**
+     * Generate a new session identifier.
+	 * 生成一个新的会话标识符
+     *
+     * @param  bool  $destroy
+     * @return bool
+     */
+    public function regenerate($destroy = false);
 
     /**
      * Generate a new session ID for the session.

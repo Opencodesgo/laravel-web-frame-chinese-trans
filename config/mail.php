@@ -7,13 +7,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Mailer 	默认邮件收发机
+    | Default Mailer 	默认邮件收发器
     |--------------------------------------------------------------------------
     |
     | This option controls the default mailer that is used to send any email
     | messages sent by your application. Alternative mailers may be setup
     | and used as needed; however, this mailer will be used by default.
-	| 此选项控制默认邮件，这被用作发送任何邮件通过你的应用。
+	| 此选项控制用于发送应用程序发送的任何电子邮件的默认邮件程序。
     |
     */
 
@@ -21,21 +21,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Mailer Configurations 	邮件收发机配置
+    | Mailer Configurations 	邮件配置
     |--------------------------------------------------------------------------
     |
     | Here you may configure all of the mailers used by your application plus
     | their respective settings. Several examples have been configured for
     | you and you are free to add your own as your application requires.
-	| 在这里，您可以配置应用程序plus使用的所有邮件各自的设置。
+	| 在这里，您可以配置应用程序plus使用的所有邮件。
     |
     | Laravel supports a variety of mail "transport" drivers to be used while
     | sending an e-mail. You will specify which one you are using for your
     | mailers below. You are free to add additional mailers as required.
-	| 框架支持多种邮件"传输"驱动程序当发送邮件时。
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses",
-    |            "postmark", "log", "array"
+    |            "postmark", "log", "array", "failover"
     |
     */
 
@@ -65,7 +64,7 @@ return [
 
         'sendmail' => [
             'transport' => 'sendmail',
-            'path' => '/usr/sbin/sendmail -bs',
+            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -t -i'),
         ],
 
         'log' => [
@@ -76,17 +75,25 @@ return [
         'array' => [
             'transport' => 'array',
         ],
+
+        'failover' => [
+            'transport' => 'failover',
+            'mailers' => [
+                'smtp',
+                'log',
+            ],
+        ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Global "From" Address 	全局From发送地址
+    | Global "From" Address
     |--------------------------------------------------------------------------
     |
     | You may wish for all e-mails sent by your application to be sent from
     | the same address. Here, you may specify a name and address that is
     | used globally for all e-mails that are sent by your application.
-	| 您可能希望通过您的申请发送的所有电子邮件都是从相同的地址。
+	| 您可能希望您的申请发送的所有电子邮件都来自同一地址。
     |
     */
 
@@ -97,13 +104,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Markdown Mail Settings 	Markdown邮件设置
+    | Markdown Mail Settings
     |--------------------------------------------------------------------------
     |
     | If you are using Markdown based email rendering, you may configure your
     | theme and component paths here, allowing you to customize the design
     | of the emails. Or, you may simply stick with the Laravel defaults!
-	| 如果您正在使用基于Markdown的电子邮件呈现，则可以在这里配置你的主题和组件路径。
+	| 如果您使用基于Markdown的电子邮件呈现，您可以在此处配置主题和组件路径，从而自定义电子邮件的设计。
     |
     */
 

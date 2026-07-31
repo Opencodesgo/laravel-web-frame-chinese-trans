@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Reflector;
 use InvalidArgumentException;
 use LogicException;
+use Throwable;
 
 class CallbackEvent extends Event
 {
@@ -44,7 +45,7 @@ class CallbackEvent extends Event
     {
         if (! is_string($callback) && ! Reflector::isCallable($callback)) {
             throw new InvalidArgumentException(
-                'Invalid scheduled callback event. Must be a string or callable.'	#无效的计划回调事件。必须是字符串或可调用对象。
+                'Invalid scheduled callback event. Must be a string or callable.'
             );
         }
 
@@ -56,7 +57,7 @@ class CallbackEvent extends Event
 
     /**
      * Run the given event.
-	 * 运行给定的事件
+	 * 运行给定事件
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return mixed
@@ -84,6 +85,12 @@ class CallbackEvent extends Event
             $response = is_object($this->callback)
                         ? $container->call([$this->callback, '__invoke'], $this->parameters)
                         : $container->call($this->callback, $this->parameters);
+
+            $this->exitCode = $response === false ? 1 : 0;
+        } catch (Throwable $e) {
+            $this->exitCode = 1;
+
+            throw $e;
         } finally {
             $this->removeMutex();
 
@@ -134,7 +141,7 @@ class CallbackEvent extends Event
 
     /**
      * Allow the event to only run on one server for each cron expression.
-	 * 允许事件只在每个cron表达式上运行一个服务器
+	 * 对于每个cron表达式，允许事件仅在一台服务器上运行。
      *
      * @return $this
      *
@@ -146,6 +153,7 @@ class CallbackEvent extends Event
             throw new LogicException(
                 "A scheduled event name is required to only run on one server. Use the 'name' method before 'onOneServer'."
             );
+			// 计划事件名称只需要在一台服务器上运行，在onOneServer之前使用name方法。
         }
 
         $this->onOneServer = true;

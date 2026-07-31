@@ -5,10 +5,11 @@
 
 namespace Illuminate\Queue\Failed;
 
+use DateTimeInterface;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Support\Facades\Date;
 
-class DatabaseFailedJobProvider implements FailedJobProviderInterface
+class DatabaseFailedJobProvider implements FailedJobProviderInterface, PrunableFailedJobProvider
 {
     /**
      * The connection resolver implementation.
@@ -20,7 +21,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * The database connection name.
-	 * 数据库连接名
+	 * 数据库连接名称
      *
      * @var string
      */
@@ -36,7 +37,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Create a new database failed job provider.
-	 * 创建新的数据库失败作业提供者
+	 * 创建新的数据库失败作业提供程序
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
      * @param  string  $database
@@ -73,7 +74,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a list of all of the failed jobs.
-	 * 获取所有失败作业的列表
+	 * 得到所有失败任务的列表
      *
      * @return array
      */
@@ -84,7 +85,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 得到一个失败的作业
+	 * 找一份失败的工作
      *
      * @param  mixed  $id
      * @return object|null
@@ -115,6 +116,28 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
     public function flush()
     {
         $this->getTable()->delete();
+    }
+
+    /**
+     * Prune all of the entries older than the given date.
+	 * 删除所有比给定日期早的条目
+     *
+     * @param  \DateTimeInterface  $before
+     * @return int
+     */
+    public function prune(DateTimeInterface $before)
+    {
+        $query = $this->getTable()->where('failed_at', '<', $before);
+
+        $totalDeleted = 0;
+
+        do {
+            $deleted = $query->take(1000)->delete();
+
+            $totalDeleted += $deleted;
+        } while ($deleted !== 0);
+
+        return $totalDeleted;
     }
 
     /**

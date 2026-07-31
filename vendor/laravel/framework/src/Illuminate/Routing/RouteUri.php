@@ -25,7 +25,7 @@ class RouteUri
 
     /**
      * Create a new route URI instance.
-	 * 创建新的路由URI实例
+	 * 创建一个新的路由URI实例
      *
      * @param  string  $uri
      * @param  array  $bindingFields
@@ -39,7 +39,7 @@ class RouteUri
 
     /**
      * Parse the given URI.
-	 * 解析给定URI
+	 * 解析给定的URI
      *
      * @param  string  $uri
      * @return static

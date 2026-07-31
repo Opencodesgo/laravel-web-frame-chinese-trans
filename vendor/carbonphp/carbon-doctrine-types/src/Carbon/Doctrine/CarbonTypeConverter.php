@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Doctrine，Carbon 类型转换器
+ */
 
 namespace Carbon\Doctrine;
 
@@ -21,6 +24,7 @@ trait CarbonTypeConverter
     /**
      * This property differentiates types installed by carbonphp/carbon-doctrine-types
      * from the ones embedded previously in nesbot/carbon source directly.
+	 * 这个属性区分了从以前在nesbot/carbon中嵌入的carbonphp/carbon-doctrine-types安装的类型。
      *
      * @readonly
      */

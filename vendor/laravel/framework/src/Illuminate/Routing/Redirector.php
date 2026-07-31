@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，重定向
+ * Illuminate，路由，重定向器
  */
 
 namespace Illuminate\Routing;
@@ -31,7 +31,7 @@ class Redirector
 
     /**
      * Create a new Redirector instance.
-	 * 创建新的Redirector实例
+	 * 创建一个新的Redirector实例
      *
      * @param  \Illuminate\Routing\UrlGenerator  $generator
      * @return void
@@ -69,7 +69,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the current URI.
-	 * 对当前URI的创建新重定向响应
+	 * 创建对当前URI的新重定向响应
      *
      * @param  int  $status
      * @param  array  $headers
@@ -151,7 +151,7 @@ class Redirector
 
     /**
      * Create a new redirect response to an external URL (no validation).
-	 * 创建一个指向外部URL的新重定向响应（不需要验证）。
+	 * 创建一个指向外部URL的新重定向响应（不需要验证）
      *
      * @param  string  $path
      * @param  int  $status

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，支持，提供者，事件服务提供者
+ * Illuminate，基础，支持，提供商，事件服务提供者
  */
 
 namespace Illuminate\Foundation\Support\Providers;
@@ -21,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * The subscriber classes to register.
-	 * 订阅类注册
+	 * 要注册的订阅者类
      *
      * @var array
      */
@@ -29,28 +29,41 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register the application's event listeners.
-	 * 注册应用程序的事件侦听器
+	 * 注册应用的事件侦听器
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->booting(function () {
+            $events = $this->getEvents();
+
+            foreach ($events as $event => $listeners) {
+                foreach (array_unique($listeners) as $listener) {
+                    Event::listen($event, $listener);
+                }
+            }
+
+            foreach ($this->subscribe as $subscriber) {
+                Event::subscribe($subscriber);
+            }
+        });
+    }
+
+    /**
+     * Boot any application services.
+	 * 启动任何应用服务
      *
      * @return void
      */
     public function boot()
     {
-        $events = $this->getEvents();
-
-        foreach ($events as $event => $listeners) {
-            foreach (array_unique($listeners) as $listener) {
-                Event::listen($event, $listener);
-            }
-        }
-
-        foreach ($this->subscribe as $subscriber) {
-            Event::subscribe($subscriber);
-        }
+        //
     }
 
     /**
      * Get the events and handlers.
-	 * 获取事件和处理程序
+	 * 得到事件和处理程序
      *
      * @return array
      */
@@ -61,7 +74,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Get the discovered events and listeners for the application.
-	 * 为应用程序获取被发现的事件和侦听器
+	 * 获取已发现的应用程序事件和监听器
      *
      * @return array
      */
@@ -81,7 +94,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Get the discovered events for the application.
-	 * 为应用程序获取被发现的事件
+	 * 获取已发现的应用程序事件
      *
      * @return array
      */
@@ -94,7 +107,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Determine if events and listeners should be automatically discovered.
-	 * 确定是否应该自动发现事件和侦听器
+	 * 确定是否应该自动发现事件和监听器
      *
      * @return bool
      */
@@ -105,7 +118,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Discover the events and listeners for the application.
-	 * 为应用程序发现事件和侦听器
+	 * 发现应用程序的事件和监听器
      *
      * @return array
      */
@@ -118,14 +131,14 @@ class EventServiceProvider extends ServiceProvider
                     ->reduce(function ($discovered, $directory) {
                         return array_merge_recursive(
                             $discovered,
-                            DiscoverEvents::within($directory, base_path())
+                            DiscoverEvents::within($directory, $this->eventDiscoveryBasePath())
                         );
                     }, []);
     }
 
     /**
      * Get the listener directories that should be used to discover events.
-	 * 获取应该用于发现事件的侦听器目录
+	 * 获取应该用于发现事件的监听器目录
      *
      * @return array
      */
@@ -134,5 +147,16 @@ class EventServiceProvider extends ServiceProvider
         return [
             $this->app->path('Listeners'),
         ];
+    }
+
+    /**
+     * Get the base path to be used during event discovery.
+	 * 获取要在事件发现期间使用的基本路径
+     *
+     * @return string
+     */
+    protected function eventDiscoveryBasePath()
+    {
+        return base_path();
     }
 }

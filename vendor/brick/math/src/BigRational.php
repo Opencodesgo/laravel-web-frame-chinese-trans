@@ -1,4 +1,7 @@
 <?php
+/**
+ * Brick，Math，大的有理数
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
 
 /**
  * An arbitrarily large rational number.
+ * 任意大的有理数
  *
  * This class is immutable.
  *
@@ -20,6 +24,7 @@ final class BigRational extends BigNumber
 {
     /**
      * The numerator.
+	 * 分子
      *
      * @var BigInteger
      */
@@ -27,6 +32,7 @@ final class BigRational extends BigNumber
 
     /**
      * The denominator. Always strictly positive.
+	 * 分母。绝对是正的。
      *
      * @var BigInteger
      */
@@ -34,6 +40,7 @@ final class BigRational extends BigNumber
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
+	 * 受保护的构造函数。使用工厂方法获取实例。
      *
      * @param BigInteger $numerator        The numerator.
      * @param BigInteger $denominator      The denominator.
@@ -60,6 +67,7 @@ final class BigRational extends BigNumber
 
     /**
      * Creates a BigRational of the given value.
+	 * 创建给定值的二粒度
      *
      * @param BigNumber|int|float|string $value
      *
@@ -76,6 +84,7 @@ final class BigRational extends BigNumber
 
     /**
      * Creates a BigRational out of a numerator and a denominator.
+	 * 从分子和分母中创建一个BigRational。
      *
      * If the denominator is negative, the signs of both the numerator and the denominator
      * will be inverted to ensure that the denominator is always positive.
@@ -101,6 +110,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing zero.
+	 * 返回代表零的二化
      *
      * @return BigRational
      *
@@ -123,6 +133,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing one.
+	 * 返回代表1的双粒度
      *
      * @return BigRational
      *
@@ -145,6 +156,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing ten.
+	 * 返回代表10的二度
      *
      * @return BigRational
      *
@@ -183,6 +195,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the quotient of the division of the numerator by the denominator.
+	 * 以分母的形式返回分子的除法
      *
      * @return BigInteger
      */
@@ -193,6 +206,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the remainder of the division of the numerator by the denominator.
+	 * 将分子的其余部分通过分母返回
      *
      * @return BigInteger
      */
@@ -203,6 +217,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the quotient and remainder of the division of the numerator by the denominator.
+	 * 从分母中返回分子的除法和余数
      *
      * @return BigInteger[]
      */
@@ -213,6 +228,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the sum of this number and the given one.
+	 * 返回这个数字和给定的和
      *
      * @param BigNumber|int|float|string $that The number to add.
      *
@@ -253,6 +269,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the product of this number and the given one.
+	 * 返回这个数字和给定的乘积
      *
      * @param BigNumber|int|float|string $that The multiplier.
      *
@@ -319,6 +336,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the reciprocal of this BigRational.
+	 * 回报这二化的倒数
      *
      * The reciprocal has the numerator and denominator swapped.
      *
@@ -333,6 +351,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the absolute value of this BigRational.
+	 * 返回这个BigRational的绝对值
      *
      * @return BigRational
      */
@@ -453,6 +472,7 @@ final class BigRational extends BigNumber
 
     /**
      * This method is required for serializing the object and SHOULD NOT be accessed directly.
+	 * 该方法需要序列化对象,不应该直接访问
      *
      * @internal
      *
@@ -465,6 +485,7 @@ final class BigRational extends BigNumber
 
     /**
      * This method is only here to allow unserializing the object and cannot be accessed directly.
+	 * 这个方法只是在这里允许不序列化对象,不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
@@ -487,6 +508,7 @@ final class BigRational extends BigNumber
 
     /**
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
+	 * 该方法需要接口序列化,不应该直接访问。
      *
      * @internal
      *
@@ -499,6 +521,7 @@ final class BigRational extends BigNumber
 
     /**
      * This method is only here to implement interface Serializable and cannot be accessed directly.
+	 * 此方法仅在这里实现接口序列化,不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck

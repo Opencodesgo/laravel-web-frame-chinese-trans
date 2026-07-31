@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Http 工厂
+ */
 
 declare(strict_types=1);
 
@@ -19,6 +22,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Implements all of the PSR-17 interfaces.
+ * 实现所有PSR-17接口。
  *
  * Note: in consuming code it is recommended to require the implemented interfaces
  * and inject the instance of this class multiple times.

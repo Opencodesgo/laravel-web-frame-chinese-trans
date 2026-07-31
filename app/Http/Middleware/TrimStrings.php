@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，修整字符串
+ * app，Http，中间件，裁剪字符串
  */
 
 namespace App\Http\Middleware;
@@ -11,11 +11,12 @@ class TrimStrings extends Middleware
 {
     /**
      * The names of the attributes that should not be trimmed.
-	 * 不应该修整的属性的名称
+	 * 不应该修剪的属性名称
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [
+        'current_password',
         'password',
         'password_confirmation',
     ];

@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，查询
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ final class Query
 {
     /**
      * Parse a query string into an associative array.
+	 * 将查询字符串解析为关联数组。
      *
      * If multiple values are found for the same key, the value of that key
      * value pair will become an array. This function does not parse nested
@@ -58,6 +62,7 @@ final class Query
 
     /**
      * Build a query string from an array of key value pairs.
+	 * 从一个键值对的数组构建一个查询字符串。
      *
      * This function can use the return value of `parse()` to build a query
      * string. This function does not modify the provided keys when an array is

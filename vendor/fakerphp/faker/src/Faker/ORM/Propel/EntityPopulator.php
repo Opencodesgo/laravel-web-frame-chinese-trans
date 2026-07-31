@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，推进，实体普及器
+ */
 
 namespace Faker\ORM\Propel;
 
@@ -6,6 +9,7 @@ use Faker\Provider\Base;
 
 /**
  * Service class for populating a table through a Propel ActiveRecord class.
+ * 用于通过Propel ActiveRecord类填充表的服务类。
  */
 class EntityPopulator
 {
@@ -183,6 +187,7 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
+	 * 使用Entity类插入一条新记录
      */
     public function execute($con, $insertedEntities)
     {

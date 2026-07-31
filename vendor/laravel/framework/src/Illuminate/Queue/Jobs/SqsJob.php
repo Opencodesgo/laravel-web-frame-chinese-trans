@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，Amazon SQS 作业
+ * Illuminate，队列，作业，Sqs 作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -13,7 +13,7 @@ class SqsJob extends Job implements JobContract
 {
     /**
      * The Amazon SQS client instance.
-	 * Amazon SQS客户端实例
+	 * Amazon SQS 客户端实例
      *
      * @var \Aws\Sqs\SqsClient
      */
@@ -21,7 +21,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * The Amazon SQS job instance.
-	 * Amazon SQS任务实例
+	 * Amazon SQS 作业实例
      *
      * @var array
      */
@@ -29,7 +29,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
-	 * 创建新的任务实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Aws\Sqs\SqsClient  $sqs
@@ -82,7 +82,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该作业被尝试的次数
+	 * 得到该任务被尝试的次数
      *
      * @return int
      */
@@ -104,7 +104,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取作业的原始主体字符串
+	 * 得到作业的原始主体字符串
      *
      * @return string
      */
@@ -115,7 +115,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the underlying SQS client instance.
-	 * 获取底层SQS客户端实例
+	 * 得到底层SQS客户端实例
      *
      * @return \Aws\Sqs\SqsClient
      */
@@ -126,7 +126,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the underlying raw SQS job.
-	 * 获取底层原始SQS作业
+	 * 得到底层原始SQS作业
      *
      * @return array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由，指规则
+ * Illuminate，路由，路由核心类，还有一个Router核心类
  */
 
 namespace Illuminate\Routing;
@@ -17,13 +17,15 @@ use Illuminate\Routing\Matching\UriValidator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
+use Laravel\SerializableClosure\SerializableClosure;
 use LogicException;
+use Opis\Closure\SerializableClosure as OpisSerializableClosure;
 use ReflectionFunction;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 
 class Route
 {
-    use Macroable, RouteDependencyResolverTrait;
+    use CreatesRegularExpressionRouteConstraints, Macroable, RouteDependencyResolverTrait;
 
     /**
      * The URI pattern the route responds to.
@@ -51,7 +53,7 @@ class Route
 
     /**
      * Indicates whether the route is a fallback route.
-	 * 是否为回退路由
+	 * 指明是否为回退路由
      *
      * @var bool
      */
@@ -67,7 +69,7 @@ class Route
 
     /**
      * The default values for the route.
-	 * 路由的缺省值
+	 * 路由的默认值
      *
      * @var array
      */
@@ -104,6 +106,14 @@ class Route
      * @var array
      */
     protected $originalParameters;
+
+    /**
+     * Indicates "trashed" models can be retrieved when resolving implicit model bindings for this route.
+	 * 表示在解析此路由的隐式模型绑定时可以检索"被丢弃"的模型
+     *
+     * @var bool
+     */
+    protected $withTrashedBindings = false;
 
     /**
      * Indicates the maximum number of seconds the route should acquire a session lock for.
@@ -171,7 +181,7 @@ class Route
 
     /**
      * Create a new Route instance.
-	 * 创建新的路由实例
+	 * 创建一个新的Route实例
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -193,7 +203,7 @@ class Route
 
     /**
      * Parse the route action into a standard array.
-	 * 解析路由动作为标准数组
+	 * 将路由操作解析成一个标准数组
      *
      * @param  callable|array|null  $action
      * @return array
@@ -207,7 +217,7 @@ class Route
 
     /**
      * Run the route action and return the response.
-	 * 运行路由动作并返回响应
+	 * 运行路由操作并返回响应
      *
      * @return mixed
      */
@@ -234,7 +244,7 @@ class Route
      */
     protected function isControllerAction()
     {
-        return is_string($this->action['uses']);
+        return is_string($this->action['uses']) && ! $this->isSerializedClosure();
     }
 
     /**
@@ -247,9 +257,24 @@ class Route
     {
         $callable = $this->action['uses'];
 
+        if ($this->isSerializedClosure()) {
+            $callable = unserialize($this->action['uses'])->getClosure();
+        }
+
         return $callable(...array_values($this->resolveMethodDependencies(
-            $this->parametersWithoutNulls(), new ReflectionFunction($this->action['uses'])
+            $this->parametersWithoutNulls(), new ReflectionFunction($callable)
         )));
+    }
+
+    /**
+     * Determine if the route action is a serialized Closure.
+	 * 确定路由操作是否是一个序列化的闭包
+     *
+     * @return bool
+     */
+    protected function isSerializedClosure()
+    {
+        return RouteAction::containsSerializedClosure($this->action);
     }
 
     /**
@@ -269,7 +294,7 @@ class Route
 
     /**
      * Get the controller instance for the route.
-	 * 获取路由的控制器实例
+	 * 得到路由的控制器实例
      *
      * @return mixed
      */
@@ -307,6 +332,18 @@ class Route
     }
 
     /**
+     * Flush the cached container instance on the route.
+	 * 刷新路由上缓存的容器实例
+     *
+     * @return void
+     */
+    public function flushController()
+    {
+        $this->computedMiddleware = null;
+        $this->controller = null;
+    }
+
+    /**
      * Determine if the route matches a given request.
 	 * 确定路由是否与给定请求匹配
      *
@@ -318,7 +355,7 @@ class Route
     {
         $this->compileRoute();
 
-        foreach ($this->getValidators() as $validator) {
+        foreach (self::getValidators() as $validator) {
             if (! $includingMethod && $validator instanceof MethodValidator) {
                 continue;
             }
@@ -496,7 +533,7 @@ class Route
 
     /**
      * Get all of the parameter names for the route.
-	 * 获取路由的所有参数名
+	 * 得到路由的所有参数名
      *
      * @return array
      */
@@ -511,7 +548,7 @@ class Route
 
     /**
      * Get the parameter names for the route.
-	 * 获取路由的参数名
+	 * 得到路由的参数名
      *
      * @return array
      */
@@ -526,7 +563,7 @@ class Route
 
     /**
      * Get the parameters that are listed in the route / controller signature.
-	 * 获取路由/控制器签名中列出的参数
+	 * 得到路由/控制器签名中列出的参数
      *
      * @param  string|null  $subClass
      * @return array
@@ -538,7 +575,7 @@ class Route
 
     /**
      * Get the binding field for the given parameter.
-	 * 获取给定参数的绑定字段
+	 * 得到给定参数的绑定字段
      *
      * @param  string|int  $parameter
      * @return string|null
@@ -577,7 +614,7 @@ class Route
 
     /**
      * Get the parent parameter of the given parameter.
-	 * 获取给定参数的父参数
+	 * 得到给定参数的父参数
      *
      * @param  string  $parameter
      * @return string
@@ -591,6 +628,31 @@ class Route
         }
 
         return array_values($this->parameters)[$key - 1];
+    }
+
+    /**
+     * Allow "trashed" models to be retrieved when resolving implicit model bindings for this route.
+	 * 在解析此路由的隐式模型绑定时，允许检索"垃圾"模型。
+     *
+     * @param  bool  $withTrashed
+     * @return $this
+     */
+    public function withTrashed($withTrashed = true)
+    {
+        $this->withTrashedBindings = $withTrashed;
+
+        return $this;
+    }
+
+    /**
+     * Determines if the route allows "trashed" models to be retrieved when resolving implicit model bindings.
+	 * 确定路由是否允许在解析隐式模型绑定时检索"废弃"模型
+     *
+     * @return bool
+     */
+    public function allowsTrashedBindings()
+    {
+        return $this->withTrashedBindings;
     }
 
     /**
@@ -670,7 +732,7 @@ class Route
 
     /**
      * Mark this route as a fallback route.
-	 * 标记这条路由为回退路由
+	 * 把这条路线标记为退路
      *
      * @return $this
      */
@@ -697,7 +759,7 @@ class Route
 
     /**
      * Get the HTTP verbs the route responds to.
-	 * 获取路由响应的HTTP动词
+	 * 得到路由响应的HTTP动词
      *
      * @return array
      */
@@ -765,7 +827,7 @@ class Route
 
     /**
      * Get the domain defined for the route.
-	 * 获取为路由定义的域
+	 * 得到为路由定义的域
      *
      * @return string|null
      */
@@ -777,7 +839,7 @@ class Route
 
     /**
      * Get the prefix of the route instance.
-	 * 获取路由实例的前缀
+	 * 得到路由实例的前缀
      *
      * @return string|null
      */
@@ -795,6 +857,8 @@ class Route
      */
     public function prefix($prefix)
     {
+        $prefix = $prefix ?? '';
+
         $this->updatePrefixOnAction($prefix);
 
         $uri = rtrim($prefix, '/').'/'.ltrim($this->uri, '/');
@@ -908,11 +972,15 @@ class Route
      * Set the handler for the route.
 	 * 设置路由的处理程序
      *
-     * @param  \Closure|string  $action
+     * @param  \Closure|array|string  $action
      * @return $this
      */
     public function uses($action)
     {
+        if (is_array($action)) {
+            $action = $action[0].'@'.$action[1];
+        }
+
         $action = is_string($action) ? $this->addGroupNamespaceToStringUses($action) : $action;
 
         return $this->setAction(array_merge($this->action, $this->parseAction([
@@ -941,7 +1009,7 @@ class Route
 
     /**
      * Get the action name for the route.
-	 * 获取路由的动作名称
+	 * 得到路由的动作名称
      *
      * @return string
      */
@@ -952,7 +1020,7 @@ class Route
 
     /**
      * Get the method name of the route action.
-	 * 获取路由操作的方法名
+	 * 得到路由操作的方法名
      *
      * @return string
      */
@@ -992,8 +1060,39 @@ class Route
     }
 
     /**
+     * Get the value of the action that should be taken on a missing model exception.
+	 * 获取应该对缺失模型异常采取的操作的值
+     *
+     * @return \Closure|null
+     */
+    public function getMissing()
+    {
+        $missing = $this->action['missing'] ?? null;
+
+        return is_string($missing) &&
+            Str::startsWith($missing, [
+                'C:32:"Opis\\Closure\\SerializableClosure',
+                'O:47:"Laravel\\SerializableClosure\\SerializableClosure',
+            ]) ? unserialize($missing) : $missing;
+    }
+
+    /**
+     * Define the callable that should be invoked on a missing model exception.
+	 * 定义在缺失模型异常时应该调用的可调用对象
+     *
+     * @param  \Closure  $missing
+     * @return $this
+     */
+    public function missing($missing)
+    {
+        $this->action['missing'] = $missing;
+
+        return $this;
+    }
+
+    /**
      * Get all middleware, including the ones from the controller.
-	 * 获取或设置附加到路由的中间件
+	 * 获取所有中间件，包括来自控制器的中间件。
      *
      * @return array
      */
@@ -1023,8 +1122,12 @@ class Route
             return (array) ($this->action['middleware'] ?? []);
         }
 
-        if (is_string($middleware)) {
+        if (! is_array($middleware)) {
             $middleware = func_get_args();
+        }
+
+        foreach ($middleware as $index => $value) {
+            $middleware[$index] = (string) $value;
         }
 
         $this->action['middleware'] = array_merge(
@@ -1035,8 +1138,23 @@ class Route
     }
 
     /**
+     * Specify that the "Authorize" / "can" middleware should be applied to the route with the given options.
+	 * 指定应该将"Authorize"/"can"中间件应用于具有给定选项的路由
+     *
+     * @param  string  $ability
+     * @param  array|string  $models
+     * @return $this
+     */
+    public function can($ability, $models = [])
+    {
+        return empty($models)
+                    ? $this->middleware(['can:'.$ability])
+                    : $this->middleware(['can:'.$ability.','.implode(',', Arr::wrap($models))]);
+    }
+
+    /**
      * Get the middleware for the route's controller.
-	 * 获取路由控制器的中间件
+	 * 得到路由控制器的中间件
      *
      * @return array
      */
@@ -1069,13 +1187,37 @@ class Route
 
     /**
      * Get the middleware should be removed from the route.
-	 * 得到应该从路由中移除的中间件
+	 * 得到应该从路由中被移除的中间件
      *
      * @return array
      */
     public function excludedMiddleware()
     {
         return (array) ($this->action['excluded_middleware'] ?? []);
+    }
+
+    /**
+     * Indicate that the route should enforce scoping of multiple implicit Eloquent bindings.
+	 * 指示路由应该强制多个隐式Eloquent绑定的作用域
+     *
+     * @return bool
+     */
+    public function scopeBindings()
+    {
+        $this->action['scope_bindings'] = true;
+
+        return $this;
+    }
+
+    /**
+     * Determine if the route should enforce scoping of multiple implicit Eloquent bindings.
+	 * 确定路由是否应该强制多个隐式Eloquent绑定的作用域
+     *
+     * @return bool
+     */
+    public function enforcesScopedBindings()
+    {
+        return (bool) ($this->action['scope_bindings'] ?? false);
     }
 
     /**
@@ -1107,7 +1249,7 @@ class Route
 
     /**
      * Get the maximum number of seconds the route's session lock should be held for.
-	 * 获取路由会话锁应该保持的最大秒数
+	 * 得到路由会话锁应该保持的最大秒数
      *
      * @return int|null
      */
@@ -1157,7 +1299,7 @@ class Route
         // To match the route, we will use a chain of responsibility pattern with the
         // validator implementations. We will spin through each one making sure it
         // passes and then we will know if the route as a whole matches request.
-		// 为了匹配路由，我们将使用验证器实现责任链模式。
+		// 为了匹配路由，我们将使用责任链模式。
         return static::$validators = [
             new UriValidator, new MethodValidator,
             new SchemeValidator, new HostValidator,
@@ -1182,6 +1324,7 @@ class Route
     /**
      * Get the optional parameter names for the route.
 	 * 获取路由的可选参数名
+	 * 
      *
      * @return array
      */
@@ -1205,7 +1348,7 @@ class Route
 
     /**
      * Set the router instance on the route.
-	 * 设置路由上的路由器实例
+	 * 设置路由上的router实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return $this
@@ -1242,7 +1385,17 @@ class Route
     public function prepareForSerialization()
     {
         if ($this->action['uses'] instanceof Closure) {
-            throw new LogicException("Unable to prepare route [{$this->uri}] for serialization. Uses Closure.");
+            $this->action['uses'] = serialize(\PHP_VERSION_ID < 70400
+                ? new OpisSerializableClosure($this->action['uses'])
+                : new SerializableClosure($this->action['uses'])
+            );
+        }
+
+        if (isset($this->action['missing']) && $this->action['missing'] instanceof Closure) {
+            $this->action['missing'] = serialize(\PHP_VERSION_ID < 70400
+                ? new OpisSerializableClosure($this->action['missing'])
+                : new SerializableClosure($this->action['missing'])
+            );
         }
 
         $this->compileRoute();

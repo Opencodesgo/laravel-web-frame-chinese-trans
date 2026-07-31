@@ -68,7 +68,7 @@ class ConnectionResolver implements ConnectionResolverInterface
 
     /**
      * Check if a connection has been registered.
-	 * 检查是否已经注册了连接
+	 * 检查是否已注册连接
      *
      * @param  string  $name
      * @return bool

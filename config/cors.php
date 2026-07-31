@@ -7,19 +7,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration 	跨域资源共享（CORS）配置
+    | Cross-Origin Resource Sharing (CORS) Configuration 	CORS 配置
     |--------------------------------------------------------------------------
     |
     | Here you may configure your settings for cross-origin resource sharing
     | or "CORS". This determines what cross-origin operations may execute
     | in web browsers. You are free to adjust these settings as needed.
-	| 这里你可以配置cross-origin。
+	| 在这里，您可以配置跨域资源共享的设置或"CORS"。
     |
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，确认，错误，传真电子邮件
+ */
 
 namespace Egulias\EmailValidator\Validation\Error;
 

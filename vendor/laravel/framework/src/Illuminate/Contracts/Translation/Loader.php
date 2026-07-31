@@ -39,7 +39,7 @@ interface Loader
 
     /**
      * Get an array of all the registered namespaces.
-	 * 获取所有已注册名称空间的数组
+	 * 获取所有已注册命名空间的数组
      *
      * @return array
      */

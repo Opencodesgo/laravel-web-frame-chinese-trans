@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，up 上线命令
+ * Illuminate，基础，控制台，UP 命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Events\MaintenanceModeDisabled;
 
 class UpCommand extends Command
 {
@@ -20,7 +21,7 @@ class UpCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令描述 
      *
      * @var string
      */
@@ -35,14 +36,19 @@ class UpCommand extends Command
     public function handle()
     {
         try {
-            if (! file_exists(storage_path('framework/down'))) {
+            if (! is_file(storage_path('framework/down'))) {
                 $this->comment('Application is already up.');
 
-                return true;
+                return 0;
             }
 
-			// 删除storage/framework/down
             unlink(storage_path('framework/down'));
+
+            if (is_file(storage_path('framework/maintenance.php'))) {
+                unlink(storage_path('framework/maintenance.php'));
+            }
+
+            $this->laravel->get('events')->dispatch(MaintenanceModeDisabled::class);
 
             $this->info('Application is now live.');
         } catch (Exception $e) {

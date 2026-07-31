@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，转储记录器，Html 转储
+ */
 
 namespace Facade\Ignition\DumpRecorder;
 

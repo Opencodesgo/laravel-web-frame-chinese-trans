@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由依赖解析器特性，一种代码复用机制
+ * Illuminate，路由，路由依赖解析器特性
  */
 
 namespace Illuminate\Routing;
@@ -81,7 +81,7 @@ trait RouteDependencyResolverTrait
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
-		// 如果形参有一个类型暗示类，我们将检查它是否已经存在参数列表。
+		// 如果形参有一个类型暗示类，我们将检查它是否在参数列表中已经存在。
         if ($className && ! $this->alreadyInParameters($className, $parameters)) {
             return $parameter->isDefaultValueAvailable() ? null : $this->container->make($className);
         }
@@ -106,7 +106,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Splice the given value into the parameter list.
-	 * 拼接给定值至参数列表
+	 * 将给定的值拼接到参数列表中
      *
      * @param  array  $parameters
      * @param  string  $offset

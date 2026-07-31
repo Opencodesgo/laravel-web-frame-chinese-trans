@@ -77,7 +77,7 @@ interface Paginator
 
     /**
      * Determine how many items are being shown per page.
-	 * 确定每页显示多少条目
+	 * 确定每页显示多少项
      *
      * @return int
      */

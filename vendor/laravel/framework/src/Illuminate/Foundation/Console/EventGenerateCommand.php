@@ -13,7 +13,7 @@ class EventGenerateCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名称 event:generate
      *
      * @var string
      */
@@ -48,7 +48,7 @@ class EventGenerateCommand extends Command
 
     /**
      * Make the event and listeners for the given event.
-	 * 为给定事件创建事件和侦听器
+	 * 为给定事件创建事件和监听器
      *
      * @param  string  $event
      * @param  array  $listeners
@@ -67,7 +67,7 @@ class EventGenerateCommand extends Command
 
     /**
      * Make the listeners for the given event.
-	 * 为给定事件创建侦听器
+	 * 为给定事件创建侦听者
      *
      * @param  string  $event
      * @param  array  $listeners

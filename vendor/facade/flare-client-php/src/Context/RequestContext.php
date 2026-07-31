@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，上下文，请求上下文
+ */
 
 namespace Facade\FlareClient\Context;
 

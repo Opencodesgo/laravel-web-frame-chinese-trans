@@ -11,7 +11,7 @@ class DatabaseNotificationCollection extends Collection
 {
     /**
      * Mark all notifications as read.
-	 * 标记所有通知为已读
+	 * 将所有通知标记为已读
      *
      * @return void
      */
@@ -22,7 +22,7 @@ class DatabaseNotificationCollection extends Collection
 
     /**
      * Mark all notifications as unread.
-	 * 标记所有通知为未读
+	 * 将所有通知标记为未读
      *
      * @return void
      */

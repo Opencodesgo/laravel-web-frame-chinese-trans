@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，处理者，Curl 处理者
+ */
 
 namespace GuzzleHttp\Handler;
 
@@ -7,6 +10,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * HTTP handler that uses cURL easy handles as a transport layer.
+ * 使用卷卷的HTTP处理程序作为传输层。
  *
  * When using the CurlHandler, custom curl options can be specified as an
  * associative array of curl option constants mapping to values in the
@@ -23,6 +27,7 @@ class CurlHandler
 
     /**
      * Accepts an associative array of options:
+	 * 接受关联数组的选项:
      *
      * - handle_factory: Optional curl factory used to create cURL handles.
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，中间件，Frame Guard
+ * Illuminate，Http，中间件，框架守卫
  */
 
 namespace Illuminate\Http\Middleware;

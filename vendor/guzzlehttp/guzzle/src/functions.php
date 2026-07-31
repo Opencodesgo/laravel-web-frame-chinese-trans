@@ -1,13 +1,13 @@
 <?php
-
 /**
- * GuzzleHttp，函数
+ * GuzzleHttp，方法
  */
 
 namespace GuzzleHttp;
 
 /**
  * Debug function used to describe the provided value type and class.
+ * 用于描述所提供的值类型和类的调试函数。
  *
  * @param mixed $input Any type of variable to describe the type of. This
  *                     parameter misses a typehint because of that.
@@ -24,6 +24,7 @@ function describe_type($input): string
 
 /**
  * Parses an array of header lines into an associative array of headers.
+ * 将标题行数组解析成一个关联数组的头
  *
  * @param iterable $lines Header lines array of strings in the following
  *                        format: "Name: Value"
@@ -37,6 +38,7 @@ function headers_from_lines(iterable $lines): array
 
 /**
  * Returns a debug stream based on the provided variable.
+ * 根据所提供的变量返回一个调试流
  *
  * @param mixed $value Optional value
  *
@@ -51,6 +53,7 @@ function debug_resource($value = null)
 
 /**
  * Chooses and creates a default handler to use based on the environment.
+ * 选择并创建基于环境的默认处理程序
  *
  * The returned handler is not wrapped by any default middlewares.
  *
@@ -77,6 +80,7 @@ function default_user_agent(): string
 
 /**
  * Returns the default cacert bundle for the current system.
+ * 返回当前系统的默认cacert包。
  *
  * First, the openssl.cafile and curl.cainfo php.ini settings are checked.
  * If those settings are not configured, then the common locations for
@@ -108,6 +112,7 @@ function normalize_header_keys(array $headers): array
 
 /**
  * Returns true if the provided host matches any of the no proxy areas.
+ * 如果提供的主机与任何没有代理区域匹配,返回true。
  *
  * This method will strip a port from the host if it is present. Each pattern
  * can be matched with an exact match (e.g., "foo.com" == "foo.com") or a
@@ -134,6 +139,7 @@ function is_host_in_noproxy(string $host, array $noProxyArray): bool
 
 /**
  * Wrapper for json_decode that throws when an error occurs.
+ * 当发生错误时抛出json_decode的包装器
  *
  * @param string $json    JSON data to parse
  * @param bool   $assoc   When true, returned objects will be converted
@@ -155,6 +161,7 @@ function json_decode(string $json, bool $assoc = false, int $depth = 512, int $o
 
 /**
  * Wrapper for JSON encoding that throws when an error occurs.
+ * 当发生错误时抛出的JSON编码包装器
  *
  * @param mixed $value   The value being encoded
  * @param int   $options JSON encode option bitmask

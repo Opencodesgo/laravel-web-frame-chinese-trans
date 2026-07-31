@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，验证，Spoof Check 验证
+ */
 
 namespace Egulias\EmailValidator\Validation;
 

@@ -23,6 +23,7 @@ trait Dispatchable
 	 * 如果给定的真值测试通过，则使用给定的参数调度事件。
      *
      * @param  bool  $boolean
+     * @param  mixed  ...$arguments
      * @return void
      */
     public static function dispatchIf($boolean, ...$arguments)
@@ -37,6 +38,7 @@ trait Dispatchable
 	 * 使用给定的参数调度事件，除非给定的真值测试通过。
      *
      * @param  bool  $boolean
+     * @param  mixed  ...$arguments
      * @return void
      */
     public static function dispatchUnless($boolean, ...$arguments)

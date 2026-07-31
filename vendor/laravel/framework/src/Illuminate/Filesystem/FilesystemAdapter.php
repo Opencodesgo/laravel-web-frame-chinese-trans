@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，文件系统，文件系统适配器
+ * Illuminate，文件系统，文件系统的适配器
  */
 
 namespace Illuminate\Filesystem;
 
+use Closure;
 use Illuminate\Contracts\Filesystem\Cloud as CloudFilesystemContract;
 use Illuminate\Contracts\Filesystem\FileExistsException as ContractFileExistsException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractFileNotFoundException;
@@ -14,6 +15,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Adapter\Local as LocalAdapter;
@@ -23,8 +25,10 @@ use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Sftp\SftpAdapter as Sftp;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -33,6 +37,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class FilesystemAdapter implements CloudFilesystemContract
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * The Flysystem filesystem implementation.
 	 * Flysystem文件系统实现
@@ -40,6 +48,14 @@ class FilesystemAdapter implements CloudFilesystemContract
      * @var \League\Flysystem\FilesystemInterface
      */
     protected $driver;
+
+    /**
+     * The temporary URL builder callback.
+	 * 临时URL生成器回调
+     *
+     * @var \Closure|null
+     */
+    protected $temporaryUrlCallback;
 
     /**
      * Create a new filesystem adapter instance.
@@ -58,16 +74,29 @@ class FilesystemAdapter implements CloudFilesystemContract
 	 * 断言给定的文件存在
      *
      * @param  string|array  $path
+     * @param  string|null  $content
      * @return $this
      */
-    public function assertExists($path)
+    public function assertExists($path, $content = null)
     {
+        clearstatcache();
+
         $paths = Arr::wrap($path);
 
         foreach ($paths as $path) {
             PHPUnit::assertTrue(
                 $this->exists($path), "Unable to find a file at path [{$path}]."
             );
+
+            if (! is_null($content)) {
+                $actual = $this->get($path);
+
+                PHPUnit::assertSame(
+                    $content,
+                    $actual,
+                    "File [{$path}] was found, but content [{$actual}] does not match [{$content}]."
+                );
+            }
         }
 
         return $this;
@@ -82,6 +111,8 @@ class FilesystemAdapter implements CloudFilesystemContract
      */
     public function assertMissing($path)
     {
+        clearstatcache();
+
         $paths = Arr::wrap($path);
 
         foreach ($paths as $path) {
@@ -137,7 +168,7 @@ class FilesystemAdapter implements CloudFilesystemContract
 
     /**
      * Get the contents of a file.
-	 * 得到文件内容
+	 * 获取文件的内容
      *
      * @param  string  $path
      * @return string
@@ -219,7 +250,7 @@ class FilesystemAdapter implements CloudFilesystemContract
 	 * 写入文件的内容
      *
      * @param  string  $path
-     * @param  string|resource  $contents
+     * @param  \Psr\Http\Message\StreamInterface|\Illuminate\Http\File|\Illuminate\Http\UploadedFile|string|resource  $contents
      * @param  mixed  $options
      * @return bool
      */
@@ -233,6 +264,7 @@ class FilesystemAdapter implements CloudFilesystemContract
         // automatically store the file using a stream. This provides a convenient path
         // for the developer to store streams without managing them manually in code.
 		// 如果给定的内容实际上是一个文件或上传的文件实例，我们将使用流自动存储文件。
+		// 这提供了一个方便的路径，开发人员无需在代码中手动管理流即可存储流。
         if ($contents instanceof File ||
             $contents instanceof UploadedFile) {
             return $this->putFile($path, $contents, $options);
@@ -341,7 +373,7 @@ class FilesystemAdapter implements CloudFilesystemContract
 
     /**
      * Append to a file.
-	 * 附加行到一个文件
+	 * 追加行到一个文件
      *
      * @param  string  $path
      * @param  string  $data
@@ -468,7 +500,7 @@ class FilesystemAdapter implements CloudFilesystemContract
             return $this->driver->getUrl($path);
         } elseif ($adapter instanceof AwsS3Adapter) {
             return $this->getAwsUrl($adapter, $path);
-        } elseif ($adapter instanceof Ftp) {
+        } elseif ($adapter instanceof Ftp || $adapter instanceof Sftp) {
             return $this->getFtpUrl($path);
         } elseif ($adapter instanceof LocalAdapter) {
             return $this->getLocalUrl($path);
@@ -564,7 +596,7 @@ class FilesystemAdapter implements CloudFilesystemContract
         // If the path contains "storage/public", it probably means the developer is using
         // the default disk to generate the path instead of the "public" disk like they
         // are really supposed to use. We will remove the public from this path here.
-		// 如果路径包含"storage/public"，则可能意味着开发人员正在使用。
+		// 如果路径包含"storage/public"，则可能意味着开发人员正在使用生成路径的默认磁盘，而不是"公共"磁盘。
         if (Str::contains($path, '/storage/public/')) {
             return Str::replaceFirst('/public/', '/', $path);
         }
@@ -593,11 +625,19 @@ class FilesystemAdapter implements CloudFilesystemContract
 
         if (method_exists($adapter, 'getTemporaryUrl')) {
             return $adapter->getTemporaryUrl($path, $expiration, $options);
-        } elseif ($adapter instanceof AwsS3Adapter) {
-            return $this->getAwsTemporaryUrl($adapter, $path, $expiration, $options);
-        } else {
-            throw new RuntimeException('This driver does not support creating temporary URLs.');
         }
+
+        if ($this->temporaryUrlCallback) {
+            return $this->temporaryUrlCallback->bindTo($this, static::class)(
+                $path, $expiration, $options
+            );
+        }
+
+        if ($adapter instanceof AwsS3Adapter) {
+            return $this->getAwsTemporaryUrl($adapter, $path, $expiration, $options);
+        }
+
+        throw new RuntimeException('This driver does not support creating temporary URLs.');
     }
 
     /**
@@ -619,9 +659,19 @@ class FilesystemAdapter implements CloudFilesystemContract
             'Key' => $adapter->getPathPrefix().$path,
         ], $options));
 
-        return (string) $client->createPresignedRequest(
+        $uri = $client->createPresignedRequest(
             $command, $expiration
         )->getUri();
+
+        // If an explicit base URL has been set on the disk configuration then we will use
+        // it as the base URL instead of the default path. This allows the developer to
+        // have full control over the base path for this filesystem's generated URLs.
+		// 如果在磁盘配置上设置了显式的基本URL，那么我们将使用它作为基础URL，而不是默认路径。
+        if (! is_null($url = $this->driver->getConfig()->get('temporary_url'))) {
+            $uri = $this->replaceBaseUrl($uri, $url);
+        }
+
+        return (string) $uri;
     }
 
     /**
@@ -638,6 +688,24 @@ class FilesystemAdapter implements CloudFilesystemContract
     }
 
     /**
+     * Replace the scheme, host and port of the given UriInterface with values from the given URL.
+	 * 将给定UriInterface的方案、主机和端口替换为来自给定URL的值。
+     *
+     * @param  \Psr\Http\Message\UriInterface  $uri
+     * @param  string  $url
+     * @return \Psr\Http\Message\UriInterface
+     */
+    protected function replaceBaseUrl($uri, $url)
+    {
+        $parsed = parse_url($url);
+
+        return $uri
+            ->withScheme($parsed['scheme'])
+            ->withHost($parsed['host'])
+            ->withPort($parsed['port'] ?? null);
+    }
+
+    /**
      * Get an array of all files in a directory.
 	 * 获取目录中所有文件的数组
      *
@@ -647,14 +715,14 @@ class FilesystemAdapter implements CloudFilesystemContract
      */
     public function files($directory = null, $recursive = false)
     {
-        $contents = $this->driver->listContents($directory, $recursive);
+        $contents = $this->driver->listContents($directory ?? '', $recursive);
 
         return $this->filterContentsByType($contents, 'file');
     }
 
     /**
      * Get all of the files from the given directory (recursive).
-	 * 从给定的目录(递归)获取所有文件
+	 * 从给定目录（递归）获取所有文件
      *
      * @param  string|null  $directory
      * @return array
@@ -674,7 +742,7 @@ class FilesystemAdapter implements CloudFilesystemContract
      */
     public function directories($directory = null, $recursive = false)
     {
-        $contents = $this->driver->listContents($directory, $recursive);
+        $contents = $this->driver->listContents($directory ?? '', $recursive);
 
         return $this->filterContentsByType($contents, 'dir');
     }
@@ -784,6 +852,18 @@ class FilesystemAdapter implements CloudFilesystemContract
     }
 
     /**
+     * Define a custom temporary URL builder callback.
+	 * 定义一个自定义的临时URL构建器回调
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function buildTemporaryUrlsUsing(Closure $callback)
+    {
+        $this->temporaryUrlCallback = $callback;
+    }
+
+    /**
      * Pass dynamic methods call onto Flysystem.
 	 * 将动态方法调用传递给Flysystem
      *
@@ -795,6 +875,10 @@ class FilesystemAdapter implements CloudFilesystemContract
      */
     public function __call($method, array $parameters)
     {
-        return $this->driver->{$method}(...array_values($parameters));
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        return $this->driver->{$method}(...$parameters);
     }
 }

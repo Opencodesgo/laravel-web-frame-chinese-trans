@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，事件，事务回滚，待完善类
+ * Illuminate，数据库，事件，事务回滚
  */
 
 namespace Illuminate\Database\Events;

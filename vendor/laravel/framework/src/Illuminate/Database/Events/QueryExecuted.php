@@ -49,7 +49,7 @@ class QueryExecuted
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $sql
      * @param  array  $bindings

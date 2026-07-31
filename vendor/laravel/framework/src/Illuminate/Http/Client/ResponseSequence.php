@@ -5,10 +5,13 @@
 
 namespace Illuminate\Http\Client;
 
+use Illuminate\Support\Traits\Macroable;
 use OutOfBoundsException;
 
 class ResponseSequence
 {
+    use Macroable;
+
     /**
      * The responses in the sequence.
 	 * 序列中的响应
@@ -19,7 +22,7 @@ class ResponseSequence
 
     /**
      * Indicates that invoking this sequence when it is empty should throw an exception.
-	 * 指明在该序列为空时调用该序列应抛出异常
+	 * 指示在该序列为空时调用该序列应抛出异常
      *
      * @var bool
      */
@@ -65,7 +68,7 @@ class ResponseSequence
 
     /**
      * Push a response with the given status code to the sequence.
-	 * 将具有给定状态码的响应发送到序列
+	 * 将具有给定状态码的响应推送到序列
      *
      * @param  int  $status
      * @param  array  $headers
@@ -152,6 +155,8 @@ class ResponseSequence
 	 * 获取序列中的下一个响应
      *
      * @return mixed
+     *
+     * @throws \OutOfBoundsException
      */
     public function __invoke()
     {

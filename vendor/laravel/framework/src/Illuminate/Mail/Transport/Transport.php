@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，传输，传输
+ * Illuminate，邮件，传输，传输抽象类
  */
 
 namespace Illuminate\Mail\Transport;
@@ -22,6 +22,8 @@ abstract class Transport implements Swift_Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function isStarted()
     {
@@ -46,6 +48,8 @@ abstract class Transport implements Swift_Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function ping()
     {

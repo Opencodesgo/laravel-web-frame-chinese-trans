@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制台，存根，需要根据实际修改
+ * Illuminate，路由，存根，控制器API，需要实际需要修改
  */
 
 namespace {{ namespace }};
@@ -60,7 +60,7 @@ class {{ class }} extends Controller
 
     /**
      * Remove the specified resource from storage.
-	 * 移除存储中的指定资源
+	 * 从存储中移除指定的资源
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -1,13 +1,10 @@
 <?php
-/**
- * 资源，语言，密码
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Language Lines 	密码重置语言
+    | Password Reset Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are the default lines which match reasons

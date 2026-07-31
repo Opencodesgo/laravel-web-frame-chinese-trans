@@ -29,7 +29,7 @@ LUA;
 	 * 获取用于将作业推入队列的Lua脚本
      *
      * KEYS[1] - The queue to push the job onto, for example: queues:foo
-     * KEYS[2] - The notification list fot the queue we are pushing jobs onto, for example: queues:foo:notify
+     * KEYS[2] - The notification list for the queue we are pushing jobs onto, for example: queues:foo:notify
      * ARGV[1] - The job payload
      *
      * @return string
@@ -77,7 +77,7 @@ LUA;
 
     /**
      * Get the Lua script for releasing reserved jobs.
-	 * 获取用于释放保留作业的Lua脚本
+	 * 得到用于释放保留作业的Lua脚本
      *
      * KEYS[1] - The "delayed" queue we release jobs onto, for example: queues:foo:delayed
      * KEYS[2] - The queue the jobs are currently on, for example: queues:foo:reserved
@@ -132,6 +132,26 @@ if(next(val) ~= nil) then
 end
 
 return val
+LUA;
+    }
+
+    /**
+     * Get the Lua script for removing all jobs from the queue.
+	 * 获取用于从队列中删除所有作业的Lua脚本
+     *
+     * KEYS[1] - The name of the primary queue
+     * KEYS[2] - The name of the "delayed" queue
+     * KEYS[3] - The name of the "reserved" queue
+     * KEYS[4] - The name of the "notify" queue
+     *
+     * @return string
+     */
+    public static function clear()
+    {
+        return <<<'LUA'
+local size = redis.call('llen', KEYS[1]) + redis.call('zcard', KEYS[2]) + redis.call('zcard', KEYS[3])
+redis.call('del', KEYS[1], KEYS[2], KEYS[3], KEYS[4])
+return size
 LUA;
     }
 }

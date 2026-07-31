@@ -25,7 +25,7 @@ class FormRequestServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap the application services.
-	 * 引导应用服务
+	 * 引导应用程序服务
      *
      * @return void
      */

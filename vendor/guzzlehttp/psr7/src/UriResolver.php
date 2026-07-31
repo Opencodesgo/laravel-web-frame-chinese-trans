@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，Uri 解析器
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Resolves a URI reference in the context of a base URI and the opposite way.
+ * 在基本URI和相反的方式下解析URI引用。
  *
  * @author Tobias Schultze
  *
@@ -52,6 +56,7 @@ final class UriResolver
 
     /**
      * Converts the relative URI into a new URI that is resolved against the base URI.
+	 * 将相对URI转换为在基本URI上解决的新URI
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3986#section-5.2
      */
@@ -106,6 +111,7 @@ final class UriResolver
 
     /**
      * Returns the target URI as a relative reference from the base URI.
+	 * 将目标URI作为基本URI的相对引用返回。
      *
      * This method is the counterpart to resolve():
      *

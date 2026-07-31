@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，流装饰特性
+ */
 
 declare(strict_types=1);
 
@@ -8,6 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Stream decorator trait
+ * 流装饰特性
  *
  * @property StreamInterface $stream
  */
@@ -63,6 +67,7 @@ trait StreamDecoratorTrait
 
     /**
      * Allow decorators to implement custom methods
+	 * 允许decor器实现自定义方法
      *
      * @return mixed
      */
@@ -146,6 +151,7 @@ trait StreamDecoratorTrait
 
     /**
      * Implement in subclasses to dynamically create streams when requested.
+	 * 在请求时在子类中实现动态创建流
      *
      * @throws \BadMethodCallException
      */

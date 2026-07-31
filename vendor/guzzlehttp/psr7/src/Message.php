@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，消息
+ */
 
 declare(strict_types=1);
 
@@ -12,6 +15,7 @@ final class Message
 {
     /**
      * Returns the string representation of an HTTP message.
+	 * 返回HTTP消息的字符串表示形式
      *
      * @param MessageInterface $message Message to convert to a string.
      */
@@ -47,6 +51,7 @@ final class Message
 
     /**
      * Get a short summary of the message body.
+	 * 获取消息主体的简短摘要。
      *
      * Will return `null` if the response is not printable.
      *
@@ -86,6 +91,7 @@ final class Message
 
     /**
      * Attempts to rewind a message body and throws an exception on failure.
+	 * 尝试倒带消息体并在失败时抛出异常。
      *
      * The body of the message will only be rewound if a call to `tell()`
      * returns a value other than `0`.
@@ -105,6 +111,7 @@ final class Message
 
     /**
      * Parses an HTTP message into an associative array.
+	 * 将HTTP消息解析为关联数组。
      *
      * The array contains the "start-line" key containing the start line of
      * the message, "headers" key containing an associative array of header
@@ -169,6 +176,7 @@ final class Message
 
     /**
      * Constructs a URI for an HTTP request message.
+	 * 为HTTP请求消息构造一个URI。
      *
      * @param string $path    Path from the start-line
      * @param array  $headers Array of headers (each value an array).
@@ -195,6 +203,7 @@ final class Message
 
     /**
      * Parses a request message string into a request object.
+	 * 将请求消息字符串解析为请求对象。
      *
      * @param string $message Request message string.
      */
@@ -221,6 +230,7 @@ final class Message
 
     /**
      * Parses a response message string into a response object.
+	 * 将响应消息字符串解析为响应对象
      *
      * @param string $message Response message string.
      */

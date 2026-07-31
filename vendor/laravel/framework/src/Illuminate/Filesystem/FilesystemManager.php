@@ -1,8 +1,6 @@
 <?php
 /**
- * Illuminate，文件系统，文件系统管理器
- * 服务容器绑定filesystem
- * S3Client 需要另行安装 composer require aws/aws-sdk-php
+ * Illuminate，文件系统，文件系统管理程序
  */
 
 namespace Illuminate\Filesystem;
@@ -29,7 +27,7 @@ class FilesystemManager implements FactoryContract
 {
     /**
      * The application instance.
-	 * app应用实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -65,7 +63,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a filesystem instance.
-	 * 得到文件系统实例
+	 * 获取文件系统实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -77,7 +75,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a filesystem instance.
-	 * 得到文件系统实例
+	 * 获取文件系统实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -103,6 +101,21 @@ class FilesystemManager implements FactoryContract
     }
 
     /**
+     * Build an on-demand disk.
+	 * 构建按需磁盘
+     *
+     * @param  string|array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function build($config)
+    {
+        return $this->resolve('ondemand', is_array($config) ? $config : [
+            'driver' => 'local',
+            'root' => $config,
+        ]);
+    }
+
+    /**
      * Attempt to get the disk from the local cache.
 	 * 尝试从本地缓存中获取磁盘
      *
@@ -119,13 +132,14 @@ class FilesystemManager implements FactoryContract
 	 * 解析给定的磁盘
      *
      * @param  string  $name
+     * @param  array|null  $config
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    protected function resolve($name, $config = null)
     {
-        $config = $this->getConfig($name);
+        $config = $config ?? $this->getConfig($name);
 
         if (empty($config['driver'])) {
             throw new InvalidArgumentException("Disk [{$name}] does not have a configured driver.");
@@ -139,11 +153,11 @@ class FilesystemManager implements FactoryContract
 
         $driverMethod = 'create'.ucfirst($name).'Driver';
 
-        if (method_exists($this, $driverMethod)) {
-            return $this->{$driverMethod}($config);
-        } else {
+        if (! method_exists($this, $driverMethod)) {
             throw new InvalidArgumentException("Driver [{$name}] is not supported.");
         }
+
+        return $this->{$driverMethod}($config);
     }
 
     /**
@@ -214,7 +228,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Create an instance of the Amazon S3 driver.
-	 * 创建Amazon S3驱动器的实例
+	 * 创建Amazon S3驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Filesystem\Cloud
@@ -264,7 +278,7 @@ class FilesystemManager implements FactoryContract
     {
         $cache = Arr::pull($config, 'cache');
 
-        $config = Arr::only($config, ['visibility', 'disable_asserts', 'url']);
+        $config = Arr::only($config, ['visibility', 'disable_asserts', 'url', 'temporary_url']);
 
         if ($cache) {
             $adapter = new CachedAdapter($adapter, $this->createCacheStore($cache));
@@ -353,7 +367,7 @@ class FilesystemManager implements FactoryContract
      */
     public function getDefaultCloudDriver()
     {
-        return $this->app['config']['filesystems.cloud'];
+        return $this->app['config']['filesystems.cloud'] ?? 's3';
     }
 
     /**
@@ -373,6 +387,20 @@ class FilesystemManager implements FactoryContract
     }
 
     /**
+     * Disconnect the given disk and remove from local cache.
+	 * 断开给定磁盘的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?? $this->getDefaultDriver();
+
+        unset($this->disks[$name]);
+    }
+
+    /**
      * Register a custom driver creator Closure.
 	 * 注册自定义驱动程序创建器Closure
      *
@@ -383,6 +411,20 @@ class FilesystemManager implements FactoryContract
     public function extend($driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
 
         return $this;
     }

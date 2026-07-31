@@ -9,10 +9,10 @@ interface Factory
 {
     /**
      * Get a mailer instance by name.
-	 * 按名称获取邮件收发机实例
+	 * 按名称获取邮件实例
      *
      * @param  string|null  $name
-     * @return \Illuminate\Mail\Mailer
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
     public function mailer($name = null);
 }

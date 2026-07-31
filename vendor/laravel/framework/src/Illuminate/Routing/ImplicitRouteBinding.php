@@ -7,6 +7,7 @@ namespace Illuminate\Routing;
 
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 
@@ -41,13 +42,21 @@ class ImplicitRouteBinding
 
             $parent = $route->parentOfParameter($parameterName);
 
-            if ($parent instanceof UrlRoutable && in_array($parameterName, array_keys($route->bindingFields()))) {
-                if (! $model = $parent->resolveChildRouteBinding(
+            $routeBindingMethod = $route->allowsTrashedBindings() && in_array(SoftDeletes::class, class_uses_recursive($instance))
+                        ? 'resolveSoftDeletableRouteBinding'
+                        : 'resolveRouteBinding';
+
+            if ($parent instanceof UrlRoutable && ($route->enforcesScopedBindings() || array_key_exists($parameterName, $route->bindingFields()))) {
+                $childRouteBindingMethod = $route->allowsTrashedBindings() && in_array(SoftDeletes::class, class_uses_recursive($instance))
+                            ? 'resolveSoftDeletableChildRouteBinding'
+                            : 'resolveChildRouteBinding';
+
+                if (! $model = $parent->{$childRouteBindingMethod}(
                     $parameterName, $parameterValue, $route->bindingFieldFor($parameterName)
                 )) {
                     throw (new ModelNotFoundException)->setModel(get_class($instance), [$parameterValue]);
                 }
-            } elseif (! $model = $instance->resolveRouteBinding($parameterValue, $route->bindingFieldFor($parameterName))) {
+            } elseif (! $model = $instance->{$routeBindingMethod}($parameterValue, $route->bindingFieldFor($parameterName))) {
                 throw (new ModelNotFoundException)->setModel(get_class($instance), [$parameterValue]);
             }
 
@@ -57,7 +66,7 @@ class ImplicitRouteBinding
 
     /**
      * Return the parameter name if it exists in the given parameters.
-	 * 如果参数名存在于给定参数中，则返回参数名。
+	 * 如果参数名存在于给定参数中，则返回参数名
      *
      * @param  string  $name
      * @param  array  $parameters
@@ -69,7 +78,6 @@ class ImplicitRouteBinding
             return $name;
         }
 
-		// 检查蛇形命名法
         if (array_key_exists($snakedName = Str::snake($name), $parameters)) {
             return $snakedName;
         }

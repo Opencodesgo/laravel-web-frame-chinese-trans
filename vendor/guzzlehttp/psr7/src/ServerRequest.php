@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，膨胀流
+ */
 
 declare(strict_types=1);
 
@@ -79,6 +82,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * Return an UploadedFile instance array.
+	 * 返回UploadedFile实例数组
      *
      * @param array $files An array which respect $_FILES structure
      *
@@ -106,6 +110,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * Create and return an UploadedFile instance from a $_FILES specification.
+	 * 创建并从$ _file规范返回UploadedFile实例。
      *
      * If the specification represents an array of values, this method will
      * delegate to normalizeNestedFileSpec() and return that return value.
@@ -131,6 +136,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * Normalize an array of file specifications.
+	 * 将文件规范的数组规范化。
      *
      * Loops through all nested files and returns a normalized array of
      * UploadedFileInterface instances.
@@ -157,6 +163,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * Return a ServerRequest populated with superglobals:
+	 * 返回使用超全局的服务器请求:
      * $_GET
      * $_POST
      * $_COOKIE
@@ -196,6 +203,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * Get a Uri populated with values from $_SERVER.
+	 * 获取来自$ _SERVER的值的Uri
      */
     public static function getUriFromGlobals(): UriInterface
     {

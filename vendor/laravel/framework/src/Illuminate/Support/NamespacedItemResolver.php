@@ -27,7 +27,7 @@ class NamespacedItemResolver
         // If we've already parsed the given key, we'll return the cached version we
         // already have, as this will save us some processing. We cache off every
         // key we parse so we can quickly return it on all subsequent requests.
-		// 如果我们已经解析了给定的键，我们将返回缓存的版本。
+		// 如果我们已经解析了给定的键，我们将返回我们已经存在的缓存版本。
         if (isset($this->parsed[$key])) {
             return $this->parsed[$key];
         }
@@ -35,7 +35,7 @@ class NamespacedItemResolver
         // If the key does not contain a double colon, it means the key is not in a
         // namespace, and is just a regular configuration item. Namespaces are a
         // tool for organizing configuration items for things such as modules.
-		// 如果键不包含双冒号，则表示该键不在。
+		// 如果键不包含双冒号，则表示该键不在命名空间中。
         if (strpos($key, '::') === false) {
             $segments = explode('.', $key);
 
@@ -47,7 +47,7 @@ class NamespacedItemResolver
         // Once we have the parsed array of this key's elements, such as its groups
         // and namespace, we will cache each array inside a simple list that has
         // the key and the parsed array for quick look-ups for later requests.
-		// 一旦我们有了这个键的元素的解析数组，比如它在命名空间中，我们将把每个数组缓存到一个简单的列表中。
+		// 一旦我们有了这个键的元素的解析数组，比如它的组和命名空间。
         return $this->parsed[$key] = $parsed;
     }
 
@@ -63,13 +63,13 @@ class NamespacedItemResolver
         // The first segment in a basic array will always be the group, so we can go
         // ahead and grab that segment. If there is only one total segment we are
         // just pulling an entire group out of the array and not a single item.
-		// 基本数组的第一个段总是组，所以我们可以。
+		// 基本数组的第一个片段总是组，因此我们能前进并抓住那一段。
         $group = $segments[0];
 
         // If there is more than one segment in this group, it means we are pulling
         // a specific item out of a group and will need to return this item name
         // as well as the group so we know which item to pull from the arrays.
-		// 如果这组里有不止一个片段，那就意味着我们在拉扯。
+		// 如果这组里有不止一个片段，那就意味着我们在拉扯一组中的特定项。
         $item = count($segments) === 1
                     ? null
                     : implode('.', array_slice($segments, 1));
@@ -112,5 +112,16 @@ class NamespacedItemResolver
     public function setParsedKey($key, $parsed)
     {
         $this->parsed[$key] = $parsed;
+    }
+
+    /**
+     * Flush the cache of parsed keys.
+	 * 刷新解析键的缓存
+     *
+     * @return void
+     */
+    public function flushParsedKeys()
+    {
+        $this->parsed = [];
     }
 }

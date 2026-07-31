@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，蓝图
+ * Illuminate，数据库，架构，蓝图
  */
 
 namespace Illuminate\Database\Schema;
@@ -28,7 +28,7 @@ class Blueprint
 
     /**
      * The prefix of the table.
-	 * 表前缀
+	 * 表的前缀
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class Blueprint
 
     /**
      * The columns that should be added to the table.
-	 * 应该添加到表的列
+	 * 应该添加到表中的列
      *
      * @var \Illuminate\Database\Schema\ColumnDefinition[]
      */
@@ -81,6 +81,14 @@ class Blueprint
      * @var bool
      */
     public $temporary = false;
+
+    /**
+     * The column to add new columns after.
+	 * 要在后面添加新列的列
+     *
+     * @var string
+     */
+    public $after;
 
     /**
      * Create a new schema blueprint.
@@ -133,7 +141,7 @@ class Blueprint
         // Each type of command has a corresponding compiler function on the schema
         // grammar which is used to build the necessary SQL statements to build
         // the blueprint element, so we'll just call that compilers function.
-		// 每种类型的命令在模式上都有相应的编译器函数。
+		// 每种类型的命令在模式上都有对应的编译器函数语法，用于构建需要构建的SQL语句蓝图元素，所以我们只调用编译器函数。
         $this->ensureCommandsAreValid($connection);
 
         foreach ($this->commands as $command) {
@@ -220,11 +228,11 @@ class Blueprint
     protected function addFluentIndexes()
     {
         foreach ($this->columns as $column) {
-            foreach (['primary', 'unique', 'index', 'spatialIndex'] as $index) {
+            foreach (['primary', 'unique', 'index', 'fulltext', 'fullText', 'spatialIndex'] as $index) {
                 // If the index has been specified on the given column, but is simply equal
                 // to "true" (boolean), no name has been specified for this index so the
                 // index method can be called without a name and it will generate one.
-				// 如果在给定的列上指定了索引，但只是相等到"true"(布尔值)。
+				// 如果在给定的列上指定了索引，但只是相等。
                 if ($column->{$index} === true) {
                     $this->{$index}($column->name);
                     $column->{$index} = false;
@@ -235,7 +243,7 @@ class Blueprint
                 // If the index has been specified on the given column, and it has a string
                 // value, we'll go ahead and call the index method and pass the name for
                 // the index since the developer specified the explicit name for this.
-				// 如果索引已经在给定的列上指定,它有一个字符串。
+				// 如果在给定的列上指定了索引，并且它有一个字符串。
                 elseif (isset($column->{$index})) {
                     $this->{$index}($column->name, $column->{$index});
                     $column->{$index} = false;
@@ -248,7 +256,7 @@ class Blueprint
 
     /**
      * Add the fluent commands specified on any columns.
-	 * 添加任何列上指定的流畅命令
+	 * 添加任意列上指定的fluent命令
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @return void
@@ -278,7 +286,7 @@ class Blueprint
      *
      * @return bool
      */
-    protected function creating()
+    public function creating()
     {
         return collect($this->commands)->contains(function ($command) {
             return $command->name === 'create';
@@ -393,6 +401,18 @@ class Blueprint
     }
 
     /**
+     * Indicate that the given fulltext index should be dropped.
+	 * 指示应该删除给定的全文索引
+     *
+     * @param  string|array  $index
+     * @return \Illuminate\Support\Fluent
+     */
+    public function dropFullText($index)
+    {
+        return $this->dropIndexCommand('dropFullText', 'fulltext', $index);
+    }
+
+    /**
      * Indicate that the given spatial index should be dropped.
 	 * 指示应该删除给定的空间索引
      *
@@ -414,6 +434,20 @@ class Blueprint
     public function dropForeign($index)
     {
         return $this->dropIndexCommand('dropForeign', 'foreign', $index);
+    }
+
+    /**
+     * Indicate that the given column and foreign key should be dropped.
+	 * 指示应该删除给定的列和外键
+     *
+     * @param  string  $column
+     * @return \Illuminate\Support\Fluent
+     */
+    public function dropConstrainedForeignId($column)
+    {
+        $this->dropForeign([$column]);
+
+        return $this->dropColumn($column);
     }
 
     /**
@@ -556,6 +590,20 @@ class Blueprint
     }
 
     /**
+     * Specify an fulltext for the table.
+	 * 为表指定全文
+     *
+     * @param  string|array  $columns
+     * @param  string|null  $name
+     * @param  string|null  $algorithm
+     * @return \Illuminate\Support\Fluent
+     */
+    public function fullText($columns, $name = null, $algorithm = null)
+    {
+        return $this->indexCommand('fulltext', $columns, $name, $algorithm);
+    }
+
+    /**
      * Specify a spatial index for the table.
 	 * 为表指定空间索引
      *
@@ -602,7 +650,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing big integer (8-byte) column on the table.
-	 * 在表上创建一个新的自动递增的大整数(8字节)列
+	 * 在表上创建一个新的自动递增的大整数（8字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Database\Schema\ColumnDefinition
@@ -614,7 +662,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing integer (4-byte) column on the table.
-	 * 在表上创建一个新的自动递增的整数(4字节)列
+	 * 在表上创建一个新的自动递增的整数（4字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Database\Schema\ColumnDefinition
@@ -626,7 +674,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing integer (4-byte) column on the table.
-	 * 在表上创建一个新的自动递增的整数(4字节)列
+	 * 在表上创建一个新的自动递增的整数（4字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Database\Schema\ColumnDefinition
@@ -712,6 +760,18 @@ class Blueprint
         $length = $length ?: Builder::$defaultStringLength;
 
         return $this->addColumn('string', $column, compact('length'));
+    }
+
+    /**
+     * Create a new tiny text column on the table.
+	 * 在表上创建一个新的小文本列
+     *
+     * @param  string  $column
+     * @return \Illuminate\Database\Schema\ColumnDefinition
+     */
+    public function tinyText($column)
+    {
+        return $this->addColumn('tinyText', $column);
     }
 
     /**
@@ -894,14 +954,31 @@ class Blueprint
      */
     public function foreignId($column)
     {
-        $this->columns[] = $column = new ForeignIdColumnDefinition($this, [
+        return $this->addColumnDefinition(new ForeignIdColumnDefinition($this, [
             'type' => 'bigInteger',
             'name' => $column,
             'autoIncrement' => false,
             'unsigned' => true,
-        ]);
+        ]));
+    }
 
-        return $column;
+    /**
+     * Create a foreign ID column for the given model.
+	 * 为给定模型创建外部ID列
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @param  string|null  $column
+     * @return \Illuminate\Database\Schema\ForeignIdColumnDefinition
+     */
+    public function foreignIdFor($model, $column = null)
+    {
+        if (is_string($model)) {
+            $model = new $model;
+        }
+
+        return $model->getKeyType() === 'int' && $model->getIncrementing()
+                    ? $this->foreignId($column ?: $model->getForeignKey())
+                    : $this->foreignUuid($column ?: $model->getForeignKey());
     }
 
     /**
@@ -1256,10 +1333,10 @@ class Blueprint
      */
     public function foreignUuid($column)
     {
-        return $this->columns[] = new ForeignIdColumnDefinition($this, [
+        return $this->addColumnDefinition(new ForeignIdColumnDefinition($this, [
             'type' => 'uuid',
             'name' => $column,
-        ]);
+        ]));
     }
 
     /**
@@ -1418,11 +1495,11 @@ class Blueprint
      */
     public function morphs($name, $indexName = null)
     {
-        $this->string("{$name}_type");
-
-        $this->unsignedBigInteger("{$name}_id");
-
-        $this->index(["{$name}_type", "{$name}_id"], $indexName);
+        if (Builder::$defaultMorphKeyType === 'uuid') {
+            $this->uuidMorphs($name, $indexName);
+        } else {
+            $this->numericMorphs($name, $indexName);
+        }
     }
 
     /**
@@ -1434,6 +1511,40 @@ class Blueprint
      * @return void
      */
     public function nullableMorphs($name, $indexName = null)
+    {
+        if (Builder::$defaultMorphKeyType === 'uuid') {
+            $this->nullableUuidMorphs($name, $indexName);
+        } else {
+            $this->nullableNumericMorphs($name, $indexName);
+        }
+    }
+
+    /**
+     * Add the proper columns for a polymorphic table using numeric IDs (incremental).
+	 * 使用数字id（增量）为多态表添加适当的列
+     *
+     * @param  string  $name
+     * @param  string|null  $indexName
+     * @return void
+     */
+    public function numericMorphs($name, $indexName = null)
+    {
+        $this->string("{$name}_type");
+
+        $this->unsignedBigInteger("{$name}_id");
+
+        $this->index(["{$name}_type", "{$name}_id"], $indexName);
+    }
+
+    /**
+     * Add nullable columns for a polymorphic table using numeric IDs (incremental).
+	 * 使用数字id（增量）为多态表添加可空列
+     *
+     * @param  string  $name
+     * @param  string|null  $indexName
+     * @return void
+     */
+    public function nullableNumericMorphs($name, $indexName = null)
     {
         $this->string("{$name}_type")->nullable();
 
@@ -1478,7 +1589,7 @@ class Blueprint
 
     /**
      * Adds the `remember_token` column to the table.
-	 * 将'memor_token'列添加到表中
+	 * 将‘memor_token’列添加到表中
      *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
@@ -1528,7 +1639,7 @@ class Blueprint
         // If the given "index" is actually an array of columns, the developer means
         // to drop an index merely by specifying the columns involved without the
         // conventional name, so we will build the index name from the columns.
-		// 如果给定的"索引"实际上是一个列数组，则开发人员的意思仅通过指定所涉及的列而删除索引。
+		// 如果给定的“索引”实际上是一个列数组，则开发人员的意思是仅通过指定所涉及的列来删除索引。
         if (is_array($index)) {
             $index = $this->createIndexName($type, $columns = $index);
         }
@@ -1562,11 +1673,46 @@ class Blueprint
      */
     public function addColumn($type, $name, array $parameters = [])
     {
-        $this->columns[] = $column = new ColumnDefinition(
+        return $this->addColumnDefinition(new ColumnDefinition(
             array_merge(compact('type', 'name'), $parameters)
-        );
+        ));
+    }
 
-        return $column;
+    /**
+     * Add a new column definition to the blueprint.
+	 * 向蓝图添加一个新的列定义
+     *
+     * @param  \Illuminate\Database\Schema\ColumnDefinition  $definition
+     * @return \Illuminate\Database\Schema\ColumnDefinition
+     */
+    protected function addColumnDefinition($definition)
+    {
+        $this->columns[] = $definition;
+
+        if ($this->after) {
+            $definition->after($this->after);
+
+            $this->after = $definition->name;
+        }
+
+        return $definition;
+    }
+
+    /**
+     * Add the columns from the callback after the given column.
+	 * 在给定列之后添加回调中的列
+     *
+     * @param  string  $column
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function after($column, Closure $callback)
+    {
+        $this->after = $column;
+
+        $callback($this);
+
+        $this->after = null;
     }
 
     /**
@@ -1670,5 +1816,37 @@ class Blueprint
         return array_filter($this->columns, function ($column) {
             return (bool) $column->change;
         });
+    }
+
+    /**
+     * Determine if the blueprint has auto-increment columns.
+	 * 确定蓝图是否具有自动递增列
+     *
+     * @return bool
+     */
+    public function hasAutoIncrementColumn()
+    {
+        return ! is_null(collect($this->getAddedColumns())->first(function ($column) {
+            return $column->autoIncrement === true;
+        }));
+    }
+
+    /**
+     * Get the auto-increment column starting values.
+	 * 获取自动递增列起始值
+     *
+     * @return array
+     */
+    public function autoIncrementingStartingValues()
+    {
+        if (! $this->hasAutoIncrementColumn()) {
+            return [];
+        }
+
+        return collect($this->getAddedColumns())->mapWithKeys(function ($column) {
+            return $column->autoIncrement === true
+                        ? [$column->name => $column->get('startingValue', $column->get('from'))]
+                        : [$column->name => null];
+        })->filter()->all();
     }
 }

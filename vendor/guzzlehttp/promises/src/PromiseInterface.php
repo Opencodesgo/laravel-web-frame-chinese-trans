@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，许诺，许诺接口
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,7 @@ namespace GuzzleHttp\Promise;
 
 /**
  * A promise represents the eventual result of an asynchronous operation.
+ * 一个承诺代表了异步操作的最终结果。
  *
  * The primary way of interacting with a promise is through its then method,
  * which registers callbacks to receive either a promise’s eventual value or
@@ -51,6 +55,7 @@ interface PromiseInterface
 
     /**
      * Resolve the promise with the given value.
+	 * 用给定的值来解决这个承诺
      *
      * @param mixed $value
      *
@@ -60,6 +65,7 @@ interface PromiseInterface
 
     /**
      * Reject the promise with the given reason.
+	 * 拒绝承诺
      *
      * @param mixed $reason
      *
@@ -69,6 +75,7 @@ interface PromiseInterface
 
     /**
      * Cancels the promise if possible.
+	 * 如果可能的话,取消承诺
      *
      * @see https://github.com/promises-aplus/cancellation-spec/issues/7
      */
@@ -76,6 +83,7 @@ interface PromiseInterface
 
     /**
      * Waits until the promise completes if possible.
+	 * 等待承诺如果可能的话完成。
      *
      * Pass $unwrap as true to unwrap the result of the promise, either
      * returning the resolved value or throwing the rejected exception.

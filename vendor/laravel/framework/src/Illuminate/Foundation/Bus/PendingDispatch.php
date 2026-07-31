@@ -5,7 +5,11 @@
 
 namespace Illuminate\Foundation\Bus;
 
+use Illuminate\Bus\UniqueLock;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Cache\Repository as Cache;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class PendingDispatch
 {
@@ -19,7 +23,7 @@ class PendingDispatch
 
     /**
      * Indicates if the job should be dispatched immediately after sending the response.
-	 * 指示是否应在发送响应后立即分派作业
+	 * 指明是否应在发送响应后立即分派作业
      *
      * @var bool
      */
@@ -53,7 +57,7 @@ class PendingDispatch
 
     /**
      * Set the desired queue for the job.
-	 * 为作业设置所需的队列
+	 * 为任务设置所需的队列
      *
      * @param  string|null  $queue
      * @return $this
@@ -108,8 +112,34 @@ class PendingDispatch
     }
 
     /**
+     * Indicate that the job should be dispatched after all database transactions have committed.
+	 * 指明应在所有数据库事务提交后分派作业
+     *
+     * @return $this
+     */
+    public function afterCommit()
+    {
+        $this->job->afterCommit();
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should not wait until database transactions have been committed before dispatching.
+	 * 指示作业不应等到数据库事务提交后才进行调度
+     *
+     * @return $this
+     */
+    public function beforeCommit()
+    {
+        $this->job->beforeCommit();
+
+        return $this;
+    }
+
+    /**
      * Set the jobs that should run if this job is successful.
-	 * 设置作业成功时应该运行的作业
+	 * 设置任务成功时应该运行的任务
      *
      * @param  array  $chain
      * @return $this
@@ -123,13 +153,44 @@ class PendingDispatch
 
     /**
      * Indicate that the job should be dispatched after the response is sent to the browser.
-	 * 指示应该在响应发送到浏览器后分派作业
+	 * 指明应该在响应发送到浏览器后分派作业
      *
      * @return $this
      */
     public function afterResponse()
     {
         $this->afterResponse = true;
+
+        return $this;
+    }
+
+    /**
+     * Determine if the job should be dispatched.
+	 * 确定是否应该分派作业
+     *
+     * @return bool
+     */
+    protected function shouldDispatch()
+    {
+        if (! $this->job instanceof ShouldBeUnique) {
+            return true;
+        }
+
+        return (new UniqueLock(Container::getInstance()->make(Cache::class)))
+                    ->acquire($this->job);
+    }
+
+    /**
+     * Dynamically proxy methods to the underlying job.
+	 * 将方法动态代理到底层作业
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return $this
+     */
+    public function __call($method, $parameters)
+    {
+        $this->job->{$method}(...$parameters);
 
         return $this;
     }
@@ -142,7 +203,9 @@ class PendingDispatch
      */
     public function __destruct()
     {
-        if ($this->afterResponse) {
+        if (! $this->shouldDispatch()) {
+            return;
+        } elseif ($this->afterResponse) {
             app(Dispatcher::class)->dispatchAfterResponse($this->job);
         } else {
             app(Dispatcher::class)->dispatch($this->job);

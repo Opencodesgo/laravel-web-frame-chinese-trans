@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特征，Capsule 管理特性
+ * Illuminate，支持，特性，压缩管理特征
  */
 
 namespace Illuminate\Support\Traits;
@@ -44,7 +44,7 @@ trait CapsuleManagerTrait
 
     /**
      * Make this capsule instance available globally.
-	 * 使这个胶囊实例全局可用
+	 * 使这个压缩实例全局可用
      *
      * @return void
      */
@@ -55,7 +55,7 @@ trait CapsuleManagerTrait
 
     /**
      * Get the IoC container instance.
-	 * 获取IoC容器实例
+	 * 得到IoC容器实例
      *
      * @return \Illuminate\Contracts\Container\Container
      */

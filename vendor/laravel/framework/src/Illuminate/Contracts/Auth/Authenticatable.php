@@ -9,7 +9,7 @@ interface Authenticatable
 {
     /**
      * Get the name of the unique identifier for the user.
-	 * 获取用户的唯一标识符名称
+	 * 获取用户的唯一标识符的名称
      *
      * @return string
      */

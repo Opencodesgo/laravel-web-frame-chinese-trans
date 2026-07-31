@@ -82,9 +82,10 @@ class JoinClause extends Builder
 
     /**
      * Add an "on" clause to the join.
-	 * 在连接中添加一个"on"子句
+	 * 向联接添加一个"on"子句
      *
      * On clauses can be chained, e.g.
+	 * On子句可以连接起来，例如：
      *
      *  $join->on('contacts.user_id', '=', 'users.id')
      *       ->on('contacts.info_id', '=', 'info.id')
@@ -116,7 +117,7 @@ class JoinClause extends Builder
      *
      * @param  \Closure|string  $first
      * @param  string|null  $operator
-     * @param  string|null  $second
+     * @param  \Illuminate\Database\Query\Expression|string|null  $second
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function orOn($first, $operator = null, $second = null)

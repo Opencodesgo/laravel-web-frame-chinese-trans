@@ -13,7 +13,7 @@ class CacheTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称，cache:table
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class CacheTableCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a migration for the cache database table';		#为缓存数据库表创建迁移
+    protected $description = 'Create a migration for the cache database table';
 
     /**
      * The filesystem instance.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，列式猜测器
+ */
 
 namespace Faker\ORM\Spot;
 
@@ -10,6 +13,7 @@ class ColumnTypeGuesser
 
     /**
      * ColumnTypeGuesser constructor.
+	 * ColumnTypeGuesser构造函数
      */
     public function __construct(Generator $generator)
     {

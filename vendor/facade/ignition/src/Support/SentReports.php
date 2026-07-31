@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，支持，发送报告
+ */
 
 namespace Facade\Ignition\Support;
 

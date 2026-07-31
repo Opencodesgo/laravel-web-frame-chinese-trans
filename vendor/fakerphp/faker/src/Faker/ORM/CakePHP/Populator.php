@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，CakePHP，普及者
+ */
 
 namespace Faker\ORM\CakePHP;
 

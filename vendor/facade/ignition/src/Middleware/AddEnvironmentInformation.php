@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，中间件，添加环境信息
+ */
 
 namespace Facade\Ignition\Middleware;
 

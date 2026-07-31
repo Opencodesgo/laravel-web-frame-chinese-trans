@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，许诺，兑现诺言
+ */
 
 declare(strict_types=1);
 
@@ -6,6 +9,7 @@ namespace GuzzleHttp\Promise;
 
 /**
  * A promise that has been fulfilled.
+ * 一个已经实现的承诺。
  *
  * Thenning off of this promise will invoke the onFulfilled callback
  * immediately and ignore other callbacks.

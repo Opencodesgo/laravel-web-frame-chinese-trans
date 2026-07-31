@@ -5,6 +5,7 @@
 
 namespace Illuminate\Auth;
 
+use Closure;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
@@ -103,7 +104,7 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Retrieve a user by the given credentials.
-	 * 通过给定凭证检索用户
+	 * 根据给定的凭据检索用户
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -119,8 +120,7 @@ class DatabaseUserProvider implements UserProvider
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // generic "user" object that will be utilized by the Guard instances.
-		// 首先,我们将将每个凭据元素添加到查询中,作为where子句。
-		// 然后我们可以执行查询，如果我们找到了一个用户，就返回它Guard实例将使用的通用"user"对象。
+		// 首先，我们将每个凭据元素作为where子句添加到查询中。
         $query = $this->conn->table($this->table);
 
         foreach ($credentials as $key => $value) {
@@ -130,6 +130,8 @@ class DatabaseUserProvider implements UserProvider
 
             if (is_array($value) || $value instanceof Arrayable) {
                 $query->whereIn($key, $value);
+            } elseif ($value instanceof Closure) {
+                $value($query);
             } else {
                 $query->where($key, $value);
             }
@@ -138,8 +140,7 @@ class DatabaseUserProvider implements UserProvider
         // Now we are ready to execute the query to see if we have an user matching
         // the given credentials. If not, we will just return nulls and indicate
         // that there are no matching users for these given credential arrays.
-		// 现在我们准备执行查询，看看我们是否有用户匹配给定的凭证。
-		// 如果不是，我们将返回空值并进行指示对于这些给定的凭据数组没有匹配的用户。
+		// 现在我们准备执行查询，看看是否有用户匹配给定的凭证。
         $user = $query->first();
 
         return $this->getGenericUser($user);

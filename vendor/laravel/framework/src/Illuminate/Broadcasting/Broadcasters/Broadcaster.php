@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，广播员
+ * Illuminate，广播，广播员，广播抽象类
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -8,6 +8,7 @@ namespace Illuminate\Broadcasting\Broadcasters;
 use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
+use Illuminate\Contracts\Broadcasting\HasBroadcastChannel;
 use Illuminate\Contracts\Routing\BindingRegistrar;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Support\Arr;
@@ -37,7 +38,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * The binding registrar instance.
-	 * 绑定注册器实例
+	 * 绑定注册商实例
      *
      * @var \Illuminate\Contracts\Routing\BindingRegistrar
      */
@@ -47,13 +48,19 @@ abstract class Broadcaster implements BroadcasterContract
      * Register a channel authenticator.
 	 * 注册一个通道验证器
      *
-     * @param  string  $channel
+     * @param  \Illuminate\Contracts\Broadcasting\HasBroadcastChannel|string  $channel
      * @param  callable|string  $callback
      * @param  array  $options
      * @return $this
      */
     public function channel($channel, $callback, $options = [])
     {
+        if ($channel instanceof HasBroadcastChannel) {
+            $channel = $channel->broadcastChannelRoute();
+        } elseif (is_string($channel) && class_exists($channel) && is_a($channel, HasBroadcastChannel::class, true)) {
+            $channel = (new $channel)->broadcastChannelRoute();
+        }
+
         $this->channels[$channel] = $callback;
 
         $this->channelOptions[$channel] = $options;
@@ -127,7 +134,7 @@ abstract class Broadcaster implements BroadcasterContract
             return $this->extractParametersFromClass($callback);
         }
 
-        throw new Exception('Given channel handler is an unknown type.');		#给定的通道处理程序是未知类型
+        throw new Exception('Given channel handler is an unknown type.');
     }
 
     /**
@@ -278,7 +285,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Normalize the given callback into a callable.
-	 * 将给定的回调函数规范化为可调用对象
+	 * 规范化给定的回调函数为可调用对象
      *
      * @param  mixed  $callback
      * @return callable
@@ -294,7 +301,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Retrieve the authenticated user using the configured guard (if any).
-	 * 使用配置的守卫（如果有的话）检索经过身份验证的用户
+	 * 使用配置的保护（如果有的话）检索经过身份验证的用户
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
@@ -338,8 +345,8 @@ abstract class Broadcaster implements BroadcasterContract
     }
 
     /**
-     * Check if channel name from request match a pattern from registered channels.
-	 * 检查请求中的通道名是否与已注册通道中的模式匹配
+     * Check if the channel name from the request matches a pattern from registered channels.
+	 * 检查来自请求的频道名称是否与来自已注册频道的模式匹配
      *
      * @param  string  $channel
      * @param  string  $pattern

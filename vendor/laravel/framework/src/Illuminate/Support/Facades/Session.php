@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Session 会话
+ * Illuminate，支持，门面，会话
  */
 
 namespace Illuminate\Support\Facades;
@@ -16,6 +16,7 @@ namespace Illuminate\Support\Facades;
  * @method static bool save()
  * @method static bool start()
  * @method static mixed get(string $key, $default = null)
+ * @method static mixed flash(string $key, $value = true)
  * @method static mixed pull(string $key, $default = null)
  * @method static mixed remove(string $key)
  * @method static string getId()

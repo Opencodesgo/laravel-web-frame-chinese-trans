@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由Url生成器
+ * Illuminate，路由，路由 URL生成器
  */
 
 namespace Illuminate\Routing;
@@ -60,7 +60,7 @@ class RouteUrlGenerator
 
     /**
      * Create a new Route URL generator.
-	 * 创建新的路由URL生成器
+	 * 创建一个新的路由URL生成器
      *
      * @param  \Illuminate\Routing\UrlGenerator  $url
      * @param  \Illuminate\Http\Request  $request
@@ -97,14 +97,14 @@ class RouteUrlGenerator
             $route
         ), $parameters);
 
-        if (preg_match('/\{.*?\}/', $uri)) {
-            throw UrlGenerationException::forMissingParameters($route);
+        if (preg_match_all('/{(.*?)}/', $uri, $matchedMissingParameters)) {
+            throw UrlGenerationException::forMissingParameters($route, $matchedMissingParameters[1]);
         }
 
         // Once we have ensured that there are no missing parameters in the URI we will encode
         // the URI and prepare it for returning to the developer. If the URI is supposed to
         // be absolute, we will return it as-is. Otherwise we will remove the URL's root.
-		// 一旦我们确保URI中没有缺失参数，我们将进行编码获取URI并准备返回给开发人员。
+		// 一旦我们确保URI中没有缺失参数。
         $uri = strtr(rawurlencode($uri), $this->dontEncode);
 
         if (! $absolute) {
@@ -150,7 +150,7 @@ class RouteUrlGenerator
 
     /**
      * Get the scheme for the given route.
-	 * 获取给定路由的方案
+	 * 获取给定路线的方案
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
@@ -261,7 +261,7 @@ class RouteUrlGenerator
         // If the URI has a fragment we will move it to the end of this URI since it will
         // need to come after any query string that may be added to the URL else it is
         // not going to be available. We will remove it then append it back on here.
-		// 如果URI有一个片段，我们将把它移动到这个URI的末尾，因为它会。
+		// 如果URI有一个片段，我们将把它移动到这个URI的末尾。
         if (! is_null($fragment = parse_url($uri, PHP_URL_FRAGMENT))) {
             $uri = preg_replace('/#.*/', '', $uri);
         }
@@ -295,7 +295,7 @@ class RouteUrlGenerator
         // Lastly, if there are still parameters remaining, we will fetch the numeric
         // parameters that are in the array and add them to the query string or we
         // will make the initial query string if it wasn't started with strings.
-		// 最后，如果仍然有参数，我们将获取数字参数，并将其添加到查询字符串中。
+		// 最后，如果还有参数，我们将获取数字参数。
         if (count($keyed) < count($parameters)) {
             $query .= '&'.implode(
                 '&', $this->getNumericParameters($parameters)

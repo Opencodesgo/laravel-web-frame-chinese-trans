@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，上传文件
+ */
 
 declare(strict_types=1);
 
@@ -79,6 +82,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Depending on the value set file or stream variable
+	 * 取决于值设置文件或流变量
      *
      * @param StreamInterface|string|resource $streamOrFile
      *
@@ -120,6 +124,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Return true if there is no upload error
+	 * 如果没有上传错误,返回true
      */
     private function isOk(): bool
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，邮件管理
+ * Illuminate，邮件，邮件管理器
  */
 
 namespace Illuminate\Mail;
@@ -21,6 +21,7 @@ use Postmark\ThrowExceptionOnFailurePlugin;
 use Postmark\Transport as PostmarkTransport;
 use Psr\Log\LoggerInterface;
 use Swift_DependencyContainer;
+use Swift_FailoverTransport as FailoverTransport;
 use Swift_Mailer;
 use Swift_SendmailTransport as SendmailTransport;
 use Swift_SmtpTransport as SmtpTransport;
@@ -71,7 +72,7 @@ class MailManager implements FactoryContract
 	 * 按名称获取邮件实例
      *
      * @param  string|null  $name
-     * @return \Illuminate\Mail\Mailer
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
     public function mailer($name = null)
     {
@@ -124,7 +125,7 @@ class MailManager implements FactoryContract
         // Once we have created the mailer instance we will set a container instance
         // on the mailer. This allows us to resolve mailer classes via containers
         // for maximum testability on said classes instead of passing Closures.
-		// 一旦我们创建了邮件实例，我们将在邮件机中设置一个容器实例。
+		// 一旦我们创建了邮件实例，我们将在发件机上设置一个容器实例。
         $mailer = new Mailer(
             $name,
             $this->app['view'],
@@ -171,20 +172,22 @@ class MailManager implements FactoryContract
      *
      * @param  array  $config
      * @return \Swift_Transport
+     *
+     * @throws \InvalidArgumentException
      */
     public function createTransport(array $config)
     {
         // Here we will check if the "transport" key exists and if it doesn't we will
         // assume an application is still using the legacy mail configuration file
         // format and use the "mail.driver" configuration option instead for BC.
-		// 这里我们将检查"transport"键是否存在，如果不存在，我们将检查假设应用程序仍在使用遗留邮件配置文件。
+		// 这里我们将检查"transport"键是否存在，如果不存在，我们将假设应用程序仍在使用遗留邮件配置文件。
         $transport = $config['transport'] ?? $this->app['config']['mail.driver'];
 
         if (isset($this->customCreators[$transport])) {
             return call_user_func($this->customCreators[$transport], $config);
         }
 
-        if (trim($transport) === '' || ! method_exists($this, $method = 'create'.ucfirst($transport).'Transport')) {
+        if (trim($transport ?? '') === '' || ! method_exists($this, $method = 'create'.ucfirst($transport).'Transport')) {
             throw new InvalidArgumentException("Unsupported mail transport [{$transport}].");
         }
 
@@ -203,7 +206,7 @@ class MailManager implements FactoryContract
         // The Swift SMTP transport instance will allow us to use any SMTP backend
         // for delivering mail such as Sendgrid, Amazon SES, or a custom server
         // a developer has available. We will just pass this configured host.
-		// Swift SMTP传输实例将允许我们使用任何SMTP后端用于发送邮件，如Sendgrid。
+		// Swift SMTP传输实例将允许我们使用任何SMTP后端。
         $transport = new SmtpTransport(
             $config['host'],
             $config['port']
@@ -216,7 +219,7 @@ class MailManager implements FactoryContract
         // Once we have the transport we will check for the presence of a username
         // and password. If we have it we will set the credentials on the Swift
         // transporter instance so that we'll properly authenticate delivery.
-		// 一旦有了传输，我们将检查用户名和密码是否存在。
+		// 一旦有了传输，我们将检查用户名是否存在。
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
 
@@ -282,11 +285,11 @@ class MailManager implements FactoryContract
      */
     protected function createSesTransport(array $config)
     {
-        if (! isset($config['secret'])) {
-            $config = array_merge($this->app['config']->get('services.ses', []), [
-                'version' => 'latest', 'service' => 'email',
-            ]);
-        }
+        $config = array_merge(
+            $this->app['config']->get('services.ses', []),
+            ['version' => 'latest', 'service' => 'email'],
+            $config
+        );
 
         $config = Arr::except($config, ['transport']);
 
@@ -353,11 +356,46 @@ class MailManager implements FactoryContract
      */
     protected function createPostmarkTransport(array $config)
     {
+        $headers = isset($config['message_stream_id']) ? [
+            'X-PM-Message-Stream' => $config['message_stream_id'],
+        ] : [];
+
         return tap(new PostmarkTransport(
-            $config['token'] ?? $this->app['config']->get('services.postmark.token')
+            $config['token'] ?? $this->app['config']->get('services.postmark.token'),
+            $headers
         ), function ($transport) {
-            $transport->registerPlugin(new ThrowExceptionOnFailurePlugin());
+            $transport->registerPlugin(new ThrowExceptionOnFailurePlugin);
         });
+    }
+
+    /**
+     * Create an instance of the Failover Swift Transport driver.
+	 * 创建一个Failover Swift Transport驱动程序的实例
+     *
+     * @param  array  $config
+     * @return \Swift_FailoverTransport
+     */
+    protected function createFailoverTransport(array $config)
+    {
+        $transports = [];
+
+        foreach ($config['mailers'] as $name) {
+            $config = $this->getConfig($name);
+
+            if (is_null($config)) {
+                throw new InvalidArgumentException("Mailer [{$name}] is not defined.");
+            }
+
+            // Now, we will check if the "driver" key exists and if it does we will set
+            // the transport configuration parameter in order to offer compatibility
+            // with any Laravel <= 6.x application style mail configuration files.
+			// 现在，我们将检查"driver"键是否存在，如果存在，我们将进行设置传输配置参数。
+            $transports[] = $this->app['config']['mail.driver']
+                ? $this->createTransport(array_merge($config, ['transport' => $name]))
+                : $this->createTransport($config);
+        }
+
+        return new FailoverTransport($transports);
     }
 
     /**
@@ -437,7 +475,7 @@ class MailManager implements FactoryContract
         // Here we will check if the "driver" key exists and if it does we will use
         // the entire mail configuration file as the "driver" config in order to
         // provide "BC" for any Laravel <= 6.x style mail configuration files.
-		// 这里我们将检查"driver"键是否存在，如果存在，我们将使用将整个邮件配置文件作为"驱动程序"配置。
+		// 这里我们将检查"driver"键是否存在，如果存在，我们将使用整个邮件配置文件。
         return $this->app['config']['mail.driver']
             ? $this->app['config']['mail']
             : $this->app['config']["mail.mailers.{$name}"];
@@ -454,7 +492,7 @@ class MailManager implements FactoryContract
         // Here we will check if the "driver" key exists and if it does we will use
         // that as the default driver in order to provide support for old styles
         // of the Laravel mail configuration file for backwards compatibility.
-		// 这里我们将检查"driver"键是否存在，如果存在，我们将使用默认的驱动程序，以便提供对旧样式的支持。
+		// 这里我们将检查"driver"键是否存在，如果存在，我们将使用默认的驱动程序，以便提供支持。
         return $this->app['config']['mail.driver'] ??
             $this->app['config']['mail.default'];
     }
@@ -476,6 +514,20 @@ class MailManager implements FactoryContract
     }
 
     /**
+     * Disconnect the given mailer and remove from local cache.
+	 * 断开给定邮件的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?: $this->getDefaultDriver();
+
+        unset($this->mailers[$name]);
+    }
+
+    /**
      * Register a custom transport creator Closure.
 	 * 注册自定义传输创建器闭包
      *
@@ -486,6 +538,44 @@ class MailManager implements FactoryContract
     public function extend($driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Get the application instance used by the manager.
+	 * 得到管理器使用的应用程序实例
+     *
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    public function getApplication()
+    {
+        return $this->app;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
+     * Forget all of the resolved mailer instances.
+	 * 忘记所有已解析的邮件实例
+     *
+     * @return $this
+     */
+    public function forgetMailers()
+    {
+        $this->mailers = [];
 
         return $this;
     }

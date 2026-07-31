@@ -9,7 +9,7 @@ interface Application
 {
     /**
      * Run an Artisan console command by name.
-	 * 按名称运行控制台命令
+	 * 按名称运行Artisan控制台命令
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -20,7 +20,7 @@ interface Application
 
     /**
      * Get the output from the last command.
-	 * 从最后命令得到输出
+	 * 获取最后一个命令的输出
      *
      * @return string
      */

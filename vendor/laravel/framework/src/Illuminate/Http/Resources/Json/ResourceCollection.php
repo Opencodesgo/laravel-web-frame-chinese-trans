@@ -7,6 +7,7 @@ namespace Illuminate\Http\Resources\Json;
 
 use Countable;
 use Illuminate\Http\Resources\CollectsResources;
+use Illuminate\Pagination\AbstractCursorPaginator;
 use Illuminate\Pagination\AbstractPaginator;
 use IteratorAggregate;
 
@@ -32,7 +33,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
 
     /**
      * Indicates if all existing request query parameters should be added to pagination links.
-	 * 指明是否应将所有现有请求查询参数添加到分页链接中
+	 * 指示是否应将所有现有请求查询参数添加到分页链接中
      *
      * @var bool
      */
@@ -48,7 +49,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
 
     /**
      * Create a new resource instance.
-	 * 创建一个新的资源实例
+	 * 创建新的资源实例
      *
      * @param  mixed  $resource
      * @return void
@@ -62,7 +63,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
 
     /**
      * Indicate that all current query parameters should be appended to pagination links.
-	 * 指明应将所有当前查询参数附加到分页链接
+	 * 指示应将所有当前查询参数附加到分页链接
      *
      * @return $this
      */
@@ -95,6 +96,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->collection->count();
@@ -105,7 +107,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
 	 * 将资源转换为JSON数组
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
@@ -121,7 +123,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
      */
     public function toResponse($request)
     {
-        if ($this->resource instanceof AbstractPaginator) {
+        if ($this->resource instanceof AbstractPaginator || $this->resource instanceof AbstractCursorPaginator) {
             return $this->preparePaginatedResponse($request);
         }
 

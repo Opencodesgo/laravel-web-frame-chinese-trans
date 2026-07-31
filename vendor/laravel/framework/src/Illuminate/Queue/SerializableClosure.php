@@ -7,6 +7,9 @@ namespace Illuminate\Queue;
 
 use Opis\Closure\SerializableClosure as OpisSerializableClosure;
 
+/**
+ * @deprecated This class will be removed in Laravel 9.
+ */
 class SerializableClosure extends OpisSerializableClosure
 {
     use SerializesAndRestoresModelIdentifiers;
@@ -15,7 +18,7 @@ class SerializableClosure extends OpisSerializableClosure
      * Transform the use variables before serialization.
 	 * 在序列化之前转换use变量
      *
-     * @param  array  $data  The Closure's use variables
+     * @param  array  $data
      * @return array
      */
     protected function transformUseVariables($data)
@@ -31,7 +34,7 @@ class SerializableClosure extends OpisSerializableClosure
      * Resolve the use variables after unserialization.
 	 * 解析反序列化后的use变量
      *
-     * @param  array  $data  The Closure's transformed use variables
+     * @param  array  $data
      * @return array
      */
     protected function resolveUseVariables($data)

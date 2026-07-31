@@ -1,21 +1,21 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，监听器队列 
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use DummyFullEvent;
+use {{ eventNamespace }};
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class DummyClass implements ShouldQueue
+class {{ class }} implements ShouldQueue
 {
     use InteractsWithQueue;
 
     /**
      * Create the event listener.
-	 * 创建事件侦听器
+	 * 创建事件监听器
      *
      * @return void
      */
@@ -28,10 +28,10 @@ class DummyClass implements ShouldQueue
      * Handle the event.
 	 * 处理事件
      *
-     * @param  DummyEvent  $event
+     * @param  {{ eventNamespace }}  $event
      * @return void
      */
-    public function handle(DummyEvent $event)
+    public function handle({{ event }} $event)
     {
         //
     }

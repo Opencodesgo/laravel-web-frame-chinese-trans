@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，抽象路由集合
+ * Illuminate，路由，抽象路由采集
  */
 
 namespace Illuminate\Routing;
@@ -38,8 +38,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
         // If no route was found we will now check if a matching route is specified by
         // another HTTP verb. If it is we will need to throw a MethodNotAllowed and
         // inform the user agent of which HTTP verb it should use for this route.
-		// 如果没有找到路由，我们将检查是否指定了匹配指定了的另外HTTP动作的路由。
-		// 如果是，我们需要抛出一个methodnotalallowed并通知用户代理应该为该路由使用哪个HTTP动词。
+		// 如果没有找到路由，我们将检查是否指定了匹配的路由另一个HTTP动词。
         $others = $this->checkForAlternateVerbs($request);
 
         if (count($others) > 0) {
@@ -51,7 +50,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
 
     /**
      * Determine if any routes match on another HTTP verb.
-	 * 确定是否有任何路由与另一个HTTP动词匹配。
+	 * 确定是否有任何路由与另一个HTTP谓词匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -63,8 +62,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
         // Here we will spin through all verbs except for the current request verb and
         // check to see if any routes respond to them. If they do, we will return a
         // proper error response with the correct headers on the response string.
-		// 这里我们将遍历除当前请求动作外并检查是否有任何路由响应它们。
-		// 如果是，我们将返回正确的错误响应，在响应字符串上有正确的报头。
+		// 这里，我们将遍历除当前请求谓词之外的所有谓词。
         return array_values(array_filter(
             $methods,
             function ($method) use ($request) {
@@ -89,7 +87,6 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
         });
 
         return $routes->merge($fallbacks)->first(function (Route $route) use ($request, $includingMethod) {
-			//  Illuminate\Routing\Route，public function matches(Request $request, $includingMethod = true)
             return $route->matches($request, $includingMethod);
         });
     }
@@ -160,6 +157,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
                 'bindingFields' => $route->bindingFields(),
                 'lockSeconds' => $route->locksFor(),
                 'waitSeconds' => $route->waitsFor(),
+                'withTrashed' => $route->allowsTrashedBindings(),
             ];
         }
 
@@ -211,13 +209,18 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
      * @param  \Symfony\Component\Routing\RouteCollection  $symfonyRoutes
      * @param  \Illuminate\Routing\Route  $route
      * @return \Symfony\Component\Routing\RouteCollection
+     *
+     * @throws \LogicException
      */
     protected function addToSymfonyRoutesCollection(SymfonyRouteCollection $symfonyRoutes, Route $route)
     {
         $name = $route->getName();
 
-        if (Str::endsWith($name, '.') &&
-            ! is_null($symfonyRoutes->get($name))) {
+        if (
+            ! is_null($name)
+            && Str::endsWith($name, '.')
+            && ! is_null($symfonyRoutes->get($name))
+        ) {
             $name = null;
         }
 
@@ -251,6 +254,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
      *
      * @return \ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->getRoutes());
@@ -262,6 +266,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->getRoutes());

@@ -6,6 +6,7 @@
 namespace Illuminate\Http\Client;
 
 use ArrayAccess;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use LogicException;
 
@@ -17,7 +18,7 @@ class Response implements ArrayAccess
 
     /**
      * The underlying PSR response.
-	 * 底层PSR响应
+	 * 底层的PSR响应
      *
      * @var \Psr\Http\Message\ResponseInterface
      */
@@ -58,15 +59,21 @@ class Response implements ArrayAccess
      * Get the JSON decoded body of the response as an array or scalar value.
 	 * 以数组或标量值的形式获取响应的JSON解码体
      *
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
-    public function json()
+    public function json($key = null, $default = null)
     {
         if (! $this->decoded) {
             $this->decoded = json_decode($this->body(), true);
         }
 
-        return $this->decoded;
+        if (is_null($key)) {
+            return $this->decoded;
+        }
+
+        return data_get($this->decoded, $key, $default);
     }
 
     /**
@@ -78,6 +85,18 @@ class Response implements ArrayAccess
     public function object()
     {
         return json_decode($this->body(), false);
+    }
+
+    /**
+     * Get the JSON decoded body of the response as a collection.
+	 * 获取响应的JSON解码体作为集合
+     *
+     * @param  string|null  $key
+     * @return \Illuminate\Support\Collection
+     */
+    public function collect($key = null)
+    {
+        return Collection::make($this->json($key));
     }
 
     /**
@@ -100,9 +119,7 @@ class Response implements ArrayAccess
      */
     public function headers()
     {
-        return collect($this->response->getHeaders())->mapWithKeys(function ($v, $k) {
-            return [$k => $v];
-        })->all();
+        return $this->response->getHeaders();
     }
 
     /**
@@ -117,14 +134,25 @@ class Response implements ArrayAccess
     }
 
     /**
+     * Get the reason phrase of the response.
+	 * 获取响应的原因短语
+     *
+     * @return string
+     */
+    public function reason()
+    {
+        return $this->response->getReasonPhrase();
+    }
+
+    /**
      * Get the effective URI of the response.
 	 * 获取响应的有效URI
      *
-     * @return \Psr\Http\Message\UriInterface
+     * @return \Psr\Http\Message\UriInterface|null
      */
     public function effectiveUri()
     {
-        return $this->transferStats->getEffectiveUri();
+        return optional($this->transferStats)->getEffectiveUri();
     }
 
     /**
@@ -161,6 +189,28 @@ class Response implements ArrayAccess
     }
 
     /**
+     * Determine if the response was a 401 "Unauthorized" response.
+	 * 确定响应是否为401"未授权"响应
+     *
+     * @return bool
+     */
+    public function unauthorized()
+    {
+        return $this->status() === 401;
+    }
+
+    /**
+     * Determine if the response was a 403 "Forbidden" response.
+	 * 确定响应是否为403"Forbidden"响应
+     *
+     * @return bool
+     */
+    public function forbidden()
+    {
+        return $this->status() === 403;
+    }
+
+    /**
      * Determine if the response indicates a client or server error occurred.
 	 * 确定响应是否表明发生了客户端或服务器错误
      *
@@ -194,6 +244,22 @@ class Response implements ArrayAccess
     }
 
     /**
+     * Execute the given callback if there was a server or client error.
+	 * 如果存在服务器或客户端错误，则执行给定的回调。
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function onError(callable $callback)
+    {
+        if ($this->failed()) {
+            $callback($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the response cookies.
 	 * 获取响应cookie
      *
@@ -202,6 +268,30 @@ class Response implements ArrayAccess
     public function cookies()
     {
         return $this->cookies;
+    }
+
+    /**
+     * Get the handler stats of the response.
+	 * 获取响应的处理程序统计信息
+     *
+     * @return array
+     */
+    public function handlerStats()
+    {
+        return optional($this->transferStats)->getHandlerStats() ?? [];
+    }
+
+    /**
+     * Close the stream and any underlying resources.
+	 * 关闭流和任何底层资源
+     *
+     * @return $this
+     */
+    public function close()
+    {
+        $this->response->getBody()->close();
+
+        return $this;
     }
 
     /**
@@ -216,20 +306,54 @@ class Response implements ArrayAccess
     }
 
     /**
+     * Create an exception if a server or client error occurred.
+	 * 如果发生服务器或客户端错误，则创建异常。
+     *
+     * @return \Illuminate\Http\Client\RequestException|null
+     */
+    public function toException()
+    {
+        if ($this->failed()) {
+            return new RequestException($this);
+        }
+    }
+
+    /**
      * Throw an exception if a server or client error occurred.
 	 * 如果发生服务器或客户端错误，则抛出异常。
      *
+     * @param  \Closure|null  $callback
      * @return $this
      *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function throw()
     {
-        if ($this->serverError() || $this->clientError()) {
-            throw new RequestException($this);
+        $callback = func_get_args()[0] ?? null;
+
+        if ($this->failed()) {
+            throw tap($this->toException(), function ($exception) use ($callback) {
+                if ($callback && is_callable($callback)) {
+                    $callback($this, $exception);
+                }
+            });
         }
 
         return $this;
+    }
+
+    /**
+     * Throw an exception if a server or client error occurred and the given condition evaluates to true.
+	 * 如果发生服务器或客户端错误并且给定条件的计算结果为true，则抛出异常。
+     *
+     * @param  bool  $condition
+     * @return $this
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function throwIf($condition)
+    {
+        return $condition ? $this->throw() : $this;
     }
 
     /**
@@ -239,6 +363,7 @@ class Response implements ArrayAccess
      * @param  string  $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->json()[$offset]);
@@ -251,6 +376,7 @@ class Response implements ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->json()[$offset];
@@ -266,6 +392,7 @@ class Response implements ArrayAccess
      *
      * @throws \LogicException
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new LogicException('Response data may not be mutated using array access.');
@@ -280,6 +407,7 @@ class Response implements ArrayAccess
      *
      * @throws \LogicException
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new LogicException('Response data may not be mutated using array access.');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Cache 缓存服务提供者
+ * Illuminate，缓存，缓存服务提供者
  */
 
 namespace Illuminate\Cache;
@@ -34,6 +34,12 @@ class CacheServiceProvider extends ServiceProvider implements DeferrableProvider
         $this->app->singleton('memcached.connector', function () {
             return new MemcachedConnector;
         });
+
+        $this->app->singleton(RateLimiter::class, function ($app) {
+            return new RateLimiter($app->make('cache')->driver(
+                $app['config']->get('cache.limiter')
+            ));
+        });
     }
 
     /**
@@ -45,7 +51,7 @@ class CacheServiceProvider extends ServiceProvider implements DeferrableProvider
     public function provides()
     {
         return [
-            'cache', 'cache.store', 'cache.psr6', 'memcached.connector',
+            'cache', 'cache.store', 'cache.psr6', 'memcached.connector', RateLimiter::class,
         ];
     }
 }

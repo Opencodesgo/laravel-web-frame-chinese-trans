@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，收集
+ * Illuminate，数据库，Eloquent，集合
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -69,13 +69,15 @@ class Collection extends BaseCollection implements QueueableCollection
     }
 
     /**
-     * Load a set of relationship counts onto the collection.
-	 * 将一组关系计数加载到集合中
+     * Load a set of aggregations over relationship's column onto the collection.
+	 * 将关系列上的一组聚合加载到集合上
      *
      * @param  array|string  $relations
+     * @param  string  $column
+     * @param  string  $function
      * @return $this
      */
-    public function loadCount($relations)
+    public function loadAggregate($relations, $column, $function = null)
     {
         if ($this->isEmpty()) {
             return $this;
@@ -84,7 +86,7 @@ class Collection extends BaseCollection implements QueueableCollection
         $models = $this->first()->newModelQuery()
             ->whereKey($this->modelKeys())
             ->select($this->first()->getKeyName())
-            ->withCount(...func_get_args())
+            ->withAggregate($relations, $column, $function)
             ->get()
             ->keyBy($this->first()->getKeyName());
 
@@ -96,10 +98,88 @@ class Collection extends BaseCollection implements QueueableCollection
         $this->each(function ($model) use ($models, $attributes) {
             $extraAttributes = Arr::only($models->get($model->getKey())->getAttributes(), $attributes);
 
-            $model->forceFill($extraAttributes)->syncOriginalAttributes($attributes);
+            $model->forceFill($extraAttributes)
+                ->syncOriginalAttributes($attributes)
+                ->mergeCasts($models->get($model->getKey())->getCasts());
         });
 
         return $this;
+    }
+
+    /**
+     * Load a set of relationship counts onto the collection.
+	 * 将一组关系计数加载到集合中
+     *
+     * @param  array|string  $relations
+     * @return $this
+     */
+    public function loadCount($relations)
+    {
+        return $this->loadAggregate($relations, '*', 'count');
+    }
+
+    /**
+     * Load a set of relationship's max column values onto the collection.
+	 * 将一组关系的最大列值加载到集合中
+     *
+     * @param  array|string  $relations
+     * @param  string  $column
+     * @return $this
+     */
+    public function loadMax($relations, $column)
+    {
+        return $this->loadAggregate($relations, $column, 'max');
+    }
+
+    /**
+     * Load a set of relationship's min column values onto the collection.
+	 * 将一组关系的最小列值加载到集合中
+     *
+     * @param  array|string  $relations
+     * @param  string  $column
+     * @return $this
+     */
+    public function loadMin($relations, $column)
+    {
+        return $this->loadAggregate($relations, $column, 'min');
+    }
+
+    /**
+     * Load a set of relationship's column summations onto the collection.
+	 * 将一组关系的列求和加载到集合中
+     *
+     * @param  array|string  $relations
+     * @param  string  $column
+     * @return $this
+     */
+    public function loadSum($relations, $column)
+    {
+        return $this->loadAggregate($relations, $column, 'sum');
+    }
+
+    /**
+     * Load a set of relationship's average column values onto the collection.
+	 * 将一组关系的平均列值加载到集合中
+     *
+     * @param  array|string  $relations
+     * @param  string  $column
+     * @return $this
+     */
+    public function loadAvg($relations, $column)
+    {
+        return $this->loadAggregate($relations, $column, 'avg');
+    }
+
+    /**
+     * Load a set of related existences onto the collection.
+	 * 将一组相关存在加载到集合中
+     *
+     * @param  array|string  $relations
+     * @return $this
+     */
+    public function loadExists($relations)
+    {
+        return $this->loadAggregate($relations, '*', 'exists');
     }
 
     /**
@@ -144,7 +224,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Load a relationship path if it is not already eager loaded.
-	 * 加载关系路径（如果它还没有被急切加载）
+	 * 加载关系路径（如果它还没有被急切加载）。
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @param  array  $path
@@ -168,7 +248,7 @@ class Collection extends BaseCollection implements QueueableCollection
             return;
         }
 
-        $models = $models->pluck($name);
+        $models = $models->pluck($name)->whereNotNull();
 
         if ($models->first() instanceof BaseCollection) {
             $models = $models->collapse();
@@ -280,7 +360,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Run a map over each of the items.
-	 * 在每个项目上运行映射
+	 * 在每个项目上运行一张地图
      *
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection|static
@@ -299,7 +379,7 @@ class Collection extends BaseCollection implements QueueableCollection
 	 * 在每个项目上运行一个关联映射
      *
      * The callback should return an associative array with a single key / value pair.
-	 * 回调函数应该返回一个具有单个键/值对的关联数组。
+	 * 回调函数应该返回一个具有单个键/值对的关联数组
      *
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection|static
@@ -334,9 +414,11 @@ class Collection extends BaseCollection implements QueueableCollection
             ->get()
             ->getDictionary();
 
-        return $this->map(function ($model) use ($freshModels) {
-            return $model->exists && isset($freshModels[$model->getKey()])
-                    ? $freshModels[$model->getKey()] : null;
+        return $this->filter(function ($model) use ($freshModels) {
+            return $model->exists && isset($freshModels[$model->getKey()]);
+        })
+        ->map(function ($model) use ($freshModels) {
+            return $freshModels[$model->getKey()];
         });
     }
 
@@ -425,7 +507,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Returns all models in the collection except the models with specified keys.
-	 * 返回集合中除具有指定键的模型外的所有模型。
+	 * 返回集合中除具有指定键的模型外的所有模型
      *
      * @param  mixed  $keys
      * @return static
@@ -439,7 +521,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Make the given, typically visible, attributes hidden across the entire collection.
-	 * 将给定的(通常是可见的)属性隐藏在整个集合中
+	 * 将给定的（通常是可见的）属性隐藏在整个集合中
      *
      * @param  array|string  $attributes
      * @return $this
@@ -451,7 +533,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Make the given, typically hidden, attributes visible across the entire collection.
-	 * 使给定的(通常是隐藏的)属性在整个集合中可见
+	 * 使给定的（通常是隐藏的）属性在整个集合中可见
      *
      * @param  array|string  $attributes
      * @return $this
@@ -656,7 +738,7 @@ class Collection extends BaseCollection implements QueueableCollection
         } elseif (count($relations) === 1) {
             return reset($relations);
         } else {
-            return array_intersect(...$relations);
+            return array_intersect(...array_values($relations));
         }
     }
 

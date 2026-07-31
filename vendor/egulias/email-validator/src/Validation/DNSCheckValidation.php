@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，验证，DNS 检查验证
+ */
 
 namespace Egulias\EmailValidator\Validation;
 
@@ -37,6 +40,7 @@ class DNSCheckValidation implements EmailValidation
     public function isValid($email, EmailLexer $emailLexer)
     {
         // use the input to check DNS if we cannot extract something similar to a domain
+		// 如果我们不能提取类似于域的东西,请使用输入来检查DNS
         $host = $email;
 
         // Arguable pattern to extract the domain. Not aiming to validate the domain nor the email
@@ -107,6 +111,7 @@ class DNSCheckValidation implements EmailValidation
 
     /**
      * Validate the DNS records for given host.
+	 * 验证给定主机的DNS记录
      *
      * @param string $host A set of DNS records in the format returned by dns_get_record.
      *
@@ -142,6 +147,7 @@ class DNSCheckValidation implements EmailValidation
 
     /**
      * Validate an MX record
+	 * 验证MX记录
      *
      * @param array $dnsRecord Given DNS record.
      *

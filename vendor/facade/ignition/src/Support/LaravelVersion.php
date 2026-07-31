@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，支持，Laravel 版本
+ */
 
 namespace Facade\Ignition\Support;
 

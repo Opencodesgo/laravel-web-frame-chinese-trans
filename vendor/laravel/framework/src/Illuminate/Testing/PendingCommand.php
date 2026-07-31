@@ -13,6 +13,7 @@ use Illuminate\Support\Arr;
 use Mockery;
 use Mockery\Exception\NoMatchingExpectationException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -37,7 +38,7 @@ class PendingCommand
 
     /**
      * The command to run.
-	 * 运行命令
+	 * 要运行的命令
      *
      * @var string
      */
@@ -60,8 +61,16 @@ class PendingCommand
     protected $expectedExitCode;
 
     /**
-     * Determine if command has executed.
-	 * 判断指令是否已执行
+     * The unexpected exit code.
+	 * 意外的退出密码
+     *
+     * @var int
+     */
+    protected $unexpectedExitCode;
+
+    /**
+     * Determine if the command has executed.
+	 * 确定命令是否已执行
      *
      * @var bool
      */
@@ -69,7 +78,7 @@ class PendingCommand
 
     /**
      * Create a new pending console command run.
-	 * 创建一个新的暂挂控制台指令运行
+	 * 创建一个新的暂挂控制台命令运行
      *
      * @param  \PHPUnit\Framework\TestCase  $test
      * @param  \Illuminate\Contracts\Container\Container  $app
@@ -87,7 +96,7 @@ class PendingCommand
 
     /**
      * Specify an expected question that will be asked when the command runs.
-	 * 指定指令运行时将被询问的预期问题
+	 * 指定命令运行时将被询问的预期问题
      *
      * @param  string  $question
      * @param  string|bool  $answer
@@ -135,7 +144,7 @@ class PendingCommand
 
     /**
      * Specify output that should be printed when the command runs.
-	 * 指定指令运行时应该打印的输出
+	 * 指定命令运行时应该打印的输出
      *
      * @param  string  $output
      * @return $this
@@ -143,6 +152,20 @@ class PendingCommand
     public function expectsOutput($output)
     {
         $this->test->expectedOutput[] = $output;
+
+        return $this;
+    }
+
+    /**
+     * Specify output that should never be printed when the command runs.
+	 * 指定在命令运行时不应该打印的输出
+     *
+     * @param  string  $output
+     * @return $this
+     */
+    public function doesntExpectOutput($output)
+    {
+        $this->test->unexpectedOutput[$output] = false;
 
         return $this;
     }
@@ -159,12 +182,24 @@ class PendingCommand
      */
     public function expectsTable($headers, $rows, $tableStyle = 'default', array $columnStyles = [])
     {
-        $this->test->expectedTables[] = [
-            'headers' => (array) $headers,
-            'rows' => $rows instanceof Arrayable ? $rows->toArray() : $rows,
-            'tableStyle' => $tableStyle,
-            'columnStyles' => $columnStyles,
-        ];
+        $table = (new Table($output = new BufferedOutput))
+            ->setHeaders((array) $headers)
+            ->setRows($rows instanceof Arrayable ? $rows->toArray() : $rows)
+            ->setStyle($tableStyle);
+
+        foreach ($columnStyles as $columnIndex => $columnStyle) {
+            $table->setColumnStyle($columnIndex, $columnStyle);
+        }
+
+        $table->render();
+
+        $lines = array_filter(
+            explode(PHP_EOL, $output->fetch())
+        );
+
+        foreach ($lines as $line) {
+            $this->expectsOutput($line);
+        }
 
         return $this;
     }
@@ -181,6 +216,42 @@ class PendingCommand
         $this->expectedExitCode = $exitCode;
 
         return $this;
+    }
+
+    /**
+     * Assert that the command does not have the given exit code.
+	 * 断言该命令没有给定的退出代码
+     *
+     * @param  int  $exitCode
+     * @return $this
+     */
+    public function assertNotExitCode($exitCode)
+    {
+        $this->unexpectedExitCode = $exitCode;
+
+        return $this;
+    }
+
+    /**
+     * Assert that the command has the success exit code.
+	 * 断言该命令具有成功退出代码
+     *
+     * @return $this
+     */
+    public function assertSuccessful()
+    {
+        return $this->assertExitCode(Command::SUCCESS);
+    }
+
+    /**
+     * Assert that the command does not have the success exit code.
+	 * 断言该命令没有成功退出码
+     *
+     * @return $this
+     */
+    public function assertFailed()
+    {
+        return $this->assertNotExitCode(Command::SUCCESS);
     }
 
     /**
@@ -223,9 +294,15 @@ class PendingCommand
                 $this->expectedExitCode, $exitCode,
                 "Expected status code {$this->expectedExitCode} but received {$exitCode}."
             );
+        } elseif (! is_null($this->unexpectedExitCode)) {
+            $this->test->assertNotEquals(
+                $this->unexpectedExitCode, $exitCode,
+                "Unexpected status code {$this->unexpectedExitCode} was received."
+            );
         }
 
         $this->verifyExpectations();
+        $this->flushExpectations();
 
         return $exitCode;
     }
@@ -257,6 +334,10 @@ class PendingCommand
         if (count($this->test->expectedOutput)) {
             $this->test->fail('Output "'.Arr::first($this->test->expectedOutput).'" was not printed.');
         }
+
+        if ($output = array_search(true, $this->test->unexpectedOutput)) {
+            $this->test->fail('Output "'.$output.'" was printed.');
+        }
     }
 
     /**
@@ -268,7 +349,7 @@ class PendingCommand
     protected function mockConsoleOutput()
     {
         $mock = Mockery::mock(OutputStyle::class.'[askQuestion]', [
-            (new ArrayInput($this->parameters)), $this->createABufferedOutputMock(),
+            new ArrayInput($this->parameters), $this->createABufferedOutputMock(),
         ]);
 
         foreach ($this->test->expectedQuestions as $i => $question) {
@@ -308,8 +389,6 @@ class PendingCommand
                 ->shouldAllowMockingProtectedMethods()
                 ->shouldIgnoreMissing();
 
-        $this->applyTableOutputExpectations($mock);
-
         foreach ($this->test->expectedOutput as $i => $output) {
             $mock->shouldReceive('doWrite')
                 ->once()
@@ -320,38 +399,31 @@ class PendingCommand
                 });
         }
 
+        foreach ($this->test->unexpectedOutput as $output => $displayed) {
+            $mock->shouldReceive('doWrite')
+                ->ordered()
+                ->with($output, Mockery::any())
+                ->andReturnUsing(function () use ($output) {
+                    $this->test->unexpectedOutput[$output] = true;
+                });
+        }
+
         return $mock;
     }
 
     /**
-     * Apply the output table expectations to the mock.
-	 * 将输出表期望应用于模拟
+     * Flush the expectations from the test case.
+	 * 从测试用例中清除期望
      *
-     * @param  \Mockery\MockInterface  $mock
      * @return void
      */
-    private function applyTableOutputExpectations($mock)
+    protected function flushExpectations()
     {
-        foreach ($this->test->expectedTables as $consoleTable) {
-            $table = (new Table($output = new BufferedOutput))
-                ->setHeaders($consoleTable['headers'])
-                ->setRows($consoleTable['rows'])
-                ->setStyle($consoleTable['tableStyle']);
-
-            foreach ($consoleTable['columnStyles'] as $columnIndex => $columnStyle) {
-                $table->setColumnStyle($columnIndex, $columnStyle);
-            }
-
-            $table->render();
-
-            $lines = array_filter(
-                preg_split("/\n/", $output->fetch())
-            );
-
-            foreach ($lines as $line) {
-                $this->expectsOutput($line);
-            }
-        }
+        $this->test->expectedOutput = [];
+        $this->test->unexpectedOutput = [];
+        $this->test->expectedTables = [];
+        $this->test->expectedQuestions = [];
+        $this->test->expectedChoices = [];
     }
 
     /**

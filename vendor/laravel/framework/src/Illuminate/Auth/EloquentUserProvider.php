@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，认证，Eloquent用户提供者
+ * Illuminate，认证，Eloquent 用户提供者
  */
 
 namespace Illuminate\Auth;
 
+use Closure;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
@@ -61,7 +62,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
-	 * 用它们唯一的标识符来检索用户,并"记住我"令牌。
+	 * 根据用户的唯一标识符和"记住我"令牌检索用户
      *
      * @param  mixed  $identifier
      * @param  string  $token
@@ -81,13 +82,12 @@ class EloquentUserProvider implements UserProvider
 
         $rememberToken = $retrievedModel->getRememberToken();
 
-        return $rememberToken && hash_equals($rememberToken, $token)
-                        ? $retrievedModel : null;
+        return $rememberToken && hash_equals($rememberToken, $token) ? $retrievedModel : null;
     }
 
     /**
      * Update the "remember me" token for the given user in storage.
-	 * 在存储中更新"记住我"的令牌
+	 * 更新存储中给定用户的"记住我"令牌
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable|\Illuminate\Database\Eloquent\Model  $user
      * @param  string  $token
@@ -124,8 +124,7 @@ class EloquentUserProvider implements UserProvider
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // Eloquent User "model" that will be utilized by the Guard instances.
-		// 首先,我们将每个凭据元素添加到查询中并作为where子句。
-		// 然后我们可以执行查询，如果我们找到了一个用户，就返回它Guard实例将使用的雄辩用户"模型"。
+		// 首先，我们将每个凭据元素作为where子句添加到查询中。
         $query = $this->newModelQuery();
 
         foreach ($credentials as $key => $value) {
@@ -135,6 +134,8 @@ class EloquentUserProvider implements UserProvider
 
             if (is_array($value) || $value instanceof Arrayable) {
                 $query->whereIn($key, $value);
+            } elseif ($value instanceof Closure) {
+                $value($query);
             } else {
                 $query->where($key, $value);
             }
@@ -159,7 +160,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Validate a user against the given credentials.
-	 * 验证一个用户对给定证书的验证
+	 * 根据给定的凭据验证用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  array  $credentials
@@ -174,7 +175,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Get a new query builder for the model instance.
-	 * 为模型实例获取一个新的查询生成器
+	 * 获取模型实例的新查询生成器
      *
      * @param  \Illuminate\Database\Eloquent\Model|null  $model
      * @return \Illuminate\Database\Eloquent\Builder
@@ -201,7 +202,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Gets the hasher implementation.
-	 * 得到哈希实现
+	 * 获取哈希实现
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */

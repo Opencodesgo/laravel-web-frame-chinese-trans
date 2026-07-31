@@ -51,7 +51,7 @@ class InstallCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行工作台命令
+	 * 执行控制台命令
      *
      * @return void
      */

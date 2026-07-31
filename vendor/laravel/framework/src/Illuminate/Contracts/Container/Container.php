@@ -22,6 +22,7 @@ interface Container extends ContainerInterface
     /**
      * Alias a type to a different name.
 	 * 将类型别名为不同的名称
+	 * 
      *
      * @param  string  $abstract
      * @param  string  $alias

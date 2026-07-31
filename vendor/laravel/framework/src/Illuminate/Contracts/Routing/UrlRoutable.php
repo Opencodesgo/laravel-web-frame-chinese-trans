@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，可路由的URL
+ * Illuminate，契约，路由，Url 可路由的
  */
 
 namespace Illuminate\Contracts\Routing;

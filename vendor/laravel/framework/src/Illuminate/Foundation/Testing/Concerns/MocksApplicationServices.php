@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，模拟应用程序服务
+ * Illuminate，基础，测试，问题，模拟应用服务
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -11,11 +11,14 @@ use Illuminate\Contracts\Notifications\Dispatcher as NotificationDispatcher;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
+/**
+ * @deprecated Will be removed in a future Laravel version.
+ */
 trait MocksApplicationServices
 {
     /**
      * All of the fired events.
-	 * 所有的点燃事件
+	 * 所有触发的事件
      *
      * @var array
      */
@@ -23,7 +26,7 @@ trait MocksApplicationServices
 
     /**
      * All of the fired model events.
-	 * 所有的被解雇的模型事件
+	 * 所有触发的模型事件
      *
      * @var array
      */
@@ -103,7 +106,7 @@ trait MocksApplicationServices
 
     /**
      * Mock the event dispatcher so all events are silenced and collected.
-	 * 模拟事件dispatcher，因此所有事件都被静默和收集。
+	 * 模拟事件调度程序，以便静默和收集所有事件。
      *
      * @return $this
      */
@@ -124,7 +127,7 @@ trait MocksApplicationServices
 
     /**
      * Filter the given events against the fired events.
-	 * 过滤给定的事件对被触发的事件
+	 * 根据触发的事件筛选给定的事件
      *
      * @param  array  $events
      * @return array
@@ -211,7 +214,7 @@ trait MocksApplicationServices
 
     /**
      * Filter the given jobs against the dispatched jobs.
-	 * 过滤给工作岗位的工作。
+	 * 根据分派的作业筛选给定的作业
      *
      * @param  array  $jobs
      * @return array
@@ -238,7 +241,7 @@ trait MocksApplicationServices
 
     /**
      * Check if the given class exists in an array of dispatched classes.
-	 * 检查给定类是否存在于发送类数组中
+	 * 检查给定的类是否存在于已分派类的数组中
      *
      * @param  string  $needle
      * @param  array  $haystack
@@ -258,7 +261,7 @@ trait MocksApplicationServices
 
     /**
      * Mock the notification dispatcher so all notifications are silenced.
-	 * 模拟通知调文器，以便所有通知被静默。
+	 * 模拟通知调度程序，使所有通知静默。
      *
      * @return $this
      */
@@ -279,7 +282,7 @@ trait MocksApplicationServices
 
     /**
      * Specify a notification that is expected to be dispatched.
-	 * 指定要发送的通知
+	 * 指定预期要发送的通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification

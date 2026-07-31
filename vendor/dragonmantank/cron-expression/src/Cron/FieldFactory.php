@@ -3,56 +3,55 @@
  * Cron，字段工厂
  */
 
+declare(strict_types=1);
+
 namespace Cron;
 
 use InvalidArgumentException;
 
 /**
- * CRON field factory implementing a flyweight factory
- * @link http://en.wikipedia.org/wiki/Cron
+ * CRON field factory implementing a flyweight factory.
+ * CRON现场工厂实施flyweight工厂
+ *
+ * @see http://en.wikipedia.org/wiki/Cron
  */
-class FieldFactory
+class FieldFactory implements FieldFactoryInterface
 {
     /**
      * @var array Cache of instantiated fields
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
-     * Get an instance of a field object for a cron expression position
-	 * 获取cron表达式位置的字段对象实例
+     * Get an instance of a field object for a cron expression position.
+	 * 为cron表达式位置获取字段对象的实例
      *
      * @param int $position CRON expression position value to retrieve
      *
-     * @return FieldInterface
      * @throws InvalidArgumentException if a position is not valid
      */
-    public function getField($position)
+    public function getField(int $position): FieldInterface
     {
-        if (!isset($this->fields[$position])) {
-            switch ($position) {
-                case 0:
-                    $this->fields[$position] = new MinutesField();
-                    break;
-                case 1:
-                    $this->fields[$position] = new HoursField();
-                    break;
-                case 2:
-                    $this->fields[$position] = new DayOfMonthField();
-                    break;
-                case 3:
-                    $this->fields[$position] = new MonthField();
-                    break;
-                case 4:
-                    $this->fields[$position] = new DayOfWeekField();
-                    break;
-                default:
-                    throw new InvalidArgumentException(
-                        ($position + 1) . ' is not a valid position'
-                    );
-            }
+        return $this->fields[$position] ?? $this->fields[$position] = $this->instantiateField($position);
+    }
+
+    private function instantiateField(int $position): FieldInterface
+    {
+        switch ($position) {
+            case CronExpression::MINUTE:
+                return new MinutesField();
+            case CronExpression::HOUR:
+                return new HoursField();
+            case CronExpression::DAY:
+                return new DayOfMonthField();
+            case CronExpression::MONTH:
+                return new MonthField();
+            case CronExpression::WEEKDAY:
+                return new DayOfWeekField();
         }
 
-        return $this->fields[$position];
+        throw new InvalidArgumentException(
+            ($position + 1) . ' is not a valid position'
+        );
     }
 }

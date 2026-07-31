@@ -11,7 +11,7 @@ class RouteGroup
 {
     /**
      * Merge route groups into a new array.
-	 * 合并路由组到新的数组中
+	 * 合并路由组合到一个新的数组中
      *
      * @param  array  $new
      * @param  array  $old
@@ -22,6 +22,10 @@ class RouteGroup
     {
         if (isset($new['domain'])) {
             unset($old['domain']);
+        }
+
+        if (isset($new['controller'])) {
+            unset($old['controller']);
         }
 
         $new = array_merge(static::formatAs($new, $old), [
@@ -65,7 +69,7 @@ class RouteGroup
      */
     protected static function formatPrefix($new, $old, $prependExistingPrefix = true)
     {
-        $old = $old['prefix'] ?? null;
+        $old = $old['prefix'] ?? '';
 
         if ($prependExistingPrefix) {
             return isset($new['prefix']) ? trim($old, '/').'/'.trim($new['prefix'], '/') : $old;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，queue:work 工作进程命令
+ * Illuminate，队列，控制台，queue:work 工作指令
  */
 
 namespace Illuminate\Queue\Console;
@@ -19,20 +19,25 @@ class WorkCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称 queue:work
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $signature = 'queue:work
                             {connection? : The name of the queue connection to work}
+                            {--name=default : The name of the worker}
                             {--queue= : The names of the queues to work}
                             {--daemon : Run the worker in daemon mode (Deprecated)}
                             {--once : Only process the next job on the queue}
                             {--stop-when-empty : Stop when the queue is empty}
-                            {--delay=0 : The number of seconds to delay failed jobs}
+                            {--delay=0 : The number of seconds to delay failed jobs (Deprecated)}
+                            {--backoff=0 : The number of seconds to wait before retrying a job that encountered an uncaught exception}
+                            {--max-jobs=0 : The number of jobs to process before stopping}
+                            {--max-time=0 : The maximum number of seconds the worker should run}
                             {--force : Force the worker to run even in maintenance mode}
                             {--memory=128 : The memory limit in megabytes}
                             {--sleep=3 : Number of seconds to sleep when no job is available}
+                            {--rest=0 : Number of seconds to rest between jobs}
                             {--timeout=60 : The number of seconds a child process can run}
                             {--tries=1 : Number of times to attempt a job before logging it failed}';
 
@@ -46,7 +51,7 @@ class WorkCommand extends Command
 
     /**
      * The queue worker instance.
-	 * 队列工作程序实例
+	 * 队列工作者实例
      *
      * @var \Illuminate\Queue\Worker
      */
@@ -78,9 +83,9 @@ class WorkCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
-     * @return void
+     * @return int|null
      */
     public function handle()
     {
@@ -91,7 +96,7 @@ class WorkCommand extends Command
         // We'll listen to the processed and failed events so we can write information
         // to the console as jobs are processed, which will let the developer watch
         // which jobs are coming through a queue and be informed on its progress.
-		// 我们将监听已处理和失败的事件，以便作业被处理时写入信息发送到控制台。
+		// 我们将监听已处理和失败的事件，所以我们可以写信息至处理作业时发送到控制台。
         $this->listenForEvents();
 
         $connection = $this->argument('connection')
@@ -100,29 +105,30 @@ class WorkCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要为在队列中设置的连接获得正确的队列配置文件。
+		// 我们需要为连接获得正确的队列，设置在应用程序的配置文件中。
         $queue = $this->getQueue($connection);
 
-        $this->runWorker(
+        return $this->runWorker(
             $connection, $queue
         );
     }
 
     /**
      * Run the worker instance.
-	 * 运行工作进程实例
+	 * 运行工作者实例
      *
      * @param  string  $connection
      * @param  string  $queue
-     * @return array
+     * @return int|null
      */
     protected function runWorker($connection, $queue)
     {
-        $this->worker->setCache($this->cache);
-
-        return $this->worker->{$this->option('once') ? 'runNextJob' : 'daemon'}(
-            $connection, $queue, $this->gatherWorkerOptions()
-        );
+        return $this->worker
+            ->setName($this->option('name'))
+            ->setCache($this->cache)
+            ->{$this->option('once') ? 'runNextJob' : 'daemon'}(
+                $connection, $queue, $this->gatherWorkerOptions()
+            );
     }
 
     /**
@@ -134,10 +140,17 @@ class WorkCommand extends Command
     protected function gatherWorkerOptions()
     {
         return new WorkerOptions(
-            $this->option('delay'), $this->option('memory'),
-            $this->option('timeout'), $this->option('sleep'),
-            $this->option('tries'), $this->option('force'),
-            $this->option('stop-when-empty')
+            $this->option('name'),
+            max($this->option('backoff'), $this->option('delay')),
+            $this->option('memory'),
+            $this->option('timeout'),
+            $this->option('sleep'),
+            $this->option('tries'),
+            $this->option('force'),
+            $this->option('stop-when-empty'),
+            $this->option('max-jobs'),
+            $this->option('max-time'),
+            $this->option('rest')
         );
     }
 
@@ -166,7 +179,7 @@ class WorkCommand extends Command
 
     /**
      * Write the status output for the queue worker.
-	 * 为队列工作进程写入状态输出
+	 * 为队列工作器写入状态输出
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  string  $status
@@ -186,7 +199,7 @@ class WorkCommand extends Command
 
     /**
      * Format the status output for the queue worker.
-	 * 格式化队列工作进程的状态输出
+	 * 格式化队列工作器的状态输出
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  string  $status
@@ -205,7 +218,7 @@ class WorkCommand extends Command
 
     /**
      * Store a failed job event.
-	 * 存储一个失败的任务事件
+	 * 存储失败的作业事件
      *
      * @param  \Illuminate\Queue\Events\JobFailed  $event
      * @return void
@@ -213,8 +226,10 @@ class WorkCommand extends Command
     protected function logFailedJob(JobFailed $event)
     {
         $this->laravel['queue.failer']->log(
-            $event->connectionName, $event->job->getQueue(),
-            $event->job->getRawBody(), $event->exception
+            $event->connectionName,
+            $event->job->getQueue(),
+            $event->job->getRawBody(),
+            $event->exception
         );
     }
 
@@ -234,7 +249,7 @@ class WorkCommand extends Command
 
     /**
      * Determine if the worker should run in maintenance mode.
-	 * 确定工人是否应该在维护模式下运行
+	 * 确定工作进程是否应该在维护模式下运行
      *
      * @return bool
      */

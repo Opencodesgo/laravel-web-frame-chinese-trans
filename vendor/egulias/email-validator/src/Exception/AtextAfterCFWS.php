@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，异常，Atext After CFWS
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

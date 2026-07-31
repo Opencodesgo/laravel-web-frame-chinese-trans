@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，问题，有上下文
+ */
 
 namespace Facade\FlareClient\Concerns;
 

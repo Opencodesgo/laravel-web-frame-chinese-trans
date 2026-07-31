@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，核心，日期时间
+ */
 
 namespace Faker\Core;
 
@@ -25,6 +28,7 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
 
     /**
      * Get the POSIX-timestamp of a DateTime, int or string.
+	 * 获取DateTime、int或string的posix时间戳。
      *
      * @param \DateTime|float|int|string $until
      *
@@ -45,6 +49,7 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
 
     /**
      * Get a DateTime created based on a POSIX-timestamp.
+	 * 获取基于posix时间戳创建的DateTime
      *
      * @param int $timestamp the UNIX / POSIX-compatible timestamp
      */
@@ -64,6 +69,7 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
 
     /**
      * Internal method to set the timezone on a DateTime object.
+	 * 在DateTime对象上设置时区的内部方法
      */
     private function setTimezone(\DateTime $dateTime, ?string $timezone): \DateTime
     {

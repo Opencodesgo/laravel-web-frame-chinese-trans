@@ -1,17 +1,20 @@
 <?php
 /**
- * Illuminate，支持，可穿线的
+ * Illuminate，支持，字符串 
  */
 
 namespace Illuminate\Support;
 
 use Closure;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\Tappable;
+use JsonSerializable;
 use Symfony\Component\VarDumper\VarDumper;
 
-class Stringable
+class Stringable implements JsonSerializable
 {
-    use Macroable;
+    use Conditionable, Macroable, Tappable;
 
     /**
      * The underlying string value.
@@ -94,6 +97,17 @@ class Stringable
     }
 
     /**
+     * Get the basename of the class path.
+	 * 获取类路径的基名
+     *
+     * @return static
+     */
+    public function classBasename()
+    {
+        return new static(class_basename($this->value));
+    }
+
+    /**
      * Get the portion of a string before the first occurrence of a given value.
 	 * 获取字符串第一次出现给定值之前的部分
      *
@@ -107,7 +121,7 @@ class Stringable
 
     /**
      * Get the portion of a string before the last occurrence of a given value.
-	 * 在给定值的最后一个出现之前获取字符串的部分
+	 * 获取字符串最后一次出现给定值之前的部分
      *
      * @param  string  $search
      * @return static
@@ -167,7 +181,7 @@ class Stringable
 
     /**
      * Get the parent directory's path.
-	 * 确定给定字符串是否包含所有数组值
+	 * 获取父目录的路径
      *
      * @param  int  $levels
      * @return static
@@ -215,16 +229,20 @@ class Stringable
     }
 
     /**
-     * Split a string using a regular expression.
-	 * 使用正则表达式拆分字符串
+     * Split a string using a regular expression or by length.
+	 * 使用正则表达式或按长度拆分字符串
      *
-     * @param  string  $pattern
+     * @param  string|int  $pattern
      * @param  int  $limit
      * @param  int  $flags
      * @return \Illuminate\Support\Collection
      */
     public function split($pattern, $limit = -1, $flags = 0)
     {
+        if (filter_var($pattern, FILTER_VALIDATE_INT) !== false) {
+            return collect(mb_str_split($this->value, $pattern));
+        }
+
         $segments = preg_split($pattern, $this->value, $limit, $flags);
 
         return ! empty($segments) ? collect($segments) : collect();
@@ -263,6 +281,17 @@ class Stringable
     public function isAscii()
     {
         return Str::isAscii($this->value);
+    }
+
+    /**
+     * Determine if a given string is a valid UUID.
+	 * 确定给定字符串是否是有效的UUID
+     *
+     * @return bool
+     */
+    public function isUuid()
+    {
+        return Str::isUuid($this->value);
     }
 
     /**
@@ -335,21 +364,42 @@ class Stringable
     }
 
     /**
+     * Convert GitHub flavored Markdown into HTML.
+	 * 将GitHub风味的Markdown转换为HTML
+     *
+     * @param  array  $options
+     * @return static
+     */
+    public function markdown(array $options = [])
+    {
+        return new static(Str::markdown($this->value, $options));
+    }
+
+    /**
+     * Masks a portion of a string with a repeated character.
+	 * 用重复字符掩码字符串的一部分
+     *
+     * @param  string  $character
+     * @param  int  $index
+     * @param  int|null  $length
+     * @param  string  $encoding
+     * @return static
+     */
+    public function mask($character, $index, $length = null, $encoding = 'UTF-8')
+    {
+        return new static(Str::mask($this->value, $character, $index, $length, $encoding));
+    }
+
+    /**
      * Get the string matching the given pattern.
 	 * 获取与给定模式匹配的字符串
      *
      * @param  string  $pattern
-     * @return static|null
+     * @return static
      */
     public function match($pattern)
     {
-        preg_match($pattern, $this->value, $matches);
-
-        if (! $matches) {
-            return new static;
-        }
-
-        return new static($matches[1] ?? $matches[0]);
+        return new static(Str::match($pattern, $this->value));
     }
 
     /**
@@ -361,13 +411,19 @@ class Stringable
      */
     public function matchAll($pattern)
     {
-        preg_match_all($pattern, $this->value, $matches);
+        return Str::matchAll($pattern, $this->value);
+    }
 
-        if (empty($matches[0])) {
-            return collect();
-        }
-
-        return collect($matches[1] ?? $matches[0]);
+    /**
+     * Determine if the string matches the given pattern.
+	 * 确定字符串是否与给定的模式匹配
+     *
+     * @param  string  $pattern
+     * @return bool
+     */
+    public function test($pattern)
+    {
+        return $this->match($pattern)->isNotEmpty();
     }
 
     /**
@@ -422,6 +478,18 @@ class Stringable
     }
 
     /**
+     * Call the given callback and return a new string.
+	 * 调用给定的回调函数并返回一个新字符串
+     *
+     * @param  callable  $callback
+     * @return static
+     */
+    public function pipe(callable $callback)
+    {
+        return new static(call_user_func($callback, $this));
+    }
+
+    /**
      * Get the plural form of an English word.
 	 * 了解英语单词的复数形式
      *
@@ -458,6 +526,42 @@ class Stringable
     }
 
     /**
+     * Remove any occurrence of the given string in the subject.
+	 * 删除主题中出现的任何给定字符串
+     *
+     * @param  string|array<string>  $search
+     * @param  bool  $caseSensitive
+     * @return static
+     */
+    public function remove($search, $caseSensitive = true)
+    {
+        return new static(Str::remove($search, $this->value, $caseSensitive));
+    }
+
+    /**
+     * Reverse the string.
+	 * 颠倒字符串顺序
+     *
+     * @return static
+     */
+    public function reverse()
+    {
+        return new static(Str::reverse($this->value));
+    }
+
+    /**
+     * Repeat the string.
+	 * 重复字符串
+     *
+     * @param  int  $times
+     * @return static
+     */
+    public function repeat(int $times)
+    {
+        return new static(Str::repeat($this->value, $times));
+    }
+
+    /**
      * Replace the given value in the given string.
 	 * 替换给定字符串中的给定值
      *
@@ -467,7 +571,7 @@ class Stringable
      */
     public function replace($search, $replace)
     {
-        return new static(str_replace($search, $replace, $this->value));
+        return new static(Str::replace($search, $replace, $this->value));
     }
 
     /**
@@ -511,7 +615,7 @@ class Stringable
 
     /**
      * Replace the patterns matching the given regular expression.
-	 * 替换匹配给定正则表达式的模式
+	 * 替换与给定正则表达式匹配的模式
      *
      * @param  string  $pattern
      * @param  \Closure|string  $replace
@@ -528,6 +632,18 @@ class Stringable
     }
 
     /**
+     * Parse input from a string to a collection, according to a format.
+	 * 根据格式将输入从字符串解析为集合
+     *
+     * @param  string  $format
+     * @return \Illuminate\Support\Collection
+     */
+    public function scan($format)
+    {
+        return collect(sscanf($this->value, $format));
+    }
+
+    /**
      * Begin a string with a single instance of a given value.
 	 * 以给定值的单个实例开始字符串
      *
@@ -537,6 +653,18 @@ class Stringable
     public function start($prefix)
     {
         return new static(Str::start($this->value, $prefix));
+    }
+
+    /**
+     * Strip HTML and PHP tags from the given string.
+	 * 从给定字符串中剥离HTML和PHP标记
+     *
+     * @param  string  $allowedTags
+     * @return static
+     */
+    public function stripTags($allowedTags = null)
+    {
+        return new static(strip_tags($this->value, $allowedTags));
     }
 
     /**
@@ -559,6 +687,17 @@ class Stringable
     public function title()
     {
         return new static(Str::title($this->value));
+    }
+
+    /**
+     * Convert the given string to title case for each word.
+	 * 将给定字符串转换为每个单词的标题大小写
+     *
+     * @return static
+     */
+    public function headline()
+    {
+        return new static(Str::headline($this->value));
     }
 
     /**
@@ -621,7 +760,7 @@ class Stringable
     }
 
     /**
-     * Returns the portion of string specified by the start and length parameters.
+     * Returns the portion of the string specified by the start and length parameters.
 	 * 返回由start和length参数指定的字符串部分
      *
      * @param  int  $start
@@ -644,7 +783,33 @@ class Stringable
      */
     public function substrCount($needle, $offset = null, $length = null)
     {
-        return Str::substrCount($this->value, $needle, $offset, $length);
+        return Str::substrCount($this->value, $needle, $offset ?? 0, $length);
+    }
+
+    /**
+     * Replace text within a portion of a string.
+	 * 替换字符串部分中的文本
+     *
+     * @param  string|array  $replace
+     * @param  array|int  $offset
+     * @param  array|int|null  $length
+     * @return static
+     */
+    public function substrReplace($replace, $offset = 0, $length = null)
+    {
+        return new static(Str::substrReplace($this->value, $replace, $offset, $length));
+    }
+
+    /**
+     * Swap multiple keywords in a string with other keywords.
+	 * 将字符串中的多个关键字与其他关键字交换
+     *
+     * @param  array  $map
+     * @return static
+     */
+    public function swap(array $map)
+    {
+        return new static(strtr($this->value, $map));
     }
 
     /**
@@ -695,23 +860,42 @@ class Stringable
     }
 
     /**
-     * Apply the callback's string changes if the given "value" is true.
-	 * 如果给定的"value"为真，则应用回调的字符串更改。
+     * Split a string by uppercase characters.
+	 * 按大写字符分割字符串
      *
-     * @param  mixed  $value
+     * @return \Illuminate\Support\Collection
+     */
+    public function ucsplit()
+    {
+        return collect(Str::ucsplit($this->value));
+    }
+
+    /**
+     * Execute the given callback if the string contains a given substring.
+	 * 如果字符串包含给定的子字符串，则执行给定的回调。
+     *
+     * @param  string|array  $needles
      * @param  callable  $callback
      * @param  callable|null  $default
-     * @return mixed|$this
+     * @return static
      */
-    public function when($value, $callback, $default = null)
+    public function whenContains($needles, $callback, $default = null)
     {
-        if ($value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
-        }
+        return $this->when($this->contains($needles), $callback, $default);
+    }
 
-        return $this;
+    /**
+     * Execute the given callback if the string contains all array values.
+	 * 如果字符串包含所有数组值，则执行给定的回调函数。
+     *
+     * @param  array  $needles
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenContainsAll(array $needles, $callback, $default = null)
+    {
+        return $this->when($this->containsAll($needles), $callback, $default);
     }
 
     /**
@@ -719,17 +903,121 @@ class Stringable
 	 * 如果字符串为空，则执行给定的回调函数。
      *
      * @param  callable  $callback
+     * @param  callable|null  $default
      * @return static
      */
-    public function whenEmpty($callback)
+    public function whenEmpty($callback, $default = null)
     {
-        if ($this->isEmpty()) {
-            $result = $callback($this);
+        return $this->when($this->isEmpty(), $callback, $default);
+    }
 
-            return is_null($result) ? $this : $result;
-        }
+    /**
+     * Execute the given callback if the string is not empty.
+	 * 如果字符串不为空，则执行给定的回调函数。
+     *
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenNotEmpty($callback, $default = null)
+    {
+        return $this->when($this->isNotEmpty(), $callback, $default);
+    }
 
-        return $this;
+    /**
+     * Execute the given callback if the string ends with a given substring.
+	 * 如果字符串以给定的子字符串结束，则执行给定的回调。
+     *
+     * @param  string|array  $needles
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenEndsWith($needles, $callback, $default = null)
+    {
+        return $this->when($this->endsWith($needles), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string is an exact match with the given value.
+	 * 如果字符串与给定值完全匹配，则执行给定的回调函数。
+     *
+     * @param  string  $value
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenExactly($value, $callback, $default = null)
+    {
+        return $this->when($this->exactly($value), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string matches a given pattern.
+	 * 如果字符串匹配给定的模式，则执行给定的回调。
+     *
+     * @param  string|array  $pattern
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenIs($pattern, $callback, $default = null)
+    {
+        return $this->when($this->is($pattern), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string is 7 bit ASCII.
+	 * 如果字符串是7位ASCII，则执行给定的回调。
+     *
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenIsAscii($callback, $default = null)
+    {
+        return $this->when($this->isAscii(), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string is a valid UUID.
+	 * 如果字符串是有效的UUID，则执行给定的回调。
+     *
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenIsUuid($callback, $default = null)
+    {
+        return $this->when($this->isUuid(), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string starts with a given substring.
+	 * 如果字符串以给定的子字符串开头，则执行给定的回调。
+     *
+     * @param  string|array  $needles
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenStartsWith($needles, $callback, $default = null)
+    {
+        return $this->when($this->startsWith($needles), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string matches the given pattern.
+	 * 如果字符串匹配给定的模式，则执行给定的回调。
+     *
+     * @param  string  $pattern
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenTest($pattern, $callback, $default = null)
+    {
+        return $this->when($this->test($pattern), $callback, $default);
     }
 
     /**
@@ -743,6 +1031,28 @@ class Stringable
     public function words($words = 100, $end = '...')
     {
         return new static(Str::words($this->value, $words, $end));
+    }
+
+    /**
+     * Get the number of words a string contains.
+	 * 获取字符串包含的单词数
+     *
+     * @return int
+     */
+    public function wordCount()
+    {
+        return str_word_count($this->value);
+    }
+
+    /**
+     * Convert the string into a `HtmlString` instance.
+	 * 将字符串转换为'HtmlString'实例。
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function toHtmlString()
+    {
+        return new HtmlString($this->value);
     }
 
     /**
@@ -762,13 +1072,25 @@ class Stringable
      * Dump the string and end the script.
 	 * 转储字符串并结束脚本
      *
-     * @return void
+     * @return never
      */
     public function dd()
     {
         $this->dump();
 
         exit(1);
+    }
+
+    /**
+     * Convert the object to a string when JSON encoded.
+	 * 在JSON编码时将对象转换为字符串
+     *
+     * @return string
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        return $this->__toString();
     }
 
     /**

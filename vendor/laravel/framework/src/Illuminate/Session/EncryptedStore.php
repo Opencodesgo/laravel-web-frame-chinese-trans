@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，加密存储
+ * Illuminate，Session，加密存储
  */
 
 namespace Illuminate\Session;

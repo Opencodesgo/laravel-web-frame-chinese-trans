@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GuzzleHttp，Client客户端
+ * GuzzleHttp，重定向中间件
  */
 
 namespace GuzzleHttp;
@@ -15,7 +14,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Request redirect middleware.
- * 请求重定向中间件
+ * 请求重定向中间件。
  *
  * Apply this middleware like other middleware using
  * {@see \GuzzleHttp\Middleware::redirect()}.
@@ -125,6 +124,7 @@ class RedirectMiddleware
 
     /**
      * Enable tracking on promise.
+	 * 启用跟踪承诺
      */
     private function withTracking(PromiseInterface $promise, string $uri, int $statusCode): PromiseInterface
     {
@@ -146,6 +146,7 @@ class RedirectMiddleware
 
     /**
      * Check for too many redirects.
+	 * 检查太多重定向
      *
      * @throws TooManyRedirectsException Too many redirects.
      */
@@ -212,6 +213,7 @@ class RedirectMiddleware
 
     /**
      * Set the appropriate URL on the request based on the location header.
+	 * 根据位置头设置请求的适当URL
      */
     private static function redirectUri(
         RequestInterface $request,

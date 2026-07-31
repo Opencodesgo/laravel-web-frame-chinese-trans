@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制器调度器
+ * Illuminate，路由，控制器调度台
  */
 
 namespace Illuminate\Routing;
@@ -22,7 +22,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Create a new controller dispatcher instance.
-	 * 创建新的控制器调度实例
+	 * 创建一个新的控制器调度程序实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void
@@ -34,7 +34,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Dispatch a request to a given controller and method.
-	 * 分派请求给给定的控制器和方法
+	 * 将请求分派给给定的控制器和方法
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller
@@ -47,7 +47,6 @@ class ControllerDispatcher implements ControllerDispatcherContract
             $route->parametersWithoutNulls(), $controller, $method
         );
 
-		// 通过路由找到的动作action在这里执行了
         if (method_exists($controller, 'callAction')) {
             return $controller->callAction($method, $parameters);
         }

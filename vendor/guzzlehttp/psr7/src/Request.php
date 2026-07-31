@@ -1,4 +1,7 @@
 <?php
+/**
+ * GuzzleHttp，Psr7，请求
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * PSR-7 request implementation.
+ * PSR-7 请求实现 
  */
 class Request implements RequestInterface
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，queue:failed 失败清单命令
+ * Illuminate，队列，控制台，queue:failed 列表失败命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -12,7 +12,7 @@ class ListFailedCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称 queue:failed
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class ListFailedCommand extends Command
      * The table headers for the command.
 	 * 命令的表头
      *
-     * @var array
+     * @var string[]
      */
     protected $headers = ['ID', 'Connection', 'Queue', 'Class', 'Failed At'];
 
@@ -51,7 +51,7 @@ class ListFailedCommand extends Command
 
     /**
      * Compile the failed jobs into a displayable format.
-	 * 编译失败的作业为可显示的格式
+	 * 将失败的作业编译为可显示的格式
      *
      * @return array
      */
@@ -75,14 +75,14 @@ class ListFailedCommand extends Command
     {
         $row = array_values(Arr::except($failed, ['payload', 'exception']));
 
-        array_splice($row, 3, 0, $this->extractJobName($failed['payload']));
+        array_splice($row, 3, 0, $this->extractJobName($failed['payload']) ?: '');
 
         return $row;
     }
 
     /**
      * Extract the failed job name from payload.
-	 * 从有效负载中提取失败的任务名称
+	 * 从有效负载中提取失败的作业名称
      *
      * @param  string  $payload
      * @return string|null
@@ -114,7 +114,7 @@ class ListFailedCommand extends Command
 
     /**
      * Display the failed jobs in the console.
-	 * 在控制台中显示失败的任务
+	 * 在控制台中显示失败的作业
      *
      * @param  array  $jobs
      * @return void

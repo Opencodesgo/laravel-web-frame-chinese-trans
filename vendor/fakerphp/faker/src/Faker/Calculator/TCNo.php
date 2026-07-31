@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，计算器，TC No
+ */
 
 namespace Faker\Calculator;
 
@@ -28,6 +31,7 @@ class TCNo
 
     /**
      * Checks whether a TCNo has a valid checksum
+	 * 检查TCNo是否有有效的校验和
      *
      * @param string $tcNo
      *
