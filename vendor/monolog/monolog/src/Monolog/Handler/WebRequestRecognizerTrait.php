@@ -1,0 +1,29 @@
+<?php declare(strict_types=1);
+
+/**
+ * Monolog，处理程序，Web 请求识别器特征
+ *
+
+/*
+ * This file is part of the Monolog package.
+ *
+ * (c) Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Monolog\Handler;
+
+trait WebRequestRecognizerTrait
+{
+    /**
+     * Checks if PHP's serving a web request
+	 * 检查PHP是否在提供web请求
+     * @return bool
+     */
+    protected function isWebRequest(): bool
+    {
+        return 'cli' !== \PHP_SAPI && 'phpdbg' !== \PHP_SAPI;
+    }
+}

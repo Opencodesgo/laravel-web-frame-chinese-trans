@@ -1,0 +1,25 @@
+<?php
+/**
+ * Symfony，Component，Process，异常，异常接口
+ */
+
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Symfony\Component\Process\Exception;
+
+/**
+ * Marker Interface for the Process Component.
+ * 流程组件的标记接口。
+ *
+ * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ */
+interface ExceptionInterface extends \Throwable
+{
+}

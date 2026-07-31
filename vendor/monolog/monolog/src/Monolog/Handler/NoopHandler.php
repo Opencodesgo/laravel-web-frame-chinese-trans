@@ -1,0 +1,45 @@
+<?php declare(strict_types=1);
+
+/**
+ * Monolog，处理程序，Noop 处理程序
+ *
+
+/*
+ * This file is part of the Monolog package.
+ *
+ * (c) Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Monolog\Handler;
+
+/**
+ * No-op
+ *
+ * This handler handles anything, but does nothing, and does not stop bubbling to the rest of the stack.
+ * This can be used for testing, or to disable a handler when overriding a configuration without
+ * influencing the rest of the stack.
+ * 此处理程序处理任何内容，但不执行任何操作，并且不会停止向堆栈的其余部分冒泡。
+ *
+ * @author Roel Harbers <roelharbers@gmail.com>
+ */
+class NoopHandler extends Handler
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function isHandling(array $record): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function handle(array $record): bool
+    {
+        return false;
+    }
+}

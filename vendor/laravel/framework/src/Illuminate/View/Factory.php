@@ -1,0 +1,665 @@
+<?php
+/**
+ * Illuminate，视图，工厂
+ */
+
+namespace Illuminate\View;
+
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\View\Factory as FactoryContract;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\View\Engines\EngineResolver;
+use InvalidArgumentException;
+
+class Factory implements FactoryContract
+{
+    use Macroable,
+        Concerns\ManagesComponents,
+        Concerns\ManagesEvents,
+        Concerns\ManagesLayouts,
+        Concerns\ManagesLoops,
+        Concerns\ManagesStacks,
+        Concerns\ManagesTranslations;
+
+    /**
+     * The engine implementation.
+	 * 引擎实现
+     *
+     * @var \Illuminate\View\Engines\EngineResolver
+     */
+    protected $engines;
+
+    /**
+     * The view finder implementation.
+	 * 取景器实现
+     *
+     * @var \Illuminate\View\ViewFinderInterface
+     */
+    protected $finder;
+
+    /**
+     * The event dispatcher instance.
+	 * 事件调度程序实例
+     *
+     * @var \Illuminate\Contracts\Events\Dispatcher
+     */
+    protected $events;
+
+    /**
+     * The IoC container instance.
+	 * IoC容器实例
+     *
+     * @var \Illuminate\Contracts\Container\Container
+     */
+    protected $container;
+
+    /**
+     * Data that should be available to all templates.
+	 * 应该对所有模板可用的数据
+     *
+     * @var array
+     */
+    protected $shared = [];
+
+    /**
+     * The extension to engine bindings.
+	 * 引擎绑定的扩展
+     *
+     * @var array
+     */
+    protected $extensions = [
+        'blade.php' => 'blade',
+        'php' => 'php',
+        'css' => 'file',
+        'html' => 'file',
+    ];
+
+    /**
+     * The view composer events.
+	 * 视图编写器事件
+     *
+     * @var array
+     */
+    protected $composers = [];
+
+    /**
+     * The number of active rendering operations.
+	 * 活动呈现操作的数量
+     *
+     * @var int
+     */
+    protected $renderCount = 0;
+
+    /**
+     * The "once" block IDs that have been rendered.
+	 * 已经渲染的"once"块id
+     *
+     * @var array
+     */
+    protected $renderedOnce = [];
+
+    /**
+     * Create a new view factory instance.
+	 * 创建一个新的视图工厂实例
+     *
+     * @param  \Illuminate\View\Engines\EngineResolver  $engines
+     * @param  \Illuminate\View\ViewFinderInterface  $finder
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function __construct(EngineResolver $engines, ViewFinderInterface $finder, Dispatcher $events)
+    {
+        $this->finder = $finder;
+        $this->events = $events;
+        $this->engines = $engines;
+
+        $this->share('__env', $this);
+    }
+
+    /**
+     * Get the evaluated view contents for the given view.
+	 * 获取给定视图的求值视图内容
+     *
+     * @param  string  $path
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function file($path, $data = [], $mergeData = [])
+    {
+        $data = array_merge($mergeData, $this->parseData($data));
+
+        return tap($this->viewInstance($path, $path, $data), function ($view) {
+            $this->callCreator($view);
+        });
+    }
+
+    /**
+     * Get the evaluated view contents for the given view.
+	 * 获取给定视图的求值视图内容
+     *
+     * @param  string  $view
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function make($view, $data = [], $mergeData = [])
+    {
+        $path = $this->finder->find(
+            $view = $this->normalizeName($view)
+        );
+
+        // Next, we will create the view instance and call the view creator for the view
+        // which can set any data, etc. Then we will return the view instance back to
+        // the caller for rendering or performing other view manipulations on this.
+		// 接下来，我们将创建视图实例并为视图调用视图创建器。
+        $data = array_merge($mergeData, $this->parseData($data));
+
+        return tap($this->viewInstance($view, $path, $data), function ($view) {
+            $this->callCreator($view);
+        });
+    }
+
+    /**
+     * Get the first view that actually exists from the given list.
+	 * 从给定列表中获取实际存在的第一个视图
+     *
+     * @param  array  $views
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $mergeData
+     * @return \Illuminate\Contracts\View\View
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function first(array $views, $data = [], $mergeData = [])
+    {
+        $view = Arr::first($views, function ($view) {
+            return $this->exists($view);
+        });
+
+        if (! $view) {
+            throw new InvalidArgumentException('None of the views in the given array exist.');
+        }
+
+        return $this->make($view, $data, $mergeData);
+    }
+
+    /**
+     * Get the rendered content of the view based on a given condition.
+	 * 根据给定条件获取视图的呈现内容
+     *
+     * @param  bool  $condition
+     * @param  string  $view
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $mergeData
+     * @return string
+     */
+    public function renderWhen($condition, $view, $data = [], $mergeData = [])
+    {
+        if (! $condition) {
+            return '';
+        }
+
+        return $this->make($view, $this->parseData($data), $mergeData)->render();
+    }
+
+    /**
+     * Get the rendered content of the view based on the negation of a given condition.
+	 * 根据给定条件的否定获取视图的呈现内容
+     *
+     * @param  bool  $condition
+     * @param  string  $view
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $mergeData
+     * @return string
+     */
+    public function renderUnless($condition, $view, $data = [], $mergeData = [])
+    {
+        return $this->renderWhen(! $condition, $view, $data, $mergeData);
+    }
+
+    /**
+     * Get the rendered contents of a partial from a loop.
+	 * 从循环中获取部分的渲染内容
+     *
+     * @param  string  $view
+     * @param  array  $data
+     * @param  string  $iterator
+     * @param  string  $empty
+     * @return string
+     */
+    public function renderEach($view, $data, $iterator, $empty = 'raw|')
+    {
+        $result = '';
+
+        // If is actually data in the array, we will loop through the data and append
+        // an instance of the partial view to the final result HTML passing in the
+        // iterated value of this data array, allowing the views to access them.
+		// 如果实际上是数组中的数据，则循环遍历数据并追加最终结果的分部视图的实例。
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $result .= $this->make(
+                    $view, ['key' => $key, $iterator => $value]
+                )->render();
+            }
+        }
+
+        // If there is no data in the array, we will render the contents of the empty
+        // view. Alternatively, the "empty view" could be a raw string that begins
+        // with "raw|" for convenience and to let this know that it is a string.
+		// 如果数组中没有数据，我们将呈现空数组的内容。
+        else {
+            $result = Str::startsWith($empty, 'raw|')
+                        ? substr($empty, 4)
+                        : $this->make($empty)->render();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Normalize a view name.
+	 * 规范化视图名称
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function normalizeName($name)
+    {
+        return ViewName::normalize($name);
+    }
+
+    /**
+     * Parse the given data into a raw array.
+	 * 将给定的数据解析为原始数组
+     *
+     * @param  mixed  $data
+     * @return array
+     */
+    protected function parseData($data)
+    {
+        return $data instanceof Arrayable ? $data->toArray() : $data;
+    }
+
+    /**
+     * Create a new view instance from the given arguments.
+	 * 根据给定的参数创建一个新的视图实例
+     *
+     * @param  string  $view
+     * @param  string  $path
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @return \Illuminate\Contracts\View\View
+     */
+    protected function viewInstance($view, $path, $data)
+    {
+        return new View($this, $this->getEngineFromPath($path), $view, $path, $data);
+    }
+
+    /**
+     * Determine if a given view exists.
+	 * 确定给定视图是否存在
+     *
+     * @param  string  $view
+     * @return bool
+     */
+    public function exists($view)
+    {
+        try {
+            $this->finder->find($view);
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the appropriate view engine for the given path.
+	 * 获取给定路径的适当视图引擎
+     *
+     * @param  string  $path
+     * @return \Illuminate\Contracts\View\Engine
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getEngineFromPath($path)
+    {
+        if (! $extension = $this->getExtension($path)) {
+            throw new InvalidArgumentException("Unrecognized extension in file: {$path}.");
+        }
+
+        $engine = $this->extensions[$extension];
+
+        return $this->engines->resolve($engine);
+    }
+
+    /**
+     * Get the extension used by the view file.
+	 * 获取视图文件使用的扩展名
+     *
+     * @param  string  $path
+     * @return string|null
+     */
+    protected function getExtension($path)
+    {
+        $extensions = array_keys($this->extensions);
+
+        return Arr::first($extensions, function ($value) use ($path) {
+            return Str::endsWith($path, '.'.$value);
+        });
+    }
+
+    /**
+     * Add a piece of shared data to the environment.
+	 * 向环境中添加一段共享数据
+     *
+     * @param  array|string  $key
+     * @param  mixed|null  $value
+     * @return mixed
+     */
+    public function share($key, $value = null)
+    {
+        $keys = is_array($key) ? $key : [$key => $value];
+
+        foreach ($keys as $key => $value) {
+            $this->shared[$key] = $value;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Increment the rendering counter.
+	 * 增加呈现计数器
+     *
+     * @return void
+     */
+    public function incrementRender()
+    {
+        $this->renderCount++;
+    }
+
+    /**
+     * Decrement the rendering counter.
+	 * 递减呈现计数器
+     *
+     * @return void
+     */
+    public function decrementRender()
+    {
+        $this->renderCount--;
+    }
+
+    /**
+     * Check if there are no active render operations.
+	 * 检查是否没有活动的渲染操作
+     *
+     * @return bool
+     */
+    public function doneRendering()
+    {
+        return $this->renderCount == 0;
+    }
+
+    /**
+     * Determine if the given once token has been rendered.
+	 * 确定给定的once标记是否已被呈现
+     *
+     * @param  string  $id
+     * @return bool
+     */
+    public function hasRenderedOnce(string $id)
+    {
+        return isset($this->renderedOnce[$id]);
+    }
+
+    /**
+     * Mark the given once token as having been rendered.
+	 * 将给定的一次标记标记为已呈现
+     *
+     * @param  string  $id
+     * @return void
+     */
+    public function markAsRenderedOnce(string $id)
+    {
+        $this->renderedOnce[$id] = true;
+    }
+
+    /**
+     * Add a location to the array of view locations.
+	 * 向视图位置数组添加一个位置
+     *
+     * @param  string  $location
+     * @return void
+     */
+    public function addLocation($location)
+    {
+        $this->finder->addLocation($location);
+    }
+
+    /**
+     * Add a new namespace to the loader.
+	 * 向加载器添加一个新的命名空间
+     *
+     * @param  string  $namespace
+     * @param  string|array  $hints
+     * @return $this
+     */
+    public function addNamespace($namespace, $hints)
+    {
+        $this->finder->addNamespace($namespace, $hints);
+
+        return $this;
+    }
+
+    /**
+     * Prepend a new namespace to the loader.
+	 * 向加载器添加一个新的命名空间
+     *
+     * @param  string  $namespace
+     * @param  string|array  $hints
+     * @return $this
+     */
+    public function prependNamespace($namespace, $hints)
+    {
+        $this->finder->prependNamespace($namespace, $hints);
+
+        return $this;
+    }
+
+    /**
+     * Replace the namespace hints for the given namespace.
+	 * 替换给定名称空间的名称空间提示
+     *
+     * @param  string  $namespace
+     * @param  string|array  $hints
+     * @return $this
+     */
+    public function replaceNamespace($namespace, $hints)
+    {
+        $this->finder->replaceNamespace($namespace, $hints);
+
+        return $this;
+    }
+
+    /**
+     * Register a valid view extension and its engine.
+	 * 注册一个有效的视图扩展及其引擎
+     *
+     * @param  string  $extension
+     * @param  string  $engine
+     * @param  \Closure|null  $resolver
+     * @return void
+     */
+    public function addExtension($extension, $engine, $resolver = null)
+    {
+        $this->finder->addExtension($extension);
+
+        if (isset($resolver)) {
+            $this->engines->register($engine, $resolver);
+        }
+
+        unset($this->extensions[$extension]);
+
+        $this->extensions = array_merge([$extension => $engine], $this->extensions);
+    }
+
+    /**
+     * Flush all of the factory state like sections and stacks.
+	 * 刷新所有工厂状态，如节和堆栈
+     *
+     * @return void
+     */
+    public function flushState()
+    {
+        $this->renderCount = 0;
+        $this->renderedOnce = [];
+
+        $this->flushSections();
+        $this->flushStacks();
+        $this->flushComponents();
+    }
+
+    /**
+     * Flush all of the section contents if done rendering.
+	 * 如果完成呈现，则刷新所有节内容
+     *
+     * @return void
+     */
+    public function flushStateIfDoneRendering()
+    {
+        if ($this->doneRendering()) {
+            $this->flushState();
+        }
+    }
+
+    /**
+     * Get the extension to engine bindings.
+	 * 获取引擎绑定的扩展
+     *
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * Get the engine resolver instance.
+	 * 获取引擎解析器实例
+     *
+     * @return \Illuminate\View\Engines\EngineResolver
+     */
+    public function getEngineResolver()
+    {
+        return $this->engines;
+    }
+
+    /**
+     * Get the view finder instance.
+	 * 获取取景器实例
+     *
+     * @return \Illuminate\View\ViewFinderInterface
+     */
+    public function getFinder()
+    {
+        return $this->finder;
+    }
+
+    /**
+     * Set the view finder instance.
+	 * 设置取景器实例
+     *
+     * @param  \Illuminate\View\ViewFinderInterface  $finder
+     * @return void
+     */
+    public function setFinder(ViewFinderInterface $finder)
+    {
+        $this->finder = $finder;
+    }
+
+    /**
+     * Flush the cache of views located by the finder.
+	 * 刷新查找器定位的视图的缓存
+     *
+     * @return void
+     */
+    public function flushFinderCache()
+    {
+        $this->getFinder()->flush();
+    }
+
+    /**
+     * Get the event dispatcher instance.
+	 * 获取事件调度程序实例
+     *
+     * @return \Illuminate\Contracts\Events\Dispatcher
+     */
+    public function getDispatcher()
+    {
+        return $this->events;
+    }
+
+    /**
+     * Set the event dispatcher instance.
+	 * 设置事件调度程序实例
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function setDispatcher(Dispatcher $events)
+    {
+        $this->events = $events;
+    }
+
+    /**
+     * Get the IoC container instance.
+	 * 获取IoC容器实例
+     *
+     * @return \Illuminate\Contracts\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set the IoC container instance.
+	 * 设置IoC容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return void
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * Get an item from the shared data.
+	 * 从共享数据中获取项
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function shared($key, $default = null)
+    {
+        return Arr::get($this->shared, $key, $default);
+    }
+
+    /**
+     * Get all of the shared data for the environment.
+	 * 获取环境的所有共享数据
+     *
+     * @return array
+     */
+    public function getShared()
+    {
+        return $this->shared;
+    }
+}

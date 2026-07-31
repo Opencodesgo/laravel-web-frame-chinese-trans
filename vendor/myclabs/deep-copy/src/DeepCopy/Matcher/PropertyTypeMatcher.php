@@ -1,0 +1,57 @@
+<?php
+/**
+ * DeepCopy，匹配程序，属性类型匹配器
+ */
+
+namespace DeepCopy\Matcher;
+
+use DeepCopy\Reflection\ReflectionHelper;
+use ReflectionException;
+
+/**
+ * Matches a property by its type.
+ * 按其类型匹配属性。
+ *
+ * It is recommended to use {@see DeepCopy\TypeFilter\TypeFilter} instead, as it applies on all occurrences
+ * of given type in copied context (eg. array elements), not just on object properties.
+ *
+ * @final
+ */
+class PropertyTypeMatcher implements Matcher
+{
+    /**
+     * @var string
+     */
+    private $propertyType;
+
+    /**
+     * @param string $propertyType Property type
+     */
+    public function __construct($propertyType)
+    {
+        $this->propertyType = $propertyType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matches($object, $property)
+    {
+        try {
+            $reflectionProperty = ReflectionHelper::getProperty($object, $property);
+        } catch (ReflectionException $exception) {
+            return false;
+        }
+
+        $reflectionProperty->setAccessible(true);
+
+        // Uninitialized properties (for PHP >7.4)
+		// 未初始化属性（适用于PHP >7.4）
+        if (method_exists($reflectionProperty, 'isInitialized') && !$reflectionProperty->isInitialized($object)) {
+            // null instanceof $this->propertyType
+            return false;
+        }
+
+        return $reflectionProperty->getValue($object) instanceof $this->propertyType;
+    }
+}

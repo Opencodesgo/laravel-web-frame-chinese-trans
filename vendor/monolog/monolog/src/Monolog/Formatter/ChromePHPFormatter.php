@@ -1,0 +1,90 @@
+<?php declare(strict_types=1);
+
+/**
+ * Monolog，Formatter，Chrome PHP 格式化
+ */
+
+/*
+ * This file is part of the Monolog package.
+ *
+ * (c) Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Monolog\Formatter;
+
+use Monolog\Logger;
+
+/**
+ * Formats a log message according to the ChromePHP array format
+ * 根据 ChromePHP数组格式格式化日志消息
+ *
+ * @author Christophe Coevoet <stof@notk.org>
+ */
+class ChromePHPFormatter implements FormatterInterface
+{
+    /**
+     * Translates Monolog log levels to Wildfire levels.
+	 * 把Monolog的水平转化为Wildfire的水平
+     *
+     * @var array<int, 'log'|'info'|'warn'|'error'>
+     */
+    private $logLevels = [
+        Logger::DEBUG     => 'log',
+        Logger::INFO      => 'info',
+        Logger::NOTICE    => 'info',
+        Logger::WARNING   => 'warn',
+        Logger::ERROR     => 'error',
+        Logger::CRITICAL  => 'error',
+        Logger::ALERT     => 'error',
+        Logger::EMERGENCY => 'error',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    public function format(array $record)
+    {
+        // Retrieve the line and file if set and remove them from the formatted extra
+		// 如果设置了行和文件，则检索它们，并将它们从格式化的extra中删除。
+        $backtrace = 'unknown';
+        if (isset($record['extra']['file'], $record['extra']['line'])) {
+            $backtrace = $record['extra']['file'].' : '.$record['extra']['line'];
+            unset($record['extra']['file'], $record['extra']['line']);
+        }
+
+        $message = ['message' => $record['message']];
+        if ($record['context']) {
+            $message['context'] = $record['context'];
+        }
+        if ($record['extra']) {
+            $message['extra'] = $record['extra'];
+        }
+        if (count($message) === 1) {
+            $message = reset($message);
+        }
+
+        return [
+            $record['channel'],
+            $message,
+            $backtrace,
+            $this->logLevels[$record['level']],
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function formatBatch(array $records)
+    {
+        $formatted = [];
+
+        foreach ($records as $record) {
+            $formatted[] = $this->format($record);
+        }
+
+        return $formatted;
+    }
+}

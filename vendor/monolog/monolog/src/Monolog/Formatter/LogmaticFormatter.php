@@ -1,0 +1,72 @@
+<?php declare(strict_types=1);
+
+/**
+ * Monolog，Formatter，Logmatic 格式化
+ */
+
+/*
+ * This file is part of the Monolog package.
+ *
+ * (c) Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Monolog\Formatter;
+
+/**
+ * Encodes message information into JSON in a format compatible with Logmatic.
+ * 以与 Logmatic兼容的格式将消息信息编码为JSON
+ *
+ * @author Julien Breux <julien.breux@gmail.com>
+ */
+class LogmaticFormatter extends JsonFormatter
+{
+    protected const MARKERS = ["sourcecode", "php"];
+
+    /**
+     * @var string
+     */
+    protected $hostname = '';
+
+    /**
+     * @var string
+     */
+    protected $appname = '';
+
+    public function setHostname(string $hostname): self
+    {
+        $this->hostname = $hostname;
+
+        return $this;
+    }
+
+    public function setAppname(string $appname): self
+    {
+        $this->appname = $appname;
+
+        return $this;
+    }
+
+    /**
+     * Appends the 'hostname' and 'appname' parameter for indexing by Logmatic.
+	 * 将“主机名”和“appname”参数附加为Logmatic索引。
+     *
+     * @see http://doc.logmatic.io/docs/basics-to-send-data
+     * @see \Monolog\Formatter\JsonFormatter::format()
+     */
+    public function format(array $record): string
+    {
+        if (!empty($this->hostname)) {
+            $record["hostname"] = $this->hostname;
+        }
+        if (!empty($this->appname)) {
+            $record["appname"] = $this->appname;
+        }
+
+        $record["@marker"] = static::MARKERS;
+
+        return parent::format($record);
+    }
+}
