@@ -1,0 +1,32 @@
+<?php
+/**
+ * Symfony，Component，Routing，请求上下文感知接口
+ */
+
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Symfony\Component\Routing;
+
+interface RequestContextAwareInterface
+{
+    /**
+     * Sets the request context.
+	 * 设置请求上下文
+     */
+    public function setContext(RequestContext $context);
+
+    /**
+     * Gets the request context.
+	 * 获取请求上下文
+     *
+     * @return RequestContext
+     */
+    public function getContext();
+}

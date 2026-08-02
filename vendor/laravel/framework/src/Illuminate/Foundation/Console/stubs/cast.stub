@@ -1,0 +1,41 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ */
+
+namespace DummyNamespace;
+
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+class DummyClass implements CastsAttributes
+{
+    /**
+     * Cast the given value.
+	 * 强制转换给定的值
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
+     * @return mixed
+     */
+    public function get($model, $key, $value, $attributes)
+    {
+        return $value;
+    }
+
+    /**
+     * Prepare the given value for storage.
+	 * 准备存储的给定值
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  array  $value
+     * @param  array  $attributes
+     * @return mixed
+     */
+    public function set($model, $key, $value, $attributes)
+    {
+        return $value;
+    }
+}

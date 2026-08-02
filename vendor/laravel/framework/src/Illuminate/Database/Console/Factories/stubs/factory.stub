@@ -1,0 +1,15 @@
+<?php
+/**
+ * Illuminate，数据库，工作台，工厂，需要根据实际修改
+ */
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use Faker\Generator as Faker;
+use {{ namespacedModel }};
+
+$factory->define({{ model }}::class, function (Faker $faker) {
+    return [
+        //
+    ];
+});

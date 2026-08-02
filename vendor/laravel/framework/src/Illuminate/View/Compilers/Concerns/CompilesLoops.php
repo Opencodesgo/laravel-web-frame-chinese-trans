@@ -1,0 +1,196 @@
+<?php
+/**
+ * Illuminate，视图，编译器，问题，编译循环
+ */
+
+namespace Illuminate\View\Compilers\Concerns;
+
+trait CompilesLoops
+{
+    /**
+     * Counter to keep track of nested forelse statements.
+	 * 计数器来跟踪嵌套的前句语句
+     *
+     * @var int
+     */
+    protected $forElseCounter = 0;
+
+    /**
+     * Compile the for-else statements into valid PHP.
+	 * 将for-else语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileForelse($expression)
+    {
+        $empty = '$__empty_'.++$this->forElseCounter;
+
+        preg_match('/\( *(.*) +as *(.*)\)$/is', $expression, $matches);
+
+        $iteratee = trim($matches[1]);
+
+        $iteration = trim($matches[2]);
+
+        $initLoop = "\$__currentLoopData = {$iteratee}; \$__env->addLoop(\$__currentLoopData);";
+
+        $iterateLoop = '$__env->incrementLoopIndices(); $loop = $__env->getLastLoop();';
+
+        return "<?php {$empty} = true; {$initLoop} foreach(\$__currentLoopData as {$iteration}): {$iterateLoop} {$empty} = false; ?>";
+    }
+
+    /**
+     * Compile the for-else-empty and empty statements into valid PHP.
+	 * 将for-else-empty和empty语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileEmpty($expression)
+    {
+        if ($expression) {
+            return "<?php if(empty{$expression}): ?>";
+        }
+
+        $empty = '$__empty_'.$this->forElseCounter--;
+
+        return "<?php endforeach; \$__env->popLoop(); \$loop = \$__env->getLastLoop(); if ({$empty}): ?>";
+    }
+
+    /**
+     * Compile the end-for-else statements into valid PHP.
+	 * 将end-for-else语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndforelse()
+    {
+        return '<?php endif; ?>';
+    }
+
+    /**
+     * Compile the end-empty statements into valid PHP.
+	 * 将end-empty语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndEmpty()
+    {
+        return '<?php endif; ?>';
+    }
+
+    /**
+     * Compile the for statements into valid PHP.
+	 * 将for语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileFor($expression)
+    {
+        return "<?php for{$expression}: ?>";
+    }
+
+    /**
+     * Compile the for-each statements into valid PHP.
+	 * 将for-each语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileForeach($expression)
+    {
+        preg_match('/\( *(.*) +as *(.*)\)$/is', $expression, $matches);
+
+        $iteratee = trim($matches[1]);
+
+        $iteration = trim($matches[2]);
+
+        $initLoop = "\$__currentLoopData = {$iteratee}; \$__env->addLoop(\$__currentLoopData);";
+
+        $iterateLoop = '$__env->incrementLoopIndices(); $loop = $__env->getLastLoop();';
+
+        return "<?php {$initLoop} foreach(\$__currentLoopData as {$iteration}): {$iterateLoop} ?>";
+    }
+
+    /**
+     * Compile the break statements into valid PHP.
+	 * 将break语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileBreak($expression)
+    {
+        if ($expression) {
+            preg_match('/\(\s*(-?\d+)\s*\)$/', $expression, $matches);
+
+            return $matches ? '<?php break '.max(1, $matches[1]).'; ?>' : "<?php if{$expression} break; ?>";
+        }
+
+        return '<?php break; ?>';
+    }
+
+    /**
+     * Compile the continue statements into valid PHP.
+	 * 将continue语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileContinue($expression)
+    {
+        if ($expression) {
+            preg_match('/\(\s*(-?\d+)\s*\)$/', $expression, $matches);
+
+            return $matches ? '<?php continue '.max(1, $matches[1]).'; ?>' : "<?php if{$expression} continue; ?>";
+        }
+
+        return '<?php continue; ?>';
+    }
+
+    /**
+     * Compile the end-for statements into valid PHP.
+	 * 将end-for语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndfor()
+    {
+        return '<?php endfor; ?>';
+    }
+
+    /**
+     * Compile the end-for-each statements into valid PHP.
+	 * 将end-for-each语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndforeach()
+    {
+        return '<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>';
+    }
+
+    /**
+     * Compile the while statements into valid PHP.
+	 * 将while语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileWhile($expression)
+    {
+        return "<?php while{$expression}: ?>";
+    }
+
+    /**
+     * Compile the end-while statements into valid PHP.
+	 * 将结束while语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndwhile()
+    {
+        return '<?php endwhile; ?>';
+    }
+}

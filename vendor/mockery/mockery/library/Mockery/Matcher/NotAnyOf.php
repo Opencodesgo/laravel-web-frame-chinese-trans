@@ -1,0 +1,49 @@
+<?php
+/**
+ * Mockery，匹配程序，Not Any Of
+ */
+
+/**
+ * Mockery (https://docs.mockery.io/)
+ *
+ * @copyright https://github.com/mockery/mockery/blob/HEAD/COPYRIGHT.md
+ * @license https://github.com/mockery/mockery/blob/HEAD/LICENSE BSD 3-Clause License
+ * @link https://github.com/mockery/mockery for the canonical source repository
+ */
+
+namespace Mockery\Matcher;
+
+class NotAnyOf extends MatcherAbstract
+{
+    /**
+     * Return a string representation of this Matcher
+	 * 返回此匹配器的字符串表示形式
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return '<AnyOf>';
+    }
+
+    /**
+     * Check if the actual value does not match the expected (in this
+     * case it's specifically NOT expected).
+     *
+     * @template TMixed
+     *
+     * @param TMixed $actual
+     *
+     * @return bool
+     */
+    public function match(&$actual)
+    {
+        foreach ($this->_expected as $exp) {
+            if ($actual === $exp || $actual == $exp) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}

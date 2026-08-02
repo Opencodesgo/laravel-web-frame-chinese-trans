@@ -1,0 +1,103 @@
+<?php
+/**
+ * Dotenv，结果，成功
+ */
+
+namespace Dotenv\Result;
+
+use PhpOption\None;
+use PhpOption\Some;
+
+/**
+ * @template T
+ * @template E
+ * @extends \Dotenv\Result\Result<T,E>
+ */
+class Success extends Result
+{
+    /**
+     * @var T
+     */
+    private $value;
+
+    /**
+     * Internal constructor for a success value.
+	 * 成功值的内部构造函数
+     *
+     * @param T $value
+     *
+     * @return void
+     */
+    private function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * Create a new error value.
+	 * 创建一个新的错误值
+     *
+     * @template S
+     *
+     * @param S $value
+     *
+     * @return \Dotenv\Result\Result<S,E>
+     */
+    public static function create($value)
+    {
+        return new self($value);
+    }
+
+    /**
+     * Get the success option value.
+	 * 获得成功的期权价值
+     *
+     * @return \PhpOption\Option<T>
+     */
+    public function success()
+    {
+        return Some::create($this->value);
+    }
+
+    /**
+     * Map over the success value.
+	 * 映射到成功值
+     *
+     * @template S
+     *
+     * @param callable(T):S $f
+     *
+     * @return \Dotenv\Result\Result<S,E>
+     */
+    public function mapSuccess(callable $f)
+    {
+        return self::create($f($this->value));
+    }
+
+    /**
+     * Get the error option value.
+	 * 获取错误选项值
+     *
+     * @return \PhpOption\Option<E>
+     */
+    public function error()
+    {
+        return None::create();
+    }
+
+    /**
+     * Map over the error value.
+	 * 映射到错误值
+     *
+     * @template F
+     *
+     * @param callable(E):F $f
+     *
+     * @return \Dotenv\Result\Result<T,F>
+     */
+    public function mapError(callable $f)
+    {
+        /** @var \Dotenv\Result\Result<T,F> */
+        return self::create($this->value);
+    }
+}

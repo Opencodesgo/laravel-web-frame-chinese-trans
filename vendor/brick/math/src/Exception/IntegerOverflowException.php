@@ -1,0 +1,31 @@
+<?php
+/**
+ * Brick，数学，异常，整数溢出异常
+ */
+
+declare(strict_types=1);
+
+namespace Brick\Math\Exception;
+
+use Brick\Math\BigInteger;
+
+/**
+ * Exception thrown when an integer overflow occurs.
+ * 当发生整数溢出时抛出异常。
+ */
+class IntegerOverflowException extends MathException
+{
+    /**
+     * @param BigInteger $value
+     *
+     * @return IntegerOverflowException
+     *
+     * @psalm-pure
+     */
+    public static function toIntOverflow(BigInteger $value) : IntegerOverflowException
+    {
+        $message = '%s is out of range %d to %d and cannot be represented as an integer.';
+
+        return new self(\sprintf($message, (string) $value, PHP_INT_MIN, PHP_INT_MAX));
+    }
+}

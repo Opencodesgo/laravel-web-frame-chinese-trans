@@ -1,0 +1,34 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ */
+
+namespace DummyNamespace;
+
+use NamespacedDummyUserModel;
+
+class DummyClass
+{
+    /**
+     * Create a new channel instance.
+	 * 创建通道实例 
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Authenticate the user's access to the channel.
+	 * 验证用户访问通道
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return array|bool
+     */
+    public function join(DummyUser $user)
+    {
+        //
+    }
+}

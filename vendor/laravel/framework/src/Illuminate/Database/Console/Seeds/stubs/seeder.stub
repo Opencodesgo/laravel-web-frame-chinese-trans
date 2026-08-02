@@ -1,0 +1,20 @@
+<?php
+/**
+ * Illuminate，数据库，播种机，播种机，根据实际需要修改
+ */
+
+use Illuminate\Database\Seeder;
+
+class {{ class }} extends Seeder
+{
+    /**
+     * Run the database seeds.
+	 * 运行数据库种子
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+    }
+}
