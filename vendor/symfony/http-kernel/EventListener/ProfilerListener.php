@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，分析器侦听器
+ * Symfony，Component，HttpKernel，事件监听器，分析器监听器
  */
 
 /*
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\Profiler\Profiler;
 
 /**
  * ProfilerListener collects data for the current request by listening to the kernel events.
- * ProfilerListener 通过侦听内核事件来收集当前请求的数据
+ * ProfilerListener通过侦听内核事件来收集当前请求的数据。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -66,6 +66,7 @@ class ProfilerListener implements EventSubscriberInterface
 
     /**
      * Handles the onKernelException event.
+	 * 处理onKernelException事件
      */
     public function onKernelException(ExceptionEvent $event)
     {
@@ -78,6 +79,7 @@ class ProfilerListener implements EventSubscriberInterface
 
     /**
      * Handles the onKernelResponse event.
+	 * 处理onKernelResponse事件
      */
     public function onKernelResponse(ResponseEvent $event)
     {

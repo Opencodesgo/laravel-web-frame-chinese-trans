@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，异常事件
+ * Symfony，Component，HttpKernel，事件，异常事件
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows to create a response for a thrown exception.
- * 允许为抛出的异常创建响应
+ * 允许为抛出的异常创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a

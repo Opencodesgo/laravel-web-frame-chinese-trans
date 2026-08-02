@@ -1,10 +1,15 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点
+ */
+
 namespace PhpParser;
 
 interface Node {
     /**
      * Gets the type of the node.
+	 * 获取节点的类型
      *
      * @psalm-return non-empty-string
      * @return string Type of the node
@@ -13,6 +18,7 @@ interface Node {
 
     /**
      * Gets the names of the sub nodes.
+	 * 获取子节点的名称
      *
      * @return string[] Names of sub nodes
      */
@@ -20,6 +26,7 @@ interface Node {
 
     /**
      * Gets line the node started in (alias of getStartLine).
+	 * 获取开始所在节点的行（getStartLine的别名）
      *
      * @return int Start line (or -1 if not available)
      * @phpstan-return -1|positive-int
@@ -30,6 +37,7 @@ interface Node {
 
     /**
      * Gets line the node started in.
+	 * 获取节点开始所在的行。
      *
      * Requires the 'startLine' attribute to be enabled in the lexer (enabled by default).
      *
@@ -40,6 +48,7 @@ interface Node {
 
     /**
      * Gets the line the node ended in.
+	 * 获取节点结束的行。
      *
      * Requires the 'endLine' attribute to be enabled in the lexer (enabled by default).
      *
@@ -50,6 +59,7 @@ interface Node {
 
     /**
      * Gets the token offset of the first token that is part of this node.
+	 * 获取作为此节点一部分的第一个令牌的令牌偏移量。
      *
      * The offset is an index into the array returned by Lexer::getTokens().
      *
@@ -61,6 +71,7 @@ interface Node {
 
     /**
      * Gets the token offset of the last token that is part of this node.
+	 * 获取作为此节点一部分的最后一个令牌的令牌偏移量。
      *
      * The offset is an index into the array returned by Lexer::getTokens().
      *
@@ -136,6 +147,7 @@ interface Node {
 
     /**
      * Returns all the attributes of this node.
+	 * 返回该节点的所有属性
      *
      * @return array<string, mixed>
      */
@@ -143,6 +155,7 @@ interface Node {
 
     /**
      * Replaces all the attributes of this node.
+	 * 替换该节点的所有属性
      *
      * @param array<string, mixed> $attributes
      */

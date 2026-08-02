@@ -5,14 +5,16 @@
 
 namespace Illuminate\Queue;
 
+use Illuminate\Contracts\Queue\ClearableQueue;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Database\Connection;
 use Illuminate\Queue\Jobs\DatabaseJob;
 use Illuminate\Queue\Jobs\DatabaseJobRecord;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use PDO;
 
-class DatabaseQueue extends Queue implements QueueContract
+class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 {
     /**
      * The database connection instance.
@@ -40,7 +42,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The expiration time of a job.
-	 * 任务超时时间，默认60秒
+	 * 作业的过期时间
      *
      * @var int|null
      */
@@ -54,19 +56,25 @@ class DatabaseQueue extends Queue implements QueueContract
      * @param  string  $table
      * @param  string  $default
      * @param  int  $retryAfter
+     * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(Connection $database, $table, $default = 'default', $retryAfter = 60)
+    public function __construct(Connection $database,
+                                $table,
+                                $default = 'default',
+                                $retryAfter = 60,
+                                $dispatchAfterCommit = false)
     {
         $this->table = $table;
         $this->default = $default;
         $this->database = $database;
         $this->retryAfter = $retryAfter;
+        $this->dispatchAfterCommit = $dispatchAfterCommit;
     }
 
     /**
      * Get the size of the queue.
-	 * 获取队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
@@ -89,9 +97,15 @@ class DatabaseQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushToDatabase($queue, $this->createPayload(
-            $job, $this->getQueue($queue), $data
-        ));
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $this->getQueue($queue), $data),
+            $queue,
+            null,
+            function ($payload, $queue) {
+                return $this->pushToDatabase($queue, $payload);
+            }
+        );
     }
 
     /**
@@ -120,9 +134,15 @@ class DatabaseQueue extends Queue implements QueueContract
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        return $this->pushToDatabase($queue, $this->createPayload(
-            $job, $this->getQueue($queue), $data
-        ), $delay);
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $this->getQueue($queue), $data),
+            $queue,
+            $delay,
+            function ($payload, $queue, $delay) {
+                return $this->pushToDatabase($queue, $payload, $delay);
+            }
+        );
     }
 
     /**
@@ -202,7 +222,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出
+	 * 将下一个作业从队列中弹出将下一个作业从队列中弹出
      *
      * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -222,7 +242,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the next available job for the queue.
-	 * 获取该队列的下一个可用作业
+	 * 得到该队列的下一个可用作业
      *
      * @param  string|null  $queue
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord|null
@@ -244,17 +264,23 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the lock required for popping the next job.
-	 * 获取弹出下一个任务所需的锁
+	 * 得到弹出下一个任务所需的锁
      *
      * @return string|bool
      */
     protected function getLockForPopping()
     {
         $databaseEngine = $this->database->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
-        $databaseVersion = $this->database->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
+        $databaseVersion = $this->database->getConfig('version') ?? $this->database->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
 
-        if ($databaseEngine == 'mysql' && ! strpos($databaseVersion, 'MariaDB') && version_compare($databaseVersion, '8.0.1', '>=') ||
-            $databaseEngine == 'pgsql' && version_compare($databaseVersion, '9.5', '>=')) {
+        if (Str::of($databaseVersion)->contains('MariaDB')) {
+            $databaseEngine = 'mariadb';
+            $databaseVersion = Str::before(Str::after($databaseVersion, '5.5.5-'), '-');
+        }
+
+        if (($databaseEngine === 'mysql' && version_compare($databaseVersion, '8.0.1', '>=')) ||
+            ($databaseEngine === 'mariadb' && version_compare($databaseVersion, '10.6.0', '>=')) ||
+            ($databaseEngine === 'pgsql' && version_compare($databaseVersion, '9.5', '>='))) {
             return 'FOR UPDATE SKIP LOCKED';
         }
 
@@ -328,7 +354,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Delete a reserved job from the queue.
-	 * 从队列中删除保留的任务
+	 * 从队列中删除保留的作业
      *
      * @param  string  $queue
      * @param  string  $id
@@ -346,8 +372,42 @@ class DatabaseQueue extends Queue implements QueueContract
     }
 
     /**
+     * Delete a reserved job from the reserved queue and release it.
+	 * 从预留队列中删除预留作业并释放
+     *
+     * @param  string  $queue
+     * @param  \Illuminate\Queue\Jobs\DatabaseJob  $job
+     * @param  int  $delay
+     * @return void
+     */
+    public function deleteAndRelease($queue, $job, $delay)
+    {
+        $this->database->transaction(function () use ($queue, $job, $delay) {
+            if ($this->database->table($this->table)->lockForUpdate()->find($job->getJobId())) {
+                $this->database->table($this->table)->where('id', $job->getJobId())->delete();
+            }
+
+            $this->release($queue, $job->getJobRecord(), $delay);
+        });
+    }
+
+    /**
+     * Delete all of the jobs from the queue.
+	 * 从队列中删除所有作业
+     *
+     * @param  string  $queue
+     * @return int
+     */
+    public function clear($queue)
+    {
+        return $this->database->table($this->table)
+                    ->where('queue', $this->getQueue($queue))
+                    ->delete();
+    }
+
+    /**
      * Get the queue or return the default.
-	 * 获取队列或返回默认值
+	 * 得到队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -359,7 +419,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying database instance.
-	 * 获取底层数据库实例
+	 * 得到底层数据库实例
      *
      * @return \Illuminate\Database\Connection
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，关注，与身份验证交互
+ * Illuminate，基础，测试，问题，与身份验证交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -14,12 +14,12 @@ trait InteractsWithAuthentication
 	 * 为应用程序设置当前登录的用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string|null  $driver
+     * @param  string|null  $guard
      * @return $this
      */
-    public function actingAs(UserContract $user, $driver = null)
+    public function actingAs(UserContract $user, $guard = null)
     {
-        return $this->be($user, $driver);
+        return $this->be($user, $guard);
     }
 
     /**
@@ -27,25 +27,25 @@ trait InteractsWithAuthentication
 	 * 为应用程序设置当前登录的用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string|null  $driver
+     * @param  string|null  $guard
      * @return $this
      */
-    public function be(UserContract $user, $driver = null)
+    public function be(UserContract $user, $guard = null)
     {
         if (isset($user->wasRecentlyCreated) && $user->wasRecentlyCreated) {
             $user->wasRecentlyCreated = false;
         }
 
-        $this->app['auth']->guard($driver)->setUser($user);
+        $this->app['auth']->guard($guard)->setUser($user);
 
-        $this->app['auth']->shouldUse($driver);
+        $this->app['auth']->shouldUse($guard);
 
         return $this;
     }
 
     /**
      * Assert that the user is authenticated.
-	 * 断言用户是经过身份验证的
+	 * 断言用户已经过身份验证
      *
      * @param  string|null  $guard
      * @return $this
@@ -59,7 +59,7 @@ trait InteractsWithAuthentication
 
     /**
      * Assert that the user is not authenticated.
-	 * 断言用户没有经过身份验证
+	 * 断言用户未经过身份验证
      *
      * @param  string|null  $guard
      * @return $this
@@ -73,7 +73,7 @@ trait InteractsWithAuthentication
 
     /**
      * Return true if the user is authenticated, false otherwise.
-	 * 如果用户被验证,则返回true,否则将错误
+	 * 如果用户通过身份验证，则返回true，否则返回false。
      *
      * @param  string|null  $guard
      * @return bool
@@ -85,7 +85,7 @@ trait InteractsWithAuthentication
 
     /**
      * Assert that the user is authenticated as the given user.
-	 * 断言用户是作为给定用户进行身份验证的
+	 * 断言用户被验证为给定的用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $guard
@@ -129,7 +129,7 @@ trait InteractsWithAuthentication
 
     /**
      * Assert that the given credentials are invalid.
-	 * 断言给定的凭证无效
+	 * 断言给定的凭据无效
      *
      * @param  array  $credentials
      * @param  string|null  $guard
@@ -146,7 +146,7 @@ trait InteractsWithAuthentication
 
     /**
      * Return true if the credentials are valid, false otherwise.
-	 * 如果凭证是有效的，则返回true，否则将错误。
+	 * 如果凭据有效则返回true，否则返回false。
      *
      * @param  array  $credentials
      * @param  string|null  $guard

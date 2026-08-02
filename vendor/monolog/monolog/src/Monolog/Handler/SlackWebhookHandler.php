@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，SlackWebhook 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Monolog\Handler\Slack\SlackRecord;
 
 /**
  * Sends notifications through Slack Webhooks
+ * 通过松弛的网络链接发送通知
  *
  * @author Haralan Dobrev <hkdobrev@gmail.com>
  * @see    https://api.slack.com/incoming-webhooks
@@ -26,12 +31,14 @@ class SlackWebhookHandler extends AbstractProcessingHandler
 {
     /**
      * Slack Webhook token
+	 * Slack Webhook令牌
      * @var string
      */
     private $webhookUrl;
 
     /**
      * Instance of the SlackRecord util class preparing data for Slack API.
+	 * 为Slack API准备数据的SlackRecord类的实例。
      * @var SlackRecord
      */
     private $slackRecord;

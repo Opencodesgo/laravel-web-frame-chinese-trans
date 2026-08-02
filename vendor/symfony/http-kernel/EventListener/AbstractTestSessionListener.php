@@ -26,7 +26,7 @@ trigger_deprecation('symfony/http-kernel', '5.4', '"%s" is deprecated use "%s" i
 
 /**
  * TestSessionListener.
- * 抽象测试会话监听器
+ * 测试会话监听器
  *
  * Saves session in test environment.
  *
@@ -117,6 +117,7 @@ abstract class AbstractTestSessionListener implements EventSubscriberInterface
 
     /**
      * Gets the session object.
+	 * 获取会话对象
      *
      * @return SessionInterface|null
      */

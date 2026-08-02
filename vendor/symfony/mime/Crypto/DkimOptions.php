@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，加密，Dkim 选项
+ * Symfony，Component，Mime，Crypto，Dkim 选择
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Mime\Crypto;
 
 /**
  * A helper providing autocompletion for available DkimSigner options.
+ * 为可用的DkimSigner选项提供自动完成的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，模拟阵列会话存储
+ * Symfony，Component，HttpFoundation，Session，储存，模拟阵列会话存储
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * MockArraySessionStorage mocks the session for unit tests.
- * MockArraySessionStorage 为单元测试模拟会话
+ * MockArraySessionStorage为单元测试模拟会话。
  *
  * No PHP session is actually started since a session can be initialized
  * and shutdown only once per PHP execution cycle.
@@ -219,6 +219,7 @@ class MockArraySessionStorage implements SessionStorageInterface
 
     /**
      * Gets the MetadataBag.
+	 * 获取元数据包
      *
      * @return MetadataBag
      */

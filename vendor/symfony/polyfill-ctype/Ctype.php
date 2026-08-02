@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Ctype，Ctype
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Polyfill\Ctype;
 
 /**
  * Ctype implementation through regex.
+ * 通过regex实现Ctype实现。
  *
  * @internal
  *
@@ -22,6 +26,7 @@ final class Ctype
 {
     /**
      * Returns TRUE if every character in text is either a letter or a digit, FALSE otherwise.
+	 * 如果文本中的每个字符都是字母或数字,则返回TRUE。
      *
      * @see https://php.net/ctype-alnum
      *
@@ -38,6 +43,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a letter, FALSE otherwise.
+	 * 如果文本中的每个字符都是字母,则返回TRUE。
      *
      * @see https://php.net/ctype-alpha
      *
@@ -54,6 +60,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a control character from the current locale, FALSE otherwise.
+	 * 如果文本中的每个字符都是来自当前语言环境的控制字符，则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-cntrl
      *
@@ -70,6 +77,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in the string text is a decimal digit, FALSE otherwise.
+	 * 如果字符串文本中的每个字符都是十进制数字则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-digit
      *
@@ -86,6 +94,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is printable and actually creates visible output (no white space), FALSE otherwise.
+	 * 如果文本中的每个字符都是可打印的并且实际上创建了可见的输出（没有空白），则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-graph
      *
@@ -102,6 +111,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a lowercase letter.
+	 * 如果文本中的每个字符都是小写字母，则返回TRUE。
      *
      * @see https://php.net/ctype-lower
      *
@@ -118,6 +128,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text will actually create output (including blanks). Returns FALSE if text contains control characters or characters that do not have any output or control function at all.
+	 * 如果文本中的每个字符都将实际创建输出（包括空白），则返回TRUE。如果文本包含控制字符或没有任何输出或控制功能的字符，则返回FALSE。
      *
      * @see https://php.net/ctype-print
      *
@@ -134,6 +145,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is printable, but neither letter, digit or blank, FALSE otherwise.
+	 * 如果文本中的每个字符都可打印，则返回TRUE，但不是字母、数字或空白，否则返回FALSE。
      *
      * @see https://php.net/ctype-punct
      *
@@ -150,6 +162,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text creates some sort of white space, FALSE otherwise. Besides the blank character this also includes tab, vertical tab, line feed, carriage return and form feed characters.
+	 * 如果文本中的每个字符都产生某种形式的空白，则返回TRUE，否则返回FALSE。除了空白字符，还包括制表符、垂直制表符、换行符、回车符和换行符。
      *
      * @see https://php.net/ctype-space
      *
@@ -166,6 +179,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is an uppercase letter.
+	 * 如果文本中的每个字符都是大写字母，则返回TRUE。
      *
      * @see https://php.net/ctype-upper
      *
@@ -198,6 +212,7 @@ final class Ctype
 
     /**
      * Converts integers to their char versions according to normal ctype behaviour, if needed.
+	 * 如果需要，根据正常的ctype行为将整数转换为其char版本。
      *
      * If an integer between -128 and 255 inclusive is provided,
      * it is interpreted as the ASCII value of a single character

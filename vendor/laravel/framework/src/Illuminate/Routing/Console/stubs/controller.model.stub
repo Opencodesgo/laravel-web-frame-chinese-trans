@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，路由，控制台，存根，需要根据实际修改
+ * Illuminate，路由，存根，控制器，需要根据实际修改
  */
 
 namespace {{ namespace }};
 
 use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use {{ namespacedRequests }}
 
 class {{ class }} extends Controller
 {
@@ -37,10 +37,10 @@ class {{ class }} extends Controller
      * Store a newly created resource in storage.
 	 * 将新创建的资源存储在存储器中
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \{{ namespacedStoreRequest }}  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store({{ storeRequest }} $request)
     {
         //
     }
@@ -73,18 +73,18 @@ class {{ class }} extends Controller
      * Update the specified resource in storage.
 	 * 更新存储中的指定资源
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \{{ namespacedUpdateRequest }}  $request
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, {{ model }} ${{ modelVariable }})
+    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-	 * 移除存储中的指定资源
+	 * 从存储中移除指定的资源
      *
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response

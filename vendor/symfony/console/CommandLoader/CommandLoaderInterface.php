@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，命令加载，命令加载接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ interface CommandLoaderInterface
 {
     /**
      * Loads a command.
+	 * 加载命令
      *
      * @return Command
      *
@@ -30,6 +34,7 @@ interface CommandLoaderInterface
 
     /**
      * Checks if a command exists.
+	 * 检查命令是否存在
      *
      * @return bool
      */

@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，工具，Xml
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -16,15 +21,16 @@ namespace League\CommonMark\Util;
 
 /**
  * Utility class for handling/generating XML and HTML
+ * 用于处理/生成XML和HTML的实用程序类
+ *
+ * @psalm-immutable
  */
 final class Xml
 {
     /**
-     * @param string $string
-     *
-     * @return string
+     * @psalm-pure
      */
-    public static function escape($string)
+    public static function escape(string $string): string
     {
         return \str_replace(['&', '<', '>', '"'], ['&amp;', '&lt;', '&gt;', '&quot;'], $string);
     }

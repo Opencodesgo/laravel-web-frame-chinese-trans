@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，表单元格
- *
+ * Symfony，Component，Console，助手，表单元格
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -46,6 +46,7 @@ class TableCell
 
     /**
      * Returns the cell value.
+	 * 返回单元格值
      *
      * @return string
      */
@@ -56,6 +57,7 @@ class TableCell
 
     /**
      * Gets number of colspan.
+	 * 获得colspan的数量
      *
      * @return int
      */
@@ -66,6 +68,7 @@ class TableCell
 
     /**
      * Gets number of rowspan.
+	 * 得到行张数
      *
      * @return int
      */

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，Assert
+ */
+
 /*
  * This file is part of PHPUnit.
  *

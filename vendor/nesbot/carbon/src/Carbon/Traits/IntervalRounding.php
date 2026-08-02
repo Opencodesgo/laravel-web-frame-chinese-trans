@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，修约间隔
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,6 +20,7 @@ use DateInterval;
 
 /**
  * Trait to call rounding methods to interval or the interval of a period.
+ * 属性将舍入方法调用到interval或一个周期的间隔。
  */
 trait IntervalRounding
 {

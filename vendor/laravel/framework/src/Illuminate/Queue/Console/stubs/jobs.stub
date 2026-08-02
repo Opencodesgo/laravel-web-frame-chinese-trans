@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，需要根据需要修改
+ * Illuminate，队列，控制台，存根，作业
  */
 
 use Illuminate\Database\Migrations\Migration;

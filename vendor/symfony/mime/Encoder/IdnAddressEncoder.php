@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，编码器，Idn 地址编码器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Mime\Encoder;
 
 /**
  * An IDN email address encoder.
+ * IDN电子邮件地址编码器。
  *
  * Encodes the domain part of an address using IDN. This is compatible will all
  * SMTP servers.

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部，相差
+ */
+
 namespace PhpParser\Internal;
 
 /**
@@ -17,6 +21,7 @@ class Differ {
 
     /**
      * Create differ over the given equality relation.
+	 * 创建不同于给定相等关系
      *
      * @param callable(T, T): bool $isEqual Equality relation
      */
@@ -26,6 +31,7 @@ class Differ {
 
     /**
      * Calculate diff (edit script) from $old to $new.
+	 * 计算diff（编辑脚本）从$old到$new
      *
      * @param T[] $old Original array
      * @param T[] $new New array

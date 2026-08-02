@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，载入程序，要求装载机
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -60,6 +63,7 @@ class RequireLoader implements Loader
 
     /**
      * Load the given mock definition
+	 * 加载给定的模拟定义
      *
      * @return void
      */

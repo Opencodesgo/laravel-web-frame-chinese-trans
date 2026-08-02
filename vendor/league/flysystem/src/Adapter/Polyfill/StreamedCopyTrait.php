@@ -11,6 +11,7 @@ trait StreamedCopyTrait
 {
     /**
      * Copy a file.
+	 * 复制文件
      *
      * @param string $path
      * @param string $newpath

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，EventDispatcher，调试，可跟踪事件调度员
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,6 +25,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Collects some data about event listeners.
+ * 收集一些关于事件侦听器的数据。
  *
  * This event dispatcher delegates the dispatching to another one.
  *
@@ -257,6 +261,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
 
     /**
      * Proxies all method calls to the original event dispatcher.
+	 * 代理所有方法调用原始事件调度器
      *
      * @param string $method    The method name
      * @param array  $arguments The method arguments
@@ -270,6 +275,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
 
     /**
      * Called before dispatching the event.
+	 * 在调度事件之前调用
      */
     protected function beforeDispatch(string $eventName, object $event)
     {
@@ -277,6 +283,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, ResetInterfa
 
     /**
      * Called after dispatching the event.
+	 * 在调度事件后调用
      */
     protected function afterDispatch(string $eventName, object $event)
     {

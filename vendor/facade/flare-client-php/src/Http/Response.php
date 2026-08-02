@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，Http，响应
+ */
 
 namespace Facade\FlareClient\Http;
 

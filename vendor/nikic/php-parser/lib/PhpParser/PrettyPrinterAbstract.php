@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，漂亮的打印机抽象
+ */
+
 namespace PhpParser;
 
 use PhpParser\Internal\DiffElem;
@@ -170,6 +174,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Creates a pretty printer instance using the given options.
+	 * 使用给定的选项创建漂亮的打印机实例。
      *
      * Supported options:
      *  * PhpVersion $phpVersion: The PHP version to target (default to PHP 7.4). This option
@@ -216,6 +221,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Reset pretty printing state.
+	 * 重置漂亮打印状态
      */
     protected function resetState(): void {
         $this->indentLevel = 0;
@@ -225,6 +231,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Set indentation level
+	 * 设置缩进水平
      *
      * @param int $level Level in number of spaces
      */
@@ -241,6 +248,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Increase indentation level.
+	 * 增加缩进水平
      */
     protected function indent(): void {
         $this->indentLevel += $this->indentWidth;
@@ -257,6 +265,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints an array of statements.
+	 * Pretty输出语句数组
      *
      * @param Node[] $stmts Array of statements
      *
@@ -271,6 +280,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints an expression.
+	 * Pretty打印了一个表达式
      *
      * @param Expr $node Expression node
      *
@@ -283,6 +293,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints a file of statements (includes the opening <?php tag if it is required).
+	 * Pretty打印语句文件(包括开头的<？PHP标记（如果需要）
      *
      * @param Node[] $stmts Array of statements
      *
@@ -307,6 +318,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Preprocesses the top-level nodes to initialize pretty printer state.
+	 * 预处理顶级节点以初始化漂亮的打印机状态。
      *
      * @param Node[] $nodes Array of nodes
      */
@@ -339,6 +351,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints an array of nodes (statements) and indents them optionally.
+	 * Pretty打印节点（语句）数组，并可选地缩进它们。
      *
      * @param Node[] $nodes Array of nodes
      * @param bool $indent Whether to indent the printed nodes
@@ -372,6 +385,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty-print an infix operation while taking precedence into account.
+	 * 美观地打印中缀操作，同时考虑优先级。
      *
      * @param string $class Node class of operator
      * @param Node $leftNode Left-hand side node
@@ -400,6 +414,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty-print a prefix operation while taking precedence into account.
+	 * 美观打印前缀操作，同时考虑优先级。
      *
      * @param string $class Node class of operator
      * @param string $operatorString String representation of the operator
@@ -430,6 +445,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty-print a postfix operation while taking precedence into account.
+	 * 美观地打印后缀操作，同时考虑优先级。
      *
      * @param string $class Node class of operator
      * @param string $operatorString String representation of the operator
@@ -456,6 +472,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints an array of nodes and implodes the printed values.
+	 * Pretty打印一个节点数组并内爆打印的值
      *
      * @param Node[] $nodes Array of Nodes to be printed
      * @param string $glue Character to implode with
@@ -477,6 +494,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints an array of nodes and implodes the printed values with commas.
+	 * Pretty打印一个节点数组，并用逗号分隔打印的值。
      *
      * @param Node[] $nodes Array of Nodes to be printed
      *
@@ -488,6 +506,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints a comma-separated list of nodes in multiline style, including comments.
+	 * Pretty以多行样式打印以逗号分隔的节点列表，包括注释。
      *
      * The result includes a leading newline and one level of indentation (same as pStmts).
      *
@@ -523,6 +542,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Prints reformatted text of the passed comments.
+	 * 打印传递的注释的重新格式化的文本
      *
      * @param Comment[] $comments List of comments
      *
@@ -540,6 +560,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Perform a format-preserving pretty print of an AST.
+	 * 执行AST的保持格式的漂亮打印。
      *
      * The format preservation is best effort. For some changes to the AST the formatting will not
      * be preserved (at least not locally).
@@ -587,6 +608,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints a node.
+	 * Pretty打印一个节点。
      *
      * This method also handles formatting preservation for nodes.
      *
@@ -765,6 +787,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Perform a format-preserving pretty print of an array.
+	 * 对数组执行保持格式的漂亮打印
      *
      * @param Node[] $nodes New nodes
      * @param Node[] $origNodes Original nodes
@@ -1025,6 +1048,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Print node with fixups.
+	 * 打印节点与固定。
      *
      * Fixups here refer to the addition of extra parentheses, braces or other characters, that
      * are required to preserve program semantics in a certain context (e.g. to maintain precedence
@@ -1112,6 +1136,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Appends to a string, ensuring whitespace between label characters.
+	 * 追加到字符串后，确保标签字符之间有空白。
      *
      * Example: "echo" and "$x" result in "echo$x", but "echo" and "x" result in "echo x".
      * Without safeAppend the result would be "echox", which does not preserve semantics.
@@ -1136,6 +1161,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether the LHS of a call must be wrapped in parenthesis.
+	 * 确定是否必须将调用的LHS包装在括号中
      *
      * @param Node $node LHS of a call
      *
@@ -1154,6 +1180,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether the LHS of an array/object operation must be wrapped in parentheses.
+	 * 确定是否必须将数组/对象操作的LHS包装在括号中
      *
      * @param Node $node LHS of dereferencing operation
      *
@@ -1167,6 +1194,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether the LHS of a static operation must be wrapped in parentheses.
+	 * 确定是否必须将静态操作的LHS包装在括号中
      *
      * @param Node $node LHS of dereferencing operation
      *
@@ -1212,6 +1240,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Print modifiers, including trailing whitespace.
+	 * 打印修饰符，包括尾随空格。
      *
      * @param int $modifiers Modifier mask to print
      *
@@ -1236,6 +1265,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determine whether a list of nodes uses multiline formatting.
+	 * 确定节点列表是否使用多行格式
      *
      * @param (Node|null)[] $nodes Node list
      *
@@ -1270,6 +1300,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Lazily initializes label char map.
+	 * 惰性初始化标签char映射。
      *
      * The label char map determines whether a certain character may occur in a label.
      */
@@ -1291,6 +1322,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Lazily initializes node list differ.
+	 * 惰性初始化节点列表不同。
      *
      * The node list differ is used to determine differences between two array subnodes.
      */
@@ -1399,6 +1431,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Lazily initializes the removal map.
+	 * 惰性地初始化移除映射。
      *
      * The removal map is used to determine which additional tokens should be removed when a
      * certain node is replaced by null.

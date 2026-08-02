@@ -21,7 +21,7 @@ class OutputStyle extends SymfonyStyle
 
     /**
      * Create a new Console OutputStyle instance.
-	 * 创建一个新的控制台 OutputStyle 实例
+	 * 创建新的控制台输出格式实例
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -76,5 +76,16 @@ class OutputStyle extends SymfonyStyle
     public function isDebug()
     {
         return $this->output->isDebug();
+    }
+
+    /**
+     * Get the underlying Symfony output implementation.
+	 * 获取底层Symfony输出实现
+     *
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }

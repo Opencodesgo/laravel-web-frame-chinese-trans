@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，问题帮助
- *
+ * Symfony，Component，Console，助手，问题助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -32,6 +32,7 @@ use function Symfony\Component\String\s;
 
 /**
  * The QuestionHelper class provides helpers to interact with the user.
+ * 问题助手类提供了与用户交互的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -47,6 +48,7 @@ class QuestionHelper extends Helper
 
     /**
      * Asks a question to the user.
+	 * 向用户提出一个问题
      *
      * @return mixed The user answer
      *
@@ -97,6 +99,7 @@ class QuestionHelper extends Helper
 
     /**
      * Prevents usage of stty.
+	 * 防止使用stty
      */
     public static function disableStty()
     {
@@ -105,6 +108,7 @@ class QuestionHelper extends Helper
 
     /**
      * Asks the question to the user.
+	 * 向用户提出问题
      *
      * @return mixed
      *
@@ -200,6 +204,7 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs the question prompt.
+	 * 输出问题提示
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
@@ -236,6 +241,7 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs an error message.
+	 * 输出错误消息
      */
     protected function writeError(OutputInterface $output, \Exception $error)
     {
@@ -250,6 +256,7 @@ class QuestionHelper extends Helper
 
     /**
      * Autocompletes a question.
+	 * 自动完成一个问题
      *
      * @param resource $inputStream
      */
@@ -413,6 +420,7 @@ class QuestionHelper extends Helper
 
     /**
      * Gets a hidden response from user.
+	 * 从用户那里得到一个隐藏的响应
      *
      * @param resource $inputStream The handler resource
      * @param bool     $trimmable   Is the answer trimmable
@@ -468,6 +476,7 @@ class QuestionHelper extends Helper
 
     /**
      * Validates an attempt.
+	 * 验证尝试。
      *
      * @param callable $interviewer A callable that will ask for a question and return the result
      *
@@ -511,6 +520,7 @@ class QuestionHelper extends Helper
 
     /**
      * Reads one or more lines of input and returns what is read.
+	 * 读取一个或多个输入行,并返回所读取的内容。
      *
      * @param resource $inputStream The handler resource
      * @param Question $question    The question being asked
@@ -545,6 +555,7 @@ class QuestionHelper extends Helper
 
     /**
      * Sets console I/O to the host code page.
+	 * 将控制台I / O设置为主机代码页
      *
      * @return int Previous code page in IBM/EBCDIC format
      */
@@ -562,6 +573,7 @@ class QuestionHelper extends Helper
 
     /**
      * Sets console I/O to the specified code page and converts the user input.
+	 * 将控制台I/O设置为指定的代码页并转换用户输入
      *
      * @param string|false $input
      *

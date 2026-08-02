@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，格式化，输出格式化
+ * Symfony，Component，Console，格式化程序，输出格式化程序
  */
 
 /*
@@ -20,7 +20,7 @@ use function Symfony\Component\String\b;
 
 /**
  * Formatter class for console output.
- * 用于控制台输出的格式化程序类
+ * 控制台输出的格式化程序类。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  * @author Roland Franssen <franssen.roland@gmail.com>
@@ -41,6 +41,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Escapes "<" and ">" special chars in given text.
+	 * 转义给定文本中的“<”和“>”特殊字符
      *
      * @return string
      */
@@ -53,6 +54,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Escapes trailing "\" in given text.
+	 * 转义给定文本中的尾随“\”
      *
      * @internal
      */
@@ -70,6 +72,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Initializes console output formatter.
+	 * 初始化控制台输出格式化程序
      *
      * @param OutputFormatterStyleInterface[] $styles Array of "name => FormatterStyle" instances
      */
@@ -202,6 +205,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Tries to create new style instance from string.
+	 * 尝试从字符串中创建新的样式实例
      */
     private function createStyleFromString(string $string): ?OutputFormatterStyleInterface
     {
@@ -241,6 +245,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Applies current style from stack to text, if must be applied.
+	 * 如果必须应用,将当前样式从堆栈中应用到文本。
      */
     private function applyCurrentStyle(string $text, string $current, int $width, int &$currentLineLength): string
     {

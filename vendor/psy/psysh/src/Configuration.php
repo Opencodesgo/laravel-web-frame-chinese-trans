@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，配置
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -30,6 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell configuration.
+ * Psy Shell配置
  */
 class Configuration
 {
@@ -134,6 +138,7 @@ class Configuration
 
     /**
      * Construct a Configuration instance.
+	 * 构造一个Configuration实例。
      *
      * Optionally, supply an array of configuration values to load.
      *
@@ -168,6 +173,7 @@ class Configuration
 
     /**
      * Construct a Configuration object from Symfony Console input.
+	 * 从Symfony Console输入构造一个Configuration对象。
      *
      * This is great for adding psysh-compatible command line options to framework- or app-specific
      * wrappers.
@@ -228,6 +234,7 @@ class Configuration
 
     /**
      * Get the desired config file from the given input.
+	 * 从给定的输入获取所需的配置文件。
      *
      * @return string|null config file path, or null if none is specified
      */
@@ -243,6 +250,7 @@ class Configuration
 
     /**
      * Get a boolean option from the given input.
+	 * 从给定的输入中获取一个布尔选项。
      *
      * This helper allows fallback for unbound and unvalidated input. It's not perfect--for example,
      * it can't deal with several short options squished together--but it's better than falling over
@@ -274,6 +282,7 @@ class Configuration
 
     /**
      * Get the desired verbosity from the given input.
+	 * 从给定的输入中获得所需的详细信息。
      *
      * This is a bit more complext than the other options parsers. It handles `--quiet` and
      * `--verbose`, along with their short aliases, and fancy things like `-vvv`.
@@ -345,6 +354,7 @@ class Configuration
 
     /**
      * Get a list of input options expected when initializing Configuration via input.
+	 * 获取通过输入初始化Configuration时期望的输入选项列表
      *
      * @see self::fromInput
      *
@@ -380,6 +390,7 @@ class Configuration
 
     /**
      * Initialize the configuration.
+	 * 初始化配置。
      *
      * This checks for the presence of Readline and Pcntl extensions.
      *
@@ -411,6 +422,7 @@ class Configuration
 
     /**
      * Get the current PsySH config file.
+	 * 获取当前的PsySH配置文件。
      *
      * If a `configFile` option was passed to the Configuration constructor,
      * this file will be returned. If not, all possible config directories will
@@ -443,6 +455,7 @@ class Configuration
 
     /**
      * Get the local PsySH config file.
+	 * 获取本地的PsySH配置文件。
      *
      * Searches for a project specific config file `.psysh.php` in the current
      * working directory.
@@ -460,6 +473,7 @@ class Configuration
 
     /**
      * Load configuration values from an array of options.
+	 * 从选项数组加载配置值
      *
      * @param array $options
      */
@@ -533,6 +547,7 @@ class Configuration
 
     /**
      * Set files to be included by default at the start of each shell session.
+	 * 设置在每个shell会话开始时默认包含的文件
      *
      * @param array $includes
      */
@@ -543,6 +558,7 @@ class Configuration
 
     /**
      * Get files to be included by default at the start of each shell session.
+	 * 获取在每个shell会话开始时默认包含的文件
      *
      * @return string[]
      */
@@ -553,6 +569,7 @@ class Configuration
 
     /**
      * Set the shell's config directory location.
+	 * 设置shell的配置目录位置
      *
      * @param string $dir
      */
@@ -569,6 +586,7 @@ class Configuration
 
     /**
      * Get the current configuration directory, if any is explicitly set.
+	 * 获取当前配置目录（如果显式设置了任何目录）
      *
      * @return string|null
      */
@@ -595,6 +613,7 @@ class Configuration
 
     /**
      * Get the current data directory, if any is explicitly set.
+	 * 获取当前数据目录（如果显式设置了任何目录）
      *
      * @return string|null
      */
@@ -605,6 +624,7 @@ class Configuration
 
     /**
      * Set the shell's temporary directory location.
+	 * 设置shell的临时目录位置
      *
      * @param string $dir
      */
@@ -621,6 +641,7 @@ class Configuration
 
     /**
      * Get the shell's temporary directory location.
+	 * 获取shell的临时目录位置
      *
      * Defaults to `/psysh` inside the system's temp dir unless explicitly
      * overridden.
@@ -644,6 +665,7 @@ class Configuration
 
     /**
      * Set the readline history file path.
+	 * 设置读行历史文件路径
      *
      * @param string $file
      */
@@ -654,6 +676,7 @@ class Configuration
 
     /**
      * Get the readline history file path.
+	 * 获取readline历史文件路径
      *
      * Defaults to `/history` inside the shell's base config dir unless
      * explicitly overridden.
@@ -688,6 +711,7 @@ class Configuration
 
     /**
      * Set the readline max history size.
+	 * 设置readline最大历史记录大小。
      *
      * @param int $value
      */
@@ -1006,6 +1030,7 @@ class Configuration
 
     /**
      * Check whether to use Unicode in PsySH specific output.
+	 * 检查是否在PsySH特定的输出中使用Unicode
      *
      * Note that this does not disable Unicode output in general, it just makes
      * it so PsySH won't output any itself.
@@ -1022,6 +1047,7 @@ class Configuration
 
     /**
      * Set the error logging level.
+	 * 设置错误日志级别
      *
      * @see self::errorLoggingLevel
      *
@@ -1038,6 +1064,7 @@ class Configuration
 
     /**
      * Get the current error logging level.
+	 * 获取当前的错误记录级别
      *
      * By default, PsySH will automatically log all errors, regardless of the
      * current `error_reporting` level.
@@ -1055,6 +1082,7 @@ class Configuration
 
     /**
      * Set a CodeCleaner service instance.
+	 * 设置codeccleaner服务实例
      *
      * @param CodeCleaner $cleaner
      */
@@ -1065,6 +1093,7 @@ class Configuration
 
     /**
      * Get a CodeCleaner service instance.
+	 * 获取一个codeccleaner服务实例
      *
      * If none has been explicitly defined, this will create a new instance.
      */
@@ -1079,6 +1108,7 @@ class Configuration
 
     /**
      * Enable or disable running PsySH without input validation.
+	 * 启用或禁用运行PsySH而不进行输入验证。
      *
      * You don't want this.
      */
@@ -1089,6 +1119,7 @@ class Configuration
 
     /**
      * Check whether to disable input validation.
+	 * 检查是否禁用输入验证
      */
     public function yolo(): bool
     {
@@ -1097,6 +1128,7 @@ class Configuration
 
     /**
      * Enable or disable tab completion.
+	 * 启用或禁用选项卡补全
      *
      * @param bool $useTabCompletion
      */
@@ -1119,6 +1151,7 @@ class Configuration
 
     /**
      * Check whether to use tab completion.
+	 * 检查是否使用制表符补全
      *
      * If `setUseTabCompletion` has been set to true, but readline is not
      * actually available, this will return false.
@@ -1142,6 +1175,7 @@ class Configuration
 
     /**
      * Set the Shell Output service.
+	 * 设置Shell Output服务
      *
      * @param ShellOutput $output
      */
@@ -1159,6 +1193,7 @@ class Configuration
 
     /**
      * Get a Shell Output service instance.
+	 * 获取Shell Output服务实例
      *
      * If none has been explicitly provided, this will create a new instance
      * with the configured verbosity and output pager supplied by self::getPager
@@ -1321,6 +1356,7 @@ class Configuration
 
     /**
      * Add tab completion matchers to the AutoCompleter.
+	 * 向AutoCompleter添加制表符补全匹配器
      *
      * This will buffer new matchers in the event that the Shell has not yet
      * been instantiated. This allows the user to specify matchers in their
@@ -1363,6 +1399,7 @@ class Configuration
 
     /**
      * Add commands to the Shell.
+	 * 向Shell添加命令。
      *
      * This will buffer new commands in the event that the Shell has not yet
      * been instantiated. This allows the user to specify commands in their
@@ -1734,6 +1771,7 @@ class Configuration
 
     /**
      * Set the current output Theme.
+	 * 设置当前输出主题
      *
      * @param Theme|string|array $theme Theme (or Theme config)
      */
@@ -1757,6 +1795,7 @@ class Configuration
 
     /**
      * Get the current output Theme.
+	 * 获取当前输出主题
      */
     public function theme(): Theme
     {
@@ -1801,6 +1840,7 @@ class Configuration
 
     /**
      * Internal method for applying output formatter style customization.
+	 * 用于应用输出格式化程序样式自定义的内部方法。
      *
      * This is called on initialization of the shell output, and again if the
      * formatter styles config is updated.
@@ -1826,6 +1866,7 @@ class Configuration
 
     /**
      * Get the configured output verbosity.
+	 * 获取配置的输出详细信息
      */
     public function verbosity(): string
     {
@@ -1834,6 +1875,7 @@ class Configuration
 
     /**
      * Set the shell output verbosity.
+	 * 设置shell输出的长度。
      *
      * Accepts OutputInterface verbosity constants.
      *
@@ -1900,6 +1942,7 @@ class Configuration
 
     /**
      * Guess whether shell output is piped.
+	 * 猜测shell输出是否通过管道传输。
      *
      * This is mostly useful for deciding whether to use non-decorated output.
      */
@@ -1914,6 +1957,7 @@ class Configuration
 
     /**
      * Guess whether an input or output stream is piped.
+	 * 猜测输入或输出流是管道化的
      *
      * @param resource|int $stream
      */

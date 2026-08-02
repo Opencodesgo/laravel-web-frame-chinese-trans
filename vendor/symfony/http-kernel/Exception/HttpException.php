@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，异常，异常
+ * Symfony，Component，HttpKernel，异常，Http 异常
  */
 
 /*
@@ -17,6 +17,7 @@ namespace Symfony\Component\HttpKernel\Exception;
 
 /**
  * HttpException.
+ * Http异常
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */

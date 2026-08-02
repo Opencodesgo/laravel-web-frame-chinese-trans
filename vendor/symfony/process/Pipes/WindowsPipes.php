@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Process，管道，Windows 管道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * WindowsPipes implementation uses temporary files as handles.
+ * windowsppipes实现使用临时文件作为句柄。
  *
  * @see https://bugs.php.net/51800
  * @see https://bugs.php.net/65650

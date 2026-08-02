@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，事件，文档预解析事件
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -11,19 +16,19 @@
 
 namespace League\CommonMark\Event;
 
-use League\CommonMark\Block\Element\Document;
 use League\CommonMark\Input\MarkdownInputInterface;
+use League\CommonMark\Node\Block\Document;
 
 /**
  * Event dispatched when the document is about to be parsed
+ * 即将解析文档时分派的事件
  */
 final class DocumentPreParsedEvent extends AbstractEvent
 {
-    /** @var Document */
-    private $document;
+    /** @psalm-readonly */
+    private Document $document;
 
-    /** @var MarkdownInputInterface */
-    private $markdown;
+    private MarkdownInputInterface $markdown;
 
     public function __construct(Document $document, MarkdownInputInterface $markdown)
     {

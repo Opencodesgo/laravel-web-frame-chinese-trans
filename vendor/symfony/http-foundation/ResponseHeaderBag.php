@@ -190,6 +190,7 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * Removes a cookie from the array, but does not unset it in the browser.
+	 * 从数组中删除cookie，但不会在浏览器中取消对它的设置。
      */
     public function removeCookie(string $name, ?string $path = '/', ?string $domain = null)
     {
@@ -244,6 +245,7 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * Clears a cookie in the browser.
+	 * 清除浏览器中的cookie
      */
     public function clearCookie(string $name, ?string $path = '/', ?string $domain = null, bool $secure = false, bool $httpOnly = true, ?string $sameSite = null)
     {
@@ -260,6 +262,7 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * Returns the calculated value of the cache-control header.
+	 * 返回缓存控制标头的计算值
      *
      * This considers several other headers and calculates or modifies the
      * cache-control header to a sensible, conservative value.

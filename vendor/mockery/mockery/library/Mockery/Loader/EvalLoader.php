@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，载入程序，Eval 装载机
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -18,6 +21,7 @@ class EvalLoader implements Loader
 {
     /**
      * Load the given mock definition
+	 * 加载给定的模拟定义
      *
      * @return void
      */

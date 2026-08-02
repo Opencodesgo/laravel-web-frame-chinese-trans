@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，格式化，输出格式化样式
+ * Symfony，Component，Console，格式化程序，输出格式化程序样式
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Color;
 
 /**
  * Formatter style class for defining styles.
- * 格式化器样式类，用于定义样式。
+ * 格式化样式类,用于定义样式。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -33,6 +33,7 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
 
     /**
      * Initializes output formatter style.
+	 * 初始化输出格式化程序样式
      *
      * @param string|null $foreground The style foreground color name
      * @param string|null $background The style background color name

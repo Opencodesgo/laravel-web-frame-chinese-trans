@@ -1,8 +1,10 @@
 <?php
+/**
+ * Symfony，Component，Routing，匹配程序，编译Url匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -17,7 +19,7 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * Matches URLs based on rules dumped by CompiledUrlMatcherDumper.
- * 根据CompiledUrlMatcherDumper转储的规则匹配url
+ * 根据CompiledUrlMatcherDumper转储的规则匹配url。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

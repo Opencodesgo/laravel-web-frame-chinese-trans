@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Sqs 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Utils;
 
 /**
  * Writes to any sqs queue.
+ * 写入任何sqs队列。
  *
  * @author Martijn van Calker <git@amvc.nl>
  */

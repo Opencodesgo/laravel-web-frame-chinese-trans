@@ -16,8 +16,8 @@ interface MigrationRepositoryInterface
     public function getRan();
 
     /**
-     * Get list of migrations.
-	 * 得到迁移列表
+     * Get the list of migrations.
+	 * 获取迁移列表
      *
      * @param  int  $steps
      * @return array
@@ -34,7 +34,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Get the completed migrations with their batch numbers.
-	 * 用他们的批号来完成已完成的迁移
+	 * 获取已完成的迁移及其批号
      *
      * @return array
      */
@@ -82,6 +82,14 @@ interface MigrationRepositoryInterface
      * @return bool
      */
     public function repositoryExists();
+
+    /**
+     * Delete the migration repository data store.
+	 * 删除迁移存储库数据存储
+     *
+     * @return void
+     */
+    public function deleteRepository();
 
     /**
      * Set the information source to gather data.

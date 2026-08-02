@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，输入数组
+ * Symfony，Component，Console，输入，Argv 输入
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * ArrayInput represents an input provided as an array.
+ * ArrayInput表示提供的输入作为数组。
  *
  * Usage:
  *
@@ -103,6 +104,7 @@ class ArrayInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
+	 * 返回args传递给命令的stringified表示
      *
      * @return string
      */
@@ -148,6 +150,7 @@ class ArrayInput extends Input
 
     /**
      * Adds a short option value.
+	 * 添加一个短期选项值
      *
      * @throws InvalidOptionException When option given doesn't exist
      */
@@ -162,6 +165,7 @@ class ArrayInput extends Input
 
     /**
      * Adds a long option value.
+	 * 增加一个长选项值
      *
      * @throws InvalidOptionException When option given doesn't exist
      * @throws InvalidOptionException When a required value is missing
@@ -196,6 +200,7 @@ class ArrayInput extends Input
 
     /**
      * Adds an argument value.
+	 * 添加一个参数值
      *
      * @param string|int $name  The argument name
      * @param mixed      $value The value for the argument

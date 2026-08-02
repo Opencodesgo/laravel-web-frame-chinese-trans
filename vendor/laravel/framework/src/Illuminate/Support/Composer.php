@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，Composer
+ * Illuminate，支持，作曲家
  */
 
 namespace Illuminate\Support;
@@ -46,7 +46,7 @@ class Composer
 	 * 重新生成Composer自动加载器文件
      *
      * @param  string|array  $extra
-     * @return void
+     * @return int
      */
     public function dumpAutoloads($extra = '')
     {
@@ -54,18 +54,18 @@ class Composer
 
         $command = array_merge($this->findComposer(), ['dump-autoload'], $extra);
 
-        $this->getProcess($command)->run();
+        return $this->getProcess($command)->run();
     }
 
     /**
      * Regenerate the optimized Composer autoloader files.
 	 * 重新生成优化的Composer自动加载器文件
      *
-     * @return void
+     * @return int
      */
     public function dumpOptimized()
     {
-        $this->dumpAutoloads('--optimize');
+        return $this->dumpAutoloads('--optimize');
     }
 
     /**
@@ -96,7 +96,7 @@ class Composer
 
     /**
      * Get a new Symfony process instance.
-	 * 获取一个新的Symfony流程实例
+	 * 得到一个新的Symfony流程实例
      *
      * @param  array  $command
      * @return \Symfony\Component\Process\Process

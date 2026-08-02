@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，处理者，Memcached 会话处理程序
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，Memcached 会话处理程序
  */
 
 /*
@@ -17,6 +17,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 /**
  * Memcached based session storage handler based on the Memcached class
  * provided by the PHP memcached extension.
+ * 基于Memcached类的会话存储处理程序。
  *
  * @see https://php.net/memcached
  *
@@ -129,7 +130,7 @@ class MemcachedSessionHandler extends AbstractSessionHandler
 
     /**
      * Return a Memcached instance.
-	 * 返回一个 Memcached 实例
+	 * 返回一个Memcached实例
      *
      * @return \Memcached
      */

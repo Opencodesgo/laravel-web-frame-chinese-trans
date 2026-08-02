@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，测试，约束，响应属性值相同
+ * Symfony，Component，HttpFoundation，测试，约束，请求属性值相同
  */
 
 /*

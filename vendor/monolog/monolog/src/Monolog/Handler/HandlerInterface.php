@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，处理程序接口
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Interface that all Monolog Handlers must implement
+ * 所有Monolog处理必须实现的接口
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -23,6 +28,7 @@ interface HandlerInterface
 {
     /**
      * Checks whether the given record will be handled by this handler.
+	 * 检查给定的记录是否由这个处理程序处理。
      *
      * This is mostly done for performance reasons, to avoid calling processors for nothing.
      *
@@ -40,6 +46,7 @@ interface HandlerInterface
 
     /**
      * Handles a record.
+	 * 处理一条记录。
      *
      * All records may be passed to this method, and the handler should discard
      * those that it does not want to handle.
@@ -58,6 +65,7 @@ interface HandlerInterface
 
     /**
      * Handles a set of records at once.
+	 * 一次处理一组记录
      *
      * @param array $records The records to handle (an array of record arrays)
      *
@@ -67,6 +75,7 @@ interface HandlerInterface
 
     /**
      * Closes the handler.
+	 * 关闭处理程序。
      *
      * Ends a log cycle and frees all resources used by the handler.
      *

@@ -1,7 +1,6 @@
 <?php
-
 /**
- * League，Flysystem，Filesystem文件系统核心类
+ * League，Flysystem，文件系统
  */
 
 namespace League\Flysystem;
@@ -32,7 +31,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Constructor.
-	 * 构造函数
+	 * 构造方法
      *
      * @param AdapterInterface $adapter
      * @param Config|array     $config
@@ -383,7 +382,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Assert a file is present.
-	 * 断言文件存在
+	 * 维护一个文件
      *
      * @param string $path path to file
      *
@@ -400,7 +399,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Assert a file is absent.
-	 * 断言文件不存在
+	 * 声明一个文件不在
      *
      * @param string $path path to file
      *

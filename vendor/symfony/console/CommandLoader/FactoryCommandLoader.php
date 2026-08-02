@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，命令加载，工厂命令加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * A simple command loader using factories to instantiate commands lazily.
+ * 一个简单的命令加载器，使用工厂惰性地实例化命令。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

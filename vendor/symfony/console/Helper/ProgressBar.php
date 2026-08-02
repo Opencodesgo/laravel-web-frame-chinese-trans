@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，进度条
- *
+ * Symfony，Component，Console，助手，进度条
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +23,7 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * The ProgressBar provides helpers to display progress output.
+ * ProgressBar提供帮助显示进度输出
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Chris Jones <leeked@gmail.com>
@@ -97,6 +98,7 @@ final class ProgressBar
 
     /**
      * Sets a placeholder formatter for a given name.
+	 * 为给定名称设置一个占位符格式器。
      *
      * This method also allow you to override an existing placeholder.
      *
@@ -114,6 +116,7 @@ final class ProgressBar
 
     /**
      * Gets the placeholder formatter for a given name.
+	 * 获取给定名称的占位符格式器
      *
      * @param string $name The placeholder name (including the delimiter char like %)
      */
@@ -128,6 +131,7 @@ final class ProgressBar
 
     /**
      * Sets a format for a given name.
+	 * 为给定名称设置格式。
      *
      * This method also allow you to override an existing format.
      *
@@ -145,6 +149,7 @@ final class ProgressBar
 
     /**
      * Gets the format for a given name.
+	 * 获取给定名称的格式
      *
      * @param string $name The format name
      */
@@ -159,6 +164,7 @@ final class ProgressBar
 
     /**
      * Associates a text with a named placeholder.
+	 * 将文本与指定的占位符关联起来。
      *
      * The text is displayed when the progress bar is rendered but only
      * when the corresponding placeholder is part of the custom format line
@@ -276,6 +282,7 @@ final class ProgressBar
 
     /**
      * Sets the redraw frequency.
+	 * 设置重绘频率
      *
      * @param int|null $freq The frequency in steps
      */
@@ -296,6 +303,7 @@ final class ProgressBar
 
     /**
      * Returns an iterator that will automatically update the progress bar when iterated.
+	 * 返回一个迭代器,它将在迭代时自动更新进度条
      *
      * @param int|null $max Number of steps to complete the bar (0 if indeterminate), if null it will be inferred from $iterable
      */
@@ -314,6 +322,7 @@ final class ProgressBar
 
     /**
      * Starts the progress output.
+	 * 启动进度输出
      *
      * @param int|null $max Number of steps to complete the bar (0 if indeterminate), null to leave unchanged
      */
@@ -332,6 +341,7 @@ final class ProgressBar
 
     /**
      * Advances the progress output X steps.
+	 * 推进进度输出X步
      *
      * @param int $step Number of steps to advance
      */
@@ -342,6 +352,7 @@ final class ProgressBar
 
     /**
      * Sets whether to overwrite the progressbar, false for new line.
+	 * 设置是否重写“进步”,假的新行。
      */
     public function setOverwrite(bool $overwrite)
     {
@@ -390,6 +401,7 @@ final class ProgressBar
 
     /**
      * Finishes the progress output.
+	 * 完成进度输出
      */
     public function finish(): void
     {
@@ -407,6 +419,7 @@ final class ProgressBar
 
     /**
      * Outputs the current progress string.
+	 * 输出当前的进度字符串
      */
     public function display(): void
     {
@@ -423,6 +436,7 @@ final class ProgressBar
 
     /**
      * Removes the progress bar from the current line.
+	 * 从当前行中删除进度条。
      *
      * This is useful if you wish to write some output
      * while a progress bar is running.
@@ -455,6 +469,7 @@ final class ProgressBar
 
     /**
      * Overwrites a previous message to the output.
+	 * 将前面的消息覆盖到输出中
      */
     private function overwrite(string $message): void
     {

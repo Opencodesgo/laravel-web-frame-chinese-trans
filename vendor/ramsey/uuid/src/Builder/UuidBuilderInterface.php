@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，建立者，Uuid 生成器接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -19,6 +22,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * A UUID builder builds instances of UuidInterface
+ * uuuid builder构建UuidInterface的实例
  *
  * @psalm-immutable
  */
@@ -26,6 +30,7 @@ interface UuidBuilderInterface
 {
     /**
      * Builds and returns a UuidInterface
+	 * 构建并返回UuidInterface
      *
      * @param CodecInterface $codec The codec to use for building this UuidInterface instance
      * @param string $bytes The byte string from which to construct a UUID

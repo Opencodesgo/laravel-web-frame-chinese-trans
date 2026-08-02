@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Url助手
+ * Symfony，Component，HttpFoundation，URL 帮助
  */
 
 /*

@@ -8,6 +8,7 @@ namespace Illuminate\Database;
 use Closure;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection as DoctrineConnection;
+use Doctrine\DBAL\Types\Type;
 use Exception;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Events\QueryExecuted;
@@ -24,6 +25,7 @@ use Illuminate\Support\Arr;
 use LogicException;
 use PDO;
 use PDOStatement;
+use RuntimeException;
 
 class Connection implements ConnectionInterface
 {
@@ -33,7 +35,7 @@ class Connection implements ConnectionInterface
 
     /**
      * The active PDO connection.
-	 * 活动的PDO连接
+	 * 活动PDO连接
      *
      * @var \PDO|\Closure
      */
@@ -54,6 +56,14 @@ class Connection implements ConnectionInterface
      * @var string
      */
     protected $database;
+
+    /**
+     * The type of the connection.
+	 * 连接的类型
+     *
+     * @var string|null
+     */
+    protected $readWriteType;
 
     /**
      * The table prefix for the connection.
@@ -128,12 +138,28 @@ class Connection implements ConnectionInterface
     protected $transactions = 0;
 
     /**
+     * The transaction manager instance.
+	 * 事务管理器实例
+     *
+     * @var \Illuminate\Database\DatabaseTransactionsManager
+     */
+    protected $transactionsManager;
+
+    /**
      * Indicates if changes have been made to the database.
 	 * 指示是否对数据库进行了更改
      *
-     * @var int
+     * @var bool
      */
     protected $recordsModified = false;
+
+    /**
+     * Indicates if the connection should use the "write" PDO connection.
+	 * 指示连接是否应该使用"write"PDO连接
+     *
+     * @var bool
+     */
+    protected $readOnWriteConnection = false;
 
     /**
      * All of the queries run against the connection.
@@ -160,12 +186,28 @@ class Connection implements ConnectionInterface
     protected $pretending = false;
 
     /**
+     * All of the callbacks that should be invoked before a query is executed.
+	 * 在执行查询之前应该调用的所有回调函数
+     *
+     * @var array
+     */
+    protected $beforeExecutingCallbacks = [];
+
+    /**
      * The instance of Doctrine connection.
-	 * 主义连接的实例
+	 * 声明连接实例
      *
      * @var \Doctrine\DBAL\Connection
      */
     protected $doctrineConnection;
+
+    /**
+     * Type mappings that should be registered with new Doctrine connections.
+	 * 应该用新的Doctrine连接注册的类型映射
+     *
+     * @var array
+     */
+    protected $doctrineTypeMappings = [];
 
     /**
      * The connection resolvers.
@@ -177,7 +219,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Create a new database connection instance.
-	 * 创建一个新的数据库连接实例。
+	 * 创建一个新的数据库连接实例
      *
      * @param  \PDO|\Closure  $pdo
      * @param  string  $database
@@ -202,7 +244,7 @@ class Connection implements ConnectionInterface
         // We need to initialize a query grammar and the query post processors
         // which are both very important parts of the database abstractions
         // so we initialize these to their default values while starting.
-		// 我们需要初始化查询语法和查询后置处理器
+		// 我们需要初始化查询语法和查询后置处理器。
         $this->useDefaultQueryGrammar();
 
         $this->useDefaultPostProcessor();
@@ -395,7 +437,7 @@ class Connection implements ConnectionInterface
             // First we will create a statement for the query. Then, we will set the fetch
             // mode and prepare the bindings for the query. Once that's done we will be
             // ready to execute the query against the database and return the cursor.
-			// 首先，我们将为查询创建一条语句。然后，我们将设置取回模式并为查询准备绑定。
+			// 首先，我们将为查询创建一条语句。
             $statement = $this->prepared($this->getPdoForSelect($useReadPdo)
                               ->prepare($query));
 
@@ -529,7 +571,7 @@ class Connection implements ConnectionInterface
             // For update or delete statements, we want to get the number of rows affected
             // by the statement and return that back to the developer. We'll first need
             // to execute the statement and then we'll use PDO to fetch the affected.
-			// 对于更新或删除语句，我们希望得到受影响的行数。
+			// 对于更新或删除语句，我们希望得到受影响的行数执行语句并将其返回给开发人员。
             $statement = $this->getPdo()->prepare($query);
 
             $this->bindValues($statement, $this->prepareBindings($bindings));
@@ -581,7 +623,7 @@ class Connection implements ConnectionInterface
             // Basically to make the database connection "pretend", we will just return
             // the default values for all the query methods, then we will return an
             // array of queries that were "executed" within the Closure callback.
-			// 基本上，为了使数据库连接“假装”，我们将返回所有查询方法的默认值。
+			// 基本上，为了使数据库连接"假装"，我们将返回所有查询方法的默认值。
             $callback($this);
 
             $this->pretending = false;
@@ -604,7 +646,7 @@ class Connection implements ConnectionInterface
         // First we will back up the value of the logging queries property and then
         // we'll be ready to run callbacks. This query log will also get cleared
         // so we will have a new log of all the queries that are executed now.
-		// 首先，我们将备份日志查询属性的值，然后我们将准备运行回调。
+		// 首先，我们将备份日志查询属性的值，然后我们将准备运行回调。此查询日志也将被清除。
         $this->enableQueryLog();
 
         $this->queryLog = [];
@@ -641,7 +683,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Prepare the query bindings for execution.
-	 * 准备执行的查询绑定
+	 * 准备执行查询绑定
      *
      * @param  array  $bindings
      * @return array
@@ -654,7 +696,7 @@ class Connection implements ConnectionInterface
             // We need to transform all instances of DateTimeInterface into the actual
             // date string. Each query grammar maintains its own date string format
             // so we'll just ask the grammar for the format to get from the date.
-			// 我们需要将DateTimeInterface的所有实例转换为实际的单据日期。
+			// 我们需要将DateTimeInterface的所有实例转换为实际的。
             if ($value instanceof DateTimeInterface) {
                 $bindings[$key] = $value->format($grammar->getDateFormat());
             } elseif (is_bool($value)) {
@@ -678,6 +720,10 @@ class Connection implements ConnectionInterface
      */
     protected function run($query, $bindings, Closure $callback)
     {
+        foreach ($this->beforeExecutingCallbacks as $beforeExecutingCallback) {
+            $beforeExecutingCallback($query, $bindings, $this);
+        }
+
         $this->reconnectIfMissingConnection();
 
         $start = microtime(true);
@@ -685,7 +731,7 @@ class Connection implements ConnectionInterface
         // Here we will run this query. If an exception occurs we'll determine if it was
         // caused by a connection that has been lost. If that is the cause, we'll try
         // to re-establish connection and re-run the query with a fresh connection.
-		// 这里我们将运行这个查询。如果出现异常，我们将确定它是否存在。
+		// 这里我们将运行这个查询。
         try {
             $result = $this->runQueryCallback($query, $bindings, $callback);
         } catch (QueryException $e) {
@@ -697,7 +743,8 @@ class Connection implements ConnectionInterface
         // Once we have run the query we will calculate the time that it took to run and
         // then log the query, bindings, and execution time so we will report them on
         // the event that the developer needs them. We'll log time in milliseconds.
-		// 一旦我们运行了查询，我们将计算运行和所花费的时间。
+		// 一旦我们运行了查询，我们将计算运行和所花费的时间然后记录查询、绑定和执行时间，以便我们报告它们开发者需要它们的事件。
+		// 我们以毫秒为单位记录时间。
         $this->logQuery(
             $query, $bindings, $this->getElapsedTime($start)
         );
@@ -721,9 +768,9 @@ class Connection implements ConnectionInterface
         // To execute the statement, we'll simply call the callback, which will actually
         // run the SQL against the PDO connection. Then we can calculate the time it
         // took to execute and log the query SQL, bindings and time in our memory.
-		// 要执行语句，我们只需调用回调函数，
+		// 要执行语句，我们只需调用回调函数，它实际上会针对PDO连接运行SQL。
         try {
-            $result = $callback($query, $bindings);
+            return $callback($query, $bindings);
         }
 
         // If an exception occurs when attempting to run a query, we'll format the error
@@ -735,8 +782,6 @@ class Connection implements ConnectionInterface
                 $query, $this->prepareBindings($bindings), $e
             );
         }
-
-        return $result;
     }
 
     /**
@@ -856,11 +901,27 @@ class Connection implements ConnectionInterface
     public function disconnect()
     {
         $this->setPdo(null)->setReadPdo(null);
+
+        $this->doctrineConnection = null;
+    }
+
+    /**
+     * Register a hook to be run just before a database query is executed.
+	 * 注册一个钩子，以便在执行数据库查询之前运行。
+     *
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function beforeExecuting(Closure $callback)
+    {
+        $this->beforeExecutingCallbacks[] = $callback;
+
+        return $this;
     }
 
     /**
      * Register a database query listener with the connection.
-	 * 向连接注册数据库查询侦听器
+	 * 向连接注册数据库查询监听器
      *
      * @param  \Closure  $callback
      * @return void
@@ -922,6 +983,17 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Determine if the database connection has modified any database records.
+	 * 确定数据库连接是否修改了任何数据库记录
+     *
+     * @return bool
+     */
+    public function hasModifiedRecords()
+    {
+        return $this->recordsModified;
+    }
+
+    /**
      * Indicate if any records have been modified.
 	 * 说明是否有任何记录被修改
      *
@@ -933,6 +1005,45 @@ class Connection implements ConnectionInterface
         if (! $this->recordsModified) {
             $this->recordsModified = $value;
         }
+    }
+
+    /**
+     * Set the record modification state.
+	 * 设置记录修改状态
+     *
+     * @param  bool  $value
+     * @return $this
+     */
+    public function setRecordModificationState(bool $value)
+    {
+        $this->recordsModified = $value;
+
+        return $this;
+    }
+
+    /**
+     * Reset the record modification state.
+	 * 重置记录修改状态
+     *
+     * @return void
+     */
+    public function forgetRecordModificationState()
+    {
+        $this->recordsModified = false;
+    }
+
+    /**
+     * Indicate that the connection should use the write PDO connection for reads.
+	 * 指示该连接应该使用写PDO连接进行读操作
+     *
+     * @param  bool  $value
+     * @return $this
+     */
+    public function useWriteConnectionWhenReading($value = true)
+    {
+        $this->readOnWriteConnection = $value;
+
+        return $this;
     }
 
     /**
@@ -969,7 +1080,13 @@ class Connection implements ConnectionInterface
      */
     public function getDoctrineSchemaManager()
     {
-        return $this->getDoctrineDriver()->getSchemaManager($this->getDoctrineConnection());
+        $connection = $this->getDoctrineConnection();
+
+        // Doctrine v2 expects one parameter while v3 expects two. 2nd will be ignored on v2...
+        return $this->getDoctrineDriver()->getSchemaManager(
+            $connection,
+            $connection->getDatabasePlatform()
+        );
     }
 
     /**
@@ -986,12 +1103,45 @@ class Connection implements ConnectionInterface
             $this->doctrineConnection = new DoctrineConnection(array_filter([
                 'pdo' => $this->getPdo(),
                 'dbname' => $this->getDatabaseName(),
-                'driver' => $driver->getName(),
+                'driver' => method_exists($driver, 'getName') ? $driver->getName() : null,
                 'serverVersion' => $this->getConfig('server_version'),
             ]), $driver);
+
+            foreach ($this->doctrineTypeMappings as $name => $type) {
+                $this->doctrineConnection
+                    ->getDatabasePlatform()
+                    ->registerDoctrineTypeMapping($type, $name);
+            }
         }
 
         return $this->doctrineConnection;
+    }
+
+    /**
+     * Register a custom Doctrine mapping type.
+	 * 注册一个自定义Doctrine映射类型
+     *
+     * @param  string  $class
+     * @param  string  $name
+     * @param  string  $type
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \RuntimeException
+     */
+    public function registerDoctrineType(string $class, string $name, string $type): void
+    {
+        if (! $this->isDoctrineAvailable()) {
+            throw new RuntimeException(
+                'Registering a custom Doctrine type requires Doctrine DBAL (doctrine/dbal).'
+            );
+        }
+
+        if (! Type::hasType($name)) {
+            Type::addType($name, $class);
+        }
+
+        $this->doctrineTypeMappings[$name] = $type;
     }
 
     /**
@@ -1032,7 +1182,8 @@ class Connection implements ConnectionInterface
             return $this->getPdo();
         }
 
-        if ($this->recordsModified && $this->getConfig('sticky')) {
+        if ($this->readOnWriteConnection ||
+            ($this->recordsModified && $this->getConfig('sticky'))) {
             return $this->getPdo();
         }
 
@@ -1086,7 +1237,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Set the reconnect instance on the connection.
-	 * 设置连接的重新连接实例
+	 * 在连接上设置重新连接实例
      *
      * @param  callable  $reconnector
      * @return $this
@@ -1100,13 +1251,24 @@ class Connection implements ConnectionInterface
 
     /**
      * Get the database connection name.
-	 * 得到数据库连接名称
+	 * 获取数据库连接名称
      *
      * @return string|null
      */
     public function getName()
     {
         return $this->getConfig('name');
+    }
+
+    /**
+     * Get the database connection full name.
+	 * 获取数据库连接的全名
+     *
+     * @return string|null
+     */
+    public function getNameWithReadWriteType()
+    {
+        return $this->getName().($this->readWriteType ? '::'.$this->readWriteType : '');
     }
 
     /**
@@ -1123,7 +1285,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Get the PDO driver name.
-	 * 得到PDO驱动名称
+	 * 获取PDO驱动程序名称
      *
      * @return string
      */
@@ -1244,6 +1406,31 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Set the transaction manager instance on the connection.
+	 * 在连接上设置事务管理器实例
+     *
+     * @param  \Illuminate\Database\DatabaseTransactionsManager  $manager
+     * @return $this
+     */
+    public function setTransactionManager($manager)
+    {
+        $this->transactionsManager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Unset the transaction manager for this connection.
+	 * 取消此连接的事务管理器设置
+     *
+     * @return void
+     */
+    public function unsetTransactionManager()
+    {
+        $this->transactionsManager = null;
+    }
+
+    /**
      * Determine if the connection is in a "dry run".
 	 * 确定连接是否处于"预演"状态
      *
@@ -1256,7 +1443,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Get the connection query log.
-	 * 得到连接查询日志
+	 * 获取连接查询日志
      *
      * @return array
      */
@@ -1267,7 +1454,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Clear the query log.
-	 * 清理查询日志
+	 * 清除查询日志
      *
      * @return void
      */
@@ -1330,6 +1517,20 @@ class Connection implements ConnectionInterface
     public function setDatabaseName($database)
     {
         $this->database = $database;
+
+        return $this;
+    }
+
+    /**
+     * Set the read / write type of the connection.
+	 * 设置连接的读写类型
+     *
+     * @param  string|null  $readWriteType
+     * @return $this
+     */
+    public function setReadWriteType($readWriteType)
+    {
+        $this->readWriteType = $readWriteType;
 
         return $this;
     }

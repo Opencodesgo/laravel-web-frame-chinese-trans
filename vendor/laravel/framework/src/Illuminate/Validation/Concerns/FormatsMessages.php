@@ -24,12 +24,16 @@ trait FormatsMessages
      */
     protected function getMessage($attribute, $rule)
     {
+        $attributeWithPlaceholders = $attribute;
+
+        $attribute = $this->replacePlaceholderInString($attribute);
+
         $inlineMessage = $this->getInlineMessage($attribute, $rule);
 
         // First we will retrieve the custom message for the validation rule if one
         // exists. If a custom validation message is being used we'll return the
         // custom message, otherwise we'll keep searching for a valid message.
-		// 首先，我们将检索验证规则的自定义消息（如果有的话）是否存在。
+		// 首先，我们将检索验证规则的自定义消息。
         if (! is_null($inlineMessage)) {
             return $inlineMessage;
         }
@@ -43,7 +47,7 @@ trait FormatsMessages
         // First we check for a custom defined validation message for the attribute
         // and rule. This allows the developer to specify specific messages for
         // only some attributes and rules that need to get specially formed.
-		// 首先，我们检查自定义验证消息的属性和规则。
+		// 首先，我们检查属性的自定义验证消息。
         if ($customMessage !== $customKey) {
             return $customMessage;
         }
@@ -51,18 +55,18 @@ trait FormatsMessages
         // If the rule being validated is a "size" rule, we will need to gather the
         // specific error message for the type of attribute being validated such
         // as a number, file or string which all have different message types.
-		// 如果被验证的规则是"大小"规则，我们将需要收集正在验证的属性类型的特定错误消息比如一个数字。
+		// 如果被验证的规则是一个"大小"规则，我们将需要收集属性类型的特定错误消息。
         elseif (in_array($rule, $this->sizeRules)) {
-            return $this->getSizeMessage($attribute, $rule);
+            return $this->getSizeMessage($attributeWithPlaceholders, $rule);
         }
 
         // Finally, if no developer specified messages have been set, and no other
         // special messages apply for this rule, we will just pull the default
         // messages out of the translator service for this validation rule.
-		// 最后，如果没有设置开发人员指定的消息，也没有其他特殊消息适用于此规则。
+		// 最后，如果没有设置开发人员指定的消息。
         $key = "validation.{$lowerRule}";
 
-        if ($key != ($value = $this->translator->get($key))) {
+        if ($key !== ($value = $this->translator->get($key))) {
             return $value;
         }
 
@@ -127,8 +131,8 @@ trait FormatsMessages
     }
 
     /**
-     * Get the custom error message from translator.
-	 * 从翻译器获取自定义错误消息
+     * Get the custom error message from the translator.
+	 * 从翻译程序获取自定义错误消息
      *
      * @param  string  $key
      * @return string
@@ -154,7 +158,7 @@ trait FormatsMessages
 
     /**
      * Check the given messages for a wildcard key.
-	 * 检查给定的消息是否有通配符
+	 * 检查给定的消息是否有通配符键
      *
      * @param  array  $messages
      * @param  string  $search
@@ -187,7 +191,7 @@ trait FormatsMessages
         // There are three different types of size validations. The attribute may be
         // either a number, file, or string so we will check a few things to know
         // which type of value it is and return the correct line for that type.
-		// 有三种不同类型的大小验证。属性可以是可以是数字、文件或字符串，所以我们要检查一些需要知道的东西。
+		// 有三种不同类型的大小验证。
         $type = $this->getAttributeType($attribute);
 
         $key = "validation.{$lowerRule}.{$type}";
@@ -207,7 +211,7 @@ trait FormatsMessages
         // We assume that the attributes present in the file array are files so that
         // means that if the attribute does not have a numeric rule and the files
         // list doesn't have it we'll just consider it a string by elimination.
-		// 我们假设文件数组中存在的属性是文件，因此表示如果属性没有数字规则和文件。
+		// 我们假设文件数组中的属性都是文件。
         if ($this->hasRule($attribute, $this->numericRules)) {
             return 'numeric';
         } elseif ($this->hasRule($attribute, ['Array'])) {
@@ -272,7 +276,7 @@ trait FormatsMessages
             // We allow for a developer to specify language lines for any attribute in this
             // application, which allows flexibility for displaying a unique displayable
             // version of the attribute name instead of the name used in an HTTP POST.
-			// 我们允许开发人员在应用中为其中的任何属性指定语言行。
+			// 我们允许开发人员为其中的任何属性指定语言行。
             if ($line = $this->getAttributeFromTranslations($name)) {
                 return $line;
             }
@@ -281,7 +285,7 @@ trait FormatsMessages
         // When no language line has been specified for the attribute and it is also
         // an implicit attribute we will display the raw attribute's name and not
         // modify it with any of these replacements before we display the name.
-		// 当没有为该属性指定语言行时，它也是对于隐式属性，我们将显示原始属性的名称。
+		// 当未为该属性指定语言行时。
         if (isset($this->implicitAttributes[$primaryAttribute])) {
             return ($formatter = $this->implicitAttributesFormatter)
                             ? $formatter($attribute)
@@ -322,7 +326,7 @@ trait FormatsMessages
 
     /**
      * Replace the :input placeholder in the given message.
-	 * 替换给定消息中的：input占位符
+	 * 替换给定消息中的：input占位符。
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -363,7 +367,11 @@ trait FormatsMessages
             return $value ? 'true' : 'false';
         }
 
-        return $value;
+        if (is_null($value)) {
+            return 'empty';
+        }
+
+        return (string) $value;
     }
 
     /**
@@ -380,7 +388,7 @@ trait FormatsMessages
         // For each attribute in the list we will simply get its displayable form as
         // this is convenient when replacing lists of parameters like some of the
         // replacement functions do when formatting out the validation message.
-		// 对于列表中的每个属性，我们将简单地获得其可显示的形式为这在替换参数列表时非常方便。
+		// 对于列表中的每个属性，我们将简单地获取其可显示属性。
         foreach ($values as $key => $value) {
             $attributes[$key] = $this->getDisplayableAttribute($value);
         }

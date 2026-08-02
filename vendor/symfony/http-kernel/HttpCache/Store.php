@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，HTTP缓存，存储
+ * Symfony，Component，HttpKernel，HTTP缓存，储存
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Store implements all the logic for storing cache metadata (Request and Response headers).
- * Store实现存储缓存元数据(请求和响应标头)的所有逻辑。
+ * 存储实现存储缓存元数据(请求和响应头)的所有逻辑。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -37,6 +37,7 @@ class Store implements StoreInterface
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * The available options are:
      *
@@ -59,6 +60,7 @@ class Store implements StoreInterface
 
     /**
      * Cleanups storage.
+	 * 清理存储
      */
     public function cleanup()
     {
@@ -73,6 +75,7 @@ class Store implements StoreInterface
 
     /**
      * Tries to lock the cache for a given Request, without blocking.
+	 * 试图锁定缓存的请求,而不阻塞。
      *
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
@@ -100,6 +103,7 @@ class Store implements StoreInterface
 
     /**
      * Releases the lock for the given Request.
+	 * 释放给定请求的锁
      *
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
@@ -140,6 +144,7 @@ class Store implements StoreInterface
 
     /**
      * Locates a cached Response for the Request provided.
+	 * 为所提供的请求定位缓存响应
      *
      * @return Response|null
      */
@@ -178,6 +183,7 @@ class Store implements StoreInterface
 
     /**
      * Writes a cache entry to the store for the given Request and Response.
+	 * 为给定的请求和响应写入存储的缓存条目。
      *
      * Existing entries are read and any that match the response are removed. This
      * method calls write with the new list of cache entries.
@@ -246,6 +252,7 @@ class Store implements StoreInterface
 
     /**
      * Returns content digest for $response.
+	 * 返回内容摘要,以响应$响应
      *
      * @return string
      */
@@ -256,6 +263,7 @@ class Store implements StoreInterface
 
     /**
      * Invalidates all cache entries that match the request.
+	 * 使所有缓存条目都无效,与请求相匹配
      *
      * @throws \RuntimeException
      */
@@ -309,6 +317,7 @@ class Store implements StoreInterface
 
     /**
      * Gets all data associated with the given key.
+	 * 获取与给定键相关的所有数据。
      *
      * Use this method only if you know what you are doing.
      */
@@ -323,6 +332,7 @@ class Store implements StoreInterface
 
     /**
      * Purges data for the given URL.
+	 * 清除给定URL的数据。
      *
      * This method purges both the HTTP and the HTTPS version of the cache entry.
      *
@@ -341,6 +351,7 @@ class Store implements StoreInterface
 
     /**
      * Purges data for the given URL.
+	 * 清除给定URL的数据
      */
     private function doPurge(string $url): bool
     {
@@ -362,6 +373,7 @@ class Store implements StoreInterface
 
     /**
      * Loads data for the given key.
+	 * 加载给定键的数据
      */
     private function load(string $key): ?string
     {
@@ -372,6 +384,7 @@ class Store implements StoreInterface
 
     /**
      * Save data for the given key.
+	 * 保存给定键的数据
      */
     private function save(string $key, string $data, bool $overwrite = true): bool
     {
@@ -430,6 +443,7 @@ class Store implements StoreInterface
 
     /**
      * Generates a cache key for the given Request.
+	 * 生成给定请求的缓存键。
      *
      * This method should return a key that must only depend on a
      * normalized version of the request URI.
@@ -447,6 +461,7 @@ class Store implements StoreInterface
 
     /**
      * Returns a cache key for the given Request.
+	 * 返回给定请求的缓存键
      */
     private function getCacheKey(Request $request): string
     {
@@ -459,6 +474,7 @@ class Store implements StoreInterface
 
     /**
      * Persists the Request HTTP headers.
+	 * 继续请求HTTP头
      */
     private function persistRequest(Request $request): array
     {
@@ -467,6 +483,7 @@ class Store implements StoreInterface
 
     /**
      * Persists the Response HTTP headers.
+	 * 持久化响应HTTP头
      */
     private function persistResponse(Response $response): array
     {
@@ -478,6 +495,7 @@ class Store implements StoreInterface
 
     /**
      * Restores a Response from the HTTP headers and body.
+	 * 重新存储来自HTTP头和正文的响应
      */
     private function restoreResponse(array $headers, ?string $path = null): ?Response
     {

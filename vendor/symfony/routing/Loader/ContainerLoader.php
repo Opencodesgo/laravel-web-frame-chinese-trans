@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，容器装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * A route loader that executes a service from a PSR-11 container to load the routes.
+ * 一种路由加载器，它从PSR-11容器中执行一个服务来加载路由。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */

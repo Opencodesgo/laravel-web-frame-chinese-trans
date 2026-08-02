@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，文件未发现异常
+ * League，Flysystem，文件未找到异常
  */
 
 namespace League\Flysystem;
@@ -31,7 +31,7 @@ class FileNotFoundException extends Exception
 
     /**
      * Get the path which was not found.
-	 * 获取未找到的路径
+	 * 找到没有找到的路
      *
      * @return string
      */

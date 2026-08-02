@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，EventDispatcher，依赖注入，注册侦听器传递
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,6 +25,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Compiler pass to register tagged services for an event dispatcher.
+ * 编译器通过为事件调度器注册标记服务。
  */
 class RegisterListenersPass implements CompilerPassInterface
 {
@@ -149,6 +153,7 @@ class RegisterListenersPass implements CompilerPassInterface
             $def = $container->getDefinition($id);
 
             // We must assume that the class value has been correctly filled, even if the service is created by a factory
+			// 我们必须假设类值已被正确填充，即使服务是由工厂创建的。
             $class = $def->getClass();
 
             if (!$r = $container->getReflectionClass($class)) {

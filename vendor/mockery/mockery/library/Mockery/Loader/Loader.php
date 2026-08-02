@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，载入程序，装载机
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -16,6 +19,7 @@ interface Loader
 {
     /**
      * Load the given mock definition
+	 * 加载给定的模拟定义
      *
      * @return void
      */

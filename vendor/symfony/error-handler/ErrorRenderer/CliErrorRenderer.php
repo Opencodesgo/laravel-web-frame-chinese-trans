@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorHandler，错误渲染器，客户端错误渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 // Help opcache.preload discover always-needed symbols
+// 帮助opcache。预加载发现总是需要的符号
 class_exists(CliDumper::class);
 
 /**

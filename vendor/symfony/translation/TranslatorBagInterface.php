@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，翻译包接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * TranslatorBagInterface.
+ * 翻译包接口
  *
  * @method MessageCatalogueInterface[] getCatalogues() Returns all catalogues of the instance
  *
@@ -24,6 +28,7 @@ interface TranslatorBagInterface
 {
     /**
      * Gets the catalogue by locale.
+	 * 通过现场获取目录
      *
      * @param string|null $locale The locale or null to use the default
      *

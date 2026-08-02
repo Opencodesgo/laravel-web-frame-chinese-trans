@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，问题，选择问题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Represents a choice question.
+ * 代表一个选择问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -45,6 +49,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns available choices.
+	 * 返回可用选项
      *
      * @return array
      */
@@ -55,6 +60,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets multiselect option.
+	 * 设置多选择选项。
      *
      * When multiselect is set to true, multiple choices can be answered.
      *
@@ -70,6 +76,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns whether the choices are multiselect.
+	 * 返回选择是多选择
      *
      * @return bool
      */
@@ -80,6 +87,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Gets the prompt for choices.
+	 * 获取选择的提示符
      *
      * @return string
      */
@@ -90,6 +98,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets the prompt for choices.
+	 * 为选择设置提示符
      *
      * @return $this
      */
@@ -102,6 +111,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets the error message for invalid values.
+	 * 设置无效值的错误消息
      *
      * The error message has a string placeholder (%s) for the invalid value.
      *

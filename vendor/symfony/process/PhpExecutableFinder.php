@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，进程，Php可执行文件查找器
+ * Symfony，Component，Process，Php 可执行文件查找器
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Process;
 
 /**
  * An executable finder specifically designed for the PHP executable.
- * 专门为PHP可执行文件设计的可执行对象
+ * 一个专门为PHP可执行文件设计的可执行查找器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -32,6 +32,7 @@ class PhpExecutableFinder
 
     /**
      * Finds The PHP executable.
+	 * 查找PHP可执行文件
      *
      * @return string|false
      */
@@ -85,6 +86,7 @@ class PhpExecutableFinder
 
     /**
      * Finds the PHP executable arguments.
+	 * 查找PHP可执行参数
      *
      * @return array
      */

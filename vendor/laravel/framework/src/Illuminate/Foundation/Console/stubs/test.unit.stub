@@ -1,0 +1,22 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，单元测试
+ */
+
+namespace {{ namespace }};
+
+use PHPUnit\Framework\TestCase;
+
+class {{ class }} extends TestCase
+{
+    /**
+     * A basic unit test example.
+	 * 一个基本的单元测试示例
+     *
+     * @return void
+     */
+    public function test_example()
+    {
+        $this->assertTrue(true);
+    }
+}

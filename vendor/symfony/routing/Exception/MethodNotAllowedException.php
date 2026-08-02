@@ -2,7 +2,6 @@
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -14,10 +13,8 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * The resource was found but the request method is not allowed.
- * 已找到资源，但不允许使用请求方法。
  *
  * This exception should trigger an HTTP 405 response in your application code.
- * 此异常应该在应用程序代码中触发HTTP 405响应。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
@@ -43,7 +40,6 @@ class MethodNotAllowedException extends \RuntimeException implements ExceptionIn
 
     /**
      * Gets the allowed HTTP methods.
-	 * 获取允许的HTTP方法
      *
      * @return string[]
      */

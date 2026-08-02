@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，事件，通知送达
+ * Illuminate，通知，事件，通知已发送
  */
 
 namespace Illuminate\Notifications\Events;

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Wildfire 格式化程序
+ * Monolog，Formatter，Wildfire 格式化
  */
 
 /*
@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 /**
  * Serializes a log message according to Wildfire's header requirements
- * 根据Wildfire的报头要求序列化日志消息
+ * 根据 Wildfire的报头要求序列化日志消息
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  * @author Christophe Coevoet <stof@notk.org>
@@ -31,7 +31,7 @@ class WildfireFormatter extends NormalizerFormatter
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
-	 * 将Monolog日志级别转换为Wildfire级别
+	 * 把Monolog的级别转化为Wildfire的级别
      *
      * @var array<Level, string>
      */
@@ -65,6 +65,7 @@ class WildfireFormatter extends NormalizerFormatter
     public function format(array $record): string
     {
         // Retrieve the line and file if set and remove them from the formatted extra
+		// 如果设置了行和文件，则检索它们，并将它们从格式化的extra中删除。
         $file = $line = '';
         if (isset($record['extra']['file'])) {
             $file = $record['extra']['file'];

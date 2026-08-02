@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，控制器参数事件
+ * Symfony，Component，HttpKernel，事件，请求事件
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Allows to create a response for a request.
- * 允许为请求创建响应
+ * 允许为请求创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a
@@ -43,6 +43,7 @@ class RequestEvent extends KernelEvent
 
     /**
      * Sets a response and stops event propagation.
+	 * 设置响应并停止事件传播
      */
     public function setResponse(Response $response)
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHP Stan，抽象宏指令
+ */
 
 declare(strict_types=1);
 
@@ -34,6 +37,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 {
     /**
      * The reflection function/method.
+	 * 反射函数/方法
      *
      * @var ReflectionFunction|ReflectionMethod
      */
@@ -41,6 +45,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * The class name.
+	 * 类名称
      *
      * @var class-string
      */
@@ -48,6 +53,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * The method name.
+	 * 方法名称
      *
      * @var string
      */
@@ -55,6 +61,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * The parameters.
+	 * 参数
      *
      * @var ReflectionParameter[]
      */
@@ -62,6 +69,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * The is static.
+	 * 它是静态的
      *
      * @var bool
      */
@@ -69,6 +77,7 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * Macro constructor.
+	 * 宏观构造函数
      *
      * @param class-string $className
      * @param string       $methodName

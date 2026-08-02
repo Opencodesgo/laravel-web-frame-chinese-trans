@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，作用域
+ * Illuminate，数据库，Eloquent，范围
  */
 
 namespace Illuminate\Database\Eloquent;

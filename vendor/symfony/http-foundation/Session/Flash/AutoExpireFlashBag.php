@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，Flash，自动过期闪光袋
+ * Symfony，Component，HttpFoundation，Session，闪存，自动过期闪存包
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 
 /**
  * AutoExpireFlashBag flash message container.
+ * AutoExpireFlashBag flash消息容器。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -56,7 +57,7 @@ class AutoExpireFlashBag implements FlashBagInterface
         // The logic: messages from the last request will be stored in new, so we move them to previous
         // This request we will show what is in 'display'.  What is placed into 'new' this time round will
         // be moved to display next time round.
-		// 逻辑：来自最后一个请求的消息将存储在new，所以我们把它们移到前面。
+		// 逻辑：来自最后一个请求的消息将存储在new中，因此我们将它们移动到previous。
         $this->flashes['display'] = \array_key_exists('new', $this->flashes) ? $this->flashes['new'] : [];
         $this->flashes['new'] = [];
     }

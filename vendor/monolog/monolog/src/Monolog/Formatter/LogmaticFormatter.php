@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Logmatic 格式化器
+ * Monolog，Formatter，Logmatic 格式化
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Monolog\Formatter;
 
 /**
  * Encodes message information into JSON in a format compatible with Logmatic.
- * 以与Logmatic兼容的格式将消息信息编码为JSON
+ * 以与 Logmatic兼容的格式将消息信息编码为JSON
  *
  * @author Julien Breux <julien.breux@gmail.com>
  */
@@ -51,6 +51,7 @@ class LogmaticFormatter extends JsonFormatter
 
     /**
      * Appends the 'hostname' and 'appname' parameter for indexing by Logmatic.
+	 * 将“主机名”和“appname”参数附加为Logmatic索引。
      *
      * @see http://doc.logmatic.io/docs/basics-to-send-data
      * @see \Monolog\Formatter\JsonFormatter::format()

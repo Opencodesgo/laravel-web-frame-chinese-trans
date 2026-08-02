@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，模式
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -16,6 +19,7 @@ class Pattern extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回这个Matcher的字符串表示
      *
      * @return string
      */
@@ -26,6 +30,7 @@ class Pattern extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected pattern.
+	 * 检查实际值是否符合预期模式
      *
      * @template TMixed
      *

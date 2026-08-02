@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，URL生成器
+ * Illuminate，契约，路由，URL 生成器
  */
 
 namespace Illuminate\Contracts\Routing;

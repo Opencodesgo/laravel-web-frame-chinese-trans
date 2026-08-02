@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，定义目标类
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

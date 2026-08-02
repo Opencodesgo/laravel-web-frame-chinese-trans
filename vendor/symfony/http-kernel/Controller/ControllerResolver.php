@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * This implementation uses the '_controller' request attribute to determine
  * the controller to execute.
+ * 这个实现使用‘_controller’请求属性来确定要执行的控制器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -100,6 +101,7 @@ class ControllerResolver implements ControllerResolverInterface
 
     /**
      * Returns a callable for the given controller.
+	 * 返回给定控制器的可调用对象
      *
      * @return callable
      *
@@ -142,6 +144,7 @@ class ControllerResolver implements ControllerResolverInterface
 
     /**
      * Returns an instantiated controller.
+	 * 返回实例化的控制器
      *
      * @return object
      */

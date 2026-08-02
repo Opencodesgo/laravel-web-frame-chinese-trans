@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，克隆，数据
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -66,6 +69,7 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Returns a native representation of the original value.
+	 * 返回原始值的本机表示
      *
      * @param array|bool $recursive Whether values should be resolved recursively or not
      *

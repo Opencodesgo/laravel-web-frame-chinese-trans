@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，生成器，Url 生成器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -55,6 +58,7 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
 
     /**
      * This array defines the characters (besides alphanumeric ones) that will not be percent-encoded in the path segment of the generated URL.
+	 * 这个数组定义了在生成的URL的路径段中不进行百分比编码的字符（除了字母数字字符）。
      *
      * PHP's rawurlencode() encodes all chars except "a-zA-Z0-9-._~" according to RFC 3986. But we want to allow some chars
      * to be used in their literal form (reasons below). Other chars inside the path must of course be encoded, e.g.
@@ -327,6 +331,7 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
 
     /**
      * Returns the target path as relative reference from the base path.
+	 * 返回目标路径作为基路径的相对引用。
      *
      * Only the URIs path component (no schema, host etc.) is relevant and must be given, starting with a slash.
      * Both paths must be absolute and not contain relative parts.

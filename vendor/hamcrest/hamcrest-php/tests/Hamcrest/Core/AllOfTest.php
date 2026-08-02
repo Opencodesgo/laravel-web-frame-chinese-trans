@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，全部测试
+ */
+
 namespace Hamcrest\Core;
 
 class AllOfTest extends \Hamcrest\AbstractMatcherTest

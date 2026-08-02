@@ -23,13 +23,30 @@ trait DispatchesJobs
 
     /**
      * Dispatch a job to its appropriate handler in the current process.
-	 * 将作业分派给当前进程中相应的处理程序
+	 * 将任务分派给当前进程中相应的处理程序
      *
      * @param  mixed  $job
      * @return mixed
+     *
+     * @deprecated Will be removed in a future Laravel version.
      */
     public function dispatchNow($job)
     {
         return app(Dispatcher::class)->dispatchNow($job);
+    }
+
+    /**
+     * Dispatch a job to its appropriate handler in the current process.
+	 * 将任务分派给当前进程中相应的处理程序
+     *
+     * Queueable jobs will be dispatched to the "sync" queue.
+	 * 可排队作业将被分配到"同步"队列
+     *
+     * @param  mixed  $job
+     * @return mixed
+     */
+    public function dispatchSync($job)
+    {
+        return app(Dispatcher::class)->dispatchSync($job);
     }
 }

@@ -1,0 +1,84 @@
+<?php
+/**
+ * Illuminate，数据库，Eloquent，描述，属性
+ */
+
+namespace Illuminate\Database\Eloquent\Casts;
+
+class Attribute
+{
+    /**
+     * The attribute accessor.
+	 * 属性访问器
+     *
+     * @var callable
+     */
+    public $get;
+
+    /**
+     * The attribute mutator.
+	 * 属性mutator
+     *
+     * @var callable
+     */
+    public $set;
+
+    /**
+     * Indicates if caching of objects is enabled for this attribute.
+	 * 指明是否为此属性启用对象缓存
+     *
+     * @var bool
+     */
+    public $withObjectCaching = true;
+
+    /**
+     * Create a new attribute accessor / mutator.
+	 * 创建一个新的属性访问器/ mutator
+     *
+     * @param  callable|null  $get
+     * @param  callable|null  $set
+     * @return void
+     */
+    public function __construct(callable $get = null, callable $set = null)
+    {
+        $this->get = $get;
+        $this->set = $set;
+    }
+
+    /**
+     * Create a new attribute accessor.
+	 * 创建一个新的属性访问器
+     *
+     * @param  callable  $get
+     * @return static
+     */
+    public static function get(callable $get)
+    {
+        return new static($get);
+    }
+
+    /**
+     * Create a new attribute mutator.
+	 * 创建一个新的属性mutator
+     *
+     * @param  callable  $set
+     * @return static
+     */
+    public static function set(callable $set)
+    {
+        return new static(null, $set);
+    }
+
+    /**
+     * Disable object caching for the attribute.
+	 * 禁用属性的对象缓存
+     *
+     * @return static
+     */
+    public function withoutObjectCaching()
+    {
+        $this->withObjectCaching = false;
+
+        return $this;
+    }
+}

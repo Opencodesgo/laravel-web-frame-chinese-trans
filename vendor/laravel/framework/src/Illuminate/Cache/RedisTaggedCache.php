@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis标记缓存
+ * Illuminate，缓存，Redis 标记缓存
  */
 
 namespace Illuminate\Cache;
@@ -9,12 +9,12 @@ class RedisTaggedCache extends TaggedCache
 {
     /**
      * Forever reference key.
-	 * 永久参考键
+	 * 永远参考键
      *
      * @var string
      */
     const REFERENCE_KEY_FOREVER = 'forever_ref';
-	
+
     /**
      * Standard reference key.
 	 * 标准参考键
@@ -49,13 +49,13 @@ class RedisTaggedCache extends TaggedCache
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return void
+     * @return int|bool
      */
     public function increment($key, $value = 1)
     {
         $this->pushStandardKeys($this->tags->getNamespace(), $key);
 
-        parent::increment($key, $value);
+        return parent::increment($key, $value);
     }
 
     /**
@@ -64,13 +64,13 @@ class RedisTaggedCache extends TaggedCache
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return void
+     * @return int|bool
      */
     public function decrement($key, $value = 1)
     {
         $this->pushStandardKeys($this->tags->getNamespace(), $key);
 
-        parent::decrement($key, $value);
+        return parent::decrement($key, $value);
     }
 
     /**
@@ -99,7 +99,9 @@ class RedisTaggedCache extends TaggedCache
         $this->deleteForeverKeys();
         $this->deleteStandardKeys();
 
-        return parent::flush();
+        $this->tags->flush();
+
+        return true;
     }
 
     /**
@@ -186,20 +188,35 @@ class RedisTaggedCache extends TaggedCache
 
     /**
      * Delete item keys that have been stored against a reference.
-	 * 查找并删除根据引用存储的所有项
+	 * 删除根据引用存储的项键
      *
      * @param  string  $referenceKey
      * @return void
      */
     protected function deleteValues($referenceKey)
     {
-        $values = array_unique($this->store->connection()->smembers($referenceKey));
+        $cursor = $defaultCursorValue = '0';
 
-        if (count($values) > 0) {
-            foreach (array_chunk($values, 1000) as $valuesChunk) {
+        do {
+            [$cursor, $valuesChunk] = $this->store->connection()->sscan(
+                $referenceKey, $cursor, ['match' => '*', 'count' => 1000]
+            );
+
+            // PhpRedis client returns false if set does not exist or empty. Array destruction
+            // on false stores null in each variable. If valuesChunk is null, it means that
+            // there were not results from the previously executed "sscan" Redis command.
+			// PhpRedis客户端返回false，如果set不存在或为空。
+			// 数组破坏如果为false，则在每个变量中存储null。
+            if (is_null($valuesChunk)) {
+                break;
+            }
+
+            $valuesChunk = array_unique($valuesChunk);
+
+            if (count($valuesChunk) > 0) {
                 $this->store->connection()->del(...$valuesChunk);
             }
-        }
+        } while (((string) $cursor) !== $defaultCursorValue);
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，命令，测试命令
+ */
 
 namespace Facade\Ignition\Commands;
 

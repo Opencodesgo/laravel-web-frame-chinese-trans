@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Service，属性，需要
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Contracts\Service\Attribute;
 
 /**
  * A required dependency.
+ * 必需的依赖项。
  *
  * This attribute indicates that a property holds a required dependency. The annotated property or method should be
  * considered during the instantiation process of the containing class.

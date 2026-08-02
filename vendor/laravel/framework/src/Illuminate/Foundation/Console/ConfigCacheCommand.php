@@ -27,11 +27,11 @@ class ConfigCacheCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a cache file for faster configuration loading';
+    protected $description = 'Create a cache file for faster configuration loading';		#创建缓存文件以加快配置加载
 
     /**
      * The filesystem instance.
-	 * 文件系统实例
+	 * 系统系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */

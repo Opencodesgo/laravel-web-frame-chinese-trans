@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，处理者，严格会话处理程序
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，严密的会话处理程序
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Adds basic `SessionUpdateTimestampHandlerInterface` behaviors to another `SessionHandlerInterface`.
+ * SessionUpdateTimestampHandlerInterface ’行为添加到另一个‘ SessionHandlerInterface ’。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

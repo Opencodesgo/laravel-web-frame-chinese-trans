@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Tag 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Adds a tags array into record
+ * 将标签数组添加到记录中
  *
  * @author Martijn Riemers
  */

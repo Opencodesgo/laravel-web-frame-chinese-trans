@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案提供者，合并冲突解决方案提供者
+ */
 
 namespace Facade\Ignition\SolutionProviders;
 

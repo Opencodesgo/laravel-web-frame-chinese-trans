@@ -1,13 +1,13 @@
 <?php
-
 /**
- * Psr，日志，Log，记录器感知特性
+ * Psr，Log，记录器感知特性
  */
 
 namespace Psr\Log;
 
 /**
  * Basic Implementation of LoggerAwareInterface.
+ * LoggerAwareInterface的基本实现。
  */
 trait LoggerAwareTrait
 {
@@ -21,6 +21,7 @@ trait LoggerAwareTrait
 
     /**
      * Sets a logger.
+	 * 设置记录器
      *
      * @param LoggerInterface $logger
      */

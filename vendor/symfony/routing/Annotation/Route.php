@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，注释，路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing\Annotation;
 
 /**
  * Annotation class for @Route().
+ * @Route（）的注释类。
  *
  * @Annotation
  * @NamedArgumentConstructor

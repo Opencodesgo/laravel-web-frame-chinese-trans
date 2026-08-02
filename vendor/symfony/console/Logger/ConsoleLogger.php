@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，记录器，控制台记录器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PSR-3 compliant console logger.
+ * PSR-3兼容的控制台记录器。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  *
@@ -89,6 +93,7 @@ class ConsoleLogger extends AbstractLogger
 
     /**
      * Returns true when any messages have been logged at error levels.
+	 * 当任何消息被记录在错误级别时返回true
      *
      * @return bool
      */
@@ -99,6 +104,7 @@ class ConsoleLogger extends AbstractLogger
 
     /**
      * Interpolates context values into the message placeholders.
+	 * 将上下文值插入到消息占位符中
      *
      * @author PHP Framework Interoperability Group
      */

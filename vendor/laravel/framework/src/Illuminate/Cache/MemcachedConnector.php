@@ -11,7 +11,7 @@ class MemcachedConnector
 {
     /**
      * Create a new Memcached connection.
-	 * 创建一个新的Memcached连接
+	 * 创建新的Memcached连接
      *
      * @param  array  $servers
      * @param  string|null  $connectionId
@@ -29,7 +29,7 @@ class MemcachedConnector
             // For each server in the array, we'll just extract the configuration and add
             // the server to the Memcached connection. Once we have added all of these
             // servers we'll verify the connection is successful and return it back.
-			// 对于数组中的每个服务器，我们将提取配置并添加服务器连接到Memcached连接。
+			// 对于数组中的每个服务器，我们将提取配置并添加服务器到Memcached连接。
             foreach ($servers as $server) {
                 $memcached->addServer(
                     $server['host'], $server['port'], $server['weight']
@@ -42,7 +42,7 @@ class MemcachedConnector
 
     /**
      * Get a new Memcached instance.
-	 * 获取一个新的Memcached实例
+	 * 创建新的Memcached实例
      *
      * @param  string|null  $connectionId
      * @param  array  $credentials

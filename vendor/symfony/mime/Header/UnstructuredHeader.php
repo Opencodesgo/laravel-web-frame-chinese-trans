@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，Header，非结构化的头
+ */
 
 /*
  * This file is part of the Symfony package.

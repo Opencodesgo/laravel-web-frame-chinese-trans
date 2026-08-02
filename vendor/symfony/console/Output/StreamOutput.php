@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，流式输出
+ * Symfony，Component，Console，输出，流输出
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * StreamOutput writes the output to a given stream.
+ * StreamOutput将输出写入给定的流。
  *
  * Usage:
  *
@@ -59,6 +60,7 @@ class StreamOutput extends Output
 
     /**
      * Gets the stream attached to this StreamOutput instance.
+	 * 获取附加到这个StreamOutput实例的流
      *
      * @return resource
      */
@@ -80,6 +82,7 @@ class StreamOutput extends Output
 
     /**
      * Returns true if the stream supports colorization.
+	 * 如果流支持着色,返回true。
      *
      * Colorization is disabled if not supported by the stream:
      *

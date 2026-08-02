@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，解析器工厂
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use PhpParser\ParserFactory as OriginalParserFactory;
 
 /**
  * Parser factory to abstract over PHP Parser library versions.
+ * 解析器工厂对PHP解析器库版本进行抽象。
  */
 class ParserFactory
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，目标类接口
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -14,6 +17,7 @@ interface TargetClassInterface
 {
     /**
      * Returns a new instance of the current TargetClassInterface's implementation.
+	 * 返回当前TargetClassInterface实现的新实例
      *
      * @param class-string $name
      *
@@ -23,6 +27,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's attributes.
+	 * 返回targetClass的属性
      *
      * @return array<class-string>
      */
@@ -30,6 +35,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's interfaces.
+	 * 返回targetClass的接口
      *
      * @return array<TargetClassInterface>
      */
@@ -37,6 +43,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's methods.
+	 * 返回targetClass的方法
      *
      * @return array<Method>
      */
@@ -44,6 +51,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's name.
+	 * 返回targetClass的名称
      *
      * @return class-string
      */
@@ -51,6 +59,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's namespace name.
+	 * 返回targetClass的名称空间名称
      *
      * @return string
      */
@@ -58,6 +67,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's short name.
+	 * 返回targetClass的短名称
      *
      * @return string
      */
@@ -83,6 +93,7 @@ interface TargetClassInterface
 
     /**
      * Returns whether the targetClass is in namespace.
+	 * 返回targetClass是否在名称空间中
      *
      * @return bool
      */
@@ -90,6 +101,7 @@ interface TargetClassInterface
 
     /**
      * Returns whether the targetClass is abstract.
+	 * 返回目标类是抽象的
      *
      * @return bool
      */
@@ -97,6 +109,7 @@ interface TargetClassInterface
 
     /**
      * Returns whether the targetClass is final.
+	 * 返回目标类是否最终
      *
      * @return bool
      */

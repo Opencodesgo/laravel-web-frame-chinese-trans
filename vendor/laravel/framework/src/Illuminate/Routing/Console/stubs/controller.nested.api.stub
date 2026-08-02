@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制台，存根，需要根据实际修改
+ * Illuminate，路由，存根，控制器，需要根据实际修改
  */
 
 namespace {{ namespace }};
@@ -39,7 +39,7 @@ class {{ class }} extends Controller
 
     /**
      * Display the specified resource.
-	 * 显示指定的资源
+	 * 显示指定资源
      *
      * @param  \{{ namespacedParentModel }}  ${{ parentModelVariable }}
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
@@ -66,7 +66,7 @@ class {{ class }} extends Controller
 
     /**
      * Remove the specified resource from storage.
-	 * 移除存储中的指定资源
+	 * 从存储中移除指定的资源
      *
      * @param  \{{ namespacedParentModel }}  ${{ parentModelVariable }}
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}

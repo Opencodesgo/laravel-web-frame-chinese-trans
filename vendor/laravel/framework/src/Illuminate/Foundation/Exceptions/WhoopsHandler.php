@@ -30,7 +30,7 @@ class WhoopsHandler
 
     /**
      * Register the application paths with the handler.
-	 * 与处理程序注册应用程序路径
+	 * 向处理程序注册应用程序路径
      *
      * @param  \Whoops\Handler\PrettyPageHandler  $handler
      * @return $this
@@ -46,7 +46,7 @@ class WhoopsHandler
 
     /**
      * Get the application paths except for the "vendor" directory.
-	 * 获取应用程序路径,除了"供应商"目录
+	 * 获取除"vendor"目录外的应用程序路径
      *
      * @return array
      */

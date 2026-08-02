@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，错误侦听器
+ * Symfony，Component，HttpKernel，事件监听器，错误监听器
  */
 
 /*
@@ -157,6 +157,7 @@ class ErrorListener implements EventSubscriberInterface
 
     /**
      * Logs an exception.
+	 * 记录一个异常
      */
     protected function logException(\Throwable $exception, string $message, ?string $logLevel = null): void
     {
@@ -173,6 +174,8 @@ class ErrorListener implements EventSubscriberInterface
 
     /**
      * Clones the request for the exception.
+	 * 复制异常请求
+	 * 
      */
     protected function duplicateRequest(\Throwable $exception, Request $request): Request
     {

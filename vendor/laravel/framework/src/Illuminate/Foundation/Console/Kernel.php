@@ -24,7 +24,7 @@ class Kernel implements KernelContract
 {
     /**
      * The application implementation.
-	 * 应用实现
+	 * 应用模式
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -56,7 +56,7 @@ class Kernel implements KernelContract
 
     /**
      * Indicates if the Closure commands have been loaded.
-	 * 指示是否加载了关闭命令
+	 * 指示是否已加载关闭命令
      *
      * @var bool
      */
@@ -64,9 +64,9 @@ class Kernel implements KernelContract
 
     /**
      * The bootstrap classes for the application.
-	 * 应用的引导类
+	 * 应用程序的引导类
      *
-     * @var array
+     * @var string[]
      */
     protected $bootstrappers = [
         \Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
@@ -102,7 +102,7 @@ class Kernel implements KernelContract
 
     /**
      * Define the application's command schedule.
-	 * 定义应用程序的命令时间表
+	 * 定义应用程序的命令调度
      *
      * @return void
      */
@@ -123,7 +123,7 @@ class Kernel implements KernelContract
      */
     protected function scheduleCache()
     {
-        return Env::get('SCHEDULE_CACHE_DRIVER');
+        return $this->app['config']->get('cache.schedule_store', Env::get('SCHEDULE_CACHE_DRIVER'));
     }
 
     /**
@@ -151,7 +151,7 @@ class Kernel implements KernelContract
 
     /**
      * Terminate the application.
-	 * 终止应用程序
+	 * 终止应用
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  int  $status
@@ -164,7 +164,7 @@ class Kernel implements KernelContract
 
     /**
      * Define the application's command schedule.
-	 * 定义应用程序的命令时间表
+	 * 定义应用程序的命令调度
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
@@ -176,7 +176,7 @@ class Kernel implements KernelContract
 
     /**
      * Get the timezone that should be used by default for scheduled events.
-	 * 获取应该在默认情况下使用的时区
+	 * 获取默认情况下应用于计划事件的时区
      *
      * @return \DateTimeZone|string|null
      */
@@ -188,8 +188,8 @@ class Kernel implements KernelContract
     }
 
     /**
-     * Register the Closure based commands for the application.
-	 * 为应用程序注册关闭的命令
+     * Register the commands for the application.
+	 * 为应用程序注册命令
      *
      * @return void
      */
@@ -219,7 +219,7 @@ class Kernel implements KernelContract
 
     /**
      * Register all of the commands in the given directory.
-	 * 在给定目录中注册所有命令
+	 * 注册给定目录中的所有命令
      *
      * @param  array|string  $paths
      * @return void
@@ -242,7 +242,7 @@ class Kernel implements KernelContract
             $command = $namespace.str_replace(
                 ['/', '.php'],
                 ['\\', ''],
-                Str::after($command->getPathname(), realpath(app_path()).DIRECTORY_SEPARATOR)
+                Str::after($command->getRealPath(), realpath(app_path()).DIRECTORY_SEPARATOR)
             );
 
             if (is_subclass_of($command, Command::class) &&
@@ -256,7 +256,7 @@ class Kernel implements KernelContract
 
     /**
      * Register the given command with the console application.
-	 * 用控制台应用程序注册给定的命令
+	 * 向控制台应用程序注册给定的命令
      *
      * @param  \Symfony\Component\Console\Command\Command  $command
      * @return void
@@ -268,7 +268,7 @@ class Kernel implements KernelContract
 
     /**
      * Run an Artisan console command by name.
-	 * 按名称运行一个Artisan控制台命令
+	 * 按名称运行Artisan控制台命令
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -299,7 +299,7 @@ class Kernel implements KernelContract
 
     /**
      * Get all of the commands registered with the console.
-	 * 获取控制台注册的所有命令
+	 * 获取在控制台注册的所有命令
      *
      * @return array
      */
@@ -385,7 +385,7 @@ class Kernel implements KernelContract
 
     /**
      * Report the exception to the exception handler.
-	 * 报告异常处理程序的异常
+	 * 向异常处理程序报告异常
      *
      * @param  \Throwable  $e
      * @return void

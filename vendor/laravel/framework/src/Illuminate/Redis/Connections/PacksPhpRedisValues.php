@@ -1,0 +1,198 @@
+<?php
+/**
+ * Illuminate，Redis，连接，包装 Php Redis 值
+ */
+
+namespace Illuminate\Redis\Connections;
+
+use Redis;
+use RuntimeException;
+use UnexpectedValueException;
+
+trait PacksPhpRedisValues
+{
+    /**
+     * Indicates if Redis supports packing.
+	 * 指示Redis是否支持打包
+     *
+     * @var bool|null
+     */
+    protected $supportsPacking;
+
+    /**
+     * Indicates if Redis supports LZF compression.
+	 * 表示Redis是否支持LZF压缩
+     *
+     * @var bool|null
+     */
+    protected $supportsLzf;
+
+    /**
+     * Indicates if Redis supports Zstd compression.
+	 * Redis是否支持Zstd压缩
+     *
+     * @var bool|null
+     */
+    protected $supportsZstd;
+
+    /**
+     * Prepares the given values to be used with the `eval` command, including serialization and compression.
+	 * 准备与'eval'命令一起使用的给定值，包括序列化和压缩。
+     *
+     * @param  array<int|string,string>  $values
+     * @return array<int|string,string>
+     */
+    public function pack(array $values): array
+    {
+        if (empty($values)) {
+            return $values;
+        }
+
+        if ($this->supportsPacking()) {
+            return array_map([$this->client, '_pack'], $values);
+        }
+
+        if ($this->compressed()) {
+            if ($this->supportsLzf() && $this->lzfCompressed()) {
+                if (! function_exists('lzf_compress')) {
+                    throw new RuntimeException("'lzf' extension required to call 'lzf_compress'.");
+                }
+
+                $processor = function ($value) {
+                    return \lzf_compress($this->client->_serialize($value));
+                };
+            } elseif ($this->supportsZstd() && $this->zstdCompressed()) {
+                if (! function_exists('zstd_compress')) {
+                    throw new RuntimeException("'zstd' extension required to call 'zstd_compress'.");
+                }
+
+                $compressionLevel = $this->client->getOption(Redis::OPT_COMPRESSION_LEVEL);
+
+                $processor = function ($value) use ($compressionLevel) {
+                    return \zstd_compress(
+                        $this->client->_serialize($value),
+                        $compressionLevel === 0 ? Redis::COMPRESSION_ZSTD_DEFAULT : $compressionLevel
+                    );
+                };
+            } else {
+                throw new UnexpectedValueException(sprintf(
+                    'Unsupported phpredis compression in use [%d].',
+                    $this->client->getOption(Redis::OPT_COMPRESSION)
+                ));
+            }
+        } else {
+            $processor = function ($value) {
+                return $this->client->_serialize($value);
+            };
+        }
+
+        return array_map($processor, $values);
+    }
+
+    /**
+     * Determine if compression is enabled.
+	 * 确定是否启用了压缩
+     *
+     * @return bool
+     */
+    public function compressed(): bool
+    {
+        return defined('Redis::OPT_COMPRESSION') &&
+               $this->client->getOption(Redis::OPT_COMPRESSION) !== Redis::COMPRESSION_NONE;
+    }
+
+    /**
+     * Determine if LZF compression is enabled.
+	 * 确定是否启用了LZF压缩
+     *
+     * @return bool
+     */
+    public function lzfCompressed(): bool
+    {
+        return defined('Redis::COMPRESSION_LZF') &&
+               $this->client->getOption(Redis::OPT_COMPRESSION) === Redis::COMPRESSION_LZF;
+    }
+
+    /**
+     * Determine if ZSTD compression is enabled.
+	 * 确定是否启用了ZSTD压缩
+     *
+     * @return bool
+     */
+    public function zstdCompressed(): bool
+    {
+        return defined('Redis::COMPRESSION_ZSTD') &&
+               $this->client->getOption(Redis::OPT_COMPRESSION) === Redis::COMPRESSION_ZSTD;
+    }
+
+    /**
+     * Determine if LZ4 compression is enabled.
+	 * 确定是否启用了LZ4压缩
+     *
+     * @return bool
+     */
+    public function lz4Compressed(): bool
+    {
+        return defined('Redis::COMPRESSION_LZ4') &&
+               $this->client->getOption(Redis::OPT_COMPRESSION) === Redis::COMPRESSION_LZ4;
+    }
+
+    /**
+     * Determine if the current PhpRedis extension version supports packing.
+	 * 确定当前PhpRedis扩展版本是否支持打包
+     *
+     * @return bool
+     */
+    protected function supportsPacking(): bool
+    {
+        if ($this->supportsPacking === null) {
+            $this->supportsPacking = $this->phpRedisVersionAtLeast('5.3.5');
+        }
+
+        return $this->supportsPacking;
+    }
+
+    /**
+     * Determine if the current PhpRedis extension version supports LZF compression.
+	 * 确定当前PhpRedis扩展版本是否支持LZF压缩
+     *
+     * @return bool
+     */
+    protected function supportsLzf(): bool
+    {
+        if ($this->supportsLzf === null) {
+            $this->supportsLzf = $this->phpRedisVersionAtLeast('4.3.0');
+        }
+
+        return $this->supportsLzf;
+    }
+
+    /**
+     * Determine if the current PhpRedis extension version supports Zstd compression.
+	 * 确定当前PhpRedis扩展版本是否支持Zstd压缩
+     *
+     * @return bool
+     */
+    protected function supportsZstd(): bool
+    {
+        if ($this->supportsZstd === null) {
+            $this->supportsZstd = $this->phpRedisVersionAtLeast('5.1.0');
+        }
+
+        return $this->supportsZstd;
+    }
+
+    /**
+     * Determine if the PhpRedis extension version is at least the given version.
+	 * 确定PhpRedis扩展版本是否至少是给定的版本
+     *
+     * @param  string  $version
+     * @return bool
+     */
+    protected function phpRedisVersionAtLeast(string $version): bool
+    {
+        $phpredisVersion = phpversion('redis');
+
+        return $phpredisVersion !== false && version_compare($phpredisVersion, $version, '>=');
+    }
+}

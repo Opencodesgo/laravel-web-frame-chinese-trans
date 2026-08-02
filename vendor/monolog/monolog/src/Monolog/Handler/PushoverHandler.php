@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Pushover 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Sends notifications through the pushover api to mobile phones
+ * 通过pushover api向手机发送通知
  *
  * @author Sebastian Göttschkes <sebastian.goettschkes@googlemail.com>
  * @see    https://www.pushover.net/api
@@ -70,6 +75,7 @@ class PushoverHandler extends SocketHandler
 
     /**
      * Sounds the api supports by default
+	 * api默认支持的声音
      * @see https://pushover.net/api#sounds
      * @var string[]
      */
@@ -236,6 +242,7 @@ class PushoverHandler extends SocketHandler
 
     /**
      * Use the formatted message?
+	 * 使用格式化的消息?
      */
     public function useFormattedMessage(bool $value): self
     {

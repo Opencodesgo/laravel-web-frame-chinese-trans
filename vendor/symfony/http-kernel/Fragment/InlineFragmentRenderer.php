@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，内联片段渲染器
+ * Symfony，Component，HttpKernel，碎片，内联片段渲染器
  */
 
 /*
@@ -25,7 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Implements the inline rendering strategy where the Request is rendered by the current HTTP kernel.
- * 实现内联呈现策略，其中Request由当前HTTP内核呈现。
+ * 实现由当前HTTP内核呈现请求的内线呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -44,6 +44,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
      * {@inheritdoc}
      *
      * Additional available options:
+	 * 其他可用选项：
      *
      *  * alt: an alternative URI to render in case of an error
      */

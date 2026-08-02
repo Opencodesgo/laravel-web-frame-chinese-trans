@@ -6,20 +6,24 @@
 namespace Illuminate\Foundation\Providers;
 
 use Illuminate\Http\Request;
+use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\AggregateServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Testing\LoggedExceptionCollection;
+use Illuminate\Testing\ParallelTestingServiceProvider;
 use Illuminate\Validation\ValidationException;
 
 class FoundationServiceProvider extends AggregateServiceProvider
 {
     /**
      * The provider class names.
-	 * 提供者类名
+	 * 提供商类名
      *
-     * @var array
+     * @var string[]
      */
     protected $providers = [
         FormRequestServiceProvider::class,
+        ParallelTestingServiceProvider::class,
     ];
 
     /**
@@ -49,6 +53,7 @@ class FoundationServiceProvider extends AggregateServiceProvider
 
         $this->registerRequestValidation();
         $this->registerRequestSignatureValidation();
+        $this->registerExceptionTracking();
     }
 
     /**
@@ -86,6 +91,35 @@ class FoundationServiceProvider extends AggregateServiceProvider
     {
         Request::macro('hasValidSignature', function ($absolute = true) {
             return URL::hasValidSignature($this, $absolute);
+        });
+
+        Request::macro('hasValidRelativeSignature', function () {
+            return URL::hasValidSignature($this, $absolute = false);
+        });
+    }
+
+    /**
+     * Register an event listener to track logged exceptions.
+	 * 注册一个事件侦听器来跟踪记录的异常
+     *
+     * @return void
+     */
+    protected function registerExceptionTracking()
+    {
+        if (! $this->app->runningUnitTests()) {
+            return;
+        }
+
+        $this->app->instance(
+            LoggedExceptionCollection::class,
+            new LoggedExceptionCollection
+        );
+
+        $this->app->make('events')->listen(MessageLogged::class, function ($event) {
+            if (isset($event->context['exception'])) {
+                $this->app->make(LoggedExceptionCollection::class)
+                        ->push($event->context['exception']);
+            }
         });
     }
 }

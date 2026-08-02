@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Shell
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -43,6 +46,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell application.
+ * Psy Shell应用程序。
  *
  * Usage:
  *
@@ -80,6 +84,7 @@ class Shell extends Application
 
     /**
      * Create a new Psy Shell.
+	 * 创建一个新的Psy Shell
      *
      * @param Configuration|null $config (default: null)
      */
@@ -105,6 +110,7 @@ class Shell extends Application
 
     /**
      * Check whether the first thing in a backtrace is an include call.
+	 * 检查回溯中的第一件事是否为include调用。
      *
      * This is used by the psysh bin to decide whether to start a shell on boot,
      * or to simply autoload the library.
@@ -127,6 +133,7 @@ class Shell extends Application
 
     /**
      * Check if the currently running PsySH bin is a phar archive.
+	 * 检查当前运行的PsySH bin是否是phar归档文件
      */
     public static function isPhar(): bool
     {
@@ -135,6 +142,7 @@ class Shell extends Application
 
     /**
      * Invoke a Psy Shell from the current context.
+	 * 从当前上下文中调用Psy Shell
      *
      * @see Psy\debug
      * @deprecated will be removed in 1.0. Use \Psy\debug instead
@@ -153,6 +161,7 @@ class Shell extends Application
 
     /**
      * Adds a command object.
+	 * 添加命令对象
      *
      * {@inheritdoc}
      *
@@ -181,6 +190,7 @@ class Shell extends Application
 
     /**
      * Gets the default input definition.
+	 * 获取默认输入定义
      *
      * @return InputDefinition An InputDefinition instance
      */
@@ -194,6 +204,7 @@ class Shell extends Application
 
     /**
      * Gets the default commands that should always be available.
+	 * 获取应该始终可用的默认命令
      *
      * @return array An array of default Command instances
      */
@@ -254,6 +265,7 @@ class Shell extends Application
 
     /**
      * Gets the default command loop listeners.
+	 * 获取默认的命令循环侦听器
      *
      * @return array An array of Execution Loop Listener instances
      */
@@ -274,6 +286,7 @@ class Shell extends Application
 
     /**
      * Add tab completion matchers.
+	 * 添加制表符完成匹配器
      *
      * @param array $matchers
      */
@@ -300,6 +313,7 @@ class Shell extends Application
 
     /**
      * Set the Shell output.
+	 * 设置Shell输出
      *
      * @param OutputInterface $output
      */
@@ -363,6 +377,7 @@ class Shell extends Application
 
     /**
      * Run PsySH in interactive mode.
+	 * 在交互模式下运行PsySH
      *
      * Initializes tab completion and readline history, then spins up the
      * execution loop.
@@ -397,6 +412,7 @@ class Shell extends Application
 
     /**
      * Run PsySH in non-interactive mode.
+	 * 在非交互模式下运行PsySH
      *
      * Note that this isn't very useful unless you supply "include" arguments at
      * the command line, or code via stdin.
@@ -439,6 +455,7 @@ class Shell extends Application
 
     /**
      * Configures the input and output instances based on the user arguments and options.
+	 * 根据用户参数和选项配置输入和输出实例
      */
     protected function configureIO(InputInterface $input, OutputInterface $output): void
     {
@@ -454,6 +471,7 @@ class Shell extends Application
 
     /**
      * Load user-defined includes.
+	 * 加载用户定义的包含
      */
     private function loadIncludes()
     {
@@ -482,6 +500,7 @@ class Shell extends Application
 
     /**
      * Read user input.
+	 * 读取用户输入
      *
      * This will continue fetching user input until the code buffer contains
      * valid code.

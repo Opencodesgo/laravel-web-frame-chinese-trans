@@ -32,7 +32,7 @@ class RequestStack
 
     /**
      * Pushes a Request on the stack.
-	 * 推送请求至堆栈上
+	 * 将请求推送到堆栈上
      *
      * This method should generally not be called directly as the stack
      * management should be taken care of by the application itself.
@@ -72,6 +72,7 @@ class RequestStack
 
     /**
      * Gets the main request.
+	 * 获取主请求。
      *
      * Be warned that making your code aware of the main request
      * might make it un-compatible with other features of your framework
@@ -88,6 +89,7 @@ class RequestStack
 
     /**
      * Gets the master request.
+	 * 获取主请求
      *
      * @return Request|null
      *
@@ -102,6 +104,7 @@ class RequestStack
 
     /**
      * Returns the parent request of the current.
+	 * 返回当前父请求。
      *
      * Be warned that making your code aware of the parent request
      * might make it un-compatible with other features of your framework
@@ -120,7 +123,7 @@ class RequestStack
 
     /**
      * Gets the current session.
-	 * 获取当前会话
+	 * 得到当前会话
      *
      * @throws SessionNotFoundException
      */

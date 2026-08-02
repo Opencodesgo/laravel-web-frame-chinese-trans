@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，迁移，迁移抽象类
+ * Illuminate，数据库，迁移，迁徙抽象类
  */
 
 namespace Illuminate\Database\Migrations;

@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -98,6 +99,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the URL port.
+	 * 增加对URL端口的检查
      *
      * @param int|null $port The port number to connect to
      */
@@ -108,6 +110,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the URL path info.
+	 * 添加对URL路径信息的检查
      */
     public function matchPath(?string $regexp)
     {
@@ -116,6 +119,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the client IP.
+	 * 增加对客户端IP的检查
      *
      * @param string $ip A specific IP address or a range specified using IP/netmask like 192.168.1.0/24
      */
@@ -126,6 +130,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the client IP.
+	 * 增加对客户端IP的检查
      *
      * @param string|string[]|null $ips A specific IP address or a range specified using IP/netmask like 192.168.1.0/24
      */
@@ -140,6 +145,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the HTTP method.
+	 * 添加对HTTP方法的检查
      *
      * @param string|string[]|null $method An HTTP method or an array of HTTP methods
      */
@@ -150,6 +156,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for request attribute.
+	 * 添加对请求属性的检查
      */
     public function matchAttribute(string $key, string $regexp)
     {

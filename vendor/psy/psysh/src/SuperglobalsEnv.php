@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，超级全局 Env
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * Environment variables implementation via $_SERVER superglobal.
+ * 通过$_SERVER superglobal实现环境变量。
  */
 class SuperglobalsEnv implements EnvInterface
 {

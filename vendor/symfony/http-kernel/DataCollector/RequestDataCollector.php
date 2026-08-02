@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，请求数据收集器
+ * Symfony，Component，HttpKernel，数据采集器，请求数据收集器
  */
 
 /*
@@ -53,6 +53,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
     public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
         // attributes are serialized and as they can be anything, they need to be converted to strings.
+		// 属性是序列化的，因为它们可以是任何东西，所以需要将它们转换为字符串。
         $attributes = [];
         $route = '';
         foreach ($request->attributes->all() as $key => $value) {
@@ -320,6 +321,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
     /**
      * Gets the route name.
+	 * 获取路由名称。
      *
      * The _route request attributes is automatically set by the Router Matcher.
      */
@@ -335,6 +337,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
     /**
      * Gets the route parameters.
+	 * 获取路由参数。
      *
      * The _route_params request attributes is automatically set by the RouterListener.
      */
@@ -345,6 +348,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
     /**
      * Gets the parsed controller.
+	 * 获取已解析的控制器
      *
      * @return array|string|Data The controller as a string or array of data
      *                           with keys 'class', 'method', 'file' and 'line'
@@ -356,6 +360,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
     /**
      * Gets the previous request attributes.
+	 * 获取前一个请求属性
      *
      * @return array|Data|false A legacy array of data from the previous redirection response
      *                          or false otherwise

@@ -37,7 +37,7 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * Initializes the context from the request and sets request attributes based on a matching route.
- * 根据请求初始化上下文，并根据匹配的路由设置请求属性。
+ * 根据请求初始化上下文,并根据匹配路径设置请求属性。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Yonel Ceruto <yonelceruto@gmail.com>
@@ -91,6 +91,7 @@ class RouterListener implements EventSubscriberInterface
     /**
      * After a sub-request is done, we need to reset the routing context to the parent request so that the URL generator
      * operates on the correct context again.
+	 * 完成子请求后，我们需要将路由上下文重置为父请求，以便URL生成器再次对正确的上下文进行操作。
      */
     public function onKernelFinishRequest(FinishRequestEvent $event)
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Global Function File
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

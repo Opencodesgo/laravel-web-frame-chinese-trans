@@ -32,6 +32,14 @@ class Logger implements LoggerInterface
     protected $dispatcher;
 
     /**
+     * Any context to be added to logs.
+	 * 要添加到日志中的任何上下文
+     *
+     * @var array
+     */
+    protected $context = [];
+
+    /**
      * Create a new log writer instance.
 	 * 创建一个新的日志写入器实例
      *
@@ -188,9 +196,39 @@ class Logger implements LoggerInterface
      */
     protected function writeLog($level, $message, $context)
     {
-        $this->logger->{$level}($message = $this->formatMessage($message), $context);
+        $this->logger->{$level}(
+            $message = $this->formatMessage($message),
+            $context = array_merge($this->context, $context)
+        );
 
         $this->fireLogEvent($level, $message, $context);
+    }
+
+    /**
+     * Add context to all future logs.
+	 * 为所有将来的日志添加上下文
+     *
+     * @param  array  $context
+     * @return $this
+     */
+    public function withContext(array $context = [])
+    {
+        $this->context = array_merge($this->context, $context);
+
+        return $this;
+    }
+
+    /**
+     * Flush the existing context array.
+	 * 刷新现有上下文数组
+     *
+     * @return $this
+     */
+    public function withoutContext()
+    {
+        $this->context = [];
+
+        return $this;
     }
 
     /**

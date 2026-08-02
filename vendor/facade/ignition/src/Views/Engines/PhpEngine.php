@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，视图，引擎，Php 引擎
+ */
 
 namespace Facade\Ignition\Views\Engines;
 
@@ -13,6 +16,7 @@ class PhpEngine extends \Illuminate\View\Engines\PhpEngine
 
     /**
      * Get the evaluated contents of the view.
+	 * 获取视图的评估内容
      *
      * @param  string  $path
      * @param  array   $data
@@ -27,6 +31,7 @@ class PhpEngine extends \Illuminate\View\Engines\PhpEngine
 
     /**
      * Handle a view exception.
+	 * 处理视图异常
      *
      * @param  \Throwable  $baseException
      * @param  int  $obLevel

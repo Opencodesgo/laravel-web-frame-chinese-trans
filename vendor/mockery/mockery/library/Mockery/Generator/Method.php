@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，方法
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

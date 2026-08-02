@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，片段侦听器
+ * Symfony，Component，HttpKernel，事件监听器，碎片监听器
  */
 
 /*
@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\UriSigner;
 
 /**
  * Handles content fragments represented by special URIs.
- * 处理由特殊 URIs 表示的内容片段
+ * 处理由特殊uri表示的内容片段。
  *
  * All URL paths starting with /_fragment are handled as
  * content fragments by this listener.
@@ -51,6 +51,7 @@ class FragmentListener implements EventSubscriberInterface
 
     /**
      * Fixes request attributes when the path is '/_fragment'.
+	 * 修复了路径为‘/_fragment’时的请求属性。
      *
      * @throws AccessDeniedHttpException if the request does not come from a trusted IP
      */

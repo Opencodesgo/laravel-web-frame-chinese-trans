@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，多重过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * MultiplePcreFilterIterator filters files using patterns (regexps, globs or strings).
+ * MultiplePcreFilterIterator使用模式（regexp， globs或字符串）过滤文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -46,6 +50,7 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Checks whether the string is accepted by the regex filters.
+	 * 检查字符串是否被正则表达式过滤器接受。
      *
      * If there is no regexps defined in the class, this method will accept the string.
      * Such case can be handled by child classes before calling the method if they want to
@@ -79,6 +84,7 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Checks whether the string is a regex.
+	 * 检查字符串是否为正则表达式
      *
      * @return bool
      */
@@ -110,6 +116,7 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Converts string into regexp.
+	 * 将字符串转换为regexp
      *
      * @return string
      */

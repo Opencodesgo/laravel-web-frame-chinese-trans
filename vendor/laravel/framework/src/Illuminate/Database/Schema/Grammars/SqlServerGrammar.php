@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，Sql Server 语法
+ * Illuminate，数据库，架构，语法，Sql Server 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -22,7 +22,7 @@ class SqlServerGrammar extends Grammar
      * The possible column modifiers.
 	 * 可能的列修饰符
      *
-     * @var array
+     * @var string[]
      */
     protected $modifiers = ['Increment', 'Collate', 'Nullable', 'Default', 'Persisted'];
 
@@ -30,9 +30,40 @@ class SqlServerGrammar extends Grammar
      * The columns available as serials.
 	 * 作为序列可用的列
      *
-     * @var array
+     * @var string[]
      */
     protected $serials = ['tinyInteger', 'smallInteger', 'mediumInteger', 'integer', 'bigInteger'];
+
+    /**
+     * Compile a create database command.
+	 * 编译一个创建数据库命令
+     *
+     * @param  string  $name
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return string
+     */
+    public function compileCreateDatabase($name, $connection)
+    {
+        return sprintf(
+            'create database %s',
+            $this->wrapValue($name),
+        );
+    }
+
+    /**
+     * Compile a drop database if exists command.
+	 * 编译一个drop database if exists命令
+     *
+     * @param  string  $name
+     * @return string
+     */
+    public function compileDropDatabaseIfExists($name)
+    {
+        return sprintf(
+            'drop database if exists %s',
+            $this->wrapValue($name)
+        );
+    }
 
     /**
      * Compile the query to determine if a table exists.
@@ -42,7 +73,7 @@ class SqlServerGrammar extends Grammar
      */
     public function compileTableExists()
     {
-        return "select * from sysobjects where type = 'U' and name = ?";
+        return "select * from sys.sysobjects where id = object_id(?) and xtype in ('U', 'V')";
     }
 
     /**
@@ -54,9 +85,7 @@ class SqlServerGrammar extends Grammar
      */
     public function compileColumnListing($table)
     {
-        return "select col.name from sys.columns as col
-                join sys.objects as obj on col.object_id = obj.object_id
-                where obj.type = 'U' and obj.object_id = object_id('$table')";
+        return "select name from sys.columns where object_id = object_id('$table')";
     }
 
     /**
@@ -181,7 +210,7 @@ class SqlServerGrammar extends Grammar
      */
     public function compileDropIfExists(Blueprint $blueprint, Fluent $command)
     {
-        return sprintf('if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = %s) drop table %s',
+        return sprintf('if exists (select * from sys.sysobjects where id = object_id(%s, \'U\')) drop table %s',
             "'".str_replace("'", "''", $this->getTablePrefix().$blueprint->getTable())."'",
             $this->wrapTable($blueprint)
         );
@@ -189,7 +218,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the SQL needed to drop all tables.
-	 * 编译删除所有表所需的SQL。
+	 * 编译删除所有表所需的SQL
      *
      * @return string
      */
@@ -231,7 +260,7 @@ class SqlServerGrammar extends Grammar
 
         $sql = "DECLARE @sql NVARCHAR(MAX) = '';";
         $sql .= "SELECT @sql += 'ALTER TABLE [dbo].[{$tableName}] DROP CONSTRAINT ' + OBJECT_NAME([default_object_id]) + ';' ";
-        $sql .= 'FROM SYS.COLUMNS ';
+        $sql .= 'FROM sys.columns ';
         $sql .= "WHERE [object_id] = OBJECT_ID('[dbo].[{$tableName}]') AND [name] in ({$columns}) AND [default_object_id] <> 0;";
         $sql .= 'EXEC(@sql)';
 
@@ -255,7 +284,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a drop unique key command.
-	 * 编译一个drop惟一的密钥命令
+	 * 编译一个删除唯一键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -270,7 +299,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a drop index command.
-	 * 编写一个删除索引命令
+	 * 编译一个删除索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -418,6 +447,18 @@ class SqlServerGrammar extends Grammar
     protected function typeString(Fluent $column)
     {
         return "nvarchar({$column->length})";
+    }
+
+    /**
+     * Create the column definition for a tiny text type.
+	 * 为小型文本类型创建列定义
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeTinyText(Fluent $column)
+    {
+        return 'nvarchar(255)';
     }
 
     /**
@@ -630,7 +671,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time (with time zone) type.
-	 * 为日期-时间(带时区)类型创建列定义
+	 * 为日期-时间（带时区）类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -680,7 +721,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Create the column definition for a timestamp (with time zone) type.
-	 * 为时间戳(带时区)类型创建列定义
+	 * 为时间戳（带时区）类型创建列定义
      *
      * @link https://docs.microsoft.com/en-us/sql/t-sql/data-types/datetimeoffset-transact-sql?view=sql-server-ver15
      *

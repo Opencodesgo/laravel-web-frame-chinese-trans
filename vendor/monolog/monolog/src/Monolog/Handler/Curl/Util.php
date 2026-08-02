@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Curl，工具
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use CurlHandle;
 
 /**
  * This class is marked as internal and it is not under the BC promise of the package.
+ * 这个类被标记为内部,并不是在BC承诺的包。
  *
  * @internal
  */
@@ -33,6 +38,7 @@ final class Util
 
     /**
      * Executes a CURL request with optional retries and exception on failure
+	 * 在故障中执行旋度请求,并在失败时执行异常
      *
      * @param  resource|CurlHandle $ch             curl handler
      * @param  int                 $retries

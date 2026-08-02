@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，代码覆盖率
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -35,6 +40,7 @@ use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 
 /**
  * Provides collection functionality for PHP code coverage information.
+ * 为PHP代码覆盖信息提供集合功能。
  */
 final class CodeCoverage
 {
@@ -129,6 +135,7 @@ final class CodeCoverage
 
     /**
      * Returns the code coverage information as a graph of node objects.
+	 * 将代码覆盖信息作为节点对象的图形返回
      */
     public function getReport(): Directory
     {
@@ -141,6 +148,7 @@ final class CodeCoverage
 
     /**
      * Clears collected code coverage data.
+	 * 清除收集的代码覆盖数据
      */
     public function clear(): void
     {
@@ -160,6 +168,7 @@ final class CodeCoverage
 
     /**
      * Returns the filter object used.
+	 * 返回使用的过滤器对象
      */
     public function filter(): Filter
     {
@@ -168,6 +177,7 @@ final class CodeCoverage
 
     /**
      * Returns the collected code coverage data.
+	 * 返回收集的代码覆盖数据
      */
     public function getData(bool $raw = false): ProcessedCodeCoverageData
     {
@@ -184,6 +194,7 @@ final class CodeCoverage
 
     /**
      * Sets the coverage data.
+	 * 设置覆盖率数据
      */
     public function setData(ProcessedCodeCoverageData $data): void
     {
@@ -192,6 +203,7 @@ final class CodeCoverage
 
     /**
      * Returns the test data.
+	 * 返回测试数据
      */
     public function getTests(): array
     {
@@ -200,6 +212,7 @@ final class CodeCoverage
 
     /**
      * Sets the test data.
+	 * 设置测试数据
      */
     public function setTests(array $tests): void
     {
@@ -208,6 +221,7 @@ final class CodeCoverage
 
     /**
      * Start collection of code coverage information.
+	 * 开始收集代码覆盖率信息
      *
      * @param PhptTestCase|string|TestCase $id
      */
@@ -226,6 +240,7 @@ final class CodeCoverage
 
     /**
      * Stop collection of code coverage information.
+	 * 停止收集代码覆盖率信息
      *
      * @param array|false $linesToBeCovered
      */
@@ -248,6 +263,7 @@ final class CodeCoverage
 
     /**
      * Appends code coverage data.
+	 * 追加代码覆盖率数据
      *
      * @param PhptTestCase|string|TestCase $id
      * @param array|false                  $linesToBeCovered
@@ -325,6 +341,7 @@ final class CodeCoverage
 
     /**
      * Merges the data from another instance.
+	 * 合并来自另一个实例的数据
      */
     public function merge(self $that): void
     {

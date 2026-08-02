@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，Ftp
+ * League，Flysystem，Adapter，Ftp
  */
 
 namespace League\Flysystem\Adapter;
@@ -180,7 +180,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set the connections to passive mode.
-	 * 设置连接为被动模式
+	 * 将连接设置为被动模式
      *
      * @throws ConnectionRuntimeException
      */
@@ -219,7 +219,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Login.
-	 * 登陆
+	 * 登录
      *
      * @throws ConnectionRuntimeException
      */
@@ -245,6 +245,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Disconnect from the FTP server.
+	 * 断开FTP服务器连接
      */
     public function disconnect()
     {
@@ -566,7 +567,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * The ftp_rawlist function with optional escaping.
-	 * 带有可选转义的ftp_rawlist函数
+	 * ftp_rawlist函数具有可选的逃避
      *
      * @param string $options
      * @param string $path

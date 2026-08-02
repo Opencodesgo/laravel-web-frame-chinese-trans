@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储，上下文提供者，请求上下文提供者
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * Tries to provide context from a request.
+ * 试图从请求提供上下文。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，处理者
+ * League，Flysystem，处理程序
  */
 
 namespace League\Flysystem;
@@ -24,6 +24,7 @@ abstract class Handler
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param FilesystemInterface $filesystem
      * @param string              $path
@@ -36,6 +37,7 @@ abstract class Handler
 
     /**
      * Check whether the entree is a directory.
+	 * 检查entree是否是一个目录
      *
      * @return bool
      */
@@ -46,6 +48,7 @@ abstract class Handler
 
     /**
      * Check whether the entree is a file.
+	 * 检查主菜是否有文件
      *
      * @return bool
      */
@@ -56,6 +59,7 @@ abstract class Handler
 
     /**
      * Retrieve the entree type (file|dir).
+	 * 检索entree类型(file | dir)
      *
      * @return string file or dir
      */
@@ -68,6 +72,7 @@ abstract class Handler
 
     /**
      * Set the Filesystem object.
+	 * 设置文件系统对象
      *
      * @param FilesystemInterface $filesystem
      *
@@ -82,6 +87,7 @@ abstract class Handler
     
     /**
      * Retrieve the Filesystem object.
+	 * 检索文件系统对象
      *
      * @return FilesystemInterface
      */
@@ -92,6 +98,7 @@ abstract class Handler
 
     /**
      * Set the entree path.
+	 * 设置主菜路径
      *
      * @param string $path
      *
@@ -106,6 +113,7 @@ abstract class Handler
 
     /**
      * Retrieve the entree path.
+	 * 找回主菜的路
      *
      * @return string path
      */
@@ -116,6 +124,7 @@ abstract class Handler
 
     /**
      * Plugins pass-through.
+	 * 插件通过
      *
      * @param string $method
      * @param array  $arguments

@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，支持，服务提供者，为所有的服务提供者提供继承
+ * Illuminate，支持，服务提供者抽象类，提供给服务提供者继承使用
  */
 
 namespace Illuminate\Support;
 
+use Closure;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Contracts\Foundation\CachesRoutes;
@@ -23,6 +24,22 @@ abstract class ServiceProvider
     protected $app;
 
     /**
+     * All of the registered booting callbacks.
+	 * 所有已注册的引导回调
+     *
+     * @var array
+     */
+    protected $bootingCallbacks = [];
+
+    /**
+     * All of the registered booted callbacks.
+	 * 所有已注册的启动回调
+     *
+     * @var array
+     */
+    protected $bootedCallbacks = [];
+
+    /**
      * The paths that should be published.
 	 * 应该发布的路径
      *
@@ -32,7 +49,7 @@ abstract class ServiceProvider
 
     /**
      * The paths that should be published by group.
-	 * 应该按组发布的路径
+	 * 应按组发布的路径
      *
      * @var array
      */
@@ -52,13 +69,71 @@ abstract class ServiceProvider
 
     /**
      * Register any application services.
-	 * 注册任何应用服务，服务提供者基本的注册方法
+	 * 注册任何应用程序服务，服务提供者自己去完善
      *
      * @return void
      */
     public function register()
     {
         //
+    }
+
+    /**
+     * Register a booting callback to be run before the "boot" method is called.
+	 * 注册一个启动回调，以便在调用"boot"方法之前运行。
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function booting(Closure $callback)
+    {
+        $this->bootingCallbacks[] = $callback;
+    }
+
+    /**
+     * Register a booted callback to be run after the "boot" method is called.
+	 * 注册一个被引导的回调，在"boot"方法被调用后运行。
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function booted(Closure $callback)
+    {
+        $this->bootedCallbacks[] = $callback;
+    }
+
+    /**
+     * Call the registered booting callbacks.
+	 * 调用注册的引导回调函数
+     *
+     * @return void
+     */
+    public function callBootingCallbacks()
+    {
+        $index = 0;
+
+        while ($index < count($this->bootingCallbacks)) {
+            $this->app->call($this->bootingCallbacks[$index]);
+
+            $index++;
+        }
+    }
+
+    /**
+     * Call the registered booted callbacks.
+	 * 调用已注册的已引导回调函数
+     *
+     * @return void
+     */
+    public function callBootedCallbacks()
+    {
+        $index = 0;
+
+        while ($index < count($this->bootedCallbacks)) {
+            $this->app->call($this->bootedCallbacks[$index]);
+
+            $index++;
+        }
     }
 
     /**
@@ -96,7 +171,7 @@ abstract class ServiceProvider
 
     /**
      * Register a view file namespace.
-	 * 注册视图文件命名空间
+	 * 注册一个视图文件命名空间
      *
      * @param  string|array  $path
      * @param  string  $namespace
@@ -183,6 +258,8 @@ abstract class ServiceProvider
     /**
      * Register Eloquent model factory paths.
 	 * 注册Eloquent模型工厂路径
+     *
+     * @deprecated Will be removed in a future Laravel version.
      *
      * @param  array|string  $paths
      * @return void
@@ -384,7 +461,7 @@ abstract class ServiceProvider
 
     /**
      * Determine if the provider is deferred.
-	 * 确定提供者是否延迟
+	 * 确定是否延迟提供者
      *
      * @return bool
      */

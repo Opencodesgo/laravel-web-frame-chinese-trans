@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符号，Json 描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * JSON descriptor.
+ * Json 描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -95,6 +99,7 @@ class JsonDescriptor extends Descriptor
 
     /**
      * Writes data as json.
+	 * 将数据写入json
      */
     private function writeData(array $data, array $options)
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -109,6 +112,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets options.
+	 * 设置选项。
      *
      * Available options:
      *
@@ -170,6 +174,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Gets an option value.
+	 * 得到一个选项值
      *
      * @return mixed
      *
@@ -221,6 +226,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets the ConfigCache factory to use.
+	 * 设置要使用的ConfigCache工厂
      */
     public function setConfigCacheFactory(ConfigCacheFactoryInterface $configCacheFactory)
     {
@@ -259,6 +265,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Gets the UrlMatcher or RequestMatcher instance associated with this Router.
+	 * 获取与此路由器关联的UrlMatcher或RequestMatcher实例
      *
      * @return UrlMatcherInterface|RequestMatcherInterface
      */
@@ -303,6 +310,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Gets the UrlGenerator instance associated with this Router.
+	 * 获取与此路由器关联的UrlGenerator实例
      *
      * @return UrlGeneratorInterface
      */

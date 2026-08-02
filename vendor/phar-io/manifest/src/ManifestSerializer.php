@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，ManifestSerializer
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

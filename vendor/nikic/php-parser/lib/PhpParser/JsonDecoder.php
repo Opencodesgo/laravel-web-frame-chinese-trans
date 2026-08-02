@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Json 解码器
+ */
+
 namespace PhpParser;
 
 class JsonDecoder {

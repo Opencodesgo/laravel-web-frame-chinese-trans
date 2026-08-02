@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，测试，约束，电子邮件附件计数
+ */
 
 /*
  * This file is part of the Symfony package.

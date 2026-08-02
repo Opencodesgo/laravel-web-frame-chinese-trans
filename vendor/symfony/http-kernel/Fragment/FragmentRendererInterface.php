@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，片段渲染器接口
+ * Symfony，Component，HttpKernel，碎片，碎片渲染界面
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
  * Interface implemented by all rendering strategies.
- * 由所有呈现策略实现的接口
+ * 所有呈现策略实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,6 +28,7 @@ interface FragmentRendererInterface
 {
     /**
      * Renders a URI and returns the Response content.
+	 * 呈现URI并返回响应内容
      *
      * @param string|ControllerReference $uri A URI as a string or a ControllerReference instance
      *
@@ -37,6 +38,7 @@ interface FragmentRendererInterface
 
     /**
      * Gets the name of the strategy.
+	 * 获取策略的名称
      *
      * @return string
      */

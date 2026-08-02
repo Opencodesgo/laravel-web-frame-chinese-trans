@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，异常，不允许方法 Http 异常
+ * Symfony，Component，HttpKernel，异常，方法不允许Http异常
  */
 
 /*

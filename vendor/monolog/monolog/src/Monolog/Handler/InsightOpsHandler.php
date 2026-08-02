@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，Insight Ops 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Logger;
 
 /**
  * Inspired on LogEntriesHandler.
+ * 灵感来自于日志条目处理程序。
  *
  * @author Robert Kaufmann III <rok3@rok3.me>
  * @author Gabriel Machado <gabriel.ms1@hotmail.com>

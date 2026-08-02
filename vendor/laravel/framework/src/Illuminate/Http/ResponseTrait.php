@@ -39,6 +39,17 @@ trait ResponseTrait
     }
 
     /**
+     * Get the status text for the response.
+	 * 获取响应的状态文本
+     *
+     * @return string
+     */
+    public function statusText()
+    {
+        return $this->statusText;
+    }
+
+    /**
      * Get the content of the response.
 	 * 获取响应的内容
      *
@@ -64,7 +75,7 @@ trait ResponseTrait
 
     /**
      * Set a header on the Response.
-	 * 在响应上设置标题
+	 * 设置响应头
      *
      * @param  string  $key
      * @param  array|string  $values
@@ -129,6 +140,26 @@ trait ResponseTrait
     }
 
     /**
+     * Expire a cookie when sending the response.
+	 * 在发送响应时使cookie过期
+     *
+     * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
+     * @param  string|null  $path
+     * @param  string|null  $domain
+     * @return $this
+     */
+    public function withoutCookie($cookie, $path = null, $domain = null)
+    {
+        if (is_string($cookie) && function_exists('cookie')) {
+            $cookie = cookie($cookie, null, -2628000, $path, $domain);
+        }
+
+        $this->headers->setCookie($cookie);
+
+        return $this;
+    }
+
+    /**
      * Get the callback of the response.
 	 * 获取响应的回调
      *
@@ -155,7 +186,7 @@ trait ResponseTrait
 
     /**
      * Throws the response in a HttpResponseException instance.
-	 * 在 HttpResponseException 实例中抛出响应
+	 * 在HttpResponseException实例中抛出响应
      *
      * @return void
      *

@@ -288,9 +288,23 @@ trait ManagesFrequencies
      */
     public function twiceDaily($first = 1, $second = 13)
     {
+        return $this->twiceDailyAt($first, $second, 0);
+    }
+
+    /**
+     * Schedule the event to run twice daily at a given offset.
+	 * 将事件安排在给定的偏移量处每天运行两次
+     *
+     * @param  int  $first
+     * @param  int  $second
+     * @param  int  $offset
+     * @return $this
+     */
+    public function twiceDailyAt($first = 1, $second = 13, $offset = 0)
+    {
         $hours = $first.','.$second;
 
-        return $this->spliceIntoPosition(1, 0)
+        return $this->spliceIntoPosition(1, $offset)
                     ->spliceIntoPosition(2, $hours);
     }
 
@@ -302,7 +316,7 @@ trait ManagesFrequencies
      */
     public function weekdays()
     {
-        return $this->spliceIntoPosition(5, '1-5');
+        return $this->days(Schedule::MONDAY.'-'.Schedule::FRIDAY);
     }
 
     /**
@@ -313,7 +327,7 @@ trait ManagesFrequencies
      */
     public function weekends()
     {
-        return $this->spliceIntoPosition(5, '0,6');
+        return $this->days(Schedule::SATURDAY.','.Schedule::SUNDAY);
     }
 
     /**
@@ -324,7 +338,7 @@ trait ManagesFrequencies
      */
     public function mondays()
     {
-        return $this->days(1);
+        return $this->days(Schedule::MONDAY);
     }
 
     /**
@@ -335,67 +349,67 @@ trait ManagesFrequencies
      */
     public function tuesdays()
     {
-        return $this->days(2);
+        return $this->days(Schedule::TUESDAY);
     }
 
     /**
      * Schedule the event to run only on Wednesdays.
-	 * 安排活动只在星期三进行
+	 * 把活动安排在星期三进行
      *
      * @return $this
      */
     public function wednesdays()
     {
-        return $this->days(3);
+        return $this->days(Schedule::WEDNESDAY);
     }
 
     /**
      * Schedule the event to run only on Thursdays.
-	 * 安排活动只在星期四进行
+	 * 把活动安排在星期四进行
      *
      * @return $this
      */
     public function thursdays()
     {
-        return $this->days(4);
+        return $this->days(Schedule::THURSDAY);
     }
 
     /**
      * Schedule the event to run only on Fridays.
-	 * 安排活动只在星期五进行
+	 * 把活动安排在周五
      *
      * @return $this
      */
     public function fridays()
     {
-        return $this->days(5);
+        return $this->days(Schedule::FRIDAY);
     }
 
     /**
      * Schedule the event to run only on Saturdays.
-	 * 安排活动只在星期六进行
+	 * 把活动安排在周六进行
      *
      * @return $this
      */
     public function saturdays()
     {
-        return $this->days(6);
+        return $this->days(Schedule::SATURDAY);
     }
 
     /**
      * Schedule the event to run only on Sundays.
-	 * 安排活动只在星期日进行
+	 * 把活动安排在星期天进行
      *
      * @return $this
      */
     public function sundays()
     {
-        return $this->days(0);
+        return $this->days(Schedule::SUNDAY);
     }
 
     /**
      * Schedule the event to run weekly.
-	 * 将活动安排为每周运行一次
+	 * 将活动安排为每周一次
      *
      * @return $this
      */
@@ -410,15 +424,15 @@ trait ManagesFrequencies
      * Schedule the event to run weekly on a given day and time.
 	 * 将活动安排在每周指定的日期和时间进行
      *
-     * @param  int  $day
+     * @param  array|mixed  $dayOfWeek
      * @param  string  $time
      * @return $this
      */
-    public function weeklyOn($day, $time = '0:0')
+    public function weeklyOn($dayOfWeek, $time = '0:0')
     {
         $this->dailyAt($time);
 
-        return $this->spliceIntoPosition(5, $day);
+        return $this->days($dayOfWeek);
     }
 
     /**
@@ -438,15 +452,15 @@ trait ManagesFrequencies
      * Schedule the event to run monthly on a given day and time.
 	 * 将活动安排在每月的特定日期和时间进行
      *
-     * @param  int  $day
+     * @param  int  $dayOfMonth
      * @param  string  $time
      * @return $this
      */
-    public function monthlyOn($day = 1, $time = '0:0')
+    public function monthlyOn($dayOfMonth = 1, $time = '0:0')
     {
         $this->dailyAt($time);
 
-        return $this->spliceIntoPosition(3, $day);
+        return $this->spliceIntoPosition(3, $dayOfMonth);
     }
 
     /**
@@ -460,13 +474,11 @@ trait ManagesFrequencies
      */
     public function twiceMonthly($first = 1, $second = 16, $time = '0:0')
     {
-        $days = $first.','.$second;
+        $daysOfMonth = $first.','.$second;
 
         $this->dailyAt($time);
 
-        return $this->spliceIntoPosition(1, 0)
-            ->spliceIntoPosition(2, 0)
-            ->spliceIntoPosition(3, $days);
+        return $this->spliceIntoPosition(3, $daysOfMonth);
     }
 
     /**
@@ -485,7 +497,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run quarterly.
-	 * 将活动安排为每季度一次
+	 * 计划该活动每季度一次
      *
      * @return $this
      */
@@ -509,6 +521,23 @@ trait ManagesFrequencies
                     ->spliceIntoPosition(2, 0)
                     ->spliceIntoPosition(3, 1)
                     ->spliceIntoPosition(4, 1);
+    }
+
+    /**
+     * Schedule the event to run yearly on a given month, day, and time.
+	 * 将事件安排为每年在给定的月份、日期和时间运行。
+     *
+     * @param  int  $month
+     * @param  int|string  $dayOfMonth
+     * @param  string  $time
+     * @return $this
+     */
+    public function yearlyOn($month = 1, $dayOfMonth = 1, $time = '0:0')
+    {
+        $this->dailyAt($time);
+
+        return $this->spliceIntoPosition(3, $dayOfMonth)
+                    ->spliceIntoPosition(4, $month);
     }
 
     /**

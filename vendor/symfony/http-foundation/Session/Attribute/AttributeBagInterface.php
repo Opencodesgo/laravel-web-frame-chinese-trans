@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，属性，属性包接口
+ * Symfony，Component，HttpFoundation，Session，属性，属性包接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * Attributes store.
- * 存储属性
+ * 存储属性。
  *
  * @author Drak <drak@zikula.org>
  */

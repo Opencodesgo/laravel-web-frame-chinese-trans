@@ -18,7 +18,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 {
     /**
      * The total number of items before slicing.
-	 * 切片前的条目总数
+	 * 切片前的项目总数
      *
      * @var int
      */
@@ -26,7 +26,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * The last available page.
-	 * 最后可用页
+	 * 最后可用的页面
      *
      * @var int
      */
@@ -34,7 +34,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Create a new paginator instance.
-	 * 创建新的分页器实例
+	 * 创建一个新的分页器实例
      *
      * @param  mixed  $items
      * @param  int  $total
@@ -61,7 +61,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the current page for the request.
-	 * 获取请求的当前页面
+	 * 得到请求的当前页面
      *
      * @param  int  $currentPage
      * @param  string  $pageName
@@ -101,6 +101,37 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
             'paginator' => $this,
             'elements' => $this->elements(),
         ]));
+    }
+
+    /**
+     * Get the paginator links as a collection (for JSON responses).
+	 * 获取分页器链接作为一个集合（用于JSON响应）
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function linkCollection()
+    {
+        return collect($this->elements())->flatMap(function ($item) {
+            if (! is_array($item)) {
+                return [['url' => null, 'label' => '...', 'active' => false]];
+            }
+
+            return collect($item)->map(function ($url, $page) {
+                return [
+                    'url' => $url,
+                    'label' => (string) $page,
+                    'active' => $this->currentPage() === $page,
+                ];
+            });
+        })->prepend([
+            'url' => $this->previousPageUrl(),
+            'label' => function_exists('__') ? __('pagination.previous') : 'Previous',
+            'active' => false,
+        ])->push([
+            'url' => $this->nextPageUrl(),
+            'label' => function_exists('__') ? __('pagination.next') : 'Next',
+            'active' => false,
+        ]);
     }
 
     /**
@@ -159,7 +190,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the last page.
-	 * 得到最后一页
+	 * 找到最后一页
      *
      * @return int
      */
@@ -183,6 +214,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
             'from' => $this->firstItem(),
             'last_page' => $this->lastPage(),
             'last_page_url' => $this->url($this->lastPage()),
+            'links' => $this->linkCollection()->toArray(),
             'next_page_url' => $this->nextPageUrl(),
             'path' => $this->path(),
             'per_page' => $this->perPage(),
@@ -194,10 +226,11 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON可序列化的对象
+	 * 转换对象为JSON可序列化的对象
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();

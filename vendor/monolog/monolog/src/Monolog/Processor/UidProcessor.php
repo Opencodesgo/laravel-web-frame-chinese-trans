@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Uid 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\ResettableInterface;
 
 /**
  * Adds a unique identifier into records
+ * 将唯一的标识符添加到记录中
  *
  * @author Simon Mönch <sm@webfactory.de>
  */

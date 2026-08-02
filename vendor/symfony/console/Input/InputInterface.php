@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，输入接口
+ * Symfony，Component，Console，输入，输入接口
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * InputInterface is the interface implemented by all input classes.
- * InputInterface 是由所有输入类实现的接口。
+ * InputInterface是所有输入类实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -27,6 +27,7 @@ interface InputInterface
 {
     /**
      * Returns the first argument from the raw parameters (not parsed).
+	 * 从原始参数返回第一个参数(不解析)
      *
      * @return string|null
      */
@@ -34,7 +35,6 @@ interface InputInterface
 
     /**
      * Returns true if the raw parameters (not parsed) contain a value.
-	 * 如果原始参数(未解析)包含值，则返回true。
      *
      * This method is to be used to introspect the input parameters
      * before they have been validated. It must be used carefully.
@@ -50,7 +50,7 @@ interface InputInterface
 
     /**
      * Returns the value of a raw option (not parsed).
-	 * 返回原始选项的值(未解析)
+	 * 返回原始选项的值（未解析）。
      *
      * This method is to be used to introspect the input parameters
      * before they have been validated. It must be used carefully.
@@ -67,6 +67,7 @@ interface InputInterface
 
     /**
      * Binds the current Input instance with the given arguments and options.
+	 * 使用给定的参数和选项绑定当前输入实例
      *
      * @throws RuntimeException
      */
@@ -74,6 +75,7 @@ interface InputInterface
 
     /**
      * Validates the input.
+	 * 验证输入
      *
      * @throws RuntimeException When not enough arguments are given
      */
@@ -81,6 +83,7 @@ interface InputInterface
 
     /**
      * Returns all the given arguments merged with the default values.
+	 * 返回与默认值合并的所有给定参数
      *
      * @return array<string|bool|int|float|array|null>
      */
@@ -88,6 +91,7 @@ interface InputInterface
 
     /**
      * Returns the argument value for a given argument name.
+	 * 返回给定参数名称的参数值
      *
      * @return mixed
      *
@@ -97,6 +101,7 @@ interface InputInterface
 
     /**
      * Sets an argument value by name.
+	 * 按名称设置参数值
      *
      * @param mixed $value The argument value
      *
@@ -106,6 +111,7 @@ interface InputInterface
 
     /**
      * Returns true if an InputArgument object exists by name or position.
+	 * 如果根据名称或位置存在inputarment对象，则返回true。
      *
      * @return bool
      */
@@ -113,6 +119,7 @@ interface InputInterface
 
     /**
      * Returns all the given options merged with the default values.
+	 * 返回与默认值合并的所有给定选项
      *
      * @return array<string|bool|int|float|array|null>
      */
@@ -130,6 +137,7 @@ interface InputInterface
 
     /**
      * Sets an option value by name.
+	 * 按名称设置选项值
      *
      * @param mixed $value The option value
      *
@@ -139,6 +147,7 @@ interface InputInterface
 
     /**
      * Returns true if an InputOption object exists by name.
+	 * 如果按名称存在InputOption对象，则返回true。
      *
      * @return bool
      */
@@ -146,6 +155,7 @@ interface InputInterface
 
     /**
      * Is this input means interactive?
+	 * 这种输入是否意味着交互性
      *
      * @return bool
      */
@@ -153,8 +163,7 @@ interface InputInterface
 
     /**
      * Sets the input interactivity.
-	 * 设置输入交互性
-	 *
+	 * 设置输入间活动
      */
     public function setInteractive(bool $interactive);
 }

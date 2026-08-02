@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，文件类型过滤迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * FileTypeFilterIterator only keeps files, directories, or both.
+ * FileTypeFilterIterator只保存文件、目录或两者。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -38,6 +42,7 @@ class FileTypeFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool
      */

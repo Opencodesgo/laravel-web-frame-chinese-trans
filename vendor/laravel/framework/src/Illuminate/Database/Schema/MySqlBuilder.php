@@ -1,12 +1,40 @@
 <?php
 /**
- * Illuminate，数据库，模式，MySql 生成器
+ * Illuminate，数据库，架构，MySql 构建者
  */
 
 namespace Illuminate\Database\Schema;
 
 class MySqlBuilder extends Builder
 {
+    /**
+     * Create a database in the schema.
+	 * 在模式中创建数据库
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function createDatabase($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileCreateDatabase($name, $this->connection)
+        );
+    }
+
+    /**
+     * Drop a database from the schema if the database exists.
+	 * 如果数据库存在，则从模式中删除该数据库。
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileDropDatabaseIfExists($name)
+        );
+    }
+
     /**
      * Determine if the given table exists.
 	 * 确定给定的表是否存在
@@ -25,7 +53,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get the column listing for a given table.
-	 * 获取给定表的列列表
+	 * 获取给定表的列清单
      *
      * @param  string  $table
      * @return array
@@ -43,7 +71,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all tables from the database.
-	 * 删除数据库所有表
+	 * 从数据库中删除所有表
      *
      * @return void
      */
@@ -72,7 +100,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all views from the database.
-	 * 删除数据库所有视图
+	 * 从数据库中删除所有视图
      *
      * @return void
      */

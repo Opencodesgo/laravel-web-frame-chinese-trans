@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，助手抽象类
- *
+ * Symfony，Component，Console，助手，助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +19,7 @@ use Symfony\Component\String\UnicodeString;
 
 /**
  * Helper is the base class for all helper classes.
+ * Helper是所有助手类的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -44,6 +45,7 @@ abstract class Helper implements HelperInterface
 
     /**
      * Returns the length of a string, using mb_strwidth if it is available.
+	 * 返回字符串的长度,如果可用,使用mb_strwidth。
      *
      * @deprecated since Symfony 5.3
      *
@@ -59,6 +61,7 @@ abstract class Helper implements HelperInterface
     /**
      * Returns the width of a string, using mb_strwidth if it is available.
      * The width is how many characters positions the string will use.
+	 * 返回字符串的宽度,如果可用,使用mb_strwidth。
      */
     public static function width(?string $string): int
     {
@@ -78,6 +81,7 @@ abstract class Helper implements HelperInterface
     /**
      * Returns the length of a string, using mb_strlen if it is available.
      * The length is related to how many bytes the string will use.
+	 * 返回字符串的长度,如果可用,使用mb_strlen。
      */
     public static function length(?string $string): int
     {
@@ -96,6 +100,7 @@ abstract class Helper implements HelperInterface
 
     /**
      * Returns the subset of a string, using mb_substr if it is available.
+	 * 返回字符串的子集,如果可用,使用mb_substr。
      *
      * @return string
      */

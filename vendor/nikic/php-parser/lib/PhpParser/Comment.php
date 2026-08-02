@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，评论
+ */
+
 namespace PhpParser;
 
 class Comment implements \JsonSerializable {
@@ -13,6 +17,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Constructs a comment node.
+	 * 构造注释节点
      *
      * @param string $text Comment text (including comment delimiters like /*)
      * @param int $startLine Line number the comment started on
@@ -35,6 +40,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the comment text.
+	 * 获取注释文本
      *
      * @return string The comment text (including comment delimiters like /*)
      */
@@ -44,6 +50,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the line number the comment started on.
+	 * 获取注释开始的行号
      *
      * @return int Line number (or -1 if not available)
      * @phpstan-return -1|positive-int
@@ -54,6 +61,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the file offset the comment started on.
+	 * 获取注释开始处的文件偏移量
      *
      * @return int File offset (or -1 if not available)
      */
@@ -63,6 +71,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the token offset the comment started on.
+	 * 获取注释开始时的令牌偏移量
      *
      * @return int Token offset (or -1 if not available)
      */
@@ -72,6 +81,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the line number the comment ends on.
+	 * 获取注释结束的行号
      *
      * @return int Line number (or -1 if not available)
      * @phpstan-return -1|positive-int
@@ -82,6 +92,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the file offset the comment ends on.
+	 * 获取注释结束时的文件偏移量
      *
      * @return int File offset (or -1 if not available)
      */
@@ -91,6 +102,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the token offset the comment ends on.
+	 * 获取注释结束时的令牌偏移量
      *
      * @return int Token offset (or -1 if not available)
      */
@@ -100,6 +112,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the comment text.
+	 * 获取注释文本
      *
      * @return string The comment text (including comment delimiters like /*)
      */
@@ -109,6 +122,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Gets the reformatted comment text.
+	 * 获取重新格式化的注释文本。
      *
      * "Reformatted" here means that we try to clean up the whitespace at the
      * starts of the lines. This is necessary because we receive the comments
@@ -169,6 +183,7 @@ class Comment implements \JsonSerializable {
 
     /**
      * Get length of shortest whitespace prefix (at the start of a line).
+	 * 获取最短空格前缀的长度（在一行的开头）。
      *
      * If there is a line with no prefix whitespace, 0 is a valid return value.
      *

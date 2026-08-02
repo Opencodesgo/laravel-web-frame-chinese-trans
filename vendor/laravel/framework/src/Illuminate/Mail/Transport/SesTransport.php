@@ -1,12 +1,14 @@
 <?php
 /**
- * Illuminate，邮件，传输，SES 传输
+ * Illuminate，邮件，传输，Ses 传输
  */
 
 namespace Illuminate\Mail\Transport;
 
+use Aws\Exception\AwsException;
 use Aws\Ses\SesClient;
 use Swift_Mime_SimpleMessage;
+use Swift_TransportException;
 
 class SesTransport extends Transport
 {
@@ -42,23 +44,32 @@ class SesTransport extends Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return int
      */
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $this->beforeSendPerformed($message);
 
-        $result = $this->ses->sendRawEmail(
-            array_merge(
-                $this->options, [
-                    'Source' => key($message->getSender() ?: $message->getFrom()),
-                    'RawMessage' => [
-                        'Data' => $message->toString(),
-                    ],
-                ]
-            )
-        );
+        try {
+            $result = $this->ses->sendRawEmail(
+                array_merge(
+                    $this->options, [
+                        'Source' => key($message->getSender() ?: $message->getFrom()),
+                        'RawMessage' => [
+                            'Data' => $message->toString(),
+                        ],
+                    ]
+                )
+            );
+        } catch (AwsException $e) {
+            throw new Swift_TransportException('Request to AWS SES API failed.', $e->getCode(), $e);
+        }
 
-        $message->getHeaders()->addTextHeader('X-SES-Message-ID', $result->get('MessageId'));
+        $messageId = $result->get('MessageId');
+
+        $message->getHeaders()->addTextHeader('X-Message-ID', $messageId);
+        $message->getHeaders()->addTextHeader('X-SES-Message-ID', $messageId);
 
         $this->sendPerformed($message);
 

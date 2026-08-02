@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，异常，无效资源异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Thrown when a resource cannot be loaded.
+ * 当资源不能加载时抛出。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

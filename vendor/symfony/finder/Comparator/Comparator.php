@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，比较器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -31,6 +34,7 @@ class Comparator
 
     /**
      * Gets the target value.
+	 * 获取目标值
      *
      * @return string
      */
@@ -55,6 +59,7 @@ class Comparator
 
     /**
      * Gets the comparison operator.
+	 * 获取比较运算符
      *
      * @return string
      */
@@ -65,6 +70,7 @@ class Comparator
 
     /**
      * Sets the comparison operator.
+	 * 设置比较运算符
      *
      * @throws \InvalidArgumentException
      *
@@ -79,6 +85,7 @@ class Comparator
 
     /**
      * Tests against the target.
+	 * 针对目标进行测试
      *
      * @param mixed $test A test value
      *

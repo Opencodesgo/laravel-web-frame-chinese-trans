@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符号，文本描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Text descriptor.
+ * 文本描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -258,6 +262,7 @@ class TextDescriptor extends Descriptor
 
     /**
      * Formats command aliases to show them in the command description.
+	 * 格式命令别名,以显示在命令描述中
      */
     private function getCommandAliasesText(Command $command): string
     {
@@ -273,6 +278,7 @@ class TextDescriptor extends Descriptor
 
     /**
      * Formats input option/argument default value.
+	 * 格式输入选项/参数默认值
      *
      * @param mixed $default
      */

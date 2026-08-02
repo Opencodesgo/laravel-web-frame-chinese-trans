@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，设置
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -9,6 +13,7 @@ use Hamcrest\Description;
 
 /**
  * Tests if a value (class, object, or array) has a named property.
+ * 测试值（类、对象或数组）是否具有命名属性。
  *
  * For example:
  * <pre>
@@ -75,6 +80,7 @@ class Set extends BaseMatcher
 
     /**
      * Matches if value (class, object, or array) has named $property.
+	 * 匹配如果value（类、对象或数组）命名为$property
      *
      * @factory
      */

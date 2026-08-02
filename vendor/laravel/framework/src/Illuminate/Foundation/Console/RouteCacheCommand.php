@@ -30,7 +30,7 @@ class RouteCacheCommand extends Command
 
     /**
      * The filesystem instance.
-	 * 文件系统实例 
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -52,7 +52,7 @@ class RouteCacheCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

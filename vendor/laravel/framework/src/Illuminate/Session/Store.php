@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，储存
+ * Illuminate，Session，存储
  */
 
 namespace Illuminate\Session;
@@ -16,7 +16,7 @@ class Store implements Session
 {
     /**
      * The session ID.
-	 * 会话ID
+	 * Session ID
      *
      * @var string
      */
@@ -24,7 +24,7 @@ class Store implements Session
 
     /**
      * The session name.
-	 * 会话名称
+	 * session名称
      *
      * @var string
      */
@@ -56,7 +56,7 @@ class Store implements Session
 
     /**
      * Create a new session instance.
-	 * 创建新的会话实例
+	 * 创建新的session实例
      *
      * @param  string  $name
      * @param  \SessionHandlerInterface  $handler
@@ -210,6 +210,18 @@ class Store implements Session
         return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) use ($placeholder) {
             return $this->get($key, $placeholder) === $placeholder;
         });
+    }
+
+    /**
+     * Determine if the given key is missing from the session data.
+	 * 确定会话数据中是否缺少给定的键
+     *
+     * @param  string|array  $key
+     * @return bool
+     */
+    public function missing($key)
+    {
+        return ! $this->exists($key);
     }
 
     /**
@@ -682,7 +694,7 @@ class Store implements Session
 
     /**
      * Set the "previous" URL in the session.
-	 * 设置会话中的"previous"URL
+	 * 设置会话中的"前一个"URL
      *
      * @param  string  $url
      * @return void
@@ -690,6 +702,17 @@ class Store implements Session
     public function setPreviousUrl($url)
     {
         $this->put('_previous.url', $url);
+    }
+
+    /**
+     * Specify that the user has confirmed their password.
+	 * 指定用户已确认其密码
+     *
+     * @return void
+     */
+    public function passwordConfirmed()
+    {
+        $this->put('auth.password_confirmed_at', time());
     }
 
     /**

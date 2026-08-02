@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，支持，Fake Composer
+ */
 
 namespace Facade\Ignition\Support;
 

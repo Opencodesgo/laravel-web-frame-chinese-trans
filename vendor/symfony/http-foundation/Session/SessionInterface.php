@@ -1,10 +1,11 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，会话接口
+ * Symfony，Component，HttpFoundation，Session，会话接口
  */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -44,6 +45,7 @@ interface SessionInterface
 
     /**
      * Sets the session ID.
+	 * 设置会话ID
      */
     public function setId(string $id);
 
@@ -57,6 +59,7 @@ interface SessionInterface
 
     /**
      * Sets the session name.
+	 * 设置会话名称
      */
     public function setName(string $name);
 
@@ -92,6 +95,7 @@ interface SessionInterface
 
     /**
      * Force the session to be saved and closed.
+	 * 强制保存并关闭会话
      *
      * This method is generally not required for real sessions as
      * the session will be automatically saved at the end of
@@ -101,6 +105,7 @@ interface SessionInterface
 
     /**
      * Checks if an attribute is defined.
+	 * 检查是否定义了属性
      *
      * @return bool
      */
@@ -108,6 +113,7 @@ interface SessionInterface
 
     /**
      * Returns an attribute.
+	 * 返回一个属性
      *
      * @param mixed $default The default value if not found
      *
@@ -117,6 +123,7 @@ interface SessionInterface
 
     /**
      * Sets an attribute.
+	 * 设置一个属性
      *
      * @param mixed $value
      */
@@ -124,6 +131,7 @@ interface SessionInterface
 
     /**
      * Returns attributes.
+	 * 返回属性
      *
      * @return array
      */
@@ -131,11 +139,13 @@ interface SessionInterface
 
     /**
      * Sets attributes.
+	 * 设置属性
      */
     public function replace(array $attributes);
 
     /**
      * Removes an attribute.
+	 * 移除属性
      *
      * @return mixed The removed value or null when it does not exist
      */
@@ -156,6 +166,7 @@ interface SessionInterface
 
     /**
      * Registers a SessionBagInterface with the session.
+	 * 向会话注册一个SessionBagInterface
      */
     public function registerBag(SessionBagInterface $bag);
 

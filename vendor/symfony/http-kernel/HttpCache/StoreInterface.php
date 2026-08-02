@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Interface implemented by HTTP cache stores.
- * 接口实现的HTTP缓存存储
+ * 通过HTTP缓存存储实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,7 +30,7 @@ interface StoreInterface
 {
     /**
      * Locates a cached Response for the Request provided.
-	 * 定位所提供请求的缓存响应
+	 * 为所提供的请求定位缓存响应
      *
      * @return Response|null
      */
@@ -38,6 +38,7 @@ interface StoreInterface
 
     /**
      * Writes a cache entry to the store for the given Request and Response.
+	 * 为给定的请求和响应写入存储的缓存条目。
      *
      * Existing entries are read and any that match the response are removed. This
      * method calls write with the new list of cache entries.
@@ -48,11 +49,13 @@ interface StoreInterface
 
     /**
      * Invalidates all cache entries that match the request.
+	 * 使所有缓存条目都无效,与请求相匹配
      */
     public function invalidate(Request $request);
 
     /**
      * Locks the cache for a given Request.
+	 * 锁定给定请求的缓存
      *
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
@@ -60,6 +63,7 @@ interface StoreInterface
 
     /**
      * Releases the lock for the given Request.
+	 * 释放给定请求的锁
      *
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
@@ -67,6 +71,7 @@ interface StoreInterface
 
     /**
      * Returns whether or not a lock exists.
+	 * 返回是否存在锁
      *
      * @return bool true if lock exists, false otherwise
      */
@@ -74,6 +79,7 @@ interface StoreInterface
 
     /**
      * Purges data for the given URL.
+	 * 清除给定URL的数据
      *
      * @return bool true if the URL exists and has been purged, false otherwise
      */
@@ -81,6 +87,7 @@ interface StoreInterface
 
     /**
      * Cleanups storage.
+	 * 清理仓库
      */
     public function cleanup();
 }

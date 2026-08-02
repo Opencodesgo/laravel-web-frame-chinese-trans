@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，编码器，Base64 Mime报头编码器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ final class Base64MimeHeaderEncoder extends Base64Encoder implements MimeHeaderE
 
     /**
      * Takes an unencoded string and produces a Base64 encoded string from it.
+	 * 获取一个未编码的字符串，并从中生成一个Base64编码的字符串。
      *
      * If the charset is iso-2022-jp, it uses mb_encode_mimeheader instead of
      * default encodeString, otherwise pass to the parent method.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，有状态的守卫
+ * Illuminate，契约，认证，有状态的警卫
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -19,7 +19,7 @@ interface StatefulGuard extends Guard
 
     /**
      * Log a user into the application without sessions or cookies.
-	 * 在没有会话或cookie的情况下将用户登录到应用
+	 * 在没有会话或cookie的情况下将用户登录到应用程序
      *
      * @param  array  $credentials
      * @return bool
@@ -28,7 +28,7 @@ interface StatefulGuard extends Guard
 
     /**
      * Log a user into the application.
-	 * 将用户登录到应用
+	 * 将用户登录到应用程序
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  bool  $remember
@@ -38,17 +38,17 @@ interface StatefulGuard extends Guard
 
     /**
      * Log the given user ID into the application.
-	 * 将给定的用户ID记录到应用
+	 * 记录给定的用户ID到应用程序中
      *
      * @param  mixed  $id
      * @param  bool  $remember
-     * @return \Illuminate\Contracts\Auth\Authenticatable
+     * @return \Illuminate\Contracts\Auth\Authenticatable|bool
      */
     public function loginUsingId($id, $remember = false);
 
     /**
      * Log the given user ID into the application without sessions or cookies.
-	 * 将给定的用户ID登录到没有会话或cookie的应用程序中
+	 * 记录给定的用户ID到没有会话或cookie的应用程序中
      *
      * @param  mixed  $id
      * @return \Illuminate\Contracts\Auth\Authenticatable|bool
@@ -65,7 +65,7 @@ interface StatefulGuard extends Guard
 
     /**
      * Log the user out of the application.
-	 * 将用户从应用中注销
+	 * 将用户从应用程序中注销
      *
      * @return void
      */

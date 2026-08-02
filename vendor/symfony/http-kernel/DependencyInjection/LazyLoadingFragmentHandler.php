@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 /**
  * Lazily loads fragment renderers from the dependency injection container.
- * 从依赖注入容器中惰性加载片段渲染器
+ * 从依赖注入容器中惰性加载片段渲染器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

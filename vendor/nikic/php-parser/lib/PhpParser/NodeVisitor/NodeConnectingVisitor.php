@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问器，节点连接访客
+ */
+
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\Node;
@@ -8,6 +12,7 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * Visitor that connects a child node to its parent node
  * as well as its sibling nodes.
+ * 连接子节点与其父节点以及兄弟节点的访问者。
  *
  * On the child node, the parent node can be accessed through
  * <code>$node->getAttribute('parent')</code>, the previous

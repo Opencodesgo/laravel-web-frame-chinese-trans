@@ -1,8 +1,10 @@
 <?php
+/**
+ * Symfony，Component，Routing，匹配程序，Url匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -24,6 +26,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * UrlMatcher matches URL based on a set of routes.
+ * UrlMatcher基于一组路由匹配URL。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -38,11 +41,13 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Collects HTTP methods that would be allowed for the request.
+	 * 收集请求允许使用的HTTP方法。
      */
     protected $allow = [];
 
     /**
      * Collects URI schemes that would be allowed for the request.
+	 * 收集请求所允许的URI模式
      *
      * @internal
      */
@@ -118,6 +123,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Tries to match a URL with a set of routes.
+	 * 尝试用一组路由匹配URL
      *
      * @param string $pathinfo The path info to be parsed
      *
@@ -201,6 +207,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Returns an array of values to use as request attributes.
+	 * 返回要用作请求属性的值数组。
      *
      * As this method requires the Route object, it is not available
      * in matchers that do not have access to the matched Route instance
@@ -222,6 +229,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Handles specific route requirements.
+	 * 处理特定的路由需求
      *
      * @return array The first element represents the status, the second contains additional information
      */
@@ -237,6 +245,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Get merged default parameters.
+	 * 获取合并的默认参数
      *
      * @return array
      */

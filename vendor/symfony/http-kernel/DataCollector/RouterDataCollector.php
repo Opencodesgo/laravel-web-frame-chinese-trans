@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，路由器数据采集器
+ * Symfony，Component，HttpKernel，数据采集器，路由器数据采集器
  */
 
 /*
@@ -71,6 +71,7 @@ class RouterDataCollector extends DataCollector
 
     /**
      * Remembers the controller associated to each request.
+	 * 记住与每个请求相关联的控制器
      */
     public function onKernelController(ControllerEvent $event)
     {

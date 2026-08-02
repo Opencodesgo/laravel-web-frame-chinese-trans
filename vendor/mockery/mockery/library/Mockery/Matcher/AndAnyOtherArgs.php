@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，还有其他的 Args
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -14,6 +17,7 @@ class AndAnyOtherArgs extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回这个Matcher的字符串表示
      *
      * @return string
      */
@@ -24,6 +28,7 @@ class AndAnyOtherArgs extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected.
+	 * 检查实际值是否符合预期
      *
      * @template TMixed
      *

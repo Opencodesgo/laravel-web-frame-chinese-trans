@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，特征集
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -57,6 +60,7 @@ use const PHP_INT_SIZE;
 
 /**
  * FeatureSet detects and exposes available features in the current environment
+ * 特性注释集检测和暴露当前环境中的可用特征。
  *
  * A feature set is used by UuidFactory to determine the available features and
  * capabilities of the environment.
@@ -179,6 +183,7 @@ class FeatureSet
 
     /**
      * Returns the builder configured for this environment
+	 * 返回为此环境配置的构建器
      */
     public function getBuilder(): UuidBuilderInterface
     {

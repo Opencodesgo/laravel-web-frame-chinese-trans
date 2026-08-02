@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，加密，加密器
+ * Illuminate，契约，加密，加密器接口
  */
 
 namespace Illuminate\Contracts\Encryption;

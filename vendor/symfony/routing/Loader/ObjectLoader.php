@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，对象装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * A route loader that calls a method on an object to load the routes.
+ * 调用对象上的方法来加载路由的路由加载器。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */
@@ -24,6 +28,7 @@ abstract class ObjectLoader extends Loader
 {
     /**
      * Returns the object that the method will be called on to load routes.
+	 * 返回将在其上调用该方法以加载路由的对象。
      *
      * For example, if your application uses a service container,
      * the $id may be a service id.
@@ -34,6 +39,7 @@ abstract class ObjectLoader extends Loader
 
     /**
      * Calls the object method that will load the routes.
+	 * 调用将加载路由的对象方法
      *
      * @param string      $resource object_id::method
      * @param string|null $type     The resource type

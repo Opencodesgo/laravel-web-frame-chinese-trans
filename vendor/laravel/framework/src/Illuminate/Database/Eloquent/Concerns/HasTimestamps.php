@@ -40,7 +40,7 @@ trait HasTimestamps
      *
      * @return void
      */
-    protected function updateTimestamps()
+    public function updateTimestamps()
     {
         $time = $this->freshTimestamp();
 
@@ -73,7 +73,7 @@ trait HasTimestamps
 
     /**
      * Set the value of the "updated at" attribute.
-	 * 设置"updated at"属性的值
+	 * 设置"更新时间"属性的值
      *
      * @param  mixed  $value
      * @return $this
@@ -144,7 +144,7 @@ trait HasTimestamps
      * Get the fully qualified "created at" column.
 	 * 获取完全限定的"created at"列
      *
-     * @return string
+     * @return string|null
      */
     public function getQualifiedCreatedAtColumn()
     {
@@ -155,7 +155,7 @@ trait HasTimestamps
      * Get the fully qualified "updated at" column.
 	 * 获取完全限定的"updated at"列
      *
-     * @return string
+     * @return string|null
      */
     public function getQualifiedUpdatedAtColumn()
     {

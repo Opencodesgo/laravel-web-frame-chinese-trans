@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，扩展，任务列表，任务列表项目标记分析器
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -11,16 +16,17 @@
 
 namespace League\CommonMark\Extension\TaskList;
 
-use League\CommonMark\Block\Element\ListItem;
-use League\CommonMark\Block\Element\Paragraph;
-use League\CommonMark\Inline\Parser\InlineParserInterface;
-use League\CommonMark\InlineParserContext;
+use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
+use League\CommonMark\Node\Block\Paragraph;
+use League\CommonMark\Parser\Inline\InlineParserInterface;
+use League\CommonMark\Parser\Inline\InlineParserMatch;
+use League\CommonMark\Parser\InlineParserContext;
 
 final class TaskListItemMarkerParser implements InlineParserInterface
 {
-    public function getCharacters(): array
+    public function getMatchDefinition(): InlineParserMatch
     {
-        return ['['];
+        return InlineParserMatch::oneOf('[ ]', '[x]');
     }
 
     public function parse(InlineParserContext $inlineContext): bool
@@ -28,17 +34,15 @@ final class TaskListItemMarkerParser implements InlineParserInterface
         $container = $inlineContext->getContainer();
 
         // Checkbox must come at the beginning of the first paragraph of the list item
-        if ($container->hasChildren() || !($container instanceof Paragraph && $container->parent() && $container->parent() instanceof ListItem)) {
+		// 复选框必须出现在列表项的第一段的开头
+        if ($container->hasChildren() || ! ($container instanceof Paragraph && $container->parent() && $container->parent() instanceof ListItem)) {
             return false;
         }
 
-        $cursor = $inlineContext->getCursor();
+        $cursor   = $inlineContext->getCursor();
         $oldState = $cursor->saveState();
 
-        $m = $cursor->match('/\[[ xX]\]/');
-        if ($m === null) {
-            return false;
-        }
+        $cursor->advanceBy(3);
 
         if ($cursor->getNextNonSpaceCharacter() === null) {
             $cursor->restoreState($oldState);
@@ -46,7 +50,7 @@ final class TaskListItemMarkerParser implements InlineParserInterface
             return false;
         }
 
-        $isChecked = $m !== '[ ]';
+        $isChecked = $inlineContext->getFullMatch() !== '[ ]';
 
         $container->appendChild(new TaskListItemMarker($isChecked));
 

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，浏览器控制台处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -25,6 +29,7 @@ use const E_USER_DEPRECATED;
 
 /**
  * Handler sending logs to browser's javascript console with no browser extension required
+ * 处理程序发送日志到浏览器的javascript控制台，不需要浏览器扩展。
  *
  * @author Olivier Poitrey <rs@dailymotion.com>
  *
@@ -45,6 +50,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
      * {@inheritDoc}
      *
      * Formatted output may contain some formatting markers to be transferred to `console.log` using the %c format.
+	 * 格式化的输出可能包含一些格式化标记，使用%c格式传输到‘ console.log ’。
      *
      * Example of formatted string:
      *
@@ -73,6 +79,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
     /**
      * Convert records to javascript console commands and send it to the browser.
      * This method is automatically called on PHP shutdown if output is HTML or Javascript.
+	 * 将记录转换为javascript控制台命令并将其发送到浏览器。
      */
     public static function send(): void
     {
@@ -105,6 +112,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Forget all logged records
+	 * 忘记所有记录
      */
     public static function resetStatic(): void
     {
@@ -113,6 +121,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper for register_shutdown_function to allow overriding
+	 * register_shutdown_function的包装器允许覆盖
      */
     protected function registerShutdownFunction(): void
     {
@@ -123,6 +132,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper for echo to allow overriding
+	 * echo允许覆盖
      */
     protected static function writeOutput(string $str): void
     {
@@ -131,6 +141,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Checks the format of the response
+	 * 检查响应的格式
      *
      * If Content-Type is set to application/javascript or text/javascript -> js
      * If Content-Type is set to text/html, or is unset -> html

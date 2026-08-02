@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，可处理的处理器特性
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Processor\ProcessorInterface;
 
 /**
  * Helper trait for implementing ProcessableInterface
+ * 实现ProcessableInterface的助手特性
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -53,6 +58,7 @@ trait ProcessableHandlerTrait
 
     /**
      * Processes a record.
+	 * 处理一条记录
      *
      * @phpstan-param  Record $record
      * @phpstan-return Record

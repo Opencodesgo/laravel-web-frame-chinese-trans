@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，过滤器，主义，主义空收集过滤器
+ */
 
 namespace DeepCopy\Filter\Doctrine;
 
@@ -13,6 +16,7 @@ class DoctrineEmptyCollectionFilter implements Filter
 {
     /**
      * Sets the object property to an empty doctrine collection.
+	 * 将对象属性设置为空的教条集合。
      *
      * @param object   $object
      * @param string   $property

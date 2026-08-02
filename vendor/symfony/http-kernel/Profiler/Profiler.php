@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，分析器，分析器核心类
+ * Symfony，Component，HttpKernel，分析器，分析器
  */
 
 /*
@@ -24,6 +24,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Profiler.
+ * 分析器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -49,6 +50,7 @@ class Profiler implements ResetInterface
 
     /**
      * Disables the profiler.
+	 * 使剖析者无效
      */
     public function disable()
     {
@@ -65,6 +67,7 @@ class Profiler implements ResetInterface
 
     /**
      * Loads the Profile for the given Response.
+	 * 加载给定响应的概要文件
      *
      * @return Profile|null
      */
@@ -79,6 +82,7 @@ class Profiler implements ResetInterface
 
     /**
      * Loads the Profile for the given token.
+	 * 加载给定令牌的概要文件
      *
      * @return Profile|null
      */
@@ -89,6 +93,7 @@ class Profiler implements ResetInterface
 
     /**
      * Saves a Profile.
+	 * 保存概要文件
      *
      * @return bool
      */
@@ -110,6 +115,7 @@ class Profiler implements ResetInterface
 
     /**
      * Purges all data from the storage.
+	 * 从存储中清除所有数据
      */
     public function purge()
     {
@@ -118,6 +124,7 @@ class Profiler implements ResetInterface
 
     /**
      * Finds profiler tokens for the given criteria.
+	 * 查找给定标准的profiler令牌
      *
      * @param int|null    $limit The maximum number of tokens to return
      * @param string|null $start The start date to search from
@@ -134,6 +141,7 @@ class Profiler implements ResetInterface
 
     /**
      * Collects data for the given Response.
+	 * 收集给定响应的数据
      *
      * @return Profile|null
      */
@@ -180,6 +188,7 @@ class Profiler implements ResetInterface
 
     /**
      * Gets the Collectors associated with this profiler.
+	 * 让与这个分析器相关的收集器
      *
      * @return array
      */
@@ -190,6 +199,7 @@ class Profiler implements ResetInterface
 
     /**
      * Sets the Collectors associated with this profiler.
+	 * 设置与此分析器相关的收集器
      *
      * @param DataCollectorInterface[] $collectors An array of collectors
      */
@@ -203,6 +213,7 @@ class Profiler implements ResetInterface
 
     /**
      * Adds a Collector.
+	 * 添加一个收集器
      */
     public function add(DataCollectorInterface $collector)
     {
@@ -211,6 +222,7 @@ class Profiler implements ResetInterface
 
     /**
      * Returns true if a Collector for the given name exists.
+	 * 如果给定名称的收集器存在,返回true
      *
      * @param string $name A collector name
      *
@@ -223,6 +235,7 @@ class Profiler implements ResetInterface
 
     /**
      * Gets a Collector by name.
+	 * 以姓名获取集热器
      *
      * @param string $name A collector name
      *

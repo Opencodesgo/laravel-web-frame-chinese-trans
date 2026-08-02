@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，表格样式
- *
+ * Symfony，Component，Console，助手，表格样式
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Defines the styles for a Table.
- * 定义表的样式
+ * 为表定义样式。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
@@ -54,6 +54,7 @@ class TableStyle
 
     /**
      * Sets padding character, used for cell padding.
+	 * 设置填充字符,用于单元格填充
      *
      * @return $this
      */
@@ -70,6 +71,7 @@ class TableStyle
 
     /**
      * Gets padding character, used for cell padding.
+	 * 获取填充字符,用于单元格填充
      *
      * @return string
      */
@@ -80,6 +82,7 @@ class TableStyle
 
     /**
      * Sets horizontal border characters.
+	 * 设置水平边框字符。
      *
      * <code>
      * ╔═══════════════╤══════════════════════════╤══════════════════╗
@@ -129,6 +132,7 @@ class TableStyle
 
     /**
      * Gets border characters.
+	 * 获取边框字符
      *
      * @internal
      */
@@ -144,6 +148,7 @@ class TableStyle
 
     /**
      * Sets crossing characters.
+	 * 设置交叉字符。
      *
      * Example:
      * <code>
@@ -193,6 +198,7 @@ class TableStyle
 
     /**
      * Sets default crossing character used for each cross.
+	 * 设置每个十字的默认交叉字符
      *
      * @see {@link setCrossingChars()} for setting each crossing individually.
      */
@@ -203,6 +209,7 @@ class TableStyle
 
     /**
      * Gets crossing character.
+	 * 得到交叉字符
      *
      * @return string
      */
@@ -213,6 +220,7 @@ class TableStyle
 
     /**
      * Gets crossing characters.
+	 * 得到交叉字符
      *
      * @internal
      */
@@ -236,6 +244,7 @@ class TableStyle
 
     /**
      * Sets header cell format.
+	 * 设置标题单元格格式
      *
      * @return $this
      */
@@ -248,6 +257,7 @@ class TableStyle
 
     /**
      * Gets header cell format.
+	 * 获取标题单元格格式
      *
      * @return string
      */
@@ -258,6 +268,7 @@ class TableStyle
 
     /**
      * Sets row cell format.
+	 * 设置行单元格格式
      *
      * @return $this
      */
@@ -270,6 +281,7 @@ class TableStyle
 
     /**
      * Gets row cell format.
+	 * 获取行单元格格式
      *
      * @return string
      */
@@ -280,6 +292,7 @@ class TableStyle
 
     /**
      * Sets row cell content format.
+	 * 设置行单元格内容格式
      *
      * @return $this
      */
@@ -292,6 +305,7 @@ class TableStyle
 
     /**
      * Gets row cell content format.
+	 * 获取行单元格内容格式
      *
      * @return string
      */
@@ -302,6 +316,7 @@ class TableStyle
 
     /**
      * Sets table border format.
+	 * 设置表边框格式
      *
      * @return $this
      */
@@ -314,6 +329,7 @@ class TableStyle
 
     /**
      * Gets table border format.
+	 * 获取表边框格式
      *
      * @return string
      */
@@ -324,6 +340,7 @@ class TableStyle
 
     /**
      * Sets cell padding type.
+	 * 设置单元格填充类型
      *
      * @return $this
      */
@@ -340,6 +357,7 @@ class TableStyle
 
     /**
      * Gets cell padding type.
+	 * 获取单元格填充类型
      *
      * @return int
      */

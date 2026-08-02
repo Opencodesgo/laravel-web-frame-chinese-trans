@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpOption，选项
+ */
 
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -30,6 +33,7 @@ abstract class Option implements IteratorAggregate
 {
     /**
      * Creates an option given a return value.
+	 * 创建一个给定返回值的选项。
      *
      * This is intended for consuming existing APIs and allows you to easily
      * convert them to an option. By default, we treat ``null`` as the None
@@ -54,6 +58,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Creates an option from an array's value.
+	 * 从数组的值创建一个选项。
      *
      * If the key does not exist in the array, the array is not actually an
      * array, or the array's value at the given key is null, None is returned.
@@ -77,6 +82,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Creates a lazy-option with the given callback.
+	 * 使用给定的回调创建一个惰性选项。
      *
      * This is also a helper constructor for lazy-consuming existing APIs where
      * the return value is not yet an option. By default, we treat ``null`` as
@@ -107,6 +113,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Option factory, which creates new option based on passed value.
+	 * 选项工厂，它根据传递的值创建新的选项。
      *
      * If value is already an option, it simply returns. If value is callable,
      * LazyOption with passed callback created and returned. If Option
@@ -143,6 +150,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Lift a function so that it accepts Option as parameters.
+	 * 提升一个函数，使其接受Option作为参数。
      *
      * We return a new closure that wraps the original callback. If any of the
      * parameters passed to the lifted function is empty, the function will
@@ -193,6 +201,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns the value if available, or throws an exception otherwise.
+	 * 如果可用则返回值，否则抛出异常。
      *
      * @throws \RuntimeException If value is not available.
      *
@@ -202,6 +211,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns the value if available, or the default value if not.
+	 * 如果可用则返回值，否则返回默认值。
      *
      * @template S
      *
@@ -213,6 +223,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns the value if available, or the results of the callable.
+	 * 返回值（如果可用）或可调用对象的结果
      *
      * This is preferable over ``getOrElse`` if the computation of the default
      * value is expensive.
@@ -227,6 +238,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns the value if available, or throws the passed exception.
+	 * 返回可用的值，或者抛出传递的异常。
      *
      * @param \Exception $ex
      *
@@ -236,6 +248,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns true if no value is available, false otherwise.
+	 * 如果没有可用的值返回true，否则返回false。
      *
      * @return bool
      */
@@ -243,6 +256,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns true if a value is available, false otherwise.
+	 * 如果值可用则返回true，否则返回false。
      *
      * @return bool
      */
@@ -250,6 +264,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns this option if non-empty, or the passed option otherwise.
+	 * 如果非空则返回此选项，否则返回传递的选项。
      *
      * This can be used to try multiple alternatives, and is especially useful
      * with lazy evaluating options:
@@ -422,6 +437,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * foldLeft() but with reversed arguments for the callable.
+	 * foldLeft()，但可调用对象的参数相反。
      *
      * @template S
      *

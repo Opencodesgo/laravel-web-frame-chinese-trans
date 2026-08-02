@@ -34,6 +34,7 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * Output decorator helpers for the Symfony Style Guide.
+ * 对Symfony风格指南的输出装饰器助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -129,6 +130,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a command comment.
+	 * 格式化命令注释
      *
      * @param string|array $message
      */
@@ -171,6 +173,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats an info message.
+	 * 格式化信息信息
      *
      * @param string|array $message
      */
@@ -203,6 +206,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a horizontal table.
+	 * 设置水平表的格式
      */
     public function horizontalTable(array $headers, array $rows)
     {
@@ -218,6 +222,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a list of key/value horizontally.
+	 * 水平格式化键/值列表。
      *
      * Each row can be one of:
      * * 'A title'
@@ -413,6 +418,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Returns a new instance which makes use of stderr if available.
+	 * 返回一个新的实例,如果可用,它使用stderr。
      *
      * @return self
      */

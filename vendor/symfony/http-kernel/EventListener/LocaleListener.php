@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，地点监听者
+ * Symfony，Component，HttpKernel，事件监听器，区域监听器
  */
 
 /*
@@ -25,7 +25,7 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * Initializes the locale based on the current request.
- * 根据当前请求初始化语言环境
+ * 根据当前的请求初始化语言环境。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

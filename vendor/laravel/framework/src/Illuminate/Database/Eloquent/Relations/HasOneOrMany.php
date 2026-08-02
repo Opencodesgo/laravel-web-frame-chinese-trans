@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，一对一或多
+ * Illuminate，数据库，Eloquent，关系，有一个或多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -8,9 +8,12 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Concerns\InteractsWithDictionary;
 
 abstract class HasOneOrMany extends Relation
 {
+    use InteractsWithDictionary;
+
     /**
      * The foreign key of the parent model.
 	 * 父模型的外键
@@ -26,14 +29,6 @@ abstract class HasOneOrMany extends Relation
      * @var string
      */
     protected $localKey;
-
-    /**
-     * The count of self joins.
-	 * 自我连接的计数
-     *
-     * @var int
-     */
-    protected static $selfJoinCount = 0;
 
     /**
      * Create a new has one or many relationship instance.
@@ -55,7 +50,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Create and return an un-saved instance of the related model.
-	 * 创建并返回一个未保存的相关模型实例
+	 * 创建并返回相关模型的未保存实例
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
@@ -68,7 +63,7 @@ abstract class HasOneOrMany extends Relation
     }
 
     /**
-     * Create and return an un-saved instances of the related models.
+     * Create and return an un-saved instance of the related models.
 	 * 创建并返回相关模型的未保存实例
      *
      * @param  iterable  $records
@@ -87,22 +82,24 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Set the base constraints on the relation query.
-	 * 设置关系查询的基本约束
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
     public function addConstraints()
     {
         if (static::$constraints) {
-            $this->query->where($this->foreignKey, '=', $this->getParentKey());
+            $query = $this->getRelationQuery();
 
-            $this->query->whereNotNull($this->foreignKey);
+            $query->where($this->foreignKey, '=', $this->getParentKey());
+
+            $query->whereNotNull($this->foreignKey);
         }
     }
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 为关系的急切负载设置约束
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -111,7 +108,7 @@ abstract class HasOneOrMany extends Relation
     {
         $whereIn = $this->whereInMethod($this->parent, $this->localKey);
 
-        $this->query->{$whereIn}(
+        $this->getRelationQuery()->{$whereIn}(
             $this->foreignKey, $this->getKeys($models, $this->localKey)
         );
     }
@@ -146,7 +143,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Match the eagerly loaded results to their many parents.
-	 * 把急切的结果与他们的许多父母相匹配
+	 * 将急切加载的结果与他们的许多父母相匹配
      *
      * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
@@ -161,9 +158,9 @@ abstract class HasOneOrMany extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 有了字典之后，我们可以简单地通过父模型旋转到把他们的孩子联系起来,用那只键字典来做。
+		// 有了字典之后，我们可以简单地通过父模型旋转，用关键字字典把他们和他们的孩子联系起来。
         foreach ($models as $model) {
-            if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
+            if (isset($dictionary[$key = $this->getDictionaryKey($model->getAttribute($this->localKey))])) {
                 $model->setRelation(
                     $relation, $this->getRelationValue($dictionary, $key, $type)
                 );
@@ -175,7 +172,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Get the value of a relationship by one or many type.
-	 * 通过一种或多种类型的关系获得关系的价值
+	 * 通过一个或多个类型获取关系的值
      *
      * @param  array  $dictionary
      * @param  string  $key
@@ -191,7 +188,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Build model dictionary keyed by the relation's foreign key.
-	 * 通过关系的外键键建立模型字典
+	 * 构建以关系的外键为键的模型字典
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @return array
@@ -201,13 +198,13 @@ abstract class HasOneOrMany extends Relation
         $foreign = $this->getForeignKeyName();
 
         return $results->mapToDictionary(function ($result) use ($foreign) {
-            return [$result->{$foreign} => $result];
+            return [$this->getDictionaryKey($result->{$foreign}) => $result];
         })->all();
     }
 
     /**
-     * Find a model by its primary key or return new instance of the related model.
-	 * 通过主键或返回相关模型的新实例查找模型
+     * Find a model by its primary key or return a new instance of the related model.
+	 * 通过主键查找模型或返回相关模型的新实例
      *
      * @param  mixed  $id
      * @param  array  $columns
@@ -226,16 +223,16 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Get the first related model record matching the attributes or instantiate it.
-	 * 获取与属性匹配或实例化的第一个相关的模型记录
+	 * 获取与属性匹配的第一个相关模型记录，或者实例化它。
      *
      * @param  array  $attributes
      * @param  array  $values
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function firstOrNew(array $attributes, array $values = [])
+    public function firstOrNew(array $attributes = [], array $values = [])
     {
         if (is_null($instance = $this->where($attributes)->first())) {
-            $instance = $this->related->newInstance($attributes + $values);
+            $instance = $this->related->newInstance(array_merge($attributes, $values));
 
             $this->setForeignAttributesForCreate($instance);
         }
@@ -251,10 +248,10 @@ abstract class HasOneOrMany extends Relation
      * @param  array  $values
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function firstOrCreate(array $attributes, array $values = [])
+    public function firstOrCreate(array $attributes = [], array $values = [])
     {
         if (is_null($instance = $this->where($attributes)->first())) {
-            $instance = $this->create($attributes + $values);
+            $instance = $this->create(array_merge($attributes, $values));
         }
 
         return $instance;
@@ -262,7 +259,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Create or update a related record matching the attributes, and fill it with values.
-	 * 创建或更新与属性匹配的相关记录,并以值填充。
+	 * 创建或更新与属性匹配的相关记录，并用值填充它。
      *
      * @param  array  $attributes
      * @param  array  $values
@@ -279,7 +276,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Attach a model instance to the parent model.
-	 * 将模型实例附加到父模型
+	 * 将模型实例附加到父模型上
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model|false
@@ -324,6 +321,20 @@ abstract class HasOneOrMany extends Relation
     }
 
     /**
+     * Create a new instance of the related model. Allow mass-assignment.
+	 * 创建相关模型的新实例。允许质量确定。
+     *
+     * @param  array  $attributes
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function forceCreate(array $attributes = [])
+    {
+        $attributes[$this->getForeignKeyName()] = $this->getParentKey();
+
+        return $this->related->forceCreate($attributes);
+    }
+
+    /**
      * Create a Collection of new instances of the related model.
 	 * 创建相关模型的新实例集合
      *
@@ -343,7 +354,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Set the foreign ID for creating a related model.
-	 * 为创建相关模型设置外键ID
+	 * 设置创建相关模型的外部ID
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
@@ -392,17 +403,6 @@ abstract class HasOneOrMany extends Relation
     }
 
     /**
-     * Get a relationship join table hash.
-	 * 让关系加入表哈希
-     *
-     * @return string
-     */
-    public function getRelationCountHash()
-    {
-        return 'laravel_reserved_'.static::$selfJoinCount++;
-    }
-
-    /**
      * Get the key for comparing against the parent key in "has" query.
 	 * 获取用于与"has"查询中的父键进行比较的键
      *
@@ -426,7 +426,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Get the fully qualified parent key name.
-	 * 获得完全合格的父键名称
+	 * 获取完全限定父键名
      *
      * @return string
      */
@@ -450,7 +450,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Get the foreign key for the relationship.
-	 * 获得关系的外键关键
+	 * 获取关系的外键
      *
      * @return string
      */

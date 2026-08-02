@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -29,6 +30,7 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * An implementation of a Symfony HTTP kernel using a "real" HTTP client.
+ * 使用"真正的"HTTP客户端的Symfony HTTP内核的实现
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

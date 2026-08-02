@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，输出
+ * Symfony，Component，Console，输出，输出
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * Base class for output classes.
+ * 输出类的基类。
  *
  * There are five levels of verbosity:
  *
@@ -172,6 +173,7 @@ abstract class Output implements OutputInterface
 
     /**
      * Writes a message to the output.
+	 * 向输出写入消息
      */
     abstract protected function doWrite(string $message, bool $newline);
 }

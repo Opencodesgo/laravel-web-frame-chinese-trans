@@ -13,7 +13,7 @@ class Mix
 {
     /**
      * Get the path to a versioned Mix file.
-	 * 获取一个版本格式的混合文件的路径
+	 * 获取版本化Mix文件的路径
      *
      * @param  string  $path
      * @param  string  $manifestDirectory
@@ -33,8 +33,14 @@ class Mix
             $manifestDirectory = "/{$manifestDirectory}";
         }
 
-        if (file_exists(public_path($manifestDirectory.'/hot'))) {
+        if (is_file(public_path($manifestDirectory.'/hot'))) {
             $url = rtrim(file_get_contents(public_path($manifestDirectory.'/hot')));
+
+            $customUrl = app('config')->get('app.mix_hot_proxy_url');
+
+            if (! empty($customUrl)) {
+                return new HtmlString("{$customUrl}{$path}");
+            }
 
             if (Str::startsWith($url, ['http://', 'https://'])) {
                 return new HtmlString(Str::after($url, ':').$path);
@@ -46,7 +52,7 @@ class Mix
         $manifestPath = public_path($manifestDirectory.'/mix-manifest.json');
 
         if (! isset($manifests[$manifestPath])) {
-            if (! file_exists($manifestPath)) {
+            if (! is_file($manifestPath)) {
                 throw new Exception('The Mix manifest does not exist.');
             }
 

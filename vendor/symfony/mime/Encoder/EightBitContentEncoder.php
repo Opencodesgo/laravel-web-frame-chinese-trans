@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，编码器，8位内容编码器
+ */
 
 /*
  * This file is part of the Symfony package.

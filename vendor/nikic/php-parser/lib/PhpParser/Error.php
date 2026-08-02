@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，错误
+ */
+
 namespace PhpParser;
 
 class Error extends \RuntimeException {
@@ -9,6 +13,7 @@ class Error extends \RuntimeException {
 
     /**
      * Creates an Exception signifying a parse error.
+	 * 创建一个异常，表示解析错误。
      *
      * @param string $message Error message
      * @param array<string, mixed> $attributes Attributes of node/token where error occurred
@@ -21,6 +26,7 @@ class Error extends \RuntimeException {
 
     /**
      * Gets the error message
+	 * 获取错误消息
      *
      * @return string Error message
      */
@@ -30,6 +36,7 @@ class Error extends \RuntimeException {
 
     /**
      * Gets the line the error starts in.
+	 * 获取错误开始所在的行
      *
      * @return int Error start line
      * @phpstan-return -1|positive-int
@@ -40,6 +47,7 @@ class Error extends \RuntimeException {
 
     /**
      * Gets the line the error ends in.
+	 * 获取错误结束的行
      *
      * @return int Error end line
      * @phpstan-return -1|positive-int
@@ -50,6 +58,7 @@ class Error extends \RuntimeException {
 
     /**
      * Gets the attributes of the node/token the error occurred at.
+	 * 获取发生错误的节点/令牌的属性
      *
      * @return array<string, mixed>
      */
@@ -59,6 +68,7 @@ class Error extends \RuntimeException {
 
     /**
      * Sets the attributes of the node/token the error occurred at.
+	 * 设置发生错误的节点/令牌的属性
      *
      * @param array<string, mixed> $attributes
      */
@@ -69,6 +79,7 @@ class Error extends \RuntimeException {
 
     /**
      * Sets the line of the PHP file the error occurred in.
+	 * 设置发生错误的PHP文件行
      *
      * @param string $message Error message
      */
@@ -79,6 +90,7 @@ class Error extends \RuntimeException {
 
     /**
      * Sets the line the error starts in.
+	 * 设置错误开始所在的行
      *
      * @param int $line Error start line
      */
@@ -89,6 +101,7 @@ class Error extends \RuntimeException {
 
     /**
      * Returns whether the error has start and end column information.
+	 * 返回错误是否包含开始列和结束列信息。
      *
      * For column information enable the startFilePos and endFilePos in the lexer options.
      */
@@ -98,6 +111,7 @@ class Error extends \RuntimeException {
 
     /**
      * Gets the start column (1-based) into the line where the error started.
+	 * 将开始列（基于1）获取到错误开始的行中
      *
      * @param string $code Source code of the file
      */
@@ -111,6 +125,7 @@ class Error extends \RuntimeException {
 
     /**
      * Gets the end column (1-based) into the line where the error ended.
+	 * 将结束列（基于1）获取到错误结束的行中
      *
      * @param string $code Source code of the file
      */
@@ -124,6 +139,7 @@ class Error extends \RuntimeException {
 
     /**
      * Formats message including line and column information.
+	 * 格式化消息，包括行和列信息。
      *
      * @param string $code Source code associated with the error, for calculation of the columns
      *
@@ -139,6 +155,7 @@ class Error extends \RuntimeException {
 
     /**
      * Converts a file offset into a column.
+	 * 将文件偏移量转换为列
      *
      * @param string $code Source code that $pos indexes into
      * @param int $pos 0-based position in $code
@@ -160,6 +177,7 @@ class Error extends \RuntimeException {
 
     /**
      * Updates the exception message after a change to rawMessage or rawLine.
+	 * 在更改rawMessage或rawLine后更新异常消息
      */
     protected function updateMessage(): void {
         $this->message = $this->rawMessage;

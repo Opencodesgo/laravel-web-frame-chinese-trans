@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Web 请求识别器特征
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ trait WebRequestRecognizerTrait
 {
     /**
      * Checks if PHP's serving a web request
+	 * 检查PHP是否在提供web请求
      * @return bool
      */
     protected function isWebRequest(): bool

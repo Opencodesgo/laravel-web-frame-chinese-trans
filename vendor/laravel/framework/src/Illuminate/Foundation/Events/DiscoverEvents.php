@@ -17,7 +17,7 @@ class DiscoverEvents
 {
     /**
      * Get all of the events and listeners by searching the given listener directory.
-	 * 通过搜索给定的侦听器目录获取所有事件和监听器
+	 * 通过搜索给定的监听器目录获取所有事件和监听器
      *
      * @param  string  $listenerPath
      * @param  string  $basePath
@@ -25,11 +25,23 @@ class DiscoverEvents
      */
     public static function within($listenerPath, $basePath)
     {
-        return collect(static::getListenerEvents(
+        $listeners = collect(static::getListenerEvents(
             (new Finder)->files()->in($listenerPath), $basePath
-        ))->mapToDictionary(function ($event, $listener) {
-            return [$event => $listener];
-        })->all();
+        ));
+
+        $discoveredEvents = [];
+
+        foreach ($listeners as $listener => $events) {
+            foreach ($events as $event) {
+                if (! isset($discoveredEvents[$event])) {
+                    $discoveredEvents[$event] = [];
+                }
+
+                $discoveredEvents[$event][] = $listener;
+            }
+        }
+
+        return $discoveredEvents;
     }
 
     /**
@@ -64,7 +76,7 @@ class DiscoverEvents
                 }
 
                 $listenerEvents[$listener->name.'@'.$method->name] =
-                                Reflector::getParameterClassName($method->getParameters()[0]);
+                                Reflector::getParameterClassNames($method->getParameters()[0]);
             }
         }
 
@@ -73,7 +85,7 @@ class DiscoverEvents
 
     /**
      * Extract the class name from the given file path.
-	 * 提取类名从给定的文件路径
+	 * 从给定的文件路径中提取类名
      *
      * @param  \SplFileInfo  $file
      * @param  string  $basePath

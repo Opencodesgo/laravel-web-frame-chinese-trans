@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，单位
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -22,6 +25,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Units.
+ * 单位特征。
  *
  * Add, subtract and set units.
  */

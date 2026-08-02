@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，方法
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -21,6 +25,7 @@ class Method extends FunctionLike {
 
     /**
      * Creates a method builder.
+	 * 创建一个方法构建器
      *
      * @param string $name Name of the method
      */
@@ -41,6 +46,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method protected.
+	 * 使该方法得到保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -90,6 +96,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method final.
+	 * 使方法最终
      *
      * @return $this The builder instance (for fluid interface)
      */

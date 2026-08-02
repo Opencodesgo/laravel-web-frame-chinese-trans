@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，本地化
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -36,13 +39,16 @@ if (interface_exists('Symfony\\Contracts\\Translation\\TranslatorInterface') &&
 
 /**
  * Trait Localization.
+ * 特征定位。
  *
  * Embed default and locale translators and translation base methods.
+ * 嵌入默认和区域翻译和翻译基方法。
  */
 trait Localization
 {
     /**
      * Default translator.
+	 * 默认的翻译
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
@@ -50,6 +56,7 @@ trait Localization
 
     /**
      * Specific translator of the current instance.
+	 * 当前实例的特定转换器
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
@@ -100,6 +107,7 @@ trait Localization
 
     /**
      * Return default humanDiff() options (merged flags as integer).
+	 * 返回默认的humanDiff（）选项（合并标志为整数）
      *
      * @return int
      */
@@ -806,6 +814,7 @@ trait Localization
 
     /**
      * Get an array of translations based on the current date.
+	 * 获取基于当前日期的翻译数组
      *
      * @param callable $translation
      * @param int      $length

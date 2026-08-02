@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，配置 Url解析器
+ * Illuminate，支持，配置 URL解析器
  */
 
 namespace Illuminate\Support;
@@ -27,7 +27,7 @@ class ConfigurationUrlParser
 
     /**
      * Parse the database configuration, hydrating options using a database configuration URL if possible.
-	 * 如果可能的话,解析数据库配置,使用数据库配置URL
+	 * 解析数据库配置，如果可能的话，使用数据库配置URL添加选项。
      *
      * @param  array|string  $config
      * @return array
@@ -181,8 +181,8 @@ class ConfigurationUrlParser
     }
 
     /**
-     * Get all of the current drivers aliases.
-	 * 找出当前所有司机的化名
+     * Get all of the current drivers' aliases.
+	 * 找出所有当前司机的化名
      *
      * @return array
      */

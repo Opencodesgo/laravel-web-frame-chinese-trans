@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，字符串结束
+ */
+
 namespace Hamcrest\Text;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest\Text;
 
 /**
  * Tests if the argument is a string that ends with a substring.
+ * 测试参数是否是以子字符串结尾的字符串。
  */
 class StringEndsWith extends SubstringMatcher
 {
@@ -18,6 +23,7 @@ class StringEndsWith extends SubstringMatcher
 
     /**
      * Matches if value is a string that ends with $substring.
+	 * 匹配以$substring结尾的字符串
      *
      * @factory
      */

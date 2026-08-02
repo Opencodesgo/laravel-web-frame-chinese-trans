@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，vendor:publish 厂商发布命令
+ * Illuminate，基础，控制台，vendor:publish 供应商发布命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Events\VendorTagPublished;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Adapter\Local as LocalAdapter;
@@ -17,7 +18,7 @@ class VendorPublishCommand extends Command
 {
     /**
      * The filesystem instance.
-	 * 文件系统实例 
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -52,7 +53,7 @@ class VendorPublishCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令名称
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -60,7 +61,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Create a new command instance.
-	 * 创建一个新的命令实例
+	 * 创建新的命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -112,7 +113,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Prompt for which provider or tag to publish.
-	 * 提示提供者或标记发布的提示符
+	 * 提示要发布哪个提供程序或标记
      *
      * @return void
      */
@@ -174,20 +175,24 @@ class VendorPublishCommand extends Command
     {
         $published = false;
 
-        foreach ($this->pathsToPublish($tag) as $from => $to) {
+        $pathsToPublish = $this->pathsToPublish($tag);
+
+        foreach ($pathsToPublish as $from => $to) {
             $this->publishItem($from, $to);
 
             $published = true;
         }
 
         if ($published === false) {
-            $this->error('Unable to locate publishable resources.');
+            $this->comment('No publishable resources for tag ['.$tag.'].');
+        } else {
+            $this->laravel['events']->dispatch(new VendorTagPublished($tag, $pathsToPublish));
         }
     }
 
     /**
      * Get all of the paths to publish.
-	 * 获取所有要发布的路径
+	 * 得到所有要发布的路径
      *
      * @param  string  $tag
      * @return array
@@ -201,7 +206,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the given item from and to the given location.
-	 * 从给定的位置发布给定的项目
+	 * 将给定的项从给定位置发布到给定位置
      *
      * @param  string  $from
      * @param  string  $to
@@ -220,7 +225,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the file to the given path.
-	 * 将文件发布到给定路径
+	 * 将文件发布到给定的路径
      *
      * @param  string  $from
      * @param  string  $to
@@ -239,7 +244,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the directory to the given directory.
-	 * 将目录发布到给定的目录
+	 * 将目录发布到给定目录
      *
      * @param  string  $from
      * @param  string  $to
@@ -257,7 +262,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Move all the files in the given MountManager.
-	 * 在给定的安装器中移动所有文件
+	 * 移动指定MountManager中的所有文件
      *
      * @param  \League\Flysystem\MountManager  $manager
      * @return void

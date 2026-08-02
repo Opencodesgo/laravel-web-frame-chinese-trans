@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储，上下文转储
+ */
 
 /*
  * This file is part of the Symfony package.

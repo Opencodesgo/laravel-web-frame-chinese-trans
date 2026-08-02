@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，测试，约束，响应成功
+ * Symfony，Component，HttpFoundation，测试，约束，响应是成功
  */
 
 /*

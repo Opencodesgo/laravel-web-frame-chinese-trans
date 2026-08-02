@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，是否包含容器测试
+ */
+
 namespace Hamcrest\Core;
 
 class IsCollectionContainingTest extends \Hamcrest\AbstractMatcherTest

@@ -11,7 +11,7 @@ class ApcStore extends TaggableStore
 
     /**
      * The APC wrapper instance.
-	 * APC包装器实例
+	 * APC封装器实例
      *
      * @var \Illuminate\Cache\ApcWrapper
      */
@@ -27,7 +27,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Create a new APC store.
-	 * 创建一个新的APC存储
+	 * 创建新的APC存储
      *
      * @param  \Illuminate\Cache\ApcWrapper  $apc
      * @param  string  $prefix
@@ -84,7 +84,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项的值
+	 * 减少缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value

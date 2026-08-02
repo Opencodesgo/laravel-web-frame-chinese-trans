@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，文件，异常，访问拒绝例外
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 /**
  * Thrown when the access on a file was denied.
+ * 当拒绝对文件的访问时抛出
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

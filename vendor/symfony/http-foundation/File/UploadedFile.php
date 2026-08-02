@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件，已上传文件
+ * Symfony，Component，HttpFoundation，文件，上传文件
  */
 
 /*
@@ -27,6 +27,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file uploaded through a form.
+ * 通过表单上传的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
@@ -53,7 +54,6 @@ class UploadedFile extends File
      *   * getError.
      *
      * Calling any other method on an non-valid instance will cause an unpredictable result.
-	 * 在无效实例上调用任何其他方法都将导致不可预测的结果
      *
      * @param string      $path         The full temporary path to the file
      * @param string      $originalName The original file name of the uploaded file
@@ -77,7 +77,7 @@ class UploadedFile extends File
 
     /**
      * Returns the original file name.
-	 * 返回原始文件名
+	 * 返回原始文件名。
      *
      * It is extracted from the request from which the file has been uploaded.
      * This should not be considered as a safe value to use for a file name on your servers.
@@ -91,7 +91,7 @@ class UploadedFile extends File
 
     /**
      * Returns the original file extension.
-	 * 返回原始文件扩展名
+	 * 返回原始文件扩展名。
      *
      * It is extracted from the original file name that was uploaded.
      * This should not be considered as a safe value to use for a file name on your servers.
@@ -105,7 +105,7 @@ class UploadedFile extends File
 
     /**
      * Returns the file mime type.
-	 * 返回文件mime类型
+	 * 返回文件mime类型。
      *
      * The client mime type is extracted from the request from which the file
      * was uploaded, so it should not be considered as a safe value.
@@ -151,7 +151,7 @@ class UploadedFile extends File
 
     /**
      * Returns the upload error.
-	 * 返回上传错误
+	 * 返回上传错误。
      *
      * If the upload was successful, the constant UPLOAD_ERR_OK is returned.
      * Otherwise one of the other UPLOAD_ERR_XXX constants is returned.
@@ -165,6 +165,7 @@ class UploadedFile extends File
 
     /**
      * Returns whether the file has been uploaded with HTTP and no error occurred.
+	 * 返回文件是否已通过HTTP上传且未发生错误
      *
      * @return bool
      */
@@ -177,6 +178,7 @@ class UploadedFile extends File
 
     /**
      * Moves the file to a new location.
+	 * 将文件移动到新位置
      *
      * @return File
      *
@@ -228,6 +230,7 @@ class UploadedFile extends File
 
     /**
      * Returns the maximum size of an uploaded file as configured in php.ini.
+	 * 返回在php.ini中配置的上传文件的最大大小
      *
      * @return int|float The maximum size of an uploaded file in bytes (returns float if size > PHP_INT_MAX)
      */
@@ -241,6 +244,7 @@ class UploadedFile extends File
 
     /**
      * Returns the given size from an ini value in bytes.
+	 * 以字节为单位从ini值返回给定的大小
      *
      * @return int|float Returns float if size > PHP_INT_MAX
      */

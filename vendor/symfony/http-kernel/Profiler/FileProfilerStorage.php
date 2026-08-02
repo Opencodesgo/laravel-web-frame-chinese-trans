@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * Storage for profiler using files.
+ * 用于profiler使用文件的存储。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -23,6 +24,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 {
     /**
      * Folder where profiler data are stored.
+	 * 存储原始数据的文件夹
      *
      * @var string
      */
@@ -199,6 +201,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Gets filename to store data, associated to the token.
+	 * 获取用于存储与令牌关联的数据的文件名
      *
      * @return string
      */
@@ -213,6 +216,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Gets the index filename.
+	 * 获取索引文件名
      *
      * @return string
      */
@@ -223,6 +227,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Reads a line in the file, backward.
+	 * 在文件中读取一行,向后。
      *
      * This function automatically skips the empty lines and do not include the line return in result value.
      *

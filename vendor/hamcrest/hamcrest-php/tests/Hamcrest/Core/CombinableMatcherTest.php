@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，组合匹配器测试
+ */
+
 namespace Hamcrest\Core;
 
 class CombinableMatcherTest extends \Hamcrest\AbstractMatcherTest

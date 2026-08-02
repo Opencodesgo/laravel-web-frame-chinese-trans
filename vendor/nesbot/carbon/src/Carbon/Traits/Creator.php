@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，创造者
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -28,6 +31,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Creator.
+ * 特征的创造者。
  *
  * Static creators.
  *
@@ -41,6 +45,7 @@ trait Creator
 
     /**
      * The errors that can occur.
+	 * 可能发生的错误
      *
      * @var array
      */
@@ -48,6 +53,7 @@ trait Creator
 
     /**
      * Create a new Carbon instance.
+	 * 创建一个新的Carbon实例。
      *
      * Please see the testing aids section (specifically static::setTestNow())
      * for more on the possibility of this constructor returning a test instance.
@@ -102,6 +108,7 @@ trait Creator
 
     /**
      * Get timezone from a datetime instance.
+	 * 从datetime实例获取时区
      *
      * @param DateTimeInterface        $date
      * @param DateTimeZone|string|null $tz
@@ -127,6 +134,7 @@ trait Creator
 
     /**
      * Update constructedObjectId on cloned.
+	 * 更新克隆上的constructedobjecid
      */
     public function __clone()
     {
@@ -135,6 +143,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a DateTime one.
+	 * 从DateTime实例创建一个Carbon实例
      *
      * @param DateTimeInterface $date
      *
@@ -165,6 +174,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a string.
+	 * 从字符串创建一个carbon实例。
      *
      * This is an alias for the constructor that allows better fluent syntax
      * as it allows you to do Carbon::parse('Monday next week')->fn() rather
@@ -204,6 +214,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a string.
+	 * 从字符串创建一个carbon实例。
      *
      * This is an alias for the constructor that allows better fluent syntax
      * as it allows you to do Carbon::parse('Monday next week')->fn() rather
@@ -233,6 +244,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a localized string (in French, Japanese, Arabic, etc.).
+	 * 从本地化字符串（法语、日语、阿拉伯语等）创建一个碳实例。
      *
      * @param string                   $time   date/time string in the given language (may also contain English).
      * @param string|null              $locale if locale is null or not specified, current global locale will be
@@ -250,6 +262,7 @@ trait Creator
 
     /**
      * Get a Carbon instance for the current date and time.
+	 * 获取当前日期和时间的Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *

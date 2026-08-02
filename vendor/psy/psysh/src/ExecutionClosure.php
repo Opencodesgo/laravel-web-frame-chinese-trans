@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，执行闭包
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * The Psy Shell's execution scope.
+ * Psy Shell的执行范围。
  */
 class ExecutionClosure
 {
@@ -62,6 +66,7 @@ class ExecutionClosure
 
     /**
      * Set the closure instance.
+	 * 设置闭包实例
      *
      * @param Shell    $shell
      * @param \Closure $closure
@@ -79,6 +84,7 @@ class ExecutionClosure
 
     /**
      * Go go gadget closure.
+	 * Go Go gadget关闭
      *
      * @return mixed
      */

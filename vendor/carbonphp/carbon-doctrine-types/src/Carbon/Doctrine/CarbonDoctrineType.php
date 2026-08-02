@@ -1,0 +1,17 @@
+<?php
+/**
+ * Carbon，Doctrine，Carbon 学说类型
+ */
+
+namespace Carbon\Doctrine;
+
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+
+interface CarbonDoctrineType
+{
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
+
+    public function convertToPHPValue($value, AbstractPlatform $platform);
+
+    public function convertToDatabaseValue($value, AbstractPlatform $platform);
+}

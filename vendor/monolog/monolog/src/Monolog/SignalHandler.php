@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，信号处理
+ * Monolog，信号处理程序
  */
 
 /*
@@ -21,7 +21,7 @@ use ReflectionExtension;
 
 /**
  * Monolog POSIX signal handler
- * POSIX 信号处理器
+ * POSIX信号处理器
  *
  * @author Robert Gust-Bardon <robert@gust-bardon.org>
  *

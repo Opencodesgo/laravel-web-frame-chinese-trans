@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，HTTP缓存，HTTP 缓存
+ * Symfony，Component，HttpKernel，HTTP缓存，HTTP缓存
  */
 
 /*
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 
 /**
  * Cache provides HTTP caching.
- * Cache 提供HTTP缓存
+ * 缓存提供HTTP缓存。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -46,6 +46,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * The available options are:
      *
@@ -114,6 +115,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the current store.
+	 * 获取当前存储
      *
      * @return StoreInterface
      */
@@ -124,6 +126,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Returns an array of events that took place during processing of the last request.
+	 * 返回在处理最后请求时发生的一系列事件
      *
      * @return array
      */
@@ -151,6 +154,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Returns a log message for the events of the last request processing.
+	 * 返回最后请求处理事件的日志消息
      *
      * @return string
      */
@@ -166,6 +170,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the Request instance associated with the main request.
+	 * 获取与主请求关联的请求实例
      *
      * @return Request
      */
@@ -176,6 +181,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the Kernel instance.
+	 * 获取内核实例
      *
      * @return HttpKernelInterface
      */
@@ -186,6 +192,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the Surrogate instance.
+	 * 获取代理实例
      *
      * @return SurrogateInterface
      *
@@ -264,6 +271,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Forwards the Request to the backend without storing the Response in the cache.
+	 * 将请求转发到后端,而不将响应存储在缓存中
      *
      * @param bool $catch Whether to process exceptions
      *
@@ -278,6 +286,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Invalidates non-safe methods (like POST, PUT, and DELETE).
+	 * 使非安全方法（如POST、PUT和DELETE）无效。
      *
      * @param bool $catch Whether to process exceptions
      *
@@ -320,6 +329,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Lookups a Response from the cache for the given Request.
+	 * 从缓存中查找响应请求的响应。
      *
      * When a matching cache entry is found and is fresh, it uses it as the
      * response without forwarding any request to the backend. When a matching
@@ -372,6 +382,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Validates that a cache entry is fresh.
+	 * 验证缓存条目是新鲜的。
      *
      * The original request is used as a template for a conditional
      * GET request with the backend.
@@ -467,6 +478,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Forwards the Request to the backend and returns the Response.
+	 * 将请求转发到后端并返回响应。
      *
      * All backend requests (cache passes, fetches, cache validations)
      * run through this method.
@@ -546,6 +558,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Checks whether the cache entry is "fresh enough" to satisfy the Request.
+	 * 检查缓存条目是否“足够新鲜”以满足请求
      *
      * @return bool
      */
@@ -564,6 +577,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Locks a Request during the call to the backend.
+	 * 在调用后锁定请求
      *
      * @return bool true if the cache entry can be returned even if it is staled, false otherwise
      */
@@ -609,6 +623,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Writes the Response to the cache.
+	 * 对缓存执行响应
      *
      * @throws \Exception
      */
@@ -634,6 +649,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Restores the Response body.
+	 * 重新储存反应体
      */
     private function restoreResponseBody(Request $request, Response $response)
     {
@@ -704,6 +720,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Records that an event took place.
+	 * 事件发生的记录
      */
     private function record(Request $request, string $event)
     {
@@ -712,6 +729,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Calculates the key we use in the "trace" array for a given request.
+	 * 计算我们在给定请求的“trace”数组中使用的键
      */
     private function getTraceKey(Request $request): string
     {
@@ -748,6 +766,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Waits for the store to release a locked entry.
+	 * 等待商店释放一个锁定的条目
      */
     private function waitForLock(Request $request): bool
     {

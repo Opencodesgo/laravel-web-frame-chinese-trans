@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，MongoDb 会话处理程序
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，MongoDb 会话处理程序
  */
 
 /*
@@ -21,7 +21,7 @@ use MongoDB\Collection;
 
 /**
  * Session handler using the mongodb/mongodb package and MongoDB driver extension.
- * 会话处理程序使用 mongodb/mongodb 包和 mongodb 驱动扩展
+ * 会话处理程序使用mongodb/mongodb包和mongodb驱动扩展。
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  *
@@ -44,6 +44,7 @@ class MongoDbSessionHandler extends AbstractSessionHandler
 
     /**
      * Constructor.
+	 * 构造函数。
      *
      * List of available options:
      *  * database: The name of the database [required]

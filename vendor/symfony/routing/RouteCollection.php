@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由收集
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Routing\Exception\RouteCircularReferenceException;
 
 /**
  * A RouteCollection represents a set of Route instances.
+ * RouteCollection表示一组Route实例。
  *
  * When adding a route at the end of the collection, an existing route
  * with the same name is removed first. So there can only be one route
@@ -62,6 +66,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets the current RouteCollection as an Iterator that includes all routes.
+	 * 获取当前的RouteCollection作为包含所有路由的迭代器
      *
      * It implements \IteratorAggregate.
      *
@@ -77,6 +82,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets the number of Routes in this collection.
+	 * 获取此集合中路由的数目
      *
      * @return int
      */
@@ -106,6 +112,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Returns all routes in this collection.
+	 * 返回此集合中的所有路由
      *
      * @return array<string, Route>
      */
@@ -124,6 +131,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets a route by name.
+	 * 按名称获取路由
      *
      * @return Route|null
      */
@@ -152,6 +160,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Removes a route or an array of routes by name from the collection.
+	 * 按名称从集合中删除路由或路由数组
      *
      * @param string|string[] $name The route name or an array of route names
      */
@@ -207,6 +216,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds a prefix to the path of all child routes.
+	 * 为所有子路由的路径添加前缀
      */
     public function addPrefix(string $prefix, array $defaults = [], array $requirements = [])
     {
@@ -225,6 +235,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds a prefix to the name of all the routes within in the collection.
+	 * 向集合中的所有路由的名称添加前缀
      */
     public function addNamePrefix(string $prefix)
     {
@@ -253,6 +264,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Sets the host pattern on all routes.
+	 * 在所有路由上设置主机模式
      */
     public function setHost(?string $pattern, array $defaults = [], array $requirements = [])
     {
@@ -265,6 +277,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Sets a condition on all routes.
+	 * 为所有路由设置一个条件。
      *
      * Existing conditions will be overridden.
      */
@@ -277,6 +290,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds defaults to all routes.
+	 * 为所有路由添加缺省值。
      *
      * An existing default value under the same name in a route will be overridden.
      */
@@ -291,6 +305,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds requirements to all routes.
+	 * 为所有路由添加需求。
      *
      * An existing requirement under the same name in a route will be overridden.
      */
@@ -305,6 +320,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds options to all routes.
+	 * 为所有路由添加选项。
      *
      * An existing option value under the same name in a route will be overridden.
      */
@@ -319,6 +335,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Sets the schemes (e.g. 'https') all child routes are restricted to.
+	 * 设置方案(例如：‘https’)所有子路由都被限制
      *
      * @param string|string[] $schemes The scheme or an array of schemes
      */
@@ -343,6 +360,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Returns an array of resources loaded to build this collection.
+	 * 返回为构建此集合而加载的资源数组
      *
      * @return ResourceInterface[]
      */
@@ -366,6 +384,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Sets an alias for an existing route.
+	 * 为现有路由设置别名
      *
      * @param string $name  The alias to create
      * @param string $alias The route to alias

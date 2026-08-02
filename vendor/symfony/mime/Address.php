@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Symfony，Component，Mime，地址
  */
@@ -34,6 +33,7 @@ final class Address
      * This allows to use a single string to construct an Address, which can be convenient to use in
      * config, and allows to have more readable config.
      * This does not try to cover all edge cases for address.
+	 * 匹配结构如‘Name <email@address.com>’的正则表达式。
      */
     private const FROM_STRING_PATTERN = '~(?<displayName>[^<]*)<(?<addrSpec>.*)>[^>]*~';
 

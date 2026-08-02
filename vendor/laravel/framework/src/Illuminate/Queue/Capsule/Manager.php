@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，压缩，管理器
+ * Illuminate，队列，压缩，管理者
  */
 
 namespace Illuminate\Queue\Capsule;
@@ -28,7 +28,7 @@ class Manager
 
     /**
      * Create a new queue capsule manager.
-	 * 创建新的队列压缩管理器
+	 * 创建一个新的队列压缩管理器
      *
      * @param  \Illuminate\Container\Container|null  $container
      * @return void
@@ -143,7 +143,7 @@ class Manager
 
     /**
      * Get a registered connection instance.
-	 * 获取已注册的连接实例
+	 * 得到已注册的连接实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Queue\Queue
@@ -168,7 +168,7 @@ class Manager
 
     /**
      * Get the queue manager instance.
-	 * 获取队列管理器实例
+	 * 得到队列管理器实例
      *
      * @return \Illuminate\Queue\QueueManager
      */

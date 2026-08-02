@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，控制台部分输出
+ * Symfony，Component，Console，输出，控制台分段输出
  */
 
 /*
@@ -43,6 +43,7 @@ class ConsoleSectionOutput extends StreamOutput
 
     /**
      * Clears previous output for this section.
+	 * 清除本节之前的输出
      *
      * @param int $lines Number of lines to clear. If null, then the entire output of this section is cleared
      */
@@ -66,6 +67,7 @@ class ConsoleSectionOutput extends StreamOutput
 
     /**
      * Overwrites the previous output with a new message.
+	 * 用新的消息覆盖前面的输出
      *
      * @param array|string $message
      */
@@ -114,6 +116,7 @@ class ConsoleSectionOutput extends StreamOutput
     /**
      * At initial stage, cursor is at the end of stream output. This method makes cursor crawl upwards until it hits
      * current section. Then it erases content it crawled through. Optionally, it erases part of current section too.
+	 * 在初始阶段，游标位于流输出的末尾。
      */
     private function popStreamContentUntilCurrentSection(int $numberOfLinesToClearFromCurrentSection = 0): string
     {

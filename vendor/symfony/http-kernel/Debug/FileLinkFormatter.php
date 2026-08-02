@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，调试，文件链接格式化
+ * Symfony，Component，HttpKernel，调试，文件链接格式化程序
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Formats debug file links.
- * 格式化调试文件链接
+ * 格式化调试文件链接。
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  *

@@ -16,7 +16,7 @@ trait SerializesAndRestoresModelIdentifiers
 {
     /**
      * Get the property value prepared for serialization.
-	 * 获取为序列化准备的属性值
+	 * 得到为序列化准备的属性值
      *
      * @param  mixed  $value
      * @return mixed
@@ -46,7 +46,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Get the restored property value after deserialization.
-	 * 获取反序列化后恢复的属性值
+	 * 得到反序列化后恢复的属性值
      *
      * @param  mixed  $value
      * @return mixed
@@ -111,7 +111,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Get the query for model restoration.
-	 * 获取模型恢复的查询
+	 * 得到模型恢复的查询
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array|int  $ids

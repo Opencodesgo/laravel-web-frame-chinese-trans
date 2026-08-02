@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，代理，抽象代理
+ * Symfony，Component，HttpFoundation，Session，储存，代理，抽象代理
  */
 
 /*
@@ -21,7 +21,7 @@ abstract class AbstractProxy
 {
     /**
      * Flag if handler wraps an internal PHP session handler (using \SessionHandler).
-	 * 标志如果处理程序包装内部PHP会话处理程序(使用\SessionHandler)
+	 * 标志如果处理程序包装内部PHP会话处理程序（使用\SessionHandler）
      *
      * @var bool
      */
@@ -45,6 +45,7 @@ abstract class AbstractProxy
 
     /**
      * Is this proxy handler and instance of \SessionHandlerInterface.
+	 * 是这个代理处理程序和\SessionHandlerInterface的实例
      *
      * @return bool
      */
@@ -55,6 +56,7 @@ abstract class AbstractProxy
 
     /**
      * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
+	 * 如果此处理程序使用\SessionHandler包装内部PHP会话保存处理程序，则返回true。
      *
      * @return bool
      */
@@ -65,6 +67,7 @@ abstract class AbstractProxy
 
     /**
      * Has a session started?
+	 * 会话开始了吗
      *
      * @return bool
      */
@@ -75,6 +78,7 @@ abstract class AbstractProxy
 
     /**
      * Gets the session ID.
+	 * 获取会话ID
      *
      * @return string
      */
@@ -85,6 +89,7 @@ abstract class AbstractProxy
 
     /**
      * Sets the session ID.
+	 * 设置会话ID
      *
      * @throws \LogicException
      */
@@ -99,6 +104,7 @@ abstract class AbstractProxy
 
     /**
      * Gets the session name.
+	 * 获取会话名称
      *
      * @return string
      */

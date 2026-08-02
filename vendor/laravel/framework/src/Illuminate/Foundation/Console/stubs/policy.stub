@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，策略
  */
 
 namespace {{ namespace }};
@@ -18,7 +18,7 @@ class {{ class }}
 	 * 确定用户是否可以查看任何模型
      *
      * @param  \{{ namespacedUserModel }}  $user
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny({{ user }} $user)
     {
@@ -31,7 +31,7 @@ class {{ class }}
      *
      * @param  \{{ namespacedUserModel }}  $user
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
@@ -43,7 +43,7 @@ class {{ class }}
 	 * 确定用户是否可以创建模型
      *
      * @param  \{{ namespacedUserModel }}  $user
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create({{ user }} $user)
     {
@@ -56,7 +56,7 @@ class {{ class }}
      *
      * @param  \{{ namespacedUserModel }}  $user
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
@@ -65,11 +65,11 @@ class {{ class }}
 
     /**
      * Determine whether the user can delete the model.
-	 * 确定用户是否可以删除模型
+	 * 判断用户是否可以删除模型
      *
      * @param  \{{ namespacedUserModel }}  $user
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
@@ -78,11 +78,11 @@ class {{ class }}
 
     /**
      * Determine whether the user can restore the model.
-	 * 确定用户是否可以恢复模型
+	 * 判断用户是否可以恢复模型
      *
      * @param  \{{ namespacedUserModel }}  $user
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
@@ -91,11 +91,11 @@ class {{ class }}
 
     /**
      * Determine whether the user can permanently delete the model.
-	 * 确定用户是否可以永久删除该模型
+	 * 确定用户是否可以永久删除模型
      *
      * @param  \{{ namespacedUserModel }}  $user
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return mixed
+     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }})
     {

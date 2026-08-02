@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，通知，工厂
+ * Illuminate，契约，通知，工厂接口
  */
 
 namespace Illuminate\Contracts\Notifications;

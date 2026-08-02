@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，记录器，Flare 处理程序
+ */
 
 namespace Facade\Ignition\Logger;
 

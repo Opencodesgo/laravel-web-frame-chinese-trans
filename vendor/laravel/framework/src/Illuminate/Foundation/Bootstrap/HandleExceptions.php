@@ -9,6 +9,8 @@ use ErrorException;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Log\LogManager;
+use Monolog\Handler\NullHandler;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 use Throwable;
@@ -33,15 +35,14 @@ class HandleExceptions
 
     /**
      * Bootstrap the given application.
-	 * 引导给定的应用
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function bootstrap(Application $app)
     {
-		// 预先分配内存缓冲区，主要用于防止内存不足错误（Out of Memory）
-        self::$reservedMemory = str_repeat('x', 10240);
+        self::$reservedMemory = str_repeat('x', 32768);
 
         $this->app = $app;
 
@@ -59,8 +60,8 @@ class HandleExceptions
     }
 
     /**
-     * Convert PHP errors to ErrorException instances.
-	 * 将PHP错误转换为ErrorException实例
+     * Report PHP deprecations, or convert PHP errors to ErrorException instances.
+	 * 报告PHP弃用，或将PHP错误转换为ErrorException实例。
      *
      * @param  int  $level
      * @param  string  $message
@@ -73,14 +74,92 @@ class HandleExceptions
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
+        if ($this->isDeprecation($level)) {
+            return $this->handleDeprecation($message, $file, $line);
+        }
+
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
         }
     }
 
     /**
+     * Reports a deprecation to the "deprecations" logger.
+	 * 向"deprecations"日志记录器报告弃用
+     *
+     * @param  string  $message
+     * @param  string  $file
+     * @param  int  $line
+     * @return void
+     */
+    public function handleDeprecation($message, $file, $line)
+    {
+        if (! class_exists(LogManager::class)
+            || ! $this->app->hasBeenBootstrapped()
+            || $this->app->runningUnitTests()
+        ) {
+            return;
+        }
+
+        try {
+            $logger = $this->app->make(LogManager::class);
+        } catch (Exception $e) {
+            return;
+        }
+
+        $this->ensureDeprecationLoggerIsConfigured();
+
+        with($logger->channel('deprecations'), function ($log) use ($message, $file, $line) {
+            $log->warning(sprintf('%s in %s on line %s',
+                $message, $file, $line
+            ));
+        });
+    }
+
+    /**
+     * Ensure the "deprecations" logger is configured.
+	 * 确保配置了"deprecations"日志记录器
+     *
+     * @return void
+     */
+    protected function ensureDeprecationLoggerIsConfigured()
+    {
+        with($this->app['config'], function ($config) {
+            if ($config->get('logging.channels.deprecations')) {
+                return;
+            }
+
+            $this->ensureNullLogDriverIsConfigured();
+
+            $driver = $config->get('logging.deprecations') ?? 'null';
+
+            $config->set('logging.channels.deprecations', $config->get("logging.channels.{$driver}"));
+        });
+    }
+
+    /**
+     * Ensure the "null" log driver is configured.
+	 * 确保配置了"null"日志驱动程序
+     *
+     * @return void
+     */
+    protected function ensureNullLogDriverIsConfigured()
+    {
+        with($this->app['config'], function ($config) {
+            if ($config->get('logging.channels.null')) {
+                return;
+            }
+
+            $config->set('logging.channels.null', [
+                'driver' => 'monolog',
+                'handler' => NullHandler::class,
+            ]);
+        });
+    }
+
+    /**
      * Handle an uncaught exception from the application.
-	 * 处理应用中未捕获的异常
+	 * 处理应用程序中未捕获的异常
      *
      * Note: Most exceptions can be handled via the try / catch block in
      * the HTTP and Console kernels. But, fatal error exceptions must
@@ -91,9 +170,9 @@ class HandleExceptions
      */
     public function handleException(Throwable $e)
     {
-        try {
-            self::$reservedMemory = null;
+        self::$reservedMemory = null;
 
+        try {
             $this->getExceptionHandler()->report($e);
         } catch (Exception $e) {
             //
@@ -108,7 +187,7 @@ class HandleExceptions
 
     /**
      * Render an exception to the console.
-	 * 向控制台呈现一个异常
+	 * 呈现异常至控制台
      *
      * @param  \Throwable  $e
      * @return void
@@ -138,6 +217,8 @@ class HandleExceptions
      */
     public function handleShutdown()
     {
+        self::$reservedMemory = null;
+
         if (! is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
             $this->handleException($this->fatalErrorFromPhpError($error, 0));
         }
@@ -154,6 +235,18 @@ class HandleExceptions
     protected function fatalErrorFromPhpError(array $error, $traceOffset = null)
     {
         return new FatalError($error['message'], 0, $error, $traceOffset);
+    }
+
+    /**
+     * Determine if the error level is a deprecation.
+	 * 确定错误级别是否为弃用
+     *
+     * @param  int  $level
+     * @return bool
+     */
+    protected function isDeprecation($level)
+    {
+        return in_array($level, [E_DEPRECATED, E_USER_DEPRECATED]);
     }
 
     /**

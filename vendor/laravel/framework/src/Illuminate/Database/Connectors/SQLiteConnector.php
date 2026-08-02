@@ -25,7 +25,7 @@ class SQLiteConnector extends Connector implements ConnectorInterface
         // SQLite supports "in-memory" databases that only last as long as the owning
         // connection does. These are useful for tests or for short lifetime store
         // querying. In-memory databases may only have a single open connection.
-		// SQLite支持"内存中"数据库，这种数据库的存续时间与数据库的存续时间相同。
+		// SQLite支持"内存中"数据库，这种数据库只有拥有连接的时间才能持续。
         if ($config['database'] === ':memory:') {
             return $this->createConnection('sqlite::memory:', $config, $options);
         }
@@ -35,7 +35,8 @@ class SQLiteConnector extends Connector implements ConnectorInterface
         // Here we'll verify that the SQLite database exists before going any further
         // as the developer probably wants to know if the database exists and this
         // SQLite driver will not throw any exception if it does not by default.
-		// 在进一步操作之前，我们将验证SQLite数据库是否存在。
+		// 在这里，我们将在进一步操作之前验证SQLite数据库是否存在，因为开发人员可能想知道数据库是否存在。
+		// 如果默认情况下不存在，这个SQLite驱动程序不会抛出任何异常。
         if ($path === false) {
             throw new InvalidArgumentException("Database ({$config['database']}) does not exist.");
         }

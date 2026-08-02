@@ -22,7 +22,7 @@ trait MustVerifyEmail
 
     /**
      * Mark the given user's email as verified.
-	 * 将给定用户的电子邮件标记为已验证
+	 * 标记定用户的电子邮件为已验证
      *
      * @return bool
      */

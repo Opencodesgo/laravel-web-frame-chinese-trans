@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，手指交叉处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -20,6 +24,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Buffers all records until a certain level is reached
+ * 缓存所有记录直到到达某个级别
  *
  * The advantage of this approach is that you don't get any clutter in your log files.
  * Only requests which actually trigger an error (or whatever your actionLevel is) will be
@@ -114,6 +119,7 @@ class FingersCrossedHandler extends Handler implements ProcessableHandlerInterfa
 
     /**
      * Manually activate this logger regardless of the activation strategy
+	 * 手动激活这个记录器,而不考虑激活策略
      */
     public function activate(): void
     {
@@ -173,6 +179,7 @@ class FingersCrossedHandler extends Handler implements ProcessableHandlerInterfa
 
     /**
      * Clears the buffer without flushing any messages down to the wrapped handler.
+	 * 清除缓冲区,而不将任何消息刷新到包装处理程序。
      *
      * It also resets the handler to its initial buffering state.
      */
@@ -184,6 +191,7 @@ class FingersCrossedHandler extends Handler implements ProcessableHandlerInterfa
 
     /**
      * Resets the state of the handler. Stops forwarding records to the wrapped handler.
+	 * 重新设置处理程序的状态。停止将记录转发到包处理程序。
      */
     private function flushBuffer(): void
     {
@@ -203,6 +211,7 @@ class FingersCrossedHandler extends Handler implements ProcessableHandlerInterfa
 
     /**
      * Return the nested handler
+	 * 返回嵌套处理程序
      *
      * If the handler was provided as a factory callable, this will trigger the handler's instantiation.
      *

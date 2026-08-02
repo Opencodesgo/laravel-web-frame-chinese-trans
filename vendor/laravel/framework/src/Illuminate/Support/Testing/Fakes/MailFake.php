@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，假装邮件
+ * Illuminate，支持，测试，假装，假邮件
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -52,9 +52,7 @@ class MailFake implements Factory, Mailer, MailQueue
      */
     public function assertSent($mailable, $callback = null)
     {
-        if ($mailable instanceof Closure) {
-            [$mailable, $callback] = [$this->firstClosureParameterType($mailable), $mailable];
-        }
+        [$mailable, $callback] = $this->prepareMailableAndCallback($mailable, $callback);
 
         if (is_numeric($callback)) {
             return $this->assertSentTimes($mailable, $callback);
@@ -91,19 +89,47 @@ class MailFake implements Factory, Mailer, MailQueue
     }
 
     /**
+     * Determine if a mailable was not sent or queued to be sent based on a truth-test callback.
+	 * 根据真值测试回调确定是否未发送或排队等待发送可邮件
+     *
+     * @param  string|\Closure  $mailable
+     * @param  callable|null  $callback
+     * @return void
+     */
+    public function assertNotOutgoing($mailable, $callback = null)
+    {
+        $this->assertNotSent($mailable, $callback);
+        $this->assertNotQueued($mailable, $callback);
+    }
+
+    /**
      * Determine if a mailable was not sent based on a truth-test callback.
 	 * 根据真值测试回调确定是否未发送可邮件
      *
-     * @param  string  $mailable
+     * @param  string|\Closure  $mailable
      * @param  callable|null  $callback
      * @return void
      */
     public function assertNotSent($mailable, $callback = null)
     {
+        [$mailable, $callback] = $this->prepareMailableAndCallback($mailable, $callback);
+
         PHPUnit::assertCount(
             0, $this->sent($mailable, $callback),
             "The unexpected [{$mailable}] mailable was sent."
         );
+    }
+
+    /**
+     * Assert that no mailables were sent or queued to be sent.
+	 * 断言没有发送邮件或排队等待发送邮件
+     *
+     * @return void
+     */
+    public function assertNothingOutgoing()
+    {
+        $this->assertNothingSent();
+        $this->assertNothingQueued();
     }
 
     /**
@@ -131,9 +157,7 @@ class MailFake implements Factory, Mailer, MailQueue
      */
     public function assertQueued($mailable, $callback = null)
     {
-        if ($mailable instanceof Closure) {
-            [$mailable, $callback] = [$this->firstClosureParameterType($mailable), $mailable];
-        }
+        [$mailable, $callback] = $this->prepareMailableAndCallback($mailable, $callback);
 
         if (is_numeric($callback)) {
             return $this->assertQueuedTimes($mailable, $callback);
@@ -167,12 +191,14 @@ class MailFake implements Factory, Mailer, MailQueue
      * Determine if a mailable was not queued based on a truth-test callback.
 	 * 根据真值测试回调确定可邮件是否未排队
      *
-     * @param  string  $mailable
+     * @param  string|\Closure  $mailable
      * @param  callable|null  $callback
      * @return void
      */
     public function assertNotQueued($mailable, $callback = null)
     {
+        [$mailable, $callback] = $this->prepareMailableAndCallback($mailable, $callback);
+
         PHPUnit::assertCount(
             0, $this->queued($mailable, $callback),
             "The unexpected [{$mailable}] mailable was queued."
@@ -198,12 +224,14 @@ class MailFake implements Factory, Mailer, MailQueue
      * Get all of the mailables matching a truth-test callback.
 	 * 获取与真值测试回调匹配的所有邮件
      *
-     * @param  string  $mailable
+     * @param  string|\Closure  $mailable
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
     public function sent($mailable, $callback = null)
     {
+        [$mailable, $callback] = $this->prepareMailableAndCallback($mailable, $callback);
+
         if (! $this->hasSent($mailable)) {
             return collect();
         }
@@ -233,12 +261,14 @@ class MailFake implements Factory, Mailer, MailQueue
      * Get all of the queued mailables matching a truth-test callback.
 	 * 获取与真值测试回调匹配的所有排队邮件
      *
-     * @param  string  $mailable
+     * @param  string|\Closure  $mailable
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
     public function queued($mailable, $callback = null)
     {
+        [$mailable, $callback] = $this->prepareMailableAndCallback($mailable, $callback);
+
         if (! $this->hasQueued($mailable)) {
             return collect();
         }
@@ -297,7 +327,7 @@ class MailFake implements Factory, Mailer, MailQueue
 	 * 按名称获取邮件实例
      *
      * @param  string|null  $name
-     * @return \Illuminate\Mail\Mailer
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
     public function mailer($name = null)
     {
@@ -347,7 +377,7 @@ class MailFake implements Factory, Mailer, MailQueue
      * Send a new message using a view.
 	 * 使用视图发送新消息
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  \Closure|string|null  $callback
      * @return void
@@ -360,11 +390,11 @@ class MailFake implements Factory, Mailer, MailQueue
 
         $view->mailer($this->currentMailer);
 
-        $this->currentMailer = null;
-
         if ($view instanceof ShouldQueue) {
             return $this->queue($view, $data);
         }
+
+        $this->currentMailer = null;
 
         $this->mailables[] = $view;
     }
@@ -413,5 +443,35 @@ class MailFake implements Factory, Mailer, MailQueue
     public function failures()
     {
         return [];
+    }
+
+    /**
+     * Infer mailable class using reflection if a typehinted closure is passed to assertion.
+	 * 如果将类型暗示闭包传递给断言，则使用反射推断可投递类。
+     *
+     * @param  string|\Closure  $mailable
+     * @param  callable|null  $callback
+     * @return array
+     */
+    protected function prepareMailableAndCallback($mailable, $callback)
+    {
+        if ($mailable instanceof Closure) {
+            return [$this->firstClosureParameterType($mailable), $mailable];
+        }
+
+        return [$mailable, $callback];
+    }
+
+    /**
+     * Forget all of the resolved mailer instances.
+	 * 忘记所有已解析的邮件实例
+     *
+     * @return $this
+     */
+    public function forgetMailers()
+    {
+        $this->currentMailer = null;
+
+        return $this;
     }
 }

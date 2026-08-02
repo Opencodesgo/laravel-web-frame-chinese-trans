@@ -1,0 +1,205 @@
+<?php
+/**
+ * Illuminate，测试，流畅的，问题，匹配
+ */
+
+namespace Illuminate\Testing\Fluent\Concerns;
+
+use Closure;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
+use PHPUnit\Framework\Assert as PHPUnit;
+
+trait Matching
+{
+    /**
+     * Asserts that the property matches the expected value.
+	 * 断言属性是否与期望值匹配
+     *
+     * @param  string  $key
+     * @param  mixed|\Closure  $expected
+     * @return $this
+     */
+    public function where(string $key, $expected): self
+    {
+        $this->has($key);
+
+        $actual = $this->prop($key);
+
+        if ($expected instanceof Closure) {
+            PHPUnit::assertTrue(
+                $expected(is_array($actual) ? Collection::make($actual) : $actual),
+                sprintf('Property [%s] was marked as invalid using a closure.', $this->dotPath($key))
+            );
+
+            return $this;
+        }
+
+        if ($expected instanceof Arrayable) {
+            $expected = $expected->toArray();
+        }
+
+        $this->ensureSorted($expected);
+        $this->ensureSorted($actual);
+
+        PHPUnit::assertSame(
+            $expected,
+            $actual,
+            sprintf('Property [%s] does not match the expected value.', $this->dotPath($key))
+        );
+
+        return $this;
+    }
+
+    /**
+     * Asserts that all properties match their expected values.
+	 * 断言所有属性是否匹配它们的期望值
+     *
+     * @param  array  $bindings
+     * @return $this
+     */
+    public function whereAll(array $bindings): self
+    {
+        foreach ($bindings as $key => $value) {
+            $this->where($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Asserts that the property is of the expected type.
+	 * 断言属性是否为预期类型
+     *
+     * @param  string  $key
+     * @param  string|array  $expected
+     * @return $this
+     */
+    public function whereType(string $key, $expected): self
+    {
+        $this->has($key);
+
+        $actual = $this->prop($key);
+
+        if (! is_array($expected)) {
+            $expected = explode('|', $expected);
+        }
+
+        PHPUnit::assertContains(
+            strtolower(gettype($actual)),
+            $expected,
+            sprintf('Property [%s] is not of expected type [%s].', $this->dotPath($key), implode('|', $expected))
+        );
+
+        return $this;
+    }
+
+    /**
+     * Asserts that all properties are of their expected types.
+	 * 断言所有属性都是它们预期的类型
+     *
+     * @param  array  $bindings
+     * @return $this
+     */
+    public function whereAllType(array $bindings): self
+    {
+        foreach ($bindings as $key => $value) {
+            $this->whereType($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Asserts that the property contains the expected values.
+	 * 断言属性是否包含期望值
+     *
+     * @param  string  $key
+     * @param  mixed  $expected
+     * @return $this
+     */
+    public function whereContains(string $key, $expected)
+    {
+        $actual = Collection::make(
+            $this->prop($key) ?? $this->prop()
+        );
+
+        $missing = Collection::make($expected)->reject(function ($search) use ($key, $actual) {
+            if ($actual->containsStrict($key, $search)) {
+                return true;
+            }
+
+            return $actual->containsStrict($search);
+        });
+
+        if ($missing->whereInstanceOf('Closure')->isNotEmpty()) {
+            PHPUnit::assertEmpty(
+                $missing->toArray(),
+                sprintf(
+                    'Property [%s] does not contain a value that passes the truth test within the given closure.',
+                    $key,
+                )
+            );
+        } else {
+            PHPUnit::assertEmpty(
+                $missing->toArray(),
+                sprintf(
+                    'Property [%s] does not contain [%s].',
+                    $key,
+                    implode(', ', array_values($missing->toArray()))
+                )
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Ensures that all properties are sorted the same way, recursively.
+	 * 确保所有属性以相同的方式递归排序
+     *
+     * @param  mixed  $value
+     * @return void
+     */
+    protected function ensureSorted(&$value): void
+    {
+        if (! is_array($value)) {
+            return;
+        }
+
+        foreach ($value as &$arg) {
+            $this->ensureSorted($arg);
+        }
+
+        ksort($value);
+    }
+
+    /**
+     * Compose the absolute "dot" path to the given key.
+	 * 组成给定键的绝对"点"路径
+     *
+     * @param  string  $key
+     * @return string
+     */
+    abstract protected function dotPath(string $key = ''): string;
+
+    /**
+     * Ensure that the given prop exists.
+	 * 确保给定的道具存在
+     *
+     * @param  string  $key
+     * @param  null  $value
+     * @param  \Closure|null  $scope
+     * @return $this
+     */
+    abstract public function has(string $key, $value = null, Closure $scope = null);
+
+    /**
+     * Retrieve a prop within the current scope using "dot" notation.
+	 * 使用"点"表示法检索当前作用域中的道具
+     *
+     * @param  string|null  $key
+     * @return mixed
+     */
+    abstract protected function prop(string $key = null);
+}

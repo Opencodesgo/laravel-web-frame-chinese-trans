@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，上下文感知
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * ContextAware interface.
+ * 上下文感知接口
  *
  * This interface is used to pass the Shell's context into commands and such
  * which require access to the current scope variables.
@@ -21,6 +25,7 @@ interface ContextAware
 {
     /**
      * Set the Context reference.
+	 * 设置上下文引用
      *
      * @param Context $context
      */

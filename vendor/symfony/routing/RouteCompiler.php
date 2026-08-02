@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由的编译器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * RouteCompiler compiles Route instances to CompiledRoute instances.
+ * routecomcompiler将Route实例编译为CompiledRoute实例。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -250,6 +254,7 @@ class RouteCompiler implements RouteCompilerInterface
 
     /**
      * Determines the longest static prefix possible for a route.
+	 * 确定路由可能的最长静态前缀
      */
     private static function determineStaticPrefix(Route $route, array $tokens): string
     {
@@ -268,6 +273,7 @@ class RouteCompiler implements RouteCompilerInterface
 
     /**
      * Returns the next static character in the Route pattern that will serve as a separator (or the empty string when none available).
+	 * 返回Route模式中的下一个静态字符，该字符将用作分隔符（或者当没有可用时为空字符串）。
      */
     private static function findNextSeparator(string $pattern, bool $useUtf8): string
     {
@@ -288,6 +294,7 @@ class RouteCompiler implements RouteCompilerInterface
 
     /**
      * Computes the regexp used to match a specific token. It can be static text or a subpattern.
+	 * 计算用于匹配特定令牌的regexp。它可以是静态文本或子模式。
      *
      * @param array $tokens        The route tokens
      * @param int   $index         The index of the current token

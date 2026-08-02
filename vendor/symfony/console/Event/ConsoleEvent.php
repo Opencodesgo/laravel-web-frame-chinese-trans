@@ -21,6 +21,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Allows to inspect input and output of a command.
+ * 允许检查命令的输入和输出
  *
  * @author Francesco Levorato <git@flevour.net>
  */
@@ -40,6 +41,7 @@ class ConsoleEvent extends Event
 
     /**
      * Gets the command that is executed.
+	 * 获取执行的命令
      *
      * @return Command|null
      */
@@ -50,6 +52,7 @@ class ConsoleEvent extends Event
 
     /**
      * Gets the input instance.
+	 * 获取输入实例
      *
      * @return InputInterface
      */
@@ -60,6 +63,7 @@ class ConsoleEvent extends Event
 
     /**
      * Gets the output instance.
+	 * 获取输出实例
      *
      * @return OutputInterface
      */

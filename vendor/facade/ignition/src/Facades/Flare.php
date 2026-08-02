@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，门面，Flare
+ */
 
 namespace Facade\Ignition\Facades;
 

@@ -12,7 +12,7 @@ trait ManagesLoops
 {
     /**
      * The stack of in-progress loops.
-	 * 正在进行的循环堆栈
+	 * 正在进行的循环的堆栈
      *
      * @var array
      */

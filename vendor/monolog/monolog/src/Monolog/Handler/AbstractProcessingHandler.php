@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，抽象处理处理者
+ * Monolog，Handler，抽象处理处理器
  */
 
 /*
@@ -17,6 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Base Handler class providing the Handler structure, including processors and formatters
+ * 基Handler类，提供Handler结构，包括处理器和格式化程序，
  *
  * Classes extending it should (in most cases) only implement write($record)
  *
@@ -56,6 +57,7 @@ abstract class AbstractProcessingHandler extends AbstractHandler implements Proc
 
     /**
      * Writes the record down to the log of the implementing handler
+	 * 将记录写入实现处理程序的日志
      *
      * @phpstan-param FormattedRecord $record
      */

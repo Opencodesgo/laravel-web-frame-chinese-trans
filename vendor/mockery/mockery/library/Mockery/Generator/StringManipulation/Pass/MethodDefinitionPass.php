@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，字符串操作，传递，方法定义传递
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

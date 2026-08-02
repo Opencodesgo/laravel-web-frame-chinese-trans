@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，字符串操作，传递，删除非序列化的内部可串行化的类通过
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

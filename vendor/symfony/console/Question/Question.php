@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，问题，问题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a Question.
+ * 代表一个问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -44,6 +48,7 @@ class Question
 
     /**
      * Returns the question.
+	 * 返回这个问题
      *
      * @return string
      */
@@ -54,6 +59,7 @@ class Question
 
     /**
      * Returns the default answer.
+	 * 返回默认的答案
      *
      * @return string|bool|int|float|null
      */
@@ -64,6 +70,7 @@ class Question
 
     /**
      * Returns whether the user response accepts newline characters.
+	 * 返回用户响应是否接受新行字符
      */
     public function isMultiline(): bool
     {
@@ -72,6 +79,7 @@ class Question
 
     /**
      * Sets whether the user response should accept newline characters.
+	 * 设置用户响应是否应该接受newline字符
      *
      * @return $this
      */
@@ -84,6 +92,7 @@ class Question
 
     /**
      * Returns whether the user response must be hidden.
+	 * 返回是否必须隐藏用户响应
      *
      * @return bool
      */
@@ -94,6 +103,7 @@ class Question
 
     /**
      * Sets whether the user response must be hidden or not.
+	 * 设置用户响应是否必须隐藏
      *
      * @return $this
      *
@@ -112,6 +122,7 @@ class Question
 
     /**
      * In case the response cannot be hidden, whether to fallback on non-hidden question or not.
+	 * 如果不能隐藏响应,是否要对非隐藏的问题进行回选。
      *
      * @return bool
      */
@@ -122,6 +133,7 @@ class Question
 
     /**
      * Sets whether to fallback on non-hidden question if the response cannot be hidden.
+	 * 设置是否返回不隐藏的问题,如果响应不能隐藏。
      *
      * @return $this
      */
@@ -134,6 +146,7 @@ class Question
 
     /**
      * Gets values for the autocompleter.
+	 * 获取自动完成器的值
      *
      * @return iterable|null
      */
@@ -146,6 +159,7 @@ class Question
 
     /**
      * Sets values for the autocompleter.
+	 * 为自动完成器设置值
      *
      * @return $this
      *
@@ -173,6 +187,7 @@ class Question
 
     /**
      * Gets the callback function used for the autocompleter.
+	 * 获取用于自动完成器的回调函数
      */
     public function getAutocompleterCallback(): ?callable
     {
@@ -181,6 +196,7 @@ class Question
 
     /**
      * Sets the callback function used for the autocompleter.
+	 * 设置用于自动完成器的回调函数。
      *
      * The callback is passed the user input as argument and should return an iterable of corresponding suggestions.
      *
@@ -199,6 +215,7 @@ class Question
 
     /**
      * Sets a validator for the question.
+	 * 为问题设置验证器
      *
      * @return $this
      */
@@ -211,6 +228,7 @@ class Question
 
     /**
      * Gets the validator for the question.
+	 * 获取问题的验证器
      *
      * @return callable|null
      */
@@ -221,6 +239,7 @@ class Question
 
     /**
      * Sets the maximum number of attempts.
+	 * 设置最大尝试次数。
      *
      * Null means an unlimited number of attempts.
      *
@@ -241,6 +260,7 @@ class Question
 
     /**
      * Gets the maximum number of attempts.
+	 * 获取尝试的最大次数。
      *
      * Null means an unlimited number of attempts.
      *
@@ -253,6 +273,7 @@ class Question
 
     /**
      * Sets a normalizer for the response.
+	 * 为响应设置一个标准化器。
      *
      * The normalizer can be a callable (a string), a closure or a class implementing __invoke.
      *
@@ -267,6 +288,7 @@ class Question
 
     /**
      * Gets the normalizer for the response.
+	 * 得到响应的标准化器。
      *
      * The normalizer can ba a callable (a string), a closure or a class implementing __invoke.
      *

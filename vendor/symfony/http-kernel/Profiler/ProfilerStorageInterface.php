@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * ProfilerStorageInterface.
+ * 分析器存储接口
  *
  * This interface exists for historical reasons. The only supported
  * implementation is FileProfilerStorage.
@@ -31,6 +32,7 @@ interface ProfilerStorageInterface
 {
     /**
      * Finds profiler tokens for the given criteria.
+	 * 查找给定条件的分析器令牌
      *
      * @param int|null $limit The maximum number of tokens to return
      * @param int|null $start The start date to search from
@@ -40,6 +42,7 @@ interface ProfilerStorageInterface
 
     /**
      * Reads data associated with the given token.
+	 * 读取与给定令牌相关的数据
      *
      * The method returns false if the token does not exist in the storage.
      */
@@ -52,6 +55,7 @@ interface ProfilerStorageInterface
 
     /**
      * Purges all data from the database.
+	 * 清除数据库中的所有数据
      */
     public function purge();
 }

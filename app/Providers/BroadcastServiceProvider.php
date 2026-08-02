@@ -1,6 +1,6 @@
 <?php
 /**
- * App，提供者，广播服务提供者
+ * app，提供者，Broadcast 广播服务提供者
  */
 
 namespace App\Providers;
@@ -12,7 +12,7 @@ class BroadcastServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-	 * 引导任何应用服务
+	 * 引导任何应用程序服务
      *
      * @return void
      */

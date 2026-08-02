@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，错误处理器，抽象的记录器
+ * Symfony，Component，ErrorHandler，缓冲记录器
  */
 
 /*
@@ -18,7 +18,7 @@ use Psr\Log\AbstractLogger;
 
 /**
  * A buffering logger that stacks logs for later.
- * 一个缓冲日志记录器，将日志堆叠起来供以后使用。
+ * 一个缓冲日志记录器,它可以在稍后堆栈日志。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

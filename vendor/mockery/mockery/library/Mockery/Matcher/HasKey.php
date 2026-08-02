@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，有主键
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -20,6 +23,7 @@ class HasKey extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回这个Matcher的字符串表示
      *
      * @return string
      */
@@ -30,6 +34,7 @@ class HasKey extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected.
+	 * 检查实际值是否符合预期
      *
      * @template TMixed
      *

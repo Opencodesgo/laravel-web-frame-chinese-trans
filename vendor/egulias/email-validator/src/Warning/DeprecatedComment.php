@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，不赞成的评论
+ */
 
 namespace Egulias\EmailValidator\Warning;
 

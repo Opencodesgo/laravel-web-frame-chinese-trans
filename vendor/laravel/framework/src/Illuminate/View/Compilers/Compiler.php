@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，编译器抽象类
+ * Illuminate，视图，编译，编译器
  */
 
 namespace Illuminate\View\Compilers;
@@ -72,12 +72,26 @@ abstract class Compiler
         // If the compiled file doesn't exist we will indicate that the view is expired
         // so that it can be re-compiled. Else, we will verify the last modification
         // of the views is less than the modification times of the compiled views.
-		// 如果编译文件不存在，我们将指示视图已经过期。
+		// 如果编译的文件不存在，我们将指出视图已过期。
         if (! $this->files->exists($compiled)) {
             return true;
         }
 
         return $this->files->lastModified($path) >=
                $this->files->lastModified($compiled);
+    }
+
+    /**
+     * Create the compiled file directory if necessary.
+	 * 如果需要，创建编译后的文件目录。
+     *
+     * @param  string  $path
+     * @return void
+     */
+    protected function ensureCompiledDirectoryExists($path)
+    {
+        if (! $this->files->exists(dirname($path))) {
+            $this->files->makeDirectory(dirname($path), 0777, true, true);
+        }
     }
 }

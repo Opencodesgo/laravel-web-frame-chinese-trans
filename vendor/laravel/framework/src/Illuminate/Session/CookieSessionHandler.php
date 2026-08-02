@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，Cookie 会话处理程序
+ * Illuminate，Session，Cookie会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -16,7 +16,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * The cookie jar instance.
-	 * cookie jar 实例
+	 * cookie压缩实例
      *
      * @var \Illuminate\Contracts\Cookie\Factory
      */
@@ -54,7 +54,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         return true;
@@ -62,7 +65,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
@@ -70,7 +76,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         $value = $this->request->cookies->get($sessionId) ?: '';
@@ -86,7 +95,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         $this->cookie->queue($sessionId, json_encode([
@@ -99,7 +111,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         $this->cookie->queue($this->cookie->forget($sessionId));
@@ -109,7 +124,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($lifetime)
     {
         return true;

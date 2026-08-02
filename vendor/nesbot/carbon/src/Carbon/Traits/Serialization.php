@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，序列化
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,6 +20,7 @@ use Throwable;
 
 /**
  * Trait Serialization.
+ * 序列化特征。
  *
  * Serialization and JSON stuff.
  *
@@ -38,6 +42,7 @@ trait Serialization
 
     /**
      * The custom Carbon JSON serializer.
+	 * 自定义Carbon JSON序列化器
      *
      * @var callable|null
      */
@@ -45,6 +50,7 @@ trait Serialization
 
     /**
      * List of key to use for dump/serialization.
+	 * 用于转储/序列化的键列表
      *
      * @var string[]
      */

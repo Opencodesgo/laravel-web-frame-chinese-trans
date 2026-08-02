@@ -66,7 +66,7 @@ class Local extends AbstractAdapter
 
     /**
      * Constructor.
-	 * 构造函数
+	 * 构造方法
      *
      * @param string $root
      * @param int    $writeFlags
@@ -465,7 +465,7 @@ class Local extends AbstractAdapter
 
     /**
      * Get the normalized path from a SplFileInfo object.
-	 * 从 SplFileInfo 对象获取规范化路径
+	 * 从SplFileInfo对象获取规范化路径
      *
      * @param SplFileInfo $file
      *

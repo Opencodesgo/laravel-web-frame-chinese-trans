@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，记录记录器，记录记录器
+ */
 
 namespace Facade\Ignition\LogRecorder;
 

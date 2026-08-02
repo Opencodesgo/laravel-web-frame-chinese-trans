@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest, 简调用匹配器
+ */
+
 namespace Hamcrest;
 
 use PHPUnit\Framework\TestCase;

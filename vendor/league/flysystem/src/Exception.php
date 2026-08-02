@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，文件核心类
+ * League，Flysystem，异常
  */
 
 namespace League\Flysystem;

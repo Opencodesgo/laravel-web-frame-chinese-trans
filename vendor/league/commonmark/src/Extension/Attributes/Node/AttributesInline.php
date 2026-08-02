@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，Extension，属性，节点，属性内联
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -14,25 +17,24 @@ declare(strict_types=1);
 
 namespace League\CommonMark\Extension\Attributes\Node;
 
-use League\CommonMark\Inline\Element\AbstractInline;
+use League\CommonMark\Node\Inline\AbstractInline;
 
 final class AttributesInline extends AbstractInline
 {
     /** @var array<string, mixed> */
-    public $attributes;
+    private array $attributes;
 
-    /** @var bool */
-    public $block;
+    private bool $block;
 
     /**
      * @param array<string, mixed> $attributes
-     * @param bool                 $block
      */
     public function __construct(array $attributes, bool $block)
     {
+        parent::__construct();
+
         $this->attributes = $attributes;
-        $this->block = $block;
-        $this->data = ['delim' => true]; // TODO: Re-implement as a delimiter?
+        $this->block      = $block;
     }
 
     /**
@@ -41,6 +43,14 @@ final class AttributesInline extends AbstractInline
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    /**
+     * @param array<string, mixed> $attributes
+     */
+    public function setAttributes(array $attributes): void
+    {
+        $this->attributes = $attributes;
     }
 
     public function isBlock(): bool

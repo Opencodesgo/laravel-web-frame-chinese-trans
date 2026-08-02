@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Env 接口
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,11 +16,13 @@ namespace Psy;
 
 /**
  * Abstraction around environment variables.
+ * 围绕环境变量的抽象。
  */
 interface EnvInterface
 {
     /**
      * Get an environment variable by name.
+	 * 按名称获取环境变量。
      *
      * @return string|null
      */

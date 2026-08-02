@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，Yaml 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlFileLoader loads Yaml routing files.
+ * YamlFileLoader加载Yaml路由文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -40,6 +44,7 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Loads a Yaml file.
+	 * 加载Yaml文件
      *
      * @param string      $file A Yaml file path
      * @param string|null $type The resource type
@@ -124,6 +129,7 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Parses a route and adds it to the RouteCollection.
+	 * 解析路由并将其添加到RouteCollection中
      */
     protected function parseRoute(RouteCollection $collection, string $name, array $config, string $path)
     {
@@ -182,6 +188,7 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Parses an import and adds the routes in the resource to the RouteCollection.
+	 * 解析导入并将资源中的路由添加到RouteCollection中
      */
     protected function parseImport(RouteCollection $collection, array $config, string $path, string $file)
     {
@@ -251,6 +258,7 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Validates the route configuration.
+	 * 验证路由配置
      *
      * @param array  $config A resource config
      * @param string $name   The config key

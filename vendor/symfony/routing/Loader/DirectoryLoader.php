@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，目录装入器
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 不变的
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -19,6 +22,7 @@ use DateTimeZone;
 
 /**
  * A simple API extension for DateTimeImmutable.
+ * DateTimeImmutable的简单API扩展。
  *
  * @mixin DeprecatedProperties
  *
@@ -522,6 +526,7 @@ class CarbonImmutable extends DateTimeImmutable implements CarbonInterface
 
     /**
      * Create a very old date representing start of time.
+	 * 创建一个非常旧的日期表示时间的开始
      *
      * @return static
      */
@@ -535,6 +540,7 @@ class CarbonImmutable extends DateTimeImmutable implements CarbonInterface
 
     /**
      * Create a very far date representing end of time.
+	 * 创建一个表示时间结束的非常远的日期
      *
      * @return static
      */

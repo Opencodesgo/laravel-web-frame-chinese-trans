@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符号，标记描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Markdown descriptor.
+ * 标记描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *

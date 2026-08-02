@@ -5,10 +5,12 @@
 
 namespace Illuminate\Database\Query;
 
+use BackedEnum;
 use Closure;
 use DateTimeInterface;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Concerns\BuildsQueries;
+use Illuminate\Database\Concerns\ExplainsQueries;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -22,11 +24,12 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
+use LogicException;
 use RuntimeException;
 
 class Builder
 {
-    use BuildsQueries, ForwardsCalls, Macroable {
+    use BuildsQueries, ExplainsQueries, ForwardsCalls, Macroable {
         __call as macroCall;
     }
 
@@ -74,7 +77,7 @@ class Builder
 
     /**
      * An aggregate function and column to be run.
-	 * 将运行的聚合函数和列
+	 * 要运行的聚合函数和列
      *
      * @var array
      */
@@ -90,9 +93,10 @@ class Builder
 
     /**
      * Indicates if the query returns distinct results.
-	 * 指示查询返回不同的结果
+	 * 指示查询是否返回不同的结果
      *
      * Occasionally contains the columns that should be distinct.
+	 * 偶尔包含应该是不同的列
      *
      * @var bool|array
      */
@@ -100,7 +104,7 @@ class Builder
 
     /**
      * The table which the query is targeting.
-	 * 查询目标的表
+	 * 查询所针对的表
      *
      * @var string
      */
@@ -108,7 +112,7 @@ class Builder
 
     /**
      * The table joins for the query.
-	 * 查询的表格连接
+	 * 表连接用于查询
      *
      * @var array
      */
@@ -203,23 +207,41 @@ class Builder
     public $lock;
 
     /**
+     * The callbacks that should be invoked before the query is executed.
+	 * 在执行查询之前应该调用的回调函数
+     *
+     * @var array
+     */
+    public $beforeQueryCallbacks = [];
+
+    /**
      * All of the available clause operators.
 	 * 所有可用的子句操作符
      *
-     * @var array
+     * @var string[]
      */
     public $operators = [
         '=', '<', '>', '<=', '>=', '<>', '!=', '<=>',
         'like', 'like binary', 'not like', 'ilike',
-        '&', '|', '^', '<<', '>>',
+        '&', '|', '^', '<<', '>>', '&~',
         'rlike', 'not rlike', 'regexp', 'not regexp',
         '~', '~*', '!~', '!~*', 'similar to',
         'not similar to', 'not ilike', '~~*', '!~~*',
     ];
 
     /**
-     * Whether use write pdo for select.
-	 * 是否对select使用write pdo
+     * All of the available bitwise operators.
+	 * 所有可用的位操作符
+     *
+     * @var string[]
+     */
+    public $bitwiseOperators = [
+        '&', '|', '^', '<<', '>>', '&~',
+    ];
+
+    /**
+     * Whether to use write pdo for the select.
+	 * 是否对select操作使用write pdo
      *
      * @var bool
      */
@@ -227,7 +249,7 @@ class Builder
 
     /**
      * Create a new query builder instance.
-	 * 创建一个新的查询生成器实例
+	 * 创建新的查询生成器实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
@@ -270,8 +292,8 @@ class Builder
     /**
      * Add a subselect expression to the query.
 	 * 向查询添加子选择表达式
-     * 
-     * @param  \Closure|$this|string  $query
+     *
+     * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
      * @return $this
      *
@@ -373,6 +395,8 @@ class Builder
     protected function parseSub($query)
     {
         if ($query instanceof self || $query instanceof EloquentBuilder || $query instanceof Relation) {
+            $query = $this->prependDatabaseNameIfCrossDatabaseQuery($query);
+
             return [$query->toSql(), $query->getBindings()];
         } elseif (is_string($query)) {
             return [$query, []];
@@ -381,6 +405,27 @@ class Builder
                 'A subquery must be a query builder instance, a Closure, or a string.'
             );
         }
+    }
+
+    /**
+     * Prepend the database name if the given query is on another database.
+	 * 如果给定的查询在另一个数据库上，则在数据库名称前加上。
+     *
+     * @param  mixed  $query
+     * @return mixed
+     */
+    protected function prependDatabaseNameIfCrossDatabaseQuery($query)
+    {
+        if ($query->getConnection()->getDatabaseName() !==
+            $this->getConnection()->getDatabaseName()) {
+            $databaseName = $query->getConnection()->getDatabaseName();
+
+            if (strpos($query->from, $databaseName) !== 0 && strpos($query->from, '.') === false) {
+                $query->from($databaseName.'.'.$query->from);
+            }
+        }
+
+        return $query;
     }
 
     /**
@@ -413,6 +458,7 @@ class Builder
      * Force the query to only return distinct results.
 	 * 强制查询只返回不同的结果
      *
+     * @param  mixed  ...$distinct
      * @return $this
      */
     public function distinct()
@@ -449,7 +495,7 @@ class Builder
 
     /**
      * Add a join clause to the query.
-	 * 向查询添加连接子句。
+	 * 向查询添加连接子句
      *
      * @param  string  $table
      * @param  \Closure|string  $first
@@ -466,7 +512,7 @@ class Builder
         // If the first "column" of the join is really a Closure instance the developer
         // is trying to build a join with a complex "on" clause containing more than
         // one condition, so we'll add the join and call a Closure with the query.
-		// 如果连接的第一个"列"确实是一个Closure实例，则开发人员可以。
+		// 如果连接的第一个"列"确实是一个Closure实例，则开发人员试图建立一个连接与一个复杂的"on"子句包含超过。
         if ($first instanceof Closure) {
             $first($join);
 
@@ -478,7 +524,7 @@ class Builder
         // If the column is simply a string, we can assume the join simply has a basic
         // "on" clause with a single condition. So we will just build the join with
         // this simple join clauses attached to it. There is not a join callback.
-		// 如果列只是一个字符串,我们可以假设join只有一个基本的。
+		// 如果列只是一个字符串，我们可以假设连接只有一个基本的。
         else {
             $method = $where ? 'where' : 'on';
 
@@ -510,7 +556,7 @@ class Builder
      * Add a subquery join clause to the query.
 	 * 向查询添加子查询连接子句
      *
-     * @param  \Closure|\Illuminate\Database\Query\Builder|string  $query
+     * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
      * @param  \Closure|string  $first
      * @param  string|null  $operator
@@ -534,7 +580,7 @@ class Builder
 
     /**
      * Add a left join to the query.
-	 * 在查询中添加一个左连接
+	 * 向查询添加左连接
      *
      * @param  string  $table
      * @param  \Closure|string  $first
@@ -549,7 +595,7 @@ class Builder
 
     /**
      * Add a "join where" clause to the query.
-	 * 在查询中添加"加入where"子句
+	 * 向查询添加"join where"子句
      *
      * @param  string  $table
      * @param  \Closure|string  $first
@@ -564,9 +610,9 @@ class Builder
 
     /**
      * Add a subquery left join to the query.
-	 * 在查询中添加一个子查询
+	 * 向查询添加子查询左连接
      *
-     * @param  \Closure|\Illuminate\Database\Query\Builder|string  $query
+     * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
      * @param  \Closure|string  $first
      * @param  string|null  $operator
@@ -580,7 +626,7 @@ class Builder
 
     /**
      * Add a right join to the query.
-	 * 添加一个右连接到查询
+	 * 向查询添加右连接
      *
      * @param  string  $table
      * @param  \Closure|string  $first
@@ -595,7 +641,7 @@ class Builder
 
     /**
      * Add a "right join where" clause to the query.
-	 * 添加"right join where"子句至查询
+	 * 向查询添加"right join where"子句
      *
      * @param  string  $table
      * @param  \Closure|string  $first
@@ -612,7 +658,7 @@ class Builder
      * Add a subquery right join to the query.
 	 * 向查询添加子查询右连接
      *
-     * @param  \Closure|\Illuminate\Database\Query\Builder|string  $query
+     * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
      * @param  \Closure|string  $first
      * @param  string|null  $operator
@@ -626,7 +672,7 @@ class Builder
 
     /**
      * Add a "cross join" clause to the query.
-	 * 添加一个"cross join"子句至查询
+	 * 向查询添加"交叉连接"子句
      *
      * @param  string  $table
      * @param  \Closure|string|null  $first
@@ -641,6 +687,27 @@ class Builder
         }
 
         $this->joins[] = $this->newJoinClause($this, 'cross', $table);
+
+        return $this;
+    }
+
+    /**
+     * Add a subquery cross join to the query.
+	 * 向查询添加子查询交叉连接
+     *
+     * @param  \Closure|\Illuminate\Database\Query\Builder|string  $query
+     * @param  string  $as
+     * @return $this
+     */
+    public function crossJoinSub($query, $as)
+    {
+        [$query, $bindings] = $this->createSub($query);
+
+        $expression = '('.$query.') as '.$this->grammar->wrapTable($as);
+
+        $this->addBinding($bindings, 'join');
+
+        $this->joins[] = $this->newJoinClause($this, 'cross', new Expression($expression));
 
         return $this;
     }
@@ -661,6 +728,7 @@ class Builder
 
     /**
      * Merge an array of where clauses and bindings.
+	 * 获取一个新的连接子句
      *
      * @param  array  $wheres
      * @param  array  $bindings
@@ -677,7 +745,7 @@ class Builder
 
     /**
      * Add a basic where clause to the query.
-	 * 添加基本的where子句至查询
+	 * 向查询添加一个基本的where子句
      *
      * @param  \Closure|string|array  $column
      * @param  mixed  $operator
@@ -698,7 +766,7 @@ class Builder
         // Here we will make some assumptions about the operator. If only 2 values are
         // passed to the method, we will assume that the operator is an equals sign
         // and keep going. Otherwise, we'll require the operator to be passed in.
-		// 这里我们将对运算符做一些假设。
+		// 这里我们将对运算符做一些假设。如果只有2个值传递给该方法时，我们将假定操作符是一个等号。
         [$value, $operator] = $this->prepareValueAndOperator(
             $value, $operator, func_num_args() === 2
         );
@@ -706,7 +774,7 @@ class Builder
         // If the columns is actually a Closure instance, we will assume the developer
         // wants to begin a nested where statement which is wrapped in parenthesis.
         // We'll add that Closure to the query then return back out immediately.
-		// 如果列实际上是一个Closure实例，我们将假定开发人员要开始一个嵌套的where语句。
+		// 如果列实际上是一个Closure实例，我们将假定开发人员想要开始一个嵌套的where语句，该语句用括号括起来。
         if ($column instanceof Closure && is_null($operator)) {
             return $this->whereNested($column, $boolean);
         }
@@ -714,7 +782,7 @@ class Builder
         // If the column is a Closure instance and there is an operator value, we will
         // assume the developer wants to run a subquery and then compare the result
         // of that subquery with the given value that was provided to the method.
-		// 如果列是Closure实例并且有一个操作符值，我们将假设开发人员想要运行一个子查询，然后比较结果。
+		// 如果列是一个Closure实例，并且有一个操作符值，我们将假设开发人员想要运行一个子查询，然后比较结果。
         if ($this->isQueryable($column) && ! is_null($operator)) {
             [$sub, $bindings] = $this->createSub($column);
 
@@ -725,7 +793,7 @@ class Builder
         // If the given operator is not found in the list of valid operators we will
         // assume that the developer is just short-cutting the '=' operators and
         // we will set the operators to '=' and set the values appropriately.
-		// 如果给定的操作符未在有效操作符列表中找到，我们将假设开发人员只是走捷径。
+		// 如果给定的操作符未在有效操作符列表中找到，则将假设开发人员只是简化了'='操作符。
         if ($this->invalidOperator($operator)) {
             [$value, $operator] = [$operator, '='];
         }
@@ -733,7 +801,7 @@ class Builder
         // If the value is a Closure, it means the developer is performing an entire
         // sub-select within the query and we will need to compile the sub-select
         // within the where clause to get the appropriate query record results.
-		// 如果该值是Closure，则意味着开发人员正在执行一个完整的在查询中子选择。
+		// 如果该值是Closure，则意味着开发人员正在执行一个完整的子选择在查询中。
         if ($value instanceof Closure) {
             return $this->whereSub($column, $operator, $value, $boolean);
         }
@@ -741,7 +809,7 @@ class Builder
         // If the value is "null", we will just assume the developer wants to add a
         // where null clause to the query. So, we will allow a short-cut here to
         // that method for convenience so the developer doesn't have to check.
-		// 如果值为“null”，我们将假设开发人员想要添加空子句在哪里查询。
+		// 如果值为"null"，我们将假设开发人员想要添加空子句在哪里查询。
         if (is_null($value)) {
             return $this->whereNull($column, $boolean, $operator !== '=');
         }
@@ -751,7 +819,7 @@ class Builder
         // If the column is making a JSON reference we'll check to see if the value
         // is a boolean. If it is, we'll add the raw boolean string as an actual
         // value to the query to ensure this is properly handled by the query.
-		// 如果列正在进行JSON引用，我们将检查该值是否是布尔值。
+		// 如果列正在进行JSON引用，我们将检查该值是否为布尔。
         if (Str::contains($column, '->') && is_bool($value)) {
             $value = new Expression($value ? 'true' : 'false');
 
@@ -760,10 +828,14 @@ class Builder
             }
         }
 
+        if ($this->isBitwiseOperator($operator)) {
+            $type = 'Bitwise';
+        }
+
         // Now that we are working with just a simple query we can put the elements
         // in our array and add the query binding to our array of bindings that
         // will be bound to each SQL statements when it is finally executed.
-		// 现在我们正在处理一个简单的查询，我们可以放入元素。
+		// 现在我们正在处理一个简单的查询，我们可以放入元素并将查询绑定添加到绑定数组中。
         $this->wheres[] = compact(
             'type', 'column', 'operator', 'value', 'boolean'
         );
@@ -824,6 +896,7 @@ class Builder
 	 * 确定给定的操作符和值组合是否合法
      *
      * Prevents using Null values with invalid operators.
+	 * 防止对无效操作符使用Null值
      *
      * @param  string  $operator
      * @param  mixed  $value
@@ -844,8 +917,21 @@ class Builder
      */
     protected function invalidOperator($operator)
     {
-        return ! in_array(strtolower($operator), $this->operators, true) &&
-               ! in_array(strtolower($operator), $this->grammar->getOperators(), true);
+        return ! is_string($operator) || (! in_array(strtolower($operator), $this->operators, true) &&
+               ! in_array(strtolower($operator), $this->grammar->getOperators(), true));
+    }
+
+    /**
+     * Determine if the operator is a bitwise operator.
+	 * 确定操作符是否是位操作符
+     *
+     * @param  string  $operator
+     * @return bool
+     */
+    protected function isBitwiseOperator($operator)
+    {
+        return in_array(strtolower($operator), $this->bitwiseOperators, true) ||
+               in_array(strtolower($operator), $this->grammar->getBitwiseOperators(), true);
     }
 
     /**
@@ -868,7 +954,7 @@ class Builder
 
     /**
      * Add a "where" clause comparing two columns to the query.
-	 * 添加一个"where"子句，比较查询中的两列。
+	 * 添加一个"where"子句，比较查询中的两列
      *
      * @param  string|array  $first
      * @param  string|null  $operator
@@ -881,7 +967,7 @@ class Builder
         // If the column is an array, we will assume it is an array of key-value pairs
         // and can add them each as a where clause. We will maintain the boolean we
         // received when the method was called and pass it into the nested where.
-		// 如果列是一个数组，我们假设它是键值对的数组。
+		// 如果列是一个数组，我们将假定它是一个键值对数组并且可以将它们分别作为where子句添加。
         if (is_array($first)) {
             return $this->addArrayOfWheres($first, $boolean, 'whereColumn');
         }
@@ -889,7 +975,7 @@ class Builder
         // If the given operator is not found in the list of valid operators we will
         // assume that the developer is just short-cutting the '=' operators and
         // we will set the operators to '=' and set the values appropriately.
-		// 如果在有效操作符列表中没有发现给定的操作符,我们将会假设开发人员。
+		// 如果给定的操作符未在有效操作符列表中找到，我们将假设开发人员只是简化了'='操作符。
         if ($this->invalidOperator($operator)) {
             [$second, $operator] = [$operator, '='];
         }
@@ -909,7 +995,7 @@ class Builder
 
     /**
      * Add an "or where" clause comparing two columns to the query.
-	 * 在查询中添加一个"or where"子句
+	 * 添加"or where"子句，将两个列与查询进行比较。
      *
      * @param  string|array  $first
      * @param  string|null  $operator
@@ -969,7 +1055,7 @@ class Builder
         // If the value is a query builder instance we will assume the developer wants to
         // look for any values that exists within this given query. So we will add the
         // query accordingly so that this query is properly executed when it is run.
-		// 如果该值是一个查询生成器实例，我们将假设开发人员希望这样做。
+		// 如果该值是一个查询生成器实例，我们将假设开发人员希望查找这个给定查询中存在的任何值。
         if ($this->isQueryable($values)) {
             [$query, $bindings] = $this->createSub($values);
 
@@ -1026,7 +1112,7 @@ class Builder
 
     /**
      * Add an "or where not in" clause to the query.
-	 * 在查询中添加"or where not in"子句
+	 * 在查询中添加"或不在"子句
      *
      * @param  string  $column
      * @param  mixed  $values
@@ -1128,7 +1214,7 @@ class Builder
      * Add an "or where null" clause to the query.
 	 * 向查询添加"or where null"子句
      *
-     * @param  string  $column
+     * @param  string|array  $column
      * @return $this
      */
     public function orWhereNull($column)
@@ -1153,7 +1239,7 @@ class Builder
      * Add a where between statement to the query.
 	 * 向查询添加where between语句
      *
-     * @param  string  $column
+     * @param  string|\Illuminate\Database\Query\Expression  $column
      * @param  array  $values
      * @param  string  $boolean
      * @param  bool  $not
@@ -1172,7 +1258,7 @@ class Builder
 
     /**
      * Add a where between statement using columns to the query.
-	 * 在使用列到查询的语句之间添加一个
+	 * 使用列向查询添加where between语句
      *
      * @param  string  $column
      * @param  array  $values
@@ -1191,7 +1277,7 @@ class Builder
 
     /**
      * Add an or where between statement to the query.
-	 * 添加一个或在查询之间的语句之间
+	 * 在查询中添加or where between语句
      *
      * @param  string  $column
      * @param  array  $values
@@ -1204,7 +1290,7 @@ class Builder
 
     /**
      * Add an or where between statement using columns to the query.
-	 * 在查询中添加一个或使用列之间的语句
+	 * 使用列向查询添加or where between语句
      *
      * @param  string  $column
      * @param  array  $values
@@ -1271,7 +1357,7 @@ class Builder
 
     /**
      * Add an "or where not null" clause to the query.
-	 * 添加一个"or where not null"语句至查询
+	 * 在查询中添加一个"or where not null"子句
      *
      * @param  string  $column
      * @return $this
@@ -1283,9 +1369,9 @@ class Builder
 
     /**
      * Add a "where date" statement to the query.
-	 * 添加一个"where date"语句至查询
+	 * 向查询添加"where date"语句
      *
-     * @param  string  $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @param  string  $operator
      * @param  \DateTimeInterface|string|null  $value
      * @param  string  $boolean
@@ -1488,7 +1574,7 @@ class Builder
 
     /**
      * Add an "or where year" statement to the query.
-	 * 向查询中添加"or where year"语句 
+	 * 向查询中添加"or where year"语句
      *
      * @param  string  $column
      * @param  string  $operator
@@ -1590,7 +1676,7 @@ class Builder
         // Once we have the query instance we can simply execute it so it can add all
         // of the sub-select's conditions to itself, and then we can cache it off
         // in the array of where clauses for the "main" parent query instance.
-		// 一旦我们有了查询实例，我们可以简单地执行它，这样它就可以添加所有。
+		// 一旦我们有了查询实例，我们可以简单地执行它，这样它就可以添加所有子选择的条件。
         call_user_func($callback, $query = $this->forSubQuery());
 
         $this->wheres[] = compact(
@@ -1748,7 +1834,7 @@ class Builder
 
     /**
      * Add an "or where JSON contains" clause to the query.
-	 * 向查询中添加"or where JSON contains"子句
+	 * 向查询中添加"或JSON包含的地方"子句
      *
      * @param  string  $column
      * @param  mixed  $value
@@ -1850,7 +1936,7 @@ class Builder
         // The connector variable will determine which connector will be used for the
         // query condition. We will change it as we come across new boolean values
         // in the dynamic method strings, which could contain a number of these.
-		// 连接器变量将决定将使用哪个连接器
+		// 连接器变量将决定将使用哪个连接器。
         $connector = 'and';
 
         $index = 0;
@@ -1859,7 +1945,8 @@ class Builder
             // If the segment is not a boolean connector, we can assume it is a column's name
             // and we will add it to the query as a new constraint as a where clause, then
             // we can keep iterating through the dynamic method string's segments again.
-			// 如果这个段不是布尔连接器,我们可以假定它是一个列的名称。
+			// 如果段不是布尔连接器，则可以假定它是一个列名。
+			// 我们将把它作为where子句的新约束添加到查询中。
             if ($segment !== 'And' && $segment !== 'Or') {
                 $this->addDynamic($segment, $connector, $parameters, $index);
 
@@ -1869,7 +1956,7 @@ class Builder
             // Otherwise, we will store the connector so we know how the next where clause we
             // find in the query should be connected to the previous ones, meaning we will
             // have the proper boolean connector to connect the next where clause found.
-			// 否则，我们将存储连接器，以便我们知道下一个where子句如何使用。
+			// 否则，我们将存储连接器，以便我们知道下一个where子句如何。
             else {
                 $connector = $segment;
             }
@@ -1897,6 +1984,41 @@ class Builder
         $bool = strtolower($connector);
 
         $this->where(Str::snake($segment), '=', $parameters[$index], $bool);
+    }
+
+    /**
+     * Add a "where fulltext" clause to the query.
+	 * 向查询添加"where fulltext"子句
+     *
+     * @param  string|string[]  $columns
+     * @param  string  $value
+     * @param  string  $boolean
+     * @return $this
+     */
+    public function whereFullText($columns, $value, array $options = [], $boolean = 'and')
+    {
+        $type = 'Fulltext';
+
+        $columns = (array) $columns;
+
+        $this->wheres[] = compact('type', 'columns', 'value', 'options', 'boolean');
+
+        $this->addBinding($value);
+
+        return $this;
+    }
+
+    /**
+     * Add a "or where fulltext" clause to the query.
+	 * 向查询中添加"or where fulltext"子句
+     *
+     * @param  string|string[]  $columns
+     * @param  string  $value
+     * @return $this
+     */
+    public function orWhereFullText($columns, $value, array $options = [])
+    {
+        return $this->whereFulltext($columns, $value, $options, 'or');
     }
 
     /**
@@ -1937,7 +2059,7 @@ class Builder
 
     /**
      * Add a "having" clause to the query.
-	 * 在查询中添加"having"子句
+	 * 在查询中添加“having”子句
      *
      * @param  string  $column
      * @param  string|null  $operator
@@ -1952,7 +2074,7 @@ class Builder
         // Here we will make some assumptions about the operator. If only 2 values are
         // passed to the method, we will assume that the operator is an equals sign
         // and keep going. Otherwise, we'll require the operator to be passed in.
-		// 这里我们将对运算符做一些假设。
+		// 这里我们将对运算符做一些假设。如果只有2个值传递给方法。
         [$value, $operator] = $this->prepareValueAndOperator(
             $value, $operator, func_num_args() === 2
         );
@@ -1960,9 +2082,13 @@ class Builder
         // If the given operator is not found in the list of valid operators we will
         // assume that the developer is just short-cutting the '=' operators and
         // we will set the operators to '=' and set the values appropriately.
-		// 如果给定的操作符未在有效操作符列表中找到，我们将假设开发人员只是走捷径。
+		// 如果给定的操作符未在有效操作符列表中找到，我们将假设开发人员只是简化了'='操作符。
         if ($this->invalidOperator($operator)) {
             [$value, $operator] = [$operator, '='];
+        }
+
+        if ($this->isBitwiseOperator($operator)) {
+            $type = 'Bitwise';
         }
 
         $this->havings[] = compact('type', 'column', 'operator', 'value', 'boolean');
@@ -1993,7 +2119,7 @@ class Builder
     }
 
     /**
-     * Add a "having between " clause to the query.
+     * Add a "having between" clause to the query.
 	 * 在查询中添加"having between"子句
      *
      * @param  string  $column
@@ -2048,9 +2174,9 @@ class Builder
 
     /**
      * Add an "order by" clause to the query.
-	 * 向查询添加"order by"子句
+	 * 向查询添加“order by”子句
      *
-     * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string  $column
+     * @param  \Closure|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string  $column
      * @param  string  $direction
      * @return $this
      *
@@ -2084,7 +2210,7 @@ class Builder
      * Add a descending "order by" clause to the query.
 	 * 向查询添加降序"order by"子句
      *
-     * @param  string  $column
+     * @param  \Closure|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string  $column
      * @return $this
      */
     public function orderByDesc($column)
@@ -2096,7 +2222,7 @@ class Builder
      * Add an "order by" clause for a timestamp to the query.
 	 * 在查询中为时间戳添加"order by"子句
      *
-     * @param  string  $column
+     * @param  \Closure|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string  $column
      * @return $this
      */
     public function latest($column = 'created_at')
@@ -2108,7 +2234,7 @@ class Builder
      * Add an "order by" clause for a timestamp to the query.
 	 * 在查询中为时间戳添加"order by"子句
      *
-     * @param  string  $column
+     * @param  \Closure|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string  $column
      * @return $this
      */
     public function oldest($column = 'created_at')
@@ -2149,7 +2275,7 @@ class Builder
 
     /**
      * Alias to set the "offset" value of the query.
-	 * 别名设置查询的"偏移"值
+	 * 设置查询的"偏移"值的别名
      *
      * @param  int  $value
      * @return $this
@@ -2262,9 +2388,9 @@ class Builder
 
     /**
      * Remove all existing orders and optionally add a new order.
-	 * 删除所有现有订单，并可选择添加新订单。
+	 * 删除所有现有订单，并可选择添加新订单
      *
-     * @param  string|null  $column
+     * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string|null  $column
      * @param  string  $direction
      * @return $this
      */
@@ -2372,6 +2498,35 @@ class Builder
     }
 
     /**
+     * Register a closure to be invoked before the query is executed.
+	 * 在执行查询之前注册要调用的闭包
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function beforeQuery(callable $callback)
+    {
+        $this->beforeQueryCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Invoke the "before query" modification callbacks.
+	 * 调用"查询前"修改回调
+     *
+     * @return void
+     */
+    public function applyBeforeQueryCallbacks()
+    {
+        foreach ($this->beforeQueryCallbacks as $callback) {
+            $callback($this);
+        }
+
+        $this->beforeQueryCallbacks = [];
+    }
+
+    /**
      * Get the SQL representation of the query.
 	 * 获取查询的SQL表示形式
      *
@@ -2379,6 +2534,8 @@ class Builder
      */
     public function toSql()
     {
+        $this->applyBeforeQueryCallbacks();
+
         return $this->grammar->compileSelect($this);
     }
 
@@ -2462,7 +2619,7 @@ class Builder
 
     /**
      * Get a paginator only supporting simple next and previous links.
-	 * 获取一个只支持简单的下一个链接的paginator
+	 * 获取只支持简单的下一个和上一个链接的分页器
      *
      * This is more efficient on larger data-sets, etc.
      *
@@ -2482,6 +2639,45 @@ class Builder
             'path' => Paginator::resolveCurrentPath(),
             'pageName' => $pageName,
         ]);
+    }
+
+    /**
+     * Get a paginator only supporting simple next and previous links.
+	 * 获取只支持简单的下一个和上一个链接的分页器
+     *
+     * This is more efficient on larger data-sets, etc.
+     *
+     * @param  int|null  $perPage
+     * @param  array  $columns
+     * @param  string  $cursorName
+     * @param  \Illuminate\Pagination\Cursor|string|null  $cursor
+     * @return \Illuminate\Contracts\Pagination\CursorPaginator
+     */
+    public function cursorPaginate($perPage = 15, $columns = ['*'], $cursorName = 'cursor', $cursor = null)
+    {
+        return $this->paginateUsingCursor($perPage, $columns, $cursorName, $cursor);
+    }
+
+    /**
+     * Ensure the proper order by required for cursor pagination.
+	 * 确保游标分页所需的正确顺序
+     *
+     * @param  bool  $shouldReverse
+     * @return \Illuminate\Support\Collection
+     */
+    protected function ensureOrderForCursorPagination($shouldReverse = false)
+    {
+        $this->enforceOrderBy();
+
+        return collect($this->orders ?? $this->unionOrders ?? [])->filter(function ($order) {
+            return Arr::has($order, 'direction');
+        })->when($shouldReverse, function (Collection $orders) {
+            return $orders->map(function ($order) {
+                $order['direction'] = $order['direction'] === 'asc' ? 'desc' : 'asc';
+
+                return $order;
+            });
+        })->values();
     }
 
     /**
@@ -2601,8 +2797,8 @@ class Builder
     }
 
     /**
-     * Get an array with the values of a given column.
-	 * 获取包含给定列值的数组
+     * Get a collection instance containing the values of a given column.
+	 * 获取包含给定列值的集合实例
      *
      * @param  string  $column
      * @param  string|null  $key
@@ -2613,7 +2809,7 @@ class Builder
         // First, we will need to select the results of the query accounting for the
         // given columns / key. Once we have the results, we will be able to take
         // the results and get the exact data that was requested for the query.
-		// 首先，我们需要选择查询的结果。
+		// 首先，我们需要选择查询的结果给定列/键。
         $queryResult = $this->onceWithColumns(
             is_null($key) ? [$column] : [$column, $key],
             function () {
@@ -2630,7 +2826,7 @@ class Builder
         // If the columns are qualified with a table or have an alias, we cannot use
         // those directly in the "pluck" operations since the results from the DB
         // are only keyed by the column itself. We'll strip the table out here.
-		// 如果列用表限定或具有别名，则不能使用。
+		// 如果列用表限定或具有别名，我们不能使用那些直接在"拔"操作。
         $column = $this->stripTableForPluck($column);
 
         $key = $this->stripTableForPluck($key);
@@ -2731,6 +2927,8 @@ class Builder
      */
     public function exists()
     {
+        $this->applyBeforeQueryCallbacks();
+
         $results = $this->connection->select(
             $this->grammar->compileExists($this), $this->getBindings(), ! $this->useWritePdo
         );
@@ -2738,7 +2936,7 @@ class Builder
         // If the results has rows, we will get the row and see if the exists column is a
         // boolean true. If there is no results for this query we will return false as
         // there are no rows for this query at all and we can return that info here.
-		// 如果结果有行，我们将获取该行并查看exists列是否为布尔真。
+		// 如果结果有行，我们将获取该行并查看exists列是否为布尔true。
         if (isset($results[0])) {
             $results = (array) $results[0];
 
@@ -2867,8 +3065,8 @@ class Builder
      */
     public function aggregate($function, $columns = ['*'])
     {
-        $results = $this->cloneWithout($this->unions ? [] : ['columns'])
-                        ->cloneWithoutBindings($this->unions ? [] : ['select'])
+        $results = $this->cloneWithout($this->unions || $this->havings ? [] : ['columns'])
+                        ->cloneWithoutBindings($this->unions || $this->havings ? [] : ['select'])
                         ->setAggregate($function, $columns)
                         ->get($columns);
 
@@ -2892,7 +3090,7 @@ class Builder
         // If there is no result, we can obviously just return 0 here. Next, we will check
         // if the result is an integer or float. If it is already one of these two data
         // types we can just return the result as-is, otherwise we will convert this.
-		// 如果没有结果，我们显然可以在这里返回0。接下来，我们将进行检查。
+		// 如果没有结果，我们显然可以在这里返回0。接下来，我们将进行检查如果结果是整数或浮点数。
         if (! $result) {
             return 0;
         }
@@ -2956,8 +3154,8 @@ class Builder
     }
 
     /**
-     * Insert a new record into the database.
-	 * 在数据库中插入一条新记录
+     * Insert new records into the database.
+	 * 向数据库中插入新记录
      *
      * @param  array  $values
      * @return bool
@@ -2967,7 +3165,7 @@ class Builder
         // Since every insert gets treated like a batch insert, we will make sure the
         // bindings are structured in a way that is convenient when building these
         // inserts statements by verifying these elements are actually an array.
-		// 由于每次插入都被视为批处理插入，因此我们将确保绑定以一种方便的方式结构化。
+		// 由于每次插入都被视为批处理插入，因此我们将确保绑定在某种程度上是结构化的。
         if (empty($values)) {
             return true;
         }
@@ -2988,6 +3186,8 @@ class Builder
             }
         }
 
+        $this->applyBeforeQueryCallbacks();
+
         // Finally, we will run this query against the database connection and return
         // the results. We will need to also flatten these bindings before running
         // the query so they are all in one huge, flattened array for execution.
@@ -2999,8 +3199,8 @@ class Builder
     }
 
     /**
-     * Insert a new record into the database while ignoring errors.
-	 * 在忽略错误时将新的记录插入数据库
+     * Insert new records into the database while ignoring errors.
+	 * 将新记录插入数据库，同时忽略错误。
      *
      * @param  array  $values
      * @return int
@@ -3020,6 +3220,8 @@ class Builder
             }
         }
 
+        $this->applyBeforeQueryCallbacks();
+
         return $this->connection->affectingStatement(
             $this->grammar->compileInsertOrIgnore($this, $values),
             $this->cleanBindings(Arr::flatten($values, 1))
@@ -3028,7 +3230,7 @@ class Builder
 
     /**
      * Insert a new record and get the value of the primary key.
-	 * 插入一个新的记录并获得主键的值
+	 * 插入一条新记录并获取主键的值。
      *
      * @param  array  $values
      * @param  string|null  $sequence
@@ -3036,6 +3238,8 @@ class Builder
      */
     public function insertGetId(array $values, $sequence = null)
     {
+        $this->applyBeforeQueryCallbacks();
+
         $sql = $this->grammar->compileInsertGetId($this, $values, $sequence);
 
         $values = $this->cleanBindings($values);
@@ -3045,7 +3249,7 @@ class Builder
 
     /**
      * Insert new records into the table using a subquery.
-	 * 使用子查询将新的记录插入到表中
+	 * 使用子查询将新记录插入表中
      *
      * @param  array  $columns
      * @param  \Closure|\Illuminate\Database\Query\Builder|string  $query
@@ -3053,6 +3257,8 @@ class Builder
      */
     public function insertUsing(array $columns, $query)
     {
+        $this->applyBeforeQueryCallbacks();
+
         [$sql, $bindings] = $this->createSub($query);
 
         return $this->connection->affectingStatement(
@@ -3062,14 +3268,16 @@ class Builder
     }
 
     /**
-     * Update a record in the database.
-	 * 更新数据库中的一条记录
+     * Update records in the database.
+	 * 更新数据库中的记录
      *
      * @param  array  $values
      * @return int
      */
     public function update(array $values)
     {
+        $this->applyBeforeQueryCallbacks();
+
         $sql = $this->grammar->compileUpdate($this, $values);
 
         return $this->connection->update($sql, $this->cleanBindings(
@@ -3078,8 +3286,30 @@ class Builder
     }
 
     /**
+     * Update records in a PostgreSQL database using the update from syntax.
+	 * 使用Update from语法更新PostgreSQL数据库中的记录
+     *
+     * @param  array  $values
+     * @return int
+     */
+    public function updateFrom(array $values)
+    {
+        if (! method_exists($this->grammar, 'compileUpdateFrom')) {
+            throw new LogicException('This database engine does not support the updateFrom method.');
+        }
+
+        $this->applyBeforeQueryCallbacks();
+
+        $sql = $this->grammar->compileUpdateFrom($this, $values);
+
+        return $this->connection->update($sql, $this->cleanBindings(
+            $this->grammar->prepareBindingsForUpdateFrom($this->bindings, $values)
+        ));
+    }
+
+    /**
      * Insert or update a record matching the attributes, and fill it with values.
-	 * 插入或更新与属性匹配的记录，并以值填充。
+	 * 插入或更新与属性匹配的记录，并用值填充它。
      *
      * @param  array  $attributes
      * @param  array  $values
@@ -3096,6 +3326,52 @@ class Builder
         }
 
         return (bool) $this->limit(1)->update($values);
+    }
+
+    /**
+     * Insert new records or update the existing ones.
+	 * 插入新记录或更新现有记录
+     *
+     * @param  array  $values
+     * @param  array|string  $uniqueBy
+     * @param  array|null  $update
+     * @return int
+     */
+    public function upsert(array $values, $uniqueBy, $update = null)
+    {
+        if (empty($values)) {
+            return 0;
+        } elseif ($update === []) {
+            return (int) $this->insert($values);
+        }
+
+        if (! is_array(reset($values))) {
+            $values = [$values];
+        } else {
+            foreach ($values as $key => $value) {
+                ksort($value);
+
+                $values[$key] = $value;
+            }
+        }
+
+        if (is_null($update)) {
+            $update = array_keys(reset($values));
+        }
+
+        $this->applyBeforeQueryCallbacks();
+
+        $bindings = $this->cleanBindings(array_merge(
+            Arr::flatten($values, 1),
+            collect($update)->reject(function ($value, $key) {
+                return is_int($key);
+            })->all()
+        ));
+
+        return $this->connection->affectingStatement(
+            $this->grammar->compileUpsert($this, $values, (array) $uniqueBy, $update),
+            $bindings
+        );
     }
 
     /**
@@ -3124,7 +3400,7 @@ class Builder
 
     /**
      * Decrement a column's value by a given amount.
-	 * 以给定的金额减去列值
+	 * 将列的值递减给定的量
      *
      * @param  string  $column
      * @param  float|int  $amount
@@ -3147,8 +3423,8 @@ class Builder
     }
 
     /**
-     * Delete a record from the database.
-	 * 从数据库中删除一条记录
+     * Delete records from the database.
+	 * 删除数据库中的记录
      *
      * @param  mixed  $id
      * @return int
@@ -3158,10 +3434,12 @@ class Builder
         // If an ID is passed to the method, we will set the where clause to check the
         // ID to let developers to simply and quickly remove a single row from this
         // database without manually specifying the "where" clauses on the query.
-		// 如果将ID传递给方法，我们将设置where子句来检查ID让开发者来简单。
+		// 如果将ID传递给方法，我们将设置where子句来检查。
         if (! is_null($id)) {
             $this->where($this->from.'.id', '=', $id);
         }
+
+        $this->applyBeforeQueryCallbacks();
 
         return $this->connection->delete(
             $this->grammar->compileDelete($this), $this->cleanBindings(
@@ -3172,12 +3450,14 @@ class Builder
 
     /**
      * Run a truncate statement on the table.
-	 * 在表上运行截断语句
+	 * 在表上运行truncate语句
      *
      * @return void
      */
     public function truncate()
     {
+        $this->applyBeforeQueryCallbacks();
+
         foreach ($this->grammar->compileTruncate($this) as $sql => $bindings) {
             $this->connection->statement($sql, $bindings);
         }
@@ -3262,7 +3542,7 @@ class Builder
 
     /**
      * Add a binding to the query.
-	 * 在查询中添加绑定
+	 * 向查询添加绑定
      *
      * @param  mixed  $value
      * @param  string  $type
@@ -3277,12 +3557,31 @@ class Builder
         }
 
         if (is_array($value)) {
-            $this->bindings[$type] = array_values(array_merge($this->bindings[$type], $value));
+            $this->bindings[$type] = array_values(array_map(
+                [$this, 'castBinding'],
+                array_merge($this->bindings[$type], $value),
+            ));
         } else {
-            $this->bindings[$type][] = $value;
+            $this->bindings[$type][] = $this->castBinding($value);
         }
 
         return $this;
+    }
+
+    /**
+     * Cast the given binding value.
+	 * 强制转换给定的绑定值
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function castBinding($value)
+    {
+        if (function_exists('enum_exists') && $value instanceof BackedEnum) {
+            return $value->value;
+        }
+
+        return $value;
     }
 
     /**
@@ -3306,11 +3605,15 @@ class Builder
      * @param  array  $bindings
      * @return array
      */
-    protected function cleanBindings(array $bindings)
+    public function cleanBindings(array $bindings)
     {
-        return array_values(array_filter($bindings, function ($binding) {
-            return ! $binding instanceof Expression;
-        }));
+        return collect($bindings)
+                    ->reject(function ($binding) {
+                        return $binding instanceof Expression;
+                    })
+                    ->map([$this, 'castBinding'])
+                    ->values()
+                    ->all();
     }
 
     /**
@@ -3349,7 +3652,7 @@ class Builder
 
     /**
      * Get the database query processor instance.
-	 * 获取数据库查询处理程序实例
+	 * 获取数据库查询处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\Processor
      */
@@ -3384,7 +3687,7 @@ class Builder
 
     /**
      * Determine if the value is a query builder instance or a Closure.
-	 * 确定值是否为查询生成器实例或关闭
+	 * 确定该值是查询生成器实例还是Closure
      *
      * @param  mixed  $value
      * @return bool
@@ -3398,6 +3701,17 @@ class Builder
     }
 
     /**
+     * Clone the query.
+	 * 克隆查询
+     *
+     * @return static
+     */
+    public function clone()
+    {
+        return clone $this;
+    }
+
+    /**
      * Clone the query without the given properties.
 	 * 克隆不含给定属性的查询
      *
@@ -3406,7 +3720,7 @@ class Builder
      */
     public function cloneWithout(array $properties)
     {
-        return tap(clone $this, function ($clone) use ($properties) {
+        return tap($this->clone(), function ($clone) use ($properties) {
             foreach ($properties as $property) {
                 $clone->{$property} = null;
             }
@@ -3422,7 +3736,7 @@ class Builder
      */
     public function cloneWithoutBindings(array $except)
     {
-        return tap(clone $this, function ($clone) use ($except) {
+        return tap($this->clone(), function ($clone) use ($except) {
             foreach ($except as $type) {
                 $clone->bindings[$type] = [];
             }
@@ -3431,7 +3745,7 @@ class Builder
 
     /**
      * Dump the current SQL and bindings.
-	 * 转储当前的SQL和绑定
+	 * 转储当前SQL和绑定
      *
      * @return $this
      */
@@ -3444,9 +3758,9 @@ class Builder
 
     /**
      * Die and dump the current SQL and bindings.
-	 * 死亡并转储当前的SQL和绑定
+	 * 终止并转储当前SQL和绑定
      *
-     * @return void
+     * @return never
      */
     public function dd()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，问题，替换属性
+ * Illuminate，验证，问题，替代属性
  */
 
 namespace Illuminate\Validation\Concerns;
@@ -9,6 +9,44 @@ use Illuminate\Support\Arr;
 
 trait ReplacesAttributes
 {
+    /**
+     * Replace all place-holders for the accepted_if rule.
+	 * 替换accepted_if规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceAcceptedIf($message, $attribute, $rule, $parameters)
+    {
+        $parameters[1] = $this->getDisplayableValue($parameters[0], Arr::get($this->data, $parameters[0]));
+
+        $parameters[0] = $this->getDisplayableAttribute($parameters[0]);
+
+        return str_replace([':other', ':value'], $parameters, $message);
+    }
+
+    /**
+     * Replace all place-holders for the declined_if rule.
+	 * 替换declined_if规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceDeclinedIf($message, $attribute, $rule, $parameters)
+    {
+        $parameters[1] = $this->getDisplayableValue($parameters[0], Arr::get($this->data, $parameters[0]));
+
+        $parameters[0] = $this->getDisplayableAttribute($parameters[0]);
+
+        return str_replace([':other', ':value'], $parameters, $message);
+    }
+
     /**
      * Replace all place-holders for the between rule.
 	 * 替换between规则的所有占位符
@@ -115,6 +153,21 @@ trait ReplacesAttributes
     }
 
     /**
+     * Replace all place-holders for the multiple_of rule.
+	 * 替换multiple_of规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceMultipleOf($message, $attribute, $rule, $parameters)
+    {
+        return str_replace(':value', $parameters[0] ?? '', $message);
+    }
+
+    /**
      * Replace all place-holders for the in rule.
 	 * 替换in规则的所有占位符
      *
@@ -164,8 +217,27 @@ trait ReplacesAttributes
     }
 
     /**
+     * Replace all place-holders for the required_array_keys rule.
+	 * 替换required_array_keys规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceRequiredArrayKeys($message, $attribute, $rule, $parameters)
+    {
+        foreach ($parameters as &$parameter) {
+            $parameter = $this->getDisplayableValue($attribute, $parameter);
+        }
+
+        return str_replace(':values', implode(', ', $parameters), $message);
+    }
+
+    /**
      * Replace all place-holders for the mimetypes rule.
-	 * 替换mimetypes规则的所有占位
+	 * 替换mimetypes规则的所有占位符
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -195,7 +267,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the required_with rule.
-	 * 替换required_with规则的所有占位符。
+	 * 替换required_with规则的所有占位符
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -384,6 +456,63 @@ trait ReplacesAttributes
         }
 
         return str_replace([':other', ':values'], [$other, implode(', ', $values)], $message);
+    }
+
+    /**
+     * Replace all place-holders for the prohibited_if rule.
+	 * 替换prohibited_if规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceProhibitedIf($message, $attribute, $rule, $parameters)
+    {
+        $parameters[1] = $this->getDisplayableValue($parameters[0], Arr::get($this->data, $parameters[0]));
+
+        $parameters[0] = $this->getDisplayableAttribute($parameters[0]);
+
+        return str_replace([':other', ':value'], $parameters, $message);
+    }
+
+    /**
+     * Replace all place-holders for the prohibited_unless rule.
+	 * 替换prohibited_unless规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceProhibitedUnless($message, $attribute, $rule, $parameters)
+    {
+        $other = $this->getDisplayableAttribute($parameters[0]);
+
+        $values = [];
+
+        foreach (array_slice($parameters, 1) as $value) {
+            $values[] = $this->getDisplayableValue($parameters[0], $value);
+        }
+
+        return str_replace([':other', ':values'], [$other, implode(', ', $values)], $message);
+    }
+
+    /**
+     * Replace all place-holders for the prohibited_with rule.
+	 * 替换prohibited_with规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function replaceProhibits($message, $attribute, $rule, $parameters)
+    {
+        return str_replace(':other', implode(' / ', $this->getAttributeList($parameters)), $message);
     }
 
     /**

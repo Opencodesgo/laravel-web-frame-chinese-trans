@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，属性，捆绑，捆绑
+ * Symfony，Component，HttpKernel，捆绑，捆绑抽象类
  */
 
 /*
@@ -61,6 +61,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension.
+	 * 返回bundle的容器扩展名
      *
      * @return ExtensionInterface|null
      *
@@ -120,6 +121,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle name (the class short name).
+	 * 返回包名（类的短名称）
      */
     final public function getName(): string
     {
@@ -136,6 +138,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension class.
+	 * 返回bundle的容器扩展类
      *
      * @return string
      */
@@ -148,6 +151,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Creates the bundle's container extension.
+	 * 创建包的容器扩展名
      *
      * @return ExtensionInterface|null
      */

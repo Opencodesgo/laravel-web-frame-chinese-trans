@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，数据收集器
+ * Symfony，Component，HttpKernel，数据控制器，数据采集器
  */
 
 /*
@@ -23,6 +23,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * DataCollector.
+ * 数据采集器
  *
  * Children of this class must store the collected data in the data property.
  *
@@ -43,6 +44,7 @@ abstract class DataCollector implements DataCollectorInterface
 
     /**
      * Converts the variable into a serializable Data instance.
+	 * 将变量转换为可序列化的Data实例。
      *
      * This array can be displayed in the template using
      * the VarDumper component.

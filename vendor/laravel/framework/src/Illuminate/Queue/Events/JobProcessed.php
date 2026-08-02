@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，作业处理
+ * Illuminate，队列，事件，作业已处理
  */
 
 namespace Illuminate\Queue\Events;
@@ -17,7 +17,7 @@ class JobProcessed
 
     /**
      * The job instance.
-	 * 任务实例
+	 * 作业实例
      *
      * @var \Illuminate\Contracts\Queue\Job
      */

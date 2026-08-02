@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，异常，视图异常与解决方案
+ */
 
 namespace Facade\Ignition\Exceptions;
 

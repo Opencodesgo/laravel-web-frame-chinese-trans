@@ -1,5 +1,4 @@
 <?php
-
 /**
  * League，Flysystem，文件存在异常
  */
@@ -32,7 +31,7 @@ class FileExistsException extends Exception
 
     /**
      * Get the path which was found.
-	 * 获取找到的路径
+	 * 找到找到的路径
      *
      * @return string
      */

@@ -1,25 +1,20 @@
 <?php
-
-/*
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+/**
+ * NunoMaduro，Collision，契约，提供者
  */
+
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Contracts;
 
 /**
- * This is an Collision Provider contract.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @internal
  */
 interface Provider
 {
     /**
      * Registers the current Handler as Error Handler.
+	 * 将当前处理程序注册为错误处理程序
      *
      * @return \NunoMaduro\Collision\Contracts\Provider
      */
@@ -27,6 +22,7 @@ interface Provider
 
     /**
      * Returns the handler.
+	 * 返回处理程序
      *
      * @return \NunoMaduro\Collision\Contracts\Handler
      */

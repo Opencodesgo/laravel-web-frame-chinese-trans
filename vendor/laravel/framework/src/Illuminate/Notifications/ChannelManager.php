@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通道管理
+ * Illuminate，通知，通道管理器
  */
 
 namespace Illuminate\Notifications;
@@ -16,7 +16,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 {
     /**
      * The default channel used to deliver messages.
-	 * 用于传递消息的默认通道
+	 * 用于传递消息的默认频道
      *
      * @var string
      */
@@ -40,7 +40,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
      */
     public function send($notifiables, $notification)
     {
-        return (new NotificationSender(
+        (new NotificationSender(
             $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
         )->send($notifiables, $notification);
     }
@@ -56,14 +56,14 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
      */
     public function sendNow($notifiables, $notification, array $channels = null)
     {
-        return (new NotificationSender(
+        (new NotificationSender(
             $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
         )->sendNow($notifiables, $notification, $channels);
     }
 
     /**
      * Get a channel instance.
-	 * 获取通道实例
+	 * 得到通道实例
      *
      * @param  string|null  $name
      * @return mixed
@@ -108,7 +108,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create a new driver instance.
-	 * 创建一个新的驱动程序实例
+	 * 创建新的驱动实例
      *
      * @param  string  $driver
      * @return mixed

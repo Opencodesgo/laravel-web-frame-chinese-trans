@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，输入抽象类
+ * Symfony，Component，Console，输入，输入
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * Input is the base class for all concrete Input classes.
+ * 输入是所有具体输入类的基类。
  *
  * Three concrete classes are provided by default:
  *
@@ -60,6 +61,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
 
     /**
      * Processes command line arguments.
+	 * 处理命令行参数
      */
     abstract protected function parse();
 
@@ -190,6 +192,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
 
     /**
      * Escapes a token through escapeshellarg if it contains unsafe chars.
+	 * 如果它包含了不安全的chars,就可以通过不可避免的行为逃出一个令牌。
      *
      * @return string
      */

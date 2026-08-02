@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Psr 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Proxies log messages to an existing PSR-3 compliant logger.
+ * 代理日志消息到现有的PSR-3兼容的记录器。
  *
  * If a formatter is configured, the formatter's output MUST be a string and the
  * formatted message will be fed to the wrapped PSR logger instead of the original
@@ -28,6 +33,7 @@ class PsrHandler extends AbstractHandler implements FormattableHandlerInterface
 {
     /**
      * PSR-3 compliant logger
+	 * PSR-3兼容的记录器
      *
      * @var LoggerInterface
      */
@@ -69,6 +75,7 @@ class PsrHandler extends AbstractHandler implements FormattableHandlerInterface
 
     /**
      * Sets the formatter.
+	 * 设置格式化程序
      *
      * @param FormatterInterface $formatter
      */
@@ -81,6 +88,7 @@ class PsrHandler extends AbstractHandler implements FormattableHandlerInterface
 
     /**
      * Gets the formatter.
+	 * 获取格式化程序
      *
      * @return FormatterInterface
      */

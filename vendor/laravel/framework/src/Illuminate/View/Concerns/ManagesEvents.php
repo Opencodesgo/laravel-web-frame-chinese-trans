@@ -13,7 +13,7 @@ trait ManagesEvents
 {
     /**
      * Register a view creator event.
-	 * 注册视图创建者事件
+	 * 注册一个视图创建者事件
      *
      * @param  array|string  $views
      * @param  \Closure|string  $callback
@@ -32,7 +32,7 @@ trait ManagesEvents
 
     /**
      * Register multiple view composers via an array.
-	 * 通过一个数组注册多个视图composer
+	 * 通过一个数组注册多个视图作曲家
      *
      * @param  array  $composers
      * @return array
@@ -50,7 +50,7 @@ trait ManagesEvents
 
     /**
      * Register a view composer event.
-	 * 注册视图composer事件
+	 * 注册一个视图编写器事件
      *
      * @param  array|string  $views
      * @param  \Closure|string  $callback
@@ -69,7 +69,7 @@ trait ManagesEvents
 
     /**
      * Add an event for a given view.
-	 * 向一个给定视图添加事件
+	 * 为给定视图添加事件
      *
      * @param  string  $view
      * @param  \Closure|string  $callback
@@ -105,7 +105,7 @@ trait ManagesEvents
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
-		// 当注册一个基于类的视图"composer"时，我们将简单地解析。
+		// 当注册一个基于类的视图"composer"时，我们将简单地解析类从应用程序IoC容器中获取。
         $callback = $this->buildClassEventCallback(
             $class, $prefix
         );
@@ -163,7 +163,7 @@ trait ManagesEvents
 
     /**
      * Add a listener to the event dispatcher.
-	 * 向事件调度程序添加侦听器
+	 * 向事件调度程序添加监听器
      *
      * @param  string  $name
      * @param  \Closure  $callback
@@ -182,7 +182,7 @@ trait ManagesEvents
 
     /**
      * Call the composer for a given view.
-	 * 调用给定视图的composer
+	 * 调用给定视图的编写器
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void

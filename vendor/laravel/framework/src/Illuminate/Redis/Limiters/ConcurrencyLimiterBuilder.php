@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限制器，并发限制生成器
+ * Illuminate，Redis，限值器，并发限制生成器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -14,7 +14,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * The Redis connection.
-	 * Redis连接器
+	 * Redis连接
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -67,7 +67,7 @@ class ConcurrencyLimiterBuilder
     }
 
     /**
-     * Set the maximum number of locks that can obtained per time window.
+     * Set the maximum number of locks that can be obtained per time window.
 	 * 设置每个时间窗口可以获得的最大锁数
      *
      * @param  int  $maxLocks

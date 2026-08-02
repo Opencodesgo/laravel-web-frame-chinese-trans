@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * A Route describes a route and its parameters.
+ * Route描述了一条路由及其参数。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -35,6 +39,7 @@ class Route implements \Serializable
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * Available options:
      *
@@ -182,6 +187,7 @@ class Route implements \Serializable
 
     /**
      * Checks if a scheme requirement has been set.
+	 * 检查是否设置了方案要求
      *
      * @return bool
      */
@@ -193,6 +199,7 @@ class Route implements \Serializable
     /**
      * Returns the uppercased HTTP methods this route is restricted to.
      * So an empty array means that any method is allowed.
+	 * 返回此路由限制使用的大写HTTP方法。
      *
      * @return string[]
      */
@@ -204,6 +211,7 @@ class Route implements \Serializable
     /**
      * Sets the HTTP methods (e.g. 'POST') this route is restricted to.
      * So an empty array means that any method is allowed.
+	 * 设置HTTP方法(例如：‘POST’)此路由被限制为。
      *
      * @param string|string[] $methods The method or an array of methods
      *
@@ -252,6 +260,7 @@ class Route implements \Serializable
 
     /**
      * Sets an option value.
+	 * 设置选项值
      *
      * @param mixed $value The option value
      *
@@ -267,6 +276,7 @@ class Route implements \Serializable
 
     /**
      * Returns the option value or null when not found.
+	 * 返回选项值，如果找不到则返回null。
      *
      * @return mixed
      */
@@ -336,6 +346,7 @@ class Route implements \Serializable
 
     /**
      * Sets a default value.
+	 * 设置默认值
      *
      * @param mixed $default The default value
      *
@@ -440,6 +451,7 @@ class Route implements \Serializable
 
     /**
      * Compiles the route.
+	 * 编译路由
      *
      * @return CompiledRoute
      *

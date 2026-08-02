@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，命令，命令列表
+ * Symfony，Component，Console，命令，列表命令
  */
 
 /*
@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * ListCommand displays the list of all available commands for the application.
- * ListCommand 显示应用程序所有可用命令的列表
+ * ListCommand显示应用程序所有可用命令的列表。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

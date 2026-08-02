@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，日志，调试日志接口
+ * Symfony，Component，HttpKernel，日志，调试记录器接口
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * DebugLoggerInterface.
+ * 调试记录器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,7 +26,7 @@ interface DebugLoggerInterface
 {
     /**
      * Returns an array of logs.
-	 * 调试日志接口
+	 * 返回一个日志数组。
      *
      * A log is an array with the following mandatory keys:
      * timestamp, message, priority, and priorityName.
@@ -37,6 +38,7 @@ interface DebugLoggerInterface
 
     /**
      * Returns the number of errors.
+	 * 返回错误的数量
      *
      * @return int
      */
@@ -44,6 +46,7 @@ interface DebugLoggerInterface
 
     /**
      * Removes all log records.
+	 * 删除所有日志记录
      */
     public function clear();
 }

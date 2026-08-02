@@ -19,6 +19,7 @@ class_exists(AcceptHeaderItem::class);
 
 /**
  * Represents an Accept-* header.
+ * 表示Accept-*报头
  *
  * An accept header is compound with a list of items,
  * sorted by descending quality.
@@ -49,6 +50,7 @@ class AcceptHeader
 
     /**
      * Builds an AcceptHeader instance from a string.
+	 * 从字符串生成一个AcceptHeader实例
      *
      * @return self
      */
@@ -71,6 +73,7 @@ class AcceptHeader
 
     /**
      * Returns header value's string representation.
+	 * 返回报头值的字符串表示形式
      *
      * @return string
      */
@@ -81,6 +84,7 @@ class AcceptHeader
 
     /**
      * Tests if header has given value.
+	 * 测试头文件是否给定值
      *
      * @return bool
      */
@@ -91,6 +95,7 @@ class AcceptHeader
 
     /**
      * Returns given value's item, if exists.
+	 * 返回给定值的项，如果存在。
      *
      * @return AcceptHeaderItem|null
      */
@@ -101,6 +106,7 @@ class AcceptHeader
 
     /**
      * Adds an item.
+	 * 添加项目
      *
      * @return $this
      */
@@ -114,6 +120,7 @@ class AcceptHeader
 
     /**
      * Returns all items.
+	 * 返回所有项目
      *
      * @return AcceptHeaderItem[]
      */
@@ -126,6 +133,7 @@ class AcceptHeader
 
     /**
      * Filters items on their value using given regex.
+	 * 使用给定的正则表达式过滤项的值
      *
      * @return self
      */
@@ -138,6 +146,7 @@ class AcceptHeader
 
     /**
      * Returns first item.
+	 * 返回第一项
      *
      * @return AcceptHeaderItem|null
      */
@@ -150,6 +159,7 @@ class AcceptHeader
 
     /**
      * Sorts items by descending quality.
+	 * 按质量降序排序
      */
     private function sort(): void
     {

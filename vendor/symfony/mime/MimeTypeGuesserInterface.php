@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，Mime，Mime Type guess接口
+ * Symfony，Component，Mime，Mime 类型猜测接口
  */
 
 /*
@@ -17,6 +16,7 @@ namespace Symfony\Component\Mime;
 
 /**
  * Guesses the MIME type of a file.
+ * 猜测文件的MIME类型
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -24,13 +24,13 @@ interface MimeTypeGuesserInterface
 {
     /**
      * Returns true if this guesser is supported.
-	 * 如果支持此猜测器，则返回true。
+	 * 如果这个猜测得到支持,返回true。
      */
     public function isGuesserSupported(): bool;
 
     /**
      * Guesses the MIME type of the file with the given path.
-	 * 猜测具有给定路径的文件的MIME类型
+	 * 用给定路径猜测文件的MIME类型
      *
      * @throws \LogicException           If the guesser is not supported
      * @throws \InvalidArgumentException If the file does not exist or is not readable

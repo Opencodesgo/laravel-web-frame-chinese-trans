@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，复合期望
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -19,6 +22,7 @@ class CompositeExpectation implements ExpectationInterface
 {
     /**
      * Stores an array of all expectations for this composite
+	 * 存储对该复合材料的所有期望的数组
      *
      * @var array<ExpectationInterface>
      */
@@ -26,6 +30,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Intercept any expectation calls and direct against all expectations
+	 * 拦截任何期望调用,并直接反对所有期望
      *
      * @param string $method
      *
@@ -42,6 +47,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Return the string summary of this composite expectation
+	 * 返回复合期望的字符串摘要
      *
      * @return string
      */
@@ -56,6 +62,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Add an expectation to the composite
+	 * 对复合材料添加一个期望
      *
      * @param ExpectationInterface|HigherOrderMessage $expectation
      *
@@ -76,6 +83,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Set a return value, or sequential queue of return values
+	 * 设置返回值,或返回值的顺序队列
      *
      * @param mixed ...$args
      *
@@ -88,6 +96,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Return the parent mock of the first expectation
+	 * 返回第一个期望的父模型
      *
      * @return LegacyMockInterface&MockInterface
      */
@@ -100,6 +109,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Return order number of the first expectation
+	 * 第一个期望的返回顺序号
      *
      * @return int
      */
@@ -112,6 +122,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Mockery API alias to getMock
+	 * 用API别名获取getMock
      *
      * @return LegacyMockInterface&MockInterface
      */
@@ -122,6 +133,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Starts a new expectation addition on the first mock which is the primary target outside of a demeter chain
+	 * 在第一个mock上启动一个新的期望添加，该mock是demeter链之外的主要目标。
      *
      * @param mixed ...$args
      *
@@ -136,6 +148,7 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Starts a new expectation addition on the first mock which is the primary target, outside of a demeter chain
+	 * 在第一个模拟中启动一个新的期望添加,这是一个demeter链之外的主要目标
      *
      * @param mixed ...$args
      *

@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，表行数
- *
+ * Symfony，Component，Console，助手，表格行
+ */
 
 /*
  * This file is part of the Symfony package.

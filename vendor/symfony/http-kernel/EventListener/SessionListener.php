@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Sets the session in the request.
- * 设置请求中的会话
+ * 在请求中设置会话。
  *
  * When the passed container contains a "session_storage" entry which
  * holds a NativeSessionStorage instance, the "cookie_secure" option

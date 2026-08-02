@@ -1,10 +1,11 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，会话包代理
+ * Symfony，Component，HttpFoundation，Session，会话包代理
  */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *

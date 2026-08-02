@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，数据头，抽象数据头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Mime\Encoder\QpMimeHeaderEncoder;
 
 /**
  * An abstract base MIME Header.
+ * 一个抽象的基本MIME头。
  *
  * @author Chris Corbyn
  */
@@ -46,6 +50,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Set the language used in this Header.
+	 * 设置标题中使用的语言。
      *
      * For example, for US English, 'en-us'.
      */
@@ -81,6 +86,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Produces a compliant, formatted RFC 2822 'phrase' based on the string given.
+	 * 基于给定的字符串生成一个兼容的、格式化的RFC 2822 ‘phrase’。
      *
      * @param string $string  as displayed
      * @param bool   $shorten the first line to make remove for header name
@@ -121,6 +127,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Encode needed word tokens within a string of input.
+	 * 在输入字符串中编码所需的字记号
      */
     protected function encodeWords(HeaderInterface $header, string $input, int $usedLength = -1): string
     {
@@ -157,6 +164,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Splits a string into tokens in blocks of words which can be encoded quickly.
+	 * 将字符串分割成可以快速编码的单词块中的令牌
      *
      * @return string[]
      */
@@ -199,6 +207,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Get a token as an encoded word for safe insertion into headers.
+	 * 获取令牌作为编码字，以便安全地插入到标头中。
      */
     protected function getTokenAsEncodedWord(string $token, int $firstLineOffset = 0): string
     {
@@ -234,6 +243,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Generates tokens from the given string which include CRLF as individual tokens.
+	 * 从给定字符串生成令牌，其中包括作为单独令牌的CRLF。
      *
      * @return string[]
      */
@@ -244,6 +254,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Generate a list of all tokens in the final header.
+	 * 在最终头文件中生成所有令牌的列表
      */
     protected function toTokens(?string $string = null): array
     {

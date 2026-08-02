@@ -5,8 +5,6 @@
 
 namespace Illuminate\Http\Testing;
 
-use Illuminate\Support\Str;
-
 class FileFactory
 {
     /**
@@ -51,7 +49,7 @@ class FileFactory
 
     /**
      * Create a new fake image.
-	 * 创建一个新的假图像
+	 * 创建新的假图片
      *
      * @param  string  $name
      * @param  int  $width
@@ -61,7 +59,7 @@ class FileFactory
     public function image($name, $width = 10, $height = 10)
     {
         return new File($name, $this->generateImage(
-            $width, $height, Str::endsWith(Str::lower($name), ['.jpg', '.jpeg']) ? 'jpeg' : 'png'
+            $width, $height, pathinfo($name, PATHINFO_EXTENSION)
         ));
     }
 
@@ -71,24 +69,21 @@ class FileFactory
      *
      * @param  int  $width
      * @param  int  $height
-     * @param  string  $type
+     * @param  string  $extension
      * @return resource
      */
-    protected function generateImage($width, $height, $type)
+    protected function generateImage($width, $height, $extension)
     {
-        return tap(tmpfile(), function ($temp) use ($width, $height, $type) {
+        return tap(tmpfile(), function ($temp) use ($width, $height, $extension) {
             ob_start();
+
+            $extension = in_array($extension, ['jpeg', 'png', 'gif', 'webp', 'wbmp', 'bmp'])
+                ? strtolower($extension)
+                : 'jpeg';
 
             $image = imagecreatetruecolor($width, $height);
 
-            switch ($type) {
-                case 'jpeg':
-                    imagejpeg($image);
-                    break;
-                case 'png':
-                    imagepng($image);
-                    break;
-            }
+            call_user_func("image{$extension}", $image);
 
             fwrite($temp, ob_get_clean());
         });

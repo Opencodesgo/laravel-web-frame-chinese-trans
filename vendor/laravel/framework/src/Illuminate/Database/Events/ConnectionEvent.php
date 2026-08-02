@@ -9,7 +9,7 @@ abstract class ConnectionEvent
 {
     /**
      * The name of the connection.
-	 * 连接的名称
+	 * 连接名称
      *
      * @var string
      */

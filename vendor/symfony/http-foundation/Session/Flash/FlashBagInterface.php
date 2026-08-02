@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，存储，Flash Bag接口
+ * Symfony，Component，HttpFoundation，Session，闪存，闪存包接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * FlashBagInterface.
- * Flash Bag接口
+ * 闪存包接口。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -34,6 +34,7 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Registers one or more messages for a given type.
+	 * 为给定类型注册一条或多条消息
      *
      * @param string|array $messages
      */
@@ -41,6 +42,7 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Gets flash messages for a given type.
+	 * 获取给定类型的flash消息
      *
      * @param string $type    Message category type
      * @param array  $default Default value if $type does not exist
@@ -51,6 +53,7 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Gets all flash messages.
+	 * 获取所有flash消息
      *
      * @return array
      */
@@ -58,6 +61,7 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Gets and clears flash from the stack.
+	 * 从堆栈中获取并清除flash
      *
      * @param array $default Default value if $type does not exist
      *
@@ -67,6 +71,7 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Gets and clears flashes from the stack.
+	 * 获取并清除堆栈中的闪烁
      *
      * @return array
      */
@@ -74,11 +79,13 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Sets all flash messages.
+	 * 设置所有flash消息
      */
     public function setAll(array $messages);
 
     /**
      * Has flash messages for a given type?
+	 * 有flash消息的给定类型
      *
      * @return bool
      */
@@ -86,6 +93,7 @@ interface FlashBagInterface extends SessionBagInterface
 
     /**
      * Returns a list of all defined types.
+	 * 返回所有已定义类型的列表
      *
      * @return array
      */

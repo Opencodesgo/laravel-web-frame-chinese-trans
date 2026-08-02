@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理器，无效参数异常
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -12,6 +16,7 @@ use InvalidArgumentException;
  * Wrapper for Closures passed as handlers. Can be used
  * directly, or will be instantiated automagically by Whoops\Run
  * if passed to Run::pushHandler
+ * 关闭闭包的包装作为处理程序。
  */
 class CallbackHandler extends Handler
 {
@@ -47,6 +52,7 @@ class CallbackHandler extends Handler
 
         // invoke the callable directly, to get simpler stacktraces (in comparison to call_user_func).
         // this assumes that $callable is a properly typed php-callable, which we check in __construct().
+		// 直接调用可调用的,以获得更简单的stacktail(与call_user_func相比)。
         return $callable($exception, $inspector, $run);
     }
 }

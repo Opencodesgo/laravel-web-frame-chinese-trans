@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，Use_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser\Builder;
@@ -15,6 +19,7 @@ class Use_ implements Builder {
 
     /**
      * Creates a name use (alias) builder.
+	 * 创建名称使用(别名)生成器
      *
      * @param Node\Name|string $name Name of the entity (namespace, class, function, constant) to alias
      * @param Stmt\Use_::TYPE_* $type One of the Stmt\Use_::TYPE_* constants
@@ -26,6 +31,7 @@ class Use_ implements Builder {
 
     /**
      * Sets alias for used name.
+	 * 为使用的名称设置别名
      *
      * @param string $alias Alias to use (last component of full name by default)
      *
@@ -38,6 +44,7 @@ class Use_ implements Builder {
 
     /**
      * Returns the built node.
+	 * 返回构建的节点
      *
      * @return Stmt\Use_ The built node
      */

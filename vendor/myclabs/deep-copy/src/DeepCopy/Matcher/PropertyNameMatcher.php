@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，匹配程序，属性名称匹配器
+ */
 
 namespace DeepCopy\Matcher;
 
@@ -22,6 +25,7 @@ class PropertyNameMatcher implements Matcher
 
     /**
      * Matches a property by its name.
+	 * 按名称匹配属性
      *
      * {@inheritdoc}
      */

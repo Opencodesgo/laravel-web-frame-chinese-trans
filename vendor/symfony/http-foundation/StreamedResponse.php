@@ -79,6 +79,7 @@ class StreamedResponse extends Response
      * {@inheritdoc}
      *
      * This method only sends the headers once.
+	 * 这个方法只发送一次报头
      *
      * @return $this
      */
@@ -97,6 +98,7 @@ class StreamedResponse extends Response
      * {@inheritdoc}
      *
      * This method only sends the content once.
+	 * 此方法只发送一次内容
      *
      * @return $this
      */

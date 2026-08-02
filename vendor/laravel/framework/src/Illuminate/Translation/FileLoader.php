@@ -179,6 +179,17 @@ class FileLoader implements Loader
     }
 
     /**
+     * Get an array of all the registered namespaces.
+	 * 获取所有已注册名称空间的数组
+     *
+     * @return array
+     */
+    public function namespaces()
+    {
+        return $this->hints;
+    }
+
+    /**
      * Add a new JSON path to the loader.
 	 * 向加载器添加一个新的JSON路径
      *
@@ -191,13 +202,13 @@ class FileLoader implements Loader
     }
 
     /**
-     * Get an array of all the registered namespaces.
-	 * 获取所有注册名称空间的数组
+     * Get an array of all the registered paths to JSON translation files.
+	 * 获取JSON翻译文件的所有注册路径的数组
      *
      * @return array
      */
-    public function namespaces()
+    public function jsonPaths()
     {
-        return $this->hints;
+        return $this->jsonPaths;
     }
 }

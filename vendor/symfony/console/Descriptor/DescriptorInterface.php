@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符号，描述接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Descriptor interface.
+ * 描述接口
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */

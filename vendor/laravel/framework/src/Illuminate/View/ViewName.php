@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图名
+ * Illuminate，视图，视图名称
  */
 
 namespace Illuminate\View;

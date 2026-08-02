@@ -16,7 +16,7 @@ class LoadEnvironmentVariables
 {
     /**
      * Bootstrap the given application.
-	 * 引导给定应用
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -66,7 +66,7 @@ class LoadEnvironmentVariables
 
     /**
      * Load a custom environment file.
-	 * 导入自定义环境文件
+	 * 加载自定义环境文件
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $file
@@ -74,7 +74,7 @@ class LoadEnvironmentVariables
      */
     protected function setEnvironmentFilePath($app, $file)
     {
-        if (file_exists($app->environmentPath().'/'.$file)) {
+        if (is_file($app->environmentPath().'/'.$file)) {
             $app->loadEnvironmentFrom($file);
 
             return true;
@@ -110,7 +110,7 @@ class LoadEnvironmentVariables
     {
         $output = (new ConsoleOutput)->getErrorOutput();
 
-        $output->writeln('The environment file is invalid!');		#环境文件无效！
+        $output->writeln('The environment file is invalid!');
         $output->writeln($e->getMessage());
 
         exit(1);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，Flash，Flash包
+ * Symfony，Component，HttpFoundation，Session，闪存，闪存包
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 
 /**
  * FlashBag flash message container.
- * FlashBag闪光信息容器
+ * FlashBag闪光信息容器。
  *
  * @author Drak <drak@zikula.org>
  */

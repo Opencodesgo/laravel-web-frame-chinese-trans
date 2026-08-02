@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，异常，无效数量异常
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

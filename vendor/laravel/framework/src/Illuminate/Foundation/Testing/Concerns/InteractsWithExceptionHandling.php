@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，关注，与异常处理交互
+ * Illuminate，基础，测试，问题，与异常处理交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -50,7 +50,7 @@ trait InteractsWithExceptionHandling
 
     /**
      * Only handle validation exceptions via the exception handler.
-	 * 只有通过异常处理程序来处理验证异常
+	 * 只通过异常处理程序处理验证异常
      *
      * @return $this
      */
@@ -61,7 +61,7 @@ trait InteractsWithExceptionHandling
 
     /**
      * Disable exception handling for the test.
-	 * 禁用异常处理测试
+	 * 禁用测试的异常处理
      *
      * @param  array  $except
      * @return $this
@@ -79,7 +79,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Create a new class instance.
-			 * 创建新的类实例
+			 * 创建一个新的类实例
              *
              * @param  \Illuminate\Contracts\Debug\ExceptionHandler  $originalHandler
              * @param  array  $except
@@ -137,7 +137,7 @@ trait InteractsWithExceptionHandling
 
                 if ($e instanceof NotFoundHttpException) {
                     throw new NotFoundHttpException(
-                        "{$request->method()} {$request->url()}", null, $e->getCode()
+                        "{$request->method()} {$request->url()}", $e, $e->getCode()
                     );
                 }
 

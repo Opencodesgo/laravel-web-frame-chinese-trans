@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHP Stan，宏指令
+ */
 
 declare(strict_types=1);
 

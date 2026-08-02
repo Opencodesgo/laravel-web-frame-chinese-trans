@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，指令构建器
+ * Illuminate，控制台，调度，命令生成器
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -58,7 +58,7 @@ class CommandBuilder
         $finished = Application::formatCommandString('schedule:finish').' "'.$event->mutexName().'"';
 
         if (windows_os()) {
-            return 'start /b cmd /c "('.$event->command.' & '.$finished.' "%errorlevel%")'.$redirect.$output.' 2>&1"';
+            return 'start /b cmd /v:on /c "('.$event->command.' & '.$finished.' ^!ERRORLEVEL^!)'.$redirect.$output.' 2>&1"';
         }
 
         return $this->ensureCorrectUser($event,

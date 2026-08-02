@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，队列，作业
+ * Illuminate，契约，队列，作业接口
  */
 
 namespace Illuminate\Contracts\Queue;
@@ -17,7 +17,7 @@ interface Job
 
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取任务标识符
      *
      * @return string
      */
@@ -25,7 +25,7 @@ interface Job
 
     /**
      * Get the decoded body of the job.
-	 * 得到作业的解密主体
+	 * 拿到解码后的文件
      *
      * @return array
      */
@@ -33,7 +33,7 @@ interface Job
 
     /**
      * Fire the job.
-	 * 触发作业
+	 * 启动这个任务
      *
      * @return void
      */
@@ -44,7 +44,6 @@ interface Job
 	 * 将作业释放回队列
      *
      * Accepts a delay specified in seconds.
-	 * 接受以秒为单位指定的延迟
      *
      * @param  int  $delay
      * @return void
@@ -53,7 +52,7 @@ interface Job
 
     /**
      * Determine if the job was released back into the queue.
-	 * 确定任务是否被释放回队列
+	 * 确定作业是否被释放回队列
      *
      * @return bool
      */
@@ -61,7 +60,7 @@ interface Job
 
     /**
      * Delete the job from the queue.
-	 * 从队业中删除任务
+	 * 从队列中删除任务
      *
      * @return void
      */
@@ -69,7 +68,7 @@ interface Job
 
     /**
      * Determine if the job has been deleted.
-	 * 确定任务是否已删除
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -77,7 +76,7 @@ interface Job
 
     /**
      * Determine if the job has been deleted or released.
-	 * 确定任务是否已被删除或释放
+	 * 确定作业是否已被删除或释放
      *
      * @return bool
      */
@@ -93,7 +92,7 @@ interface Job
 
     /**
      * Determine if the job has been marked as a failure.
-	 * 确定任务是否已被标记为失败
+	 * 确定作业是否已被标记为失败
      *
      * @return bool
      */
@@ -101,7 +100,7 @@ interface Job
 
     /**
      * Mark the job as "failed".
-	 * 标记任务为"失败"
+	 * 把这项工作标记为"失败"
      *
      * @return void
      */
@@ -146,7 +145,7 @@ interface Job
      *
      * @return int|null
      */
-    public function timeoutAt();
+    public function retryUntil();
 
     /**
      * Get the name of the queued job class.

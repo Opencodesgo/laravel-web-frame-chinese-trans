@@ -1,11 +1,16 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部，令牌流
+ */
+
 namespace PhpParser\Internal;
 
 use PhpParser\Token;
 
 /**
  * Provides operations on token streams, for use by pretty printer.
+ * 提供令牌流的操作，供漂亮的打印机使用。
  *
  * @internal
  */
@@ -17,6 +22,7 @@ class TokenStream {
 
     /**
      * Create token stream instance.
+	 * 创建令牌流实例
      *
      * @param Token[] $tokens Tokens in PhpToken::tokenize() format
      */
@@ -27,6 +33,7 @@ class TokenStream {
 
     /**
      * Whether the given position is immediately surrounded by parenthesis.
+	 * 给定的位置是否立即被括号包围
      *
      * @param int $startPos Start position
      * @param int $endPos End position
@@ -38,6 +45,7 @@ class TokenStream {
 
     /**
      * Whether the given position is immediately surrounded by braces.
+	 * 给定位置是否立即被大括号包围
      *
      * @param int $startPos Start position
      * @param int $endPos End position
@@ -50,6 +58,7 @@ class TokenStream {
 
     /**
      * Check whether the position is directly preceded by a certain token type.
+	 * 检查该位置前面是否有某种token类型。
      *
      * During this check whitespace and comments are skipped.
      *
@@ -75,6 +84,7 @@ class TokenStream {
 
     /**
      * Check whether the position is directly followed by a certain token type.
+	 * 检查该位置是否直接后跟某种token类型。
      *
      * During this check whitespace and comments are skipped.
      *
@@ -136,6 +146,7 @@ class TokenStream {
 
     /**
      * Return first non-whitespace token position smaller or equal to passed position.
+	 * 返回第一个非空白标记位置，小于或等于传递的位置。
      *
      * @param int $pos Token position
      * @return int Non-whitespace token position
@@ -152,6 +163,7 @@ class TokenStream {
 
     /**
      * Return first non-whitespace position greater or equal to passed position.
+	 * 返回第一个大于或等于传递位置的非空白位置
      *
      * @param int $pos Token position
      * @return int Non-whitespace token position
@@ -202,6 +214,7 @@ class TokenStream {
 
     /**
      * Get indentation before token position.
+	 * 在标记位置前获取缩进
      *
      * @param int $pos Token position
      *
@@ -213,6 +226,7 @@ class TokenStream {
 
     /**
      * Get the code corresponding to a token offset range, optionally adjusted for indentation.
+	 * 获取与记号偏移范围相对应的代码，可选地根据缩进进行调整。
      *
      * @param int $from Token start position (inclusive)
      * @param int $to Token end position (exclusive)
@@ -245,6 +259,7 @@ class TokenStream {
 
     /**
      * Precalculate the indentation at every token position.
+	 * 预先计算每个标记位置的缩进
      *
      * @return int[] Token position to indentation map
      */
@@ -268,6 +283,7 @@ class TokenStream {
         }
 
         // Add a sentinel for one past end of the file
+		// 为文件的过去一端添加一个哨兵
         $indentMap[] = $indent;
 
         return $indentMap;

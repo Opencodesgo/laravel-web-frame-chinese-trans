@@ -1,0 +1,33 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，视图组件
+ */
+
+namespace {{ namespace }};
+
+use Illuminate\View\Component;
+
+class {{ class }} extends Component
+{
+    /**
+     * Create a new component instance.
+	 * 创建新的组件实例
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+	 * 获取表示组件的视图/内容
+     *
+     * @return \Illuminate\Contracts\View\View|\Closure|string
+     */
+    public function render()
+    {
+        return {{ view }};
+    }
+}

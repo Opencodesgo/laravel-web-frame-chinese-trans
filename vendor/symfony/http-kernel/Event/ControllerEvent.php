@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，事件控制器
+ * Symfony，Component，HttpKernel，事件，控制器事件
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows filtering of a controller callable.
- * 允许筛选可调用的控制器
+ * 允许筛选可调用的控制器。
  *
  * You can call getController() to retrieve the current controller. With
  * setController() you can set a new controller that is used in the processing

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，测试处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,8 +20,10 @@ use Psr\Log\LogLevel;
 
 /**
  * Used for testing purposes.
+ * 用于测试目的。
  *
  * It records all records and gives you access to them for verification.
+ * 它记录了所有记录，并允许您访问它们以进行验证。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *

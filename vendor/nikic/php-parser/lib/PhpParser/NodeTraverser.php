@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点转盘
+ */
+
 namespace PhpParser;
 
 class NodeTraverser implements NodeTraverserInterface {
@@ -31,6 +35,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     /**
      * Create a traverser with the given visitors.
+	 * 用给定的访问者创建一个遍历器
      *
      * @param NodeVisitor ...$visitors Node visitors
      */
@@ -40,6 +45,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     /**
      * Adds a visitor.
+	 * 添加访客
      *
      * @param NodeVisitor $visitor Visitor to add
      */
@@ -49,6 +55,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     /**
      * Removes an added visitor.
+	 * 删除已添加的访问者
      */
     public function removeVisitor(NodeVisitor $visitor): void {
         $index = array_search($visitor, $this->visitors);
@@ -59,6 +66,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     /**
      * Traverses an array of nodes using the registered visitors.
+	 * 使用已注册的访问者遍历节点数组
      *
      * @param Node[] $nodes Array of nodes
      *
@@ -87,6 +95,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     /**
      * Recursively traverse a node.
+	 * 递归遍历节点
      *
      * @param Node $node Node to traverse.
      */
@@ -173,6 +182,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     /**
      * Recursively traverse array (usually of nodes).
+	 * 递归遍历数组（通常是节点）
      *
      * @param array $nodes Array to traverse
      *

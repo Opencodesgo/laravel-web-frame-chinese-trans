@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，转换器
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -25,6 +28,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Converter.
+ * 特征转换器。
  *
  * Change date into different string formats and types and
  * handle the string cast.
@@ -39,6 +43,7 @@ trait Converter
 
     /**
      * Returns the formatted date string on success or FALSE on failure.
+	 * 成功时返回格式化日期字符串，失败时返回FALSE。
      *
      * @see https://php.net/manual/en/datetime.format.php
      *
@@ -76,6 +81,7 @@ trait Converter
 
     /**
      * Format the instance as a string using the set format
+	 * 使用set Format将实例格式化为字符串
      *
      * @example
      * ```

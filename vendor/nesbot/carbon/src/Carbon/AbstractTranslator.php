@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，抽象翻译
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -23,6 +26,7 @@ abstract class AbstractTranslator extends Translation\Translator
 {
     /**
      * Translator singletons for each language.
+	 * 翻译每种语言的单例
      *
      * @var array
      */
@@ -30,6 +34,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of custom localized messages.
+	 * 自定义本地化消息列表
      *
      * @var array
      */
@@ -37,6 +42,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of custom directories that contain translation files.
+	 * 包含翻译文件的自定义目录列表
      *
      * @var string[]
      */
@@ -44,6 +50,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set to true while constructing.
+	 * 在构造时设置为true
      *
      * @var bool
      */
@@ -51,6 +58,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of locales aliases.
+	 * 区域设置别名列表
      *
      * @var array<string, string>
      */
@@ -61,6 +69,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Return a singleton instance of Translator.
+	 * 返回Translator的单例实例
      *
      * @param string|null $locale optional initial locale ("en" - english by default)
      *
@@ -90,6 +99,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Returns the list of directories translation files are searched in.
+	 * 返回搜索翻译文件的目录列表
      *
      * @return array
      */
@@ -100,6 +110,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set list of directories translation files are searched in.
+	 * 设置搜索翻译文件的目录列表
      *
      * @param array $directories new directories list
      *
@@ -114,6 +125,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Add a directory to the list translation files are searched in.
+	 * 将目录添加到搜索翻译文件的列表中。
      *
      * @param string $directory new directory
      *
@@ -128,6 +140,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Remove a directory from the list translation files are searched in.
+	 * 从搜索翻译文件的列表中删除一个目录
      *
      * @param string $directory directory path
      *
@@ -177,6 +190,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Returns the list of files matching a given locale prefix (or all if empty).
+	 * 返回与给定语言环境前缀匹配的文件列表（如果为空则为全部）
      *
      * @param string $prefix prefix required to filter result
      *
@@ -246,6 +260,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Init messages language from matching file in Lang directory.
+	 * 从Lang目录中的匹配文件初始化消息语言
      *
      * @param string $locale
      *
@@ -258,6 +273,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set messages of a locale and take file first if present.
+	 * 设置区域设置的消息，如果存在，首先获取文件。
      *
      * @param string $locale
      * @param array  $messages
@@ -278,6 +294,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set messages of the current locale and take file first if present.
+	 * 设置当前语言环境的消息，如果存在，首先获取文件。
      *
      * @param array $messages
      *
@@ -303,6 +320,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set the current translator locale and indicate if the source locale file exists
+	 * 设置当前的翻译语言环境，并指出源语言环境文件是否存在。
      *
      * @param string $locale locale ex. en
      *
@@ -369,6 +387,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Show locale on var_dump().
+	 * 在var_dump（）上显示区域设置
      *
      * @return array
      */

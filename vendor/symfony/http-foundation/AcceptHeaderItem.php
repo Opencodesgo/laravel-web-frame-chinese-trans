@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，接收报头
+ * Symfony，Component，HttpFoundation，测试，接收报头项
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Represents an Accept-* header item.
- * 表示 Accept-* 报头项
+ * 表示Accept-*报头项
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
@@ -37,7 +37,7 @@ class AcceptHeaderItem
 
     /**
      * Builds an AcceptHeaderInstance instance from a string.
-	 * 从字符串构建一个 AcceptHeaderInstance 实例
+	 * 从字符串构建一个AcceptHeaderInstance实例
      *
      * @return self
      */
@@ -69,6 +69,7 @@ class AcceptHeaderItem
 
     /**
      * Set the item value.
+	 * 设置项目值
      *
      * @return $this
      */
@@ -81,6 +82,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item value.
+	 * 返回项值
      *
      * @return string
      */
@@ -91,6 +93,7 @@ class AcceptHeaderItem
 
     /**
      * Set the item quality.
+	 * 设置项目质量
      *
      * @return $this
      */
@@ -103,6 +106,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item quality.
+	 * 返回项目质量
      *
      * @return float
      */
@@ -113,6 +117,7 @@ class AcceptHeaderItem
 
     /**
      * Set the item index.
+	 * 设置项目索引
      *
      * @return $this
      */
@@ -125,6 +130,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item index.
+	 * 返回项目索引
      *
      * @return int
      */
@@ -135,6 +141,7 @@ class AcceptHeaderItem
 
     /**
      * Tests if an attribute exists.
+	 * 测试属性是否存在
      *
      * @return bool
      */
@@ -145,6 +152,7 @@ class AcceptHeaderItem
 
     /**
      * Returns an attribute by its name.
+	 * 按名称返回属性
      *
      * @param mixed $default
      *
@@ -157,6 +165,7 @@ class AcceptHeaderItem
 
     /**
      * Returns all attributes.
+	 * 返回所有属性
      *
      * @return array
      */

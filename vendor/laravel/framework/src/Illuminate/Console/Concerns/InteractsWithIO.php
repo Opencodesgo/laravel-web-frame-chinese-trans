@@ -5,6 +5,7 @@
 
 namespace Illuminate\Console\Concerns;
 
+use Closure;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
@@ -258,6 +259,39 @@ trait InteractsWithIO
     }
 
     /**
+     * Execute a given callback while advancing a progress bar.
+	 * 在推进进度条时执行给定的回调
+     *
+     * @param  iterable|int  $totalSteps
+     * @param  \Closure  $callback
+     * @return mixed|void
+     */
+    public function withProgressBar($totalSteps, Closure $callback)
+    {
+        $bar = $this->output->createProgressBar(
+            is_iterable($totalSteps) ? count($totalSteps) : $totalSteps
+        );
+
+        $bar->start();
+
+        if (is_iterable($totalSteps)) {
+            foreach ($totalSteps as $value) {
+                $callback($value, $bar);
+
+                $bar->advance();
+            }
+        } else {
+            $callback($bar);
+        }
+
+        $bar->finish();
+
+        if (is_iterable($totalSteps)) {
+            return $totalSteps;
+        }
+    }
+
+    /**
      * Write a string as information output.
 	 * 写一个字符串作为信息输出
      *
@@ -346,7 +380,7 @@ trait InteractsWithIO
 
     /**
      * Write a string in an alert box.
-	 * 在提示框中写一个字符串
+	 * 在警告框中写一个字符串
      *
      * @param  string  $string
      * @return void
@@ -359,7 +393,19 @@ trait InteractsWithIO
         $this->comment('*     '.$string.'     *');
         $this->comment(str_repeat('*', $length));
 
-        $this->output->newLine();
+        $this->newLine();
+    }
+
+    /**
+     * Write a blank line.
+	 * 写一个空行
+     *
+     * @param  int  $count
+     * @return void
+     */
+    public function newLine($count = 1)
+    {
+        $this->output->newLine($count);
     }
 
     /**

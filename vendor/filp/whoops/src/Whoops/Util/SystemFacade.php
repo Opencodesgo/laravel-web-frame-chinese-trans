@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，工具，系统门面
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -10,6 +14,7 @@ class SystemFacade
 {
     /**
      * Turns on output buffering.
+	 * 打开输出缓冲
      *
      * @return bool
      */

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，格式化接口
+ * Monolog，Formatter，格式化接口
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Monolog\Formatter;
 
 /**
  * Interface for formatters
- * 格式化接口
+ * 格式化器接口
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -27,6 +27,7 @@ interface FormatterInterface
 {
     /**
      * Formats a log record.
+	 * 格式化日志记录
      *
      * @param  array $record A record to format
      * @return mixed The formatted record
@@ -37,6 +38,7 @@ interface FormatterInterface
 
     /**
      * Formats a set of log records.
+	 * 格式化一组日志记录
      *
      * @param  array $records A set of records to format
      * @return mixed The formatted set of records

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，中间件，设置通知符名称
+ */
 
 namespace Facade\Ignition\Middleware;
 

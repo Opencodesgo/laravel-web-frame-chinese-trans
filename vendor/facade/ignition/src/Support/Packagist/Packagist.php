@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，支持，包装机构，包装机构
+ */
 
 namespace Facade\Ignition\Support\Packagist;
 

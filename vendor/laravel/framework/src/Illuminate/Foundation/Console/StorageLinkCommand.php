@@ -6,8 +6,6 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
-use RuntimeException;
-use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class StorageLinkCommand extends Command
 {
@@ -17,11 +15,13 @@ class StorageLinkCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'storage:link {--relative : Create the symbolic link using relative paths}';
+    protected $signature = 'storage:link
+                {--relative : Create the symbolic link using relative paths}
+                {--force : Recreate existing symbolic links}';
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -35,18 +35,25 @@ class StorageLinkCommand extends Command
      */
     public function handle()
     {
+        $relative = $this->option('relative');
+
         foreach ($this->links() as $link => $target) {
-            if (file_exists($link)) {
+            if (file_exists($link) && ! $this->isRemovableSymlink($link, $this->option('force'))) {
                 $this->error("The [$link] link already exists.");
-            } else {
-                if ($this->option('relative')) {
-                    $target = $this->getRelativeTarget($link, $target);
-                }
-
-                $this->laravel->make('files')->link($target, $link);
-
-                $this->info("The [$link] link has been connected to [$target].");
+                continue;
             }
+
+            if (is_link($link)) {
+                $this->laravel->make('files')->delete($link);
+            }
+
+            if ($relative) {
+                $this->laravel->make('files')->relativeLink($target, $link);
+            } else {
+                $this->laravel->make('files')->link($target, $link);
+            }
+
+            $this->info("The [$link] link has been connected to [$target].");
         }
 
         $this->info('The links have been created.');
@@ -65,19 +72,15 @@ class StorageLinkCommand extends Command
     }
 
     /**
-     * Get the relative path to the target.
-	 * 获取到目标的相对路径
+     * Determine if the provided path is a symlink that can be removed.
+	 * 确定所提供的路径是否是可以删除的符号链接
      *
      * @param  string  $link
-     * @param  string  $target
-     * @return string
+     * @param  bool  $force
+     * @return bool
      */
-    protected function getRelativeTarget($link, $target)
+    protected function isRemovableSymlink(string $link, bool $force): bool
     {
-        if (! class_exists(SymfonyFilesystem::class)) {
-            throw new RuntimeException('To enable support for relative links, please install the symfony/filesystem package.');
-        }
-
-        return (new SymfonyFilesystem)->makePathRelative($target, dirname($link));
+        return is_link($link) && $force;
     }
 }

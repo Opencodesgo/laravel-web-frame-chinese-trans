@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，节点，构建者
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -91,6 +96,7 @@ final class Builder
 
     /**
      * Builds an array representation of the directory structure.
+	 * 生成目录结构的数组表示形式。
      *
      * For instance,
      *

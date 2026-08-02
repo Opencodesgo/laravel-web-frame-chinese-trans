@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，数据头，数据头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Mime\Header;
 
 /**
  * A Date MIME Header.
+ * 一个日期MIME头。
  *
  * @author Chris Corbyn
  */
@@ -47,6 +51,7 @@ final class DateHeader extends AbstractHeader
 
     /**
      * Set the date-time of the Date in this Header.
+	 * 设置该报头中日期的日期时间。
      *
      * If a DateTime instance is provided, it is converted to DateTimeImmutable.
      */

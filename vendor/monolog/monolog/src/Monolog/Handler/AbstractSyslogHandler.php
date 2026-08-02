@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，抽象 Syslog 处理程序
+ * Monolog，Handler，抽象 Syslog 处理程序
  */
 
 /*
@@ -21,6 +21,7 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * Common syslog functionality
+ * 常用 syslog功能
  *
  * @phpstan-import-type Level from \Monolog\Logger
  */
@@ -31,6 +32,7 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 
     /**
      * Translates Monolog log levels to syslog log priorities.
+	 * 将独白日志级别转换为日志日志优先级。
      * @var array
      * @phpstan-var array<Level, int>
      */
@@ -47,6 +49,7 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 
     /**
      * List of valid log facility names.
+	 * 有效的日志设备名称列表
      * @var array<string, int>
      */
     protected $facilities = [

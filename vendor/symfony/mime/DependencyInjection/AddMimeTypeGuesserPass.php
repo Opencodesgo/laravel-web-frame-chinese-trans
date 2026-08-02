@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，依赖注入，添加Mime Type guess Pass
+ * Symfony，Component，Mime，依赖注入，添加 Mime类型猜测传递
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Registers custom mime types guessers.
+ * 注册自定义mime类型猜测器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class ValidationData
 {
     /**
-     * Initialize and gather data for given attribute.
+     * Initialize and gather data for the given attribute.
 	 * 初始化并收集给定属性的数据
      *
      * @param  string  $attribute

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件包
+ * Symfony，Component，HttpFoundation，Ip 工具
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Http utility functions.
- * Http 实用函数
+ * Http实用函数
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,7 +26,6 @@ class IpUtils
 
     /**
      * This class should not be instantiated.
-	 * 这个类不应该被实例化
      */
     private function __construct()
     {
@@ -66,6 +65,7 @@ class IpUtils
     /**
      * Compares two IPv4 addresses.
      * In case a subnet is given, it checks if it contains the request IP.
+	 * 比较两个IPv4地址。
      *
      * @param string $ip IPv4 address or subnet in CIDR notation
      *
@@ -113,6 +113,7 @@ class IpUtils
     /**
      * Compares two IPv6 addresses.
      * In case a subnet is given, it checks if it contains the request IP.
+	 * 比较两个IPv6地址。
      *
      * @author David Soria Parra <dsp at php dot net>
      *
@@ -190,6 +191,7 @@ class IpUtils
 
     /**
      * Anonymizes an IP/IPv6.
+	 * 匿名IP/IPv6。
      *
      * Removes the last byte for v4 and the last 8 bytes for v6 IPs
      */

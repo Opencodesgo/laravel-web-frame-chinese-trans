@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Doctrine Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Doctrine related classes to array representation.
+ * 将类相关类转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，事件，维护模式异常
+ * Illuminate，基础，Http，异常，维护模式异常
  */
 
 namespace Illuminate\Foundation\Http\Exceptions;
@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Date;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Throwable;
 
+/**
+ * @deprecated Will be removed in a future Laravel version.
+ */
 class MaintenanceModeException extends ServiceUnavailableHttpException
 {
     /**
@@ -38,7 +41,7 @@ class MaintenanceModeException extends ServiceUnavailableHttpException
 
     /**
      * Create a new exception instance.
-	 * 创建一个新的异常实例
+	 * 创建新的异常实例
      *
      * @param  int  $time
      * @param  int|null  $retryAfter

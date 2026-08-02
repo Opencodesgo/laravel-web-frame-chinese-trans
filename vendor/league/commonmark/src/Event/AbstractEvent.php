@@ -1,6 +1,11 @@
 <?php
-
 /**
+ * League，CommonMark，事件，抽象事件
+ */
+
+declare(strict_types=1);
+
+/*
  * This file is part of the league/commonmark package.
  *
  * (c) Colin O'Dell <colinodell@gmail.com>
@@ -14,8 +19,11 @@
 
 namespace League\CommonMark\Event;
 
+use Psr\EventDispatcher\StoppableEventInterface;
+
 /**
  * Base class for classes containing event data.
+ * 包含事件数据的类的基类。
  *
  * This class contains no event data. It is used by events that do not pass
  * state information to an event handler when an event is raised.
@@ -23,13 +31,14 @@ namespace League\CommonMark\Event;
  * You can call the method stopPropagation() to abort the execution of
  * further listeners in your event listener.
  */
-abstract class AbstractEvent
+abstract class AbstractEvent implements StoppableEventInterface
 {
-    /** @var bool */
-    private $propagationStopped = false;
+    /** @psalm-readonly-allow-private-mutation */
+    private bool $propagationStopped = false;
 
     /**
      * Returns whether further event listeners should be triggered.
+	 * 返回是否应该触发进一步的事件侦听器。
      */
     final public function isPropagationStopped(): bool
     {
@@ -38,6 +47,7 @@ abstract class AbstractEvent
 
     /**
      * Stops the propagation of the event to further event listeners.
+	 * 停止将事件传播到其他事件侦听器。
      *
      * If multiple event listeners are connected to the same event, no
      * further event listener will be triggered once any trigger calls

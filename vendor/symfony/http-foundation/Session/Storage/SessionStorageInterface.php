@@ -1,8 +1,8 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，会话存储接口
+ * Symfony，Component，HttpFoundation，Session，储存，会话存储接口
  */
- 
+
 /*
  * This file is part of the Symfony package.
  *
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * StorageInterface.
- * 各类存储器接口
+ * 存储器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Drak <drak@zikula.org>
@@ -27,6 +27,7 @@ interface SessionStorageInterface
 {
     /**
      * Starts the session.
+	 * 开始会话
      *
      * @return bool
      *
@@ -44,6 +45,7 @@ interface SessionStorageInterface
 
     /**
      * Returns the session ID.
+	 * 返回会话ID
      *
      * @return string
      */
@@ -51,11 +53,13 @@ interface SessionStorageInterface
 
     /**
      * Sets the session ID.
+	 * 设置会话ID
      */
     public function setId(string $id);
 
     /**
      * Returns the session name.
+	 * 返回会话名称
      *
      * @return string
      */
@@ -63,6 +67,7 @@ interface SessionStorageInterface
 
     /**
      * Sets the session name.
+	 * 设置会话名称
      */
     public function setName(string $name);
 
@@ -100,6 +105,7 @@ interface SessionStorageInterface
 
     /**
      * Force the session to be saved and closed.
+	 * 强制保存并关闭会话。
      *
      * This method must invoke session_write_close() unless this interface is
      * used for a storage object design for unit or functional testing where
@@ -113,11 +119,13 @@ interface SessionStorageInterface
 
     /**
      * Clear all session data in memory.
+	 * 清除内存中的所有会话数据
      */
     public function clear();
 
     /**
      * Gets a SessionBagInterface by name.
+	 * 按名称获取SessionBagInterface
      *
      * @return SessionBagInterface
      *
@@ -127,7 +135,8 @@ interface SessionStorageInterface
 
     /**
      * Registers a SessionBagInterface for use.
-	 * 注册一个 SessionBagInterface 供使用
+	 * 注册一个SessionBagInterface供使用
+	 *
      */
     public function registerBag(SessionBagInterface $bag);
 

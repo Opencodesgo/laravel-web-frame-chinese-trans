@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，缓存，空存储
+ * Illuminate，缓存，零存储
  */
 
 namespace Illuminate\Cache;
 
-class NullStore extends TaggableStore
+use Illuminate\Contracts\Cache\LockProvider;
+
+class NullStore extends TaggableStore implements LockProvider
 {
     use RetrievesMultipleKeys;
 
@@ -14,7 +16,7 @@ class NullStore extends TaggableStore
 	 * 按键从缓存中检索项
      *
      * @param  string  $key
-     * @return mixed
+     * @return void
      */
     public function get($key)
     {
@@ -37,11 +39,11 @@ class NullStore extends TaggableStore
 
     /**
      * Increment the value of an item in the cache.
-	 * 递增缓存中项的值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return int|bool
+     * @return bool
      */
     public function increment($key, $value = 1)
     {
@@ -54,7 +56,7 @@ class NullStore extends TaggableStore
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return int|bool
+     * @return bool
      */
     public function decrement($key, $value = 1)
     {
@@ -72,6 +74,33 @@ class NullStore extends TaggableStore
     public function forever($key, $value)
     {
         return false;
+    }
+
+    /**
+     * Get a lock instance.
+	 * 得到锁实例
+     *
+     * @param  string  $name
+     * @param  int  $seconds
+     * @param  string|null  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function lock($name, $seconds = 0, $owner = null)
+    {
+        return new NoLock($name, $seconds, $owner);
+    }
+
+    /**
+     * Restore a lock instance using the owner identifier.
+	 * 使用所有者标识符恢复锁实例
+     *
+     * @param  string  $name
+     * @param  string  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function restoreLock($name, $owner)
+    {
+        return $this->lock($name, 0, $owner);
     }
 
     /**

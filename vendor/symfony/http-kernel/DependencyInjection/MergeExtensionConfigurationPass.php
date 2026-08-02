@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Ensures certain extensions are always loaded.
- * 确保总是加载某些扩展
+ * 确保总是加载某些扩展。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */

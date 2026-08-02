@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，事件，缓存未击中，待完善类
+ * Illuminate，缓存，事件，缓存丢失
  */
 
 namespace Illuminate\Cache\Events;

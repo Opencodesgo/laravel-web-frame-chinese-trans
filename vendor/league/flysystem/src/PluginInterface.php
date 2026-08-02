@@ -17,7 +17,7 @@ interface PluginInterface
 
     /**
      * Set the Filesystem object.
-	 * 设置 Filesystem 对象
+	 * 设置文件系统对象
      *
      * @param FilesystemInterface $filesystem
      */

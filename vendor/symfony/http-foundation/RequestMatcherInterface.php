@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -16,7 +17,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * RequestMatcherInterface is an interface for strategies to match a Request.
- * RequestMatcherInterface 是用于匹配请求的策略的接口
+ * RequestMatcherInterface是用于匹配请求的策略的接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

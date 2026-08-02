@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，一对多
+ * Illuminate，数据库，Eloquent，关系，有多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -24,7 +24,7 @@ class HasMany extends HasOneOrMany
 
     /**
      * Initialize the relation on a set of models.
-	 * 初始化一组模型的关系
+	 * 初始化一组模型上的关系
      *
      * @param  array  $models
      * @param  string  $relation

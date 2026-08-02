@@ -1,7 +1,11 @@
 <?php
+/**
+ * Ramsey，Uuid，Uuid
+ */
 
 /**
  * This file is part of the ramsey/uuid library
+ * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -37,6 +41,7 @@ use function substr;
 
 /**
  * Uuid provides constants and static methods for working with and generating UUIDs
+ * Uuid提供了用于工作和生成UUIDs的常量和静态方法
  *
  * @psalm-immutable
  */

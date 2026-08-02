@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部，可打印的新匿名类节点
+ */
+
 namespace PhpParser\Internal;
 
 use PhpParser\Node;

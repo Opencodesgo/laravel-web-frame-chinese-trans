@@ -1,15 +1,18 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:job 作业生成命令
+ * Illuminate，基础，控制台，make:job 任务生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class JobMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
 	 * 控制台命令名称
@@ -63,7 +66,7 @@ class JobMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -75,7 +78,7 @@ class JobMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

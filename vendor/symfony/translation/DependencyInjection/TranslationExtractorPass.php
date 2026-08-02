@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，依赖注入，翻译提取器传递
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Adds tagged translation.extractor services to translation extractor.
+ * 添加标记翻译。提取器服务到翻译萃取器。
  */
 class TranslationExtractorPass implements CompilerPassInterface
 {

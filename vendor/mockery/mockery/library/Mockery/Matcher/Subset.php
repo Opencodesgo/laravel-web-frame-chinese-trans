@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，子集
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -32,6 +35,7 @@ class Subset extends MatcherAbstract
 
     /**
      * Return a string representation of this Matcher
+	 * 返回这个Matcher的字符串表示
      *
      * @return string
      */
@@ -52,6 +56,7 @@ class Subset extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected.
+	 * 检查实际值是否符合预期
      *
      * @template TMixed
      *
@@ -84,6 +89,7 @@ class Subset extends MatcherAbstract
 
     /**
      * Recursively format an array into the string representation for this matcher
+	 * 递归地将一个数组格式化为这个matcher的字符串表示
      *
      * @return string
      */

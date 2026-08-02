@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，转换器，时间转换接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library

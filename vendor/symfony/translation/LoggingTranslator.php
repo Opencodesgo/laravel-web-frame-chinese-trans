@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，记录翻译器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -88,6 +91,7 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, 
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @return array
      */
@@ -102,6 +106,7 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, 
 
     /**
      * Passes through all unknown calls onto the translator object.
+	 * 将所有未知调用传递给translator对象
      */
     public function __call(string $method, array $args)
     {
@@ -110,6 +115,7 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, 
 
     /**
      * Logs for missing translations.
+	 * 缺少翻译的日志
      */
     private function log(string $id, ?string $domain, ?string $locale)
     {

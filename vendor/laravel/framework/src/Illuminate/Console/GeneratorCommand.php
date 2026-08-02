@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，控制台，命令生成程序
+ * Illuminate，控制台，指令产生器
  */
 
 namespace Illuminate\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,7 +32,7 @@ abstract class GeneratorCommand extends Command
      * Reserved names that cannot be used for generation.
 	 * 不能用于生成的保留名称
      *
-     * @var array
+     * @var string[]
      */
     protected $reservedNames = [
         '__halt_compiler',
@@ -115,6 +116,10 @@ abstract class GeneratorCommand extends Command
     {
         parent::__construct();
 
+        if (in_array(CreatesMatchingTest::class, class_uses_recursive($this))) {
+            $this->addTestOptions();
+        }
+
         $this->files = $files;
     }
 
@@ -139,7 +144,7 @@ abstract class GeneratorCommand extends Command
         // First we need to ensure that the given name is not a reserved word within the PHP
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
-		// 首先，我们需要确保给定的名称不是PHP中的保留字。
+		// 首先，我们需要确保给定的名称不是PHP语言和类名实际上是有效的的保留字。
         if ($this->isReservedName($this->getNameInput())) {
             $this->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
 
@@ -153,7 +158,7 @@ abstract class GeneratorCommand extends Command
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-		// 接下来，我们将检查类是否已经存在。
+		// 接下来，我们将检查类是否已经存在。如果有，我们不想创建类并覆盖用户的代码。
         if ((! $this->hasOption('force') ||
              ! $this->option('force')) &&
              $this->alreadyExists($this->getNameInput())) {
@@ -171,6 +176,10 @@ abstract class GeneratorCommand extends Command
         $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
         $this->info($this->type.' created successfully.');
+
+        if (in_array(CreatesMatchingTest::class, class_uses_recursive($this))) {
+            $this->handleTestCreation($path);
+        }
     }
 
     /**
@@ -184,13 +193,13 @@ abstract class GeneratorCommand extends Command
     {
         $name = ltrim($name, '\\/');
 
+        $name = str_replace('/', '\\', $name);
+
         $rootNamespace = $this->rootNamespace();
 
         if (Str::startsWith($name, $rootNamespace)) {
             return $name;
         }
-
-        $name = str_replace('/', '\\', $name);
 
         return $this->qualifyClass(
             $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name
@@ -198,8 +207,32 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
+     * Qualify the given model class base name.
+	 * 限定给定的模型类基名
+     *
+     * @param  string  $model
+     * @return string
+     */
+    protected function qualifyModel(string $model)
+    {
+        $model = ltrim($model, '\\/');
+
+        $model = str_replace('/', '\\', $model);
+
+        $rootNamespace = $this->rootNamespace();
+
+        if (Str::startsWith($model, $rootNamespace)) {
+            return $model;
+        }
+
+        return is_dir(app_path('Models'))
+                    ? $rootNamespace.'Models\\'.$model
+                    : $rootNamespace.$model;
+    }
+
+    /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

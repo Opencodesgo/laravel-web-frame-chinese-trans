@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest, 抽象匹配器测试
+ */
+
 namespace Hamcrest;
 
 use PHPUnit\Framework\TestCase;
@@ -49,6 +53,7 @@ abstract class AbstractMatcherTest extends TestCase
     public function testIsNullSafe()
     {
         //Should not generate any notices
+		//不应产生任何通知
         $this->createMatcher()->matches(null);
         $this->createMatcher()->describeMismatch(
             null,
@@ -59,6 +64,7 @@ abstract class AbstractMatcherTest extends TestCase
     public function testCopesWithUnknownTypes()
     {
         //Should not generate any notices
+		// 不应产生任何通知
         $this->createMatcher()->matches(new UnknownType());
         $this->createMatcher()->describeMismatch(
             new UnknownType(),

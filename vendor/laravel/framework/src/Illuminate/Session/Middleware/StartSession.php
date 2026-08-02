@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，中间件，开始会话
+ * Illuminate，Session，中间件，开始会话
  */
 
 namespace Illuminate\Session\Middleware;
@@ -8,6 +8,7 @@ namespace Illuminate\Session\Middleware;
 use Closure;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
@@ -18,7 +19,7 @@ class StartSession
 {
     /**
      * The session manager.
-	 * 会话管理
+	 * 会话管理器
      *
      * @var \Illuminate\Session\SessionManager
      */
@@ -34,7 +35,7 @@ class StartSession
 
     /**
      * Create a new session middleware.
-	 * 创建一个新的会话中间件
+	 * 创建新的会话中间件
      *
      * @param  \Illuminate\Session\SessionManager  $manager
      * @param  callable|null  $cacheFactoryResolver
@@ -48,7 +49,7 @@ class StartSession
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
+	 * 处理传拉请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -63,11 +64,11 @@ class StartSession
         $session = $this->getSession($request);
 
         if ($this->manager->shouldBlock() ||
-            ($request->route() && $request->route()->locksFor())) {
+            ($request->route() instanceof Route && $request->route()->locksFor())) {
             return $this->handleRequestWhileBlocking($request, $session, $next);
-        } else {
-            return $this->handleStatefulRequest($request, $session, $next);
         }
+
+        return $this->handleStatefulRequest($request, $session, $next);
     }
 
     /**
@@ -81,6 +82,10 @@ class StartSession
      */
     protected function handleRequestWhileBlocking(Request $request, $session, Closure $next)
     {
+        if (! $request->route() instanceof Route) {
+            return;
+        }
+
         $lockFor = $request->route() && $request->route()->locksFor()
                         ? $request->route()->locksFor()
                         : 10;
@@ -132,7 +137,7 @@ class StartSession
         // Again, if the session has been configured we will need to close out the session
         // so that the attributes may be persisted to some storage medium. We will also
         // add the session identifier cookie to the application response headers now.
-		// 同样，如果已经配置了会话，我们将需要关闭会话，以便将属性持久化到某些存储介质中。
+		// 同样，如果已经配置了会话，我们将需要关闭会话。
         $this->saveSession($request);
 
         return $response;
@@ -191,7 +196,7 @@ class StartSession
 
     /**
      * Determine if the configuration odds hit the lottery.
-	 * 确定配置的概率是否命中彩票
+	 * 确定配置的概率是否命中开奖
      *
      * @param  array  $config
      * @return bool
@@ -212,7 +217,7 @@ class StartSession
     protected function storeCurrentUrl(Request $request, $session)
     {
         if ($request->method() === 'GET' &&
-            $request->route() &&
+            $request->route() instanceof Route &&
             ! $request->ajax() &&
             ! $request->prefetch()) {
             $session->setPreviousUrl($request->fullUrl());
@@ -289,7 +294,7 @@ class StartSession
 
     /**
      * Determine if the configured session driver is persistent.
-	 * 确定配置的会话驱动是否持久
+	 * 确定配置的会话驱动程序是否持久
      *
      * @param  array|null  $config
      * @return bool

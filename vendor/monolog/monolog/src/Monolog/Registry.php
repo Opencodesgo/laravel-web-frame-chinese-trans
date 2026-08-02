@@ -19,6 +19,7 @@ use InvalidArgumentException;
 
 /**
  * Monolog log registry
+ * 独白日志注册表
  *
  * Allows to get `Logger` instances in the global scope
  * via static method calls on this class.
@@ -51,6 +52,7 @@ class Registry
 
     /**
      * Adds new logging channel to the registry
+	 * 在注册表中添加新的日志通道
      *
      * @param  Logger                    $logger    Instance of the logging channel
      * @param  string|null               $name      Name of the logging channel ($logger->getName() by default)
@@ -88,7 +90,7 @@ class Registry
 
     /**
      * Removes instance from registry by name or instance
-	 * 按名称或实例从注册表中删除实例
+	 * 通过名称或实例从注册表中删除实例
      *
      * @param string|Logger $logger Name or logger instance
      */
@@ -105,6 +107,7 @@ class Registry
 
     /**
      * Clears the registry
+	 * 清除注册表
      */
     public static function clear(): void
     {
@@ -113,7 +116,7 @@ class Registry
 
     /**
      * Gets Logger instance from the registry
-	 * 从注册中心获取Logger实例
+	 * 从注册表获取Logger实例
      *
      * @param  string                    $name Name of the requested Logger instance
      * @throws \InvalidArgumentException If named Logger instance is not in the registry
@@ -129,7 +132,7 @@ class Registry
 
     /**
      * Gets Logger instance from the registry via static method call
-	 * 通过静态方法调用从注册中心获取Logger实例
+	 * 通过静态方法调用从注册表中获取Logger实例
      *
      * @param  string                    $name      Name of the requested Logger instance
      * @param  mixed[]                   $arguments Arguments passed to static method call

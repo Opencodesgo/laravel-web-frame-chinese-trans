@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 时区
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -57,6 +60,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Cast the current instance into the given class.
+	 * 将当前实例强制转换为给定的类
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -77,6 +81,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from mixed input.
+	 * 从混合输入创建一个CarbonTimeZone
      *
      * @param DateTimeZone|string|int|null $object     original value to get CarbonTimeZone from it.
      * @param DateTimeZone|string|int|null $objectDump dump of the object for error messages.
@@ -114,6 +119,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Returns abbreviated name of the current timezone according to DST setting.
+	 * 根据DST设置返回当前时区的缩写名称
      *
      * @param bool $dst
      *
@@ -138,6 +144,7 @@ class CarbonTimeZone extends DateTimeZone
      * @alias getAbbreviatedName
      *
      * Returns abbreviated name of the current timezone according to DST setting.
+	 * 根据DST设置返回当前时区的缩写名称
      *
      * @param bool $dst
      *
@@ -164,6 +171,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Returns a new CarbonTimeZone object using the offset string instead of region string.
+	 * 使用偏移量字符串而不是区域字符串返回一个新的CarbonTimeZone对象
      *
      * @param DateTimeInterface|null $date
      *
@@ -222,6 +230,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Returns a new CarbonTimeZone object using the region string instead of offset string.
+	 * 使用区域字符串而不是偏移量字符串返回一个新的CarbonTimeZone对象
      *
      * @param DateTimeInterface|null $date
      *
@@ -244,6 +253,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Cast to string (get timezone name).
+	 * 转换为字符串（获取时区名称）
      *
      * @return string
      */
@@ -254,6 +264,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Return the type number:
+	 * 返回类型号：
      *
      * Type 1; A UTC offset, such as -0300
      * Type 2; A timezone abbreviation, such as GMT
@@ -266,6 +277,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from mixed input.
+	 * 从混合输入创建一个CarbonTimeZone
      *
      * @param DateTimeZone|string|int|null $object
      *
@@ -278,6 +290,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from int/float hour offset.
+	 * 从int / float小时偏移处创建一个碳时区
      *
      * @param float $hourOffset number of hour of the timezone shift (can be decimal).
      *
@@ -290,6 +303,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from int/float minute offset.
+	 * 从int / float分钟偏移处创建一个碳时区
      *
      * @param float $minuteOffset number of total minutes of the timezone shift.
      *
@@ -302,6 +316,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Convert a total minutes offset into a standardized timezone offset string.
+	 * 将每分钟转换为标准化时区偏移串
      *
      * @param float $minutes number of total minutes of the timezone shift.
      *

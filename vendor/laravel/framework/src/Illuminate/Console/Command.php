@@ -35,7 +35,7 @@ class Command extends SymfonyCommand
 
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -45,21 +45,21 @@ class Command extends SymfonyCommand
      * The console command description.
 	 * 控制台命令描述
      *
-     * @var string|null
+     * @var string
      */
     protected $description;
 
     /**
      * The console command help text.
-	 * 控制台命令帮助
+	 * 控制台命令帮助文本
      *
-     * @var string|null
+     * @var string
      */
     protected $help;
 
     /**
      * Indicates whether the command should be shown in the Artisan command list.
-	 * 指示该命令是否应该显示在Artisan命令列表中
+	 * 指明该命令是否应该显示在Artisan命令列表中
      *
      * @var bool
      */
@@ -76,7 +76,7 @@ class Command extends SymfonyCommand
         // We will go ahead and set the name, description, and parameters on console
         // commands just to make things a little easier on the developer. This is
         // so they don't have to all be manually specified in the constructors.
-		// 我们将继续在控制台上设置名称、描述和参数，只是为了让开发人员更容易一些。
+		// 我们将继续在控制台上设置名称、描述和参数命令只是为了让开发人员更容易一些。
         if (isset($this->signature)) {
             $this->configureUsingFluentDefinition();
         } else {
@@ -113,7 +113,7 @@ class Command extends SymfonyCommand
         // After parsing the signature we will spin through the arguments and options
         // and set them on this command. These will already be changed into proper
         // instances of these "InputArgument" and "InputOption" Symfony classes.
-		// 解析完签名后，我们将浏览参数和选项并用这个命令设置它们。
+		// 解析完签名后，我们将浏览参数和选项在此命令中设置它们。
         $this->getDefinition()->addArguments($arguments);
         $this->getDefinition()->addOptions($options);
     }
@@ -147,7 +147,9 @@ class Command extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        return (int) $this->laravel->call([$this, 'handle']);
+        $method = method_exists($this, 'handle') ? 'handle' : '__invoke';
+
+        return (int) $this->laravel->call([$this, $method]);
     }
 
     /**
@@ -178,6 +180,8 @@ class Command extends SymfonyCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function isHidden()
     {
@@ -186,6 +190,8 @@ class Command extends SymfonyCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @return static
      */
     public function setHidden(bool $hidden)
     {
@@ -196,7 +202,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the Laravel application instance.
-	 * 获取框架应用程序实例
+	 * 得到应用实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -207,7 +213,7 @@ class Command extends SymfonyCommand
 
     /**
      * Set the Laravel application instance.
-	 * 设置框架应用实例
+	 * 设置应用实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $laravel
      * @return void

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，邮件，邮件程序
+ * Illuminate，契约，邮件，邮件程序接口
  */
 
 namespace Illuminate\Contracts\Mail;

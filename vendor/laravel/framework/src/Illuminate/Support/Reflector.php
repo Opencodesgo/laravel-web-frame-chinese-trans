@@ -8,12 +8,13 @@ namespace Illuminate\Support;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionUnionType;
 
 class Reflector
 {
     /**
      * This is a PHP 7.4 compatible implementation of is_callable.
-	 * 这是一个与PHP 7.4兼容的is_callable实现
+	 * 这是一个与7.4兼容的is_callable实现
      *
      * @param  mixed  $var
      * @param  bool  $syntaxOnly
@@ -74,6 +75,47 @@ class Reflector
             return;
         }
 
+        return static::getTypeName($parameter, $type);
+    }
+
+    /**
+     * Get the class names of the given parameter's type, including union types.
+	 * 获取给定参数类型的类名，包括联合类型。
+     *
+     * @param  \ReflectionParameter  $parameter
+     * @return array
+     */
+    public static function getParameterClassNames($parameter)
+    {
+        $type = $parameter->getType();
+
+        if (! $type instanceof ReflectionUnionType) {
+            return array_filter([static::getParameterClassName($parameter)]);
+        }
+
+        $unionTypes = [];
+
+        foreach ($type->getTypes() as $listedType) {
+            if (! $listedType instanceof ReflectionNamedType || $listedType->isBuiltin()) {
+                continue;
+            }
+
+            $unionTypes[] = static::getTypeName($parameter, $listedType);
+        }
+
+        return array_filter($unionTypes);
+    }
+
+    /**
+     * Get the given type's class name.
+	 * 获取给定类型的类名
+     *
+     * @param  \ReflectionParameter  $parameter
+     * @param  \ReflectionNamedType  $type
+     * @return string
+     */
+    protected static function getTypeName($parameter, $type)
+    {
         $name = $type->getName();
 
         if (! is_null($class = $parameter->getDeclaringClass())) {
@@ -101,8 +143,8 @@ class Reflector
     {
         $paramClassName = static::getParameterClassName($parameter);
 
-        return ($paramClassName && class_exists($paramClassName))
-            ? (new ReflectionClass($paramClassName))->isSubclassOf($className)
-            : false;
+        return $paramClassName
+            && (class_exists($paramClassName) || interface_exists($paramClassName))
+            && (new ReflectionClass($paramClassName))->isSubclassOf($className);
     }
 }

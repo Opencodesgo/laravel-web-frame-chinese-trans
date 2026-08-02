@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorHandler，异常，分隔错误上下文
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\ErrorHandler\Exception;
 
 /**
  * Data Object that represents a Silenced Error.
+ * 数据对象,表示一个沉默的错误。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

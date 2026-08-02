@@ -9,7 +9,7 @@ interface LengthAwarePaginator extends Paginator
 {
     /**
      * Create a range of pagination URLs.
-	 * 创建一系列分页url
+	 * 创建一系列分页URL
      *
      * @param  int  $start
      * @param  int  $end

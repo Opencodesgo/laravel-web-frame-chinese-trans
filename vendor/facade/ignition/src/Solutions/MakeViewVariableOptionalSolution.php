@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案，使视图可变可选解决方案
+ */
 
 namespace Facade\Ignition\Solutions;
 

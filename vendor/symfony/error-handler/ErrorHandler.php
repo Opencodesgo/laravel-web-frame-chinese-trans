@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，错误处理器，错误处理器
+ * Symfony，Component，ErrorHandler，错误处理程序
  */
 
 /*
@@ -28,7 +28,7 @@ use Symfony\Component\ErrorHandler\Exception\SilencedErrorContext;
 
 /**
  * A generic ErrorHandler for the PHP engine.
- * PHP引擎的通用ErrorHandler
+ * PHP引擎的通用ErrorHandler。
  *
  * Provides five bit fields that control how errors are handled:
  * - thrownErrors: errors thrown as \ErrorException
@@ -109,6 +109,7 @@ class ErrorHandler
 
     /**
      * Registers the error handler.
+	 * 注册错误处理程序
      */
     public static function register(?self $handler = null, bool $replace = true): self
     {
@@ -159,6 +160,7 @@ class ErrorHandler
 
     /**
      * Calls a function and turns any PHP error into \ErrorException.
+	 * 调用一个函数并将任何PHP错误转换为\ ErrorException
      *
      * @return mixed What $function(...$arguments) returns
      *
@@ -207,6 +209,7 @@ class ErrorHandler
 
     /**
      * Sets a logger to non assigned errors levels.
+	 * 设置一个记录器到不指定的错误级别
      *
      * @param LoggerInterface $logger  A PSR-3 logger to put as default for the given levels
      * @param array|int|null  $levels  An array map of E_* to LogLevel::* or an integer bit field of E_* constants
@@ -239,6 +242,7 @@ class ErrorHandler
 
     /**
      * Sets a logger for each error level.
+	 * 为每个错误级别设置记录器
      *
      * @param array $loggers Error levels to [LoggerInterface|null, LogLevel::*] map
      *
@@ -292,6 +296,7 @@ class ErrorHandler
 
     /**
      * Sets a user exception handler.
+	 * 设置用户异常处理程序
      *
      * @param callable(\Throwable $e)|null $handler
      *
@@ -307,6 +312,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels that throw an exception when a PHP error occurs.
+	 * 设置发生PHP错误时抛出异常的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for thrown errors
      * @param bool $replace Replace or amend the previous value
@@ -327,6 +333,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels for which local variables are preserved.
+	 * 设置保留局部变量的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for scoped errors
      * @param bool $replace Replace or amend the previous value
@@ -346,6 +353,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels for which the stack trace is preserved.
+	 * 设置为其保留堆栈跟踪的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for traced errors
      * @param bool $replace Replace or amend the previous value
@@ -365,6 +373,7 @@ class ErrorHandler
 
     /**
      * Sets the error levels where the @-operator is ignored.
+	 * 设置忽略@-操作符的错误级别。
      *
      * @param int  $levels  A bit field of E_* constants for screamed errors
      * @param bool $replace Replace or amend the previous value
@@ -384,6 +393,7 @@ class ErrorHandler
 
     /**
      * Re-registers as a PHP error handler if levels changed.
+	 * 如果级别改变，重新注册为PHP错误处理程序。
      */
     private function reRegister(int $prev): void
     {
@@ -404,6 +414,7 @@ class ErrorHandler
 
     /**
      * Handles errors by filtering then logging them according to the configured bit fields.
+	 * 通过过滤然后根据配置的位字段记录错误来处理错误
      *
      * @return bool Returns false when no handling happens so that the PHP engine can handle the error itself
      *
@@ -566,6 +577,7 @@ class ErrorHandler
 
     /**
      * Handles an exception by logging then forwarding it to another handler.
+	 * 通过记录异常，然后将其转发给另一个处理程序来处理异常。
      *
      * @internal
      */
@@ -644,6 +656,7 @@ class ErrorHandler
 
     /**
      * Shutdown registered function for handling PHP fatal errors.
+	 * 关闭处理PHP致命错误的注册函数
      *
      * @param array|null $error An array as returned by error_get_last()
      *
@@ -727,6 +740,7 @@ class ErrorHandler
 
     /**
      * Renders the given exception.
+	 * 呈现给定的异常。
      *
      * As this method is mainly called during boot where nothing is yet available,
      * the output is always either HTML or CLI depending where PHP runs.
@@ -750,6 +764,7 @@ class ErrorHandler
 
     /**
      * Override this method if you want to define more error enhancers.
+	 * 如果要定义更多的错误增强程序，请重写此方法。
      *
      * @return ErrorEnhancerInterface[]
      */
@@ -764,6 +779,7 @@ class ErrorHandler
 
     /**
      * Cleans the trace by removing function arguments and the frames added by the error handler and DebugClassLoader.
+	 * 通过删除函数参数和错误处理程序和DebugClassLoader添加的帧来清除跟踪
      */
     private function cleanTrace(array $backtrace, int $type, string &$file, int &$line, bool $throw): array
     {
@@ -807,6 +823,7 @@ class ErrorHandler
     /**
      * Parse the error message by removing the anonymous class notation
      * and using the parent class instead if possible.
+	 * 通过删除匿名类符号来解析错误消息如果可能的话，使用父类代替。
      */
     private function parseAnonymousClass(string $message): string
     {

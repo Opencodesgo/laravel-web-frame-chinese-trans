@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，语言环境感知监听器
+ * Symfony，Component，HttpKernel，事件监听器，现场环境感知器
  */
 
 /*
@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Pass the current locale to the provided services.
- * 将当前区域设置传递给所提供的服务
+ * 将当前语言环境传递给提供的服务。
  *
  * @author Pierre Bobiet <pierrebobiet@gmail.com>
  */

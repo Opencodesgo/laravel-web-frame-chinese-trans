@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Service，测试，ServiceLocatorTest
+ */
 
 /*
  * This file is part of the Symfony package.

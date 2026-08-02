@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，Is
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -12,6 +16,7 @@ use Hamcrest\Util;
 /**
  * Decorates another Matcher, retaining the behavior but allowing tests
  * to be slightly more expressive.
+ * 装饰另一个 Matcher，保留其行为，但使测试表达得更加清晰。
  *
  * For example:  assertThat($cheese, equalTo($smelly))
  *          vs.  assertThat($cheese, is(equalTo($smelly)))
@@ -44,6 +49,7 @@ class Is extends BaseMatcher
     /**
      * Decorates another Matcher, retaining the behavior but allowing tests
      * to be slightly more expressive.
+	 * 装饰另一个匹配器，保留原有行为，同时允许测试表达能力更强。
      *
      * For example:  assertThat($cheese, equalTo($smelly))
      *          vs.  assertThat($cheese, is(equalTo($smelly)))

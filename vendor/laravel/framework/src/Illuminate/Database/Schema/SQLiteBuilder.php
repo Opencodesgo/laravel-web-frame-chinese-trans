@@ -1,12 +1,40 @@
 <?php
 /**
- * Illuminate，数据库，模式，SQLite 生成器
+ * Illuminate，数据库，架构，SQLite 构建者
  */
 
 namespace Illuminate\Database\Schema;
 
+use Illuminate\Support\Facades\File;
+
 class SQLiteBuilder extends Builder
 {
+    /**
+     * Create a database in the schema.
+	 * 在模式中创建数据库
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function createDatabase($name)
+    {
+        return File::put($name, '') !== false;
+    }
+
+    /**
+     * Drop a database from the schema if the database exists.
+	 * 如果数据库存在，则从模式中删除该数据库。
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        return File::exists($name)
+            ? File::delete($name)
+            : true;
+    }
+
     /**
      * Drop all tables from the database.
 	 * 从数据库中删除所有表
@@ -30,7 +58,7 @@ class SQLiteBuilder extends Builder
 
     /**
      * Drop all views from the database.
-	 * 删除数据库所有视图
+	 * 从数据库中删除所有视图
      *
      * @return void
      */

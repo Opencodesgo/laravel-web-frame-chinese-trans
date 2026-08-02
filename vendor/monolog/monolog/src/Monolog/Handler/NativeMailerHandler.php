@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Native Mailer 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * NativeMailerHandler uses the mail() function to send the emails
+ * NativeMailerHandler使用邮件()函数发送邮件
  *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Mark Garrett <mark@moderndeveloperllc.com>
@@ -24,18 +29,21 @@ class NativeMailerHandler extends MailHandler
 {
     /**
      * The email addresses to which the message will be sent
+	 * 邮件将被发送到的电子邮件地址
      * @var string[]
      */
     protected $to;
 
     /**
      * The subject of the email
+	 * 邮件的主题
      * @var string
      */
     protected $subject;
 
     /**
      * Optional headers for the message
+	 * 消息的可选标头
      * @var string[]
      */
     protected $headers = [];
@@ -81,6 +89,7 @@ class NativeMailerHandler extends MailHandler
 
     /**
      * Add headers to the message
+	 * 在消息中添加头
      *
      * @param string|string[] $headers Custom added headers
      */
@@ -98,6 +107,7 @@ class NativeMailerHandler extends MailHandler
 
     /**
      * Add parameters to the message
+	 * 在消息中添加参数
      *
      * @param string|string[] $parameters Custom added parameters
      */

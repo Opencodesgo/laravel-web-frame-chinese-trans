@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问器，第一个发现访客
+ */
+
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\Node;
@@ -9,6 +13,7 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * This visitor can be used to find the first node satisfying some criterion determined by
  * a filter callback.
+ * 该访问器可用于查找满足由过滤回调确定的某个条件的第一个节点。
  */
 class FirstFindingVisitor extends NodeVisitorAbstract {
     /** @var callable Filter callback */
@@ -22,6 +27,7 @@ class FirstFindingVisitor extends NodeVisitorAbstract {
 
     /**
      * Get found node satisfying the filter callback.
+	 * 找到满足过滤器回调的节点。
      *
      * Returns null if no node satisfies the filter callback.
      *

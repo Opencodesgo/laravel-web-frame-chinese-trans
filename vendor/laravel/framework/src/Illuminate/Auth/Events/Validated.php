@@ -21,7 +21,7 @@ class Validated
 
     /**
      * The user retrieved and validated from the User Provider.
-	 * 从用户提供程序中检索和验证用户
+	 * 从用户提供程序中检索和验证的用户
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */

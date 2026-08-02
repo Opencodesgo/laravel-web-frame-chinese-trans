@@ -21,6 +21,7 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
 /**
  * Contains all events dispatched by an Application.
+ * 包含应用程序分派的所有事件
  *
  * @author Francesco Levorato <git@flevour.net>
  */
@@ -53,6 +54,7 @@ final class ConsoleEvents
 
     /**
      * The ERROR event occurs when an uncaught exception or error appears.
+	 * 当出现异常或错误时,会发生错误事件。
      *
      * This event allows you to deal with the exception/error or
      * to modify the thrown exception.
@@ -63,6 +65,7 @@ final class ConsoleEvents
 
     /**
      * Event aliases.
+	 * 事件别名。
      *
      * These aliases can be consumed by RegisterListenersPass.
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，migrate:status 状态命令
+ * Illuminate，数据库，控制台，迁移，migrate:status 状态命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -25,11 +25,11 @@ class StatusCommand extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Show the status of each migration';
+    protected $description = 'Show the status of each migration';		#显示每个迁移的状态
 
     /**
      * The migrator instance.
-	 * 迁移器实例
+	 * 迁移实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */

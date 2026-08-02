@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，扩展，任务列表，任务列表扩展
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -11,14 +16,14 @@
 
 namespace League\CommonMark\Extension\TaskList;
 
-use League\CommonMark\ConfigurableEnvironmentInterface;
+use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Extension\ExtensionInterface;
 
 final class TaskListExtension implements ExtensionInterface
 {
-    public function register(ConfigurableEnvironmentInterface $environment)
+    public function register(EnvironmentBuilderInterface $environment): void
     {
         $environment->addInlineParser(new TaskListItemMarkerParser(), 35);
-        $environment->addInlineRenderer(TaskListItemMarker::class, new TaskListItemMarkerRenderer());
+        $environment->addRenderer(TaskListItemMarker::class, new TaskListItemMarkerRenderer());
     }
 }

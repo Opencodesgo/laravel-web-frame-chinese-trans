@@ -6,7 +6,7 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
 class ObserverMakeCommand extends GeneratorCommand
@@ -52,19 +52,6 @@ class ObserverMakeCommand extends GeneratorCommand
     }
 
     /**
-     * Get the stub file for the generator.
-	 * 获取生成器的存根文件
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return $this->option('model')
-                    ? __DIR__.'/stubs/observer.stub'
-                    : __DIR__.'/stubs/observer.plain.stub';
-    }
-
-    /**
      * Replace the model for the given stub.
 	 * 替换给定存根的模型
      *
@@ -74,32 +61,73 @@ class ObserverMakeCommand extends GeneratorCommand
      */
     protected function replaceModel($stub, $model)
     {
-        $model = str_replace('/', '\\', $model);
+        $modelClass = $this->parseModel($model);
 
-        $namespaceModel = $this->laravel->getNamespace().$model;
+        $replace = [
+            'DummyFullModelClass' => $modelClass,
+            '{{ namespacedModel }}' => $modelClass,
+            '{{namespacedModel}}' => $modelClass,
+            'DummyModelClass' => class_basename($modelClass),
+            '{{ model }}' => class_basename($modelClass),
+            '{{model}}' => class_basename($modelClass),
+            'DummyModelVariable' => lcfirst(class_basename($modelClass)),
+            '{{ modelVariable }}' => lcfirst(class_basename($modelClass)),
+            '{{modelVariable}}' => lcfirst(class_basename($modelClass)),
+        ];
 
-        if (Str::startsWith($model, '\\')) {
-            $stub = str_replace('NamespacedDummyModel', trim($model, '\\'), $stub);
-        } else {
-            $stub = str_replace('NamespacedDummyModel', $namespaceModel, $stub);
+        return str_replace(
+            array_keys($replace), array_values($replace), $stub
+        );
+    }
+
+    /**
+     * Get the fully-qualified model class name.
+	 * 获取完全限定的模型类名
+     *
+     * @param  string  $model
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function parseModel($model)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+            throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $stub = str_replace(
-            "use {$namespaceModel};\nuse {$namespaceModel};", "use {$namespaceModel};", $stub
-        );
+        return $this->qualifyModel($model);
+    }
 
-        $model = class_basename(trim($model, '\\'));
+    /**
+     * Get the stub file for the generator.
+	 * 获取生成器的存根文件
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return $this->option('model')
+            ? $this->resolveStubPath('/stubs/observer.stub')
+            : $this->resolveStubPath('/stubs/observer.plain.stub');
+    }
 
-        $stub = str_replace('DocDummyModel', Str::snake($model, ' '), $stub);
-
-        $stub = str_replace('DummyModel', $model, $stub);
-
-        return str_replace('dummyModel', Str::camel($model), $stub);
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

@@ -1,18 +1,16 @@
 <?php
-
 /**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
+ * NunoMaduro，Collision，作者
  */
+
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
 use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContract;
 use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
+use NunoMaduro\Collision\Contracts\RenderlessEditor;
+use NunoMaduro\Collision\Contracts\RenderlessTrace;
 use NunoMaduro\Collision\Contracts\SolutionsRepository;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
@@ -22,19 +20,21 @@ use Whoops\Exception\Frame;
 use Whoops\Exception\Inspector;
 
 /**
- * This is an Collision Writer implementation.
+ * @internal
  *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @see \Tests\Unit\WriterTest
  */
-class Writer implements WriterContract
+final class Writer implements WriterContract
 {
     /**
      * The number of frames if no verbosity is specified.
+	 * 如果没有详细说明,则帧数
      */
-    const VERBOSITY_NORMAL_FRAMES = 1;
+    public const VERBOSITY_NORMAL_FRAMES = 1;
 
     /**
      * Holds an instance of the solutions repository.
+	 * 保存解决方案存储库的实例
      *
      * @var \NunoMaduro\Collision\Contracts\SolutionsRepository
      */
@@ -42,6 +42,7 @@ class Writer implements WriterContract
 
     /**
      * Holds an instance of the Output.
+	 * 保存Output的实例
      *
      * @var \Symfony\Component\Console\Output\OutputInterface
      */
@@ -49,6 +50,7 @@ class Writer implements WriterContract
 
     /**
      * Holds an instance of the Argument Formatter.
+	 * 保存参数格式化程序的实例
      *
      * @var \NunoMaduro\Collision\Contracts\ArgumentFormatter
      */
@@ -56,6 +58,7 @@ class Writer implements WriterContract
 
     /**
      * Holds an instance of the Highlighter.
+	 * 保存Highlighter的实例
      *
      * @var \NunoMaduro\Collision\Contracts\Highlighter
      */
@@ -71,6 +74,7 @@ class Writer implements WriterContract
 
     /**
      * Declares whether or not the trace should appear.
+	 * 声明是否应该显示跟踪
      *
      * @var bool
      */
@@ -78,6 +82,7 @@ class Writer implements WriterContract
 
     /**
      * Declares whether or not the title should appear.
+	 * 声明标题是否应该出现
      *
      * @var bool
      */
@@ -85,6 +90,7 @@ class Writer implements WriterContract
 
     /**
      * Declares whether or not the editor should appear.
+	 * 声明是否应该显示编辑器
      *
      * @var bool
      */
@@ -92,6 +98,7 @@ class Writer implements WriterContract
 
     /**
      * Creates an instance of the writer.
+	 * 创建写入器的实例
      */
     public function __construct(
         SolutionsRepository $solutionsRepository = null,
@@ -116,15 +123,20 @@ class Writer implements WriterContract
 
         $editorFrame = array_shift($frames);
 
-        if ($this->showEditor && $editorFrame !== null) {
+        $exception = $inspector->getException();
+
+        if ($this->showEditor
+            && $editorFrame !== null
+            && !$exception instanceof RenderlessEditor
+        ) {
             $this->renderEditor($editorFrame);
         }
 
         $this->renderSolution($inspector);
 
-        if ($this->showTrace && !empty($frames)) {
+        if ($this->showTrace && !empty($frames) && !$exception instanceof RenderlessTrace) {
             $this->renderTrace($frames);
-        } else {
+        } elseif (!$exception instanceof RenderlessEditor) {
             $this->output->writeln('');
         }
     }
@@ -189,6 +201,7 @@ class Writer implements WriterContract
 
     /**
      * Returns pertinent frames.
+	 * 返回相关帧
      */
     protected function getFrames(Inspector $inspector): array
     {
@@ -202,7 +215,10 @@ class Writer implements WriterContract
                     }
 
                     foreach ($this->ignore as $ignore) {
-                        if (preg_match($ignore, $frame->getFile())) {
+                        // Ensure paths are linux-style (like the ones on $this->ignore)
+                        // @phpstan-ignore-next-line
+                        $sanitizedPath = (string) str_replace('\\', '/', $frame->getFile());
+                        if (preg_match($ignore, $sanitizedPath)) {
                             return false;
                         }
                     }
@@ -215,6 +231,7 @@ class Writer implements WriterContract
 
     /**
      * Renders the title of the exception.
+	 * 呈现异常的标题
      */
     protected function renderTitleAndDescription(Inspector $inspector): WriterContract
     {
@@ -234,6 +251,7 @@ class Writer implements WriterContract
 
     /**
      * Renders the solution of the exception, if any.
+	 * 呈现异常的解决方案（如果有的话）
      */
     protected function renderSolution(Inspector $inspector): WriterContract
     {
@@ -267,21 +285,24 @@ class Writer implements WriterContract
      */
     protected function renderEditor(Frame $frame): WriterContract
     {
-        $file = $this->getFileRelativePath((string) $frame->getFile());
+        if ($frame->getFile() !== 'Unknown') {
+            $file = $this->getFileRelativePath((string) $frame->getFile());
 
-        // getLine() might return null so cast to int to get 0 instead
-        $line = (int) $frame->getLine();
-        $this->render('at <fg=green>' . $file . '</>' . ':<fg=green>' . $line . '</>');
+            // getLine() might return null so cast to int to get 0 instead
+            $line = (int) $frame->getLine();
+            $this->render('at <fg=green>' . $file . '</>' . ':<fg=green>' . $line . '</>');
 
-        $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
+            $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
-        $this->output->writeln($content);
+            $this->output->writeln($content);
+        }
 
         return $this;
     }
 
     /**
      * Renders the trace of the exception.
+	 * 呈现异常的跟踪
      */
     protected function renderTrace(array $frames): WriterContract
     {
@@ -317,20 +338,12 @@ class Writer implements WriterContract
             $this->render("<fg=white>    $class$function($args)</>", false);
         }
 
-        /* Let's consider add this later...
-         * if ($vendorFrames > 0) {
-         * $this->output->write(
-         * sprintf("\n      \e[2m+%s vendor frames \e[22m\n", $vendorFrames)
-         * );
-         * $vendorFrames = 0;
-         * }.
-         */
-
         return $this;
     }
 
     /**
      * Renders an message into the console.
+	 * 将消息呈现到控制台
      *
      * @return $this
      */
@@ -347,6 +360,7 @@ class Writer implements WriterContract
 
     /**
      * Returns the relative path of the given file path.
+	 * 返回给定文件路径的相对路径
      */
     protected function getFileRelativePath(string $filePath): string
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，测试员，测试员特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -34,6 +37,7 @@ trait TesterTrait
 
     /**
      * Gets the display returned by the last execution of the command or application.
+	 * 获取最后执行命令或应用程序返回的显示
      *
      * @return string
      *
@@ -58,6 +62,7 @@ trait TesterTrait
 
     /**
      * Gets the output written to STDERR by the application.
+	 * 通过应用程序获取写入STDERR的输出。
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *
@@ -82,6 +87,7 @@ trait TesterTrait
 
     /**
      * Gets the input instance used by the last execution of the command or application.
+	 * 获取命令或应用程序最后执行的输入实例
      *
      * @return InputInterface
      */
@@ -92,6 +98,7 @@ trait TesterTrait
 
     /**
      * Gets the output instance used by the last execution of the command or application.
+	 * 获取命令或应用程序最后执行的输出实例
      *
      * @return OutputInterface
      */
@@ -102,6 +109,7 @@ trait TesterTrait
 
     /**
      * Gets the status code returned by the last execution of the command or application.
+	 * 获取最后执行命令或应用程序返回的状态代码
      *
      * @return int
      *
@@ -123,6 +131,7 @@ trait TesterTrait
 
     /**
      * Sets the user inputs.
+	 * 设置用户输入
      *
      * @param array $inputs An array of strings representing each input
      *                      passed to the command input stream
@@ -138,6 +147,7 @@ trait TesterTrait
 
     /**
      * Initializes the output property.
+	 * 初始化输出属性
      *
      * Available options:
      *

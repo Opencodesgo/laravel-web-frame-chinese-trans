@@ -31,7 +31,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * The session store instance.
-	 * session 存储实例
+	 * 会话存储实例
      *
      * @var \Illuminate\Session\Store
      */
@@ -74,7 +74,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 将输入数组闪存到会话中
+	 * 将输入数组闪现到会话中
      *
      * @param  array|null  $input
      * @return $this
@@ -134,7 +134,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash a container of errors to the session.
-	 * 将一个错误容器刷到会话中
+	 * 将错误容器闪现到会话中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @param  string  $key
@@ -155,6 +155,22 @@ class RedirectResponse extends BaseRedirectResponse
         );
 
         return $this;
+    }
+
+    /**
+     * Parse the given errors into an appropriate value.
+	 * 将给定的错误解析为适当的值
+     *
+     * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
+     * @return \Illuminate\Support\MessageBag
+     */
+    protected function parseErrors($provider)
+    {
+        if ($provider instanceof MessageProvider) {
+            return $provider->getMessageBag();
+        }
+
+        return new MessageBag((array) $provider);
     }
 
     /**
@@ -179,22 +195,6 @@ class RedirectResponse extends BaseRedirectResponse
     public function withoutFragment()
     {
         return $this->setTargetUrl(Str::before($this->getTargetUrl(), '#'));
-    }
-
-    /**
-     * Parse the given errors into an appropriate value.
-	 * 将给定的错误解析为适当的值
-     *
-     * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
-     * @return \Illuminate\Support\MessageBag
-     */
-    protected function parseErrors($provider)
-    {
-        if ($provider instanceof MessageProvider) {
-            return $provider->getMessageBag();
-        }
-
-        return new MessageBag((array) $provider);
     }
 
     /**
@@ -233,7 +233,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the session store instance.
-	 * 获取会话存储实例
+	 * 得到会话存储实例
      *
      * @return \Illuminate\Session\Store|null
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，分析程序，分词器，记号赋予器模式
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Parser\Tokenizer;
 
 /**
  * CSS selector tokenizer patterns builder.
+ * CSS选择器标记器模式生成器。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

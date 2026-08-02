@@ -45,7 +45,7 @@ trait DatabaseRule
 
     /**
      * Create a new rule instance.
-	 * 创建一个新的规则实例
+	 * 创建新的规则实例
      *
      * @param  string  $table
      * @param  string  $column
@@ -74,9 +74,13 @@ trait DatabaseRule
         if (is_subclass_of($table, Model::class)) {
             $model = new $table;
 
-            return implode('.', array_filter(
-                [$model->getConnectionName(), $model->getTable()]
-            ));
+            if (Str::contains($model->getTable(), '.')) {
+                return $table;
+            }
+
+            return implode('.', array_map(function (string $part) {
+                return trim($part, '.');
+            }, array_filter([$model->getConnectionName(), $model->getTable()])));
         }
 
         return $table;
@@ -87,7 +91,7 @@ trait DatabaseRule
 	 * 在查询上设置"where"约束
      *
      * @param  \Closure|string  $column
-     * @param  array|string|null  $value
+     * @param  array|string|int|null  $value
      * @return $this
      */
     public function where($column, $value = null)

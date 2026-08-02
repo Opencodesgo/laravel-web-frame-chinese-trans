@@ -1,13 +1,14 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，模型
  */
 
 namespace {{ namespace }};
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class {{ class }} extends Model
 {
-    //
+    use HasFactory;
 }

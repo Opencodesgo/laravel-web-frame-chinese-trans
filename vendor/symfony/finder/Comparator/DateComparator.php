@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，比较器，日期比较器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Comparator;
 
 /**
  * DateCompare compiles date comparisons.
+ * DateCompare编译日期比较。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

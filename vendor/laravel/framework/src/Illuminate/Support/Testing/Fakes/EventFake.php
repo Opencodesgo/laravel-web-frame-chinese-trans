@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，事件假装
+ * Illuminate，支持，测试，假装，假事件
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -8,8 +8,10 @@ namespace Illuminate\Support\Testing\Fakes;
 use Closure;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
+use ReflectionFunction;
 
 class EventFake implements Dispatcher
 {
@@ -55,6 +57,43 @@ class EventFake implements Dispatcher
     }
 
     /**
+     * Assert if an event has a listener attached to it.
+	 * 如果事件附加了侦听器，则断言。
+     *
+     * @param  string  $expectedEvent
+     * @param  string  $expectedListener
+     * @return void
+     */
+    public function assertListening($expectedEvent, $expectedListener)
+    {
+        foreach ($this->dispatcher->getListeners($expectedEvent) as $listenerClosure) {
+            $actualListener = (new ReflectionFunction($listenerClosure))
+                        ->getStaticVariables()['listener'];
+
+            if (is_string($actualListener) && Str::endsWith($actualListener, '@handle')) {
+                $actualListener = Str::parseCallback($actualListener)[0];
+            }
+
+            if ($actualListener === $expectedListener ||
+                ($actualListener instanceof Closure &&
+                $expectedListener === Closure::class)) {
+                PHPUnit::assertTrue(true);
+
+                return;
+            }
+        }
+
+        PHPUnit::assertTrue(
+            false,
+            sprintf(
+                'Event [%s] does not have the [%s] listener attached to it',
+                $expectedEvent,
+                print_r($expectedListener, true)
+            )
+        );
+    }
+
+    /**
      * Assert if an event was dispatched based on a truth-test callback.
 	 * 判断事件是否基于真值测试回调分派
      *
@@ -80,7 +119,7 @@ class EventFake implements Dispatcher
 
     /**
      * Assert if an event was dispatched a number of times.
-	 * 如果事件被多次调度，则断言。
+	 * 断言事件是否被多次调度
      *
      * @param  string  $event
      * @param  int  $times
@@ -117,8 +156,24 @@ class EventFake implements Dispatcher
     }
 
     /**
+     * Assert that no events were dispatched.
+	 * 断言没有分派任何事件
+     *
+     * @return void
+     */
+    public function assertNothingDispatched()
+    {
+        $count = count(Arr::flatten($this->events));
+
+        PHPUnit::assertSame(
+            0, $count,
+            "{$count} unexpected events were dispatched."
+        );
+    }
+
+    /**
      * Get all of the events matching a truth-test callback.
-	 * 获取与true -test回调匹配的所有事件
+	 * 获取与true-test回调匹配的所有事件
      *
      * @param  string  $event
      * @param  callable|null  $callback
@@ -153,20 +208,20 @@ class EventFake implements Dispatcher
 
     /**
      * Register an event listener with the dispatcher.
-	 * 向调度程序注册事件侦听器
+	 * 向调度程序注册事件监听器
      *
-     * @param  string|array  $events
+     * @param  \Closure|string|array  $events
      * @param  mixed  $listener
      * @return void
      */
-    public function listen($events, $listener)
+    public function listen($events, $listener = null)
     {
         $this->dispatcher->listen($events, $listener);
     }
 
     /**
      * Determine if a given event has listeners.
-	 * 确定给定事件是否有侦听器
+	 * 确定给定事件是否有监听器
      *
      * @param  string  $eventName
      * @return bool
@@ -215,7 +270,7 @@ class EventFake implements Dispatcher
 
     /**
      * Fire an event and call the listeners.
-	 * 触发一个事件并调用侦听器
+	 * 触发一个事件并调用监听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -270,7 +325,7 @@ class EventFake implements Dispatcher
 
     /**
      * Forget all of the queued listeners.
-	 * 忘记所有排队的侦听器
+	 * 忘记所有排队的监听器
      *
      * @return void
      */
@@ -281,11 +336,11 @@ class EventFake implements Dispatcher
 
     /**
      * Dispatch an event and call the listeners.
-	 * 分派事件并调用侦听器
+	 * 分派事件并调用监听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
-     * @return void
+     * @return array|null
      */
     public function until($event, $payload = [])
     {

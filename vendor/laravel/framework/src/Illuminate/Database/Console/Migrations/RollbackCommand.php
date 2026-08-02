@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，migrate:rollback 回滚命令
+ * Illuminate，数据库，控制台，迁移，migrate:rollback 回滚命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -27,7 +27,7 @@ class RollbackCommand extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Rollback the last database migration';
+    protected $description = 'Rollback the last database migration';		#回滚上一次数据库迁移
 
     /**
      * The migrator instance.

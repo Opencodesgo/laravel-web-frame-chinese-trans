@@ -1,7 +1,6 @@
 <?php
 /**
  * Illuminate，Http，响应
- * 服务容器绑定response
  */
 
 namespace Illuminate\Http;
@@ -11,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Traits\Macroable;
+use InvalidArgumentException;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -23,7 +23,7 @@ class Response extends SymfonyResponse
 
     /**
      * Create a new HTTP response.
-	 * 创建新的HTTP响应
+	 * 创建一个新的HTTP响应
      *
      * @param  mixed  $content
      * @param  int  $status
@@ -36,17 +36,19 @@ class Response extends SymfonyResponse
     {
         $this->headers = new ResponseHeaderBag($headers);
 
-        $this->setContent($content);		# 在SymfonyResponse里，进行重写
-        $this->setStatusCode($status);		# 在SymfonyResponse里
-        $this->setProtocolVersion('1.0');	# 在SymfonyResponse里
+        $this->setContent($content);
+        $this->setStatusCode($status);
+        $this->setProtocolVersion('1.0');
     }
 
     /**
      * Set the content on the response.
-	 * 设置响应内容
+	 * 设置响应的内容
      *
      * @param  mixed  $content
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function setContent($content)
     {
@@ -60,12 +62,16 @@ class Response extends SymfonyResponse
             $this->header('Content-Type', 'application/json');
 
             $content = $this->morphToJson($content);
+
+            if ($content === false) {
+                throw new InvalidArgumentException(json_last_error_msg());
+            }
         }
 
         // If this content implements the "Renderable" interface then we will call the
         // render method on the object so we will avoid any "__toString" exceptions
         // that might be thrown and have their errors obscured by PHP's handling.
-		// 如果这个内容实现了"Renderable"接口，那么我们将调用对象的渲染方法
+		// 如果这个内容实现了"Renderable"接口，那么我们将调用对象上的渲染方法。
         elseif ($content instanceof Renderable) {
             $content = $content->render();
         }
@@ -77,7 +83,7 @@ class Response extends SymfonyResponse
 
     /**
      * Determine if the given content should be turned into JSON.
-	 * 确定是否应该将给定的内容转换成JSON
+	 * 确定是否应该将给定的内容转换为JSON
      *
      * @param  mixed  $content
      * @return bool

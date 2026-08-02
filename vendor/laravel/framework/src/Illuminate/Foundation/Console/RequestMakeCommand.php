@@ -27,7 +27,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -60,7 +60,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

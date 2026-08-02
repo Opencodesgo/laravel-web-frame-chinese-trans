@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Creates the service-locators required by ServiceValueResolver.
- * 创建 ServiceValueResolver 所需的服务定位器
+ * 创建ServiceValueResolver所需的服务定位器。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

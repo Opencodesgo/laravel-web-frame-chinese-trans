@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，字符串输入
+ * Symfony，Component，Console，输入，字符串输入
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * StringInput represents an input provided as a string.
- * StringInput 表示作为字符串提供的输入
+ * StringInput表示提供的输入作为字符串。
  *
  * Usage:
  *
@@ -44,7 +44,7 @@ class StringInput extends ArgvInput
 
     /**
      * Tokenizes a string.
-	 * 标记字符串
+	 * 定义一个字符串
      *
      * @throws InvalidArgumentException When unable to parse input (should never happen)
      */

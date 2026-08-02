@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Renders error or exception pages from a given FlattenException.
+ * 从给定的flatexception呈现错误或异常页面
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  * @author Matthias Pigulla <mp@webfactory.de>

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Process，异常，异常接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Process\Exception;
 
 /**
  * RuntimeException for the Process Component.
+ * 流程组件的运行时异常。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */

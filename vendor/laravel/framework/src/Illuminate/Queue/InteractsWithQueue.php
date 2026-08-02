@@ -11,7 +11,7 @@ trait InteractsWithQueue
 {
     /**
      * The underlying queue job instance.
-	 * 底层队列任务实例
+	 * 底层队列作业实例
      *
      * @var \Illuminate\Contracts\Queue\Job
      */
@@ -19,7 +19,7 @@ trait InteractsWithQueue
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该任务被尝试的次数
+	 * 得到该任务被尝试的次数
      *
      * @return int
      */
@@ -30,7 +30,7 @@ trait InteractsWithQueue
 
     /**
      * Delete the job from the queue.
-	 * 从队列中删除任务
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -43,7 +43,7 @@ trait InteractsWithQueue
 
     /**
      * Fail the job from the queue.
-	 * 从队列中失败任务
+	 * 从队列中失败作业
      *
      * @param  \Throwable|null  $exception
      * @return void
@@ -57,7 +57,7 @@ trait InteractsWithQueue
 
     /**
      * Release the job back into the queue.
-	 * 释放任务并返回队列
+	 * 将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -71,7 +71,7 @@ trait InteractsWithQueue
 
     /**
      * Set the base queue job instance.
-	 * 设置基本队列任务实例
+	 * 设置基本队列作业实例
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @return $this

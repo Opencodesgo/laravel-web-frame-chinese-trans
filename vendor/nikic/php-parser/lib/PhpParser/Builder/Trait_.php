@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，Trait_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -22,6 +26,7 @@ class Trait_ extends Declaration {
 
     /**
      * Creates an interface builder.
+	 * 创建一个接口构建器
      *
      * @param string $name Name of the interface
      */
@@ -31,6 +36,7 @@ class Trait_ extends Declaration {
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *
@@ -56,6 +62,7 @@ class Trait_ extends Declaration {
 
     /**
      * Adds an attribute group.
+	 * 添加一个属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -69,6 +76,7 @@ class Trait_ extends Declaration {
 
     /**
      * Returns the built trait node.
+	 * 返回构建的特性节点
      *
      * @return Stmt\Trait_ The built interface node
      */

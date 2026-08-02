@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -50,9 +51,10 @@ class_exists(ConfigCache::class);
 
 /**
  * The Kernel is the heart of the Symfony system.
- * 内核是 Symfony 系统的核心
+ * 内核是Symfony系统的核心
  *
  * It manages an environment made of bundles.
+ * 它管理一个由包组成的环境
  *
  * Environment names must always start with a letter and
  * they must only contain letters and numbers.
@@ -82,7 +84,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
      */
     private static $freshCache = [];
 
-    public const VERSION = '5.4.48';
+    public const VERSION = '5.4.48';		#Symfony版本
     public const VERSION_ID = 50448;
     public const MAJOR_VERSION = 5;
     public const MINOR_VERSION = 4;
@@ -211,6 +213,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Gets an HTTP kernel from the container.
+	 * 从容器获取HTTP内核
      *
      * @return HttpKernelInterface
      */
@@ -284,7 +287,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Gets the application root dir (path of the project's composer file).
-	 * 获取应用程序根目录(项目编写器文件的路径)
+	 * 获取应用程序根dir(项目的作曲家文件的路径)
      *
      * @return string
      */
@@ -382,6 +385,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Initializes bundles.
+	 * 初始化包
      *
      * @throws \LogicException if two bundles share a common name
      */
@@ -400,6 +404,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * The extension point similar to the Bundle::build() method.
+	 * 扩展点类似于Bundle::build()方法
      *
      * Use this method to register compiler passes and manipulate the container during the building process.
      */
@@ -409,6 +414,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Gets the container class.
+	 * 获取容器类
      *
      * @return string
      *
@@ -429,6 +435,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Gets the container's base class.
+	 * 获取容器的基类。
      *
      * All names except Container must be fully qualified.
      *
@@ -441,6 +448,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Initializes the service container.
+	 * 初始化服务容器。
      *
      * The built version of the service container is used when fresh, otherwise the
      * container is built.
@@ -598,6 +606,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Returns the kernel parameters.
+	 * 返回内核参数
      *
      * @return array
      */
@@ -631,6 +640,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Builds the service container.
+	 * 构建服务容器
      *
      * @return ContainerBuilder
      *
@@ -664,6 +674,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Prepares the ContainerBuilder before it is compiled.
+	 * 在编译之前准备容器生成器
      */
     protected function prepareContainer(ContainerBuilder $container)
     {
@@ -694,6 +705,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Gets a new ContainerBuilder instance used to build the service container.
+	 * 获取用于构建服务容器的新容器生成器实例
      *
      * @return ContainerBuilder
      */
@@ -717,6 +729,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Dumps the service container to PHP code in the cache.
+	 * 将服务容器转储到缓存中的PHP代码
      *
      * @param string $class     The name of the class to generate
      * @param string $baseClass The name of the container's base class
@@ -758,6 +771,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Returns a loader for the container.
+	 * 为容器返回加载器
      *
      * @return DelegatingLoader
      */
@@ -809,6 +823,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Removes comments from a PHP source string.
+	 * 从PHP源字符串中删除注释
      *
      * We don't use the PHP php_strip_whitespace() function
      * as we want the content to be readable and well-formatted.

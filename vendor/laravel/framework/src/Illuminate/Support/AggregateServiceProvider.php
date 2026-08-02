@@ -9,7 +9,7 @@ class AggregateServiceProvider extends ServiceProvider
 {
     /**
      * The provider class names.
-	 * 提供程序类名
+	 * 提供者类名
      *
      * @var array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，错误处理器，调试
+ * Symfony，Component，ErrorHandler，调试
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\ErrorHandler;
 
 /**
  * Registers all the debug tools.
- * 注册所有调试工具
+ * 注册所有调试工具。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -19,7 +19,7 @@ class ClearResetsCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -35,6 +35,6 @@ class ClearResetsCommand extends Command
     {
         $this->laravel['auth.password']->broker($this->argument('name'))->getRepository()->deleteExpired();
 
-        $this->info('Expired reset tokens cleared!');
+        $this->info('Expired reset tokens cleared!');		#过期的重置令牌已清除！
     }
 }

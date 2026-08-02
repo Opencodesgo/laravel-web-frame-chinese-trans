@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，异常接口
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

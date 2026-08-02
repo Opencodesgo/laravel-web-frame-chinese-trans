@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，表格
- *
+ * Symfony，Component，Console，助手，表格
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Provides helpers to display a table.
+ * 提供显示表的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
@@ -44,22 +45,26 @@ class Table
 
     /**
      * Table headers.
+	 * 表头
      */
     private $headers = [];
 
     /**
      * Table rows.
+	 * 表行
      */
     private $rows = [];
     private $horizontal = false;
 
     /**
      * Column widths cache.
+	 * 列widths缓存
      */
     private $effectiveColumnWidths = [];
 
     /**
      * Number of columns cache.
+	 * 列缓存数
      *
      * @var int
      */
@@ -82,6 +87,7 @@ class Table
 
     /**
      * User set column widths.
+	 * 用户设置栏宽度
      *
      * @var array
      */
@@ -108,6 +114,7 @@ class Table
 
     /**
      * Sets a style definition.
+	 * 设置样式定义
      */
     public static function setStyleDefinition(string $name, TableStyle $style)
     {
@@ -120,6 +127,7 @@ class Table
 
     /**
      * Gets a style definition by name.
+	 * 通过名称获取样式定义
      *
      * @return TableStyle
      */
@@ -138,6 +146,7 @@ class Table
 
     /**
      * Sets table style.
+	 * 设置表样式
      *
      * @param TableStyle|string $name The style name or a TableStyle instance
      *
@@ -152,6 +161,7 @@ class Table
 
     /**
      * Gets the current table style.
+	 * 获取当前表样式
      *
      * @return TableStyle
      */
@@ -162,6 +172,7 @@ class Table
 
     /**
      * Sets table column style.
+	 * 设置表列样式
      *
      * @param TableStyle|string $name The style name or a TableStyle instance
      *
@@ -176,6 +187,7 @@ class Table
 
     /**
      * Gets the current style for a column.
+	 * 获取列的当前样式
      *
      * If style was not set, it returns the global table style.
      *
@@ -188,6 +200,7 @@ class Table
 
     /**
      * Sets the minimum width of a column.
+	 * 设置列的最小宽度
      *
      * @return $this
      */
@@ -200,6 +213,7 @@ class Table
 
     /**
      * Sets the minimum width of all columns.
+	 * 设置所有列的最小宽度
      *
      * @return $this
      */
@@ -215,6 +229,7 @@ class Table
 
     /**
      * Sets the maximum width of a column.
+	 * 设置列的最大宽度。
      *
      * Any cell within this column which contents exceeds the specified width will be wrapped into multiple lines, while
      * formatted strings are preserved.
@@ -288,6 +303,7 @@ class Table
 
     /**
      * Adds a row to the table, and re-renders the table.
+	 * 向表中添加一行，并重新呈现表。
      *
      * @return $this
      */
@@ -349,6 +365,7 @@ class Table
 
     /**
      * Renders table to output.
+	 * 将表呈现为输出。
      *
      * Example:
      *
@@ -449,6 +466,7 @@ class Table
 
     /**
      * Renders horizontal header separator.
+	 * 呈现水平标题分隔符
      *
      * Example:
      *
@@ -504,6 +522,7 @@ class Table
 
     /**
      * Renders vertical column separator.
+	 * 呈现垂直列分隔符
      */
     private function renderColumnSeparator(int $type = self::BORDER_OUTSIDE): string
     {
@@ -514,6 +533,7 @@ class Table
 
     /**
      * Renders table row.
+	 * 呈现表行
      *
      * Example:
      *
@@ -537,6 +557,7 @@ class Table
 
     /**
      * Renders table cell with padding.
+	 * 渲染带有填充的表格单元格
      */
     private function renderCell(array $row, int $column, string $cellFormat): string
     {
@@ -591,6 +612,7 @@ class Table
 
     /**
      * Calculate number of columns for this table.
+	 * 计算此表的列数
      */
     private function calculateNumberOfColumns(array $rows)
     {
@@ -675,6 +697,7 @@ class Table
 
     /**
      * fill rows that contains rowspan > 1.
+	 * 填充包含rowspan > 1的行
      *
      * @throws InvalidArgumentException
      */
@@ -765,6 +788,7 @@ class Table
 
     /**
      * Gets number of columns by row.
+	 * 按行获取列数
      */
     private function getNumberOfColumns(array $row): int
     {
@@ -778,6 +802,7 @@ class Table
 
     /**
      * Gets list of columns for the given row.
+	 * 获取给定行的列列表
      */
     private function getRowColumns(array $row): array
     {
@@ -794,6 +819,7 @@ class Table
 
     /**
      * Calculates columns widths.
+	 * 计算列宽度
      */
     private function calculateColumnsWidth(iterable $groups)
     {
@@ -848,6 +874,7 @@ class Table
 
     /**
      * Called after rendering to cleanup cache data.
+	 * 在呈现后调用以清除缓存数据
      */
     private function cleanup()
     {

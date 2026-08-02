@@ -20,7 +20,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * The array of active view paths.
-	 * 活动视图路径数组
+	 * 活动视图路径的数组
      *
      * @var array
      */
@@ -36,7 +36,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * The namespace to file path hints.
-	 * 文件路径提示的命名空间
+	 * 命名空间到文件路径的提示
      *
      * @var array
      */
@@ -46,13 +46,13 @@ class FileViewFinder implements ViewFinderInterface
      * Register a view extension with the finder.
 	 * 向查找器注册视图扩展
      *
-     * @var array
+     * @var string[]
      */
     protected $extensions = ['blade.php', 'php', 'css', 'html'];
 
     /**
      * Create a new file view loader instance.
-	 * 创建新的文件视图加载器实例
+	 * 创建一个新的文件视图加载器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  array  $paths
@@ -91,7 +91,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the path to a template with a named path.
-	 * 获取具有命名路径的模板路径
+	 * 获取具有命名路径的模板的路径
      *
      * @param  string  $name
      * @return string
@@ -152,7 +152,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get an array of possible view files.
-	 * 得到可能视图文件的数组
+	 * 获取可能的视图文件的数组
      *
      * @param  string  $name
      * @return array
@@ -202,7 +202,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Add a namespace hint to the finder.
-	 * 向查找器添加命名空间提示
+	 * 向查找器添加名称空间提示
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -221,7 +221,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Prepend a namespace hint to the finder.
-	 * 向查找器添加一个命名空间提示
+	 * 向查找器添加一个名称空间提示
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -240,7 +240,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Replace the namespace hints for the given namespace.
-	 * 替换给定名称空间的命名空间提示
+	 * 替换给定名称空间的名称空间提示
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -253,7 +253,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Register an extension with the view finder.
-	 * 用查找器注册一个扩展
+	 * 用取景器注册一个扩展
      *
      * @param  string  $extension
      * @return void
@@ -339,7 +339,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the namespace to file path hints.
-	 * 得到文件路径提示的命名空间
+	 * 将名称空间获取到文件路径提示
      *
      * @return array
      */
@@ -350,7 +350,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get registered extensions.
-	 * 得到已注册的扩展名
+	 * 注册扩展名
      *
      * @return array
      */

@@ -1,7 +1,11 @@
 <?php
+/**
+ * Ramsey，Uuid，Uuid 工厂
+ */
 
 /**
  * This file is part of the ramsey/uuid library
+ * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -129,6 +133,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Sets the codec to use for this factory
+	 * 将codec设置为该工厂使用
      *
      * @param CodecInterface $codec A UUID encoder-decoder
      */

@@ -8,11 +8,15 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Concerns\ComparesRelatedModels;
+use Illuminate\Database\Eloquent\Relations\Concerns\InteractsWithDictionary;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
 class BelongsTo extends Relation
 {
-    use SupportsDefaultModels;
+    use ComparesRelatedModels,
+        InteractsWithDictionary,
+        SupportsDefaultModels;
 
     /**
      * The child model instance of the relation.
@@ -32,7 +36,7 @@ class BelongsTo extends Relation
 
     /**
      * The associated key on the parent model.
-	 * 在父模型上的相关键
+	 * 父模型上的关联键
      *
      * @var string
      */
@@ -45,14 +49,6 @@ class BelongsTo extends Relation
      * @var string
      */
     protected $relationName;
-
-    /**
-     * The count of self joins.
-	 * 自我连接的计数
-     *
-     * @var int
-     */
-    protected static $selfJoinCount = 0;
 
     /**
      * Create a new belongs to relationship instance.
@@ -74,7 +70,7 @@ class BelongsTo extends Relation
         // In the underlying base relationship class, this variable is referred to as
         // the "parent" since most relationships are not inversed. But, since this
         // one is we will create a "child" variable for much better readability.
-		// 在基础基关系类中，该变量被称为"父亲"，因为大多数关系都没有转化。
+		// 在基础基关系类中，该变量被称为"父母"自大多数关系都不是反向的。
         $this->child = $child;
 
         parent::__construct($query, $child);
@@ -97,7 +93,7 @@ class BelongsTo extends Relation
 
     /**
      * Set the base constraints on the relation query.
-	 * 设置关系查询的基本约束
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
@@ -107,7 +103,7 @@ class BelongsTo extends Relation
             // For belongs to relationships, which are essentially the inverse of has one
             // or has many relationships, we need to actually query on the primary key
             // of the related models matching on the foreign key that's on a parent.
-			// For属于关系，本质上是has的倒数或者有很多关系。
+			// For属于关系，本质上是has的倒数。
             $table = $this->related->getTable();
 
             $this->query->where($table.'.'.$this->ownerKey, '=', $this->child->{$this->foreignKey});
@@ -116,7 +112,7 @@ class BelongsTo extends Relation
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 为关系的急切负载设置约束
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -136,7 +132,7 @@ class BelongsTo extends Relation
 
     /**
      * Gather the keys from an array of related models.
-	 * 从一系列相关模型中收集键
+	 * 从相关模型的数组中收集键
      *
      * @param  array  $models
      * @return array
@@ -148,7 +144,7 @@ class BelongsTo extends Relation
         // First we need to gather all of the keys from the parent models so we know what
         // to query for via the eager loading query. We will add them to an array then
         // execute a "where in" statement to gather up all of those related records.
-		// 首先，我们需要从父模型中收集所有键，以便我们知道通过即时加载查询查询。
+		// 首先，我们需要从父模型中收集所有的键。
         foreach ($models as $model) {
             if (! is_null($value = $model->{$this->foreignKey})) {
                 $keys[] = $value;
@@ -162,7 +158,7 @@ class BelongsTo extends Relation
 
     /**
      * Initialize the relation on a set of models.
-	 * 初始化一组模型的关系
+	 * 初始化一组模型上的关系
      *
      * @param  array  $models
      * @param  string  $relation
@@ -179,7 +175,7 @@ class BelongsTo extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
-	 * 把急切的结果与他们的父母相匹配
+	 * 将急切加载的结果与他们的父母匹配
      *
      * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
@@ -199,16 +195,20 @@ class BelongsTo extends Relation
         $dictionary = [];
 
         foreach ($results as $result) {
-            $dictionary[$result->getAttribute($owner)] = $result;
+            $attribute = $this->getDictionaryKey($result->getAttribute($owner));
+
+            $dictionary[$attribute] = $result;
         }
 
         // Once we have the dictionary constructed, we can loop through all the parents
         // and match back onto their children using these keys of the dictionary and
         // the primary key of the children to map them onto the correct instances.
-		// 一旦构造了字典，就可以循环遍历所有父元素，然后用字典里的这些键来匹配他们的孩子。
+		// 一旦构造了字典，就可以循环遍历所有父元素。
         foreach ($models as $model) {
-            if (isset($dictionary[$model->{$foreign}])) {
-                $model->setRelation($relation, $dictionary[$model->{$foreign}]);
+            $attribute = $this->getDictionaryKey($model->{$foreign});
+
+            if (isset($dictionary[$attribute])) {
+                $model->setRelation($relation, $dictionary[$attribute]);
             }
         }
 
@@ -219,7 +219,7 @@ class BelongsTo extends Relation
      * Associate the model instance to the given parent.
 	 * 将模型实例关联到给定的父实例
      *
-     * @param  \Illuminate\Database\Eloquent\Model|int|string  $model
+     * @param  \Illuminate\Database\Eloquent\Model|int|string|null  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function associate($model)
@@ -239,7 +239,7 @@ class BelongsTo extends Relation
 
     /**
      * Dissociate previously associated model from the given parent.
-	 * 从给定的父中分离之前关联的模型
+	 * 将先前关联的模型与给定的父模型分离
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -251,8 +251,19 @@ class BelongsTo extends Relation
     }
 
     /**
+     * Alias of "dissociate" method.
+	 * "解离"方法的别名
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function disassociate()
+    {
+        return $this->dissociate();
+    }
+
+    /**
      * Add the constraints for a relationship query.
-	 * 添加关系查询的约束
+	 * 为关系查询添加约束
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -272,7 +283,7 @@ class BelongsTo extends Relation
 
     /**
      * Add the constraints for a relationship query on the same table.
-	 * 在同一个表中添加关系查询的约束
+	 * 为同一表上的关系查询添加约束
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -293,19 +304,8 @@ class BelongsTo extends Relation
     }
 
     /**
-     * Get a relationship join table hash.
-	 * 让关系加入表哈希
-     *
-     * @return string
-     */
-    public function getRelationCountHash()
-    {
-        return 'laravel_reserved_'.static::$selfJoinCount++;
-    }
-
-    /**
      * Determine if the related model has an auto-incrementing ID.
-	 * 确定相关模型是否有自动递增ID
+	 * 确定相关模型是否具有自动递增的ID
      *
      * @return bool
      */
@@ -329,7 +329,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the child of the relationship.
-	 * 得到子关系
+	 * 得到这段关系的孩子
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -340,7 +340,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the foreign key of the relationship.
-	 * 获得关系的外国关键
+	 * 获取关系的外键
      *
      * @return string
      */
@@ -351,7 +351,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the fully qualified foreign key of the relationship.
-	 * 获得关系的完全合格的外国密钥
+	 * 获取关系的完全限定外键
      *
      * @return string
      */
@@ -361,8 +361,19 @@ class BelongsTo extends Relation
     }
 
     /**
+     * Get the key value of the child's foreign key.
+	 * 获取子节点的外键的键值
+     *
+     * @return mixed
+     */
+    public function getParentKey()
+    {
+        return $this->child->{$this->foreignKey};
+    }
+
+    /**
      * Get the associated key of the relationship.
-	 * 得到关系的相关关键
+	 * 获取关系的关联键
      *
      * @return string
      */
@@ -373,13 +384,25 @@ class BelongsTo extends Relation
 
     /**
      * Get the fully qualified associated key of the relationship.
-	 * 获得关系的完全合格的相关关键
+	 * 获取关系的完全限定关联键
      *
      * @return string
      */
     public function getQualifiedOwnerKeyName()
     {
         return $this->related->qualifyColumn($this->ownerKey);
+    }
+
+    /**
+     * Get the value of the model's associated key.
+	 * 获取模型关联键的值
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return mixed
+     */
+    protected function getRelatedKeyFrom(Model $model)
+    {
+        return $model->{$this->ownerKey};
     }
 
     /**

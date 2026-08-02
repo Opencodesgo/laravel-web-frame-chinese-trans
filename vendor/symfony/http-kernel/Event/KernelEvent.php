@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，内核事件
+ * Symfony，Component，HttpKernel，事件，内核事件
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Base class for events dispatched in the HttpKernel component.
- * 在 HttpKernel 组件中调度的事件的基类
+ * 在HttpKernel组件中调度的事件的基类。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -65,6 +65,7 @@ class KernelEvent extends Event
 
     /**
      * Returns the request type the kernel is currently processing.
+	 * 返回当前处理的请求类型
      *
      * @return int One of HttpKernelInterface::MAIN_REQUEST and
      *             HttpKernelInterface::SUB_REQUEST
@@ -76,6 +77,7 @@ class KernelEvent extends Event
 
     /**
      * Checks if this is the main request.
+	 * 检查是否这是主请求
      */
     public function isMainRequest(): bool
     {
@@ -84,7 +86,7 @@ class KernelEvent extends Event
 
     /**
      * Checks if this is a master request.
-	 * 检查这是否是一个主请求
+	 * 检查是否这是一个主请求
      *
      * @return bool
      *

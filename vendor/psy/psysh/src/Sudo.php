@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Sudo
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -14,11 +17,13 @@ namespace Psy;
 /**
  * Helpers for bypassing visibility restrictions, mostly used in code generated
  * by the `sudo` command.
+ * 用于绕过可见性限制的帮助程序，主要用于生成的代码。
  */
 class Sudo
 {
     /**
      * Fetch a property of an object, bypassing visibility restrictions.
+	 * 获取对象的属性，绕过可见性限制。
      *
      * @param object $object
      * @param string $property property name
@@ -34,6 +39,7 @@ class Sudo
 
     /**
      * Assign the value of a property of an object, bypassing visibility restrictions.
+	 * 为对象的属性赋值，绕过可见性限制。
      *
      * @param object $object
      * @param string $property property name
@@ -51,6 +57,7 @@ class Sudo
 
     /**
      * Call a method on an object, bypassing visibility restrictions.
+	 * 调用对象上的方法，绕过可见性限制。
      *
      * @param object $object
      * @param string $method  method name
@@ -69,6 +76,7 @@ class Sudo
 
     /**
      * Fetch a property of a class, bypassing visibility restrictions.
+	 * 获取类的属性，绕过可见性限制。
      *
      * @param string|object $class    class name or instance
      * @param string        $property property name
@@ -85,6 +93,7 @@ class Sudo
 
     /**
      * Assign the value of a static property of a class, bypassing visibility restrictions.
+	 * 为类的静态属性赋值，绕过可见性限制。
      *
      * @param string|object $class    class name or instance
      * @param string        $property property name
@@ -108,6 +117,7 @@ class Sudo
 
     /**
      * Call a static method on a class, bypassing visibility restrictions.
+	 * 调用类上的静态方法，绕过可见性限制。
      *
      * @param string|object $class   class name or instance
      * @param string        $method  method name
@@ -126,6 +136,7 @@ class Sudo
 
     /**
      * Fetch a class constant, bypassing visibility restrictions.
+	 * 获取类常量，绕过可见性限制。
      *
      * @param string|object $class class name or instance
      * @param string        $const constant name
@@ -154,6 +165,7 @@ class Sudo
 
     /**
      * Construct an instance of a class, bypassing private constructors.
+	 * 构造类的实例，绕过私有构造函数。
      *
      * @param string $class   class name
      * @param mixed  $args...
@@ -172,6 +184,7 @@ class Sudo
 
     /**
      * Get a ReflectionProperty from an object (or its parent classes).
+	 * 从对象（或它的父类）获取一个ReflectionProperty
      *
      * @throws \ReflectionException if neither the object nor any of its parents has this property
      *

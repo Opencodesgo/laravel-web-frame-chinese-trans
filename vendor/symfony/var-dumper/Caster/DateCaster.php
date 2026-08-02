@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，日期 Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts DateTimeInterface related classes to array representation.
+ * 将DateTimeInterface相关类转换为数组表示。
  *
  * @author Dany Maillard <danymaillard93b@gmail.com>
  *

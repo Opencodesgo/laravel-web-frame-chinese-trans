@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，事件调度
+ * Symfony，Component，EventDispatcher，事件调度员
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\EventDispatcher\Debug\WrappedListener;
 
 /**
  * The EventDispatcherInterface is the central point of Symfony's event listener system.
+ * EventDispatcherInterface是Symfony事件侦听器系统的中心点。
  *
  * Listeners are registered on the manager and events are dispatched through the
  * manager.
@@ -214,6 +215,7 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * Triggers the listeners of an event.
+	 * 触发事件的侦听器。
      *
      * This method can be overridden to add functionality that is executed
      * for each listener.
@@ -236,6 +238,7 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * Sorts the internal list of listeners for the given event by priority.
+	 * 按优先顺序将给定事件的侦听器的内部列表排序
      */
     private function sortListeners(string $eventName)
     {
@@ -255,6 +258,7 @@ class EventDispatcher implements EventDispatcherInterface
 
     /**
      * Optimizes the internal list of listeners for the given event by priority.
+	 * 优先考虑给定事件的侦听器的内部列表
      */
     private function optimizeListeners(string $eventName): array
     {

@@ -26,7 +26,7 @@ class ServerBag extends ParameterBag
 {
     /**
      * Gets the HTTP headers.
-	 * 获取HTTP标头
+	 * 得到HTTP头
      *
      * @return array
      */

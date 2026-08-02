@@ -117,6 +117,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
         $response = $event->getResponse();
         $autoCacheControl = !$response->headers->has(self::NO_AUTO_CACHE_CONTROL_HEADER);
         // Always remove the internal header if present
+		// 总是删除内部标头（如果存在）
         $response->headers->remove(self::NO_AUTO_CACHE_CONTROL_HEADER);
 
         if (!$session = $this->container && $this->container->has('initialized_session') ? $this->container->get('initialized_session') : ($event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null)) {
@@ -316,6 +317,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
 
     /**
      * Gets the session object.
+	 * 得到会话对象
      *
      * @internal
      *

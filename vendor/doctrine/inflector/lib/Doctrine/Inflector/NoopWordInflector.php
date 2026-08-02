@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Inflector，等待单词偏转器
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，切断阵列存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Caster;
 
 /**
  * Represents a cut array.
+ * 表示一个切割阵列。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

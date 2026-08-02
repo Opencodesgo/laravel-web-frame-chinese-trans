@@ -1,70 +1,70 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，观察者模式
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use NamespacedDummyModel;
+use {{ namespacedModel }};
 
-class DummyClass
+class {{ class }}
 {
     /**
-     * Handle the DocDummyModel "created" event.
-	 * 处理DocDummyModel"创建"事件
+     * Handle the {{ model }} "created" event.
+	 * 处理{{model}} "created"事件
      *
-     * @param  \NamespacedDummyModel  $dummyModel
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function created(DummyModel $dummyModel)
+    public function created({{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
-     * Handle the DocDummyModel "updated" event.
-	 * 处理DocDummyModel"更新"事件
+     * Handle the {{ model }} "updated" event.
+	 * 处理{{model}} "updated"事件
      *
-     * @param  \NamespacedDummyModel  $dummyModel
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function updated(DummyModel $dummyModel)
+    public function updated({{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
-     * Handle the DocDummyModel "deleted" event.
-	 * 处理DocDummyModel"删除"事件
+     * Handle the {{ model }} "deleted" event.
+	 * 处理{{model}} "deleted"事件
      *
-     * @param  \NamespacedDummyModel  $dummyModel
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function deleted(DummyModel $dummyModel)
+    public function deleted({{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
-     * Handle the DocDummyModel "restored" event.
-	 * 处理DocDummyModel"恢复"事件
+     * Handle the {{ model }} "restored" event.
+	 * 处理{{model}} "restored"事件
      *
-     * @param  \NamespacedDummyModel  $dummyModel
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function restored(DummyModel $dummyModel)
+    public function restored({{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
-     * Handle the DocDummyModel "force deleted" event.
-	 * 处理DocDummyModel"力删除"事件
+     * Handle the {{ model }} "force deleted" event.
+	 * 处理{{model}} "force deleted"事件
      *
-     * @param  \NamespacedDummyModel  $dummyModel
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void
      */
-    public function forceDeleted(DummyModel $dummyModel)
+    public function forceDeleted({{ model }} ${{ modelVariable }})
     {
         //
     }

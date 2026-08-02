@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，差异
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -24,6 +27,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Difference.
+ * 差异特征。
  *
  * Depends on the following methods:
  *
@@ -114,6 +118,7 @@ trait Difference
      * Get the difference as a DateInterval instance.
      * Return relative interval (negative if $absolute flag is not set to true and the given date is before
      * current one).
+	 * 将差值作为DateInterval实例获取。
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -142,6 +147,7 @@ trait Difference
      * Get the difference as a CarbonInterval instance.
      * Return relative interval (negative if $absolute flag is not set to true and the given date is before
      * current one).
+	 * 以CarbonInterval实例的形式获取差值。
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference

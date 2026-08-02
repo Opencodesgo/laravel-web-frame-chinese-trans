@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，星期
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -13,6 +16,7 @@ namespace Carbon\Traits;
 
 /**
  * Trait Week.
+ * 星期特征。
  *
  * week and ISO week number, year and count in year.
  *

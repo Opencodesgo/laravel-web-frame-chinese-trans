@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，转存
- *
+ * Symfony，Component，Console，助手，转储
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -20,7 +20,7 @@ class FilterEmailValidation implements EmailValidation
 
     /**
      * Create a new validation instance.
-	 * 创建新的验证实例
+	 * 创建一个新的验证实例
      *
      * @param  int  $flags
      * @return void

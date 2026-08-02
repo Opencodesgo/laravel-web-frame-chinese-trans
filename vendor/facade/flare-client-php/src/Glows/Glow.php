@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，发光，发光
+ */
 
 namespace Facade\FlareClient\Glows;
 

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Zend 监控处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Handler sending logs to Zend Monitor
+ * 处理发送日志到Zend监视器
  *
  * @author  Christian Bergau <cbergau86@gmail.com>
  * @author  Jason Davis <happydude@jasondavis.net>
@@ -27,6 +32,7 @@ class ZendMonitorHandler extends AbstractProcessingHandler
 {
     /**
      * Monolog level / ZendMonitor Custom Event priority map
+	 * 独白级别/ ZendMonitor自定义事件优先级图
      *
      * @var array<int, int>
      */
@@ -43,6 +49,7 @@ class ZendMonitorHandler extends AbstractProcessingHandler
             );
         }
         //zend monitor constants are not defined if zend monitor is not enabled.
+		// 如果未启用Zend监视器，则不定义Zend监视器常量。
         $this->levelMap = [
             Logger::DEBUG     => \ZEND_MONITOR_EVENT_SEVERITY_INFO,
             Logger::INFO      => \ZEND_MONITOR_EVENT_SEVERITY_INFO,
@@ -71,6 +78,7 @@ class ZendMonitorHandler extends AbstractProcessingHandler
 
     /**
      * Write to Zend Monitor Events
+	 * 写入Zend监视器事件
      * @param string $type      Text displayed in "Class Name (custom)" field
      * @param string $message   Text displayed in "Error String"
      * @param array  $formatted Displayed in Custom Variables tab

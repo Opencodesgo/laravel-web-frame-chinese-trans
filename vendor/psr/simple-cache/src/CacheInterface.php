@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，SimpleCache，缓存接口
+ */
 
 namespace Psr\SimpleCache;
 
@@ -6,6 +9,7 @@ interface CacheInterface
 {
     /**
      * Fetches a value from the cache.
+	 * 从缓存获取一个值。
      *
      * @param string $key     The unique key of this item in the cache.
      * @param mixed  $default Default value to return if the key does not exist.
@@ -19,6 +23,7 @@ interface CacheInterface
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
+	 * 将数据保存在缓存中，由具有可选过期TTL时间的键唯一引用。
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store, must be serializable.
@@ -35,6 +40,7 @@ interface CacheInterface
 
     /**
      * Delete an item from the cache by its unique key.
+	 * 根据项的唯一键从缓存中删除项。
      *
      * @param string $key The unique cache key of the item to delete.
      *
@@ -47,6 +53,7 @@ interface CacheInterface
 
     /**
      * Wipes clean the entire cache's keys.
+	 * 擦除清除整个缓存的键
      *
      * @return bool True on success and false on failure.
      */
@@ -54,6 +61,7 @@ interface CacheInterface
 
     /**
      * Obtains multiple cache items by their unique keys.
+	 * 根据其唯一键获取多个缓存项
      *
      * @param iterable $keys    A list of keys that can obtained in a single operation.
      * @param mixed    $default Default value to return for keys that do not exist.
@@ -84,6 +92,7 @@ interface CacheInterface
 
     /**
      * Deletes multiple cache items in a single operation.
+	 * 在单个操作中删除多个缓存项
      *
      * @param iterable $keys A list of string-based keys to be deleted.
      *
@@ -97,6 +106,7 @@ interface CacheInterface
 
     /**
      * Determines whether an item is present in the cache.
+	 * 确定项是否存在于缓存中。
      *
      * NOTE: It is recommended that has() is only to be used for cache warming type purposes
      * and not to be used within your live applications operations for get/set, as this method

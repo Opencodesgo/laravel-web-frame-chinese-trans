@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Decorates output to add console style guide helpers.
- * 装饰输出以添加控制台样式指南帮助器
+ * 装饰输出以添加控制台风格的向导助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * BinaryFileResponse represents an HTTP response delivering a file.
+ * binaryfilerresponse表示传递文件的HTTP响应
  *
  * @author Niklas Fiekas <niklas.fiekas@tu-clausthal.de>
  * @author stealth35 <stealth35-php@live.fr>
@@ -122,6 +123,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Gets the file.
+	 * 得么文件
      *
      * @return File
      */
@@ -132,6 +134,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Sets the response stream chunk size.
+	 * 设置响应流块大小
      *
      * @return $this
      */
@@ -148,6 +151,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Automatically sets the Last-Modified header according the file modification date.
+	 * 根据文件修改日期自动设置Last-Modified头
      *
      * @return $this
      */
@@ -160,6 +164,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Automatically sets the ETag header according to the checksum of the file.
+	 * 根据文件的校验和自动设置ETag头
      *
      * @return $this
      */
@@ -172,6 +177,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Sets the Content-Disposition header with the given filename.
+	 * 用给定的文件名设置Content-Disposition报头
      *
      * @param string $disposition      ResponseHeaderBag::DISPOSITION_INLINE or ResponseHeaderBag::DISPOSITION_ATTACHMENT
      * @param string $filename         Optionally use this UTF-8 encoded filename instead of the real name of the file
@@ -401,6 +407,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Trust X-Sendfile-Type header.
+	 * 信任X-Sendfile-Type头
      */
     public static function trustXSendfileTypeHeader()
     {
@@ -410,6 +417,7 @@ class BinaryFileResponse extends Response
     /**
      * If this is set to true, the file will be unlinked after the request is sent
      * Note: If the X-Sendfile header is used, the deleteFileAfterSend setting will not be used.
+	 * 如果将此设置为true，则在发送请求后将取消对文件的链接。
      *
      * @return $this
      */

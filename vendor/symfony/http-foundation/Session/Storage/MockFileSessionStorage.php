@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，模拟文件会话存储
+ * Symfony，Component，HttpFoundation，Session，储存，模拟文件会话存储
  */
 
 /*
@@ -119,13 +119,14 @@ class MockFileSessionStorage extends MockArraySessionStorage
 
         // this is needed when the session object is re-used across multiple requests
         // in functional tests.
+		// 当跨多个请求重用会话对象时，需要这样做。
         $this->started = false;
     }
 
     /**
      * Deletes a session from persistent storage.
      * Deliberately leaves session data in memory intact.
-	 * 从持久存储中删除会话
+	 * 从持久存储中删除会话。
      */
     private function destroy(): void
     {
@@ -139,6 +140,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
 
     /**
      * Calculate path to file.
+	 * 计算文件的路径
      */
     private function getFilePath(): string
     {

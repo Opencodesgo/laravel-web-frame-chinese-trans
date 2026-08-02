@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，支持，进程工具包
+ * Illuminate，支持，进程常用工具
  */
 
 namespace Illuminate\Support;
 
 /**
  * ProcessUtils is a bunch of utility methods.
- * ProcessUtils 是一堆实用程序方法
+ * ProcessUtils是一堆实用程序方法
  *
  * This class was originally copied from Symfony 3.
  */

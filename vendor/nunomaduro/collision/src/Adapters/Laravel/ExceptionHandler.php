@@ -1,13 +1,9 @@
 <?php
-
 /**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
+ * NunoMaduro，Collision，适配器，Laravel，异常处理者
  */
+
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
@@ -18,16 +14,13 @@ use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExce
 use Throwable;
 
 /**
- * This is an Collision Laravel Adapter ExceptionHandler implementation.
- *
- * Registers the Error Handler on Laravel.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @internal
  */
-class ExceptionHandler implements ExceptionHandlerContract
+final class ExceptionHandler implements ExceptionHandlerContract
 {
     /**
      * Holds an instance of the application exception handler.
+	 * 保存应用程序异常处理程序的实例
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler
      */
@@ -35,6 +28,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Holds an instance of the container.
+	 * 保存容器的实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -42,6 +36,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Creates a new instance of the ExceptionHandler.
+	 * 创建ExceptionHandler的新实例
      */
     public function __construct(Container $container, ExceptionHandlerContract $appExceptionHandler)
     {
@@ -86,6 +81,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Determine if the exception should be reported.
+	 * 确定是否应该报告异常
      *
      * @return bool
      */

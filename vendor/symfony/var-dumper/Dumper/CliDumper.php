@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储，Cli 转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * CliDumper dumps variables for command line output.
+ * 命令行输出的变量转储变量。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -96,6 +100,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Sets the maximum number of characters per line for dumped strings.
+	 * 为丢弃的字符串设置每个行的最大字符数
      */
     public function setMaxStringWidth(int $maxStringWidth)
     {
@@ -104,6 +109,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Configures styles.
+	 * 配置风格
      *
      * @param array $styles A map of style names to style definitions
      */
@@ -593,6 +599,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Returns true if the stream supports colorization.
+	 * 如果流支持着色,返回true。
      *
      * Reference: Composer\XdebugHandler\Process::supportsColor
      * https://github.com/composer/xdebug-handler
@@ -638,6 +645,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Returns true if the Windows terminal supports true color.
+	 * 如果Windows终端支持真实的颜色,返回true。
      *
      * Note that this does not check an output stream, but relies on environment
      * variables from known implementations, or a PHP and Windows version that

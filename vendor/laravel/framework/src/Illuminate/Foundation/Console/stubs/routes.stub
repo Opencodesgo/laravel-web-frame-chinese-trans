@@ -1,17 +1,16 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，路由
  */
 
 /*
 |--------------------------------------------------------------------------
-| Load The Cached Routes
+| Load The Cached Routes 	加载缓存的路由
 |--------------------------------------------------------------------------
 |
 | Here we will decode and unserialize the RouteCollection instance that
 | holds all of the route information for an application. This allows
 | us to instantaneously load the entire route map into the router.
-| 在这里，我们将进行解码并未序列化的程序性实例。
 |
 */
 

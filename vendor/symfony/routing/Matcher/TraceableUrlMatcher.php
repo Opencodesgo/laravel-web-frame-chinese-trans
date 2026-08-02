@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，匹配程序，可追踪的Url匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * TraceableUrlMatcher helps debug path info matching by tracing the match.
+ * TraceableUrlMatcher通过跟踪匹配来帮助调试路径信息匹配。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Laravel，服务提供者
+ */
 
 /**
  * This file is part of the Carbon package.

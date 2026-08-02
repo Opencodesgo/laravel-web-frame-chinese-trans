@@ -23,11 +23,8 @@ class ViewServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerFactory();
-
         $this->registerViewFinder();
-
         $this->registerBladeCompiler();
-
         $this->registerEngineResolver();
     }
 
@@ -43,8 +40,7 @@ class ViewServiceProvider extends ServiceProvider
             // Next we need to grab the engine resolver instance that will be used by the
             // environment. The resolver will be used by an environment to get each of
             // the various engine implementations such as plain PHP or Blade engine.
-			// 接下来我们需要获取引擎解析器实例。
-			// 解析器将被用作一个环境去获取各种引擎实现，如纯PHP或Blade引擎。
+			// 接下来，我们需要获取引擎解析器实例，该实例将被环境使用。
             $resolver = $app['view.engine.resolver'];
 
             $finder = $app['view.finder'];
@@ -54,7 +50,7 @@ class ViewServiceProvider extends ServiceProvider
             // We will also set the container instance on this view environment since the
             // view composers may be classes registered in the container, which allows
             // for great testable, flexible composers for the application developer.
-			// 我们还将在此视图环境中设置容器实例
+			// 我们还将在这个视图环境中设置容器实例。
             $factory->setContainer($app);
 
             $factory->share('app', $app);
@@ -65,7 +61,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Create a new Factory Instance.
-	 * 创建工厂实例
+	 * 创建一个新的工厂实例
      *
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @param  \Illuminate\View\ViewFinderInterface  $finder
@@ -79,7 +75,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the view finder implementation.
-	 * 注册视图查询器实现
+	 * 注册取景器实现
      *
      * @return void
      */
@@ -99,13 +95,15 @@ class ViewServiceProvider extends ServiceProvider
     public function registerBladeCompiler()
     {
         $this->app->singleton('blade.compiler', function ($app) {
-            return new BladeCompiler($app['files'], $app['config']['view.compiled']);
+            return tap(new BladeCompiler($app['files'], $app['config']['view.compiled']), function ($blade) {
+                $blade->component('dynamic-component', DynamicComponent::class);
+            });
         });
     }
 
     /**
      * Register the engine resolver instance.
-	 * 注册引擎解析实例
+	 * 注册引擎解析程序实例
      *
      * @return void
      */
@@ -136,7 +134,7 @@ class ViewServiceProvider extends ServiceProvider
     public function registerFileEngine($resolver)
     {
         $resolver->register('file', function () {
-            return new FileEngine;
+            return new FileEngine($this->app['files']);
         });
     }
 
@@ -150,7 +148,7 @@ class ViewServiceProvider extends ServiceProvider
     public function registerPhpEngine($resolver)
     {
         $resolver->register('php', function () {
-            return new PhpEngine;
+            return new PhpEngine($this->app['files']);
         });
     }
 
@@ -164,7 +162,7 @@ class ViewServiceProvider extends ServiceProvider
     public function registerBladeEngine($resolver)
     {
         $resolver->register('blade', function () {
-            return new CompilerEngine($this->app['blade.compiler']);
+            return new CompilerEngine($this->app['blade.compiler'], $this->app['files']);
         });
     }
 }

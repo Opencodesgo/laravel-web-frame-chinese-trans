@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Elasticsearch 格式化器
+ * Monolog，Formatter，Elasticsearch 格式化
  */
 
 /*
@@ -19,6 +19,7 @@ use DateTimeInterface;
 
 /**
  * Format a log message into an Elasticsearch record
+ * 将日志信息格式化为Elasticsearch记录
  *
  * @author Avtandil Kikabidze <akalongman@gmail.com>
  */
@@ -59,6 +60,7 @@ class ElasticsearchFormatter extends NormalizerFormatter
 
     /**
      * Getter index
+	 * 吸气指数
      *
      * @return string
      */
@@ -69,6 +71,7 @@ class ElasticsearchFormatter extends NormalizerFormatter
 
     /**
      * Getter type
+	 * 吸气型
      *
      * @return string
      */
@@ -79,6 +82,7 @@ class ElasticsearchFormatter extends NormalizerFormatter
 
     /**
      * Convert a log message into an Elasticsearch record
+	 * 将日志消息转换为弹性搜索记录
      *
      * @param  mixed[] $record Log message
      * @return mixed[]

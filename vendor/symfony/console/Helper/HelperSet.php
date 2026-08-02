@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，助手设置
- *
+ * Symfony，Component，Console，助手，辅助装置
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * HelperSet represents a set of helpers to be used with a command.
+ * HelperSet代表一组使用命令的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -52,6 +53,7 @@ class HelperSet implements \IteratorAggregate
 
     /**
      * Returns true if the helper if defined.
+	 * 如果定义了助手,则返回true
      *
      * @return bool
      */
@@ -62,6 +64,7 @@ class HelperSet implements \IteratorAggregate
 
     /**
      * Gets a helper value.
+	 * 得到一个助手值
      *
      * @return HelperInterface
      *
@@ -88,6 +91,7 @@ class HelperSet implements \IteratorAggregate
 
     /**
      * Gets the command associated with this helper set.
+	 * 获取与此助手集关联的命令
      *
      * @return Command
      *

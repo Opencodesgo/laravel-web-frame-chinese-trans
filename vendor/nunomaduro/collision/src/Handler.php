@@ -1,13 +1,9 @@
 <?php
-
 /**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
+ * NunoMaduro，Collision，处理者
  */
+
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
@@ -17,14 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Whoops\Handler\Handler as AbstractHandler;
 
 /**
- * This is an Collision Handler implementation.
+ * @internal
  *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @see \Tests\Unit\HandlerTest
  */
-class Handler extends AbstractHandler implements HandlerContract
+final class Handler extends AbstractHandler implements HandlerContract
 {
     /**
      * Holds an instance of the writer.
+	 * 保存写入器的实例
      *
      * @var \NunoMaduro\Collision\Contracts\Writer
      */
@@ -32,6 +29,7 @@ class Handler extends AbstractHandler implements HandlerContract
 
     /**
      * Creates an instance of the Handler.
+	 * 创建处理程序的实例
      */
     public function __construct(WriterContract $writer = null)
     {

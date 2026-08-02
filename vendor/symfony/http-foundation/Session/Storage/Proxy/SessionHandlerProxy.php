@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，代理，会话处理程序代理
+ * Symfony，Component，HttpFoundation，Session，储存，代理，会话处理程序代理
  */
 
 /*

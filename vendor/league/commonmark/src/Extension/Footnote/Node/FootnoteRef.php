@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，脚注，节点，脚注参考
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -14,27 +17,30 @@ declare(strict_types=1);
 
 namespace League\CommonMark\Extension\Footnote\Node;
 
-use League\CommonMark\Inline\Element\AbstractInline;
+use League\CommonMark\Node\Inline\AbstractInline;
 use League\CommonMark\Reference\ReferenceInterface;
+use League\CommonMark\Reference\ReferenceableInterface;
 
-final class FootnoteRef extends AbstractInline
+final class FootnoteRef extends AbstractInline implements ReferenceableInterface
 {
-    /** @var ReferenceInterface */
-    private $reference;
+    private ReferenceInterface $reference;
 
-    /** @var string|null */
-    private $content;
+    /** @psalm-readonly */
+    private ?string $content = null;
 
     /**
-     * @param ReferenceInterface $reference
-     * @param string|null        $content
-     * @param array<mixed>       $data
+     * @param array<mixed> $data
      */
     public function __construct(ReferenceInterface $reference, ?string $content = null, array $data = [])
     {
+        parent::__construct();
+
         $this->reference = $reference;
-        $this->content = $content;
-        $this->data = $data;
+        $this->content   = $content;
+
+        if (\count($data) > 0) {
+            $this->data->import($data);
+        }
     }
 
     public function getReference(): ReferenceInterface
@@ -42,11 +48,9 @@ final class FootnoteRef extends AbstractInline
         return $this->reference;
     }
 
-    public function setReference(ReferenceInterface $reference): FootnoteRef
+    public function setReference(ReferenceInterface $reference): void
     {
         $this->reference = $reference;
-
-        return $this;
     }
 
     public function getContent(): ?string

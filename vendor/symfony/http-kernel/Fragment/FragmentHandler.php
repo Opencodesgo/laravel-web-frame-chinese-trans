@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，片段处理程序
+ * Symfony，Component，HttpKernel，碎片，片段处理程序
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Renders a URI that represents a resource fragment.
- * 呈现表示资源片段的 URI
+ * 呈现表示资源片段的URI。
  *
  * This class handles the rendering of resource fragments that are included into
  * a main resource. The handling of the rendering is managed by specialized renderers.
@@ -52,6 +52,7 @@ class FragmentHandler
 
     /**
      * Adds a renderer.
+	 * 添加一个渲染器
      */
     public function addRenderer(FragmentRendererInterface $renderer)
     {
@@ -60,6 +61,7 @@ class FragmentHandler
 
     /**
      * Renders a URI and returns the Response content.
+	 * 呈现URI并返回响应内容。
      *
      * Available options:
      *
@@ -91,6 +93,7 @@ class FragmentHandler
 
     /**
      * Delivers the Response as a string.
+	 * 将响应作为字符串传递。
      *
      * When the Response is a StreamedResponse, the content is streamed immediately
      * instead of being returned.

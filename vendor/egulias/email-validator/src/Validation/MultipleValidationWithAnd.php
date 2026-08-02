@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，验证，与的多重验证
+ */
 
 namespace Egulias\EmailValidator\Validation;
 
@@ -10,12 +13,14 @@ class MultipleValidationWithAnd implements EmailValidation
     /**
      * If one of validations gets failure skips all succeeding validation.
      * This means MultipleErrors will only contain a single error which first found.
+	 * 如果一个验证失败,就会跳过所有成功的验证。
      */
     const STOP_ON_ERROR = 0;
 
     /**
      * All of validations will be invoked even if one of them got failure.
      * So MultipleErrors will contain all causes.
+	 * 即使其中一个失败了,所有的验证都将被调用。
      */
     const ALLOW_ALL_ERRORS = 1;
 
@@ -106,6 +111,7 @@ class MultipleValidationWithAnd implements EmailValidation
 
     /**
      * Returns the validation errors.
+	 * 返回验证错误
      *
      * @return MultipleErrors|null
      */

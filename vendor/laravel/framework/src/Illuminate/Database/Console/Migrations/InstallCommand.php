@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，migrate:install 安装命令
+ * Illuminate，数据库，控制台，迁移，migrate:install 安装命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -51,7 +51,7 @@ class InstallCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行工作台命令
+	 * 执行控制台命令
      *
      * @return void
      */

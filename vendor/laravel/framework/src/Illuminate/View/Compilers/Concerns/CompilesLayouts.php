@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译布局
+ * Illuminate，视图，编译，问题，编译的布局
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -9,7 +9,7 @@ trait CompilesLayouts
 {
     /**
      * The name of the last section that was started.
-	 * 最后开始的部件的名称
+	 * 最后开始的部分的名称
      *
      * @var string
      */
@@ -27,6 +27,24 @@ trait CompilesLayouts
         $expression = $this->stripParentheses($expression);
 
         $echo = "<?php echo \$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
+
+        $this->footer[] = $echo;
+
+        return '';
+    }
+
+    /**
+     * Compile the extends-first statements into valid PHP.
+	 * 将extends-first语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileExtendsFirst($expression)
+    {
+        $expression = $this->stripParentheses($expression);
+
+        $echo = "<?php echo \$__env->first({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
 
         $this->footer[] = $echo;
 

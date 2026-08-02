@@ -1,4 +1,7 @@
 <?php
+/**
+ * Factory Call
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

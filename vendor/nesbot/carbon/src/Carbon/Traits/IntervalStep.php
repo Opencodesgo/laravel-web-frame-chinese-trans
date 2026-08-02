@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，间隔步骤
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -22,6 +25,7 @@ trait IntervalStep
 {
     /**
      * Step to apply instead of a fixed interval to get the new date.
+	 * 步骤来应用而不是固定间隔来获取新日期
      *
      * @var Closure|null
      */
@@ -29,6 +33,7 @@ trait IntervalStep
 
     /**
      * Get the dynamic step in use.
+	 * 使用动态步骤
      *
      * @return Closure
      */
@@ -39,6 +44,7 @@ trait IntervalStep
 
     /**
      * Set a step to apply instead of a fixed interval to get the new date.
+	 * 设置要应用的步骤而不是固定的间隔来获取新日期。
      *
      * Or pass null to switch to fixed interval.
      *
@@ -51,6 +57,7 @@ trait IntervalStep
 
     /**
      * Take a date and apply either the step if set, or the current interval else.
+	 * 取一个日期，如果设置了步骤，则应用步骤，否则应用当前间隔。
      *
      * The interval/step is applied negatively (typically subtraction instead of addition) if $negated is true.
      *
@@ -77,6 +84,7 @@ trait IntervalStep
 
     /**
      * Convert DateTimeImmutable instance to CarbonImmutable instance and DateTime instance to Carbon instance.
+	 * 将DateTimeImmutable实例转换为CarbonImmutable实例，将DateTime实例转换为Carbon实例。
      *
      * @param DateTimeInterface $dateTime
      *

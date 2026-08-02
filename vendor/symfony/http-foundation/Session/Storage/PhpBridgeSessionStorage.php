@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，Php Bridge 会话存储
+ * Symfony，Component，HttpFoundation，Session，储存，PHP Bridge会话存储
  */
 
 /*

@@ -1,13 +1,13 @@
 <?php
 /**
- * Psr，日志，Log，抽象记录器
+ * Psr，Log，抽象的记录
  */
 
 namespace Psr\Log;
 
 /**
  * This is a simple Logger implementation that other Loggers can inherit from.
- * 这是一个简单的Logger实现，其他Logger可以继承它。
+ * 这是一个简单的Logger实现,其他日志记录器可以继承。
  *
  * It simply delegates all log-level-specific methods to the `log` method to
  * reduce boilerplate code that a simple Logger that does the same thing with
@@ -17,6 +17,7 @@ abstract class AbstractLogger implements LoggerInterface
 {
     /**
      * System is unusable.
+	 * 系统是不可用的
      *
      * @param string  $message
      * @param mixed[] $context
@@ -30,6 +31,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Action must be taken immediately.
+	 * 必须立即采取行动。
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
@@ -46,6 +48,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Critical conditions.
+	 * 临界状态
      *
      * Example: Application component unavailable, unexpected exception.
      *
@@ -62,6 +65,7 @@ abstract class AbstractLogger implements LoggerInterface
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
+	 * 运行时错误，不需要立即采取行动，但通常应该记录和监控。
      *
      * @param string  $message
      * @param mixed[] $context
@@ -75,6 +79,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Exceptional occurrences that are not errors.
+	 * 不属于错误的异常情况
      *
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
@@ -91,6 +96,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Normal but significant events.
+	 * 正常但重要的事件
      *
      * @param string  $message
      * @param mixed[] $context
@@ -104,6 +110,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Interesting events.
+	 * 有趣的事件
      *
      * Example: User logs in, SQL logs.
      *
@@ -119,6 +126,7 @@ abstract class AbstractLogger implements LoggerInterface
 
     /**
      * Detailed debug information.
+	 * 详细的调试信息
      *
      * @param string  $message
      * @param mixed[] $context

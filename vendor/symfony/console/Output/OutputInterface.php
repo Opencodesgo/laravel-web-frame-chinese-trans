@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，输出接口
+ * Symfony，Component，Console，输出，输出接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * OutputInterface is the interface implemented by all Output classes.
- * OutputInterface 是由所有Output类实现的接口。
+ * OutputInterface是所有输出类实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -36,7 +36,7 @@ interface OutputInterface
 
     /**
      * Writes a message to the output.
-	 * 将消息写入输出
+	 * 向输出写入消息
      *
      * @param string|iterable $messages The message as an iterable of strings or a single string
      * @param bool            $newline  Whether to add a newline
@@ -46,7 +46,7 @@ interface OutputInterface
 
     /**
      * Writes a message to the output and adds a newline at the end.
-	 * 将消息写入输出并在末尾添加换行符
+	 * 设置输出的verbosity
      *
      * @param string|iterable $messages The message as an iterable of strings or a single string
      * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
@@ -55,12 +55,13 @@ interface OutputInterface
 
     /**
      * Sets the verbosity of the output.
-	 * 设置输出的详细程度
+	 * 设置输出的verbosity
      */
     public function setVerbosity(int $level);
 
     /**
      * Gets the current verbosity of the output.
+	 * 得到当前输出的verbosity
      *
      * @return int
      */
@@ -68,6 +69,7 @@ interface OutputInterface
 
     /**
      * Returns whether verbosity is quiet (-q).
+	 * 返回verbose是否为quiet （-q）
      *
      * @return bool
      */
@@ -75,6 +77,7 @@ interface OutputInterface
 
     /**
      * Returns whether verbosity is verbose (-v).
+	 * 返回verbose是否为verbose （-v）
      *
      * @return bool
      */
@@ -82,6 +85,7 @@ interface OutputInterface
 
     /**
      * Returns whether verbosity is very verbose (-vv).
+	 * 返回verbose是否非常verbose （-vv）
      *
      * @return bool
      */
@@ -96,11 +100,13 @@ interface OutputInterface
 
     /**
      * Sets the decorated flag.
+	 * 设置装饰的标识
      */
     public function setDecorated(bool $decorated);
 
     /**
      * Gets the decorated flag.
+	 * 得到装饰的标识
      *
      * @return bool
      */
@@ -110,6 +116,7 @@ interface OutputInterface
 
     /**
      * Returns current output formatter instance.
+	 * 返回当前输出格式化程序实例
      *
      * @return OutputFormatterInterface
      */

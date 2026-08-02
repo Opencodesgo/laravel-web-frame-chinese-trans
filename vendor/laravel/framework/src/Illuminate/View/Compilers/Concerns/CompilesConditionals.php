@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译条件
+ * Illuminate，视图，编译，问题，编译条件式
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 trait CompilesConditionals
 {
     /**
-     * Identifier for the first case in switch statement.
+     * Identifier for the first case in the switch statement.
 	 * switch语句中第一个case的标识符
      *
      * @var bool
@@ -311,9 +311,10 @@ trait CompilesConditionals
     }
 
     /**
-     * Compile an once block into valid PHP.
+     * Compile a once block into valid PHP.
 	 * 将once块编译成有效的PHP
      *
+     * @param  string|null  $id
      * @return string
      */
     protected function compileOnce($id = null)

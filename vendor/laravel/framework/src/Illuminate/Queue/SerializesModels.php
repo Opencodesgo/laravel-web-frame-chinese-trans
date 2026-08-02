@@ -98,7 +98,7 @@ trait SerializesModels
 	 * 序列化后恢复模型
      *
      * @param  array  $values
-     * @return array
+     * @return void
      */
     public function __unserialize(array $values)
     {
@@ -129,13 +129,11 @@ trait SerializesModels
                 $this, $this->getRestoredPropertyValue($values[$name])
             );
         }
-
-        return $values;
     }
 
     /**
      * Get the property value for the given property.
-	 * 获取给定属性的属性值
+	 * 得到给定属性的属性值
      *
      * @param  \ReflectionProperty  $property
      * @return mixed

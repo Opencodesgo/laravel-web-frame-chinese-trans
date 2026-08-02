@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，语法抽象类
+ * Illuminate，数据库，语法
  */
 
 namespace Illuminate\Database;
@@ -114,7 +114,7 @@ abstract class Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
-	 * 在关键字标识符中包一个字符串
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -130,7 +130,7 @@ abstract class Grammar
 
     /**
      * Convert an array of column names into a delimited string.
-	 * 将列名的数组转换为一个分隔符字符串
+	 * 将列名数组转换为带分隔符的字符串
      *
      * @param  array  $columns
      * @return string
@@ -142,7 +142,7 @@ abstract class Grammar
 
     /**
      * Create query parameter place-holders for an array.
-	 * 为数组创建查询参数标杆
+	 * 为数组创建查询参数占位符
      *
      * @param  array  $values
      * @return string
@@ -154,7 +154,7 @@ abstract class Grammar
 
     /**
      * Get the appropriate query parameter place-holder for a value.
-	 * 为值获取适当的查询参数
+	 * 获取值的适当查询参数占位符
      *
      * @param  mixed  $value
      * @return string
@@ -182,7 +182,7 @@ abstract class Grammar
 
     /**
      * Determine if the given value is a raw expression.
-	 * 确定给定的值是否为原始表达式
+	 * 确定给定的值是否是一个原始表达式
      *
      * @param  mixed  $value
      * @return bool
@@ -197,7 +197,7 @@ abstract class Grammar
 	 * 获取原始表达式的值
      *
      * @param  \Illuminate\Database\Query\Expression  $expression
-     * @return string
+     * @return mixed
      */
     public function getValue($expression)
     {
@@ -217,7 +217,7 @@ abstract class Grammar
 
     /**
      * Get the grammar's table prefix.
-	 * 得到语法的表前缀
+	 * 获取语法表前缀
      *
      * @return string
      */

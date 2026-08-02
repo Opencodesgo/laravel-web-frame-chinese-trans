@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Slack 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Monolog\Handler\Slack\SlackRecord;
 
 /**
  * Sends notifications through Slack API
+ * 通过松弛API发送通知
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @see    https://api.slack.com/
@@ -28,12 +33,14 @@ class SlackHandler extends SocketHandler
 {
     /**
      * Slack API token
+	 * 松弛API令牌
      * @var string
      */
     private $token;
 
     /**
      * Instance of the SlackRecord util class preparing data for Slack API.
+	 * 松弛记录util类的实例,为松弛API准备数据。
      * @var SlackRecord
      */
     private $slackRecord;
@@ -116,6 +123,7 @@ class SlackHandler extends SocketHandler
 
     /**
      * Builds the body of API call
+	 * 构建API调用的主体
      *
      * @phpstan-param FormattedRecord $record
      */
@@ -144,6 +152,7 @@ class SlackHandler extends SocketHandler
 
     /**
      * Builds the header of the API Call
+	 * 构建API调用的头
      */
     private function buildHeader(string $content): string
     {
@@ -167,6 +176,7 @@ class SlackHandler extends SocketHandler
 
     /**
      * Finalizes the request by reading some bytes and then closing the socket
+	 * 通过读取一些字节来确定请求,然后关闭套接字
      *
      * If we do not read some but close the socket too early, slack sometimes
      * drops the request entirely.
@@ -198,6 +208,7 @@ class SlackHandler extends SocketHandler
 
     /**
      * Channel used by the bot when posting
+	 * 在发布时使用的通道
      */
     public function setChannel(string $channel): self
     {
@@ -208,6 +219,7 @@ class SlackHandler extends SocketHandler
 
     /**
      * Username used by the bot when posting
+	 * 在发布时使用的用户名
      */
     public function setUsername(string $username): self
     {

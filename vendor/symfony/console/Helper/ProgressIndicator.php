@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，进度指示器
- *
+ * Symfony，Component，Console，助手，进度指示器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -79,6 +79,7 @@ class ProgressIndicator
 
     /**
      * Sets the current indicator message.
+	 * 设置当前的指示信息
      */
     public function setMessage(?string $message)
     {
@@ -89,6 +90,7 @@ class ProgressIndicator
 
     /**
      * Starts the indicator output.
+	 * 启动指示输出
      */
     public function start(string $message)
     {
@@ -107,6 +109,7 @@ class ProgressIndicator
 
     /**
      * Advances the indicator.
+	 * 推进指示器
      */
     public function advance()
     {
@@ -132,6 +135,7 @@ class ProgressIndicator
 
     /**
      * Finish the indicator with message.
+	 * 用消息完成指示器
      */
     public function finish(string $message)
     {
@@ -147,6 +151,7 @@ class ProgressIndicator
 
     /**
      * Gets the format for a given name.
+	 * 获取给定名称的格式
      *
      * @return string|null
      */
@@ -157,6 +162,7 @@ class ProgressIndicator
 
     /**
      * Sets a placeholder formatter for a given name.
+	 * 为给定名称设置一个占位符格式器。
      *
      * This method also allow you to override an existing placeholder.
      */
@@ -171,6 +177,7 @@ class ProgressIndicator
 
     /**
      * Gets the placeholder formatter for a given name (including the delimiter char like %).
+	 * 获取给定名称的占位符格式器(包括分隔符char,如%)
      *
      * @return callable|null
      */
@@ -214,6 +221,7 @@ class ProgressIndicator
 
     /**
      * Overwrites a previous message to the output.
+	 * 将前面的消息覆盖到输出中
      */
     private function overwrite(string $message)
     {

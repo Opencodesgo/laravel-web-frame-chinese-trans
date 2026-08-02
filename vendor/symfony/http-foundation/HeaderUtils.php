@@ -27,6 +27,7 @@ class HeaderUtils
 
     /**
      * This class should not be instantiated.
+	 * 不应该实例化这个类
      */
     private function __construct()
     {
@@ -34,6 +35,7 @@ class HeaderUtils
 
     /**
      * Splits an HTTP header by one or more separators.
+	 * 通过一个或多个分隔符拆分HTTP标头。
      *
      * Example:
      *
@@ -77,6 +79,7 @@ class HeaderUtils
 
     /**
      * Combines an array of arrays into one associative array.
+	 * 将数组的数组组合成一个关联数组
      *
      * Each of the nested arrays should have one or two elements. The first
      * value will be used as the keys in the associative array, and the second
@@ -102,6 +105,7 @@ class HeaderUtils
 
     /**
      * Joins an associative array into a string for use in an HTTP header.
+	 * 将一个关联数组连接到一个字符串中，以供HTTP报头使用。
      *
      * The key and value of each entry are joined with '=', and all entries
      * are joined with the specified separator and an additional space (for
@@ -128,6 +132,7 @@ class HeaderUtils
 
     /**
      * Encodes a string as a quoted string, if necessary.
+	 * 如果需要，将字符串编码为带引号的字符串。
      *
      * If a string contains characters not allowed by the "token" construct in
      * the HTTP specification, it is backslash-escaped and enclosed in quotes
@@ -144,6 +149,7 @@ class HeaderUtils
 
     /**
      * Decodes a quoted string.
+	 * 解码带引号的字符串。
      *
      * If passed an unquoted string that matches the "token" construct (as
      * defined in the HTTP specification), it is passed through verbatim.
@@ -155,6 +161,7 @@ class HeaderUtils
 
     /**
      * Generates an HTTP Content-Disposition field-value.
+	 * 生成HTTP Content-Disposition字段值
      *
      * @param string $disposition      One of "inline" or "attachment"
      * @param string $filename         A unicode string
@@ -201,6 +208,7 @@ class HeaderUtils
 
     /**
      * Like parse_str(), but preserves dots in variable names.
+	 * 类似于parse_str()，但保留变量名中的点。
      */
     public static function parseQuery(string $query, bool $ignoreBrackets = false, string $separator = '&'): array
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，本机文件会话处理程序
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，本机文件会话处理程序
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Native session handler using PHP's built in file storage.
- * 使用PHP内置文件存储的本机会话处理程序
+ * 使用PHP内置文件存储的本机会话处理程序。
  *
  * @author Drak <drak@zikula.org>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案提供者，不正确的 Valet Db凭据解决方案提供者
+ */
 
 namespace Facade\Ignition\SolutionProviders;
 

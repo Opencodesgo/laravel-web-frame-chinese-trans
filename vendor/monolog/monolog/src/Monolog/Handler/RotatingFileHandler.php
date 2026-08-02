@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Rotating 文件处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Utils;
 
 /**
  * Stores logs to files that are rotated every day and a limited number of files are kept.
+ * 存储日志到每天旋转的文件,保存数量有限的文件。
  *
  * This rotation is only intended to be used as a workaround. Using logrotate to
  * handle the rotation is strongly encouraged when you can use it.
@@ -113,6 +118,7 @@ class RotatingFileHandler extends StreamHandler
     protected function write(array $record): void
     {
         // on the first record written, if the log is new, we rotate (once per day) after the log has been written so that the new file exists
+		// 对于写入的第一条记录，如果日志是新的，则在日志写入后进行轮换（每天一次），以便新文件存在。
         if (null === $this->mustRotate) {
             $this->mustRotate = null === $this->url || !file_exists($this->url);
         }
@@ -132,6 +138,7 @@ class RotatingFileHandler extends StreamHandler
 
     /**
      * Rotates the files.
+	 * 旋转文件
      */
     protected function rotate(): void
     {

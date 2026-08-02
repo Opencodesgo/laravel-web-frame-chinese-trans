@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，分析器，配置文件
+ * Symfony，Component，HttpKernel，分析器，分析器
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 
 /**
  * Profile.
+ * 分析器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -58,6 +59,7 @@ class Profile
 
     /**
      * Gets the token.
+	 * 获取令牌
      *
      * @return string
      */
@@ -68,6 +70,7 @@ class Profile
 
     /**
      * Sets the parent token.
+	 * 设置父令牌
      */
     public function setParent(self $parent)
     {
@@ -76,6 +79,7 @@ class Profile
 
     /**
      * Returns the parent profile.
+	 * 返回父文件
      *
      * @return self|null
      */
@@ -86,6 +90,7 @@ class Profile
 
     /**
      * Returns the parent token.
+	 * 返回父令牌
      *
      * @return string|null
      */
@@ -96,6 +101,7 @@ class Profile
 
     /**
      * Returns the IP.
+	 * 返回IP
      *
      * @return string|null
      */
@@ -111,6 +117,7 @@ class Profile
 
     /**
      * Returns the request method.
+	 * 返回请求方法
      *
      * @return string|null
      */
@@ -126,6 +133,7 @@ class Profile
 
     /**
      * Returns the URL.
+	 * 返回URL
      *
      * @return string|null
      */
@@ -167,6 +175,7 @@ class Profile
 
     /**
      * Finds children profilers.
+	 * 查找子分析器
      *
      * @return self[]
      */
@@ -177,6 +186,7 @@ class Profile
 
     /**
      * Sets children profiler.
+	 * 设置子分析器
      *
      * @param Profile[] $children
      */
@@ -190,6 +200,7 @@ class Profile
 
     /**
      * Adds the child token.
+	 * 添加子标记
      */
     public function addChild(self $child)
     {
@@ -210,6 +221,7 @@ class Profile
 
     /**
      * Gets a Collector by name.
+	 * 以名字获取集热器
      *
      * @return DataCollectorInterface
      *
@@ -226,6 +238,7 @@ class Profile
 
     /**
      * Gets the Collectors associated with this profile.
+	 * 获取与此概要相关的收集器
      *
      * @return DataCollectorInterface[]
      */
@@ -236,6 +249,7 @@ class Profile
 
     /**
      * Sets the Collectors associated with this profile.
+	 * 设置与此概要文件相关的收集器
      *
      * @param DataCollectorInterface[] $collectors
      */
@@ -249,6 +263,7 @@ class Profile
 
     /**
      * Adds a Collector.
+	 * 添加一个收集器
      */
     public function addCollector(DataCollectorInterface $collector)
     {

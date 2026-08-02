@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由集合生成器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ trigger_deprecation('symfony/routing', '5.1', 'The "%s" class is deprecated, use
 
 /**
  * Helps add and import routes into a RouteCollection.
+ * 帮助在RouteCollection中添加和导入路由。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  *
@@ -50,6 +54,7 @@ class RouteCollectionBuilder
 
     /**
      * Import an external routing resource and returns the RouteCollectionBuilder.
+	 * 导入外部路由资源并返回RouteCollectionBuilder。
      *
      *     $routes->import('blog.yml', '/blog');
      *
@@ -89,6 +94,7 @@ class RouteCollectionBuilder
 
     /**
      * Adds a route and returns it for future modification.
+	 * 添加路由并返回以备将来修改
      *
      * @return Route
      */
@@ -103,6 +109,7 @@ class RouteCollectionBuilder
 
     /**
      * Returns a RouteCollectionBuilder that can be configured and then added with mount().
+	 * 返回一个可以配置的RouteCollectionBuilder，然后用mount（）添加。
      *
      * @return self
      */
@@ -122,6 +129,7 @@ class RouteCollectionBuilder
 
     /**
      * Adds a Route object to the builder.
+	 * 将Route对象添加到构建器中
      *
      * @return $this
      */
@@ -139,6 +147,7 @@ class RouteCollectionBuilder
 
     /**
      * Sets the host on all embedded routes (unless already set).
+	 * 在所有嵌入路由上设置主机（除非已经设置）
      *
      * @return $this
      */
@@ -151,6 +160,7 @@ class RouteCollectionBuilder
 
     /**
      * Sets a condition on all embedded routes (unless already set).
+	 * 在所有嵌入路由上设置一个条件（除非已经设置）
      *
      * @return $this
      */
@@ -208,6 +218,7 @@ class RouteCollectionBuilder
 
     /**
      * Sets the schemes on all embedded routes (unless already set).
+	 * 在所有嵌入路由上设置方案（除非已经设置）
      *
      * @param array|string $schemes
      *
@@ -222,6 +233,7 @@ class RouteCollectionBuilder
 
     /**
      * Sets the methods on all embedded routes (unless already set).
+	 * 设置所有嵌入路由上的方法（除非已经设置）
      *
      * @param array|string $methods
      *
@@ -236,6 +248,7 @@ class RouteCollectionBuilder
 
     /**
      * Adds a resource for this collection.
+	 * 为此集合添加资源
      *
      * @return $this
      */
@@ -248,6 +261,7 @@ class RouteCollectionBuilder
 
     /**
      * Creates the final RouteCollection and returns it.
+	 * 创建最终的RouteCollection并返回它
      *
      * @return RouteCollection
      */
@@ -312,6 +326,7 @@ class RouteCollectionBuilder
 
     /**
      * Generates a route name based on details of this route.
+	 * 根据路由的详细信息生成路由名称
      */
     private function generateRouteName(Route $route): string
     {
@@ -329,6 +344,7 @@ class RouteCollectionBuilder
 
     /**
      * Finds a loader able to load an imported resource and loads it.
+	 * 查找能够加载导入资源的加载器并加载它。
      *
      * @param mixed       $resource A resource
      * @param string|null $type     The resource type or null if unknown

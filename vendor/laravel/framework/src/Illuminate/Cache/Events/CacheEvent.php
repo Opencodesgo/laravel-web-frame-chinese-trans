@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，事件，缓存事件
+ * Illuminate，缓存，事件，缓存事件抽象类
  */
 
 namespace Illuminate\Cache\Events;
@@ -9,7 +9,7 @@ abstract class CacheEvent
 {
     /**
      * The key of the event.
-	 * 事件的键
+	 * 事件密钥
      *
      * @var string
      */

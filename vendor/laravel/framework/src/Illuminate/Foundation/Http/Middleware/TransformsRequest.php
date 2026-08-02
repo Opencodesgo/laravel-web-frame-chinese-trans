@@ -27,7 +27,7 @@ class TransformsRequest
 
     /**
      * Clean the request's data.
-	 * 清理请求的数据
+	 * 清除请求数据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -45,7 +45,7 @@ class TransformsRequest
 
     /**
      * Clean the data in the parameter bag.
-	 * 清理参数包中的数据
+	 * 清理参数袋中的数据
      *
      * @param  \Symfony\Component\HttpFoundation\ParameterBag  $bag
      * @return void
@@ -65,9 +65,11 @@ class TransformsRequest
      */
     protected function cleanArray(array $data, $keyPrefix = '')
     {
-        return collect($data)->map(function ($value, $key) use ($keyPrefix) {
-            return $this->cleanValue($keyPrefix.$key, $value);
-        })->all();
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->cleanValue($keyPrefix.$key, $value);
+        }
+
+        return collect($data)->all();
     }
 
     /**
@@ -89,7 +91,7 @@ class TransformsRequest
 
     /**
      * Transform the given value.
-	 * 转换给定的值
+	 * 变换给定的值
      *
      * @param  string  $key
      * @param  mixed  $value

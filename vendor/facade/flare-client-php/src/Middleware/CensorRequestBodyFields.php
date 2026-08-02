@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，中间件，审查请求正文字段
+ */
 
 namespace Facade\FlareClient\Middleware;
 

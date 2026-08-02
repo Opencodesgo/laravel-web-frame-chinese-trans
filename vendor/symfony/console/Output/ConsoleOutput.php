@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，输出控制台
+ * Symfony，Component，Console，输出，控制台输出
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * ConsoleOutput is the default class for all CLI output. It uses STDOUT and STDERR.
+ * ConsoleOutput是所有CLI输出的默认类。它使用STDOUT和STDERR。
  *
  * This class is a convenient wrapper around `StreamOutput` for both STDOUT and STDERR.
  *
@@ -61,6 +62,7 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
 
     /**
      * Creates a new output section.
+	 * 创建一个新的输出部分
      */
     public function section(): ConsoleSectionOutput
     {
@@ -113,6 +115,7 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
     /**
      * Returns true if current environment supports writing console output to
      * STDOUT.
+	 * 如果当前环境支持将控制台输出写入标准输出
      *
      * @return bool
      */
@@ -124,6 +127,7 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
     /**
      * Returns true if current environment supports writing console output to
      * STDERR.
+	 * 如果当前环境支持将控制台输出写入标准错误
      *
      * @return bool
      */

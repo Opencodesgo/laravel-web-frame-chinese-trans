@@ -17,7 +17,7 @@ trait ManagesTranslations
 
     /**
      * Start a translation block.
-	 * 开始一个翻译块
+	 * 启动一个翻译块
      *
      * @param  array  $replacements
      * @return void

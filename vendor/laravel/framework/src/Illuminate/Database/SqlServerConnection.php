@@ -1,17 +1,20 @@
 <?php
 /**
  * Illuminate，数据库，Sql Server 连接
- * Doctrine\DBAL\Driver\PDOSqlsrv\Driver 驱动不存在，需要自行安装
  */
 
 namespace Illuminate\Database;
 
 use Closure;
 use Doctrine\DBAL\Driver\PDOSqlsrv\Driver as DoctrineDriver;
+use Doctrine\DBAL\Version;
+use Illuminate\Database\PDO\SqlServerDriver;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Schema\Grammars\SqlServerGrammar as SchemaGrammar;
 use Illuminate\Database\Schema\SqlServerBuilder;
+use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
 use Throwable;
 
 class SqlServerConnection extends Connection
@@ -30,7 +33,7 @@ class SqlServerConnection extends Connection
     {
         for ($a = 1; $a <= $attempts; $a++) {
             if ($this->getDriverName() === 'sqlsrv') {
-                return parent::transaction($callback);
+                return parent::transaction($callback, $attempts);
             }
 
             $this->getPdo()->exec('BEGIN TRAN');
@@ -38,17 +41,17 @@ class SqlServerConnection extends Connection
             // We'll simply execute the given callback within a try / catch block
             // and if we catch any exception we can rollback the transaction
             // so that none of the changes are persisted to the database.
-			// 我们将简单地在一个try / catch块中执行给定的回调
+			// 我们将简单地在try / catch块中执行给定的回调如果我们捕捉到任何异常，我们可以回滚事务这样就不会将任何更改持久化到数据库中。
             try {
                 $result = $callback($this);
 
                 $this->getPdo()->exec('COMMIT TRAN');
             }
 
-            // If we catch an exception, we will roll back so nothing gets messed
+            // If we catch an exception, we will rollback so nothing gets messed
             // up in the database. Then we'll re-throw the exception so it can
             // be handled how the developer sees fit for their applications.
-			// 如果我们捕捉到一个异常，我们将回滚，这样就不会出错。
+			// 如果我们捕捉到一个异常，我们将回滚，这样就不会搞砸数据库了。
             catch (Throwable $e) {
                 $this->getPdo()->exec('ROLLBACK TRAN');
 
@@ -72,7 +75,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 获取连接的模式生成器实例
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\SqlServerBuilder
      */
@@ -97,8 +100,22 @@ class SqlServerConnection extends Connection
     }
 
     /**
+     * Get the schema state for the connection.
+	 * 获取连接的模式状态
+     *
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
+     * @param  callable|null  $processFactory
+     *
+     * @throws \RuntimeException
+     */
+    public function getSchemaState(Filesystem $files = null, callable $processFactory = null)
+    {
+        throw new RuntimeException('Schema dumping is not supported when using SQL Server.');
+    }
+
+    /**
      * Get the default post processor instance.
-	 * 获取默认的post处理器实例
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\SqlServerProcessor
      */
@@ -111,10 +128,10 @@ class SqlServerConnection extends Connection
      * Get the Doctrine DBAL driver.
 	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
+     * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver|\Illuminate\Database\PDO\SqlServerDriver
      */
     protected function getDoctrineDriver()
     {
-        return new DoctrineDriver;
+        return class_exists(Version::class) ? new DoctrineDriver : new SqlServerDriver;
     }
 }

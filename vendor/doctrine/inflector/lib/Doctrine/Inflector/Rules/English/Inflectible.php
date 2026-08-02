@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Inflector，规则，英语，可弯曲的
+ */
 
 declare(strict_types=1);
 

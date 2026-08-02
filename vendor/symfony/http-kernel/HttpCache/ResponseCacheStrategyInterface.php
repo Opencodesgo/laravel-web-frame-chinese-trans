@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * ResponseCacheStrategyInterface implementations know how to compute the
  * Response cache HTTP header based on the different response cache headers.
+ * responsecachestrategy gyinterface实现知道如何计算基于不同响应缓存头的响应缓存HTTP头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,11 +31,13 @@ interface ResponseCacheStrategyInterface
 {
     /**
      * Adds a Response.
+	 * 添加一个响应
      */
     public function add(Response $response);
 
     /**
      * Updates the Response HTTP headers based on the embedded Responses.
+	 * 根据嵌入式响应更新响应HTTP头
      */
     public function update(Response $response);
 }

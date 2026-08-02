@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，队列，调用队列闭包
+ * Illuminate，队列，呼叫队列闭包
  */
 
 namespace Illuminate\Queue;
 
 use Closure;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,19 +15,27 @@ use ReflectionFunction;
 
 class CallQueuedClosure implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * The serializable Closure instance.
 	 * 可序列化的闭包实例
      *
-     * @var \Illuminate\Queue\SerializableClosure
+     * @var \Laravel\SerializableClosure\SerializableClosure
      */
     public $closure;
 
     /**
+     * The callbacks that should be executed on failure.
+	 * 失败时应该执行的回调
+     *
+     * @var array
+     */
+    public $failureCallbacks = [];
+
+    /**
      * Indicate if the job should be deleted when models are missing.
-	 * 指明当模型丢失时是否应该删除作业
+	 * 指示当模型丢失时是否应该删除作业
      *
      * @var bool
      */
@@ -36,10 +45,10 @@ class CallQueuedClosure implements ShouldQueue
      * Create a new job instance.
 	 * 创建一个新的作业实例
      *
-     * @param  \Illuminate\Queue\SerializableClosure  $closure
+     * @param  \Laravel\SerializableClosure\SerializableClosure  $closure
      * @return void
      */
-    public function __construct(SerializableClosure $closure)
+    public function __construct($closure)
     {
         $this->closure = $closure;
     }
@@ -53,7 +62,7 @@ class CallQueuedClosure implements ShouldQueue
      */
     public static function create(Closure $job)
     {
-        return new self(new SerializableClosure($job));
+        return new self(SerializableClosureFactory::make($job));
     }
 
     /**
@@ -65,12 +74,42 @@ class CallQueuedClosure implements ShouldQueue
      */
     public function handle(Container $container)
     {
-        $container->call($this->closure->getClosure());
+        $container->call($this->closure->getClosure(), ['job' => $this]);
+    }
+
+    /**
+     * Add a callback to be executed if the job fails.
+	 * 添加一个回调，在作业失败时执行。
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function onFailure($callback)
+    {
+        $this->failureCallbacks[] = $callback instanceof Closure
+                        ? SerializableClosureFactory::make($callback)
+                        : $callback;
+
+        return $this;
+    }
+
+    /**
+     * Handle a job failure.
+	 * 处理工作失败
+     *
+     * @param  \Throwable  $e
+     * @return void
+     */
+    public function failed($e)
+    {
+        foreach ($this->failureCallbacks as $callback) {
+            $callback($e);
+        }
     }
 
     /**
      * Get the display name for the queued job.
-	 * 获取排队任务的显示名称
+	 * 得到排队作业的显示名称
      *
      * @return string
      */

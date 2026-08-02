@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，没有 Args
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

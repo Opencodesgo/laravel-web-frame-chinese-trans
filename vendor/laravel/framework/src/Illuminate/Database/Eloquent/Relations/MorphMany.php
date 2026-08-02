@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，一对多动态关联
+ * Illuminate，数据库，Eloquent，关系，变形很多
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -51,5 +51,19 @@ class MorphMany extends MorphOneOrMany
     public function match(array $models, Collection $results, $relation)
     {
         return $this->matchMany($models, $results, $relation);
+    }
+
+    /**
+     * Create a new instance of the related model. Allow mass-assignment.
+	 * 创建相关模型的新实例。允许质量确定。
+     *
+     * @param  array  $attributes
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function forceCreate(array $attributes = [])
+    {
+        $attributes[$this->getMorphType()] = $this->morphClass;
+
+        return parent::forceCreate($attributes);
     }
 }

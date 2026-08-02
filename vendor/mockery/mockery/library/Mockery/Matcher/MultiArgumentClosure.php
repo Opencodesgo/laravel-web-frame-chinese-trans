@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配程序，多参数闭包
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -14,6 +17,7 @@ class MultiArgumentClosure extends MatcherAbstract implements ArgumentListMatche
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回这个Matcher的字符串表示
      *
      * @return string
      */
@@ -26,6 +30,7 @@ class MultiArgumentClosure extends MatcherAbstract implements ArgumentListMatche
      * Check if the actual value matches the expected.
      * Actual passed by reference to preserve reference trail (where applicable)
      * back to the original method parameter.
+	 * 检查实际值是否符合预期。
      *
      * @template TMixed
      *

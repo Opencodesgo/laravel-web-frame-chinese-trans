@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，ValidateRequest 侦听器
+ * Symfony，Component，HttpKernel，事件监听器，验证请求监听器
  */
 
 /*
@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @final
  */
-class   implements EventSubscriberInterface
+class ValidateRequestListener implements EventSubscriberInterface
 {
     /**
      * Performs the validation.

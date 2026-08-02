@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，终端 
+ * Symfony，Component，Console，终端
  */
 
 /*
@@ -22,6 +22,7 @@ class Terminal
 
     /**
      * Gets the terminal width.
+	 * 获取终端宽度
      *
      * @return int
      */
@@ -41,6 +42,7 @@ class Terminal
 
     /**
      * Gets the terminal height.
+	 * 获取终端高度
      *
      * @return int
      */
@@ -100,6 +102,7 @@ class Terminal
 
     /**
      * Returns whether STDOUT has vt100 support (some Windows 10+ configurations).
+	 * 返回STDOUT是否支持vt100（一些Windows 10+配置）
      */
     private static function hasVt100Support(): bool
     {
@@ -108,6 +111,7 @@ class Terminal
 
     /**
      * Initializes dimensions using the output of an stty columns line.
+	 * 使用stty列行的输出初始化维度
      */
     private static function initDimensionsUsingStty()
     {
@@ -126,6 +130,7 @@ class Terminal
 
     /**
      * Runs and parses mode CON if it's available, suppressing any error output.
+	 * 运行和解析模式CON,如果它可用,抑制任何错误输出。
      *
      * @return int[]|null An array composed of the width and the height or null if it could not be parsed
      */
@@ -142,6 +147,7 @@ class Terminal
 
     /**
      * Runs and parses stty -a if it's available, suppressing any error output.
+	 * 运行和解析stty a -如果它可用,抑制任何错误输出。
      */
     private static function getSttyColumns(): ?string
     {

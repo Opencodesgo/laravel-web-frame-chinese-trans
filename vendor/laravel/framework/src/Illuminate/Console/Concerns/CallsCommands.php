@@ -34,8 +34,8 @@ trait CallsCommands
     }
 
     /**
-     * Call another console command silently.
-	 * 以静默方式调用另一个控制台命令
+     * Call another console command without output.
+	 * 调用另一个没有输出的控制台命令
      *
      * @param  \Symfony\Component\Console\Command\Command|string  $command
      * @param  array  $arguments
@@ -44,6 +44,19 @@ trait CallsCommands
     public function callSilent($command, array $arguments = [])
     {
         return $this->runCommand($command, $arguments, new NullOutput);
+    }
+
+    /**
+     * Call another console command without output.
+	 * 调用另一个没有输出的控制台命令
+     *
+     * @param  \Symfony\Component\Console\Command\Command|string  $command
+     * @param  array  $arguments
+     * @return int
+     */
+    public function callSilently($command, array $arguments = [])
+    {
+        return $this->callSilent($command, $arguments);
     }
 
     /**

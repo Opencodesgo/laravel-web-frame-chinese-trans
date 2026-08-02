@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，提供者
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Support\ServiceProvider;
 
-class DummyClass extends ServiceProvider
+class {{ class }} extends ServiceProvider
 {
     /**
      * Register services.

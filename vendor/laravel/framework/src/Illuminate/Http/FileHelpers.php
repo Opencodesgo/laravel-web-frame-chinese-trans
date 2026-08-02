@@ -11,7 +11,7 @@ trait FileHelpers
 {
     /**
      * The cache copy of the file's hash name.
-	 * 文件哈希的缓存副本
+	 * 文件哈希名称的缓存副本
      *
      * @var string
      */
@@ -25,25 +25,23 @@ trait FileHelpers
      */
     public function path()
     {
-		// 通过SymfonyFile，调取的是SplFileInfo
         return $this->getRealPath();
     }
 
     /**
      * Get the file's extension.
-	 * 获取文件扩展名
+	 * 得到文件的扩展名
      *
      * @return string
      */
     public function extension()
     {
-		// / SymfonyFile里
         return $this->guessExtension();
     }
 
     /**
      * Get a filename for the file.
-	 * 得到文件的文件名
+	 * 获取文件的文件名
      *
      * @param  string|null  $path
      * @return string

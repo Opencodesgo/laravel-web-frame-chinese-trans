@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图类
+ * Illuminate，视图，视图核心类
  */
 
 namespace Illuminate\View;
@@ -43,7 +43,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The name of the view.
-	 * 视图名
+	 * 视图名称
      *
      * @var string
      */
@@ -51,7 +51,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The array of view data.
-	 * 视图数据数组
+	 * 视图数据的数组
      *
      * @var array
      */
@@ -67,7 +67,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Create a new view instance.
-	 * 创建一个新的视图实例
+	 * 创建新的视图实例
      *
      * @param  \Illuminate\View\Factory  $factory
      * @param  \Illuminate\Contracts\View\Engine  $engine
@@ -88,10 +88,10 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the string contents of the view.
-	 * 得到视图的字符串内容
+	 * 获取视图的字符串内容
      *
      * @param  callable|null  $callback
-     * @return array|string
+     * @return string
      *
      * @throws \Throwable
      */
@@ -105,7 +105,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
             // Once we have the contents of the view, we will flush the sections if we are
             // done rendering all views so that there is nothing left hanging over when
             // another view gets rendered in the future by the application developer.
-			// 一旦我们有视图的内容，如果我们已经呈现所有视图将会清空。
+			// 一旦我们有了视图的内容，我们将刷新区段。
             $this->factory->flushStateIfDoneRendering();
 
             return ! is_null($response) ? $response : $contents;
@@ -118,7 +118,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the contents of the view instance.
-	 * 得到视图实例内容
+	 * 获取视图实例的内容
      *
      * @return string
      */
@@ -127,7 +127,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
         // We will keep track of the amount of views being rendered so we can flush
         // the section after the complete rendering operation is done. This will
         // clear out the sections for any separate views that may be rendered.
-		// 我们将跟踪渲染视图的数量，以便刷新完成渲染操作后的section。
+		// 我们将跟踪渲染视图的数量，因此我们能刷新完成呈现操作后的部分。
         $this->factory->incrementRender();
 
         $this->factory->callComposer($this);
@@ -252,7 +252,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the name of the view.
-	 * 得到视图名称
+	 * 获取视图的名称
      *
      * @return string
      */
@@ -263,7 +263,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the name of the view.
-	 * 得到视图名称
+	 * 获取视图的名称
      *
      * @return string
      */
@@ -285,7 +285,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the path to the view file.
-	 * 得到视图文件路径
+	 * 获取视图文件的路径
      *
      * @return string
      */
@@ -296,7 +296,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Set the path to the view.
-	 * 设置视图路径
+	 * 设置视图的路径
      *
      * @param  string  $path
      * @return void
@@ -335,6 +335,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  string  $key
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($key)
     {
         return array_key_exists($key, $this->data);
@@ -347,6 +348,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  string  $key
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($key)
     {
         return $this->data[$key];
@@ -360,6 +362,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  mixed  $value
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($key, $value)
     {
         $this->with($key, $value);
@@ -372,6 +375,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  string  $key
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($key)
     {
         unset($this->data[$key]);
@@ -453,7 +457,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get content as a string of HTML.
-	 * 获取HMTL字符串内容
+	 * 获取HTML字符串形式的内容
      *
      * @return string
      */

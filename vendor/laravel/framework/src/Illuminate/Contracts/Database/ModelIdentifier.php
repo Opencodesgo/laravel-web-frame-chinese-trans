@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，数据库，模型识别
+ * Illuminate，契约，数据库，模型标识符
  */
 
 namespace Illuminate\Contracts\Database;
@@ -9,7 +9,7 @@ class ModelIdentifier
 {
     /**
      * The class name of the model.
-	 * 模型类名
+	 * 模型的类名
      *
      * @var string
      */
@@ -20,6 +20,7 @@ class ModelIdentifier
 	 * 模型的唯一标识符
      *
      * This may be either a single ID or an array of IDs.
+	 * 它可以是单个ID，也可以是一个ID数组。
      *
      * @var mixed
      */
@@ -35,7 +36,7 @@ class ModelIdentifier
 
     /**
      * The connection name of the model.
-	 * 模型的连接名
+	 * 模型的连接名称
      *
      * @var string|null
      */

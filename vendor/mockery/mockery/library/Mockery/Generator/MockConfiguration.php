@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，模拟配置
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -42,6 +45,7 @@ class MockConfiguration
 {
     /**
      * Instance cache of all methods
+	 * 所有方法的实例缓存
      *
      * @var list<Method>
      */
@@ -49,6 +53,7 @@ class MockConfiguration
 
     /**
      * Methods that should specifically not be mocked
+	 * 应该特别不被嘲笑的方法。
      *
      * This is currently populated with stuff we don't know how to deal with, should really be somewhere else
      */
@@ -58,6 +63,7 @@ class MockConfiguration
 
     /**
      * An instance mock is where we override the original class before it's autoloaded
+	 * 一个实例模拟是在它重复之前重写原始类的地方
      *
      * @var bool
      */
@@ -65,6 +71,7 @@ class MockConfiguration
 
     /**
      * If true, overrides original class destructor
+	 * 如果是真的,重写原始类析构函数。
      *
      * @var bool
      */
@@ -72,6 +79,7 @@ class MockConfiguration
 
     /**
      * The class name we'd like to use for a generated mock
+	 * 我们想要使用的类名称用于生成的模拟
      *
      * @var string|null
      */
@@ -79,6 +87,7 @@ class MockConfiguration
 
     /**
      * Param overrides
+	 * 参数覆盖
      *
      * @var array<string,mixed>
      */
@@ -102,6 +111,7 @@ class MockConfiguration
 
     /**
      * A number of interfaces we'd like to mock, keyed by name to attempt to keep unique
+	 * 我们想要模拟的几个接口,以名称命名,试图保持独特
      *
      * @var array<TargetClassInterface>
      */
@@ -109,6 +119,7 @@ class MockConfiguration
 
     /**
      * An object we'd like our mock to proxy to
+	 * 我们想要模拟的对象
      *
      * @var object|null
      */
@@ -121,6 +132,7 @@ class MockConfiguration
 
     /**
      * A number of traits we'd like to mock, keyed by name to attempt to keep unique
+	 * 我们想要嘲笑一些特征,以名字为目的,试图保持独特。
      *
      * @var array<string,DefinedTargetClass>
      */
@@ -128,6 +140,7 @@ class MockConfiguration
 
     /**
      * If not empty, only these methods will be mocked
+	 * 如果不是空的,只有这些方法会被嘲笑
      *
      * @var array<string>
      */
@@ -165,6 +178,7 @@ class MockConfiguration
 
     /**
      * Generate a suitable name based on the config
+	 * 基于配置生成一个合适的名称
      *
      * @return string
      */
@@ -211,6 +225,7 @@ class MockConfiguration
 
     /**
      * Attempt to create a hash of the configuration, in order to allow caching
+	 * 为了允许缓存,尝试创建一个配置的散列
      *
      * @TODO workout if this will work
      *
@@ -236,6 +251,8 @@ class MockConfiguration
     /**
      * Gets a list of methods from the classes, interfaces and objects and filters them appropriately.
      * Lot's of filtering going on, perhaps we could have filter classes to iterate through
+	 * 从类、接口和对象中获取方法列表,并适当地筛选它们。
+	 * 大量的过滤,也许我们可以过滤类来迭代。
      *
      * @return list<Method>
      */
@@ -267,6 +284,7 @@ class MockConfiguration
 
         /**
          * Remove blacklisted methods
+		 * 删除黑名单方法
          */
         $blackListedMethods = $this->getBlackListedMethods();
         if ($blackListedMethods !== []) {
@@ -561,6 +579,7 @@ class MockConfiguration
     /**
      * We declare the __call method to handle undefined stuff, if the class
      * we're mocking has also defined it, we need to comply with their interface
+	 * 我们声明__call方法来处理未定义的东西，我们嘲笑它也定义了它,我们需要遵守他们的界面。
      *
      * @return bool
      */
@@ -624,6 +643,7 @@ class MockConfiguration
      * If we attempt to implement Traversable,
      * we must ensure we are also implementing either Iterator or IteratorAggregate,
      * and that whichever one it is comes before Traversable in the list of implements.
+	 * 如果我们尝试实现可穿越性,我们必须确保我们还实现迭代器或迭代聚合,
      *
      * @param class-string $targetInterface
      */

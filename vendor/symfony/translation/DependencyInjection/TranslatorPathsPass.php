@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，依赖注入，翻译者路径证书
+ */
 
 /*
  * This file is part of the Symfony package.

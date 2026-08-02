@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * HttpKernelInterface handles a Request to convert it to a Response.
- * HttpKernelInterface 处理请求并将其转换为响应
+ * HttpKernelInterface处理请求并将其转换为响应
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,12 +31,13 @@ interface HttpKernelInterface
 
     /**
      * @deprecated since symfony/http-kernel 5.3, use MAIN_REQUEST instead.
-     *             To ease the migration, this constant won't be removed until Symfony 7.0.
+     * To ease the migration, this constant won't be removed until Symfony 7.0.
      */
     public const MASTER_REQUEST = self::MAIN_REQUEST;
 
     /**
      * Handles a Request to convert it to a Response.
+	 * 处理请求以将其转换为响应
      *
      * When $catch is true, the implementation must catch all exceptions
      * and do its best to convert them to a Response instance.

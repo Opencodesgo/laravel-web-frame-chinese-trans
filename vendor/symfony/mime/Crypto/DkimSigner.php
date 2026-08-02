@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，加密，Dkim 签名者
+ * Symfony，Component，Mime，Crypto，Dkim 签名者
  */
 
 /*

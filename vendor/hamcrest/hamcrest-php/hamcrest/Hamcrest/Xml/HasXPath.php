@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Xml，有X路径
+ */
+
 namespace Hamcrest\Xml;
 
 /*
@@ -13,6 +17,8 @@ use Hamcrest\Matcher;
  * Matches if XPath applied to XML/HTML/XHTML document either
  * evaluates to result matching the matcher or returns at least
  * one node, matching the matcher if present.
+ * 如果将 XPath 应用于 XML/HTML/XHTML 文档，则该表达式要么返回与匹配器相匹配的结果，
+ * 要么返回至少一个与匹配器相匹配的节点（如果存在的话）。
  */
 class HasXPath extends DiagnosingMatcher
 {

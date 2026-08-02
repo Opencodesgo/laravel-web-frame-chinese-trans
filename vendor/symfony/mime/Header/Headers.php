@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，数据头，头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * A collection of headers.
+ * 头文件的集合。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，命令，命令核心类
+ * Symfony，Component，Console，命令，命令
  */
 
 /*
@@ -30,7 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all commands.
- * 所有命令基本类
+ * 所有命令的基类
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -128,6 +128,7 @@ class Command
 
     /**
      * Ignores validation errors.
+	 * 忽略验证错误
      *
      * This is mainly useful for the help command.
      */
@@ -155,6 +156,7 @@ class Command
 
     /**
      * Gets the helper set.
+	 * 获取助手集合
      *
      * @return HelperSet|null
      */
@@ -165,6 +167,7 @@ class Command
 
     /**
      * Gets the application instance for this command.
+	 * 获取此命令的应用程序实例
      *
      * @return Application|null
      */
@@ -175,6 +178,7 @@ class Command
 
     /**
      * Checks whether the command is enabled or not in the current environment.
+	 * 检查命令是否在当前环境中启用。
      *
      * Override this to check for x or y and return false if the command cannot
      * run properly under the current conditions.
@@ -188,6 +192,7 @@ class Command
 
     /**
      * Configures the current command.
+	 * 配置当前命令
      */
     protected function configure()
     {
@@ -195,6 +200,7 @@ class Command
 
     /**
      * Executes the current command.
+	 * 执行当前命令。
      *
      * This method is not abstract because you can use this class
      * as a concrete class. In this case, instead of defining the
@@ -214,6 +220,7 @@ class Command
 
     /**
      * Interacts with the user.
+	 * 与用户交互。
      *
      * This method is executed before the InputDefinition is validated.
      * This means that this is the only place where the command can
@@ -226,6 +233,7 @@ class Command
     /**
      * Initializes the command after the input has been bound and before the input
      * is validated.
+	 * 在绑定输入之后和输入之前初始化命令得到验证。
      *
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialized based on the input arguments and options.
@@ -239,6 +247,7 @@ class Command
 
     /**
      * Runs the command.
+	 * 运行命令。
      *
      * The code to execute is either defined directly with the
      * setCode() method or by overriding the execute() method
@@ -311,6 +320,7 @@ class Command
 
     /**
      * Adds suggestions to $suggestions for the current completion input (e.g. option or argument).
+	 * 为当前完成输入(例如选项或参数)添加建议
      */
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
@@ -318,6 +328,7 @@ class Command
 
     /**
      * Sets the code to execute when running this command.
+	 * 在运行此命令时设置执行的代码。
      *
      * If this method is used, it overrides the code defined
      * in the execute() method.
@@ -353,6 +364,7 @@ class Command
 
     /**
      * Merges the application definition with the command definition.
+	 * 使用命令定义将应用程序定义合并。
      *
      * This method is not part of public API and should not be used directly.
      *
@@ -380,6 +392,7 @@ class Command
 
     /**
      * Sets an array of argument and option instances.
+	 * 设置一个参数数组和选项实例。
      *
      * @param array|InputDefinition $definition An array of argument and option instances or a definition instance
      *
@@ -400,6 +413,7 @@ class Command
 
     /**
      * Gets the InputDefinition attached to this Command.
+	 * 获取连接到这个命令的InputDefinition
      *
      * @return InputDefinition
      */
@@ -410,6 +424,7 @@ class Command
 
     /**
      * Gets the InputDefinition to be used to create representations of this Command.
+	 * 获取用于创建此命令的表示的InputDefinition。
      *
      * Can be overridden to provide the original command representation when it would otherwise
      * be changed by merging with the application InputDefinition.
@@ -429,6 +444,7 @@ class Command
 
     /**
      * Adds an argument.
+	 * 添加参数
      *
      * @param int|null $mode    The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
      * @param mixed    $default The default value (for InputArgument::OPTIONAL mode only)
@@ -449,6 +465,7 @@ class Command
 
     /**
      * Adds an option.
+	 * 添加选项
      *
      * @param string|array|null $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
      * @param int|null          $mode     The option mode: One of the InputOption::VALUE_* constants
@@ -470,6 +487,7 @@ class Command
 
     /**
      * Sets the name of the command.
+	 * 设置命令名称
      *
      * This method can set both the namespace and the name if
      * you separate them by a colon (:)
@@ -491,6 +509,7 @@ class Command
 
     /**
      * Sets the process title of the command.
+	 * 设置命令的进程标题
      *
      * This feature should be used only when creating a long process command,
      * like a daemon.
@@ -506,6 +525,7 @@ class Command
 
     /**
      * Returns the command name.
+	 * 返回命令名
      *
      * @return string|null
      */
@@ -539,6 +559,7 @@ class Command
 
     /**
      * Sets the description for the command.
+	 * 设置命令的描述
      *
      * @return $this
      */
@@ -551,6 +572,7 @@ class Command
 
     /**
      * Returns the description for the command.
+	 * 返回命令的描述
      *
      * @return string
      */
@@ -561,6 +583,7 @@ class Command
 
     /**
      * Sets the help for the command.
+	 * 为命令设置帮助
      *
      * @return $this
      */
@@ -573,6 +596,7 @@ class Command
 
     /**
      * Returns the help for the command.
+	 * 返回命令的帮助
      *
      * @return string
      */
@@ -606,6 +630,7 @@ class Command
 
     /**
      * Sets the aliases for the command.
+	 * 为命令设置别名
      *
      * @param string[] $aliases An array of aliases for the command
      *
@@ -629,6 +654,7 @@ class Command
 
     /**
      * Returns the aliases for the command.
+	 * 返回命令的别名
      *
      * @return array
      */
@@ -639,6 +665,7 @@ class Command
 
     /**
      * Returns the synopsis for the command.
+	 * 返回命令的概要
      *
      * @param bool $short Whether to show the short version of the synopsis (with options folded) or not
      *
@@ -657,6 +684,7 @@ class Command
 
     /**
      * Add a command usage example, it'll be prefixed with the command name.
+	 * 添加一个命令使用示例,它将用命令名来前缀。
      *
      * @return $this
      */
@@ -673,6 +701,7 @@ class Command
 
     /**
      * Returns alternative usages of the command.
+	 * 返回命令的替代用法
      *
      * @return array
      */
@@ -683,6 +712,7 @@ class Command
 
     /**
      * Gets a helper instance by name.
+	 * 通过名称获取辅助实例
      *
      * @return mixed
      *
@@ -700,6 +730,7 @@ class Command
 
     /**
      * Validates a command name.
+	 * 验证命令名。
      *
      * It must be non-empty and parts can optionally be separated by ":".
      *

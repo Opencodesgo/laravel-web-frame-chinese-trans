@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，H包含片段渲染器
+ * Symfony，Component，HttpKernel，碎片，HInclude 片段渲染器
  */
 
 /*
@@ -22,7 +22,7 @@ use Twig\Environment;
 
 /**
  * Implements the Hinclude rendering strategy.
- * 实现Hinclude呈现策略
+ * 实现Hinclude呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -46,6 +46,7 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
 
     /**
      * Checks if a templating engine has been set.
+	 * 检查是否设置了模板引擎
      *
      * @return bool
      */

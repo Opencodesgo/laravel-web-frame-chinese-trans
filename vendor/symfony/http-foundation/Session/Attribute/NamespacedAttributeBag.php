@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，属性，命名空间属性包
+ * Symfony，Component，HttpFoundation，Session，属性，命名空间属性包
  */
 
 /*
@@ -19,6 +19,7 @@ trigger_deprecation('symfony/http-foundation', '5.3', 'The "%s" class is depreca
 /**
  * This class provides structured storage of session attributes using
  * a name spacing character in the key.
+ * 类提供会话属性的结构化存储键中的名称间距字符。
  *
  * @author Drak <drak@zikula.org>
  *
@@ -101,6 +102,7 @@ class NamespacedAttributeBag extends AttributeBag
 	 * 解析attributes属性中的路径并将其作为引用返回
      *
      * This method allows structured namespacing of session attributes.
+	 * 此方法允许会话属性的结构化名称空间
      *
      * @param string $name         Key name
      * @param bool   $writeContext Write context, default false
@@ -149,6 +151,7 @@ class NamespacedAttributeBag extends AttributeBag
 
     /**
      * Resolves the key from the name.
+	 * 从名称解析键
      *
      * This is the last part in a dot separated string.
      *

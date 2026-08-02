@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存取暖器，缓存取暖器集合
+ * Symfony，Component，HttpKernel，缓存回暖，缓存回暖集群
  */
 
 /*

@@ -65,7 +65,7 @@ class RequirePassword
         if ($this->shouldConfirmPassword($request)) {
             if ($request->expectsJson()) {
                 return $this->responseFactory->json([
-                    'message' => 'Password confirmation required.',			#需要确认密码
+                    'message' => 'Password confirmation required.',
                 ], 423);
             }
 

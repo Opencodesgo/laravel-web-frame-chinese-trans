@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Abstract class implementing Surrogate capabilities to Request and Response instances.
- * 实现请求和响应实例代理功能的抽象类
+ * 抽象类实现了请求和响应实例的代理功能。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -44,6 +44,7 @@ abstract class AbstractSurrogate implements SurrogateInterface
 
     /**
      * Returns a new cache strategy instance.
+	 * 返回一个新的缓存策略实例
      *
      * @return ResponseCacheStrategyInterface
      */
@@ -119,7 +120,7 @@ abstract class AbstractSurrogate implements SurrogateInterface
 
     /**
      * Remove the Surrogate from the Surrogate-Control header.
-	 * 从代理控件标头中删除代理
+	 * 从回控头删除代理
      */
     protected function removeFromControl(Response $response)
     {

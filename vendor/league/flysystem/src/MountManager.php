@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，安装管理器
+ * League，Flysystem，类MountManager
  */
 
 namespace League\Flysystem;
@@ -11,7 +11,7 @@ use League\Flysystem\Plugin\PluginNotFoundException;
 
 /**
  * Class MountManager.
- * MountManager 类
+ * 类MountManager
  *
  * Proxies methods to Filesystem (@see __call):
  *
@@ -36,6 +36,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -48,6 +49,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * Mount文件系统 
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -66,6 +68,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * Mount文件系统 
      *
      * @param string              $prefix
      * @param FilesystemInterface $filesystem
@@ -87,6 +90,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get the filesystem with the corresponding prefix.
+	 * 用相应的前缀获取文件系统
      *
      * @param string $prefix
      *
@@ -105,6 +109,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Retrieve the prefix from an arguments array.
+	 * 从参数数组中检索前缀
      *
      * @param array $arguments
      *
@@ -154,6 +159,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Call forwarder.
+	 * 调取转发器
      *
      * @param string $method
      * @param array  $arguments
@@ -204,6 +210,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * List with plugin adapter.
+	 * 带有插件适配器的列表
      *
      * @param array  $keys
      * @param string $directory
@@ -224,6 +231,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Move a file.
+	 * 移动一个文件
      *
      * @param string $from
      * @param string $to
@@ -261,6 +269,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Invoke a plugin on a filesystem mounted on a given prefix.
+	 * 在给定的前缀上安装文件系统上的插件
      *
      * @param string $method
      * @param array  $arguments
@@ -303,6 +312,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Check whether a file exists.
+	 * 检查文件是否存在
      *
      * @param string $path
      *
@@ -317,6 +327,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Read a file.
+	 * 读取文件
      *
      * @param string $path The path to the file.
      *
@@ -333,6 +344,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Retrieves a read-stream for a path.
+	 * 检索路径的读流
      *
      * @param string $path The path to the file.
      *
@@ -349,6 +361,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get a file's metadata.
+	 * 获取文件的元数据
      *
      * @param string $path The path to the file.
      *
@@ -365,6 +378,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get a file's size.
+	 * 得到文件大小 
      *
      * @param string $path The path to the file.
      *
@@ -381,6 +395,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get a file's mime-type.
+	 * 获取文件的mime-type
      *
      * @param string $path The path to the file.
      *
@@ -397,6 +412,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get a file's timestamp.
+	 * 获取文件的时间戳
      *
      * @param string $path The path to the file.
      *
@@ -413,6 +429,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get a file's visibility.
+	 * 获取文件的可见性
      *
      * @param string $path The path to the file.
      *
@@ -429,6 +446,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Write a new file.
+	 * 编写一个新文件
      *
      * @param string $path     The path of the new file.
      * @param string $contents The file contents.
@@ -447,6 +465,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Write a new file using a stream.
+	 * 使用流编写新文件
      *
      * @param string   $path     The path of the new file.
      * @param resource $resource The file handle.
@@ -466,6 +485,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Update an existing file.
+	 * 更新现有文件
      *
      * @param string $path     The path of the existing file.
      * @param string $contents The file contents.
@@ -484,6 +504,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Update an existing file using a stream.
+	 * 使用流更新现有文件
      *
      * @param string   $path     The path of the existing file.
      * @param resource $resource The file handle.
@@ -503,6 +524,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Rename a file.
+	 * 重命名文件
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.
@@ -521,6 +543,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Delete a file.
+	 * 删除文件
      *
      * @param string $path
      *
@@ -537,6 +560,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Delete a directory.
+	 * 删除目录
      *
      * @param string $dirname
      *
@@ -553,6 +577,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Create a directory.
+	 * 创建目录
      *
      * @param string $dirname The name of the new directory.
      * @param array  $config  An optional configuration array.
@@ -568,6 +593,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Set the visibility for a file.
+	 * 设置文件的可见性
      *
      * @param string $path       The path to the file.
      * @param string $visibility One of 'public' or 'private'.
@@ -585,6 +611,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Create a file or update if exists.
+	 * 如果存在,创建一个文件或更新
      *
      * @param string $path     The path to the file.
      * @param string $contents The file contents.
@@ -601,6 +628,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Create a file or update if exists.
+	 * 如果存在,创建一个文件或更新
      *
      * @param string   $path     The path to the file.
      * @param resource $resource The file handle.
@@ -619,6 +647,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Read and delete a file.
+	 * 读取和删除文件
      *
      * @param string $path The path to the file.
      *
@@ -635,6 +664,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get a file/directory handler.
+	 * 获取文件/目录处理程序
      *
      * @deprecated
      *

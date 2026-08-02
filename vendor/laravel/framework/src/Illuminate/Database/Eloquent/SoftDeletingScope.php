@@ -11,7 +11,7 @@ class SoftDeletingScope implements Scope
      * All of the extensions to be added to the builder.
 	 * 要添加到构建器中的所有扩展
      *
-     * @var array
+     * @var string[]
      */
     protected $extensions = ['Restore', 'WithTrashed', 'WithoutTrashed', 'OnlyTrashed'];
 
@@ -102,7 +102,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Add the without-trashed extension to the builder.
-	 * 添加向构建器的扩展扩展
+	 * 向构建器中添加无垃圾扩展
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void

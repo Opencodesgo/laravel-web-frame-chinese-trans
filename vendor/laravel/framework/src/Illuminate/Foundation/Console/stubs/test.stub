@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，测试
  */
 
 namespace {{ namespace }};
@@ -13,11 +13,11 @@ class {{ class }} extends TestCase
 {
     /**
      * A basic feature test example.
-	 * 一个基本的特征测试示例
+	 * 一个基本的特性测试示例
      *
      * @return void
      */
-    public function testExample()
+    public function test_example()
     {
         $response = $this->get('/');
 

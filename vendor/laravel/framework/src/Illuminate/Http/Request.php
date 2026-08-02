@@ -1,7 +1,6 @@
 <?php
 /**
  * Illuminate，Http，请求
- * 服务容器绑定request
  */
 
 namespace Illuminate\Http;
@@ -30,7 +29,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * The decoded JSON content for the request.
-	 * 请求的解码后的JSON内容
+	 * 请求的解码JSON内容
      *
      * @var \Symfony\Component\HttpFoundation\ParameterBag|null
      */
@@ -38,7 +37,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * All of the converted files for the request.
-	 * 请求转换的所有文件
+	 * 为请求转换的所有文件
      *
      * @var array
      */
@@ -62,15 +61,15 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Create a new Illuminate HTTP request from server variables.
-	 * 从服务器变量创建一个新的HTTP请求
+	 * 从服务器变量创建一个新的点亮HTTP请求
      *
      * @return static
      */
     public static function capture()
     {
-        static::enableHttpMethodParameterOverride();	# 在SymfonyRequest里
+        static::enableHttpMethodParameterOverride();
 
-        return static::createFromBase(SymfonyRequest::createFromGlobals());    # createFromGlobals在SymfonyRequest里
+        return static::createFromBase(SymfonyRequest::createFromGlobals());
     }
 
     /**
@@ -86,7 +85,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get the request method.
-	 * 得到请求方法
+	 * 获取请求方法
      *
      * @return string
      */
@@ -97,7 +96,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get the root URL for the application.
-	 * 取应用程序的根URL
+	 * 获取应用程序的根URL
      *
      * @return string
      */
@@ -134,7 +133,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get the full URL for the request with the added query string parameters.
-	 * 获取带有添加的查询字符串参数请求的完整URL
+	 * 获取带有添加的查询字符串参数的请求的完整URL
      *
      * @param  array  $query
      * @return string
@@ -149,6 +148,24 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
+     * Get the full URL for the request without the given query string parameters.
+	 * 获取不含给定查询字符串参数的请求的完整URL
+     *
+     * @param  array|string  $query
+     * @return string
+     */
+    public function fullUrlWithoutQuery($keys)
+    {
+        $query = Arr::except($this->query(), $keys);
+
+        $question = $this->getBaseUrl().$this->getPathInfo() === '/' ? '/?' : '?';
+
+        return count($query) > 0
+            ? $this->url().$question.Arr::query($query)
+            : $this->url();
+    }
+
+    /**
      * Get the current path info for the request.
 	 * 获取请求的当前路径信息
      *
@@ -158,7 +175,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         $pattern = trim($this->getPathInfo(), '/');
 
-        return $pattern == '' ? '/' : $pattern;
+        return $pattern === '' ? '/' : $pattern;
     }
 
     /**
@@ -187,7 +204,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get all of the segments for the request path.
-	 * 获取请求路径的所有片段
+	 * 获取请求路径的所有段
      *
      * @return array
      */
@@ -233,7 +250,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
-     * Determine if the current request URL and query string matches a pattern.
+     * Determine if the current request URL and query string match a pattern.
 	 * 确定当前请求URL和查询字符串是否与模式匹配
      *
      * @param  mixed  ...$patterns
@@ -264,7 +281,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
-     * Determine if the request is the result of an PJAX call.
+     * Determine if the request is the result of a PJAX call.
 	 * 确定请求是否是PJAX调用的结果
      *
      * @return bool
@@ -275,15 +292,15 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
-     * Determine if the request is the result of an prefetch call.
+     * Determine if the request is the result of a prefetch call.
 	 * 确定请求是否是预取调用的结果
      *
      * @return bool
      */
     public function prefetch()
     {
-        return strcasecmp($this->server->get('HTTP_X_MOZ'), 'prefetch') === 0 ||
-               strcasecmp($this->headers->get('Purpose'), 'prefetch') === 0;
+        return strcasecmp($this->server->get('HTTP_X_MOZ') ?? '', 'prefetch') === 0 ||
+               strcasecmp($this->headers->get('Purpose') ?? '', 'prefetch') === 0;
     }
 
     /**
@@ -299,7 +316,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get the client IP address.
-	 * 得到客户端IP地址 
+	 * 获取客户端IP地址
      *
      * @return string|null
      */
@@ -310,7 +327,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get the client IP addresses.
-	 * 得到客户端IP地址
+	 * 获取客户端IP地址
      *
      * @return array
      */
@@ -332,7 +349,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Merge new input into the current request's input array.
-	 * 合并新输入到当前请求的输入数组中
+	 * 将新输入合并到当前请求的输入数组中
      *
      * @param  array  $input
      * @return $this
@@ -342,6 +359,20 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
         $this->getInputSource()->add($input);
 
         return $this;
+    }
+
+    /**
+     * Merge new input into the request's input, but only when that key is missing from the request.
+	 * 将新输入合并到请求的输入中，但仅当请求中缺少该键时。
+     *
+     * @param  array  $input
+     * @return $this
+     */
+    public function mergeIfMissing(array $input)
+    {
+        return $this->merge(collect($input)->filter(function ($value, $key) {
+            return $this->missing($key);
+        })->toArray());
     }
 
     /**
@@ -363,7 +394,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 	 * 这个方法属于Symfony HttpFoundation，在使用Laravel时通常不需要。
      *
      * Instead, you may use the "input" method.
-	 * 相反，您可以使用"输入"方法。
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -412,7 +442,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Create a new request instance from the given Laravel request.
-	 * 从给定的请求里创建新的请求实例
+	 * 从给定的Laravel请求创建一个新的请求实例
      *
      * @param  \Illuminate\Http\Request  $from
      * @param  \Illuminate\Http\Request|null  $to
@@ -453,7 +483,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Create an Illuminate request from a Symfony instance.
-	 * 从Symfony实例创建一个请求
+	 * 从Symfony实例创建一个点亮请求
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return static
@@ -476,6 +506,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * {@inheritdoc}
+     *
+     * @return static
      */
     public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null)
     {
@@ -581,7 +613,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get a unique fingerprint for the request / route / IP address.
-	 * 获取请求/路由/IP地址的唯一指纹
+	 * 获取请求/路由/ IP地址的唯一指纹
      *
      * @return string
      *
@@ -685,10 +717,13 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  string  $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
+        $route = $this->route();
+
         return Arr::has(
-            $this->all() + $this->route()->parameters(),
+            $this->all() + ($route ? $route->parameters() : []),
             $offset
         );
     }
@@ -700,6 +735,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
@@ -713,6 +749,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  mixed  $value
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->getInputSource()->set($offset, $value);
@@ -725,6 +762,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  string  $offset
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $this->getInputSource()->remove($offset);

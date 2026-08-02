@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，确认，错误，RFC 的警告
+ */
 
 namespace Egulias\EmailValidator\Validation\Error;
 

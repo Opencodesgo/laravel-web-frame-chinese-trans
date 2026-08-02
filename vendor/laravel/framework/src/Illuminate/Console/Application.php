@@ -22,7 +22,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -30,7 +29,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 {
     /**
      * The Laravel application instance.
-	 * 框架应用实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -38,7 +37,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The output from the previous command.
-	 * 前一个命令的输出
+	 * 上一个命令的输出
      *
      * @var \Symfony\Component\Console\Output\BufferedOutput
      */
@@ -46,7 +45,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The console application bootstrappers.
-	 * 控制台应用程序引导程序
+	 * 控制台应用引导程序
      *
      * @var array
      */
@@ -85,6 +84,8 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * {@inheritdoc}
+     *
+     * @return int
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
@@ -94,7 +95,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
         $this->events->dispatch(
             new CommandStarting(
-                $commandName, $input, $output = $output ?: new ConsoleOutput
+                $commandName, $input, $output = $output ?: new BufferedConsoleOutput
             )
         );
 
@@ -126,7 +127,7 @@ class Application extends SymfonyApplication implements ApplicationContract
      */
     public static function artisanBinary()
     {
-        return defined('ARTISAN_BINARY') ? ProcessUtils::escapeArgument(ARTISAN_BINARY) : 'artisan';
+        return ProcessUtils::escapeArgument(defined('ARTISAN_BINARY') ? ARTISAN_BINARY : 'artisan');
     }
 
     /**
@@ -155,7 +156,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * Bootstrap the console application.
-	 * 引导控制台应用
+	 * 引导控制台应用程序
      *
      * @return void
      */
@@ -179,7 +180,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * Run an Artisan console command by name.
-	 * 按名称运行控制台命令
+	 * 按名称运行Artisan控制台命令
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -225,7 +226,7 @@ class Application extends SymfonyApplication implements ApplicationContract
             $input = new ArrayInput($parameters);
         }
 
-        return [$command, $input ?? null];
+        return [$command, $input];
     }
 
     /**
@@ -271,7 +272,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * Add a command, resolving through the application.
-	 * 将命令添加到父实例
+	 * 添加命令，通过应用程序解析。
      *
      * @param  string  $command
      * @return \Symfony\Component\Console\Command\Command
@@ -304,6 +305,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 	 * 获取应用程序的默认输入定义
      *
      * This is used to add the --env option to every available command.
+	 * 这用于向每个可用命令添加 ——env 选项
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
      */
@@ -329,7 +331,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * Get the Laravel application instance.
-	 * 获取框架应用程序实例
+	 * 获取应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

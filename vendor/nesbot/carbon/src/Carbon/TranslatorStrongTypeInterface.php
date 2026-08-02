@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，翻译强型接口
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 /**
  * Mark translator using strong type from symfony/translation >= 6.
+ * 标记翻译使用强类型从symfony/translation >= 6。
  */
 interface TranslatorStrongTypeInterface
 {

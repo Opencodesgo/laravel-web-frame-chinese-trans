@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，错误处理器，调试类装入器
+ * Symfony，Component，ErrorHandler，调试类装入器
  */
 
 /*
@@ -28,6 +28,7 @@ use Symfony\Component\HttpClient\HttplugClient;
 
 /**
  * Autoloader checking if the class is really defined in the file found.
+ * Autoloader检查是否在文件中定义了这个类。
  *
  * The ClassLoader will wrap all registered autoloaders
  * and will throw an exception if a file is found but does
@@ -174,6 +175,7 @@ class DebugClassLoader
 
     /**
      * Wraps all autoloaders.
+	 * 包装所有的自动加载
      */
     public static function enable(): void
     {
@@ -200,6 +202,7 @@ class DebugClassLoader
 
     /**
      * Disables the wrapping.
+	 * 把包装禁用
      */
     public static function disable(): void
     {
@@ -274,6 +277,7 @@ class DebugClassLoader
 
     /**
      * Loads the given class or interface.
+	 * 加载给定的类或接口
      *
      * @throws \RuntimeException
      */
@@ -744,6 +748,7 @@ class DebugClassLoader
 
     /**
      * `class_implements` includes interfaces from the parents so we have to manually exclude them.
+	 * ‘ class_implements ’包含来自父类的接口，所以我们必须手动排除它们。
      *
      * @return string[]
      */
@@ -896,6 +901,7 @@ class DebugClassLoader
 
     /**
      * Utility method to add #[ReturnTypeWillChange] where php triggers deprecations.
+	 * 在php触发弃用的地方添加#[ReturnTypeWillChange]
      */
     private function patchReturnTypeWillChange(\ReflectionMethod $method)
     {
@@ -924,6 +930,7 @@ class DebugClassLoader
 
     /**
      * Utility method to add @return annotations to the Symfony code-base where it triggers self-deprecations.
+	 * 将@return注释添加到Symfony代码库中，从而触发自弃用。
      */
     private function patchMethod(\ReflectionMethod $method, string $returnType, string $declaringFile, string $normalizedType)
     {

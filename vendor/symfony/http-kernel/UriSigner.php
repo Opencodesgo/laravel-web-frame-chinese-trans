@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，Uri 签名者
+ * Symfony，Component，HttpKernel，URI 签名者
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Signs URIs.
+ * 签名者 URI 
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -38,6 +39,7 @@ class UriSigner
 
     /**
      * Signs a URI.
+	 * 对URI进行签名
      *
      * The given URI is signed by adding the query string parameter
      * which value depends on the URI and the secret.
@@ -61,6 +63,7 @@ class UriSigner
 
     /**
      * Checks that a URI contains the correct hash.
+	 * 检查URI是否包含正确的散列
      *
      * @return bool
      */

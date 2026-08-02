@@ -58,7 +58,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * An Application is the container for a collection of commands.
- * 应用程序是命令集合的容器
+ * 应用程序是收集命令的容器。
  *
  * It is the main entry point of a Console application.
  *
@@ -219,6 +219,7 @@ class Application implements ResetInterface
 
     /**
      * Runs the current application.
+	 * 运行当前应用程序
      *
      * @return int 0 if everything went fine, or an error code
      */
@@ -323,6 +324,7 @@ class Application implements ResetInterface
 
     /**
      * Get the helper set associated with the command.
+	 * 获取与命令关联的助手集合
      *
      * @return HelperSet
      */
@@ -342,6 +344,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the InputDefinition related to this Application.
+	 * 获取与此应用程序相关的input定义
      *
      * @return InputDefinition
      */
@@ -363,6 +366,7 @@ class Application implements ResetInterface
 
     /**
      * Adds suggestions to $suggestions for the current completion input (e.g. option or argument).
+	 * 为当前完成输入(例如选项或参数)添加建议
      */
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
@@ -395,6 +399,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the help message.
+	 * 获取帮助信息
      *
      * @return string
      */
@@ -405,6 +410,7 @@ class Application implements ResetInterface
 
     /**
      * Gets whether to catch exceptions or not during commands execution.
+	 * 获取是否在命令执行时捕获异常
      *
      * @return bool
      */
@@ -415,6 +421,7 @@ class Application implements ResetInterface
 
     /**
      * Sets whether to catch exceptions or not during commands execution.
+	 * 设置是否在命令执行时捕获异常
      */
     public function setCatchExceptions(bool $boolean)
     {
@@ -423,6 +430,7 @@ class Application implements ResetInterface
 
     /**
      * Gets whether to automatically exit after a command execution or not.
+	 * get是否在命令执行后自动退出
      *
      * @return bool
      */
@@ -433,6 +441,7 @@ class Application implements ResetInterface
 
     /**
      * Sets whether to automatically exit after a command execution or not.
+	 * 设置是否在命令执行后自动退出
      */
     public function setAutoExit(bool $boolean)
     {
@@ -441,6 +450,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the name of the application.
+	 * 获取应用程序的名称
      *
      * @return string
      */
@@ -451,6 +461,7 @@ class Application implements ResetInterface
 
     /**
      * Sets the application name.
+	 * 设置应用程序名称
      **/
     public function setName(string $name)
     {
@@ -459,6 +470,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the application version.
+	 * 获取应用程序版本
      *
      * @return string
      */
@@ -469,6 +481,7 @@ class Application implements ResetInterface
 
     /**
      * Sets the application version.
+	 * 设置应用程序版本
      */
     public function setVersion(string $version)
     {
@@ -477,6 +490,7 @@ class Application implements ResetInterface
 
     /**
      * Returns the long version of the application.
+	 * 返回应用程序的长版本
      *
      * @return string
      */
@@ -495,6 +509,7 @@ class Application implements ResetInterface
 
     /**
      * Registers a new command.
+	 * 注册一个新命令
      *
      * @return Command
      */
@@ -505,6 +520,7 @@ class Application implements ResetInterface
 
     /**
      * Adds an array of command objects.
+	 * 添加一个命令对象数组。
      *
      * If a Command is not enabled it will not be added.
      *
@@ -519,6 +535,7 @@ class Application implements ResetInterface
 
     /**
      * Adds a command object.
+	 * 添加命令对象。
      *
      * If a command with the same name already exists, it will be overridden.
      * If the command is not enabled it will not be added.
@@ -557,6 +574,7 @@ class Application implements ResetInterface
 
     /**
      * Returns a registered command by name or alias.
+	 * 名称或别名返回已注册的命令
      *
      * @return Command
      *
@@ -591,6 +609,7 @@ class Application implements ResetInterface
 
     /**
      * Returns true if the command exists, false otherwise.
+	 * 如果命令存在则返回true，否则返回false。
      *
      * @return bool
      */
@@ -603,6 +622,7 @@ class Application implements ResetInterface
 
     /**
      * Returns an array of all unique namespaces used by currently registered commands.
+	 * 返回当前注册命令使用的所有唯一名称空间的数组。
      *
      * It does not return the global namespace which always exists.
      *
@@ -628,6 +648,7 @@ class Application implements ResetInterface
 
     /**
      * Finds a registered namespace by a name or an abbreviation.
+	 * 按名称或缩写查找已注册的名称空间
      *
      * @return string
      *
@@ -665,6 +686,7 @@ class Application implements ResetInterface
 
     /**
      * Finds a command by name or alias.
+	 * 按名称或别名查找命令。
      *
      * Contrary to get, this command tries to find the best
      * match if you give it an abbreviation of a name or alias.
@@ -778,6 +800,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the commands (registered in the given namespace if provided).
+	 * 获取命令(如果提供的话,在给定的名称空间中注册)。
      *
      * The array keys are the full names and the values the command instances.
      *
@@ -822,6 +845,7 @@ class Application implements ResetInterface
 
     /**
      * Returns an array of possible abbreviations given a set of names.
+	 * 返回一组可能的缩写,给定一组名称
      *
      * @return string[][]
      */
@@ -926,6 +950,7 @@ class Application implements ResetInterface
 
     /**
      * Configures the input and output instances based on the user arguments and options.
+	 * 根据用户参数和选项配置输入和输出实例
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
@@ -986,6 +1011,7 @@ class Application implements ResetInterface
 
     /**
      * Runs the current command.
+	 * 运行当前命令。
      *
      * If an event dispatcher has been attached to the application,
      * events are also dispatched during the life-cycle of the command.
@@ -1086,6 +1112,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the name of the command based on input.
+	 * 根据输入获取命令的名称
      *
      * @return string|null
      */
@@ -1096,6 +1123,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the default input definition.
+	 * 获取默认的输入定义
      *
      * @return InputDefinition
      */
@@ -1114,6 +1142,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the default commands that should always be available.
+	 * 获取应该总是可用的默认命令
      *
      * @return Command[]
      */
@@ -1124,6 +1153,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the default helper set with the helpers that should always be available.
+	 * 将默认的助手设置为应该总是可用的助手
      *
      * @return HelperSet
      */
@@ -1139,6 +1169,7 @@ class Application implements ResetInterface
 
     /**
      * Returns abbreviated suggestions in string format.
+	 * 以字符串格式返回缩写建议
      */
     private function getAbbreviationSuggestions(array $abbrevs): string
     {
@@ -1147,6 +1178,7 @@ class Application implements ResetInterface
 
     /**
      * Returns the namespace part of the command name.
+	 * 返回命令名的名称空间部分
      *
      * This method is not part of public API and should not be used directly.
      *
@@ -1162,6 +1194,7 @@ class Application implements ResetInterface
     /**
      * Finds alternative of $name among $collection,
      * if nothing is found in $collection, try in $abbrevs.
+	 * 在$ collection中找到$ name,如果没有从美元的收藏中找到,那就试试abbrev。
      *
      * @return string[]
      */
@@ -1209,6 +1242,7 @@ class Application implements ResetInterface
 
     /**
      * Sets the default Command name.
+	 * 设置默认命令名
      *
      * @return $this
      */
@@ -1272,6 +1306,7 @@ class Application implements ResetInterface
 
     /**
      * Returns all namespaces of the command name.
+	 * 返回命令名的所有名称空间
      *
      * @return string[]
      */

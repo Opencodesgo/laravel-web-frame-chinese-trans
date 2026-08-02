@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，不可变事件调度程序
+ * Symfony，Component，EventDispatcher，不可变事件调度员
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\EventDispatcher;
 
 /**
  * A read-only proxy for an event dispatcher.
+ * 一个事件调度器的只读代理。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

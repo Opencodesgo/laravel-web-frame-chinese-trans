@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，翻译器
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -29,4 +32,5 @@ require $transMethod->hasReturnType()
 class Translator extends LazyTranslator
 {
     // Proxy dynamically loaded LazyTranslator in a static way
+	// 代理以静态方式动态加载LazyTranslator
 }

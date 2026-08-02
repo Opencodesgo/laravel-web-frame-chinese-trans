@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，本机会话存储
+ * Symfony，Component，HttpFoundation，Session，储存，本机会话存储
  */
 
 /*
@@ -66,7 +66,6 @@ class NativeSessionStorage implements SessionStorageInterface
     /**
      * Depending on how you want the storage driver to behave you probably
      * want to override this constructor entirely.
-	 * 这取决于您希望存储驱动程序如何运行
      *
      * List of options for $options array with their defaults.
      *
@@ -125,6 +124,7 @@ class NativeSessionStorage implements SessionStorageInterface
 
     /**
      * Gets the save handler instance.
+	 * 获取保存处理程序实例
      *
      * @return AbstractProxy|\SessionHandlerInterface
      */
@@ -371,6 +371,7 @@ class NativeSessionStorage implements SessionStorageInterface
 
     /**
      * Gets the MetadataBag.
+	 * 获取元数据包
      *
      * @return MetadataBag
      */
@@ -389,6 +390,7 @@ class NativeSessionStorage implements SessionStorageInterface
 
     /**
      * Sets session.* ini variables.
+	 * 设置会话。* ini变量。
      *
      * For convenience we omit 'session.' from the beginning of the keys.
      * Explicitly ignores other ini keys.
@@ -440,6 +442,7 @@ class NativeSessionStorage implements SessionStorageInterface
 
     /**
      * Registers session save handler as a PHP session handler.
+	 * 将会话保存处理程序注册为PHP会话处理程序。
      *
      * To use internal PHP session save handlers, override this method using ini_set with
      * session.save_handler and session.save_path e.g.

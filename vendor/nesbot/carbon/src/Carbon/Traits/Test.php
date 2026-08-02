@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，测试 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -27,6 +30,7 @@ trait Test
 
     /**
      * A test Carbon instance to be returned when now instances are created.
+	 * 现在创建实例时返回的测试Carbon实例
      *
      * @var Closure|static|null
      */

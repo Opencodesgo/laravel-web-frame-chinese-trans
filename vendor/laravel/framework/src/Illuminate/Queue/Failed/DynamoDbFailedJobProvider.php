@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，失败，DynamoDb失败的作业提供者
+ * Illuminate，队列，失败，DynamoDb 失败的作业提供者
  */
 
 namespace Illuminate\Queue\Failed;
@@ -10,7 +10,6 @@ use DateTimeInterface;
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Str;
 
 class DynamoDbFailedJobProvider implements FailedJobProviderInterface
 {
@@ -40,7 +39,7 @@ class DynamoDbFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Create a new DynamoDb failed job provider.
-	 * 创建一个新的DynamoDb失败任务提供者
+	 * 创建新的DynamoDb失败作业提供者
      *
      * @param  \Aws\DynamoDb\DynamoDbClient  $dynamo
      * @param  string  $applicationName
@@ -56,7 +55,7 @@ class DynamoDbFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Log a failed job into storage.
-	 * 记录失败的任务到存储中
+	 * 记录失败的作业到存储中
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -66,7 +65,7 @@ class DynamoDbFailedJobProvider implements FailedJobProviderInterface
      */
     public function log($connection, $queue, $payload, $exception)
     {
-        $id = (string) Str::orderedUuid();
+        $id = json_decode($payload, true)['uuid'];
 
         $failedAt = Date::now();
 
@@ -89,7 +88,7 @@ class DynamoDbFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a list of all of the failed jobs.
-	 * 获取所有失败作业的列表
+	 * 得到所有失败任务的列表
      *
      * @return array
      */
@@ -105,7 +104,9 @@ class DynamoDbFailedJobProvider implements FailedJobProviderInterface
             'ScanIndexForward' => false,
         ]);
 
-        return collect($results['Items'])->map(function ($result) {
+        return collect($results['Items'])->sortByDesc(function ($result) {
+            return (int) $result['failed_at']['N'];
+        })->map(function ($result) {
             return (object) [
                 'id' => $result['uuid']['S'],
                 'connection' => $result['connection']['S'],
@@ -121,7 +122,7 @@ class DynamoDbFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 得到一个失败的作业
+	 * 找一份失败的工作
      *
      * @param  mixed  $id
      * @return object|null

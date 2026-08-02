@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，配置数据收集器
+ * Symfony，Component，HttpKernel，数据采集器，配置数据采集器
  */
 
 /*
@@ -34,6 +34,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Sets the Kernel associated with this Request.
+	 * 设置与此请求关联的内核
      */
     public function setKernel(?KernelInterface $kernel = null)
     {
@@ -96,6 +97,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the token.
+	 * 得到令牌
      */
     public function getToken(): ?string
     {
@@ -104,6 +106,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the Symfony version.
+	 * 获取Symfony版本
      */
     public function getSymfonyVersion(): string
     {
@@ -112,6 +115,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns the state of the current Symfony release.
+	 * 返回当前Symfony版本的状态
      *
      * @return string One of: unknown, dev, stable, eom, eol
      */
@@ -131,6 +135,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns if the current Symfony version is a Long-Term Support one.
+	 * 如果当前Symfony版本是长期支持版本，则返回。
      */
     public function isSymfonyLts(): bool
     {
@@ -157,6 +162,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the PHP version.
+	 * 获取PHP版本
      */
     public function getPhpVersion(): string
     {
@@ -165,6 +171,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the PHP version extra part.
+	 * 获取PHP版本额外部分
      */
     public function getPhpVersionExtra(): ?string
     {
@@ -191,6 +198,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the environment.
+	 * 得到环境
      */
     public function getEnv(): string
     {
@@ -199,6 +207,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns true if the debug is enabled.
+	 * 如果启用了调试，则返回true。
      *
      * @return bool|string true if debug is enabled, false otherwise or a string if no kernel was set
      */
@@ -209,6 +218,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns true if the XDebug is enabled.
+	 * 如果启用了XDebug，则返回true。
      */
     public function hasXDebug(): bool
     {
@@ -217,6 +227,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns true if APCu is enabled.
+	 * 如果APCu已启用，则返回true。
      */
     public function hasApcu(): bool
     {
@@ -225,6 +236,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns true if Zend OPcache is enabled.
+	 * 如果启用Zend OPcache则返回true
      */
     public function hasZendOpcache(): bool
     {
@@ -238,6 +250,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the PHP SAPI name.
+	 * 获取PHP SAPI名称
      */
     public function getSapiName(): string
     {
@@ -254,6 +267,7 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Tries to retrieve information about the current Symfony version.
+	 * 尝试检索有关当前Symfony版本的信息
      *
      * @return string One of: dev, stable, eom, eol
      */

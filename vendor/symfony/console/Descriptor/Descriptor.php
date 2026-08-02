@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符号，描述符
+ */
+
 
 /*
  * This file is part of the Symfony package.
@@ -61,6 +65,7 @@ abstract class Descriptor implements DescriptorInterface
 
     /**
      * Writes content to output.
+	 * 写入内容到输出
      */
     protected function write(string $content, bool $decorated = false)
     {
@@ -69,26 +74,31 @@ abstract class Descriptor implements DescriptorInterface
 
     /**
      * Describes an InputArgument instance.
+	 * 描述一个InputArgument实例
      */
     abstract protected function describeInputArgument(InputArgument $argument, array $options = []);
 
     /**
      * Describes an InputOption instance.
+	 * 描述一个InputOption实例
      */
     abstract protected function describeInputOption(InputOption $option, array $options = []);
 
     /**
      * Describes an InputDefinition instance.
+	 * 描述InputDefinition实例
      */
     abstract protected function describeInputDefinition(InputDefinition $definition, array $options = []);
 
     /**
      * Describes a Command instance.
+	 * 描述一个命令实例
      */
     abstract protected function describeCommand(Command $command, array $options = []);
 
     /**
      * Describes an Application instance.
+	 * 描述一个应用程序实例
      */
     abstract protected function describeApplication(Application $application, array $options = []);
 }

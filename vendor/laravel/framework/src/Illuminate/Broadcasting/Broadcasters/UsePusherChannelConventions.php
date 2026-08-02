@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，广播员
+ * Illuminate，广播，广播员，使用推送通道约定
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -10,8 +10,8 @@ use Illuminate\Support\Str;
 trait UsePusherChannelConventions
 {
     /**
-     * Return true if channel is protected by authentication.
-	 * 如果信道受身份验证保护，则返回true
+     * Return true if the channel is protected by authentication.
+	 * 如果通道受身份验证保护，则返回true。
      *
      * @param  string  $channel
      * @return bool
@@ -23,7 +23,7 @@ trait UsePusherChannelConventions
 
     /**
      * Remove prefix from channel name.
-	 * 从信道名中删除前缀
+	 * 从通道名中删除前缀
      *
      * @param  string  $channel
      * @return string

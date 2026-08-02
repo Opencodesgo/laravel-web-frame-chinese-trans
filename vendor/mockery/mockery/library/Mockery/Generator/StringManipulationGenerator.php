@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，发生器，字符串操作发生器
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -77,6 +80,7 @@ class StringManipulationGenerator implements Generator
 
     /**
      * Creates a new StringManipulationGenerator with the default passes
+	 * 使用默认的通过创建一个新的stringhandationgenerator
      *
      * @return StringManipulationGenerator
      */

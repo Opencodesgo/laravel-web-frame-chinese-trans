@@ -6,13 +6,29 @@
 namespace Illuminate\Database;
 
 use Doctrine\DBAL\Driver\PDOMySql\Driver as DoctrineDriver;
+use Doctrine\DBAL\Version;
+use Illuminate\Database\PDO\MySqlDriver;
 use Illuminate\Database\Query\Grammars\MySqlGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\MySqlProcessor;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar as SchemaGrammar;
 use Illuminate\Database\Schema\MySqlBuilder;
+use Illuminate\Database\Schema\MySqlSchemaState;
+use Illuminate\Filesystem\Filesystem;
+use PDO;
 
 class MySqlConnection extends Connection
 {
+    /**
+     * Determine if the connected database is a MariaDB database.
+	 * 判断连接的数据库是否为MariaDB数据库
+     *
+     * @return bool
+     */
+    public function isMaria()
+    {
+        return strpos($this->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION), 'MariaDB') !== false;
+    }
+
     /**
      * Get the default query grammar instance.
 	 * 获取默认查询语法实例
@@ -26,7 +42,7 @@ class MySqlConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 获取连接的模式生成器实例
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\MySqlBuilder
      */
@@ -51,8 +67,21 @@ class MySqlConnection extends Connection
     }
 
     /**
+     * Get the schema state for the connection.
+	 * 获取连接的模式状态
+     *
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
+     * @param  callable|null  $processFactory
+     * @return \Illuminate\Database\Schema\MySqlSchemaState
+     */
+    public function getSchemaState(Filesystem $files = null, callable $processFactory = null)
+    {
+        return new MySqlSchemaState($this, $files, $processFactory);
+    }
+
+    /**
      * Get the default post processor instance.
-	 * 获取默认的请求处理器实例
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\MySqlProcessor
      */
@@ -65,10 +94,10 @@ class MySqlConnection extends Connection
      * Get the Doctrine DBAL driver.
 	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOMySql\Driver
+     * @return \Doctrine\DBAL\Driver\PDOMySql\Driver|\Illuminate\Database\PDO\MySqlDriver
      */
     protected function getDoctrineDriver()
     {
-        return new DoctrineDriver;
+        return class_exists(Version::class) ? new DoctrineDriver : new MySqlDriver;
     }
 }

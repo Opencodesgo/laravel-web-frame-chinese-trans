@@ -17,7 +17,7 @@ class DynamoDbLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建一个新的锁实例
+	 * 创建新的锁实例
      *
      * @param  \Illuminate\Cache\DynamoDbStore  $dynamo
      * @param  string  $name
@@ -40,9 +40,11 @@ class DynamoDbLock extends Lock
      */
     public function acquire()
     {
-        return $this->dynamo->add(
-            $this->name, $this->owner, $this->seconds
-        );
+        if ($this->seconds > 0) {
+            return $this->dynamo->add($this->name, $this->owner, $this->seconds);
+        } else {
+            return $this->dynamo->add($this->name, $this->owner, 86400);
+        }
     }
 
     /**

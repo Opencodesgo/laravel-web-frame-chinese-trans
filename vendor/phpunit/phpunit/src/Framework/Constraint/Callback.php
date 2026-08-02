@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，限制，回调
+ */
+
 /*
  * This file is part of PHPUnit.
  *

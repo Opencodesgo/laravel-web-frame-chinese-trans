@@ -13,7 +13,7 @@ trait GuardsAttributes
      * The attributes that are mass assignable.
 	 * 可大量分配的属性
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = [];
 
@@ -21,13 +21,13 @@ trait GuardsAttributes
      * The attributes that aren't mass assignable.
 	 * 不能大规模分配的属性
      *
-     * @var array
+     * @var string[]|bool
      */
     protected $guarded = ['*'];
 
     /**
      * Indicates if all mass assignment is enabled.
-	 * 指示是否启用了所有的质量分配
+	 * 指明是否启用了所有的质量分配
      *
      * @var bool
      */
@@ -82,18 +82,20 @@ trait GuardsAttributes
 
     /**
      * Get the guarded attributes for the model.
-	 * 获取模型的protected属性
+	 * 获取模型的保护属性
      *
      * @return array
      */
     public function getGuarded()
     {
-        return $this->guarded;
+        return $this->guarded === false
+                    ? []
+                    : $this->guarded;
     }
 
     /**
      * Set the guarded attributes for the model.
-	 * 为模型设置受保护的属性
+	 * 设置模型的受保护的属性
      *
      * @param  array  $guarded
      * @return $this
@@ -143,7 +145,7 @@ trait GuardsAttributes
     }
 
     /**
-     * Determine if current state is "unguarded".
+     * Determine if the current state is "unguarded".
 	 * 确定当前状态是否为"未保护"
      *
      * @return bool
@@ -199,7 +201,7 @@ trait GuardsAttributes
         // If the attribute is explicitly listed in the "guarded" array then we can
         // return false immediately. This means this attribute is definitely not
         // fillable and there is no point in going any further in this method.
-		// 如果该属性显式地列在"guarded"数组中，那么我们可以立即返回false。
+		// 如果该属性显式地列在"guarded"数组中。
         if ($this->isGuarded($key)) {
             return false;
         }
@@ -237,9 +239,14 @@ trait GuardsAttributes
     protected function isGuardableColumn($key)
     {
         if (! isset(static::$guardableColumns[get_class($this)])) {
-            static::$guardableColumns[get_class($this)] = $this->getConnection()
+            $columns = $this->getConnection()
                         ->getSchemaBuilder()
                         ->getColumnListing($this->getTable());
+
+            if (empty($columns)) {
+                return true;
+            }
+            static::$guardableColumns[get_class($this)] = $columns;
         }
 
         return in_array($key, static::$guardableColumns[get_class($this)]);

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，集合是否包含
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -11,6 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Tests if an array contains values that match one or more Matchers.
+ * 测试数组是否包含与一个或多个匹配器匹配的值。
  */
 class IsCollectionContaining extends TypeSafeMatcher
 {
@@ -50,6 +55,7 @@ class IsCollectionContaining extends TypeSafeMatcher
 
     /**
      * Test if the value is an array containing this matcher.
+	 * 测试该值是否为包含此匹配器的数组。
      *
      * Example:
      * <pre>

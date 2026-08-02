@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，期待
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -52,6 +55,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Actual count of calls to this expectation
+	 * 对这个期望的调用的实际计数
      *
      * @var int
      */
@@ -59,6 +63,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Exception message
+	 * 异常消息
      *
      * @var null|string
      */
@@ -67,6 +72,7 @@ class Expectation implements ExpectationInterface
     /**
      * Array of closures executed with given arguments to generate a result
      * to be returned
+	 * 使用给定参数执行以生成结果的闭包数组待归还
      *
      * @var array
      */
@@ -74,6 +80,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * The count validator class to use
+	 * 使用计数验证器类
      *
      * @var string
      */
@@ -81,6 +88,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Count validator store
+	 * 计数验证器存储
      *
      * @var array
      */
@@ -88,6 +96,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Arguments expected by this expectation
+	 * 期望的论点
      *
      * @var array
      */
@@ -95,6 +104,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Expected count of calls to this expectation
+	 * 预计对这个期望的调用数
      *
      * @var int
      */
@@ -110,6 +120,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Integer representing the call order of this expectation on a global basis
+	 * 在全球基础上表示这种期望的调用顺序的整数
      *
      * @var int
      */
@@ -117,6 +128,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Mock object to which this expectation belongs
+	 * 模拟对象,这个期望属于
      *
      * @var LegacyMockInterface
      */
@@ -124,6 +136,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Method name
+	 * 方法名称
      *
      * @var string
      */
@@ -131,6 +144,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Integer representing the call order of this expectation
+	 * 表示期望的调用顺序的整数
      *
      * @var int
      */
@@ -139,6 +153,7 @@ class Expectation implements ExpectationInterface
     /**
      * Flag indicating if the return value should be obtained from the original
      * class method instead of returning predefined values from the return queue
+	 * 标志，指示是否应该从原始返回值中获得返回值类方法，而不是从返回队列返回预定义值。
      *
      * @var bool
      */
@@ -146,6 +161,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Array of return values as a queue for multiple return sequence
+	 * 作为多个返回序列队列的返回值数组
      *
      * @var array
      */
@@ -153,6 +169,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Value to return from this expectation
+	 * 从这个期望中返回的值
      *
      * @var mixed
      */
@@ -160,6 +177,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Array of values to be set when this expectation matches
+	 * 当此期望匹配时要设置的值数组
      *
      * @var array
      */
@@ -167,6 +185,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Flag indicating that an exception is expected to be throw (not returned)
+	 * 表示预计会抛出（而不是返回）异常的标志
      *
      * @var bool
      */
@@ -202,6 +221,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Return a string with the method name and arguments formatted
+	 * 返回方法名和参数格式化的字符串
      *
      * @return string
      */
@@ -212,6 +232,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set a return value, or sequential queue of return values
+	 * 设置返回值或返回值的顺序队列
      *
      * @param mixed ...$args
      *
@@ -226,6 +247,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Sets up a closure to return the nth argument from the expected method call
+	 * 设置闭包以返回预期方法调用的第n个参数
      *
      * @param int $index
      *
@@ -264,6 +286,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Return null. This is merely a language construct for Mock describing.
+	 * 返回null。这仅仅是Mock描述的语言结构。
      *
      * @return self
      */
@@ -274,6 +297,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set a return value, or sequential queue of return values
+	 * 设置返回值或返回值的顺序队列
      *
      * @param mixed ...$args
      *
@@ -286,6 +310,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Return this mock, like a fluent interface
+	 * 返回这个模拟，就像一个流畅的接口。
      *
      * @return self
      */
@@ -304,6 +329,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Return a self-returning black hole object.
+	 * 返回一个自返回黑洞对象
      *
      * @return self
      */
@@ -316,6 +342,7 @@ class Expectation implements ExpectationInterface
      * Set a closure or sequence of closures with which to generate return
      * values. The arguments passed to the expected method are passed to the
      * closures as parameters.
+	 * 设置要生成返回值的闭包或闭包序列值。
      *
      * @param callable ...$args
      *
@@ -330,6 +357,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set a sequential queue of return values with an array
+	 * 用数组设置返回值的顺序队列
      *
      * @return self
      */
@@ -340,6 +368,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Register values to be set to a public property each time this expectation occurs
+	 * 每次发生此期望时，将注册值设置为公共属性。
      *
      * @param string $name
      * @param array  ...$values
@@ -355,6 +384,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set Exception class and arguments to that class to be thrown
+	 * 设置Exception类和要抛出的该类的参数
      *
      * @param string|Throwable $exception
      * @param string           $message
@@ -375,6 +405,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set Exception classes to be thrown
+	 * 设置要抛出的Exception类
      *
      * @return self
      */
@@ -398,6 +429,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Sets up a closure that will yield each of the provided args
+	 * 设置一个闭包，该闭包将产生所提供的每个参数。
      *
      * @param mixed ...$args
      *
@@ -418,6 +450,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Sets next count validator to the AtLeast instance
+	 * 将下一个计数验证器设置为AtLeast实例
      *
      * @return self
      */
@@ -430,6 +463,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Sets next count validator to the AtMost instance
+	 * 将下一个计数验证器设置为AtMost实例
      *
      * @return self
      */
@@ -442,6 +476,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set the exception message
+	 * 设置异常消息
      *
      * @param string $message
      *
@@ -456,6 +491,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Shorthand for setting minimum and maximum constraints on call counts
+	 * 对调用计数设置最小和最大约束的简写
      *
      * @param int $minimum
      * @param int $maximum
@@ -467,6 +503,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Mark this expectation as being a default
+	 * 将此期望标记为默认值
      *
      * @return self
      */
@@ -491,6 +528,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Return the parent mock of the expectation
+	 * 返回期望的父模拟
      *
      * @return LegacyMockInterface|MockInterface
      */
@@ -506,6 +544,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Return order number
+	 * 退货单号
      *
      * @return int
      */
@@ -516,6 +555,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates call order should apply globally
+	 * 指示呼叫顺序应全局应用
      *
      * @return self
      */
@@ -528,6 +568,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Check if there is a constraint on call count
+	 * 检查呼叫计数是否有限制
      *
      * @return bool
      */
@@ -538,6 +579,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Checks if this expectation is eligible for additional calls
+	 * 检查此期望是否符合附加呼叫的条件
      *
      * @return bool
      */
@@ -554,6 +596,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Check if passed arguments match an argument expectation
+	 * 检查传递的参数是否符合参数期望
      *
      * @return bool
      */
@@ -586,6 +629,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates that this expectation is never expected to be called
+	 * 指示永远不会调用此期望
      *
      * @return self
      */
@@ -596,6 +640,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates that this expectation is expected exactly once
+	 * 指示该期望只期望一次
      *
      * @return self
      */
@@ -606,6 +651,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates that this expectation must be called in a specific given order
+	 * 指示必须以特定的给定顺序调用此期望
      *
      * @param string $group Name of the ordered group
      *
@@ -659,6 +705,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates the number of times this expectation should occur
+	 * 指示此期望应该发生的次数
      *
      * @param int $limit
      *
@@ -700,6 +747,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates that this expectation is expected exactly twice
+	 * 指示该期望被精确地期望两次
      *
      * @return self
      */
@@ -710,6 +758,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Verify call order
+	 * 验证呼叫顺序
      *
      * @return void
      */
@@ -730,6 +779,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Verify this expectation
+	 * 验证这个期望
      *
      * @return void
      */
@@ -769,6 +819,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Expected argument setter for the expectation
+	 * 期望参数设置器
      *
      * @param mixed ...$args
      *
@@ -781,6 +832,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set expectation that any arguments are acceptable
+	 * 设定任何参数都是可接受的期望
      *
      * @return self
      */
@@ -818,6 +870,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set with() as no arguments expected
+	 * 设置with()为不需要参数
      *
      * @return self
      */
@@ -830,6 +883,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Expected arguments should partially match the real arguments
+	 * 预期参数应该部分匹配实际参数
      *
      * @param mixed ...$expectedArgs
      *
@@ -850,6 +904,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Indicates this expectation should occur zero or more times
+	 * 指示此期望应该出现零次或多次
      *
      * @return self
      */
@@ -860,6 +915,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Setup the ordering tracking on the mock or mock container
+	 * 在模拟或模拟容器上设置排序跟踪
      *
      * @param string $group
      * @param object $ordering
@@ -886,6 +942,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Fetch the return value for the matching args
+	 * 获取匹配参数的返回值
      *
      * @return mixed
      */
@@ -916,6 +973,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Check if passed argument matches an argument expectation
+	 * 检查传递的参数是否与参数期望匹配
      *
      * @param mixed $expected
      * @param mixed $actual
@@ -957,6 +1015,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Check if the passed arguments match the expectations, one by one.
+	 * 逐个检查传递的参数是否符合预期
      *
      * @param array $args
      *
@@ -977,6 +1036,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Sets public properties with queued values to the mock object
+	 * 将具有排队值的公共属性设置为模拟对象
      *
      * @return void
      */
@@ -1025,6 +1085,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Check if the registered expectation is an ArgumentListMatcher
+	 * 检查注册的期望是否是一个ArgumentListMatcher
      *
      * @return bool
      */
@@ -1035,6 +1096,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Throws an exception if the expectation has been configured to do so
+	 * 如果期望已配置为这样做，则抛出异常。
      *
      * @param Throwable $return
      *
@@ -1057,6 +1119,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Expected arguments for the expectation passed as an array
+	 * 作为数组传递的期望的预期参数
      *
      * @return self
      */
@@ -1073,6 +1136,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Expected arguments have to be matched by the given closure.
+	 * 期望的参数必须与给定的闭包匹配
      *
      * @return self
      */

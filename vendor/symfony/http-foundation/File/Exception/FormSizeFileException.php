@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，文件，异常，表单大小文件异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 /**
  * Thrown when an UPLOAD_ERR_FORM_SIZE error occurred with UploadedFile.
+ * 当UploadedFile发生UPLOAD_ERR_FORM_SIZE错误时抛出
  *
  * @author Florent Mata <florentmata@gmail.com>
  */

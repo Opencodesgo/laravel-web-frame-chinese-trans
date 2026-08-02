@@ -10,18 +10,21 @@ use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Contracts\Mail\Factory as MailFactory;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Queue\Factory as Queue;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Localizable;
+use PHPUnit\Framework\Assert as PHPUnit;
 use ReflectionClass;
 use ReflectionProperty;
 
 class Mailable implements MailableContract, Renderable
 {
-    use ForwardsCalls, Localizable;
+    use Conditionable, ForwardsCalls, Localizable;
 
     /**
      * The locale of the message.
@@ -65,7 +68,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "reply to" recipients of the message.
-	 * 消息的"回复"收件人
+	 * 回复收件人
      *
      * @var array
      */
@@ -73,7 +76,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The subject of the message.
-	 * 消息的主题
+	 * 消息主题
      *
      * @var string
      */
@@ -85,7 +88,7 @@ class Mailable implements MailableContract, Renderable
      *
      * @var string
      */
-    protected $markdown;
+    public $markdown;
 
     /**
      * The HTML to use for the message.
@@ -168,6 +171,14 @@ class Mailable implements MailableContract, Renderable
     public $mailer;
 
     /**
+     * The rendered mailable views for testing / assertions.
+	 * 为测试/断言呈现的可邮寄视图
+     *
+     * @var array
+     */
+    protected $assertionableRenderStrings;
+
+    /**
      * The callback that should be invoked while building the view data.
 	 * 在构建视图数据时应该调用的回调
      *
@@ -184,7 +195,7 @@ class Mailable implements MailableContract, Renderable
      */
     public function send($mailer)
     {
-        return $this->withLocale($this->locale, function () use ($mailer) {
+        $this->withLocale($this->locale, function () use ($mailer) {
             Container::getInstance()->call([$this, 'build']);
 
             $mailer = $mailer instanceof MailFactory
@@ -250,7 +261,11 @@ class Mailable implements MailableContract, Renderable
      */
     protected function newQueuedJob()
     {
-        return new SendQueuedMailable($this);
+        return (new SendQueuedMailable($this))
+                    ->through(array_merge(
+                        method_exists($this, 'middleware') ? $this->middleware() : [],
+                        $this->middleware ?? []
+                    ));
     }
 
     /**
@@ -647,7 +662,6 @@ class Mailable implements MailableContract, Renderable
 	 * 设置邮件的收件人
      *
      * All recipients are stored internally as [['name' => ?, 'address' => ?]]
-	 * 所有收件人在内部存储为[['name' => ?]， 'address' => ？]]
      *
      * @param  object|array|string  $address
      * @param  string|null  $name
@@ -656,6 +670,10 @@ class Mailable implements MailableContract, Renderable
      */
     protected function setAddress($address, $name = null, $property = 'to')
     {
+        if (empty($address)) {
+            return $this;
+        }
+
         foreach ($this->addressesToArray($address, $name) as $recipient) {
             $recipient = $this->normalizeRecipient($recipient);
 
@@ -720,6 +738,10 @@ class Mailable implements MailableContract, Renderable
      */
     protected function hasRecipient($address, $name = null, $property = 'to')
     {
+        if (empty($address)) {
+            return false;
+        }
+
         $expected = $this->normalizeRecipient(
             $this->addressesToArray($address, $name)[0]
         );
@@ -910,6 +932,119 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Assert that the given text is present in the HTML email body.
+	 * 断言给定的文本存在于HTML电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertSeeInHtml($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            Str::contains($html, $string),
+            "Did not see expected text [{$string}] within email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is not present in the HTML email body.
+	 * 断言给定的文本不存在于HTML邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertDontSeeInHtml($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertFalse(
+            Str::contains($html, $string),
+            "Saw unexpected text [{$string}] within email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is present in the plain-text email body.
+	 * 断言给定的文本存在于纯文本电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertSeeInText($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            Str::contains($text, $string),
+            "Did not see expected text [{$string}] within text email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is not present in the plain-text email body.
+	 * 断言给定的文本不存在于纯文本电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertDontSeeInText($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertFalse(
+            Str::contains($text, $string),
+            "Saw unexpected text [{$string}] within text email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Render the HTML and plain-text version of the mailable into views for assertions.
+	 * 将可邮件的HTML和纯文本版本呈现到断言视图中
+     *
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    protected function renderForAssertions()
+    {
+        if ($this->assertionableRenderStrings) {
+            return $this->assertionableRenderStrings;
+        }
+
+        return $this->assertionableRenderStrings = $this->withLocale($this->locale, function () {
+            Container::getInstance()->call([$this, 'build']);
+
+            $html = Container::getInstance()->make('mailer')->render(
+                $view = $this->buildView(), $this->buildViewData()
+            );
+
+            if (is_array($view) && isset($view[1])) {
+                $text = $view[1];
+            }
+
+            $text = $text ?? $view['text'] ?? '';
+
+            if (! empty($text) && ! $text instanceof Htmlable) {
+                $text = Container::getInstance()->make('mailer')->render(
+                    $text, $this->buildViewData()
+                );
+            }
+
+            return [(string) $html, (string) $text];
+        });
+    }
+
+    /**
      * Set the name of the mailer that should send the message.
 	 * 设置应该发送邮件的邮件发件人的名称
      *
@@ -947,26 +1082,6 @@ class Mailable implements MailableContract, Renderable
     public static function buildViewDataUsing(callable $callback)
     {
         static::$viewDataCallback = $callback;
-    }
-
-    /**
-     * Apply the callback's message changes if the given "value" is true.
-	 * 如果给定的"value"为真，则应用回调的消息更改。
-     *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  mixed  $default
-     * @return mixed|$this
-     */
-    public function when($value, $callback, $default = null)
-    {
-        if ($value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
-        }
-
-        return $this;
     }
 
     /**

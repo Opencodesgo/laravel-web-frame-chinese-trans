@@ -1,10 +1,13 @@
 <?php
 /**
- * League，CommonMark，Github风味的Markdown转换器
+ * League，CommonMark，Github 风味的降价转换器
  */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
+ * 这个文件是league/commonmark包的一部分
  *
  * (c) Colin O'Dell <colinodell@gmail.com>
  *
@@ -14,29 +17,35 @@
 
 namespace League\CommonMark;
 
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+
 /**
- * Converts Github Flavored Markdown to HTML.
+ * Converts GitHub Flavored Markdown to HTML.
+ * 转换GitHub风味Markdown为HTML
  */
-class GithubFlavoredMarkdownConverter extends CommonMarkConverter
+final class GithubFlavoredMarkdownConverter extends MarkdownConverter
 {
     /**
-     * Create a new commonmark converter instance.
+     * Create a new Markdown converter pre-configured for GFM
+	 * 创建一个为GFM预先配置的新Markdown转换器
      *
-     * @param array<string, mixed>      $config
-     * @param EnvironmentInterface|null $environment
+     * @param array<string, mixed> $config
      */
-    public function __construct(array $config = [], EnvironmentInterface $environment = null)
+    public function __construct(array $config = [])
     {
-        if ($environment === null) {
-            $environment = Environment::createGFMEnvironment();
-        } else {
-            @\trigger_error(\sprintf('Passing an $environment into the "%s" constructor is deprecated in 1.6 and will not be supported in 2.0; use MarkdownConverter instead. See https://commonmark.thephpleague.com/2.0/upgrading/consumers/#commonmarkconverter-and-githubflavoredmarkdownconverter-constructors for more details.', self::class), \E_USER_DEPRECATED);
-        }
+        $environment = new Environment($config);
+        $environment->addExtension(new CommonMarkCoreExtension());
+        $environment->addExtension(new GithubFlavoredMarkdownExtension());
 
-        if ($environment instanceof ConfigurableEnvironmentInterface) {
-            $environment->mergeConfig($config);
-        }
+        parent::__construct($environment);
+    }
 
-        MarkdownConverter::__construct($environment);
+    public function getEnvironment(): Environment
+    {
+        \assert($this->environment instanceof Environment);
+
+        return $this->environment;
     }
 }

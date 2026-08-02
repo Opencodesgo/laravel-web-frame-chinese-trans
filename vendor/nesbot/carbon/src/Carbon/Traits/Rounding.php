@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，舍入
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,6 +19,7 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Rounding.
+ * 舍入特征。
  *
  * Round, ceil, floor units.
  *
@@ -30,6 +34,7 @@ trait Rounding
 
     /**
      * Round the current instance at the given unit with given precision if specified and the given function.
+	 * 如果指定并使用给定函数，则以给定精度四舍五入当前实例的给定单元。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -140,6 +145,7 @@ trait Rounding
 
     /**
      * Truncate the current instance at the given unit with given precision if specified.
+	 * 如果指定，以给定精度截断给定单元的当前实例。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -153,6 +159,7 @@ trait Rounding
 
     /**
      * Ceil the current instance at the given unit with given precision if specified.
+	 * 如果指定，则以给定的精度在给定单元上捕获当前实例。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -166,6 +173,7 @@ trait Rounding
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 如果指定，以给定的精度舍入当前实例秒。
      *
      * @param float|int|string|\DateInterval|null $precision
      * @param string                              $function
@@ -179,6 +187,7 @@ trait Rounding
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 如果指定，以给定的精度舍入当前实例秒。
      *
      * @param float|int|string|\DateInterval|null $precision
      *
@@ -191,6 +200,7 @@ trait Rounding
 
     /**
      * Ceil the current instance second with given precision if specified.
+	 * 如果指定了当前实例，则以给定的精度第二次调用当前实例。
      *
      * @param float|int|string|\DateInterval|null $precision
      *
@@ -203,6 +213,7 @@ trait Rounding
 
     /**
      * Round the current instance week.
+	 * 四舍五入当前实例周
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *
@@ -230,6 +241,7 @@ trait Rounding
 
     /**
      * Ceil the current instance week.
+	 * 指定当前实例周。
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *

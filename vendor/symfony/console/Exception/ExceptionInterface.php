@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * ExceptionInterface.
+ * 异常接口
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，期待主管
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -23,6 +26,7 @@ class ExpectationDirector
 {
     /**
      * Stores an array of all default expectations for this mock
+	 * 为这个模拟存储一系列默认的期望
      *
      * @var list<ExpectationInterface>
      */
@@ -30,6 +34,7 @@ class ExpectationDirector
 
     /**
      * Stores an array of all expectations for this mock
+	 * 为这个模拟存储一系列期望
      *
      * @var list<ExpectationInterface>
      */
@@ -37,6 +42,7 @@ class ExpectationDirector
 
     /**
      * The expected order of next call
+	 * 下一次呼叫的预期顺序
      *
      * @var int
      */
@@ -44,6 +50,7 @@ class ExpectationDirector
 
     /**
      * Mock object the director is attached to
+	 * 指示器附加到的模拟对象
      *
      * @var LegacyMockInterface|MockInterface
      */
@@ -51,6 +58,7 @@ class ExpectationDirector
 
     /**
      * Method name the director is directing
+	 * 方法名称:导演是导演
      *
      * @var string
      */
@@ -58,6 +66,7 @@ class ExpectationDirector
 
     /**
      * Constructor
+	 * 构造方法
      *
      * @param string $name
      */
@@ -69,6 +78,7 @@ class ExpectationDirector
 
     /**
      * Add a new expectation to the director
+	 * 向导演增加一个新的期望
      */
     public function addExpectation(Expectation $expectation)
     {
@@ -77,6 +87,7 @@ class ExpectationDirector
 
     /**
      * Handle a method call being directed by this instance
+	 * 处理由此实例引导的方法调用
      *
      * @return mixed
      */
@@ -106,6 +117,7 @@ class ExpectationDirector
 
     /**
      * Attempt to locate an expectation matching the provided args
+	 * 尝试定位一个期望匹配提供的args
      *
      * @return mixed
      */
@@ -126,6 +138,7 @@ class ExpectationDirector
 
     /**
      * Return all expectations assigned to this director
+	 * 返回指定给该董事的所有期望
      *
      * @return array<ExpectationInterface>
      */
@@ -136,6 +149,7 @@ class ExpectationDirector
 
     /**
      * Return the number of expectations assigned to this director.
+	 * 返回分配给这个负责人的期望的数量
      *
      * @return int
      */
@@ -160,6 +174,7 @@ class ExpectationDirector
 
     /**
      * Return all expectations assigned to this director
+	 * 返回指定给该董事的所有期望
      *
      * @return array<ExpectationInterface>
      */
@@ -170,6 +185,7 @@ class ExpectationDirector
 
     /**
      * Make the given expectation a default for all others assuming it was correctly created last
+	 * 将给定的期望默认为所有其他人假设它是正确的
      *
      * @throws Exception
      *
@@ -190,6 +206,7 @@ class ExpectationDirector
 
     /**
      * Verify all expectations of the director
+	 * 核实董事的所有期望
      *
      * @throws Exception
      *
@@ -212,6 +229,7 @@ class ExpectationDirector
 
     /**
      * Search current array of expectations for a match
+	 * 搜索当前对匹配的期望数组
      *
      * @param array<ExpectationInterface> $expectations
      *

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，进程处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Logger;
 
 /**
  * Stores to STDIN of any process, specified by a command.
+ * 存储到任何流程的STDIN,由命令指定。
  *
  * Usage example:
  * <pre>
@@ -28,6 +33,7 @@ class ProcessHandler extends AbstractProcessingHandler
 {
     /**
      * Holds the process to receive data on its STDIN.
+	 * 保存过程以接收其STDIN的数据
      *
      * @var resource|bool|null
      */
@@ -80,6 +86,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
     /**
      * Writes the record down to the log of the implementing handler
+	 * 将记录向下写入实现处理程序的日志
      *
      * @throws \UnexpectedValueException
      */
@@ -98,6 +105,7 @@ class ProcessHandler extends AbstractProcessingHandler
     /**
      * Makes sure that the process is actually started, and if not, starts it,
      * assigns the stream pipes, and handles startup errors, if any.
+	 * 确保进程已经启动，如果没有，就启动它，分配流管道，并处理启动错误（如果有的话）。
      */
     private function ensureProcessIsStarted(): void
     {
@@ -110,6 +118,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
     /**
      * Starts the actual process and sets all streams to non-blocking.
+	 * 启动实际进程并将所有流设置为非阻塞
      */
     private function startProcess(): void
     {
@@ -122,6 +131,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
     /**
      * Selects the STDERR stream, handles upcoming startup errors, and throws an exception, if any.
+	 * 选择STDERR流，处理即将到来的启动错误，并抛出异常（如果有的话）。
      *
      * @throws \UnexpectedValueException
      */
@@ -143,6 +153,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
     /**
      * Selects the STDERR stream.
+	 * 选择STDERR流
      *
      * @return int|bool
      */
@@ -156,6 +167,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
     /**
      * Reads the errors of the process, if there are any.
+	 * 读取进程的错误（如果有的话）
      *
      * @codeCoverageIgnore
      * @return string Empty string if there are no errors.
@@ -167,6 +179,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
     /**
      * Writes to the input stream of the opened process.
+	 * 写入已打开进程的输入流
      *
      * @codeCoverageIgnore
      */

@@ -1,4 +1,8 @@
 <?php
+/**
+ * NunoMaduro，闭包，可序列化的关闭
+ */
+
 /* ===========================================================================
  * Copyright (c) 2018-2021 Zindex Software
  *
@@ -14,6 +18,7 @@ use ReflectionObject;
 
 /**
  * Provides a wrapper for serialization of closures
+ * 提供用于闭包序列化的包装器。
  */
 class SerializableClosure implements Serializable
 {

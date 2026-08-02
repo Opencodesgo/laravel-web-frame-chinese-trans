@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，视图，问题，收集视图异常
+ */
 
 namespace Facade\Ignition\Views\Concerns;
 

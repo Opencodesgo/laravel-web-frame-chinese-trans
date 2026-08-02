@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，MongoDB 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -20,6 +24,7 @@ use Monolog\Formatter\MongoDBFormatter;
 
 /**
  * Logs to a MongoDB database.
+ * 日志到MongoDB数据库。
  *
  * Usage example:
  *
@@ -42,6 +47,7 @@ class MongoDBHandler extends AbstractProcessingHandler
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param Client|Manager $mongodb    MongoDB library or driver client
      * @param string         $database   Database name

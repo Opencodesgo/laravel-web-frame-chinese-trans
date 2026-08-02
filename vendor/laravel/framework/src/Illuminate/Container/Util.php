@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，容器，多功能工具包
+ * Illuminate，容器，工具
  */
 
 namespace Illuminate\Container;
@@ -8,11 +8,14 @@ namespace Illuminate\Container;
 use Closure;
 use ReflectionNamedType;
 
+/**
+ * @internal
+ */
 class Util
 {
     /**
      * If the given value is not an array and not null, wrap it in one.
-	 * 如果给定的值不是数组，也不为空，则将其封装在一个数组中。
+	 * 如果给定的值不是数组也不为空，则将其封装在一个数组中。
      *
      * From Arr::wrap() in Illuminate\Support.
      *
@@ -56,7 +59,7 @@ class Util
         $type = $parameter->getType();
 
         if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
-            return;
+            return null;
         }
 
         $name = $type->getName();

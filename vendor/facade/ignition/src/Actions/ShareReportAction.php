@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，动作，分享报告动作
+ */
 
 namespace Facade\Ignition\Actions;
 

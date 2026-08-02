@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，扩展，目录，标准化者，标准化策略接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -11,7 +16,7 @@
 
 namespace League\CommonMark\Extension\TableOfContents\Normalizer;
 
-use League\CommonMark\Block\Element\ListItem;
+use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
 
 interface NormalizerStrategyInterface
 {

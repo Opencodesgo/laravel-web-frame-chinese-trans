@@ -1,17 +1,18 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，由一对多
+ * Illuminate，数据库，Eloquent，关系，有一个通过
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Concerns\InteractsWithDictionary;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
 class HasOneThrough extends HasManyThrough
 {
-    use SupportsDefaultModels;
+    use InteractsWithDictionary, SupportsDefaultModels;
 
     /**
      * Get the results of the relationship.
@@ -57,9 +58,9 @@ class HasOneThrough extends HasManyThrough
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 有了字典之后，我们可以简单地通过父模型旋转到把他们和他们的孩子联系起来。
+		// 一旦我们有了字典，我们可以简单地通过父模型旋转到用关键字字典把他们和他们的孩子联系起来。
         foreach ($models as $model) {
-            if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
+            if (isset($dictionary[$key = $this->getDictionaryKey($model->getAttribute($this->localKey))])) {
                 $value = $dictionary[$key];
                 $model->setRelation(
                     $relation, reset($value)

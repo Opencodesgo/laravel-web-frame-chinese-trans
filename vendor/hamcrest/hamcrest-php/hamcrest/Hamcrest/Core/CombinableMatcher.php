@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，可以化合的匹配器
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -47,6 +51,7 @@ class CombinableMatcher extends BaseMatcher
      * <pre>
      *   assertThat($string, both(containsString("a"))->andAlso(containsString("b")));
      * </pre>
+	 * 这对于流畅地组合必须同时通过的匹配器非常有用。
      *
      * @factory
      */

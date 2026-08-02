@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，日期
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -38,6 +41,7 @@ use Throwable;
 
 /**
  * A simple API extension for DateTime.
+ * DateTime的简单API扩展。
  *
  * @mixin DeprecatedProperties
  *

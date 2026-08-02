@@ -51,7 +51,7 @@ class Response implements Arrayable
 
     /**
      * Create a new "allow" Response.
-	 * 创建新的"允许"响应
+	 * 创建一个新的"allow"响应
      *
      * @param  string|null  $message
      * @param  mixed  $code
@@ -64,7 +64,7 @@ class Response implements Arrayable
 
     /**
      * Create a new "deny" Response.
-	 * 创建新的"拒绝"响应
+	 * 创建一个新的"deny"响应
      *
      * @param  string|null  $message
      * @param  mixed  $code
@@ -88,7 +88,7 @@ class Response implements Arrayable
 
     /**
      * Determine if the response was denied.
-	 * 确定是否拒绝响应
+	 * 确定响应是否被拒绝
      *
      * @return bool
      */
@@ -99,7 +99,7 @@ class Response implements Arrayable
 
     /**
      * Get the response message.
-	 * 得到响应消息
+	 * 获取响应消息
      *
      * @return string|null
      */

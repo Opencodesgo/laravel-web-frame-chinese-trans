@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，载入程序，Mo 文件装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -127,6 +130,7 @@ class MoFileLoader extends FileLoader
 
     /**
      * Reads an unsigned long from stream respecting endianness.
+	 * 从小溪上读一篇没有签名的人,尊重求求性
      *
      * @param resource $stream
      */

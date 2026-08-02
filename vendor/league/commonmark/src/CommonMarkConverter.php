@@ -1,7 +1,9 @@
 <?php
 /**
- * League，CommonMark，通用标记变换器
+ * League，CommonMark，通用标志转换器
  */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -17,42 +19,33 @@
 
 namespace League\CommonMark;
 
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+
 /**
  * Converts CommonMark-compatible Markdown to HTML.
- * 将commonmark兼容的Markdown转换为HTML
+ * 将commonmark兼容的Markdown转换为HTML。
  */
-class CommonMarkConverter extends MarkdownConverter
+final class CommonMarkConverter extends MarkdownConverter
 {
     /**
-     * The currently-installed version.
-	 * 当前安装的版本
+     * Create a new Markdown converter pre-configured for CommonMark
+	 * 为CommonMark创建一个新的Markdown转换器
      *
-     * This might be a typical `x.y.z` version, or `x.y-dev`.
-     *
-     * @deprecated in 1.5.0 and will be removed from 2.0.0.
-     *   Use \Composer\InstalledVersions provided by composer-runtime-api instead.
+     * @param array<string, mixed> $config
      */
-    public const VERSION = '1.6.7';
-
-    /**
-     * Create a new commonmark converter instance.
-	 * 创建一个新的公共标记转换器实例
-     *
-     * @param array<string, mixed>      $config
-     * @param EnvironmentInterface|null $environment
-     */
-    public function __construct(array $config = [], EnvironmentInterface $environment = null)
+    public function __construct(array $config = [])
     {
-        if ($environment === null) {
-            $environment = Environment::createCommonMarkEnvironment();
-        } else {
-            @\trigger_error(\sprintf('Passing an $environment into the "%s" constructor is deprecated in 1.6 and will not be supported in 2.0; use MarkdownConverter instead. See https://commonmark.thephpleague.com/2.0/upgrading/consumers/#commonmarkconverter-and-githubflavoredmarkdownconverter-constructors for more details.', self::class), \E_USER_DEPRECATED);
-        }
-
-        if ($environment instanceof ConfigurableEnvironmentInterface) {
-            $environment->mergeConfig($config);
-        }
+        $environment = new Environment($config);
+        $environment->addExtension(new CommonMarkCoreExtension());
 
         parent::__construct($environment);
+    }
+
+    public function getEnvironment(): Environment
+    {
+        \assert($this->environment instanceof Environment);
+
+        return $this->environment;
     }
 }

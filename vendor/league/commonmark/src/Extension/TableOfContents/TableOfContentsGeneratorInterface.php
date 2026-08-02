@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，扩展，目录，目录生成器接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -11,13 +16,10 @@
 
 namespace League\CommonMark\Extension\TableOfContents;
 
-use League\CommonMark\Block\Element\Document;
 use League\CommonMark\Extension\TableOfContents\Node\TableOfContents;
+use League\CommonMark\Node\Block\Document;
 
 interface TableOfContentsGeneratorInterface
 {
     public function generate(Document $document): ?TableOfContents;
 }
-
-// Trigger autoload without causing a deprecated error
-\class_exists(TableOfContents::class);

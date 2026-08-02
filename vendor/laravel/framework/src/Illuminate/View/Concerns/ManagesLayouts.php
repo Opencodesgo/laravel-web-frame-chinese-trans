@@ -13,7 +13,7 @@ trait ManagesLayouts
 {
     /**
      * All of the finished, captured sections.
-	 * 所有完成的，捕获的部分。
+	 * 所有完成的、捕获的部分。
      *
      * @var array
      */
@@ -264,7 +264,7 @@ trait ManagesLayouts
 
     /**
      * Flush all of the sections.
-	 * 刷新所有的部分
+	 * 冲洗所有的部分
      *
      * @return void
      */

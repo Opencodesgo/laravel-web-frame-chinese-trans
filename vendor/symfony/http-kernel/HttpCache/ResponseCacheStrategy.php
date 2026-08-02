@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * ResponseCacheStrategy knows how to compute the Response cache HTTP header
  * based on the different response cache headers.
+ * ResponseCacheStrategy知道如何计算响应缓存HTTP报头基于不同的响应缓存头。
  *
  * This implementation changes the main response TTL to the smallest TTL received
  * or force validation if one of the surrogates has validation cache strategy.
@@ -29,6 +30,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
 {
     /**
      * Cache-Control headers that are sent to the final response if they appear in ANY of the responses.
+	 * 如果它们出现在任何响应中,则发送到最终响应的Cache-Control头。
      */
     private const OVERRIDE_DIRECTIVES = ['private', 'no-cache', 'no-store', 'no-transform', 'must-revalidate', 'proxy-revalidate'];
 
@@ -213,6 +215,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
 
     /**
      * Store lowest max-age/s-maxage/expires for the final response.
+	 * 存储最低质量/ s-maxage /到期的最终响应。
      *
      * The response might have been stored in cache a while ago. To keep things comparable,
      * we have to subtract the age so that the value is normalized for an age of 0.

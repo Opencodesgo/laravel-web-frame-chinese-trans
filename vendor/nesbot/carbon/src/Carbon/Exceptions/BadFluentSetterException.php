@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，糟糕流畅的Setter异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
 {
     /**
      * The setter.
+	 * setter
      *
      * @var string
      */
@@ -25,6 +29,7 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string         $setter
      * @param int            $code
@@ -39,6 +44,7 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
 
     /**
      * Get the setter.
+	 * 得到setter
      *
      * @return string
      */

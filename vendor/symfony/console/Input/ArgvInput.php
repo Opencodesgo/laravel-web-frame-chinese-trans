@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，输入参数
+ * Symfony，Component，Console，输入，Argv 输入
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * ArgvInput represents an input coming from the CLI arguments.
+ * ArgvInput表示来自CLI参数的输入。
  *
  * Usage:
  *
@@ -94,6 +95,7 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option.
+	 * 替换一个简短的选项
      */
     private function parseShortOption(string $token)
     {
@@ -113,6 +115,7 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option set.
+	 * 解析一个短选项集
      *
      * @throws RuntimeException When option given doesn't exist
      */
@@ -138,6 +141,7 @@ class ArgvInput extends Input
 
     /**
      * Parses a long option.
+	 * Parses有一个很长的选择
      */
     private function parseLongOption(string $token)
     {
@@ -155,6 +159,7 @@ class ArgvInput extends Input
 
     /**
      * Parses an argument.
+	 * 解析参数
      *
      * @throws RuntimeException When too many arguments are given
      */
@@ -199,6 +204,7 @@ class ArgvInput extends Input
 
     /**
      * Adds a short option value.
+	 * 添加一个短期选项值
      *
      * @throws RuntimeException When option given doesn't exist
      */
@@ -213,6 +219,7 @@ class ArgvInput extends Input
 
     /**
      * Adds a long option value.
+	 * 添加一个长选项值
      *
      * @throws RuntimeException When option given doesn't exist
      */
@@ -359,7 +366,7 @@ class ArgvInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
-	 * 返回传递给命令的参数的字符串化表示形式
+	 * 返回args传递给命令的stringified表示
      *
      * @return string
      */

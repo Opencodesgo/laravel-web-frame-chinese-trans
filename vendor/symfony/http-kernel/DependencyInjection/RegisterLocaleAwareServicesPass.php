@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Register all services that have the "kernel.locale_aware" tag into the listener.
- * 注册所有具有"内核"的服务。Locale_aware标记放入侦听器。
+ * 注册所有具有“内核”的服务。Locale_aware”标记放入侦听器。
  *
  * @author Pierre Bobiet <pierrebobiet@gmail.com>
  */

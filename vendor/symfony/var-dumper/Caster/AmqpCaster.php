@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，魔术师，Amqp Caster
+ * Symfony，Component，VarDumper，魔术师，Amqp Caster
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Amqp related classes to array representation.
+ * 将Amqp相关类投射到数组表示。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  *

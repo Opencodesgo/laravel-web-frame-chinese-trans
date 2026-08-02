@@ -10,11 +10,11 @@ use Illuminate\Support\Traits\Macroable;
 
 class PendingResourceRegistration
 {
-    use Macroable;
+    use CreatesRegularExpressionRouteConstraints, Macroable;
 
     /**
      * The resource registrar.
-	 * 资源注册者
+	 * 资源注册商
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */
@@ -54,7 +54,7 @@ class PendingResourceRegistration
 
     /**
      * Create a new pending resource registration instance.
-	 * 创建新的挂起的资源注册实例
+	 * 创建一个新的挂起的资源注册实例
      *
      * @param  \Illuminate\Routing\ResourceRegistrar  $registrar
      * @param  string  $name
@@ -165,6 +165,12 @@ class PendingResourceRegistration
      */
     public function middleware($middleware)
     {
+        $middleware = Arr::wrap($middleware);
+
+        foreach ($middleware as $key => $value) {
+            $middleware[$key] = (string) $value;
+        }
+
         $this->options['middleware'] = $middleware;
 
         return $this;
@@ -202,7 +208,7 @@ class PendingResourceRegistration
 
     /**
      * Indicate that the resource routes should have "shallow" nesting.
-	 * 指明资源路由应该有"浅"嵌套
+	 * 指示资源路由应该有"浅"嵌套
      *
      * @param  bool  $shallow
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -215,8 +221,22 @@ class PendingResourceRegistration
     }
 
     /**
+     * Define the callable that should be invoked on a missing model exception.
+	 * 定义在缺失模型异常时应该调用的可调用对象
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function missing($callback)
+    {
+        $this->options['missing'] = $callback;
+
+        return $this;
+    }
+
+    /**
      * Indicate that the resource routes should be scoped using the given binding fields.
-	 * 指明资源路由应该使用给定的绑定字段限定范围
+	 * 指示资源路由应该使用给定的绑定字段限定范围
      *
      * @param  array  $fields
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -245,7 +265,7 @@ class PendingResourceRegistration
 
     /**
      * Handle the object's destruction.
-	 * 处理对象销毁
+	 * 处理对象的销毁
      *
      * @return void
      */

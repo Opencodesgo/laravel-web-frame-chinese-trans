@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，载入程序，IcuRes 文件装载机
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IcuResFileLoader loads translations from a resource bundle.
+ * IcuResFileLoader 加载一个资源包的翻译。
  *
  * @author stealth35
  */
@@ -61,6 +65,7 @@ class IcuResFileLoader implements LoaderInterface
 
     /**
      * Flattens an ResourceBundle.
+	 * 足智多谋
      *
      * The scheme used is:
      *   key { key2 { key3 { "value" } } }

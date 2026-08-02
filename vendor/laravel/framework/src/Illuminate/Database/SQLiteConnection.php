@@ -6,10 +6,14 @@
 namespace Illuminate\Database;
 
 use Doctrine\DBAL\Driver\PDOSqlite\Driver as DoctrineDriver;
+use Doctrine\DBAL\Version;
+use Illuminate\Database\PDO\SQLiteDriver;
 use Illuminate\Database\Query\Grammars\SQLiteGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\SQLiteProcessor;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar as SchemaGrammar;
 use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Database\Schema\SqliteSchemaState;
+use Illuminate\Filesystem\Filesystem;
 
 class SQLiteConnection extends Connection
 {
@@ -40,7 +44,7 @@ class SQLiteConnection extends Connection
 
     /**
      * Get the default query grammar instance.
-	 * 得到默认查询语法实例
+	 * 获取默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\SQLiteGrammar
      */
@@ -51,7 +55,7 @@ class SQLiteConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 获取连接的模式生成器实例
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\SQLiteBuilder
      */
@@ -66,7 +70,7 @@ class SQLiteConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 得到默认模式语法实例
+	 * 获取默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\SQLiteGrammar
      */
@@ -76,8 +80,22 @@ class SQLiteConnection extends Connection
     }
 
     /**
+     * Get the schema state for the connection.
+	 * 获取连接的模式状态
+     *
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
+     * @param  callable|null  $processFactory
+     *
+     * @throws \RuntimeException
+     */
+    public function getSchemaState(Filesystem $files = null, callable $processFactory = null)
+    {
+        return new SqliteSchemaState($this, $files, $processFactory);
+    }
+
+    /**
      * Get the default post processor instance.
-	 * 获取默认的post处理器实例
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\SQLiteProcessor
      */
@@ -90,11 +108,11 @@ class SQLiteConnection extends Connection
      * Get the Doctrine DBAL driver.
 	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOSqlite\Driver
+     * @return \Doctrine\DBAL\Driver\PDOSqlite\Driver|\Illuminate\Database\PDO\SQLiteDriver
      */
     protected function getDoctrineDriver()
     {
-        return new DoctrineDriver;
+        return class_exists(Version::class) ? new DoctrineDriver : new SQLiteDriver;
     }
 
     /**

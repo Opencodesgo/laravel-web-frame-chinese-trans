@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，DateTime 不可变
+ * Monolog，日期时间不可变
  */
 
 /*
@@ -37,7 +37,7 @@ class DateTimeImmutable extends \DateTimeImmutable implements \JsonSerializable
 
         // if you like to use a custom time to pass to Logger::addRecord directly,
         // call modify() or setTimestamp() on this instance to change the date after creating it
-		// 如果你想使用自定义时间直接传递给 Logger::addRecord。
+		// 如果你想使用自定义时间直接传递给Logger::addRecord，
         parent::__construct('now', $timezone);
     }
 

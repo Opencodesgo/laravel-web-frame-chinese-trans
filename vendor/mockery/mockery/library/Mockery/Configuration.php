@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，配置
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -36,6 +39,7 @@ class Configuration
      * i.e. when method expectations are made, set using a zeroOrMoreTimes()
      * constraint, and then never called. Essentially such expectations are
      * not required and are just taking up test space.
+	 * 布尔断言我们是否忽略了不必要的方法的模拟,
      *
      * @var bool
      */
@@ -69,6 +73,7 @@ class Configuration
 
     /**
      * Parameter map for use with PHP internal classes.
+	 * 使用PHP内部类的参数映射
      *
      *  e.g. ['class' => ['method' => ['param1', 'param2']]]
      *
@@ -78,6 +83,7 @@ class Configuration
 
     /**
      * Custom object formatters
+	 * 自定义对象格式化程序
      *
      * e.g. ['class' => static fn($object) => 'formatted']
      *
@@ -105,6 +111,7 @@ class Configuration
 
     /**
      * Set boolean to allow/prevent unnecessary mocking of methods
+	 * 设置布尔允许/防止不必要的方法模拟
      *
      * @param bool $flag
      *
@@ -124,6 +131,7 @@ class Configuration
 
     /**
      * Set boolean to allow/prevent mocking of non-existent methods
+	 * 设置布尔允许/防止对不存在的方法进行模拟
      *
      * @param bool $flag
      *
@@ -176,6 +184,7 @@ class Configuration
 
     /**
      * Get the default matcher for a given class
+	 * 为给定的类获得默认的matcher
      *
      * @param class-string $class
      *
@@ -206,6 +215,7 @@ class Configuration
 
     /**
      * Get the parameter map of an internal PHP class method
+	 * 获取内部PHP类方法的参数映射
      *
      * @param class-string $class
      * @param string       $method
@@ -229,6 +239,7 @@ class Configuration
 
     /**
      * Get the parameter maps of internal PHP classes
+	 * 获取内部PHP类的参数映射
      *
      * @return array<class-string,array<string,list<string>>>
      */
@@ -239,6 +250,7 @@ class Configuration
 
     /**
      * Get the object formatter for a class
+	 * 为类获取对象格式化程序
      *
      * @param class-string $class
      * @param Closure      $defaultFormatter
@@ -268,6 +280,7 @@ class Configuration
 
     /**
      * Returns the quick definitions configuration
+	 * 返回快速定义配置
      */
     public function getQuickDefinitions(): QuickDefinitionsConfiguration
     {
@@ -276,6 +289,7 @@ class Configuration
 
     /**
      * Return flag indicating whether mocking non-existent methods allowed
+	 * 返回标志,表明是否允许模拟不存在的方法
      *
      * @return bool
      *
@@ -293,6 +307,7 @@ class Configuration
 
     /**
      * Return flag indicating whether mocking non-existent methods allowed
+	 * 返回标志,表明是否允许模拟不存在的方法
      *
      * @return bool
      */
@@ -303,6 +318,7 @@ class Configuration
 
     /**
      * Is reflection cache enabled?
+	 * 启用了反射缓存吗?
      *
      * @return bool
      */
@@ -313,6 +329,7 @@ class Configuration
 
     /**
      * Remove all overridden parameter maps from internal PHP classes.
+	 * 从内部PHP类中删除所有覆盖的参数映射
      *
      * @return void
      */
@@ -323,6 +340,7 @@ class Configuration
 
     /**
      * Set a map of constants to be used in the mock generator
+	 * 在模拟生成器中设置一个常量的映射
      *
      * e.g. ['MyClass' => ['MY_CONST' => 123, 'ARRAY_CONST' => ['foo', 'bar']]]
      *
@@ -365,6 +383,7 @@ class Configuration
 
     /**
      * Set a parameter map (array of param signature strings) for the method of an internal PHP class.
+	 * 为内部PHP类的方法设置参数映射(param签名字符串数组)
      *
      * @param class-string $class
      * @param string       $method
@@ -393,6 +412,7 @@ class Configuration
 
     /**
      * Set a custom object formatter for a class
+	 * 为类设置自定义对象格式化程序
      *
      * @param class-string $class
      * @param Closure      $formatterCallback

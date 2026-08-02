@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，改变列
+ * Illuminate，数据库，架构，语法，更改列
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -18,7 +18,7 @@ class ChangeColumn
 {
     /**
      * Compile a change column command into a series of SQL statements.
-	 * 编译更改列命令成一系列SQL语句
+	 * 将更改列命令编译成一系列SQL语句
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -210,6 +210,7 @@ class ChangeColumn
             'binary',
             'boolean',
             'date',
+            'dateTime',
             'decimal',
             'double',
             'float',

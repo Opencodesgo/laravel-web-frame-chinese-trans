@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案，使用默认的 Valet Db凭据解决方案
+ */
 
 namespace Facade\Ignition\Solutions;
 

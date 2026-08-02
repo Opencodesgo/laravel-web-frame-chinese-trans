@@ -30,7 +30,6 @@ trait ParsesLogConfiguration
     /**
      * Get fallback log channel name.
 	 * 获取回退日志通道名称
-	 * 
      *
      * @return string
      */
@@ -54,6 +53,24 @@ trait ParsesLogConfiguration
         }
 
         throw new InvalidArgumentException('Invalid log level.');
+    }
+
+    /**
+     * Parse the action level from the given configuration.
+	 * 从给定的配置中解析操作级别
+     *
+     * @param  array  $config
+     * @return int
+     */
+    protected function actionLevel(array $config)
+    {
+        $level = $config['action_level'] ?? 'debug';
+
+        if (isset($this->levels[$level])) {
+            return $this->levels[$level];
+        }
+
+        throw new InvalidArgumentException('Invalid log action level.');
     }
 
     /**

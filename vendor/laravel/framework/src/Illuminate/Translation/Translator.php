@@ -1,7 +1,6 @@
 <?php
 /**
  * Illuminate，翻译，翻译程序
- * 服务容器绑定translator
  */
 
 namespace Illuminate\Translation;
@@ -10,7 +9,6 @@ use Countable;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
@@ -119,7 +117,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // For JSON translations, there is only one file per locale, so we will simply load
         // that file and then we will be ready to check the array for the key. These are
         // only one level deep so we do not need to do any fancy searching through it.
-		// 对于JSON翻译，每个语言环境只有一个文件，因此我们将简单地加载。
+		// 对于JSON翻译，每个语言环境只有一个文件，所以我们将加载文件，然后我们就可以检查数组中的键了。
         $this->load('*', '*', $locale);
 
         $line = $this->loaded['*']['*'][$locale][$key] ?? null;
@@ -127,7 +125,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If we can't find a translation for the JSON key, we will attempt to translate it
         // using the typical translation file. This way developers can always just use a
         // helper such as __ instead of having to pick between trans or __ with views.
-		// 如果我们找不到JSON键的翻译，我们将尝试使用典型的翻译文件翻译它。
+		// 如果我们找不到JSON键的翻译，我们将尝试翻译它。
         if (! isset($line)) {
             [$namespace, $group, $item] = $this->parseKey($key);
 
@@ -135,14 +133,13 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
             // was not passed, we will use the default locales which was given to us when
             // the translator was instantiated. Then, we can load the lines and return.
 			// 在这里，我们将获得语言行应该使用的区域设置。
-			// 没有传递，我们将使用默认的区域设置，它是什么时候给我们的。
             $locales = $fallback ? $this->localeArray($locale) : [$locale];
 
             foreach ($locales as $locale) {
                 if (! is_null($line = $this->getLine(
                     $namespace, $group, $locale, $item, $replace
                 ))) {
-                    return $line ?? $key;
+                    return $line;
                 }
             }
         }
@@ -173,7 +170,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the given "number" is actually an array or countable we will simply count the
         // number of elements in an instance. This allows developers to pass an array of
         // items without having to count it on their end first which gives bad syntax.
-		// 如果给定的"number"实际上是一个数组或可数数，我们将简单地计数。
+		// 如果给定的"数字"实际上是一个数组或可数的，我们将简单地计算实例中的元素数量。
         if (is_array($number) || $number instanceof Countable) {
             $number = count($number);
         }
@@ -239,31 +236,15 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
             return $line;
         }
 
-        $replace = $this->sortReplacements($replace);
+        $shouldReplace = [];
 
         foreach ($replace as $key => $value) {
-            $line = str_replace(
-                [':'.$key, ':'.Str::upper($key), ':'.Str::ucfirst($key)],
-                [$value, Str::upper($value), Str::ucfirst($value)],
-                $line
-            );
+            $shouldReplace[':'.Str::ucfirst($key ?? '')] = Str::ucfirst($value ?? '');
+            $shouldReplace[':'.Str::upper($key ?? '')] = Str::upper($value ?? '');
+            $shouldReplace[':'.$key] = $value;
         }
 
-        return $line;
-    }
-
-    /**
-     * Sort the replacements array.
-	 * 对替换数组进行排序
-     *
-     * @param  array  $replace
-     * @return array
-     */
-    protected function sortReplacements(array $replace)
-    {
-        return (new Collection($replace))->sortBy(function ($value, $key) {
-            return mb_strlen($key) * -1;
-        })->all();
+        return strtr($line, $shouldReplace);
     }
 
     /**
@@ -302,7 +283,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // The loader is responsible for returning the array of language lines for the
         // given namespace, group, and locale. We'll set the lines in this array of
         // lines that have already been loaded so that we can easily access them.
-		// 加载器负责返回给定命名空间语言行数组。
+		// 加载器负责返回语言行数组。
         $lines = $this->loader->load($locale, $group, $namespace);
 
         $this->loaded[$namespace][$group][$locale] = $lines;
@@ -443,6 +424,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      *
      * @param  string  $locale
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function setLocale($locale)
     {

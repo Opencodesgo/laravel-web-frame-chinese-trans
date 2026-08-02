@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，注释目录加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
 {
     /**
      * Loads from annotations from a directory.
+	 * 从目录中加载注解
      *
      * @param string      $path A directory path
      * @param string|null $type The resource type

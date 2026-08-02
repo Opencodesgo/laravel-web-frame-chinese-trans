@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，后期数据采集器接口
+ * Symfony，Component，HttpKernel，数据采集器，后期数据采集器接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\DataCollector;
 
 /**
  * LateDataCollectorInterface.
+ * 后期数据采集器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -23,6 +24,7 @@ interface LateDataCollectorInterface
 {
     /**
      * Collects data as late as possible.
+	 * 尽量晚收集数据
      */
     public function lateCollect();
 }

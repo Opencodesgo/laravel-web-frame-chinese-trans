@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，请求上下文感知接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,11 +18,13 @@ interface RequestContextAwareInterface
 {
     /**
      * Sets the request context.
+	 * 设置请求上下文
      */
     public function setContext(RequestContext $context);
 
     /**
      * Gets the request context.
+	 * 得到请求上下文
      *
      * @return RequestContext
      */

@@ -1,7 +1,6 @@
 <?php
-
 /**
- * League，Flysystem，适配器，Ftp适配器抽象类
+ * League，Flysystem，Adapter，抽象 Ftp适配器
  */
 
 namespace League\Flysystem\Adapter;
@@ -90,6 +89,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param array $config
      */
@@ -101,6 +101,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the config.
+	 * 设置配置
      *
      * @param array $config
      *
@@ -125,6 +126,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the host.
+	 * 返回主机
      *
      * @return string
      */
@@ -135,6 +137,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the host.
+	 * 设置主机
      *
      * @param string $host
      *
@@ -149,6 +152,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the public permission value.
+	 * 设置公共权限值
      *
      * @param int $permPublic
      *
@@ -163,6 +167,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the private permission value.
+	 * 设置私有权限值
      *
      * @param int $permPrivate
      *
@@ -177,6 +182,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the ftp port.
+	 * 返回ftp端口
      *
      * @return int
      */
@@ -187,6 +193,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the root folder to work from.
+	 * 返回要从中工作的根文件夹
      *
      * @return string
      */
@@ -197,6 +204,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the ftp port.
+	 * 设置ftp端口
      *
      * @param int|string $port
      *
@@ -211,6 +219,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the root folder to work from.
+	 * 设置根文件夹
      *
      * @param string $root
      *
@@ -225,6 +234,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the ftp username.
+	 * 返回ftp用户名
      *
      * @return string username
      */
@@ -237,6 +247,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set ftp username.
+	 * 设置ftp用户名
      *
      * @param string $username
      *
@@ -251,6 +262,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the password.
+	 * 返回密码
      *
      * @return string password
      */
@@ -261,6 +273,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the ftp password.
+	 * 设置ftp密码
      *
      * @param string $password
      *
@@ -275,6 +288,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the amount of seconds before the connection will timeout.
+	 * 返回连接超时前的秒数
      *
      * @return int
      */
@@ -285,6 +299,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the amount of seconds before the connection should timeout.
+	 * 设置连接超时前的秒数
      *
      * @param int $timeout
      *
@@ -299,6 +314,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Return the FTP system type.
+	 * 返回FTP系统类型
      *
      * @return string
      */
@@ -309,6 +325,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the FTP system type (windows or unix).
+	 * 设置FTP系统类型(windows或unix)
      *
      * @param string $systemType
      *
@@ -323,6 +340,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * True to enable timestamps for FTP servers that return unix-style listings.
+	 * 为启用返回unix风格列表的FTP服务器的时间戳
      *
      * @param bool $bool
      *
@@ -347,6 +365,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a directory listing.
+	 * 规范化目录列表
      *
      * @param array  $listing
      * @param string $prefix
@@ -373,6 +392,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Sort a directory listing.
+	 * 对目录列表进行排序
      *
      * @param array $result
      *
@@ -391,6 +411,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a file entry.
+	 * 将文件条目规范化
      *
      * @param string $item
      * @param string $base
@@ -414,6 +435,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a Unix file entry.
+	 * 将Unix文件条目规范化
      *
      * Given $item contains:
      *    '-rw-r--r--   1 ftp      ftp           409 Aug 19 09:01 file1.txt'
@@ -469,6 +491,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Only accurate to the minute (current year), or to the day.
+	 * 只准确到一分钟(一分钟),或到当天。
      *
      * Inadequacies in timestamp accuracy are due to limitations of the FTP 'LIST' command
      *
@@ -500,6 +523,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a Windows/DOS file entry.
+	 * 将Windows / DOS文件条目规范化
      *
      * @param string $item
      * @param string $base
@@ -537,6 +561,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the system type from a listing item.
+	 * 从列表项获取系统类型
      *
      * @param string $item
      *
@@ -549,6 +574,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the file type from the permissions.
+	 * 从权限中获取文件类型
      *
      * @param string $permissions
      *
@@ -561,6 +587,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a permissions string.
+	 * 将权限字符串规范化
      *
      * @param string $permissions
      *
@@ -593,6 +620,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Filter out dot-directories.
+	 * 过滤掉。directory。
      *
      * @param array $list
      *
@@ -633,6 +661,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Ensure a directory exists.
+	 * 确保存在一个目录
      *
      * @param string $dirname
      */
@@ -660,6 +689,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the public permission value.
+	 * 获得公共权限值
      *
      * @return int
      */
@@ -670,6 +700,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the private permission value.
+	 * 获得私有权限值
      *
      * @return int
      */
@@ -680,6 +711,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Disconnect on destruction.
+	 * 断开破坏
      */
     public function __destruct()
     {
@@ -688,16 +720,19 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Establish a connection.
+	 * 建立连接
      */
     abstract public function connect();
 
     /**
      * Close the connection.
+	 * 关闭连接
      */
     abstract public function disconnect();
 
     /**
      * Check if a connection is active.
+	 * 检查连接是否活动
      *
      * @return bool
      */

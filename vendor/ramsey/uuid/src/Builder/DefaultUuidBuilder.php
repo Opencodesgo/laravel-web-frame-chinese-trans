@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，建立者，默认Uuid生成器
+ */
 
 /**
  * This file is part of the ramsey/uuid library

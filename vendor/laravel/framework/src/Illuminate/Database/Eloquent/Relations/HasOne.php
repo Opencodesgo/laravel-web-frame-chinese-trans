@@ -1,17 +1,22 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，一对一
+ * Illuminate，数据库，Eloquent，关系，有一个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
+use Illuminate\Contracts\Database\Eloquent\SupportsPartialRelations;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Concerns\CanBeOneOfMany;
+use Illuminate\Database\Eloquent\Relations\Concerns\ComparesRelatedModels;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
+use Illuminate\Database\Query\JoinClause;
 
-class HasOne extends HasOneOrMany
+class HasOne extends HasOneOrMany implements SupportsPartialRelations
 {
-    use SupportsDefaultModels;
+    use ComparesRelatedModels, CanBeOneOfMany, SupportsDefaultModels;
 
     /**
      * Get the results of the relationship.
@@ -60,6 +65,64 @@ class HasOne extends HasOneOrMany
     }
 
     /**
+     * Add the constraints for an internal relationship existence query.
+	 * 为内部关系存在性查询添加约束
+     *
+     * Essentially, these queries compare on column names like "whereColumn".
+	 * 本质上，这些查询比较的是像"whereColumn"这样的列名。
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
+     * @param  array|mixed  $columns
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
+        if ($this->isOneOfMany()) {
+            $this->mergeOneOfManyJoinsTo($query);
+        }
+
+        return parent::getRelationExistenceQuery($query, $parentQuery, $columns);
+    }
+
+    /**
+     * Add constraints for inner join subselect for one of many relationships.
+	 * 为多个关系之一的内连接子选择添加约束
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string|null  $column
+     * @param  string|null  $aggregate
+     * @return void
+     */
+    public function addOneOfManySubQueryConstraints(Builder $query, $column = null, $aggregate = null)
+    {
+        $query->addSelect($this->foreignKey);
+    }
+
+    /**
+     * Get the columns that should be selected by the one of many subquery.
+	 * 获取应由多个子查询之一选择的列
+     *
+     * @return array|string
+     */
+    public function getOneOfManySubQuerySelectColumns()
+    {
+        return $this->foreignKey;
+    }
+
+    /**
+     * Add join query constraints for one of many relationships.
+	 * 为多个关系中的一个添加连接查询约束
+     *
+     * @param  \Illuminate\Database\Eloquent\JoinClause  $join
+     * @return void
+     */
+    public function addOneOfManyJoinSubQueryConstraints(JoinClause $join)
+    {
+        $join->on($this->qualifySubSelectColumn($this->foreignKey), '=', $this->qualifyRelatedColumn($this->foreignKey));
+    }
+
+    /**
      * Make a new related instance for the given model.
 	 * 为给定模型创建一个新的相关实例
      *
@@ -71,5 +134,17 @@ class HasOne extends HasOneOrMany
         return $this->related->newInstance()->setAttribute(
             $this->getForeignKeyName(), $parent->{$this->localKey}
         );
+    }
+
+    /**
+     * Get the value of the model's foreign key.
+	 * 获取模型外键的值
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return mixed
+     */
+    protected function getRelatedKeyFrom(Model $model)
+    {
+        return $model->getAttribute($this->getForeignKeyName());
     }
 }

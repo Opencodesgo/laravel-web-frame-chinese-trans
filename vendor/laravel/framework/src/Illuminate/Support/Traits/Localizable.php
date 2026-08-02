@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特征，可本地化
+ * Illuminate，支持，特性，可本地化
  */
 
 namespace Illuminate\Support\Traits;
@@ -11,7 +11,7 @@ trait Localizable
 {
     /**
      * Run the callback with the given locale.
-	 * 使用给定的区域运行回调
+	 * 使用给定的语言环境运行回调
      *
      * @param  string  $locale
      * @param  \Closure  $callback

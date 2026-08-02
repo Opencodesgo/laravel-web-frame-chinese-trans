@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，普通事件
+ * Symfony，Component，EventDispatcher，通用事件
  */
 
 /*
@@ -18,8 +18,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event encapsulation class.
+ * 事件封装类。
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
+ * 封装事件，从而将观察者与其封装的主题解耦。
  *
  * @author Drak <drak@zikula.org>
  *
@@ -33,6 +35,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Encapsulate an event with $subject and $arguments.
+	 * 用$ subject和$参数封装一个事件
      *
      * @param mixed $subject   The subject of the event, usually an object or a callable
      * @param array $arguments Arguments to store in the event
@@ -45,6 +48,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for subject property.
+	 * 主体属性的Getter
      *
      * @return mixed
      */
@@ -55,6 +59,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Get argument by key.
+	 * 按键获取参数
      *
      * @return mixed
      *
@@ -71,6 +76,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Add argument to event.
+	 * 向事件添加参数
      *
      * @param mixed $value Value
      *
@@ -85,6 +91,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for all arguments.
+	 * 所有参数的Getter
      *
      * @return array
      */
@@ -95,6 +102,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Set args property.
+	 * 设置args属性
      *
      * @return $this
      */
@@ -107,6 +115,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Has argument.
+	 * 有参数
      *
      * @return bool
      */
@@ -117,6 +126,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess for argument getter.
+	 * 参数getter的ArrayAccess
      *
      * @param string $key Array key
      *
@@ -132,6 +142,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess for argument setter.
+	 * 参数设置器的ArrayAccess
      *
      * @param string $key   Array key to set
      * @param mixed  $value Value
@@ -146,6 +157,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess for unset argument.
+	 * 用于未设置参数的ArrayAccess
      *
      * @param string $key Array key
      *
@@ -161,6 +173,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess has argument.
+	 * ArrayAccess有参数
      *
      * @param string $key Array key
      *
@@ -174,6 +187,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * IteratorAggregate for iterating over the object like an array.
+	 * IteratorAggregate用于像数组一样遍历对象
      *
      * @return \ArrayIterator<string, mixed>
      */

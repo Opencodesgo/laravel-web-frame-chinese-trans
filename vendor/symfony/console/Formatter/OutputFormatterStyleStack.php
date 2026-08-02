@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，格式化，输出格式化程序样式堆栈
+ * Symfony，Component，Console，格式化程序，输出格式化程序样式栈
  */
 
 /*
@@ -37,6 +37,7 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Resets stack (ie. empty internal arrays).
+	 * 重新设置堆栈(ie)。空内部数组)。
      */
     public function reset()
     {
@@ -45,6 +46,7 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Pushes a style in the stack.
+	 * 在堆栈中推一个样式
      */
     public function push(OutputFormatterStyleInterface $style)
     {
@@ -53,6 +55,7 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Pops a style from the stack.
+	 * 从堆栈中弹出一个样式
      *
      * @return OutputFormatterStyleInterface
      *
@@ -81,7 +84,8 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Computes current style with stacks top codes.
-     *
+     * 用栈码计算当前样式
+	 * 
      * @return OutputFormatterStyle
      */
     public function getCurrent()

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，Function_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -17,6 +21,7 @@ class Function_ extends FunctionLike {
 
     /**
      * Creates a function builder.
+	 * 创建一个函数构建器
      *
      * @param string $name Name of the function
      */
@@ -26,6 +31,7 @@ class Function_ extends FunctionLike {
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Node|PhpParser\Builder $stmt The statement to add
      *
@@ -39,6 +45,7 @@ class Function_ extends FunctionLike {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -52,6 +59,7 @@ class Function_ extends FunctionLike {
 
     /**
      * Returns the built function node.
+	 * 返回构建的函数节点
      *
      * @return Stmt\Function_ The built function node
      */

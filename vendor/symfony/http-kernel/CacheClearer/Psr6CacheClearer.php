@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存清除器，Psr6 缓存清除器
+ * Symfony，Component，HttpKernel，缓存清除，Psr6 缓存清除器
  */
 
 /*

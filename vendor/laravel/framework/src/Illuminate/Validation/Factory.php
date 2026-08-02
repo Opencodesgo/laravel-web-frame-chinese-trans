@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，工厂类
+ * Illuminate，验证，工厂
  */
 
 namespace Illuminate\Validation;
@@ -78,6 +78,14 @@ class Factory implements FactoryContract
     protected $fallbackMessages = [];
 
     /**
+     * Indicates that unvalidated array keys should be excluded, even if the parent array was validated.
+	 * 指示即使验证了父数组，也应排除未验证的数组键。
+     *
+     * @var bool
+     */
+    protected $excludeUnvalidatedArrayKeys;
+
+    /**
      * The Validator resolver instance.
 	 * 验证器解析器实例
      *
@@ -87,7 +95,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator factory instance.
-	 * 创建一个新的Validator工厂实例
+	 * 创建一个新的验证器工厂实例
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @param  \Illuminate\Contracts\Container\Container|null  $container
@@ -101,7 +109,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator instance.
-	 * 创建一个新的Validator实例
+	 * 创建新的验证器实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -118,7 +126,7 @@ class Factory implements FactoryContract
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
-		// 状态验证器负责检查唯一的和存在的验证器数据。
+		// 状态验证器负责检查唯一的和存在的数据。
         if (! is_null($this->verifier)) {
             $validator->setPresenceVerifier($this->verifier);
         }
@@ -126,10 +134,12 @@ class Factory implements FactoryContract
         // Next we'll set the IoC container instance of the validator, which is used to
         // resolve out class based validator extensions. If it is not set then these
         // types of extensions will not be possible on these validation instances.
-		// 接下来，我们将设置验证器的IoC容器实例，这用来解析出基于类的验证器扩展。
+		// 接下来，我们将设置验证器的IoC容器实例，这用于解析出基于类的验证器扩展。
         if (! is_null($this->container)) {
             $validator->setContainer($this->container);
         }
+
+        $validator->excludeUnvalidatedArrayKeys = $this->excludeUnvalidatedArrayKeys;
 
         $this->addExtensions($validator);
 
@@ -155,7 +165,7 @@ class Factory implements FactoryContract
 
     /**
      * Resolve a new Validator instance.
-	 * 解析一个新的Validator实例
+	 * 解析一个新的验证器实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -264,6 +274,17 @@ class Factory implements FactoryContract
     }
 
     /**
+     * Indicate that unvalidated array keys should be excluded, even if the parent array was validated.
+	 * 指示应排除未验证的数组键，即使父数组已经过验证。
+     *
+     * @return void
+     */
+    public function excludeUnvalidatedArrayKeys()
+    {
+        $this->excludeUnvalidatedArrayKeys = true;
+    }
+
+    /**
      * Set the Validator instance resolver.
 	 * 设置Validator实例解析器
      *
@@ -307,5 +328,30 @@ class Factory implements FactoryContract
     public function setPresenceVerifier(PresenceVerifierInterface $presenceVerifier)
     {
         $this->verifier = $presenceVerifier;
+    }
+
+    /**
+     * Get the container instance used by the validation factory.
+	 * 获取验证工厂使用的容器实例
+     *
+     * @return \Illuminate\Contracts\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set the container instance used by the validation factory.
+	 * 设置验证工厂使用的容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 }

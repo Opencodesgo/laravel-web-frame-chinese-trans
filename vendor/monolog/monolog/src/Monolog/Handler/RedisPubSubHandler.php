@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Redis Pub Sub 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends the message to a Redis Pub/Sub channel using PUBLISH
+ * 使用PUBLISH将消息发送到Redis Pub/Sub通道
  *
  * usage example:
  *

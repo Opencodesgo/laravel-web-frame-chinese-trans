@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，扩展
+ * Symfony，Component，HttpKernel，依赖注入，延期 
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension as BaseExtension;
 
 /**
  * Allow adding classes to the class cache.
- * 允许向类缓存中添加类
+ * 允许向类缓存中添加类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -39,6 +39,7 @@ abstract class Extension extends BaseExtension
 
     /**
      * Adds annotated classes to the class cache.
+	 * 将带注释的类添加到类缓存中
      *
      * @param array $annotatedClasses An array of class patterns
      */

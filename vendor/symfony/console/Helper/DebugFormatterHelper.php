@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，调试格式化助手
+ * Symfony，Component，Console，助手，调试格式化程序助手
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * Helps outputting debug information when running an external program from a command.
- * 在从命令运行外部程序时帮助输出调试信息
+ * 在从命令运行外部程序时帮助排除调试信息。
  *
  * An external program can be a Process, an HTTP request, or anything else.
  *
@@ -43,6 +43,7 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Adds progress to a formatting session.
+	 * 添加到格式化会话的进度
      *
      * @return string
      */
@@ -79,6 +80,7 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Stops a formatting session.
+	 * 停止格式化会话
      *
      * @return string
      */

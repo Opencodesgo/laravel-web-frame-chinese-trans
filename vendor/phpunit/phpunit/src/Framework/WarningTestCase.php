@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Framework，警告测试用例
+ */
+ 
 /*
  * This file is part of PHPUnit.
  *

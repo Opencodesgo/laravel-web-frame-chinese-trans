@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，提供者库
+ * Illuminate，基础，供应者库
  */
 
 namespace Illuminate\Foundation;
@@ -73,7 +73,7 @@ class ProviderRepository
         // Next, we will register events to load the providers for each of the events
         // that it has requested. This allows the service provider to defer itself
         // while still getting automatically loaded when a certain event occurs.
-		// 接下来，我们将注册事件以加载每个事件的提供程序。
+		// 接下来，我们将注册事件以加载每个事件的提供程序它所要求的。
         foreach ($manifest['when'] as $provider => $events) {
             $this->registerLoadEvents($provider, $events);
         }
@@ -81,7 +81,7 @@ class ProviderRepository
         // We will go ahead and register all of the eagerly loaded providers with the
         // application so their services can be registered with the application as
         // a provided service. Then we will set the deferred service list on it.
-		// 我们将继续并将所有急切加载的提供程序注册应用程序，以便将其服务注册。
+		// 我们将继续并将所有急切加载的提供程序注册为应用。
         foreach ($manifest['eager'] as $provider) {
             $this->app->register($provider);
         }
@@ -125,7 +125,7 @@ class ProviderRepository
 
     /**
      * Register the load events for the given provider.
-	 * 为给定的提供者注册负载事件
+	 * 注册给定提供程序的加载事件
      *
      * @param  string  $provider
      * @param  array  $events
@@ -154,7 +154,7 @@ class ProviderRepository
         // The service manifest should contain a list of all of the providers for
         // the application so we can compare it on each request to the service
         // and determine if the manifest should be recompiled or is current.
-		// 服务清单应该包含所有提供者的列表。
+		// 服务清单应该包含一个的应用提供者的列表。。。。。。。。。。。。
         $manifest = $this->freshManifest($providers);
 
         foreach ($providers as $provider) {
@@ -163,7 +163,7 @@ class ProviderRepository
             // When recompiling the service manifest, we will spin through each of the
             // providers and check if it's a deferred provider or not. If so we'll
             // add it's provided services to the manifest and note the provider.
-			// 重新编译服务清单时，我们将遍历每个提供者并检查它是否是一个延迟的提供者。
+			// 重新编译服务清单时，我们将遍历每个提供者并检查它是否是一个延迟的。
             if ($instance->isDeferred()) {
                 foreach ($instance->provides() as $service) {
                     $manifest['deferred'][$service] = $provider;
@@ -220,7 +220,7 @@ class ProviderRepository
 
     /**
      * Create a new provider instance.
-	 * 创建一个新的提供者实例
+	 * 创建新的提供者实例
      *
      * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider

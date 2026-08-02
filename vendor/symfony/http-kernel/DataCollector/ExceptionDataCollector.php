@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，异常数据收集器
+ * Symfony，Component，HttpKernel，数据采集器，异常数据收集器
  */
 
 /*

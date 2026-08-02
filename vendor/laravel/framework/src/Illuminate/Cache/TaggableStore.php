@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Taggable 商店
+ * Illuminate，缓存，Taggable 存储
  */
 
 namespace Illuminate\Cache;

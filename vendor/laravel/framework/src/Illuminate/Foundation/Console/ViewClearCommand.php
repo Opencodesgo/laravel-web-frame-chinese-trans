@@ -13,7 +13,7 @@ class ViewClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令
+	 * 控制台命令名称 view:clear
      *
      * @var string
      */

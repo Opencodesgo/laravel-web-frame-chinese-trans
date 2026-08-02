@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案，丢失的包解决方案
+ */
 
 namespace Facade\Ignition\Solutions;
 

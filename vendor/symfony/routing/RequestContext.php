@@ -1,8 +1,10 @@
 <?php
+/**
+ * Symfony，Component，Routing，请求上下文
+ */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -66,6 +68,7 @@ class RequestContext
 
     /**
      * Updates the RequestContext information based on a HttpFoundation Request.
+	 * 基于HttpFoundation请求更新RequestContext信息
      *
      * @return $this
      */
@@ -85,6 +88,7 @@ class RequestContext
 
     /**
      * Gets the base URL.
+	 * 得到基本URL 
      *
      * @return string
      */
@@ -95,6 +99,7 @@ class RequestContext
 
     /**
      * Sets the base URL.
+	 * 设置基本URL
      *
      * @return $this
      */
@@ -107,6 +112,7 @@ class RequestContext
 
     /**
      * Gets the path info.
+	 * 获取路径信息。
      *
      * @return string
      */
@@ -117,6 +123,7 @@ class RequestContext
 
     /**
      * Sets the path info.
+	 * 设置路径信息
      *
      * @return $this
      */
@@ -266,6 +273,7 @@ class RequestContext
 
     /**
      * Returns the parameters.
+	 * 返回参数
      *
      * @return array
      */
@@ -276,6 +284,7 @@ class RequestContext
 
     /**
      * Sets the parameters.
+	 * 设置参数
      *
      * @param array $parameters The parameters
      *
@@ -290,6 +299,7 @@ class RequestContext
 
     /**
      * Gets a parameter value.
+	 * 得到参数值
      *
      * @return mixed
      */
@@ -300,6 +310,7 @@ class RequestContext
 
     /**
      * Checks if a parameter value is set for the given parameter.
+	 * 检查是否为给定参数设置了参数值
      *
      * @return bool
      */
@@ -310,6 +321,7 @@ class RequestContext
 
     /**
      * Sets a parameter value.
+	 * 设置参数值
      *
      * @param mixed $parameter The parameter value
      *

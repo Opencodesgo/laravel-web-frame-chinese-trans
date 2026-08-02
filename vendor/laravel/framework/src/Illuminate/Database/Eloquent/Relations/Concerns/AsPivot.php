@@ -1,11 +1,10 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，作为支点
+ * Illuminate，数据库，Eloquent，关系，问题，作为轴
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -37,7 +36,7 @@ trait AsPivot
 
     /**
      * Create a new pivot model instance.
-	 * 创建一个新的支点模型实例
+	 * 创建一个新的pivot模型实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @param  array  $attributes
@@ -54,7 +53,7 @@ trait AsPivot
         // The pivot model is a "dynamic" model since we will set the tables dynamically
         // for the instance. This allows it work for any intermediate tables for the
         // many to many relationship that are defined by this developer's classes.
-		// 数据透视模型是一个"动态"模型，因为我们将为实例动态地设置表。
+		// 数据透视模型是一个"动态"模型，因为我们将动态地设置实例表。
         $instance->setConnection($parent->getConnectionName())
             ->setTable($table)
             ->forceFill($attributes)
@@ -63,7 +62,7 @@ trait AsPivot
         // We store off the parent instance so we will access the timestamp column names
         // for the model, since the pivot model timestamps aren't easily configurable
         // from the developer's point of view. We can use the parents to get these.
-		// 我们存储父实例，以便访问模型的时间戳列名，由于pivot模型时间戳不容易配置。
+		// 我们存储父实例，以便访问模型的时间戳列名。
         $instance->pivotParent = $parent;
 
         $instance->exists = $exists;
@@ -73,7 +72,7 @@ trait AsPivot
 
     /**
      * Create a new pivot model from raw values returned from a query.
-	 * 从查询返回的原始值创建新的pivot模型
+	 * 根据查询返回的原始值创建新的数据透视模型
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @param  array  $attributes
@@ -93,16 +92,16 @@ trait AsPivot
     }
 
     /**
-     * Set the keys for a save update query.
-	 * 为保存更新查询设置键
+     * Set the keys for a select query.
+	 * 为选择查询设置键
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function setKeysForSaveQuery(Builder $query)
+    protected function setKeysForSelectQuery($query)
     {
         if (isset($this->attributes[$this->getKeyName()])) {
-            return parent::setKeysForSaveQuery($query);
+            return parent::setKeysForSelectQuery($query);
         }
 
         $query->where($this->foreignKey, $this->getOriginal(
@@ -112,6 +111,18 @@ trait AsPivot
         return $query->where($this->relatedKey, $this->getOriginal(
             $this->relatedKey, $this->getAttribute($this->relatedKey)
         ));
+    }
+
+    /**
+     * Set the keys for a save update query.
+	 * 为保存更新查询设置键
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        return $this->setKeysForSelectQuery($query);
     }
 
     /**
@@ -141,7 +152,7 @@ trait AsPivot
 
     /**
      * Get the query builder for a delete operation on the pivot.
-	 * 在支点上为删除操作获取查询构建器
+	 * 获取对数据透视进行删除操作的查询构建器
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -155,7 +166,7 @@ trait AsPivot
 
     /**
      * Get the table associated with the model.
-	 * 获取与模型相关的表
+	 * 获取与模型相关联的表
      *
      * @return string
      */
@@ -222,7 +233,7 @@ trait AsPivot
 
     /**
      * Determine if the pivot model or given attributes has timestamp attributes.
-	 * 确定主模型或给定属性是否具有时间戳属性
+	 * 确定数据透视模型或给定属性是否具有时间戳属性
      *
      * @param  array|null  $attributes
      * @return bool
@@ -247,7 +258,7 @@ trait AsPivot
 
     /**
      * Get the name of the "updated at" column.
-	 * 获取"更新"列的名称
+	 * 获取"更新时间"列的名称
      *
      * @return string
      */
@@ -260,7 +271,7 @@ trait AsPivot
 
     /**
      * Get the queueable identity for the entity.
-	 * 为实体获取队列标识
+	 * 获取实体的可排队标识
      *
      * @return mixed
      */
@@ -303,7 +314,7 @@ trait AsPivot
 
     /**
      * Get a new query to restore multiple models by their queueable IDs.
-	 * 获取一个新的查询,以通过它们的行将id来恢复多个模型
+	 * 获取一个新查询，根据可排队id恢复多个模型。
      *
      * @param  int[]|string[]  $ids
      * @return \Illuminate\Database\Eloquent\Builder

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，Log，测试，记录器接口测试
+ */
 
 namespace Psr\Log\Test;
 
@@ -8,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Provides a base test class for ensuring compliance with the LoggerInterface.
+ * 提供一个基本测试类,以确保与LoggerInterface的遵从性。
  *
  * Implementors can extend the class and implement abstract methods to run this
  * as part of their test suite.
@@ -21,6 +25,7 @@ abstract class LoggerInterfaceTest extends TestCase
 
     /**
      * This must return the log messages in order.
+	 * 这必须返回日志消息。
      *
      * The simple formatting of the messages is: "<LOG LEVEL> <MESSAGE>".
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，控制台，创建通知表
+ * Illuminate，通知，控制台，存根，创建通知表
  */
 
 use Illuminate\Database\Migrations\Migration;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，文件系统，云
+ * Illuminate，契约，文件系统，云接口
  */
 
 namespace Illuminate\Contracts\Filesystem;

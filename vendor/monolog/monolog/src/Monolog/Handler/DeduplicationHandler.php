@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，重复数据删除处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Simple handler wrapper that deduplicates log records across multiple requests
+ * 在多个请求中删除日志记录的简单处理器包装器
  *
  * It also includes the BufferHandler functionality and will buffer
  * all messages until the end of the request or flush() is called.

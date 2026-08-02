@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect namespace typed in the console.
+ * 表示在控制台中键入的不正确的名称空间
  *
  * @author Pierre du Plessis <pdples@gmail.com>
  */

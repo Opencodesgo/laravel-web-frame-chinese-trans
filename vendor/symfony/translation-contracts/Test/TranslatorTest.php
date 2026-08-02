@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，测试，翻译器测试
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -315,6 +318,7 @@ class TranslatorTest extends TestCase
 
     /**
      * This array should contain all currently known langcodes.
+	 * 这个数组应该包含目前已知的所有langcode。
      *
      * As it is impossible to have this ever complete we should try as hard as possible to have it almost complete.
      *
@@ -333,6 +337,7 @@ class TranslatorTest extends TestCase
 
     /**
      * This array should be at least empty within the near future.
+	 * 在不久的将来,这个数组应该至少是空的。
      *
      * This both depends on a complete list trying to add above as understanding
      * the plural rules of the current failing languages.
@@ -352,6 +357,7 @@ class TranslatorTest extends TestCase
 
     /**
      * We validate only on the plural coverage. Thus the real rules is not tested.
+	 * 我们只在复数覆盖范围内验证。因此,真正的规则没有经过测试。
      *
      * @param string $nplural       Plural expected
      * @param array  $matrix        Containing langcodes and their plural index values

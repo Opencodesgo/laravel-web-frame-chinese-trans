@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Log\Logger;
 
 /**
  * Registers the default logger if necessary.
- * 必要时注册默认日志记录器
+ * 必要时注册默认日志记录器。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */

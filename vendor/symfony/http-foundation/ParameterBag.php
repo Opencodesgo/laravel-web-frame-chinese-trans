@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 /**
  * ParameterBag is a container for key/value pairs.
- * ParameterBag 是键/值对的容器
+ * ParameterBag是键/值对的容器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -28,7 +28,6 @@ class ParameterBag implements \IteratorAggregate, \Countable
 {
     /**
      * Parameter storage.
-	 * 参数存储器
      */
     protected $parameters;
 
@@ -62,6 +61,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter keys.
+	 * 返回参数键
      *
      * @return array
      */
@@ -72,6 +72,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Replaces the current parameters by a new set.
+	 * 用一组新参数替换当前参数
      */
     public function replace(array $parameters = [])
     {
@@ -80,6 +81,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds parameters.
+	 * 添加参数
      */
     public function add(array $parameters = [])
     {
@@ -88,6 +90,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns a parameter by name.
+	 * 按名称返回参数
      *
      * @param mixed $default The default value if the parameter key does not exist
      *
@@ -100,6 +103,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Sets a parameter by name.
+	 * 按名称设置参数
      *
      * @param mixed $value The value
      */
@@ -110,6 +114,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the parameter is defined.
+	 * 如果定义了参数，则返回true。
      *
      * @return bool
      */
@@ -120,6 +125,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Removes a parameter.
+	 * 移除参数
      */
     public function remove(string $key)
     {
@@ -128,6 +134,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the alphabetic characters of the parameter value.
+	 * 返回参数值的字母字符
      *
      * @return string
      */
@@ -138,6 +145,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the alphabetic characters and digits of the parameter value.
+	 * 返回参数值的字母字符和数字
      *
      * @return string
      */
@@ -148,6 +156,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the digits of the parameter value.
+	 * 返回参数值的数字
      *
      * @return string
      */
@@ -159,6 +168,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter value converted to integer.
+	 * 返回转换为整数的参数值
      *
      * @return int
      */
@@ -169,6 +179,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter value converted to boolean.
+	 * 返回转换为布尔值的参数值
      *
      * @return bool
      */
@@ -179,6 +190,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Filter key.
+	 * 过滤器键
      *
      * @param mixed $default Default = null
      * @param int   $filter  FILTER_* constant
@@ -212,6 +224,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns an iterator for parameters.
+	 * 返回参数的迭代器
      *
      * @return \ArrayIterator<string, mixed>
      */
@@ -223,6 +236,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the number of parameters.
+	 * 返回参数的个数
      *
      * @return int
      */

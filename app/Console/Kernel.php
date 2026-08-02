@@ -1,6 +1,6 @@
 <?php
 /**
- * App，控制台，内核
+ * app，控制台，内核
  */
 
 namespace App\Console;
@@ -10,16 +10,6 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-	 * 应用提供的工具命令
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
-
     /**
      * Define the application's command schedule.
 	 * 定义应用的命令调度

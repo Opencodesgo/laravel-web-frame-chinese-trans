@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，输入选项
+ * Symfony，Component，Console，输入，输入选项
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a command line option.
- * 表示命令行选项
+ * 表示命令行选项。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -27,11 +27,13 @@ class InputOption
 {
     /**
      * Do not accept input for the option (e.g. --yell). This is the default behavior of options.
+	 * 不接受选项的输入（例如——yell）。这是选项的默认行为。
      */
     public const VALUE_NONE = 1;
 
     /**
      * A value must be passed when the option is used (e.g. --iterations=5 or -i5).
+	 * 当使用选项时，必须传递一个值（例如——iterations=5或-i5）。
      */
     public const VALUE_REQUIRED = 2;
 
@@ -47,6 +49,7 @@ class InputOption
 
     /**
      * The option may have either positive or negative value (e.g. --ansi or --no-ansi).
+	 * 该选项可以是正值或负值（例如——ansi或——no-ansi）
      */
     public const VALUE_NEGATABLE = 16;
 
@@ -113,6 +116,7 @@ class InputOption
 
     /**
      * Returns the option shortcut.
+	 * 返回选项快捷键
      *
      * @return string|null
      */
@@ -123,6 +127,7 @@ class InputOption
 
     /**
      * Returns the option name.
+	 * 返回选项名
      *
      * @return string
      */
@@ -133,6 +138,7 @@ class InputOption
 
     /**
      * Returns true if the option accepts a value.
+	 * 如果选项接受值,返回true
      *
      * @return bool true if value mode is not self::VALUE_NONE, false otherwise
      */
@@ -143,6 +149,7 @@ class InputOption
 
     /**
      * Returns true if the option requires a value.
+	 * 如果该选项需要一个值,则返回true。
      *
      * @return bool true if value mode is self::VALUE_REQUIRED, false otherwise
      */
@@ -153,6 +160,7 @@ class InputOption
 
     /**
      * Returns true if the option takes an optional value.
+	 * 如果选项具有可选值,则返回true。
      *
      * @return bool true if value mode is self::VALUE_OPTIONAL, false otherwise
      */
@@ -163,6 +171,7 @@ class InputOption
 
     /**
      * Returns true if the option can take multiple values.
+	 * 如果选项可以采用多个值,返回true。
      *
      * @return bool true if mode is self::VALUE_IS_ARRAY, false otherwise
      */
@@ -198,6 +207,7 @@ class InputOption
 
     /**
      * Returns the default value.
+	 * 返回默认值
      *
      * @return string|bool|int|float|array|null
      */
@@ -208,6 +218,7 @@ class InputOption
 
     /**
      * Returns the description text.
+	 * 返回描述文本
      *
      * @return string
      */
@@ -218,6 +229,7 @@ class InputOption
 
     /**
      * Checks whether the given option equals this one.
+	 * 检查给定的选项是否等于这个
      *
      * @return bool
      */

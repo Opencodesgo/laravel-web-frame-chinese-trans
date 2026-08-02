@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，容器，可倒带生成器
+ * Illuminate，容器，倒回生成器
  */
 
 namespace Illuminate\Container;
@@ -28,7 +28,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
 
     /**
      * Create a new generator instance.
-	 * 创建新的生成器实例
+	 * 创建一个新的生成器实例
      *
      * @param  callable  $generator
      * @param  callable|int  $count
@@ -46,6 +46,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return ($this->generator)();
@@ -57,6 +58,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         if (is_callable($count = $this->count)) {

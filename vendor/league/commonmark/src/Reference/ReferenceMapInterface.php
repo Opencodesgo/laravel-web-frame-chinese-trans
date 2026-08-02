@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，引用，引用映射接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -16,34 +21,15 @@ namespace League\CommonMark\Reference;
 
 /**
  * A collection of references
+ * 一组参考资料
+ *
+ * @phpstan-extends \IteratorAggregate<ReferenceInterface>
  */
-interface ReferenceMapInterface
+interface ReferenceMapInterface extends \IteratorAggregate, \Countable
 {
-    /**
-     * @param ReferenceInterface $reference
-     *
-     * @return void
-     */
-    public function addReference(ReferenceInterface $reference): void;
+    public function add(ReferenceInterface $reference): void;
 
-    /**
-     * @param string $label
-     *
-     * @return bool
-     */
     public function contains(string $label): bool;
 
-    /**
-     * @param string $label
-     *
-     * @return ReferenceInterface|null
-     */
-    public function getReference(string $label): ?ReferenceInterface;
-
-    /**
-     * Lists all registered references.
-     *
-     * @return ReferenceInterface[]
-     */
-    public function listReferences(): iterable;
+    public function get(string $label): ?ReferenceInterface;
 }

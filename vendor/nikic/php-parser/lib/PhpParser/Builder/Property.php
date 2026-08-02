@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，属性
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -28,6 +32,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Creates a property builder.
+	 * 创建一个属性构建器
      *
      * @param string $name Name of the property
      */
@@ -37,6 +42,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property public.
+	 * 使属性公开
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -48,6 +54,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property protected.
+	 * 使属性受保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -59,6 +66,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property private.
+	 * 使属性私有
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -70,6 +78,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property static.
+	 * 使属性为静态
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -81,6 +90,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property readonly.
+	 * 使属性为只读
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -92,6 +102,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property abstract. Requires at least one property hook to be specified as well.
+	 * 使属性抽象。还要求指定至少一个属性钩子。
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -103,6 +114,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Makes the property final.
+	 * 使属性为最终值
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -114,6 +126,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Gives the property private(set) visibility.
+	 * 赋予属性private（set）可见性
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -125,6 +138,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Gives the property protected(set) visibility.
+	 * 赋予属性protected（set）可见性
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -136,6 +150,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Sets default value for the property.
+	 * 设置属性的默认值
      *
      * @param mixed $value Default value to use
      *
@@ -149,6 +164,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Sets doc comment for the property.
+	 * 为属性设置文档注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *
@@ -177,6 +193,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -190,6 +207,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Adds a property hook.
+	 * 添加属性钩子
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -201,6 +219,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Returns the built class node.
+	 * 返回构建的类节点
      *
      * @return Stmt\Property The built property node
      */

@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，Mime，Mime类型
+ * Symfony，Component，Mime，Fileinfo Mime 类型猜测器
  */
 
 /*
@@ -20,7 +19,7 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * Guesses the MIME type using the PECL extension FileInfo.
- * 使用PECL扩展名FileInfo猜测MIME类型
+ * 使用PECL扩展FileInfo猜测MIME类型。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

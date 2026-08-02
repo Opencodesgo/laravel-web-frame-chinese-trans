@@ -1,13 +1,13 @@
 <?php
 /**
- * Psr，日志，Log，日志级别
+ * Psr，Log，日志等级
  */
 
 namespace Psr\Log;
 
 /**
  * Describes log levels.
- * 描述日志级别
+ * 描述日志级别。
  */
 class LogLevel
 {

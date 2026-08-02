@@ -17,7 +17,7 @@ class ControllerMiddlewareOptions
 
     /**
      * Create a new middleware option instance.
-	 * 创建新的中间件选项实例
+	 * 创建一个新的中间件选项实例
      *
      * @param  array  $options
      * @return void

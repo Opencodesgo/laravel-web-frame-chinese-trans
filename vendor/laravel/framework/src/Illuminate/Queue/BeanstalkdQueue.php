@@ -1,7 +1,6 @@
 <?php
 /**
  * Illuminate，队列，Beanstalkd 队列
- * Pheanstalk\Pheanstalk 需要自己安装
  */
 
 namespace Illuminate\Queue;
@@ -15,7 +14,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 {
     /**
      * The Pheanstalk instance.
-	 * Pheanstalk实例
+	 * Pheanstalk实列
      *
      * @var \Pheanstalk\Pheanstalk
      */
@@ -47,25 +46,31 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Create a new Beanstalkd queue instance.
-	 * 创建新的Beanstalkd队列实例
+	 * 创建一个新的beanstald队列实例
      *
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
      * @param  string  $default
      * @param  int  $timeToRun
      * @param  int  $blockFor
+     * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(Pheanstalk $pheanstalk, $default, $timeToRun, $blockFor = 0)
+    public function __construct(Pheanstalk $pheanstalk,
+                                $default,
+                                $timeToRun,
+                                $blockFor = 0,
+                                $dispatchAfterCommit = false)
     {
         $this->default = $default;
         $this->blockFor = $blockFor;
         $this->timeToRun = $timeToRun;
         $this->pheanstalk = $pheanstalk;
+        $this->dispatchAfterCommit = $dispatchAfterCommit;
     }
 
     /**
      * Get the size of the queue.
-	 * 得到队列大小
+	 * 得到队列的大小
      *
      * @param  string|null  $queue
      * @return int
@@ -88,7 +93,15 @@ class BeanstalkdQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushRaw($this->createPayload($job, $this->getQueue($queue), $data), $queue);
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $this->getQueue($queue), $data),
+            $queue,
+            null,
+            function ($payload, $queue) {
+                return $this->pushRaw($payload, $queue);
+            }
+        );
     }
 
     /**
@@ -119,13 +132,19 @@ class BeanstalkdQueue extends Queue implements QueueContract
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        $pheanstalk = $this->pheanstalk->useTube($this->getQueue($queue));
-
-        return $pheanstalk->put(
+        return $this->enqueueUsing(
+            $job,
             $this->createPayload($job, $this->getQueue($queue), $data),
-            Pheanstalk::DEFAULT_PRIORITY,
-            $this->secondsUntil($delay),
-            $this->timeToRun
+            $queue,
+            $delay,
+            function ($payload, $queue, $delay) {
+                return $this->pheanstalk->useTube($this->getQueue($queue))->put(
+                    $payload,
+                    Pheanstalk::DEFAULT_PRIORITY,
+                    $this->secondsUntil($delay),
+                    $this->timeToRun
+                );
+            }
         );
     }
 
@@ -166,7 +185,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the queue or return the default.
-	 * 获取队列或返回默认值
+	 * 得到队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -178,7 +197,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying Pheanstalk instance.
-	 * 获取底层Pheanstalk实例
+	 * 得到底层Pheanstalk实例
      *
      * @return \Pheanstalk\Pheanstalk
      */

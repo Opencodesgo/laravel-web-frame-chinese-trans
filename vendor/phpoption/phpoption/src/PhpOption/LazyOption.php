@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpOption，懒人选项
+ */
 
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Json响应
+ * Symfony，Component，HttpFoundation，Json 响应
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Response represents an HTTP response in JSON format.
- * Response 表示JSON格式的HTTP响应
+ * Response表示JSON格式的HTTP响应
  *
  * Note that this class does not force the returned JSON content to be an
  * object. It is however recommended that you do return an object as it
@@ -60,7 +60,7 @@ class JsonResponse extends Response
 
     /**
      * Factory method for chainability.
-	 * 可链性的工厂方法
+	 * 可链性的工厂方法。
      *
      * Example:
      *
@@ -84,6 +84,7 @@ class JsonResponse extends Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法。
      *
      * Example:
      *
@@ -103,6 +104,7 @@ class JsonResponse extends Response
 
     /**
      * Sets the JSONP callback.
+	 * 设置JSONP回调
      *
      * @param string|null $callback The JSONP callback or null to use none
      *
@@ -138,6 +140,7 @@ class JsonResponse extends Response
 
     /**
      * Sets a raw string containing a JSON document to be sent.
+	 * 设置包含要发送的JSON文档的原始字符串
      *
      * @return $this
      */
@@ -150,6 +153,7 @@ class JsonResponse extends Response
 
     /**
      * Sets the data to be sent as JSON.
+	 * 设置要作为JSON发送的数据
      *
      * @param mixed $data
      *
@@ -181,6 +185,7 @@ class JsonResponse extends Response
 
     /**
      * Returns options used while encoding data to JSON.
+	 * 返回将数据编码为JSON时使用的选项
      *
      * @return int
      */
@@ -191,6 +196,7 @@ class JsonResponse extends Response
 
     /**
      * Sets options used while encoding data to JSON.
+	 * 设置将数据编码为JSON时使用的选项
      *
      * @return $this
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，处理者，空会话处理程序
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，空会话处理程序
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Can be used in unit testing or in a situations where persisted sessions are not desired.
- * 可用于单元测试或不需要持久会话的情况
+ * 可用于单元测试或不需要持久会话的情况。
  *
  * @author Drak <drak@zikula.org>
  */

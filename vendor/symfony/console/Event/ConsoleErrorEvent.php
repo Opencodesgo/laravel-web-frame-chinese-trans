@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Allows to handle throwables thrown while running a command.
+ * 允许在运行命令时处理投掷的投掷。
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */

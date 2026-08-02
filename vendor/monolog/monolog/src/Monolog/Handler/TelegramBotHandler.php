@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Telegram Bot 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Utils;
 
 /**
  * Handler send logs to Telegram using Telegram Bot API.
+ * 处理程序发送日志到Telegram使用Telegram Bot API。
  *
  * How to use:
  *  1) Create telegram bot with https://telegram.me/BotFather
@@ -37,6 +42,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
 
     /**
      * The available values of parseMode according to the Telegram api documentation
+	 * 根据Telegram api文档，parseMode的可用值
      */
     private const AVAILABLE_PARSE_MODES = [
         'HTML',
@@ -259,6 +265,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
 
     /**
      * Handle a message that is too long: truncates or splits into several
+	 * 处理太长的消息：截断或分成几个
      * @param string $message
      * @return string[]
      */

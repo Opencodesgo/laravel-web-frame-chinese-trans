@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，调用类通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use Psy\Exception\ErrorException;
 /**
  * The called class pass throws warnings for get_class() and get_called_class()
  * outside a class context.
+ * 被调用的类传递会抛出get_class（）和get_called_class（）在类上下文之外的警告。
  */
 class CalledClassPass extends CodeCleanerPass
 {

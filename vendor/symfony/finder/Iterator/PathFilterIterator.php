@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，路径过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * PathFilterIterator filters files by path patterns (e.g. some/special/dir).
+ * PathFilterIterator通过路径模式过滤文件（例如some/special/dir）。
  *
  * @author Fabien Potencier  <fabien@symfony.com>
  * @author Włodzimierz Gajda <gajdaw@gajdaw.pl>
@@ -23,6 +27,7 @@ class PathFilterIterator extends MultiplePcreFilterIterator
 {
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool
      */
@@ -40,6 +45,7 @@ class PathFilterIterator extends MultiplePcreFilterIterator
 
     /**
      * Converts strings to regexp.
+	 * 将字符串转换为regexp。
      *
      * PCRE patterns are left unchanged.
      *

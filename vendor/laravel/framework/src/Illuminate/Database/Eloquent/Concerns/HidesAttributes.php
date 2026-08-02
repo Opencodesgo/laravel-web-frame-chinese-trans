@@ -63,7 +63,7 @@ trait HidesAttributes
 
     /**
      * Set the visible attributes for the model.
-	 * 设置模型的可见属性
+	 * 为模型设置可见属性
      *
      * @param  array  $visible
      * @return $this
@@ -105,9 +105,7 @@ trait HidesAttributes
      */
     public function makeVisibleIf($condition, $attributes)
     {
-        $condition = $condition instanceof Closure ? $condition($this) : $condition;
-
-        return $condition ? $this->makeVisible($attributes) : $this;
+        return value($condition, $this) ? $this->makeVisible($attributes) : $this;
     }
 
     /**
@@ -136,8 +134,6 @@ trait HidesAttributes
      */
     public function makeHiddenIf($condition, $attributes)
     {
-        $condition = $condition instanceof Closure ? $condition($this) : $condition;
-
-        return value($condition) ? $this->makeHidden($attributes) : $this;
+        return value($condition, $this) ? $this->makeHidden($attributes) : $this;
     }
 }

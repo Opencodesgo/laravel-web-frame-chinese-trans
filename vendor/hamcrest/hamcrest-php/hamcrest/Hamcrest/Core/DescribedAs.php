@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，被描述为
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -10,6 +14,7 @@ use Hamcrest\Matcher;
 
 /**
  * Provides a custom description to another matcher.
+ * 为另一个匹配器提供自定义描述。
  */
 class DescribedAs extends BaseMatcher
 {
@@ -53,6 +58,7 @@ class DescribedAs extends BaseMatcher
 
     /**
      * Wraps an existing matcher and overrides the description when it fails.
+	 * 包装现有匹配器，并在其失败时覆盖描述。
      *
      * @factory ...
      */

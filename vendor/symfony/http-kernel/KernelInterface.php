@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -20,6 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * The Kernel is the heart of the Symfony system.
+ * 内核是Symfony系统的核心
  *
  * It manages an environment made of application kernel and bundles.
  *
@@ -33,6 +35,7 @@ interface KernelInterface extends HttpKernelInterface
 {
     /**
      * Returns an array of bundles to register.
+	 * 返回要注册的bundle数组
      *
      * @return iterable<mixed, BundleInterface>
      */
@@ -40,16 +43,20 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Loads the container configuration.
+	 * 加载容器配置
      */
     public function registerContainerConfiguration(LoaderInterface $loader);
 
     /**
      * Boots the current kernel.
+	 * 引导当前内核
+	 * 
      */
     public function boot();
 
     /**
      * Shutdowns the kernel.
+	 * 关闭内核
      *
      * This method is mainly useful when doing functional testing.
      */
@@ -57,6 +64,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the registered bundle instances.
+	 * 获取已注册的包实例
      *
      * @return array<string, BundleInterface>
      */
@@ -64,6 +72,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Returns a bundle.
+	 * 返回一个bundle
      *
      * @return BundleInterface
      *
@@ -73,6 +82,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Returns the file path for a given bundle resource.
+	 * 返回给定包资源的文件路径。
      *
      * A Resource can be a file or a directory.
      *
@@ -92,6 +102,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the environment.
+	 * 获取环境
      *
      * @return string
      */
@@ -99,6 +110,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Checks if debug mode is enabled.
+	 * 检查是否启用了调试模式
      *
      * @return bool
      */
@@ -106,6 +118,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the project dir (path of the project's composer file).
+	 * 获取项目目录（项目编写器文件的路径
      *
      * @return string
      */
@@ -113,6 +126,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the current container.
+	 * 获取当前容器
      *
      * @return ContainerInterface
      */
@@ -120,6 +134,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the request start time (not available if debug is disabled).
+	 * 获取请求启动时间(如果调试禁用)
      *
      * @return float
      */
@@ -127,6 +142,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the cache directory.
+	 * 获取缓存目录
      *
      * Since Symfony 5.2, the cache directory should be used for caches that are written at runtime.
      * For caches and artifacts that can be warmed at compile-time and deployed as read-only,
@@ -138,6 +154,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the log directory.
+	 * 获取日志目录
      *
      * @return string
      */
@@ -145,6 +162,7 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Gets the charset of the application.
+	 * 获取应用程序的字符集
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，翻译器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -111,6 +114,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
     /**
      * Adds a Loader.
+	 * 添加一个加载程序
      *
      * @param string $format The name of the loader (@see addResource())
      */
@@ -121,6 +125,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
     /**
      * Adds a Resource.
+	 * 添加一个资源
      *
      * @param string $format   The name of the loader (@see addLoader())
      * @param mixed  $resource The resource name
@@ -183,6 +188,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @internal
      */
@@ -254,6 +260,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
     /**
      * Gets the loaders.
+	 * 获取加载器
      *
      * @return LoaderInterface[]
      */
@@ -452,6 +459,7 @@ EOF
 
     /**
      * Asserts that the locale is valid, throws an Exception if not.
+	 * 断言语言环境是否有效，如果无效则抛出异常。
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */

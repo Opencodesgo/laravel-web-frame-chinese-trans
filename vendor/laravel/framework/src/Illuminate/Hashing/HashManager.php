@@ -45,7 +45,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Get information about the given hashed value.
-	 * 获取关于给定哈罗德值的信息
+	 * 获取有关给定散列值的信息
      *
      * @param  string  $hashedValue
      * @return array
@@ -57,7 +57,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Hash the given value.
-	 * 哈希给定的值
+	 * 哈希给定值
      *
      * @param  string  $value
      * @param  array  $options
@@ -70,7 +70,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Check the given plain value against a hash.
-	 * 检查给定的对哈希的极值
+	 * 根据散列检查给定的普通值
      *
      * @param  string  $value
      * @param  string  $hashedValue
@@ -84,7 +84,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Check if the given hash has been hashed using the given options.
-	 * 检查给定的哈希是否使用给定的选项被哈希
+	 * 检查给定的散列是否已经使用给定的选项进行了散列
      *
      * @param  string  $hashedValue
      * @param  array  $options

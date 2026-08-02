@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，深度范围过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * DepthRangeFilterIterator limits the directory depth.
+ * DepthRangeFilterIterator限制目录深度。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -40,6 +44,7 @@ class DepthRangeFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool
      */

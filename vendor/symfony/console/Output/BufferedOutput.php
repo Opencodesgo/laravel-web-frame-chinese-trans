@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，缓冲输出区
+ * Symfony，Component，Console，输出，缓冲输出区
  */
 
 /*
@@ -23,6 +23,7 @@ class BufferedOutput extends Output
 
     /**
      * Empties buffer and returns its content.
+	 * 清空缓冲区并返回其内容
      *
      * @return string
      */

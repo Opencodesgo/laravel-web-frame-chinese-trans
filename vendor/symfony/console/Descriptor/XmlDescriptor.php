@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，描述符号，Xml 描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * XML descriptor.
+ * Xml 描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -162,6 +166,7 @@ class XmlDescriptor extends Descriptor
 
     /**
      * Appends document children to parent node.
+	 * 将文件添加到父节点
      */
     private function appendDocument(\DOMNode $parentNode, \DOMNode $importedParent)
     {
@@ -172,6 +177,7 @@ class XmlDescriptor extends Descriptor
 
     /**
      * Writes DOM document.
+	 * 写入DOM文档
      */
     private function writeDocument(\DOMDocument $dom)
     {

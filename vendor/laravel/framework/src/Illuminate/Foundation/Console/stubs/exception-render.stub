@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，异常呈现
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Exception;
 
-class DummyClass extends Exception
+class {{ class }} extends Exception
 {
     /**
      * Render the exception as an HTTP response.
-	 * 呈现异常到HTTP响应
+	 * 呈现异常为HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

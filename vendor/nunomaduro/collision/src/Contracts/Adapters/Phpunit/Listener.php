@@ -1,13 +1,9 @@
 <?php
-
 /**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
+ * NunoMaduro，Collision，契约，适配器，Php单元，监听者
  */
+
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Contracts\Adapters\Phpunit;
 
@@ -15,15 +11,14 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 
 /**
- * This is an Collision Phpunit Adapter contract.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @internal
  */
 interface Listener extends TestListener
 {
     /**
      * Renders the provided error
      * on the console.
+	 * 呈现所提供的错误在控制台上
      *
      * @return void
      */

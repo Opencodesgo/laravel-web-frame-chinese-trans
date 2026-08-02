@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提取器，链提取器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * ChainExtractor extracts translation messages from template files.
+ * 链提取器从模板文件中提取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -22,6 +26,7 @@ class ChainExtractor implements ExtractorInterface
 {
     /**
      * The extractors.
+	 * 萃取器
      *
      * @var ExtractorInterface[]
      */

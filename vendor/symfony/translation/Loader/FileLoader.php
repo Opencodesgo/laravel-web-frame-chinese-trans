@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，载入程序，文件装载机
+ */
 
 /*
  * This file is part of the Symfony package.

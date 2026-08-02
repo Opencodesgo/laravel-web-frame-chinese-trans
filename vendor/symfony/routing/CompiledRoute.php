@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，编译后的路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
+ * compileroutes由RouteCompiler类返回。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -93,6 +97,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the static prefix.
+	 * 返回静态前缀
      *
      * @return string
      */
@@ -103,6 +108,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the regex.
+	 * 返回正则表达式
      *
      * @return string
      */
@@ -113,6 +119,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the host regex.
+	 * 返回主机正则表达式
      *
      * @return string|null
      */
@@ -123,6 +130,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the tokens.
+	 * 返回令牌
      *
      * @return array
      */
@@ -133,6 +141,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the host tokens.
+	 * 返回主机令牌
      *
      * @return array
      */
@@ -143,6 +152,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the variables.
+	 * 返回变量
      *
      * @return array
      */
@@ -153,6 +163,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the path variables.
+	 * 返回路径变量
      *
      * @return array
      */
@@ -163,6 +174,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the host variables.
+	 * 返回主机变量
      *
      * @return array
      */

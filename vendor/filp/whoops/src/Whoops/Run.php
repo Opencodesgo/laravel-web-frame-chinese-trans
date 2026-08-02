@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，运行
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -64,6 +68,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
+	 * 在某些场景中,如在关机处理程序中,我们不能抛出异常。
      *
      * @var bool
      */
@@ -71,6 +76,7 @@ final class Run implements RunInterface
 
     /**
      * The inspector factory to create inspectors.
+	 * 检查员工厂要制造检查员
      *
      * @var InspectorFactoryInterface
      */
@@ -89,6 +95,7 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the last of all currently registered handlers.
+	 * 显式地请求您的处理程序运行为当前所有注册处理程序的最后一个
      *
      * @param callable|HandlerInterface $handler
      *
@@ -102,6 +109,7 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the first of all currently registered handlers.
+	 * 显式请求您的处理程序作为所有当前注册的处理程序中的第一个运行
      *
      * @param callable|HandlerInterface $handler
      *
@@ -115,6 +123,7 @@ final class Run implements RunInterface
     /**
      * Register your handler as the last of all currently registered handlers (to be executed first).
      * Prefer using appendHandler and prependHandler for clarity.
+	 * 将您的处理程序注册为最后一个已注册的处理程序(要先执行)。
      *
      * @param callable|HandlerInterface $handler
      *
@@ -130,6 +139,7 @@ final class Run implements RunInterface
 
     /**
      * Removes and returns the last handler pushed to the handler stack.
+	 * 移除并返回最后一个推入处理程序堆栈的处理程序
      *
      * @see Run::removeFirstHandler(), Run::removeLastHandler()
      *
@@ -142,6 +152,7 @@ final class Run implements RunInterface
 
     /**
      * Removes the first handler.
+	 * 删除第一个处理程序
      *
      * @return void
      */
@@ -152,6 +163,7 @@ final class Run implements RunInterface
 
     /**
      * Removes the last handler.
+	 * 删除最后一个处理程序
      *
      * @return void
      */
@@ -162,6 +174,7 @@ final class Run implements RunInterface
 
     /**
      * Returns an array with all handlers, in the order they were added to the stack.
+	 * 返回一个包含所有处理程序的数组，按照它们被添加到堆栈中的顺序。
      *
      * @return array
      */
@@ -172,6 +185,7 @@ final class Run implements RunInterface
 
     /**
      * Clears all handlers in the handlerStack, including the default PrettyPage handler.
+	 * 清除handlerStack中的所有处理程序，包括默认的pretypage处理程序。
      *
      * @return Run
      */
@@ -194,6 +208,7 @@ final class Run implements RunInterface
 
     /**
      * Registers this instance as an error handler.
+	 * 将此实例注册为错误处理程序
      *
      * @return Run
      */
@@ -220,6 +235,7 @@ final class Run implements RunInterface
 
     /**
      * Unregisters all handlers registered by this Whoops\Run instance.
+	 * 注销此Whoops\Run实例注册的所有处理程序
      *
      * @return Run
      */
@@ -237,6 +253,7 @@ final class Run implements RunInterface
 
     /**
      * Should Whoops allow Handlers to force the script to quit?
+	 * Whoops是否允许处理程序强制脚本退出？
      *
      * @param bool|int $exit
      *
@@ -253,6 +270,7 @@ final class Run implements RunInterface
 
     /**
      * Silence particular errors in particular files.
+	 * 沉默特定文件中的特定错误
      *
      * @param array|string $patterns List or a single regex pattern to match.
      * @param int          $levels   Defaults to E_STRICT | E_DEPRECATED.
@@ -279,6 +297,7 @@ final class Run implements RunInterface
 
     /**
      * Returns an array with silent errors in path configuration.
+	 * 返回一个在路径配置中有静默错误的数组
      *
      * @return array
      */
@@ -291,6 +310,7 @@ final class Run implements RunInterface
      * Should Whoops send HTTP error code to the browser if possible?
      * Whoops will by default send HTTP code 500, but you may wish to
      * use 502, 503, or another 5xx family code.
+	 * 如果可能的话,谁应该将HTTP错误代码发送到浏览器?
      *
      * @param bool|int $code
      *
@@ -365,6 +385,7 @@ final class Run implements RunInterface
 
     /**
      * Handles an exception, ultimately generating a Whoops error page.
+	 * 处理一个异常，最终生成一个Whoops错误页面。
      *
      * @param Throwable $exception
      *
@@ -448,6 +469,7 @@ final class Run implements RunInterface
 
     /**
      * Converts generic PHP errors to \ErrorException instances, before passing them off to be handled.
+	 * 将一般PHP错误转换为ErrorException实例，然后将其传递给处理。
      *
      * This method MUST be compatible with set_error_handler.
      *
@@ -492,6 +514,7 @@ final class Run implements RunInterface
 
     /**
      * Special case to deal with Fatal errors and the like.
+	 * 处理致命错误等的特殊情况
      *
      * @return void
      */
@@ -552,6 +575,7 @@ final class Run implements RunInterface
 
     /**
      * Resolves the giving handler.
+	 * 解析给出的处理程序
      *
      * @param callable|HandlerInterface $handler
      *
@@ -577,6 +601,7 @@ final class Run implements RunInterface
 
     /**
      * Echo something to the browser.
+	 * 向浏览器回显一些内容
      *
      * @param string $output
      *

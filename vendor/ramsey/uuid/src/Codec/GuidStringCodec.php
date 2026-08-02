@@ -1,7 +1,11 @@
 <?php
+/**
+ * Ramsey，Uuid，编解码器，Guid String编解码器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
+ * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.

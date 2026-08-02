@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，Interface_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -21,6 +25,7 @@ class Interface_ extends Declaration {
 
     /**
      * Creates an interface builder.
+	 * 创建接口构建器
      *
      * @param string $name Name of the interface
      */
@@ -30,6 +35,7 @@ class Interface_ extends Declaration {
 
     /**
      * Extends one or more interfaces.
+	 * 扩展一个或多个接口
      *
      * @param Name|string ...$interfaces Names of interfaces to extend
      *
@@ -45,6 +51,7 @@ class Interface_ extends Declaration {
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *
@@ -68,6 +75,7 @@ class Interface_ extends Declaration {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -81,6 +89,7 @@ class Interface_ extends Declaration {
 
     /**
      * Returns the built interface node.
+	 * 返回构建的接口节点
      *
      * @return Stmt\Interface_ The built interface node
      */

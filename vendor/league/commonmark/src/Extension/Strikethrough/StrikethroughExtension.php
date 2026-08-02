@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，扩展，删除线，删除线扩展
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -11,14 +16,14 @@
 
 namespace League\CommonMark\Extension\Strikethrough;
 
-use League\CommonMark\ConfigurableEnvironmentInterface;
+use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Extension\ExtensionInterface;
 
 final class StrikethroughExtension implements ExtensionInterface
 {
-    public function register(ConfigurableEnvironmentInterface $environment)
+    public function register(EnvironmentBuilderInterface $environment): void
     {
         $environment->addDelimiterProcessor(new StrikethroughDelimiterProcessor());
-        $environment->addInlineRenderer(Strikethrough::class, new StrikethroughRenderer());
+        $environment->addRenderer(Strikethrough::class, new StrikethroughRenderer());
     }
 }

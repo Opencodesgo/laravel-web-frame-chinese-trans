@@ -27,7 +27,7 @@ class ConnectionFactory
 
     /**
      * Create a new connection factory instance.
-	 * 创建新的连接工厂实例
+	 * 创建一个新的连接工厂实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -113,7 +113,7 @@ class ConnectionFactory
 
     /**
      * Get the read configuration for a read / write connection.
-	 * 提到读/写连接的读配置
+	 * 获取读/写连接的读配置
      *
      * @param  array  $config
      * @return array
@@ -183,7 +183,7 @@ class ConnectionFactory
 
     /**
      * Create a new Closure that resolves to a PDO instance with a specific host or an array of hosts.
-	 * 创建一个新的闭包,它解析为一个PDO实例，它有一个特定的主机或一个主机数组。
+	 * 创建一个新的Closure，它解析为具有特定主机或主机数组的PDO实例。
      *
      * @param  array  $config
      * @return \Closure
@@ -293,7 +293,6 @@ class ConnectionFactory
             return $resolver($connection, $database, $prefix, $config);
         }
 
-		// 根据不同数据库驱动创建连接实例
         switch ($driver) {
             case 'mysql':
                 return new MySqlConnection($connection, $database, $prefix, $config);

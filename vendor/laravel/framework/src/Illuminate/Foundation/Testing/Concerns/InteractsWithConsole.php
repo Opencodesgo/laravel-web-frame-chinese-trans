@@ -13,7 +13,7 @@ trait InteractsWithConsole
 {
     /**
      * Indicates if the console output should be mocked.
-	 * 指示是否应该嘲笑控制台输出
+	 * 指明是否应该模拟控制台输出
      *
      * @var bool
      */
@@ -21,15 +21,23 @@ trait InteractsWithConsole
 
     /**
      * All of the expected output lines.
-	 * 所有预期的输出行
+	 * 所有期望的输出行
      *
      * @var array
      */
     public $expectedOutput = [];
 
     /**
-     * All of the expected ouput tables.
-	 * 所有预期的ouput表
+     * All of the output lines that aren't expected to be displayed.
+	 * 所有不希望显示的输出行
+     *
+     * @var array
+     */
+    public $unexpectedOutput = [];
+
+    /**
+     * All of the expected output tables.
+	 * 所有预期的输出表
      *
      * @var array
      */
@@ -37,7 +45,7 @@ trait InteractsWithConsole
 
     /**
      * All of the expected questions.
-	 * 所有的预期问题
+	 * 所有预期的问题
      *
      * @var array
      */
@@ -45,7 +53,7 @@ trait InteractsWithConsole
 
     /**
      * All of the expected choice questions.
-	 * 所有预期的选择问题
+	 * 所有的选择题
      *
      * @var array
      */
@@ -53,7 +61,7 @@ trait InteractsWithConsole
 
     /**
      * Call artisan command and return code.
-	 * 调用artisan命令和返回代码
+	 * 调用artisan命令并返回代码
      *
      * @param  string  $command
      * @param  array  $parameters

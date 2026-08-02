@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Inflector，语言影响器工厂
+ */
 
 declare(strict_types=1);
 
@@ -10,6 +13,7 @@ interface LanguageInflectorFactory
 {
     /**
      * Applies custom rules for singularisation
+	 * 为单数应用自定义规则
      *
      * @param bool $reset If true, will unset default inflections for all new rules
      *
@@ -19,6 +23,7 @@ interface LanguageInflectorFactory
 
     /**
      * Applies custom rules for pluralisation
+	 * 应用自定义规则
      *
      * @param bool $reset If true, will unset default inflections for all new rules
      *
@@ -28,6 +33,7 @@ interface LanguageInflectorFactory
 
     /**
      * Builds the inflector instance with all applicable rules
+	 * 用所有适用的规则构建发型器实例
      */
     public function build(): Inflector;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，Empty Array Dim Fetch Pass
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -20,6 +23,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate empty brackets are only used for assignment.
+ * 验证空括号仅用于赋值。
  */
 class EmptyArrayDimFetchPass extends CodeCleanerPass
 {

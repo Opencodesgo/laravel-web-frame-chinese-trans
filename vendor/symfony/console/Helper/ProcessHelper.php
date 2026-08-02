@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，助手，过程助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * The ProcessHelper class provides helpers to run external processes.
+ * ProcessHelper类提供帮助来运行外部过程。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -27,6 +31,7 @@ class ProcessHelper extends Helper
 {
     /**
      * Runs an external process.
+	 * 运行一个外部过程
      *
      * @param array|Process $cmd      An instance of Process or an array of the command and arguments
      * @param callable|null $callback A PHP callback to run whenever there is some
@@ -86,6 +91,7 @@ class ProcessHelper extends Helper
 
     /**
      * Runs the process.
+	 * 运行这个过程。
      *
      * This is identical to run() except that an exception is thrown if the process
      * exits with a non-zero exit code.
@@ -111,6 +117,7 @@ class ProcessHelper extends Helper
 
     /**
      * Wraps a Process callback to add debugging output.
+	 * 包一个流程回调以添加调试输出
      */
     public function wrapCallback(OutputInterface $output, Process $process, ?callable $callback = null): callable
     {

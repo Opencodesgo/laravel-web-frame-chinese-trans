@@ -184,6 +184,7 @@ class Cookie
 
     /**
      * Creates a cookie copy with a new path on the server in which the cookie will be available on.
+	 * 在服务器上创建一个具有新路径的cookie副本，cookie将在该服务器上可用。
      *
      * @return static
      */
@@ -197,6 +198,7 @@ class Cookie
 
     /**
      * Creates a cookie copy that only be transmitted over a secure HTTPS connection from the client.
+	 * 创建一个cookie副本，该副本只能通过安全的HTTPS连接从客户端传输。
      *
      * @return static
      */
@@ -210,6 +212,7 @@ class Cookie
 
     /**
      * Creates a cookie copy that be accessible only through the HTTP protocol.
+	 * 创建一个只能通过HTTP协议访问的cookie副本
      *
      * @return static
      */
@@ -223,6 +226,7 @@ class Cookie
 
     /**
      * Creates a cookie copy that uses no url encoding.
+	 * 创建一个不使用url编码的cookie副本。
      *
      * @return static
      */
@@ -240,6 +244,7 @@ class Cookie
 
     /**
      * Creates a cookie copy with SameSite attribute.
+	 * 创建具有SameSite属性的cookie副本
      *
      * @return static
      */
@@ -263,6 +268,7 @@ class Cookie
 
     /**
      * Returns the cookie as a string.
+	 * 以字符串形式返回cookie
      *
      * @return string
      */
@@ -311,6 +317,7 @@ class Cookie
 
     /**
      * Gets the name of the cookie.
+	 * 获取cookie的名称
      *
      * @return string
      */
@@ -321,6 +328,7 @@ class Cookie
 
     /**
      * Gets the value of the cookie.
+	 * 获取cookie的值
      *
      * @return string|null
      */
@@ -331,6 +339,7 @@ class Cookie
 
     /**
      * Gets the domain that the cookie is available to.
+	 * 获取cookie可用于的域
      *
      * @return string|null
      */
@@ -341,6 +350,7 @@ class Cookie
 
     /**
      * Gets the time the cookie expires.
+	 * 获取cookie过期的时间
      *
      * @return int
      */
@@ -351,6 +361,7 @@ class Cookie
 
     /**
      * Gets the max-age attribute.
+	 * 获取max-age属性
      *
      * @return int
      */
@@ -363,6 +374,7 @@ class Cookie
 
     /**
      * Gets the path on the server in which the cookie will be available on.
+	 * 获取将在其中提供cookie的服务器上的路径
      *
      * @return string
      */
@@ -373,6 +385,7 @@ class Cookie
 
     /**
      * Checks whether the cookie should only be transmitted over a secure HTTPS connection from the client.
+	 * 检查cookie是否只能通过安全的HTTPS连接从客户端传输
      *
      * @return bool
      */
@@ -383,6 +396,7 @@ class Cookie
 
     /**
      * Checks whether the cookie will be made accessible only through the HTTP protocol.
+	 * 检查cookie是否只能通过HTTP协议访问
      *
      * @return bool
      */
@@ -393,6 +407,7 @@ class Cookie
 
     /**
      * Whether this cookie is about to be cleared.
+	 * 该cookie是否即将被清除
      *
      * @return bool
      */
@@ -403,6 +418,7 @@ class Cookie
 
     /**
      * Checks if the cookie value should be sent with no url encoding.
+	 * 检查是否应该发送不带url编码的cookie值
      *
      * @return bool
      */
@@ -413,6 +429,7 @@ class Cookie
 
     /**
      * Gets the SameSite attribute.
+	 * 获取相同的站点属性
      *
      * @return string|null
      */

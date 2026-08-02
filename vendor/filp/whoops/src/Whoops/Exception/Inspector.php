@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，检查员
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -95,6 +99,7 @@ class Inspector implements InspectorInterface
 
     /**
      * Returns a url to the php-manual related to the underlying error - when available.
+	 * 返回与底层错误相关的php手册的url -当可用时
      *
      * @return string|null
      */
@@ -128,6 +133,7 @@ class Inspector implements InspectorInterface
 
     /**
      * Does the wrapped Exception has a previous Exception?
+	 * 包装的异常是否有先前的异常？
      * @return bool
      */
     public function hasPreviousException()
@@ -156,6 +162,7 @@ class Inspector implements InspectorInterface
 
     /**
      * Returns an array of all previous exceptions for this inspector's exception
+	 * 返回该检查器异常的所有先前异常数组
      * @return \Throwable[]
      */
     public function getPreviousExceptions()
@@ -251,6 +258,7 @@ class Inspector implements InspectorInterface
 
     /**
      * Gets the backtrace from an exception.
+	 * 从异常获取回溯
      *
      * If xdebug is installed
      *

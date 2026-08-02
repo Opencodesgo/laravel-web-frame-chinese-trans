@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，编译程序接口
+ * Illuminate，视图，编译，编译程序接口
  */
 
 namespace Illuminate\View\Compilers;

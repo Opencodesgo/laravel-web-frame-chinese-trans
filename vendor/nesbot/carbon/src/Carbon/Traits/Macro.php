@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，宏指令
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -13,8 +16,10 @@ namespace Carbon\Traits;
 
 /**
  * Trait Macros.
+ * 宏指令特征。
  *
  * Allows users to register macros within the Carbon class.
+ * 允许用户在Carbon类中注册宏。
  */
 trait Macro
 {
@@ -22,6 +27,7 @@ trait Macro
 
     /**
      * The registered macros.
+	 * 已注册的宏
      *
      * @var array
      */
@@ -29,6 +35,7 @@ trait Macro
 
     /**
      * The registered generic macros.
+	 * 注册的通用宏
      *
      * @var array
      */
@@ -36,6 +43,7 @@ trait Macro
 
     /**
      * Register a custom macro.
+	 * 注册自定义宏
      *
      * @example
      * ```
@@ -61,6 +69,7 @@ trait Macro
 
     /**
      * Remove all macros and generic macros.
+	 * 删除所有宏和通用宏
      */
     public static function resetMacros()
     {
@@ -70,6 +79,7 @@ trait Macro
 
     /**
      * Register a custom macro.
+	 * 注册自定义宏
      *
      * @param object|callable $macro
      * @param int             $priority marco with higher priority is tried first
@@ -88,6 +98,7 @@ trait Macro
 
     /**
      * Checks if macro is registered globally.
+	 * 检查是否全局注册了宏
      *
      * @param string $name
      *
@@ -124,6 +135,7 @@ trait Macro
 
     /**
      * Get the raw callable macro registered globally or locally for a given name.
+	 * 获取为给定名称全局或本地注册的原始可调用宏
      *
      * @param string $name
      *

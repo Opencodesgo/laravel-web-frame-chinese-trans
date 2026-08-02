@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，队列，工厂
+ * Illuminate，契约，队列，工厂接口
  */
 
 namespace Illuminate\Contracts\Queue;

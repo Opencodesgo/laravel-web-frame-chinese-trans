@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列，核心类
+ * Illuminate，队列，队列抽象类
  */
 
 namespace Illuminate\Queue;
@@ -8,6 +8,10 @@ namespace Illuminate\Queue;
 use Closure;
 use DateTimeInterface;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Queue\Events\JobQueued;
+use Illuminate\Support\Arr;
 use Illuminate\Support\InteractsWithTime;
 use Illuminate\Support\Str;
 
@@ -17,7 +21,7 @@ abstract class Queue
 
     /**
      * The IoC container instance.
-	 * 容器实例
+	 * IoC容器实例
      *
      * @var \Illuminate\Container\Container
      */
@@ -25,11 +29,19 @@ abstract class Queue
 
     /**
      * The connection name for the queue.
-	 * 队列连接名
+	 * 队列的连接名称
      *
      * @var string
      */
     protected $connectionName;
+
+    /**
+     * Indicates that jobs should be dispatched after all database transactions have committed.
+	 * 指示应在所有数据库事务提交后分派作业
+     *
+     * @return $this
+     */
+    protected $dispatchAfterCommit;
 
     /**
      * The create payload callbacks.
@@ -101,7 +113,7 @@ abstract class Queue
             $job = CallQueuedClosure::create($job);
         }
 
-        $payload = json_encode($this->createPayloadArray($job, $queue, $data));
+        $payload = json_encode($this->createPayloadArray($job, $queue, $data), \JSON_UNESCAPED_UNICODE);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new InvalidPayloadException(
@@ -144,26 +156,31 @@ abstract class Queue
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
             'maxTries' => $job->tries ?? null,
             'maxExceptions' => $job->maxExceptions ?? null,
-            'delay' => $this->getJobRetryDelay($job),
+            'failOnTimeout' => $job->failOnTimeout ?? false,
+            'backoff' => $this->getJobBackoff($job),
             'timeout' => $job->timeout ?? null,
-            'timeoutAt' => $this->getJobExpiration($job),
+            'retryUntil' => $this->getJobExpiration($job),
             'data' => [
                 'commandName' => $job,
                 'command' => $job,
             ],
         ]);
 
+        $command = $this->jobShouldBeEncrypted($job) && $this->container->bound(Encrypter::class)
+                    ? $this->container[Encrypter::class]->encrypt(serialize(clone $job))
+                    : serialize(clone $job);
+
         return array_merge($payload, [
-            'data' => [
+            'data' => array_merge($payload['data'], [
                 'commandName' => get_class($job),
-                'command' => serialize(clone $job),
-            ],
+                'command' => $command,
+            ]),
         ]);
     }
 
     /**
      * Get the display name for the given job.
-	 * 获取给定作业的显示名称
+	 * 得到给定作业的显示名称
      *
      * @param  object  $job
      * @return string
@@ -175,41 +192,62 @@ abstract class Queue
     }
 
     /**
-     * Get the retry delay for an object-based queue handler.
-	 * 获取基于对象的队列处理程序的重试延迟
+     * Get the backoff for an object-based queue handler.
+	 * 得到基于对象的队列处理程序的后退
      *
      * @param  mixed  $job
      * @return mixed
      */
-    public function getJobRetryDelay($job)
+    public function getJobBackoff($job)
     {
-        if (! method_exists($job, 'retryAfter') && ! isset($job->retryAfter)) {
+        if (! method_exists($job, 'backoff') && ! isset($job->backoff)) {
             return;
         }
 
-        $delay = $job->retryAfter ?? $job->retryAfter();
+        if (is_null($backoff = $job->backoff ?? $job->backoff())) {
+            return;
+        }
 
-        return $delay instanceof DateTimeInterface
-                        ? $this->secondsUntil($delay) : $delay;
+        return collect(Arr::wrap($backoff))
+            ->map(function ($backoff) {
+                return $backoff instanceof DateTimeInterface
+                                ? $this->secondsUntil($backoff) : $backoff;
+            })->implode(',');
     }
 
     /**
      * Get the expiration timestamp for an object-based queue handler.
-	 * 获取基于对象的队列处理程序的过期时间戳
+	 * 得到基于对象的队列处理程序的过期时间戳
      *
      * @param  mixed  $job
      * @return mixed
      */
     public function getJobExpiration($job)
     {
-        if (! method_exists($job, 'retryUntil') && ! isset($job->timeoutAt)) {
+        if (! method_exists($job, 'retryUntil') && ! isset($job->retryUntil)) {
             return;
         }
 
-        $expiration = $job->timeoutAt ?? $job->retryUntil();
+        $expiration = $job->retryUntil ?? $job->retryUntil();
 
         return $expiration instanceof DateTimeInterface
                         ? $expiration->getTimestamp() : $expiration;
+    }
+
+    /**
+     * Determine if the job should be encrypted.
+	 * 确定是否应该加密作业
+     *
+     * @param  object  $job
+     * @return bool
+     */
+    protected function jobShouldBeEncrypted($job)
+    {
+        if ($job instanceof ShouldBeEncrypted) {
+            return true;
+        }
+
+        return isset($job->shouldBeEncrypted) && $job->shouldBeEncrypted;
     }
 
     /**
@@ -229,7 +267,8 @@ abstract class Queue
             'job' => $job,
             'maxTries' => null,
             'maxExceptions' => null,
-            'delay' => null,
+            'failOnTimeout' => false,
+            'backoff' => null,
             'timeout' => null,
             'data' => $data,
         ]);
@@ -239,7 +278,7 @@ abstract class Queue
      * Register a callback to be executed when creating job payloads.
 	 * 注册一个回调，以便在创建作业有效负载时执行。
      *
-     * @param  callable  $callback
+     * @param  callable|null  $callback
      * @return void
      */
     public static function createPayloadUsing($callback)
@@ -273,8 +312,72 @@ abstract class Queue
     }
 
     /**
+     * Enqueue a job using the given callback.
+	 * 使用给定的回调为作业排队
+     *
+     * @param  \Closure|string|object  $job
+     * @param  string  $payload
+     * @param  string  $queue
+     * @param  \DateTimeInterface|\DateInterval|int|null  $delay
+     * @param  callable  $callback
+     * @return mixed
+     */
+    protected function enqueueUsing($job, $payload, $queue, $delay, $callback)
+    {
+        if ($this->shouldDispatchAfterCommit($job) &&
+            $this->container->bound('db.transactions')) {
+            return $this->container->make('db.transactions')->addCallback(
+                function () use ($payload, $queue, $delay, $callback, $job) {
+                    return tap($callback($payload, $queue, $delay), function ($jobId) use ($job) {
+                        $this->raiseJobQueuedEvent($jobId, $job);
+                    });
+                }
+            );
+        }
+
+        return tap($callback($payload, $queue, $delay), function ($jobId) use ($job) {
+            $this->raiseJobQueuedEvent($jobId, $job);
+        });
+    }
+
+    /**
+     * Determine if the job should be dispatched after all database transactions have committed.
+	 * 确定是否应该在所有数据库事务提交后分派作业
+     *
+     * @param  \Closure|string|object  $job
+     * @return bool
+     */
+    protected function shouldDispatchAfterCommit($job)
+    {
+        if (is_object($job) && isset($job->afterCommit)) {
+            return $job->afterCommit;
+        }
+
+        if (isset($this->dispatchAfterCommit)) {
+            return $this->dispatchAfterCommit;
+        }
+
+        return false;
+    }
+
+    /**
+     * Raise the job queued event.
+	 * 引发作业排队事件
+     *
+     * @param  string|int|null  $jobId
+     * @param  \Closure|string|object  $job
+     * @return void
+     */
+    protected function raiseJobQueuedEvent($jobId, $job)
+    {
+        if ($this->container->bound('events')) {
+            $this->container['events']->dispatch(new JobQueued($this->connectionName, $jobId, $job));
+        }
+    }
+
+    /**
      * Get the connection name for the queue.
-	 * 获取队列的连接名称
+	 * 得到队列的连接名称
      *
      * @return string
      */
@@ -295,6 +398,17 @@ abstract class Queue
         $this->connectionName = $name;
 
         return $this;
+    }
+
+    /**
+     * Get the container instance being used by the connection.
+	 * 得到连接正在使用的容器实例
+     *
+     * @return \Illuminate\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     /**

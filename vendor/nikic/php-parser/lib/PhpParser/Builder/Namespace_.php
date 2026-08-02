@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，命名空间
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -14,6 +18,7 @@ class Namespace_ extends Declaration {
 
     /**
      * Creates a namespace builder.
+	 * 创建命名空间构建器
      *
      * @param Node\Name|string|null $name Name of the namespace
      */
@@ -23,6 +28,7 @@ class Namespace_ extends Declaration {
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Node|PhpParser\Builder $stmt The statement to add
      *
@@ -36,6 +42,7 @@ class Namespace_ extends Declaration {
 
     /**
      * Returns the built node.
+	 * 返回构建的节点
      *
      * @return Stmt\Namespace_ The built node
      */

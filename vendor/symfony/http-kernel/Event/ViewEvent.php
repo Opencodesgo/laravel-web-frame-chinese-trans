@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，查看事件
+ * Symfony，Component，HttpKernel，事件，查看事件
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows to create a response for the return value of a controller.
- * 允许为控制器的返回值创建响应
+ * 允许为控制器的返回值创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a
@@ -31,6 +31,7 @@ final class ViewEvent extends RequestEvent
 {
     /**
      * The return value of the controller.
+	 * 控制器的返回值
      *
      * @var mixed
      */
@@ -45,6 +46,7 @@ final class ViewEvent extends RequestEvent
 
     /**
      * Returns the return value of the controller.
+	 * 返回控制器的返回值
      *
      * @return mixed
      */

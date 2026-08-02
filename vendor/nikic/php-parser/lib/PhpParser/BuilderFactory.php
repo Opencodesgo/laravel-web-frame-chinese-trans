@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者工厂
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Arg;
@@ -13,6 +17,7 @@ use PhpParser\Node\Stmt\Use_;
 class BuilderFactory {
     /**
      * Creates an attribute node.
+	 * 创建属性节点
      *
      * @param string|Name $name Name of the attribute
      * @param array $args Attribute named arguments
@@ -26,6 +31,7 @@ class BuilderFactory {
 
     /**
      * Creates a namespace builder.
+	 * 创建名称空间构建器
      *
      * @param null|string|Node\Name $name Name of the namespace
      *
@@ -37,6 +43,7 @@ class BuilderFactory {
 
     /**
      * Creates a class builder.
+	 * 创建一个类构建器
      *
      * @param string $name Name of the class
      *
@@ -48,6 +55,7 @@ class BuilderFactory {
 
     /**
      * Creates an interface builder.
+	 * 创建接口构建器
      *
      * @param string $name Name of the interface
      *
@@ -59,6 +67,7 @@ class BuilderFactory {
 
     /**
      * Creates a trait builder.
+	 * 创建一个特质构建器
      *
      * @param string $name Name of the trait
      *
@@ -70,6 +79,7 @@ class BuilderFactory {
 
     /**
      * Creates an enum builder.
+	 * 创建枚举生成器
      *
      * @param string $name Name of the enum
      *
@@ -81,6 +91,7 @@ class BuilderFactory {
 
     /**
      * Creates a trait use builder.
+	 * 创建一个trait使用构建器
      *
      * @param Node\Name|string ...$traits Trait names
      *
@@ -92,6 +103,7 @@ class BuilderFactory {
 
     /**
      * Creates a trait use adaptation builder.
+	 * 创建一个特征使用适应构建器
      *
      * @param Node\Name|string|null $trait Trait name
      * @param Node\Identifier|string $method Method name
@@ -109,6 +121,7 @@ class BuilderFactory {
 
     /**
      * Creates a method builder.
+	 * 创建一个方法构建器
      *
      * @param string $name Name of the method
      *
@@ -120,6 +133,7 @@ class BuilderFactory {
 
     /**
      * Creates a parameter builder.
+	 * 创建参数构建器
      *
      * @param string $name Name of the parameter
      *
@@ -131,6 +145,7 @@ class BuilderFactory {
 
     /**
      * Creates a property builder.
+	 * 创建属性构建器
      *
      * @param string $name Name of the property
      *
@@ -142,6 +157,7 @@ class BuilderFactory {
 
     /**
      * Creates a function builder.
+	 * 创建一个函数构建器
      *
      * @param string $name Name of the function
      *
@@ -153,6 +169,7 @@ class BuilderFactory {
 
     /**
      * Creates a namespace/class use builder.
+	 * 创建名称空间/类使用构建器
      *
      * @param Node\Name|string $name Name of the entity (namespace or class) to alias
      *
@@ -164,6 +181,7 @@ class BuilderFactory {
 
     /**
      * Creates a function use builder.
+	 * 创建一个函数使用生成器
      *
      * @param Node\Name|string $name Name of the function to alias
      *
@@ -175,6 +193,7 @@ class BuilderFactory {
 
     /**
      * Creates a constant use builder.
+	 * 创建一个常量使用构建器
      *
      * @param Node\Name|string $name Name of the const to alias
      *
@@ -186,6 +205,7 @@ class BuilderFactory {
 
     /**
      * Creates a class constant builder.
+	 * 创建类常量构建器
      *
      * @param string|Identifier $name Name
      * @param Node\Expr|bool|null|int|float|string|array $value Value
@@ -198,6 +218,7 @@ class BuilderFactory {
 
     /**
      * Creates an enum case builder.
+	 * 创建枚举案例构建器
      *
      * @param string|Identifier $name Name
      *
@@ -209,6 +230,7 @@ class BuilderFactory {
 
     /**
      * Creates node a for a literal value.
+	 * 为文字值创建节点a
      *
      * @param Expr|bool|null|int|float|string|array|\UnitEnum $value $value
      */
@@ -218,6 +240,7 @@ class BuilderFactory {
 
     /**
      * Creates variable node.
+	 * 创建可变节点
      *
      * @param string|Expr $name Name
      */
@@ -231,6 +254,7 @@ class BuilderFactory {
 
     /**
      * Normalizes an argument list.
+	 * 规范化参数列表。
      *
      * Creates Arg nodes for all arguments and converts literal values to expressions.
      *
@@ -254,6 +278,7 @@ class BuilderFactory {
 
     /**
      * Creates a function call node.
+	 * 创建一个函数调用节点
      *
      * @param string|Name|Expr $name Function name
      * @param array $args Function arguments
@@ -267,6 +292,7 @@ class BuilderFactory {
 
     /**
      * Creates a method call node.
+	 * 创建方法调用节点
      *
      * @param Expr $var Variable the method is called on
      * @param string|Identifier|Expr $name Method name
@@ -282,6 +308,7 @@ class BuilderFactory {
 
     /**
      * Creates a static method call node.
+	 * 创建静态方法调用节点
      *
      * @param string|Name|Expr $class Class name
      * @param string|Identifier|Expr $name Method name
@@ -297,6 +324,7 @@ class BuilderFactory {
 
     /**
      * Creates an object creation node.
+	 * 创建对象创建节点
      *
      * @param string|Name|Expr $class Class name
      * @param array $args Constructor arguments
@@ -310,6 +338,7 @@ class BuilderFactory {
 
     /**
      * Creates a constant fetch node.
+	 * 创建一个常量获取节点
      *
      * @param string|Name $name Constant name
      */
@@ -319,6 +348,7 @@ class BuilderFactory {
 
     /**
      * Creates a property fetch node.
+	 * 创建一个属性获取节点
      *
      * @param Expr $var Variable holding object
      * @param string|Identifier|Expr $name Property name
@@ -329,6 +359,7 @@ class BuilderFactory {
 
     /**
      * Creates a class constant fetch node.
+	 * 创建类常量获取节点
      *
      * @param string|Name|Expr $class Class name
      * @param string|Identifier|Expr $name Constant name
@@ -342,6 +373,7 @@ class BuilderFactory {
 
     /**
      * Creates nested Concat nodes from a list of expressions.
+	 * 从表达式列表创建嵌套的Concat节点
      *
      * @param Expr|string ...$exprs Expressions or literal strings
      */

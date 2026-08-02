@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，建立者，退化 Uuid生成器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -56,6 +59,7 @@ class DegradedUuidBuilder implements UuidBuilderInterface
 
     /**
      * Builds and returns a DegradedUuid
+	 * 构建并返回DegradedUuid
      *
      * @param CodecInterface $codec The codec to use for building this DegradedUuid instance
      * @param string $bytes The byte string from which to construct a UUID

@@ -5,6 +5,7 @@
 
 namespace Illuminate\View\Engines;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\Compilers\CompilerInterface;
 use Illuminate\View\ViewException;
 use Throwable;
@@ -21,21 +22,24 @@ class CompilerEngine extends PhpEngine
 
     /**
      * A stack of the last compiled templates.
-	 * 最后编译模板的堆栈
+	 * 最后编译的模板的堆栈
      *
      * @var array
      */
     protected $lastCompiled = [];
 
     /**
-     * Create a new Blade view engine instance.
-	 * 创建一个新的Blade视图引擎实例
+     * Create a new compiler engine instance.
+	 * 创建一个新的编译器引擎实例
      *
      * @param  \Illuminate\View\Compilers\CompilerInterface  $compiler
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
      * @return void
      */
-    public function __construct(CompilerInterface $compiler)
+    public function __construct(CompilerInterface $compiler, Filesystem $files = null)
     {
+        parent::__construct($files ?: new Filesystem);
+
         $this->compiler = $compiler;
     }
 
@@ -62,7 +66,7 @@ class CompilerEngine extends PhpEngine
         // Once we have the path to the compiled file, we will evaluate the paths with
         // typical PHP just like any other templates. We also keep a stack of views
         // which have been rendered for right exception messages to be generated.
-		// 一旦获得编译文件的路径，我们将用PHP标准路径就像其他模板一样。
+		// 获得编译文件的路径后，我们将使用就像其他模板一样。
         $results = $this->evaluatePath($this->compiler->getCompiledPath($path), $data);
 
         array_pop($this->lastCompiled);

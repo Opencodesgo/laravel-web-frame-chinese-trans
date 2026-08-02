@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，分析程序，令牌流
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
 
 /**
  * CSS selector token stream.
+ * CSS选择令牌流。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -65,6 +69,7 @@ class TokenStream
 
     /**
      * Freezes stream.
+	 * 冻结流
      *
      * @return $this
      */
@@ -75,6 +80,7 @@ class TokenStream
 
     /**
      * Returns next token.
+	 * 返回下一个令牌
      *
      * @throws InternalErrorException If there is no more token
      */
@@ -96,6 +102,7 @@ class TokenStream
 
     /**
      * Returns peeked token.
+	 * 返回窥视令牌
      */
     public function getPeek(): Token
     {
@@ -109,6 +116,7 @@ class TokenStream
 
     /**
      * Returns used tokens.
+	 * 返回使用过的令牌
      *
      * @return Token[]
      */
@@ -119,6 +127,7 @@ class TokenStream
 
     /**
      * Returns next identifier token.
+	 * 返回下一个标识令牌
      *
      * @throws SyntaxErrorException If next token is not an identifier
      */
@@ -135,6 +144,7 @@ class TokenStream
 
     /**
      * Returns next identifier or null if star delimiter token is found.
+	 * 如果找到了星分隔符令牌,则返回下一个标识符或null。
      *
      * @throws SyntaxErrorException If next token is not an identifier or a star delimiter
      */
@@ -155,6 +165,7 @@ class TokenStream
 
     /**
      * Skips next whitespace if any.
+	 * 如果有的话,就跳过下一个空白。
      */
     public function skipWhitespace()
     {

@@ -107,7 +107,7 @@ final class Utils
 
     /**
      * Handle a json_encode failure.
-	 * 处理json_encode失败
+	 * 处理json_encode失败。
      *
      * If the failure is due to invalid string encoding, try to clean the
      * input and encode again. If the second encoding attempt fails, the
@@ -200,6 +200,7 @@ final class Utils
 
     /**
      * Detect invalid UTF-8 string characters and convert to valid UTF-8.
+	 * 检测无效的UTF-8字符串字符并转换为有效的UTF-8。
      *
      * Valid UTF-8 input will be left unmodified, but strings containing
      * invalid UTF-8 codepoints will be reencoded as UTF-8 with an assumed
@@ -237,6 +238,7 @@ final class Utils
 
     /**
      * Converts a string with a valid 'memory_limit' format, to bytes.
+	 * 将具有有效‘memory_limit’格式的字符串转换为字节
      *
      * @param string|false $val
      * @return int|false Returns an integer representing bytes. Returns FALSE in case of error.

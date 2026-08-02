@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，格式化助手
- *
+ * Symfony，Component，Console，助手，格式化程序助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * The Formatter class provides helpers to format messages.
+ * 格式化程序类提供帮助来格式化消息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,6 +26,7 @@ class FormatterHelper extends Helper
 {
     /**
      * Formats a message within a section.
+	 * 在一个部分中格式化一个消息
      *
      * @return string
      */
@@ -35,6 +37,7 @@ class FormatterHelper extends Helper
 
     /**
      * Formats a message as a block of text.
+	 * 将消息格式化为文本块
      *
      * @param string|array $messages The message to write in the block
      *
@@ -71,6 +74,7 @@ class FormatterHelper extends Helper
 
     /**
      * Truncates a message to the given length.
+	 * 将消息截断为给定长度
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，部分，文本部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -91,6 +94,7 @@ class TextPart extends AbstractPart
 
     /**
      * Sets the name of the file (used by FormDataPart).
+	 * 设置文件的名称（由FormDataPart使用）
      *
      * @return $this
      */

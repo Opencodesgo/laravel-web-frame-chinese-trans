@@ -1,4 +1,7 @@
 <?php
+/**
+ * Swift_AddressEncoderException
+ */
 
 /*
  * This file is part of SwiftMailer.

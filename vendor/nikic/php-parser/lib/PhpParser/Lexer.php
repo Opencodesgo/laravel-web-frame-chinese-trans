@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer
+ */
+
 namespace PhpParser;
 
 require __DIR__ . '/compatibility_tokens.php';
@@ -7,6 +11,7 @@ require __DIR__ . '/compatibility_tokens.php';
 class Lexer {
     /**
      * Tokenize the provided source code.
+	 * 对提供的源代码进行标记化。
      *
      * The token array is in the same format as provided by the PhpToken::tokenize() method in
      * PHP 8.0. The tokens are instances of PhpParser\Token, to abstract over a polyfill

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，内核，重要类
+ * Illuminate，基础，Http，内核
  */
 
 namespace Illuminate\Foundation\Http;
@@ -27,7 +27,7 @@ class Kernel implements KernelContract
 
     /**
      * The router instance.
-	 * 路由实例
+	 * 路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -35,9 +35,9 @@ class Kernel implements KernelContract
 
     /**
      * The bootstrap classes for the application.
-	 * 应用的引导类，主要有加载环境、加载配置、处理异常、注册门面、注册提供者、启动提供者
+	 * 应用的引导类
      *
-     * @var array
+     * @var string[]
      */
     protected $bootstrappers = [
         \Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
@@ -50,7 +50,7 @@ class Kernel implements KernelContract
 
     /**
      * The application's middleware stack.
-	 * 应用的中间件堆栈
+	 * 应用程序的中间件堆栈
      *
      * @var array
      */
@@ -77,14 +77,17 @@ class Kernel implements KernelContract
 	 * 中间件的优先级排序列表
      *
      * Forces non-global middleware to always be in the given order.
+	 * 强制非全局中间件始终按照给定的顺序排列
      *
-     * @var array
+     * @var string[]
      */
     protected $middlewarePriority = [
+        \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
@@ -92,7 +95,7 @@ class Kernel implements KernelContract
 
     /**
      * Create a new HTTP kernel instance.
-	 * 创建一个新的HTTP内核实例
+	 * 创建新的HTTP内核实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Routing\Router  $router
@@ -108,7 +111,7 @@ class Kernel implements KernelContract
 
     /**
      * Handle an incoming HTTP request.
-	 * 处理传入的HTTP请求
+	 * 处理传入HTTP请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -134,23 +137,19 @@ class Kernel implements KernelContract
 
     /**
      * Send the given request through the middleware / router.
-	 * 通过中间件/路由器发送指定的请求
+	 * 通过中间件/路由器发送给定的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     protected function sendRequestThroughRouter($request)
     {
-		// 将请求对象注册到容器
         $this->app->instance('request', $request);
 
-		// 注册完即清除掉节约资源
         Facade::clearResolvedInstance('request');
 
-		// 引导及启动提供者
         $this->bootstrap();
 
-		// 通过管道执行
         return (new Pipeline($this->app))
                     ->send($request)
                     ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
@@ -159,15 +158,13 @@ class Kernel implements KernelContract
 
     /**
      * Bootstrap the application for HTTP requests.
-	 * 为HTTP请求引导应用
+	 * 为HTTP请求引导应用程序
      *
      * @return void
      */
     public function bootstrap()
     {
-		// Illuminate\Foundation\Application
         if (! $this->app->hasBeenBootstrapped()) {
-			// 42行protected $bootstrappers = [，开始真正的引导加载
             $this->app->bootstrapWith($this->bootstrappers());
         }
     }
@@ -183,7 +180,6 @@ class Kernel implements KernelContract
         return function ($request) {
             $this->app->instance('request', $request);
 
-			// Illuminate\Routing\Router
             return $this->router->dispatch($request);
         };
     }
@@ -269,7 +265,7 @@ class Kernel implements KernelContract
 
     /**
      * Determine if the kernel has a given middleware.
-	 * 确定内核是否有给定的中间件
+	 * 确定是否内核有给定中间件
      *
      * @param  string  $middleware
      * @return bool
@@ -280,7 +276,7 @@ class Kernel implements KernelContract
     }
 
     /**
-     * Add a new middleware to beginning of the stack if it does not already exist.
+     * Add a new middleware to the beginning of the stack if it does not already exist.
 	 * 如果新的中间件不存在，则在堆栈的开头添加它。
      *
      * @param  string  $middleware
@@ -297,7 +293,7 @@ class Kernel implements KernelContract
 
     /**
      * Add a new middleware to end of the stack if it does not already exist.
-	 * 在堆栈的末尾添加一个新的中间件（如果它还不存在）。
+	 * 在堆栈的末尾添加一个新的中间件（如果它还不存在）
      *
      * @param  string  $middleware
      * @return $this
@@ -417,6 +413,17 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Get the priority-sorted list of middleware.
+	 * 获取中间件的优先级排序列表
+     *
+     * @return array
+     */
+    public function getMiddlewarePriority()
+    {
+        return $this->middlewarePriority;
+    }
+
+    /**
      * Get the bootstrap classes for the application.
 	 * 获取应用程序的引导类
      *
@@ -441,7 +448,7 @@ class Kernel implements KernelContract
 
     /**
      * Render the exception to a response.
-	 * 呈现异常给响应
+	 * 呈现响应异常
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Throwable  $e
@@ -465,7 +472,7 @@ class Kernel implements KernelContract
 
     /**
      * Get the application's route middleware.
-	 * 获取应用程序的路由中间件
+	 * 得到应用中由中间件
      *
      * @return array
      */
@@ -476,12 +483,26 @@ class Kernel implements KernelContract
 
     /**
      * Get the Laravel application instance.
-	 * 获取Laravel应用程序实例
+	 * 得到应用实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
     public function getApplication()
     {
         return $this->app;
+    }
+
+    /**
+     * Set the Laravel application instance.
+	 * 设置应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication(Application $app)
+    {
+        $this->app = $app;
+
+        return $this;
     }
 }

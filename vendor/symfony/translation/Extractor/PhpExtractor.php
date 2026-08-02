@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提取器，Php 提取器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PhpExtractor extracts translation messages from a PHP template.
+ * phpextor 从PHP模板中提取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -27,11 +31,13 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Prefix for new found message.
+	 * 新发现信息的前缀
      */
     private $prefix = '';
 
     /**
      * The sequence that captures translation messages.
+	 * 捕获翻译消息的序列
      */
     protected $sequences = [
         [
@@ -261,6 +267,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Extracts trans message from PHP tokens.
+	 * 从PHP令牌提取反文
      */
     protected function parseTokens(array $tokens, MessageCatalogue $catalog, string $filename)
     {

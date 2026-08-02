@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，Session会话核心类
+ * Symfony，Component，HttpFoundation，Session，会话
  */
 
 /*
@@ -270,6 +270,7 @@ class Session implements SessionInterface, \IteratorAggregate, \Countable
 
     /**
      * Gets the flashbag interface.
+	 * 取flashbag接口
      *
      * @return FlashBagInterface
      */
@@ -280,7 +281,7 @@ class Session implements SessionInterface, \IteratorAggregate, \Countable
 
     /**
      * Gets the attributebag interface.
-	 * 获取attributebag接口
+	 * 获取属性包接口
      *
      * Note that this method was added to help with IDE autocompletion.
      */

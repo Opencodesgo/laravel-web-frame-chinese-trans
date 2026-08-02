@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:test 命令
+ * Illuminate，基础，控制台，make:test 测试生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputOption;
 
 class TestMakeCommand extends GeneratorCommand
 {
@@ -16,7 +17,7 @@ class TestMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:test {name : The name of the class} {--unit : Create a unit test}';
+    protected $name = 'make:test';
 
     /**
      * The console command description.
@@ -36,20 +37,22 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
-        return $this->option('unit')
-                    ? $this->resolveStubPath('/stubs/test.unit.stub')
-                    : $this->resolveStubPath('/stubs/test.stub');
+        $suffix = $this->option('unit') ? '.unit.stub' : '.stub';
+
+        return $this->option('pest')
+            ? $this->resolveStubPath('/stubs/pest'.$suffix)
+            : $this->resolveStubPath('/stubs/test'.$suffix);
     }
 
     /**
      * Resolve the fully-qualified path to the stub.
-	 * 解析存根的全限定路径
+	 * 解析到存根的全限定路径
      *
      * @param  string  $stub
      * @return string
@@ -63,7 +66,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the destination class path.
-	 * 获取目标类路径
+	 * 得到目标类路径
      *
      * @param  string  $name
      * @return string
@@ -77,7 +80,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -93,12 +96,26 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the root namespace for the class.
-	 * 获取类的根命名空间
+	 * 得到类的根命名空间
      *
      * @return string
      */
     protected function rootNamespace()
     {
         return 'Tests';
+    }
+
+    /**
+     * Get the console command options.
+	 * 得到控制台命令选项
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['unit', 'u', InputOption::VALUE_NONE, 'Create a unit test.'],
+            ['pest', 'p', InputOption::VALUE_NONE, 'Create a Pest test.'],
+        ];
     }
 }

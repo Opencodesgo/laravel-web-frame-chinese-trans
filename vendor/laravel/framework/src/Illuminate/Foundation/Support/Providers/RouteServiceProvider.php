@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，基础，支持，提供者，路由服务提供者
+ * Illuminate，基础，支持，提供商，路由服务提供者
  */
 
 namespace Illuminate\Foundation\Support\Providers;
 
+use Closure;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -19,11 +20,43 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * The controller namespace for the application.
-	 * 应用程序的控制器名称空间
+	 * 应用控制器命名空间
      *
      * @var string|null
      */
     protected $namespace;
+
+    /**
+     * The callback that should be used to load the application's routes.
+	 * 应该用来加载应用程序路由的回调函数
+     *
+     * @var \Closure|null
+     */
+    protected $loadRoutesUsing;
+
+    /**
+     * Register any application services.
+	 * 注册任何应用服务
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->booted(function () {
+            $this->setRootControllerNamespace();
+
+            if ($this->routesAreCached()) {
+                $this->loadCachedRoutes();
+            } else {
+                $this->loadRoutes();
+
+                $this->app->booted(function () {
+                    $this->app['router']->getRoutes()->refreshNameLookups();
+                    $this->app['router']->getRoutes()->refreshActionLookups();
+                });
+            }
+        });
+    }
 
     /**
      * Bootstrap any application services.
@@ -33,23 +66,26 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setRootControllerNamespace();
+        //
+    }
 
-        if ($this->routesAreCached()) {
-            $this->loadCachedRoutes();
-        } else {
-            $this->loadRoutes();
+    /**
+     * Register the callback that will be used to load the application's routes.
+	 * 注册将用于加载应用程序路由的回调函数
+     *
+     * @param  \Closure  $routesCallback
+     * @return $this
+     */
+    protected function routes(Closure $routesCallback)
+    {
+        $this->loadRoutesUsing = $routesCallback;
 
-            $this->app->booted(function () {
-                $this->app['router']->getRoutes()->refreshNameLookups();
-                $this->app['router']->getRoutes()->refreshActionLookups();
-            });
-        }
+        return $this;
     }
 
     /**
      * Set the root controller namespace for the application.
-	 * 为应用程序设置根控制器名称空间
+	 * 为应用程序设置根控制器命名空间
      *
      * @return void
      */
@@ -86,20 +122,22 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Load the application routes.
-	 * 加载应用程序路由
+	 * 加载应用路由
      *
      * @return void
      */
     protected function loadRoutes()
     {
-        if (method_exists($this, 'map')) {
+        if (! is_null($this->loadRoutesUsing)) {
+            $this->app->call($this->loadRoutesUsing);
+        } elseif (method_exists($this, 'map')) {
             $this->app->call([$this, 'map']);
         }
     }
 
     /**
      * Pass dynamic methods onto the router instance.
-	 * 将动态方法传递到路由器实例
+	 * 将动态方法传递给路由器实例
      *
      * @param  string  $method
      * @param  array  $parameters

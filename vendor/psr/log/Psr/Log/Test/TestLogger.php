@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，Log，测试，测试记录器
+ */
 
 namespace Psr\Log\Test;
 
@@ -6,6 +9,7 @@ use Psr\Log\AbstractLogger;
 
 /**
  * Used for testing purposes.
+ * 用于测试目的。
  *
  * It records all records and gives you access to them for verification.
  *

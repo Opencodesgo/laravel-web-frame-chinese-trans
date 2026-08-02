@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，高级指令消息
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，进程，进程核心类
+ * Symfony，Component，Process，程序
  */
 
 /*
@@ -27,6 +27,7 @@ use Symfony\Component\Process\Pipes\WindowsPipes;
 /**
  * Process is a thin wrapper around proc_* functions to easily
  * start independent PHP processes.
+ * Process是proc_*函数的一个薄包装，以方便地启动独立的PHP进程。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Romain Neutron <imprec@gmail.com>
@@ -89,7 +90,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Exit codes translation table.
-	 * 退出代码翻译表
+	 * 退出代码转换表。
      *
      * User-defined errors must use exit codes in the 64-113 range.
      */
@@ -173,6 +174,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Creates a Process instance as a command-line to be run in a shell wrapper.
+	 * 将Process实例创建为要在shell包装器中运行的命令行。
      *
      * Command-lines are parsed by the shell of your OS (/bin/sh on Unix-like, cmd.exe on Windows.)
      * This allows using e.g. pipes or conditional execution. In this mode, signals are sent to the
@@ -231,6 +233,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Runs the process.
+	 * 运行进程。
      *
      * The callback receives the type of output (out or err) and
      * some bytes from the output in real-time. It allows to have feedback
@@ -261,6 +264,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Runs the process.
+	 * 运行进程。
      *
      * This is identical to run() except that an exception is thrown if the process
      * exits with a non-zero exit code.
@@ -282,6 +286,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Starts the process and returns after writing the input to STDIN.
+	 * 启动进程并在将输入写入STDIN后返回。
      *
      * This method blocks until all STDIN data is sent to the process then it
      * returns while the process runs in the background.
@@ -375,6 +380,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Restarts the process.
+	 * 重新启动进程。
      *
      * Be warned that the process is cloned before being started.
      *
@@ -404,6 +410,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Waits for the process to terminate.
+	 * 等待进程终止。
      *
      * The callback receives the type of output (out or err) and some bytes
      * from the output in real-time while writing the standard input to the process.
@@ -451,6 +458,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Waits until the callback returns true.
+	 * 等待回调函数返回true。
      *
      * The callback receives the type of output (out or err) and some bytes
      * from the output in real-time while writing the standard input to the process.
@@ -497,6 +505,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the Pid (process identifier), if applicable.
+	 * 如果适用，返回Pid（进程标识符）。
      *
      * @return int|null The process id if running, null otherwise
      */
@@ -525,6 +534,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Disables fetching output and error output from the underlying process.
+	 * 禁用从底层进程获取输出和错误输出
      *
      * @return $this
      *
@@ -547,6 +557,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Enables fetching output and error output from the underlying process.
+	 * 允许从底层进程获取输出和错误输出
      *
      * @return $this
      *
@@ -565,6 +576,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns true in case the output is disabled, false otherwise.
+	 * 如果输出被禁用，则返回true，否则返回false。
      *
      * @return bool
      */
@@ -575,6 +587,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the current output of the process (STDOUT).
+	 * 返回进程的当前输出（STDOUT）
      *
      * @return string
      *
@@ -594,6 +607,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the output incrementally.
+	 * 递增地返回输出。
      *
      * In comparison with the getOutput method which always return the whole
      * output, this one returns the new output since the last call.
@@ -619,6 +633,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns an iterator to the output of the process, with the output type as keys (Process::OUT/ERR).
+	 * 返回一个迭代器到进程的输出，输出类型为keys （process::OUT/ERR）。
      *
      * @param int $flags A bit field of Process::ITER_* flags
      *
@@ -677,6 +692,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Clears the process output.
+	 * 清除流程输出
      *
      * @return $this
      */
@@ -691,6 +707,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the current error output of the process (STDERR).
+	 * 返回进程的当前错误输出（STDERR）
      *
      * @return string
      *
@@ -710,6 +727,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the errorOutput incrementally.
+	 * 递增地返回errorOutput。
      *
      * In comparison with the getErrorOutput method which always return the
      * whole error output, this one returns the new error output since the last
@@ -736,6 +754,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Clears the process output.
+	 * 清除流程输出
      *
      * @return $this
      */
@@ -750,6 +769,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the exit code returned by the process.
+	 * 返回进程返回的退出代码
      *
      * @return int|null The exit status code, null if the Process is not terminated
      */
@@ -762,6 +782,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns a string representation for the exit code returned by the process.
+	 * 返回进程返回的退出码的字符串表示形式。
      *
      * This method relies on the Unix exit code status standardization
      * and might not be relevant for other operating systems.
@@ -782,6 +803,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process ended successfully.
+	 * 检查进程是否成功结束
      *
      * @return bool
      */
@@ -792,6 +814,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns true if the child process has been terminated by an uncaught signal.
+	 * 如果子进程被未捕获的信号终止，则返回true。
      *
      * It always returns false on Windows.
      *
@@ -808,6 +831,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the number of the signal that caused the child process to terminate its execution.
+	 * 返回导致子进程终止执行的信号号。
      *
      * It is only meaningful if hasBeenSignaled() returns true.
      *
@@ -829,6 +853,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns true if the child process has been stopped by a signal.
+	 * 如果子进程被信号停止，则返回true。
      *
      * It always returns false on Windows.
      *
@@ -845,6 +870,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns the number of the signal that caused the child process to stop its execution.
+	 * 返回导致子进程停止执行的信号号。
      *
      * It is only meaningful if hasBeenStopped() returns true.
      *
@@ -861,6 +887,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process is currently running.
+	 * 检查进程当前是否正在运行
      *
      * @return bool
      */
@@ -877,6 +904,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process has been started with no regard to the current state.
+	 * 检查进程是否已经启动，而不考虑当前状态。
      *
      * @return bool
      */
@@ -887,6 +915,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Checks if the process is terminated.
+	 * 检查进程是否终止
      *
      * @return bool
      */
@@ -899,6 +928,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the process status.
+	 * 获取进程状态。
      *
      * The status is one of: ready, started, terminated.
      *
@@ -950,6 +980,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Adds a line to the STDOUT stream.
+	 * 向STDOUT流添加一行
      *
      * @internal
      */
@@ -964,6 +995,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Adds a line to the STDERR stream.
+	 * 向STDERR流添加一行
      *
      * @internal
      */
@@ -1016,6 +1048,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Sets the process timeout (max. runtime) in seconds.
+	 * 设置进程超时时间。运行时)，以秒为单位。
      *
      * To disable the timeout, set this value to null.
      *
@@ -1032,6 +1065,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Sets the process idle timeout (max. time since last output) in seconds.
+	 * 设置进程空闲超时时间。自上次输出以来的时间)，以秒为单位。
      *
      * To disable the timeout, set this value to null.
      *
@@ -1053,6 +1087,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Enables or disables the TTY mode.
+	 * 启用或禁用TTY模式
      *
      * @return $this
      *
@@ -1107,6 +1142,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the working directory.
+	 * 获取工作目录
      *
      * @return string|null
      */
@@ -1123,6 +1159,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Sets the current working directory.
+	 * 设置当前工作目录
      *
      * @return $this
      */
@@ -1135,6 +1172,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the environment variables.
+	 * 获取环境变量
      *
      * @return array
      */
@@ -1145,6 +1183,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Sets the environment variables.
+	 * 设置环境变量
      *
      * @param array<string|\Stringable> $env The new environment variables
      *
@@ -1159,6 +1198,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Gets the Process input.
+	 * 获取Process输入
      *
      * @return resource|string|\Iterator|null
      */
@@ -1169,6 +1209,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Sets the input.
+	 * 设置输入。
      *
      * This content will be passed to the underlying process standard input.
      *
@@ -1191,6 +1232,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Performs a check between the timeout definition and the time the process started.
+	 * 在超时定义和进程启动时间之间执行检查。
      *
      * In case you run a background process (with the start method), you should
      * trigger this method regularly to ensure the process timeout
@@ -1230,6 +1272,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Defines options to pass to the underlying proc_open().
+	 * 定义要传递给底层proc_open（）的选项。
      *
      * @see https://php.net/proc_open for the options supported by PHP.
      *
@@ -1256,6 +1299,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns whether TTY is supported on the current operating system.
+	 * 返回当前操作系统是否支持TTY
      */
     public static function isTtySupported(): bool
     {
@@ -1270,6 +1314,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Returns whether PTY is supported on the current operating system.
+	 * 返回当前操作系统是否支持PTY
      *
      * @return bool
      */
@@ -1290,6 +1335,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Creates the descriptors needed by the proc_open.
+	 * 创建proc_open所需的描述符
      */
     private function getDescriptors(): array
     {
@@ -1307,6 +1353,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Builds up the callback used by wait().
+	 * 构建wait（）使用的回调函数。
      *
      * The callbacks adds all occurred output to the specific buffer and calls
      * the user callback (if present) with the received output.
@@ -1338,6 +1385,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Updates the status of the process, reads pipes.
+	 * 更新进程的状态，读取管道。
      *
      * @param bool $blocking Whether to use a blocking read call
      */
@@ -1397,6 +1445,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Reads pipes for the freshest output.
+	 * 读取管道获取最新的输出
      *
      * @param string $caller   The name of the method that needs fresh outputs
      * @param bool   $blocking Whether to use blocking calls or not
@@ -1416,6 +1465,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Validates and returns the filtered timeout.
+	 * 验证并返回过滤后的超时
      *
      * @throws InvalidArgumentException if the given timeout is a negative number
      */
@@ -1434,6 +1484,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Reads pipes, executes callback.
+	 * 读取管道，执行回调。
      *
      * @param bool $blocking Whether to use blocking calls or not
      * @param bool $close    Whether to close file handles or not
@@ -1454,6 +1505,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Closes process resource, closes file handles, sets the exitcode.
+	 * 关闭进程资源，关闭文件句柄，设置退出代码。
      *
      * @return int The exitcode
      */
@@ -1487,6 +1539,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Resets data related to the latest run of the process.
+	 * 重置与进程最新运行相关的数据
      */
     private function resetProcessData()
     {
@@ -1506,6 +1559,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Sends a POSIX signal to the process.
+	 * 向进程发送一个POSIX信号
      *
      * @param int  $signal         A valid POSIX signal (see https://php.net/pcntl.constants)
      * @param bool $throwException Whether to throw exception in case signal failed
@@ -1613,6 +1667,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Ensures the process is running or terminated, throws a LogicException if the process has a not started.
+	 * 确保进程正在运行或终止，如果进程尚未启动则抛出LogicException。
      *
      * @throws LogicException if the process has not run
      */
@@ -1625,6 +1680,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Ensures the process is terminated, throws a LogicException if the process has a status different than "terminated".
+	 * 确保进程终止，如果进程的状态与“终止”不同，则抛出LogicException。
      *
      * @throws LogicException if the process is not yet terminated
      */
@@ -1637,6 +1693,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Escapes a string to be used as a shell argument.
+	 * 转义要用作shell参数的字符串
      */
     private function escapeArgument(?string $argument): string
     {

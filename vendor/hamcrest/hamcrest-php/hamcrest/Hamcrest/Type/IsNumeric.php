@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否数字
+ */
+
 namespace Hamcrest\Type;
 
 /*

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，框架结构
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -34,6 +38,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Filters frames using a callable, returns the same FrameCollection
+	 * 使用可调用对象筛选帧，返回相同的FrameCollection。
      *
      * @param  callable        $callable
      * @return FrameCollection
@@ -46,6 +51,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Map the collection of frames
+	 * 映射帧的集合
      *
      * @param  callable        $callable
      * @return FrameCollection
@@ -145,6 +151,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Count the frames that belongs to the application.
+	 * 计算属于应用程序的帧
      *
      * @return int
      */
@@ -195,6 +202,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Gets the innermost part of stack trace that is not the same as that of outer exception
+	 * 获取与外部异常不同的堆栈跟踪的最内层部分
      *
      * @param  FrameCollection $parentFrames Outer exception frames to compare tail against
      * @return Frame[]

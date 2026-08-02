@@ -6,6 +6,7 @@
 namespace Illuminate\Database\Concerns;
 
 use Closure;
+use RuntimeException;
 use Throwable;
 
 trait ManagesTransactions
@@ -28,8 +29,8 @@ trait ManagesTransactions
             // We'll simply execute the given callback within a try / catch block and if we
             // catch any exception we can rollback this transaction so that none of this
             // gets actually persisted to a database or stored in a permanent fashion.
-			// 我们将简单地在try / catch块中执行给定的回调捕获任何异常，我们可以回滚这个事务，
-			// 这样这些都不会发生实际持久化到数据库或以永久方式存储。
+			// 我们只需在try/catch块中执行给定的回调，如果我们捕获到任何异常，我们可以回滚此事务，
+			// 这样这些都不会实际持久化到数据库或以永久方式存储。
             try {
                 $callbackResult = $callback($this);
             }
@@ -37,7 +38,7 @@ trait ManagesTransactions
             // If we catch an exception we'll rollback this transaction and try again if we
             // are not out of attempts. If we are out of attempts we will just throw the
             // exception back out and let the developer handle an uncaught exceptions.
-			// 如果捕获异常，我们将回滚此事务并再次尝试。
+			// 如果我们捕获到异常，我们将回滚此事务，如果我们没有尝试完，则重试。
             catch (Throwable $e) {
                 $this->handleTransactionException(
                     $e, $currentAttempt, $attempts
@@ -52,6 +53,10 @@ trait ManagesTransactions
                 }
 
                 $this->transactions = max(0, $this->transactions - 1);
+
+                if ($this->transactions == 0) {
+                    optional($this->transactionsManager)->commit($this->getName());
+                }
             } catch (Throwable $e) {
                 $this->handleCommitTransactionException(
                     $e, $currentAttempt, $attempts
@@ -82,10 +87,14 @@ trait ManagesTransactions
         // On a deadlock, MySQL rolls back the entire transaction so we can't just
         // retry the query. We have to throw this exception all the way out and
         // let the developer handle it in another way. We will decrement too.
-		// 在死锁中，MySQL回滚整个事务，所以我们不能只是重试查询。
+		// 在死锁时，MySQL会回滚整个事务，因此我们不能只是重试查询。
         if ($this->causedByConcurrencyError($e) &&
             $this->transactions > 1) {
             $this->transactions--;
+
+            optional($this->transactionsManager)->rollback(
+                $this->getName(), $this->transactions
+            );
 
             throw $e;
         }
@@ -93,7 +102,8 @@ trait ManagesTransactions
         // If there was an exception we will rollback this transaction and then we
         // can check if we have exceeded the maximum attempt count for this and
         // if we haven't we will return and try this query again in our loop.
-		// 如果出现异常，我们将回滚此事务，然后我们可以检查我们是否已经超过了这个和的最大尝试数。
+		// 如果发生异常，我们将回滚此事务，然后我们可以检查是否超过了此事务的最大尝试次数，
+		// 如果没有，我们将返回并在循环中再次尝试此查询。
         $this->rollBack();
 
         if ($this->causedByConcurrencyError($e) &&
@@ -117,6 +127,10 @@ trait ManagesTransactions
         $this->createTransaction();
 
         $this->transactions++;
+
+        optional($this->transactionsManager)->begin(
+            $this->getName(), $this->transactions
+        );
 
         $this->fireConnectionEvent('beganTransaction');
     }
@@ -195,6 +209,10 @@ trait ManagesTransactions
 
         $this->transactions = max(0, $this->transactions - 1);
 
+        if ($this->transactions == 0) {
+            optional($this->transactionsManager)->commit($this->getName());
+        }
+
         $this->fireConnectionEvent('committed');
     }
 
@@ -260,6 +278,10 @@ trait ManagesTransactions
 
         $this->transactions = $toLevel;
 
+        optional($this->transactionsManager)->rollback(
+            $this->getName(), $this->transactions
+        );
+
         $this->fireConnectionEvent('rollingBack');
     }
 
@@ -296,6 +318,10 @@ trait ManagesTransactions
     {
         if ($this->causedByLostConnection($e)) {
             $this->transactions = 0;
+
+            optional($this->transactionsManager)->rollback(
+                $this->getName(), $this->transactions
+            );
         }
 
         throw $e;
@@ -310,5 +336,23 @@ trait ManagesTransactions
     public function transactionLevel()
     {
         return $this->transactions;
+    }
+
+    /**
+     * Execute the callback after a transaction commits.
+	 * 在事务提交后执行回调
+     *
+     * @param  callable  $callback
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    public function afterCommit($callback)
+    {
+        if ($this->transactionsManager) {
+            return $this->transactionsManager->addCallback($callback);
+        }
+
+        throw new RuntimeException('Transactions Manager has not been set.');
     }
 }

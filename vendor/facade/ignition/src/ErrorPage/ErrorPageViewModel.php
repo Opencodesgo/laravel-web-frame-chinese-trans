@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，错误页面，错误页面视图模型
+ */
 
 namespace Facade\Ignition\ErrorPage;
 

@@ -1,16 +1,16 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，编辑器
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class DummyClass extends Mailable
+class {{ class }} extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -27,12 +27,12 @@ class DummyClass extends Mailable
 
     /**
      * Build the message.
-	 * 构建信息
+	 * 构建消息
      *
      * @return $this
      */
     public function build()
     {
-        return $this->markdown('DummyView');
+        return $this->markdown('{{ view }}');
     }
 }

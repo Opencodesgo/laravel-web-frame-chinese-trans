@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，视图，工厂
+ * Illuminate，契约，视图，工厂接口
  */
 
 namespace Illuminate\Contracts\View;

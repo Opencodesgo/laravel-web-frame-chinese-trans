@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，中间件，来自会话的共享错误
+ * Illuminate，视图，中间件，会话的共享错误
  */
 
 namespace Illuminate\View\Middleware;
@@ -21,7 +21,7 @@ class ShareErrorsFromSession
 
     /**
      * Create a new error binder instance.
-	 * 创建新的错误绑定实例
+	 * 创建一个新的错误绑定实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @return void
@@ -33,7 +33,7 @@ class ShareErrorsFromSession
 
     /**
      * Handle an incoming request.
-	 * 绑定传入请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -44,7 +44,7 @@ class ShareErrorsFromSession
         // If the current session has an "errors" variable bound to it, we will share
         // its value with all view instances so the views can easily access errors
         // without having to bind. An empty bag is set when there aren't errors.
-		// 如果当前会话绑定了一个"errors"变量
+		// 如果当前会话绑定了一个“errors”变量。
         $this->view->share(
             'errors', $request->session()->get('errors') ?: new ViewErrorBag
         );

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，解决方案提供者，丢失的 App密钥解决方案提供商
+ */
 
 namespace Facade\Ignition\SolutionProviders;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，Css 选择器转换器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\CssSelector\XPath\Translator;
 /**
  * CssSelectorConverter is the main entry point of the component and can convert CSS
  * selectors to XPath expressions.
+ * CssSelectorConverter是组件的主要入口点，可以转换CSS选择器转换为XPath表达式。
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -56,6 +60,7 @@ class CssSelectorConverter
 
     /**
      * Translates a CSS expression to its XPath equivalent.
+	 * 将CSS表达式翻译为它的XPath。
      *
      * Optionally, a prefix can be added to the resulting XPath
      * expression with the $prefix parameter.

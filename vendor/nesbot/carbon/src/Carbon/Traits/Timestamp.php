@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，时间戳
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -13,11 +16,13 @@ namespace Carbon\Traits;
 
 /**
  * Trait Timestamp.
+ * 时间戳特征。
  */
 trait Timestamp
 {
     /**
      * Create a Carbon instance from a timestamp and set the timezone (use default one if not specified).
+	 * 从时间戳创建一个Carbon实例并设置时区（如果没有指定，使用默认时区）。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -34,6 +39,7 @@ trait Timestamp
 
     /**
      * Create a Carbon instance from an timestamp keeping the timezone to UTC.
+	 * 从时间戳创建一个Carbon实例，使时区保持为UTC。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -141,6 +147,7 @@ trait Timestamp
 
     /**
      * Returns the timestamp with millisecond precision.
+	 * 返回毫秒精度的时间戳
      *
      * @return int
      */

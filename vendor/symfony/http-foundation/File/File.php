@@ -20,7 +20,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file in the file system.
- * 文件系统中的文件
+ * 文件系统中的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

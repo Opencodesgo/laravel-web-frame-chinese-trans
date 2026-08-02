@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，元数据的包
+ * Symfony，Component，HttpFoundation，Session，储存，元数据包
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * Metadata container.
- * 元数据的容器
+ * 元数据容器
  *
  * Adds metadata to the session.
  *
@@ -47,6 +47,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Unix timestamp.
+	 * Unix间戳
      *
      * @var int
      */
@@ -99,6 +100,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Stamps a new session's metadata.
+	 * 戳记新会话的元数据
      *
      * @param int|null $lifetime Sets the cookie lifetime for the session cookie. A null value
      *                           will leave the system settings unchanged, 0 sets the cookie
@@ -120,6 +122,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Gets the created timestamp metadata.
+	 * 获取创建的时间戳元数据
      *
      * @return int Unix timestamp
      */
@@ -130,6 +133,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Gets the last used metadata.
+	 * 获取最后使用的元数据
      *
      * @return int Unix timestamp
      */
@@ -157,6 +161,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Sets name.
+	 * 设置名称
      */
     public function setName(string $name)
     {

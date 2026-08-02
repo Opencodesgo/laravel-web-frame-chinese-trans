@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，帮助函数
+ * Illuminate，基础，帮助
  */
 
 use Illuminate\Container\Container;
@@ -15,7 +15,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
+use Illuminate\Foundation\Bus\PendingClosureDispatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Mix;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -27,12 +27,12 @@ use Symfony\Component\HttpFoundation\Response;
 if (! function_exists('abort')) {
     /**
      * Throw an HttpException with the given data.
-	 * 使用给定的数据抛出一个HttpException
+	 * 用给定的数据抛出一个HttpException
      *
      * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int  $code
      * @param  string  $message
      * @param  array  $headers
-     * @return void
+     * @return never
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -52,7 +52,7 @@ if (! function_exists('abort')) {
 if (! function_exists('abort_if')) {
     /**
      * Throw an HttpException with the given data if the given condition is true.
-	 * 如果给定的条件是真实的,则向给定的数据抛出一个HttpException
+	 * 如果给定条件为真，则抛出带有给定数据的HttpException。
      *
      * @param  bool  $boolean
      * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int  $code
@@ -74,7 +74,7 @@ if (! function_exists('abort_if')) {
 if (! function_exists('abort_unless')) {
     /**
      * Throw an HttpException with the given data unless the given condition is true.
-	 * 除非给定的条件是正确的,否则将使用给定的数据抛出一个HttpException
+	 * 对给定的数据抛出HttpException，除非给定的条件为真。
      *
      * @param  bool  $boolean
      * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int  $code
@@ -96,7 +96,7 @@ if (! function_exists('abort_unless')) {
 if (! function_exists('action')) {
     /**
      * Generate the URL to a controller action.
-	 * 生成控制器动作的URL
+	 * 生成一个控制器动作的URL
      *
      * @param  string|array  $name
      * @param  mixed  $parameters
@@ -131,7 +131,7 @@ if (! function_exists('app')) {
 if (! function_exists('app_path')) {
     /**
      * Get the path to the application folder.
-	 * 获取应用文件夹的路径
+	 * 获取应用程序文件夹的路径
      *
      * @param  string  $path
      * @return string
@@ -145,7 +145,7 @@ if (! function_exists('app_path')) {
 if (! function_exists('asset')) {
     /**
      * Generate an asset path for the application.
-	 * 为应用程序生成一个资产路径
+	 * 为应用程序生成一个资源路径
      *
      * @param  string  $path
      * @param  bool|null  $secure
@@ -298,7 +298,7 @@ if (! function_exists('config')) {
 if (! function_exists('config_path')) {
     /**
      * Get the configuration path.
-	 * 获取配置路径
+	 * 得到配置路径
      *
      * @param  string  $path
      * @return string
@@ -312,7 +312,7 @@ if (! function_exists('config_path')) {
 if (! function_exists('cookie')) {
     /**
      * Create a new cookie instance.
-	 * 创建一个新的cookie实例
+	 * 创建新的cookie实例
      *
      * @param  string|null  $name
      * @param  string|null  $value
@@ -374,7 +374,7 @@ if (! function_exists('csrf_token')) {
 if (! function_exists('database_path')) {
     /**
      * Get the database path.
-	 * 获取数据库路径
+	 * 得到数据库路径
      *
      * @param  string  $path
      * @return string
@@ -410,11 +410,27 @@ if (! function_exists('dispatch')) {
      */
     function dispatch($job)
     {
-        if ($job instanceof Closure) {
-            $job = CallQueuedClosure::create($job);
-        }
+        return $job instanceof Closure
+                ? new PendingClosureDispatch(CallQueuedClosure::create($job))
+                : new PendingDispatch($job);
+    }
+}
 
-        return new PendingDispatch($job);
+if (! function_exists('dispatch_sync')) {
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+	 * 将命令分派给当前进程中相应的处理程序
+     *
+     * Queueable jobs will be dispatched to the "sync" queue.
+	 * 可排队作业将被分配到"同步"队列
+     *
+     * @param  mixed  $job
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    function dispatch_sync($job, $handler = null)
+    {
+        return app(Dispatcher::class)->dispatchSync($job, $handler);
     }
 }
 
@@ -426,53 +442,12 @@ if (! function_exists('dispatch_now')) {
      * @param  mixed  $job
      * @param  mixed  $handler
      * @return mixed
+     *
+     * @deprecated Will be removed in a future Laravel version.
      */
     function dispatch_now($job, $handler = null)
     {
         return app(Dispatcher::class)->dispatchNow($job, $handler);
-    }
-}
-
-if (! function_exists('elixir')) {
-    /**
-     * Get the path to a versioned Elixir file.
-	 * 获取版本化Elixir文件的路径
-     *
-     * @param  string  $file
-     * @param  string  $buildDirectory
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @deprecated Use Laravel Mix instead.
-     */
-    function elixir($file, $buildDirectory = 'build')
-    {
-        static $manifest = [];
-        static $manifestPath;
-
-        if (empty($manifest) || $manifestPath !== $buildDirectory) {
-            $path = public_path($buildDirectory.'/rev-manifest.json');
-
-            if (file_exists($path)) {
-                $manifest = json_decode(file_get_contents($path), true);
-                $manifestPath = $buildDirectory;
-            }
-        }
-
-        $file = ltrim($file, '/');
-
-        if (isset($manifest[$file])) {
-            return '/'.trim($buildDirectory.'/'.$manifest[$file], '/');
-        }
-
-        $unversioned = public_path($file);
-
-        if (file_exists($unversioned)) {
-            return '/'.trim($file, '/');
-        }
-
-        throw new InvalidArgumentException("File {$file} not defined in asset manifest.");
     }
 }
 
@@ -494,7 +469,7 @@ if (! function_exists('encrypt')) {
 if (! function_exists('event')) {
     /**
      * Dispatch an event and call the listeners.
-	 * 发送一个事件并调用侦听器
+	 * 分派事件并调用监听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -507,31 +482,10 @@ if (! function_exists('event')) {
     }
 }
 
-if (! function_exists('factory')) {
-    /**
-     * Create a model factory builder for a given class and amount.
-	 * 为给定的类和数量创建一个模型工厂生成器
-     *
-     * @param  string  $class
-     * @param  int  $amount
-     * @return \Illuminate\Database\Eloquent\FactoryBuilder
-     */
-    function factory($class, $amount = null)
-    {
-        $factory = app(EloquentFactory::class);
-
-        if (isset($amount) && is_int($amount)) {
-            return $factory->of($class)->times($amount);
-        }
-
-        return $factory->of($class);
-    }
-}
-
 if (! function_exists('info')) {
     /**
      * Write some information to the log.
-	 * 将一些信息写入日志
+	 * 向日志中写入一些信息
      *
      * @param  string  $message
      * @param  array  $context
@@ -546,7 +500,7 @@ if (! function_exists('info')) {
 if (! function_exists('logger')) {
     /**
      * Log a debug message to the logs.
-	 * 将调试消息记录到日志中
+	 * 记录调试消息到日志中
      *
      * @param  string|null  $message
      * @param  array  $context
@@ -559,6 +513,20 @@ if (! function_exists('logger')) {
         }
 
         return app('log')->debug($message, $context);
+    }
+}
+
+if (! function_exists('lang_path')) {
+    /**
+     * Get the path to the language folder.
+	 * 获取语言文件夹的路径
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function lang_path($path = '')
+    {
+        return app('path.lang').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -692,11 +660,15 @@ if (! function_exists('report')) {
      * Report an exception.
 	 * 报告异常
      *
-     * @param  \Throwable  $exception
+     * @param  \Throwable|string  $exception
      * @return void
      */
-    function report(Throwable $exception)
+    function report($exception)
     {
+        if (is_string($exception)) {
+            $exception = new Exception($exception);
+        }
+
         app(ExceptionHandler::class)->report($exception);
     }
 }
@@ -708,7 +680,7 @@ if (! function_exists('request')) {
      *
      * @param  array|string|null  $key
      * @param  mixed  $default
-     * @return \Illuminate\Http\Request|string|array
+     * @return \Illuminate\Http\Request|string|array|null
      */
     function request($key = null, $default = null)
     {
@@ -745,7 +717,7 @@ if (! function_exists('rescue')) {
                 report($e);
             }
 
-            return $rescue instanceof Closure ? $rescue($e) : $rescue;
+            return value($rescue, $e);
         }
     }
 }
@@ -784,7 +756,7 @@ if (! function_exists('response')) {
      * Return a new response from the application.
 	 * 从应用程序返回一个新的响应
      *
-     * @param  \Illuminate\View\View|string|array|null  $content
+     * @param  \Illuminate\Contracts\View\View|string|array|null  $content
      * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
@@ -820,7 +792,7 @@ if (! function_exists('route')) {
 if (! function_exists('secure_asset')) {
     /**
      * Generate an asset path for the application.
-	 * 为应用程序生成一个资产路径
+	 * 为应用程序生成一个资源路径
      *
      * @param  string  $path
      * @return string
@@ -903,7 +875,7 @@ if (! function_exists('today')) {
 if (! function_exists('trans')) {
     /**
      * Translate the given message.
-	 * 翻译给定的消息
+	 * 翻译给定的信息
      *
      * @param  string|null  $key
      * @param  array  $replace
@@ -1003,12 +975,12 @@ if (! function_exists('validator')) {
 if (! function_exists('view')) {
     /**
      * Get the evaluated view contents for the given view.
-	 * 获取给定视图的值视图内容
+	 * 获取给定视图的求值视图内容
      *
      * @param  string|null  $view
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @param  array  $mergeData
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     function view($view = null, $data = [], $mergeData = [])
     {

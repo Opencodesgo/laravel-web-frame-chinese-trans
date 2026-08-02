@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，处理包装
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * This simple wrapper class can be used to extend handlers functionality.
+ * 这个简单的包装器类可以用来扩展处理程序的功能。
  *
  * Example: A custom filtering that can be applied to any handler.
  *

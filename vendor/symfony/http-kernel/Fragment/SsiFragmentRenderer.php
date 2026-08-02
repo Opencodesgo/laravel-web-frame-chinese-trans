@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，Ssi 片段渲染器
+ * Symfony，Component，HttpKernel，碎片，Ssi 碎片渲染器
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 /**
  * Implements the SSI rendering strategy.
+ * 实现SSI呈现策略
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */

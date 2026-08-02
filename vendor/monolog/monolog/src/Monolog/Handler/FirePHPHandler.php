@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Fire PHP 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Simple FirePHP Handler (http://www.firephp.org/), which uses the Wildfire protocol.
+ * 简单的FirePHP处理器
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  *
@@ -27,6 +32,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * WildFire JSON header message format
+	 * WildFire JSON头消息格式
      */
     protected const PROTOCOL_URI = 'http://meta.wildfirehq.org/Protocol/JsonStream/0.2';
 
@@ -42,6 +48,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Header prefix for Wildfire to recognize & parse headers
+	 * Wildfire识别和分析标题的头前缀
      */
     protected const HEADER_PREFIX = 'X-Wf';
 
@@ -53,6 +60,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Shared static message index between potentially multiple handlers
+	 * 共享的静态消息索引之间可能有多个处理程序
      * @var int
      */
     protected static $messageIndex = 1;
@@ -62,6 +70,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Base header creation function used by init headers & record headers
+	 * 初始标题创建函数使用初始化标题和记录头
      *
      * @param array<int|string> $meta    Wildfire Plugin, Protocol & Structure Indexes
      * @param string            $message Log message
@@ -79,6 +88,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Creates message header from record
+	 * 从记录创建消息头
      *
      * @return array<string, string>
      *
@@ -108,6 +118,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Wildfire initialization headers to enable message parsing
+	 * Wildfire初始化头以启用消息解析
      *
      * @see createHeader()
      * @see sendHeader()
@@ -126,6 +137,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Send header string to the client
+	 * 向客户端发送头字符串
      */
     protected function sendHeader(string $header, string $content): void
     {
@@ -136,6 +148,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Creates & sends header for a record, ensuring init headers have been sent prior
+	 * 创建并发送一个记录的头,确保之前发送初始化头
      *
      * @see sendHeader()
      * @see sendInitHeaders()
@@ -168,6 +181,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Verifies if the headers are accepted by the current user agent
+	 * 验证头是否被当前的用户代理接受
      */
     protected function headersAccepted(): bool
     {

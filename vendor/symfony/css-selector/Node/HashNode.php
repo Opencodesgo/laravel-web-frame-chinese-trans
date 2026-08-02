@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，异常，哈希节点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>#<id>" node.
+ * 表示一个“<selector>#<id>”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

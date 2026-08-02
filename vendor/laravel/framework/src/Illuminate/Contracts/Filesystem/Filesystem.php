@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，文件系统，文件系统
+ * Illuminate，契约，文件系统，文件系统接口
  */
 
 namespace Illuminate\Contracts\Filesystem;
@@ -9,7 +9,7 @@ interface Filesystem
 {
     /**
      * The public visibility setting.
-	 * 公众能见度设置
+	 * 公共能见度设置
      *
      * @var string
      */
@@ -17,7 +17,7 @@ interface Filesystem
 
     /**
      * The private visibility setting.
-	 * 私有可见性设置
+	 * 私有能见度设置
      *
      * @var string
      */
@@ -139,7 +139,7 @@ interface Filesystem
 
     /**
      * Move a file to a new location.
-	 * 将文件移动到新位置
+	 * 移动文件到新位置
      *
      * @param  string  $from
      * @param  string  $to
@@ -196,7 +196,7 @@ interface Filesystem
 
     /**
      * Get all (recursive) of the directories within a given directory.
-	 * 在给定目录中删除所有（递归）目录
+	 * 获取给定目录中的所有（递归）目录
      *
      * @param  string|null  $directory
      * @return array

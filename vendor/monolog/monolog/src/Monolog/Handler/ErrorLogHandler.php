@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，错误日志处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Monolog\Utils;
 
 /**
  * Stores to PHP error_log() handler.
+ * 存储到PHP error_log()处理程序。
  *
  * @author Elan Ruusamäe <glen@delfi.ee>
  */

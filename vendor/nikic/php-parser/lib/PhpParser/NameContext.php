@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，名字上下文
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Name;
@@ -21,6 +25,7 @@ class NameContext {
 
     /**
      * Create a name context.
+	 * 创建名称上下文
      *
      * @param ErrorHandler $errorHandler Error handling used to report errors
      */
@@ -30,6 +35,7 @@ class NameContext {
 
     /**
      * Start a new namespace.
+	 * 启动一个新的命名空间
      *
      * This also resets the alias table.
      *
@@ -46,6 +52,7 @@ class NameContext {
 
     /**
      * Add an alias / import.
+	 * 添加别名/导入
      *
      * @param Name $name Original name
      * @param string $aliasName Aliased name
@@ -83,6 +90,7 @@ class NameContext {
 
     /**
      * Get current namespace.
+	 * 获取当前名称空间
      *
      * @return null|Name Namespace (or null if global namespace)
      */
@@ -92,6 +100,7 @@ class NameContext {
 
     /**
      * Get resolved name.
+	 * 获得已解析的名称
      *
      * @param Name $name Name to resolve
      * @param Stmt\Use_::TYPE_* $type One of Stmt\Use_::TYPE_{FUNCTION|CONSTANT}
@@ -136,6 +145,7 @@ class NameContext {
 
     /**
      * Get resolved class name.
+	 * 获得已解析的类名
      *
      * @param Name $name Class ame to resolve
      *
@@ -147,6 +157,7 @@ class NameContext {
 
     /**
      * Get possible ways of writing a fully qualified name (e.g., by making use of aliases).
+	 * 了解编写完全限定名的可能方法（例如，通过使用别名）
      *
      * @param string $name Fully-qualified name (without leading namespace separator)
      * @param Stmt\Use_::TYPE_* $type One of Stmt\Use_::TYPE_*
@@ -203,6 +214,7 @@ class NameContext {
 
     /**
      * Get shortest representation of this fully-qualified name.
+	 * 获取此全限定名称的最短表示形式
      *
      * @param string $name Fully-qualified name (without leading namespace separator)
      * @param Stmt\Use_::TYPE_* $type One of Stmt\Use_::TYPE_*

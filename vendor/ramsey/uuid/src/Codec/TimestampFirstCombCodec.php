@@ -1,7 +1,11 @@
 <?php
+/**
+ * Ramsey，Uuid，编解码器，时间戳第一梳理编解码器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
+ * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -99,6 +103,7 @@ class TimestampFirstCombCodec extends StringCodec
 
     /**
      * Swaps bytes according to the timestamp-first COMB rules
+	 * 根据时间戳优先的COMB规则交换字节
      */
     private function swapBytes(string $bytes): string
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，生成Http请求
+ * Illuminate，基础，测试，问题，发出 Http请求
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -9,6 +9,7 @@ use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Cookie\CookieValuePrefix;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Testing\LoggedExceptionCollection;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -17,7 +18,7 @@ trait MakesHttpRequests
 {
     /**
      * Additional headers for the request.
-	 * 请求的附加头
+	 * 请求的附加标头
      *
      * @var array
      */
@@ -33,7 +34,7 @@ trait MakesHttpRequests
 
     /**
      * Additional cookies will not be encrypted for the request.
-	 * 额外的cookie不会被加密
+	 * 其他cookie将不会为请求加密
      *
      * @var array
      */
@@ -89,7 +90,7 @@ trait MakesHttpRequests
 
     /**
      * Add a header to be sent with the request.
-	 * 在请求中添加一个头
+	 * 添加与请求一起发送的标头
      *
      * @param  string  $name
      * @param  string  $value
@@ -104,7 +105,7 @@ trait MakesHttpRequests
 
     /**
      * Add an authorization token for the request.
-	 * 为请求添加一个授权令牌
+	 * 为请求添加授权令牌
      *
      * @param  string  $token
      * @param  string  $type
@@ -117,7 +118,7 @@ trait MakesHttpRequests
 
     /**
      * Flush all the configured headers.
-	 * 刷新所有配置的标题
+	 * 刷新所有配置的标头
      *
      * @return $this
      */
@@ -130,7 +131,7 @@ trait MakesHttpRequests
 
     /**
      * Define a set of server variables to be sent with the requests.
-	 * 定义一个由请求发送的服务器变量集
+	 * 定义一组要随请求一起发送的服务器变量
      *
      * @param  array  $server
      * @return $this
@@ -144,7 +145,7 @@ trait MakesHttpRequests
 
     /**
      * Disable middleware for the test.
-	 * 禁用中间件进行测试
+	 * 禁用测试的中间件
      *
      * @param  string|array|null  $middleware
      * @return $this
@@ -172,7 +173,7 @@ trait MakesHttpRequests
 
     /**
      * Enable the given middleware for the test.
-	 * 启用给定的中间件进行测试
+	 * 为测试启用给定的中间件
      *
      * @param  string|array|null  $middleware
      * @return $this
@@ -194,7 +195,7 @@ trait MakesHttpRequests
 
     /**
      * Define additional cookies to be sent with the request.
-	 * 根据请求定义额外的cookie
+	 * 定义要随请求一起发送的其他cookie
      *
      * @param  array  $cookies
      * @return $this
@@ -278,7 +279,7 @@ trait MakesHttpRequests
 
     /**
      * Disable automatic encryption of cookie values.
-	 * 禁用cookie值的自动加密
+	 * 禁用cookie值的自动加密功能
      *
      * @return $this
      */
@@ -351,7 +352,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a POST request, expecting a JSON response.
-	 * 使用POST请求访问给定的URI，期望JSON响应。
+	 * 使用POST请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -382,7 +383,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PUT request, expecting a JSON response.
-	 * 使用PUT请求访问给定的URI，期望JSON响应。
+	 * 使用一个PUT请求访问给定的URI，期望得到一个JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -427,7 +428,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a DELETE request.
-	 * 使用删除请求访问给定的URI
+	 * 使用DELETE请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
@@ -444,7 +445,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a DELETE request, expecting a JSON response.
-	 * 使用删除请求访问给定的URI,期望JSON响应
+	 * 使用DELETE请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -522,7 +523,7 @@ trait MakesHttpRequests
 
     /**
      * Call the given URI and return the Response.
-	 * 调用给定的URI并返回响应
+	 * 调用给定的URI并返回Response
      *
      * @param  string  $method
      * @param  string  $uri
@@ -548,18 +549,18 @@ trait MakesHttpRequests
             $request = Request::createFromBase($symfonyRequest)
         );
 
+        $kernel->terminate($request, $response);
+
         if ($this->followRedirects) {
             $response = $this->followRedirects($response);
         }
-
-        $kernel->terminate($request, $response);
 
         return $this->createTestResponse($response);
     }
 
     /**
      * Turn the given URI into a fully qualified URL.
-	 * 将给定的URI转换为一个完全合格的URL
+	 * 将给定的URI转换为完全限定的URL
      *
      * @param  string  $uri
      * @return string
@@ -575,7 +576,7 @@ trait MakesHttpRequests
 
     /**
      * Transform headers array to array of $_SERVER vars with HTTP_* format.
-	 * 将headers数组转换为HTTP_*格式的$_SERVER变量数组。
+	 * 将headers数组转换为HTTP_*格式的$_SERVER变量数组
      *
      * @param  array  $headers
      * @return array
@@ -663,31 +664,37 @@ trait MakesHttpRequests
 
     /**
      * Follow a redirect chain until a non-redirect is received.
-	 * 遵循重定向链,直到接收非重定向
+	 * 遵循重定向链，直到接收到非重定向。
      *
      * @param  \Illuminate\Http\Response  $response
      * @return \Illuminate\Http\Response|\Illuminate\Testing\TestResponse
      */
     protected function followRedirects($response)
     {
+        $this->followRedirects = false;
+
         while ($response->isRedirect()) {
             $response = $this->get($response->headers->get('Location'));
         }
-
-        $this->followRedirects = false;
 
         return $response;
     }
 
     /**
      * Create the test response instance from the given response.
-	 * 从给定的响应创建测试响应实例
+	 * 根据给定的响应创建测试响应实例
      *
      * @param  \Illuminate\Http\Response  $response
      * @return \Illuminate\Testing\TestResponse
      */
     protected function createTestResponse($response)
     {
-        return TestResponse::fromBaseResponse($response);
+        return tap(TestResponse::fromBaseResponse($response), function ($response) {
+            $response->withExceptions(
+                $this->app->bound(LoggedExceptionCollection::class)
+                    ? $this->app->make(LoggedExceptionCollection::class)
+                    : new LoggedExceptionCollection
+            );
+        });
     }
 }

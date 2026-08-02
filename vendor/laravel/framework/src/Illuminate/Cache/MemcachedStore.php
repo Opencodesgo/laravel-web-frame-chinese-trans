@@ -32,7 +32,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Indicates whether we are using Memcached version >= 3.0.0.
-	 * 指示我们是否使用Memcached版本>= 3.0.0
+	 * 指明我们是否使用Memcached版本>= 3.0.0
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Create a new Memcached store.
-	 * 创建一个新的Memcached存储
+	 * 创建新的Memcached存储
      *
      * @param  \Memcached  $memcached
      * @param  string  $prefix
@@ -196,7 +196,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Get a lock instance.
-	 * 获取一个锁实例
+	 * 得到锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
@@ -270,7 +270,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Get the underlying Memcached connection.
-	 * 获取底层Memcached连接
+	 * 得到底层Memcached连接
      *
      * @return \Memcached
      */
@@ -281,7 +281,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Get the cache key prefix.
-	 * 获取缓存键前缀
+	 * 得到缓存键前缀
      *
      * @return string
      */

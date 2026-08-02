@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，微调缓冲器输出
+ * Symfony，Component，Console，输出，修整的缓冲输出
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * A BufferedOutput that keeps only the last N chars.
+ * 一个缓冲输出,只保留最后一个N个chars。
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
@@ -39,6 +40,7 @@ class TrimmedBufferOutput extends Output
 
     /**
      * Empties buffer and returns its content.
+	 * 清空缓冲区并返回其内容
      *
      * @return string
      */

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，参数
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -20,6 +24,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Creates a parameter builder.
+	 * 创建参数构建器
      *
      * @param string $name Name of the parameter
      */
@@ -29,6 +34,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Sets default value for the parameter.
+	 * 设置参数的默认值
      *
      * @param mixed $value Default value to use
      *
@@ -42,6 +48,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Sets type for the parameter.
+	 * 为参数设置类型
      *
      * @param string|Node\Name|Node\Identifier|Node\ComplexType $type Parameter type
      *
@@ -58,6 +65,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Make the parameter accept the value by reference.
+	 * 通过引用使参数接受该值
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -69,6 +77,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Make the parameter variadic
+	 * 使参数可变
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -113,6 +122,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Makes the (promoted) parameter readonly.
+	 * 使（提升的）参数只读
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -124,6 +134,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Gives the promoted property private(set) visibility.
+	 * 提供提升属性private（set）可见性
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -135,6 +146,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Gives the promoted property protected(set) visibility.
+	 * 提供提升的属性protected（set）可见性
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -146,6 +158,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -159,6 +172,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Returns the built parameter node.
+	 * 返回生成的参数节点
      *
      * @return Node\Param The built parameter node
      */

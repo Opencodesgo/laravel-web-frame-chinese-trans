@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Removes empty service-locators registered for ServiceValueResolver.
- * 移除为 ServiceValueResolver 注册的空服务定位器
+ * 移除为ServiceValueResolver注册的空服务定位器。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

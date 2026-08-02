@@ -6,6 +6,7 @@
 namespace Illuminate\Support;
 
 use Illuminate\Support\Traits\Macroable;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Uuid;
@@ -34,7 +35,7 @@ class Str
 
     /**
      * The cache of studly-cased words.
-	 * 刻意区分大小写的单词
+	 * 隐藏的刻意区分大小写的单词
      *
      * @var array
      */
@@ -98,7 +99,7 @@ class Str
 
     /**
      * Transliterate a UTF-8 value to ASCII.
-	 * 将UTF-8值翻译为ASCII
+	 * 将UTF-8值音译为ASCII
      *
      * @param  string  $value
      * @param  string  $language
@@ -107,6 +108,20 @@ class Str
     public static function ascii($value, $language = 'en')
     {
         return ASCII::to_ascii((string) $value, $language);
+    }
+
+    /**
+     * Transliterate a string to its closest ASCII representation.
+	 * 将字符串音译为最接近的ASCII表示形式
+     *
+     * @param  string  $string
+     * @param  string|null  $unknown
+     * @param  bool|null  $strict
+     * @return string
+     */
+    public static function transliterate($string, $unknown = '?', $strict = false)
+    {
+        return ASCII::to_transliterate($string, $unknown, $strict);
     }
 
     /**
@@ -119,7 +134,13 @@ class Str
      */
     public static function before($subject, $search)
     {
-        return $search === '' ? $subject : explode($search, $subject)[0];
+        if ($search === '') {
+            return $subject;
+        }
+
+        $result = strstr($subject, (string) $search, true);
+
+        return $result === false ? $subject : $result;
     }
 
     /**
@@ -228,7 +249,10 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle !== '' && substr($haystack, -strlen($needle)) === (string) $needle) {
+            if (
+                $needle !== '' && $needle !== null
+                && substr($haystack, -strlen($needle)) === (string) $needle
+            ) {
                 return true;
             }
         }
@@ -263,11 +287,15 @@ class Str
     {
         $patterns = Arr::wrap($pattern);
 
+        $value = (string) $value;
+
         if (empty($patterns)) {
             return false;
         }
 
         foreach ($patterns as $pattern) {
+            $pattern = (string) $pattern;
+
             // If the given value is an exact match we can of course return true right
             // from the beginning. Otherwise, we will translate asterisks and do an
             // actual pattern match against the two strings to see if they match.
@@ -281,7 +309,7 @@ class Str
             // Asterisks are translated into zero-or-more regular expression wildcards
             // to make it convenient to check if the strings starts with the given
             // pattern such as "library/*", making any string check convenient.
-			// 星号被转换成零个或多个正则表达式通配符。
+			// 星号被翻译成零或更多的正则表达式。
             $pattern = str_replace('\*', '.*', $pattern);
 
             if (preg_match('#^'.$pattern.'\z#u', $value) === 1) {
@@ -400,6 +428,100 @@ class Str
     }
 
     /**
+     * Converts GitHub flavored Markdown into HTML.
+	 * 将GitHub风味的Markdown转换为HTML
+     *
+     * @param  string  $string
+     * @param  array  $options
+     * @return string
+     */
+    public static function markdown($string, array $options = [])
+    {
+        $converter = new GithubFlavoredMarkdownConverter($options);
+
+        return (string) $converter->convertToHtml($string);
+    }
+
+    /**
+     * Masks a portion of a string with a repeated character.
+	 * 用重复字符掩码字符串的一部分
+     *
+     * @param  string  $string
+     * @param  string  $character
+     * @param  int  $index
+     * @param  int|null  $length
+     * @param  string  $encoding
+     * @return string
+     */
+    public static function mask($string, $character, $index, $length = null, $encoding = 'UTF-8')
+    {
+        if ($character === '') {
+            return $string;
+        }
+
+        if (is_null($length) && PHP_MAJOR_VERSION < 8) {
+            $length = mb_strlen($string, $encoding);
+        }
+
+        $segment = mb_substr($string, $index, $length, $encoding);
+
+        if ($segment === '') {
+            return $string;
+        }
+
+        $strlen = mb_strlen($string, $encoding);
+        $startIndex = $index;
+
+        if ($index < 0) {
+            $startIndex = $index < -$strlen ? 0 : $strlen + $index;
+        }
+
+        $start = mb_substr($string, 0, $startIndex, $encoding);
+        $segmentLen = mb_strlen($segment, $encoding);
+        $end = mb_substr($string, $startIndex + $segmentLen);
+
+        return $start.str_repeat(mb_substr($character, 0, 1, $encoding), $segmentLen).$end;
+    }
+
+    /**
+     * Get the string matching the given pattern.
+	 * 获取与给定模式匹配的字符串
+     *
+     * @param  string  $pattern
+     * @param  string  $subject
+     * @return string
+     */
+    public static function match($pattern, $subject)
+    {
+        preg_match($pattern, $subject, $matches);
+
+        if (! $matches) {
+            return '';
+        }
+
+        return $matches[1] ?? $matches[0];
+    }
+
+    /**
+     * Get the string matching the given pattern.
+	 * 获取与给定模式匹配的字符串
+     *
+     * @param  string  $pattern
+     * @param  string  $subject
+     * @return \Illuminate\Support\Collection
+     */
+    public static function matchAll($pattern, $subject)
+    {
+        preg_match_all($pattern, $subject, $matches);
+
+        if (empty($matches[0])) {
+            return collect();
+        }
+
+        return collect($matches[1] ?? $matches[0]);
+    }
+
+    /**
      * Pad both sides of a string with another.
 	 * 在绳子的两边垫上另一根
      *
@@ -410,7 +532,7 @@ class Str
      */
     public static function padBoth($value, $length, $pad = ' ')
     {
-        return str_pad($value, $length, $pad, STR_PAD_BOTH);
+        return str_pad($value, strlen($value) - mb_strlen($value) + $length, $pad, STR_PAD_BOTH);
     }
 
     /**
@@ -424,7 +546,7 @@ class Str
      */
     public static function padLeft($value, $length, $pad = ' ')
     {
-        return str_pad($value, $length, $pad, STR_PAD_LEFT);
+        return str_pad($value, strlen($value) - mb_strlen($value) + $length, $pad, STR_PAD_LEFT);
     }
 
     /**
@@ -438,7 +560,7 @@ class Str
      */
     public static function padRight($value, $length, $pad = ' ')
     {
-        return str_pad($value, $length, $pad, STR_PAD_RIGHT);
+        return str_pad($value, strlen($value) - mb_strlen($value) + $length, $pad, STR_PAD_RIGHT);
     }
 
     /**
@@ -459,7 +581,7 @@ class Str
 	 * 了解英语单词的复数形式
      *
      * @param  string  $value
-     * @param  int  $count
+     * @param  int|array|\Countable  $count
      * @return string
      */
     public static function plural($value, $count = 2)
@@ -472,7 +594,7 @@ class Str
 	 * 将英语的最后一个单词复数化，注意大小写字符串的大小写。
      *
      * @param  string  $value
-     * @param  int  $count
+     * @param  int|array|\Countable  $count
      * @return string
      */
     public static function pluralStudly($value, $count = 2)
@@ -486,7 +608,7 @@ class Str
 
     /**
      * Generate a more truly "random" alpha-numeric string.
-	 * 生成一个更真正"随机"的字母数字字符串
+	 * 生成一个更真正“随机”的字母数字字符串
      *
      * @param  int  $length
      * @return string
@@ -504,6 +626,19 @@ class Str
         }
 
         return $string;
+    }
+
+    /**
+     * Repeat the given string.
+	 * 重复给定的字符串
+     *
+     * @param  string  $string
+     * @param  int  $times
+     * @return string
+     */
+    public static function repeat(string $string, int $times)
+    {
+        return str_repeat($string, $times);
     }
 
     /**
@@ -529,6 +664,20 @@ class Str
     }
 
     /**
+     * Replace the given value in the given string.
+	 * 替换给定字符串中的给定值
+     *
+     * @param  string|string[]  $search
+     * @param  string|string[]  $replace
+     * @param  string|string[]  $subject
+     * @return string
+     */
+    public static function replace($search, $replace, $subject)
+    {
+        return str_replace($search, $replace, $subject);
+    }
+
+    /**
      * Replace the first occurrence of a given value in the string.
 	 * 替换字符串中第一次出现的给定值
      *
@@ -539,7 +688,7 @@ class Str
      */
     public static function replaceFirst($search, $replace, $subject)
     {
-        if ($search == '') {
+        if ($search === '') {
             return $subject;
         }
 
@@ -574,6 +723,36 @@ class Str
         }
 
         return $subject;
+    }
+
+    /**
+     * Remove any occurrence of the given string in the subject.
+	 * 删除主题中出现的任何给定字符串
+     *
+     * @param  string|array<string>  $search
+     * @param  string  $subject
+     * @param  bool  $caseSensitive
+     * @return string
+     */
+    public static function remove($search, $subject, $caseSensitive = true)
+    {
+        $subject = $caseSensitive
+                    ? str_replace($search, '', $subject)
+                    : str_ireplace($search, '', $subject);
+
+        return $subject;
+    }
+
+    /**
+     * Reverse the given string.
+	 * 反转给定的字符串
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public static function reverse(string $value)
+    {
+        return implode(array_reverse(mb_str_split($value)));
     }
 
     /**
@@ -613,6 +792,26 @@ class Str
     public static function title($value)
     {
         return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+    }
+
+    /**
+     * Convert the given string to title case for each word.
+	 * 将给定字符串转换为每个单词的标题大小写
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public static function headline($value)
+    {
+        $parts = explode(' ', $value);
+
+        $parts = count($parts) > 1
+            ? $parts = array_map([static::class, 'title'], $parts)
+            : $parts = array_map([static::class, 'title'], static::ucsplit(implode('_', $parts)));
+
+        $collapsed = static::replace(['-', '_', ' '], '_', implode('_', $parts));
+
+        return implode(' ', array_filter(explode('_', $collapsed)));
     }
 
     /**
@@ -663,7 +862,7 @@ class Str
 
     /**
      * Convert a string to snake case.
-	 * 将字符串转换为蛇形命名法  补充：全小写字母，单词间用下划线连接（如 user_age）
+	 * 将字符串转换为蛇形
      *
      * @param  string  $value
      * @param  string  $delimiter
@@ -720,13 +919,17 @@ class Str
             return static::$studlyCache[$key];
         }
 
-        $value = ucwords(str_replace(['-', '_'], ' ', $value));
+        $words = explode(' ', static::replace(['-', '_'], ' ', $value));
 
-        return static::$studlyCache[$key] = str_replace(' ', '', $value);
+        $studlyWords = array_map(function ($word) {
+            return static::ucfirst($word);
+        }, $words);
+
+        return static::$studlyCache[$key] = implode($studlyWords);
     }
 
     /**
-     * Returns the portion of string specified by the start and length parameters.
+     * Returns the portion of the string specified by the start and length parameters.
 	 * 返回由start和length参数指定的字符串部分
      *
      * @param  string  $string
@@ -759,6 +962,38 @@ class Str
     }
 
     /**
+     * Replace text within a portion of a string.
+	 * 替换字符串部分中的文本
+     *
+     * @param  string|array  $string
+     * @param  string|array  $replace
+     * @param  array|int  $offset
+     * @param  array|int|null  $length
+     * @return string|array
+     */
+    public static function substrReplace($string, $replace, $offset = 0, $length = null)
+    {
+        if ($length === null) {
+            $length = strlen($string);
+        }
+
+        return substr_replace($string, $replace, $offset, $length);
+    }
+
+    /**
+     * Swap multiple keywords in a string with other keywords.
+	 * 将字符串中的多个关键字与其他关键字交换
+     *
+     * @param  array  $map
+     * @param  string  $subject
+     * @return string
+     */
+    public static function swap(array $map, $subject)
+    {
+        return strtr($subject, $map);
+    }
+
+    /**
      * Make a string's first character uppercase.
 	 * 使字符串的第一个字符大写
      *
@@ -768,6 +1003,30 @@ class Str
     public static function ucfirst($string)
     {
         return static::upper(static::substr($string, 0, 1)).static::substr($string, 1);
+    }
+
+    /**
+     * Split a string into pieces by uppercase characters.
+	 * 用大写字符将字符串分成几个部分
+     *
+     * @param  string  $string
+     * @return array
+     */
+    public static function ucsplit($string)
+    {
+        return preg_split('/(?=\p{Lu})/u', $string, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    /**
+     * Get the number of words a string contains.
+	 * 获取字符串包含的单词数
+     *
+     * @param  string  $string
+     * @return int
+     */
+    public static function wordCount($string)
+    {
+        return str_word_count($string);
     }
 
     /**
@@ -795,7 +1054,7 @@ class Str
             return call_user_func(static::$uuidFactory);
         }
 
-        $factory = new UuidFactory();
+        $factory = new UuidFactory;
 
         $factory->setRandomGenerator(new CombGenerator(
             $factory->getRandomGenerator(),
@@ -823,12 +1082,25 @@ class Str
 
     /**
      * Indicate that UUIDs should be created normally and not using a custom factory.
-	 * 指明应该正常创建UUID，而不是使用自定义工厂
+	 * 指示应该正常创建uid，而不是使用自定义工厂。
      *
      * @return void
      */
     public static function createUuidsNormally()
     {
         static::$uuidFactory = null;
+    }
+
+    /**
+     * Remove all strings from the casing caches.
+	 * 从套管缓存中删除所有字符串
+     *
+     * @return void
+     */
+    public static function flushCache()
+    {
+        static::$snakeCache = [];
+        static::$camelCache = [];
+        static::$studlyCache = [];
     }
 }

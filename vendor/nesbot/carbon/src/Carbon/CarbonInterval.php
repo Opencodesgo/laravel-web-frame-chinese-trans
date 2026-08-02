@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 间隔
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -199,6 +202,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Interval spec period designators
+	 * 间隔指定周期指示符
      */
     public const PERIOD_PREFIX = 'P';
     public const PERIOD_YEARS = 'Y';
@@ -256,6 +260,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * The registered macros.
+	 * 已注册的宏
      *
      * @var array
      */
@@ -263,6 +268,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Timezone handler for settings() method.
+	 * settings（）方法的时区处理程序
      *
      * @var mixed
      */
@@ -270,6 +276,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Set the instance's timezone from a string or object.
+	 * 从字符串或对象设置实例的时区
      *
      * @param \DateTimeZone|string $tzName
      *
@@ -286,6 +293,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
      * @internal
      *
      * Set the instance's timezone from a string or object and add/subtract the offset difference.
+	 * 从字符串或对象设置实例的时区，并添加/减去偏移量差异。
      *
      * @param \DateTimeZone|string $tzName
      *
@@ -300,6 +308,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Mapping of units and factors for cascading.
+	 * 级联单元和因子的映射。
      *
      * Should only be modified by changing the factors or referenced constants.
      *
@@ -346,6 +355,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Set default cascading factors for ->cascade() method.
+	 * 为“->cascade（）”方法设置默认级联因子
      *
      * @param array $cascadeFactors
      */
@@ -374,6 +384,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Create a new CarbonInterval instance.
+	 * 创建一个新的CarbonInterval实例
      *
      * @param Closure|DateInterval|string|int|null $years
      * @param int|float|null                       $months
@@ -505,6 +516,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns the factor for a given source-to-target couple.
+	 * 返回给定源到目标对的因子
      *
      * @param string $source
      * @param string $target
@@ -533,6 +545,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
     /**
      * Returns the factor for a given source-to-target couple if set,
      * else try to find the appropriate constant as the factor, such as Carbon::DAYS_PER_WEEK.
+	 * 如果设置，则返回给定源到目标对的因子，否则尝试找到适当的常数作为因子，例如Carbon::DAYS_PER_WEEK。
      *
      * @param string $source
      * @param string $target
@@ -563,6 +576,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns current config for days per week.
+	 * 返回每周天数的当前配置
      *
      * @return int|float
      */
@@ -573,6 +587,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns current config for hours per day.
+	 * 每天返回当前配置
      *
      * @return int|float
      */
@@ -583,6 +598,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns current config for minutes per hour.
+	 * 每小时返回当前配置
      *
      * @return int|float
      */
@@ -593,6 +609,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns current config for seconds per minute.
+	 * 每分钟返回当前配置
      *
      * @return int|float
      */
@@ -603,6 +620,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns current config for microseconds per second.
+	 * 每秒钟返回当前配置
      *
      * @return int|float
      */
@@ -613,6 +631,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns current config for microseconds per second.
+	 * 每秒钟返回当前配置
      *
      * @return int|float
      */
@@ -626,6 +645,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
      * This is an alias for the constructor that allows better fluent
      * syntax as it allows you to do CarbonInterval::create(1)->fn() rather than
      * (new CarbonInterval(1))->fn().
+	 * 从特定的值创建一个新的CarbonInterval实例。
      *
      * @param int $years
      * @param int $months
@@ -647,6 +667,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Parse a string into a new CarbonInterval object according to the specified format.
+	 * 根据指定的格式将字符串解析为新的碳间隔对象。
      *
      * @example
      * ```
@@ -714,6 +735,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get a copy of the instance.
+	 * 获取实例的副本
      *
      * @return static
      */
@@ -728,6 +750,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get a copy of the instance.
+	 * 获取实例的副本
      *
      * @return static
      */
@@ -738,6 +761,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Provide static helpers to create instances.  Allows CarbonInterval::years(3).
+	 * 为创建实例提供静态助手。允许碳碳间隔::年份(3)。
      *
      * Note: This is done using the magic method to allow static and instance methods to
      *       have the same names.
@@ -774,6 +798,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Evaluate the PHP generated by var_export() and recreate the exported CarbonInterval instance.
+	 * 评估var_export()生成的PHP,并重新创建出口的碳间隔实例。
      *
      * @param array $dump data as exported by var_export()
      *
@@ -791,6 +816,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Return the current context from inside a macro callee or a new one if static.
+	 * 如果静态,从宏callee或新的callee中返回当前上下文。
      *
      * @return static
      */
@@ -801,6 +827,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Creates a CarbonInterval from string.
+	 * 从字符串中创建一个碳间隔。
      *
      * Format:
      *
@@ -990,6 +1017,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Creates a CarbonInterval from string using a different locale.
+	 * 使用不同的地区创建一个字符串
      *
      * @param string      $interval interval string in the given language (may also contain English).
      * @param string|null $locale   if locale is null or not specified, current global locale will be used instead.
@@ -1043,6 +1071,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Cast the current instance into the given class.
+	 * 将当前的实例放入给定的类中
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -1076,6 +1105,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Make a CarbonInterval instance from given variable if possible.
+	 * 如果可能的话,用给定的变量做一个碳间隔实例。
      *
      * Always return a new instance. Parse only strings and only these likely to be intervals (skip dates
      * and recurrences). Throw an exception for invalid format, but otherwise return null.
@@ -1144,6 +1174,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Sets up a DateInterval from the relative parts of the string.
+	 * 从字符串的相对部分设置一个DateInterval
      *
      * @param string $time
      *
@@ -1232,6 +1263,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get a part of the CarbonInterval object.
+	 * 获取碳碳间隔物体的一部分
      *
      * @param string $name
      *
@@ -1246,6 +1278,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Set a part of the CarbonInterval object.
+	 * 设置Carbon间隔物体的一部分
      *
      * @param string|array $name
      * @param int          $value
@@ -1347,6 +1380,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Set a part of the CarbonInterval object.
+	 * 设置Carbon间隔物体的一部分
      *
      * @param string $name
      * @param int    $value
@@ -1360,6 +1394,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Allow setting of weeks and days to be cumulative.
+	 * 允许设定几周和几天的时间来累积
      *
      * @param int $weeks Number of weeks to set
      * @param int $days  Number of days to set
@@ -1375,6 +1410,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns true if the interval is empty for each unit.
+	 * 如果每个单元的间隔是空的,返回true。
      *
      * @return bool
      */
@@ -1392,6 +1428,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Register a custom macro.
+	 * 注册自定义宏
      *
      * @example
      * ```
@@ -1413,6 +1450,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Register macros from a mixin object.
+	 * 从混合对象中注册宏。
      *
      * @example
      * ```
@@ -1451,6 +1489,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Check if macro is registered.
+	 * 检查宏是否注册
      *
      * @param string $name
      *
@@ -1654,6 +1693,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns interval values as an array where key are the unit names and values the counts.
+	 * 将区间值返回为一个数组,其中键是单元名,并将值值。
      *
      * @return int[]
      */
@@ -1673,6 +1713,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Returns interval non-zero values as an array where key are the unit names and values the counts.
+	 * 返回区间非零值作为数组,其中键是单元名和值。
      *
      * @return int[]
      */
@@ -1684,6 +1725,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
     /**
      * Returns interval values as an array where key are the unit names and values the counts
      * from the biggest non-zero one the the smallest non-zero one.
+	 * 将区间值返回为一个数组,其中键是单元名,并将值值为值从最大非零1到最小的非零1。
      *
      * @return int[]
      */
@@ -1720,6 +1762,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get the current interval in a human readable format in the current locale.
+	 * 在当前语言环境中以人类可读的格式获取当前的间隔。
      *
      * @example
      * ```
@@ -1973,6 +2016,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Format the instance as a string using the forHumans() function.
+	 * 用forhuman()函数将实例格式化为字符串
      *
      * @throws Exception
      *
@@ -1995,6 +2039,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Return native DateInterval PHP object matching the current instance.
+	 * 返回原生DateInterval PHP对象匹配当前实例
      *
      * @example
      * ```
@@ -2010,6 +2055,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Convert the interval to a CarbonPeriod.
+	 * 将间隔转换成碳周期
      *
      * @param DateTimeInterface|string|int ...$params Start date, [end date or recurrences] and optional settings.
      *
@@ -2030,6 +2076,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Invert the interval.
+	 * 将间隔反转
      *
      * @param bool|int $inverted if a parameter is passed, the passed value cast as 1 or 0 is used
      *                           as the new value of the ->invert property.
@@ -2061,6 +2108,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Add the passed interval to the current instance.
+	 * 将传递的间隔添加到当前实例
      *
      * @param string|DateInterval $unit
      * @param int|float           $value
@@ -2104,6 +2152,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Subtract the passed interval to the current instance.
+	 * 将传递的间隔减去当前的实例
      *
      * @param string|DateInterval $unit
      * @param int|float           $value
@@ -2121,6 +2170,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Subtract the passed interval to the current instance.
+	 * 将传递的间隔减去当前的实例
      *
      * @param string|DateInterval $unit
      * @param int|float           $value
@@ -2134,6 +2184,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Add given parameters to the current interval.
+	 * 将给定的参数添加到当前区间
      *
      * @param int       $years
      * @param int       $months
@@ -2164,6 +2215,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Add given parameters to the current interval.
+	 * 将给定的参数添加到当前区间
      *
      * @param int       $years
      * @param int       $months
@@ -2264,6 +2316,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Multiply and cascade current instance by a given factor.
+	 * 将电流实例乘以一个给定的因子
      *
      * @param float|int $factor
      *
@@ -2292,6 +2345,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Divide and cascade current instance by a given divider.
+	 * 通过给定的分割器除以和级联流实例
      *
      * @param float|int $divider
      *
@@ -2304,6 +2358,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get the interval_spec string of a date interval.
+	 * 获取日期间隔的interval_spec字符串
      *
      * @param DateInterval $interval
      *
@@ -2356,6 +2411,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get the interval_spec string.
+	 * 获取interval_spec字符串
      *
      * @return string
      */
@@ -2476,6 +2532,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Convert overflowed values into bigger units.
+	 * 将溢出的值转换为更大的单元
      *
      * @return $this
      */
@@ -2508,6 +2565,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Get amount of given unit equivalent to the interval.
+	 * 获得相当于区间的给定单位的数量
      *
      * @param string $unit
      *
@@ -2605,6 +2663,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is equal to another
+	 * 确定实例是否等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2619,6 +2678,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is equal to another
+	 * 确定实例是否等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2633,6 +2693,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is not equal to another
+	 * 确定实例不等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2647,6 +2708,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is not equal to another
+	 * 确定实例不等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2659,6 +2721,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is greater (longer) than another
+	 * 确定实例是否大于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2673,6 +2736,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is greater (longer) than another
+	 * 确定实例是否大于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2687,6 +2751,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is greater (longer) than or equal to another
+	 * 确定实例是否大于或等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2701,6 +2766,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is greater (longer) than or equal to another
+	 * 确定实例是否大于或等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2713,6 +2779,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is less (shorter) than another
+	 * 确定实例是否小于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2727,6 +2794,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is less (shorter) than another
+	 * 确定实例是否小于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2741,6 +2809,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is less (shorter) than or equal to another
+	 * 确定实例小于或等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2755,6 +2824,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is less (shorter) than or equal to another
+	 * 确定实例小于或等于另一个
      *
      * @param CarbonInterval|DateInterval|mixed $interval
      *
@@ -2767,6 +2837,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is between two others.
+	 * 确定实例是否在两个对象之间。
      *
      * The third argument allow you to specify if bounds are included or not (true by default)
      * but for when you including/excluding bounds may produce different results in your application,
@@ -2795,6 +2866,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is between two others, bounds excluded.
+	 * 确定实例在两个其他的,边界被排除
      *
      * @example
      * ```
@@ -2815,6 +2887,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is between two others, bounds excluded.
+	 * 确定实例在两个其他的,边界被排除。
      *
      * @example
      * ```
@@ -2835,6 +2908,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Determines if the instance is between two others
+	 * 确定实例是否为两个
      *
      * @example
      * ```
@@ -2857,6 +2931,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Round the current instance at the given unit with given precision if specified and the given function.
+	 * 在给定的单元中,如果指定和给定的函数,在给定的单元中绕过当前的实例。
      *
      * @param string                             $unit
      * @param float|int|string|DateInterval|null $precision
@@ -2897,6 +2972,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Truncate the current instance at the given unit with given precision if specified.
+	 * 在给定的单元中截断当前实例,给定精度
      *
      * @param string                             $unit
      * @param float|int|string|DateInterval|null $precision
@@ -2912,6 +2988,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Ceil the current instance at the given unit with given precision if specified.
+	 * 指示给定单位的当前实例,如果指定的话,指定的精度。
      *
      * @param string                             $unit
      * @param float|int|string|DateInterval|null $precision
@@ -2927,6 +3004,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 在目前的实例中,如果指定的话,将指定精度。
      *
      * @param float|int|string|DateInterval|null $precision
      * @param string                             $function
@@ -2942,6 +3020,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 在目前的实例中,如果指定的话,将指定精度。
      *
      * @param float|int|string|DateInterval|null $precision
      *
@@ -2956,6 +3035,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Ceil the current instance second with given precision if specified.
+	 * 如果指定的话,请将当前的实例作为第二个精度。
      *
      * @param float|int|string|DateInterval|null $precision
      *
@@ -3005,6 +3085,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface
 
     /**
      * Throw an exception if precision loss when storing the given value as an integer would be >= 1.0.
+	 * 如果将给定的值存储为一个整数时,抛出一个异常,即> = 1.0。
      */
     private function assertSafeForInteger(string $name, $value)
     {

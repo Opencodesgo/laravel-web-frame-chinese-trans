@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，终止事件
+ * Symfony，Component，HttpKernel，事件，终止事件
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows to execute logic after a response was sent.
- * 允许在发送响应后执行逻辑
+ * 允许在发送响应后执行逻辑。
  *
  * Since it's only triggered on main requests, the `getRequestType()` method
  * will always return the value of `HttpKernelInterface::MAIN_REQUEST`.

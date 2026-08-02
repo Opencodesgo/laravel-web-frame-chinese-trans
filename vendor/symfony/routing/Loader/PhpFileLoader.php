@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，Php 文件装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * PhpFileLoader loads routes from a PHP file.
+ * PhpFileLoader从PHP文件中加载路由。
  *
  * The file must return a RouteCollection instance.
  *
@@ -29,6 +33,7 @@ class PhpFileLoader extends FileLoader
 {
     /**
      * Loads a PHP file.
+	 * 导入PHP文件
      *
      * @param string      $file A PHP file path
      * @param string|null $type The resource type

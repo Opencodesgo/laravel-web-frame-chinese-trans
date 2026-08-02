@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，内存处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Some methods that are common for all memory processors
+ * 一些方法对于所有内存处理器都是常见的
  *
  * @author Rob Jensen
  */
@@ -40,6 +45,7 @@ abstract class MemoryProcessor implements ProcessorInterface
 
     /**
      * Formats bytes into a human readable string if $this->useFormatting is true, otherwise return $bytes as is
+	 * 如果$this->useFormatting为true，则将字节格式化为人类可读的字符串，否则按原样返回$bytes。
      *
      * @param  int        $bytes
      * @return string|int Formatted string if $this->useFormatting is true, otherwise return $bytes as int

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Input，输入定义
+ * Symfony，Component，Console，输入，输入定义
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * A InputDefinition represents a set of valid command line arguments and options.
+ * InputDefinition表示一组有效的命令行参数和选项。
  *
  * Usage:
  *
@@ -49,6 +50,7 @@ class InputDefinition
 
     /**
      * Sets the definition of the input.
+	 * 设置输入的定义
      */
     public function setDefinition(array $definition)
     {
@@ -68,6 +70,7 @@ class InputDefinition
 
     /**
      * Sets the InputArgument objects.
+	 * 设置InputArgument对象
      *
      * @param InputArgument[] $arguments An array of InputArgument objects
      */
@@ -82,6 +85,7 @@ class InputDefinition
 
     /**
      * Adds an array of InputArgument objects.
+	 * 添加一个输入参数对象数组
      *
      * @param InputArgument[] $arguments An array of InputArgument objects
      */
@@ -126,6 +130,7 @@ class InputDefinition
 
     /**
      * Returns an InputArgument by name or by position.
+	 * 以名字或位置返回InputArgument
      *
      * @param string|int $name The InputArgument name or position
      *
@@ -146,6 +151,7 @@ class InputDefinition
 
     /**
      * Returns true if an InputArgument object exists by name or position.
+	 * 如果一个InputArgument对象以名称或位置存在,则返回true。
      *
      * @param string|int $name The InputArgument name or position
      *
@@ -160,6 +166,7 @@ class InputDefinition
 
     /**
      * Gets the array of InputArgument objects.
+	 * 获取InputArgument对象的数组
      *
      * @return InputArgument[]
      */
@@ -170,6 +177,7 @@ class InputDefinition
 
     /**
      * Returns the number of InputArguments.
+	 * 返回InputArguments的数量
      *
      * @return int
      */
@@ -180,6 +188,7 @@ class InputDefinition
 
     /**
      * Returns the number of required InputArguments.
+	 * 返回所需的预付款数量
      *
      * @return int
      */
@@ -203,6 +212,7 @@ class InputDefinition
 
     /**
      * Sets the InputOption objects.
+	 * 设置InputOption对象
      *
      * @param InputOption[] $options An array of InputOption objects
      */
@@ -216,6 +226,7 @@ class InputDefinition
 
     /**
      * Adds an array of InputOption objects.
+	 * 添加一个InputOption对象的数组
      *
      * @param InputOption[] $options An array of InputOption objects
      */
@@ -264,6 +275,7 @@ class InputDefinition
 
     /**
      * Returns an InputOption by name.
+	 * 以名字返回一个InputOption
      *
      * @return InputOption
      *
@@ -280,6 +292,7 @@ class InputDefinition
 
     /**
      * Returns true if an InputOption object exists by name.
+	 * 如果一个InputOption对象以名称存在,返回true。
      *
      * This method can't be used to check if the user included the option when
      * executing the command (use getOption() instead).
@@ -293,6 +306,7 @@ class InputDefinition
 
     /**
      * Gets the array of InputOption objects.
+	 * 获取InputOption对象的数组
      *
      * @return InputOption[]
      */
@@ -303,6 +317,7 @@ class InputDefinition
 
     /**
      * Returns true if an InputOption object exists by shortcut.
+	 * 如果一个InputOption对象以快捷方式存在,则返回true。
      *
      * @return bool
      */
@@ -313,6 +328,7 @@ class InputDefinition
 
     /**
      * Returns true if an InputOption object exists by negated name.
+	 * 如果一个InputOption对象以否定的名称存在,返回true。
      */
     public function hasNegation(string $name): bool
     {
@@ -321,6 +337,7 @@ class InputDefinition
 
     /**
      * Gets an InputOption by shortcut.
+	 * 通过快捷方式获得一种咒语
      *
      * @return InputOption
      */
@@ -344,6 +361,7 @@ class InputDefinition
 
     /**
      * Returns the InputOption name given a shortcut.
+	 * 返回InputOption的名称
      *
      * @throws InvalidArgumentException When option given does not exist
      *
@@ -360,6 +378,7 @@ class InputDefinition
 
     /**
      * Returns the InputOption name given a negation.
+	 * 通过否定返回InputOption名称
      *
      * @throws InvalidArgumentException When option given does not exist
      *
@@ -376,6 +395,7 @@ class InputDefinition
 
     /**
      * Gets the synopsis.
+	 * 获取概要
      *
      * @return string
      */

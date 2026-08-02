@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，Is Type Of
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -9,6 +13,7 @@ use Hamcrest\Description;
 
 /**
  * Tests whether the value has a built-in type.
+ * 测试值是否具有内置类型。
  */
 class IsTypeOf extends BaseMatcher
 {

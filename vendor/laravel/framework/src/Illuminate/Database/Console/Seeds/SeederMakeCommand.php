@@ -1,13 +1,11 @@
 <?php
 /**
- * Illuminate，数据库，控制台，播种机，make:seeder 播种机制作命令
+ * Illuminate，数据库，控制台，播种，make:seeder 播种机制作命令
  */
 
 namespace Illuminate\Database\Console\Seeds;
 
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Composer;
 
 class SeederMakeCommand extends GeneratorCommand
 {
@@ -36,29 +34,6 @@ class SeederMakeCommand extends GeneratorCommand
     protected $type = 'Seeder';
 
     /**
-     * The Composer instance.
-	 * Composer实例
-     *
-     * @var \Illuminate\Support\Composer
-     */
-    protected $composer;
-
-    /**
-     * Create a new command instance.
-	 * 创建新的命令实例
-     *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  \Illuminate\Support\Composer  $composer
-     * @return void
-     */
-    public function __construct(Filesystem $files, Composer $composer)
-    {
-        parent::__construct($files);
-
-        $this->composer = $composer;
-    }
-
-    /**
      * Execute the console command.
 	 * 执行控制台命令
      *
@@ -67,8 +42,6 @@ class SeederMakeCommand extends GeneratorCommand
     public function handle()
     {
         parent::handle();
-
-        $this->composer->dumpAutoloads();
     }
 
     /**
@@ -91,7 +64,7 @@ class SeederMakeCommand extends GeneratorCommand
      */
     protected function resolveStubPath($stub)
     {
-        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+        return is_file($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
             : __DIR__.$stub;
     }
@@ -105,7 +78,11 @@ class SeederMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        return $this->laravel->databasePath().'/seeds/'.$name.'.php';
+        if (is_dir($this->laravel->databasePath().'/seeds')) {
+            return $this->laravel->databasePath().'/seeds/'.$name.'.php';
+        } else {
+            return $this->laravel->databasePath().'/seeders/'.$name.'.php';
+        }
     }
 
     /**

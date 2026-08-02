@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Git 处理器
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Injects Git branch and Git commit SHA in all records
+ * 在所有记录中注入Git分支和Git提交
  *
  * @author Nick Otter
  * @author Jordi Boggiano <j.boggiano@seld.be>

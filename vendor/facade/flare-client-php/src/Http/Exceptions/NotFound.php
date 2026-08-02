@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，FlareClient，Http，异常，未找到
+ */
 
 namespace Facade\FlareClient\Http\Exceptions;
 

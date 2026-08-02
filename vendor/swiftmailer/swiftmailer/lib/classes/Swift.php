@@ -1,4 +1,7 @@
 <?php
+/**
+ * Swift
+ */
 
 /*
  * This file is part of SwiftMailer.
@@ -35,6 +38,7 @@ abstract class Swift
 
     /**
      * Internal autoloader for spl_autoload_register().
+	 * spl_autoload_register（）的内部自动加载器
      *
      * @param string $class
      */
@@ -63,6 +67,7 @@ abstract class Swift
 
     /**
      * Configure autoloading using Swift Mailer.
+	 * 使用Swift Mailer配置自动加载。
      *
      * This is designed to play nicely with other autoloaders.
      *

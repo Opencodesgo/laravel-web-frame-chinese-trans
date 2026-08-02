@@ -17,7 +17,7 @@ interface ViewFinderInterface
 
     /**
      * Get the fully qualified location of the view.
-	 * 获取视图的完全限定位置
+	 * 获取视图的完全限定位
      *
      * @param  string  $view
      * @return string
@@ -65,7 +65,7 @@ interface ViewFinderInterface
 
     /**
      * Add a valid view extension to the finder.
-	 * 向发现器添加有效的视图扩展
+	 * 向查找器添加有效的视图扩展
      *
      * @param  string  $extension
      * @return void

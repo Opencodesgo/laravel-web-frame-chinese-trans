@@ -19,6 +19,7 @@ namespace Symfony\Component\HttpFoundation\Exception;
  * 请求异常接口
  *
  * Exceptions implementing this interface should trigger an HTTP 400 response in the application code.
+ * 实现此接口的异常应该在应用程序代码中触发HTTP 400响应。
  */
 interface RequestExceptionInterface
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，混入
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -23,6 +26,7 @@ use Throwable;
 
 /**
  * Trait Mixin.
+ * 混入特征。
  *
  * Allows mixing in entire classes with multiple macros.
  */
@@ -30,6 +34,7 @@ trait Mixin
 {
     /**
      * Stack of macro instance contexts.
+	 * 宏实例上下文的堆栈
      *
      * @var array
      */
@@ -37,6 +42,7 @@ trait Mixin
 
     /**
      * Mix another object into the class.
+	 * 将另一个对象混合到类中。
      *
      * @example
      * ```

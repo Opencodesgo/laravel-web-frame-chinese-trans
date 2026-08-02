@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，Chrome PHP 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Monolog\Utils;
 
 /**
  * Handler sending logs to the ChromePHP extension (http://www.chromephp.com/)
+ * 处理将日志发送到ChromePHP扩展的处理程序
  *
  * This also works out of the box with Firefox 43+
  *
@@ -31,16 +36,19 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Version of the extension
+	 * 扩展的版本
      */
     protected const VERSION = '4.0';
 
     /**
      * Header name
+	 * 标题名称
      */
     protected const HEADER_NAME = 'X-ChromeLogger-Data';
 
     /**
      * Regular expression to detect supported browsers (matches any Chrome, or Firefox 43+)
+	 * 正则表达式来检测支持的浏览器
      */
     protected const USER_AGENT_REGEX = '{\b(?:Chrome/\d+(?:\.\d+)*|HeadlessChrome|Firefox/(?:4[3-9]|[5-9]\d|\d{3,})(?:\.\d)*)\b}';
 
@@ -49,6 +57,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Tracks whether we sent too much data
+	 * 跟踪我们是否发送了太多的数据
      *
      * Chrome limits the headers to 4KB, so when we sent 3KB we stop sending
      *
@@ -111,6 +120,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Creates & sends header for a record
+	 * 创建并发送标题记录
      *
      * @see sendHeader()
      * @see send()
@@ -128,6 +138,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Sends the log header
+	 * 发送日志头
      *
      * @see sendHeader()
      */
@@ -174,6 +185,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Send header string to the client
+	 * 向客户端发送头字符串
      */
     protected function sendHeader(string $header, string $content): void
     {
@@ -184,6 +196,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 
     /**
      * Verifies if the headers are accepted by the current user agent
+	 * 验证头是否被当前的用户代理接受
      */
     protected function headersAccepted(): bool
     {

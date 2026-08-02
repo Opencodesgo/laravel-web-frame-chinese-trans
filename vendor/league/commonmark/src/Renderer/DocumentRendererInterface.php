@@ -1,0 +1,33 @@
+<?php
+/**
+ * League，CommonMark，渲染器，文档渲染器接口
+ */
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the league/commonmark package.
+ *
+ * (c) Colin O'Dell <colinodell@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace League\CommonMark\Renderer;
+
+use League\CommonMark\Node\Block\Document;
+use League\CommonMark\Output\RenderedContentInterface;
+
+/**
+ * Renders a parsed Document AST
+ * 呈现已解析的文档AST
+ */
+interface DocumentRendererInterface extends MarkdownRendererInterface
+{
+    /**
+     * Render the given Document node (and all of its children)
+	 * 渲染给定的文档节点(以及所有的孩子)
+     */
+    public function renderDocument(Document $document): RenderedContentInterface;
+}

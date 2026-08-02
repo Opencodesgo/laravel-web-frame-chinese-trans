@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，异常，缺失输入异常
+ * Symfony，Component，Console，异常，输入缺失异常
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents failure to read input from stdin.
+ * 表示从stdin读取输入失败
  *
  * @author Gabriel Ostrolucký <gabriel.ostrolucky@gmail.com>
  */

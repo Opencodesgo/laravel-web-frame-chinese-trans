@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，日志，Log，记录器特征
+ * Psr，Log，记录器特征
  */
 
 namespace Psr\Log;
@@ -31,6 +31,7 @@ trait LoggerTrait
 
     /**
      * Action must be taken immediately.
+	 * 必须立即采取行动。
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
@@ -47,6 +48,7 @@ trait LoggerTrait
 
     /**
      * Critical conditions.
+	 * 临界状态
      *
      * Example: Application component unavailable, unexpected exception.
      *
@@ -76,6 +78,7 @@ trait LoggerTrait
 
     /**
      * Exceptional occurrences that are not errors.
+	 * 不属于错误的异常情况。
      *
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
@@ -92,6 +95,7 @@ trait LoggerTrait
 
     /**
      * Normal but significant events.
+	 * 正常但重要的事件
      *
      * @param string $message
      * @param array  $context
@@ -105,6 +109,7 @@ trait LoggerTrait
 
     /**
      * Interesting events.
+	 * 有趣的事件
      *
      * Example: User logs in, SQL logs.
      *
@@ -120,6 +125,7 @@ trait LoggerTrait
 
     /**
      * Detailed debug information.
+	 * 详细的调试信息
      *
      * @param string $message
      * @param array  $context
@@ -133,6 +139,7 @@ trait LoggerTrait
 
     /**
      * Logs with an arbitrary level.
+	 * 具有任意级别的日志
      *
      * @param mixed  $level
      * @param string $message

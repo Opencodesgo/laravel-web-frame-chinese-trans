@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转储，Yaml File 转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlFileDumper generates yaml files from a message catalogue.
+ * YamlFileDumper从信息目录中生成yaml文件
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */

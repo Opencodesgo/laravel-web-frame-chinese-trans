@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Header包
+ * Symfony，Component，HttpFoundation，测试，头包
  */
 
 /*
@@ -42,7 +42,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the headers as a string.
-	 * 以字符串形式返回标头
+	 * 返回标头为字符串
      *
      * @return string
      */
@@ -67,6 +67,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the headers.
+	 * 返回头
      *
      * @param string|null $key The name of the headers to return or null to get them all
      *
@@ -83,6 +84,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter keys.
+	 * 返回参数键
      *
      * @return string[]
      */
@@ -93,6 +95,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Replaces the current HTTP headers by a new set.
+	 * 用一组新的头替换当前的HTTP头
      */
     public function replace(array $headers = [])
     {
@@ -102,6 +105,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds new headers the current HTTP headers set.
+	 * 在当前HTTP标头集中添加新标头
      */
     public function add(array $headers)
     {
@@ -112,6 +116,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the first header by name or the default one.
+	 * 按名称或默认名称返回第一个标头
      *
      * @return string|null
      */
@@ -132,6 +137,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Sets a header by name.
+	 * 按名称设置标题
      *
      * @param string|string[]|null $values  The value or an array of values
      * @param bool                 $replace Whether to replace the actual value or not (true by default)
@@ -163,6 +169,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the HTTP header is defined.
+	 * 如果定义了HTTP报头，则返回true。
      *
      * @return bool
      */
@@ -173,6 +180,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the given HTTP header contains the given value.
+	 * 如果给定的HTTP头包含给定的值，则返回true。
      *
      * @return bool
      */
@@ -183,6 +191,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Removes a header.
+	 * 移除标头
      */
     public function remove(string $key)
     {
@@ -197,6 +206,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the HTTP header value converted to a date.
+	 * 返回转换为日期的HTTP报头值
      *
      * @return \DateTimeInterface|null
      *
@@ -217,6 +227,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds a custom Cache-Control directive.
+	 * 添加自定义缓存控制指令
      *
      * @param bool|string $value The Cache-Control directive value
      */
@@ -229,6 +240,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the Cache-Control directive is defined.
+	 * 如果定义了Cache-Control指令，则返回true。
      *
      * @return bool
      */
@@ -239,6 +251,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns a Cache-Control directive value by name.
+	 * 按名称返回缓存控制指令值
      *
      * @return bool|string|null
      */
@@ -259,6 +272,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns an iterator for headers.
+	 * 返回头文件的迭代器
      *
      * @return \ArrayIterator<string, list<string|null>>
      */
@@ -270,6 +284,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the number of headers.
+	 * 返回报头的数目
      *
      * @return int
      */

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Null 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Blackhole
+ * 黑洞
  *
  * Any record it can handle will be thrown away. This can be used
  * to put on top of an existing stack to override it temporarily.

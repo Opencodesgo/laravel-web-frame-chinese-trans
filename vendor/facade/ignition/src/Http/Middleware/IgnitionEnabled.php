@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facade，Ignition，Http，中间件，启用点火
+ */
 
 namespace Facade\Ignition\Http\Middleware;
 
@@ -9,6 +12,7 @@ class IgnitionEnabled
 {
     /**
      * Handle an incoming request.
+	 * 处理传入的请求
      *
      * @param  Request  $request
      * @param  Closure  $next

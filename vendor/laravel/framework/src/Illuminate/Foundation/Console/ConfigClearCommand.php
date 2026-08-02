@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，config:clear 配置清空命令
+ * Illuminate，基础，控制台，config:clear 配置清除命令
  */
 
 namespace Illuminate\Foundation\Console;

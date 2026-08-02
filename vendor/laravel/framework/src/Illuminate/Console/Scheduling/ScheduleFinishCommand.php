@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，控制台，调度，schedule:finish 计划完成命令
+ * Illuminate，控制台，调度，schedule:finish 调度完成命令
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Events\ScheduledBackgroundTaskFinished;
+use Illuminate\Contracts\Events\Dispatcher;
 
 class ScheduleFinishCommand extends Command
 {
@@ -27,7 +29,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * Indicates whether the command should be shown in the Artisan command list.
-	 * 指示该命令是否应该显示在Artisan命令列表中
+	 * 指明该命令是否应该显示在Artisan命令列表中
      *
      * @var bool
      */
@@ -44,6 +46,10 @@ class ScheduleFinishCommand extends Command
     {
         collect($schedule->events())->filter(function ($value) {
             return $value->mutexName() == $this->argument('id');
-        })->each->callAfterCallbacksWithExitCode($this->laravel, $this->argument('code'));
+        })->each(function ($event) {
+            $event->callafterCallbacksWithExitCode($this->laravel, $this->argument('code'));
+
+            $this->laravel->make(Dispatcher::class)->dispatch(new ScheduledBackgroundTaskFinished($event));
+        });
     }
 }

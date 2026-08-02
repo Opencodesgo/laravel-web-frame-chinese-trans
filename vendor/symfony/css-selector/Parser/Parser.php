@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，分析程序，分析程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\CssSelector\Parser\Tokenizer\Tokenizer;
 
 /**
  * CSS selector parser.
+ * CSS选择器解析器。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -47,6 +51,7 @@ class Parser implements ParserInterface
 
     /**
      * Parses the arguments for ":nth-child()" and friends.
+	 * 解析“:n -child()”及其友元的参数
      *
      * @param Token[] $tokens
      *
@@ -143,6 +148,7 @@ class Parser implements ParserInterface
 
     /**
      * Parses next simple node (hash, class, pseudo, negation).
+	 * 解析下一个简单的节点(散列、类、伪、否定)。
      *
      * @throws SyntaxErrorException
      */

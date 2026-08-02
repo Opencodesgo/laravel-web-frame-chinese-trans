@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限制器，持续时间限制生成器
+ * Illuminate，Redis，限值器，持续时间限制生成器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -29,7 +29,7 @@ class DurationLimiterBuilder
     public $name;
 
     /**
-     * The maximum number of locks that can obtained per time window.
+     * The maximum number of locks that can be obtained per time window.
 	 * 每个时间窗口可以获得的最大锁数
      *
      * @var int
@@ -67,7 +67,7 @@ class DurationLimiterBuilder
     }
 
     /**
-     * Set the maximum number of locks that can obtained per time window.
+     * Set the maximum number of locks that can be obtained per time window.
 	 * 设置每个时间窗口可以获得的最大锁数
      *
      * @param  int  $maxLocks

@@ -15,7 +15,7 @@ class RouteAction
 {
     /**
      * Parse the given action into an array.
-	 * 解析给定动作为数组
+	 * 将给定的动作解析为数组
      *
      * @param  string  $uri
      * @param  mixed  $action
@@ -27,7 +27,6 @@ class RouteAction
         // fluent routing. In that case, we set a default closure, to be executed
         // if the user never explicitly sets an action to handle the given uri.
 		// 如果没有立即传入操作，我们假定用户将使用流利的路由。
-		// 因此，我们设置了要执行的默认闭包。
         if (is_null($action)) {
             return static::missingAction($uri);
         }
@@ -35,7 +34,7 @@ class RouteAction
         // If the action is already a Closure instance, we will just set that instance
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
-		// 如果动作已经是一个Closure实例，我们将设置该实例。
+		// 如果动作已经是一个Closure实例，我们将设置该实例作为"使用"属性。
         if (Reflector::isCallable($action, true)) {
             return ! is_array($action) ? ['uses' => $action] : [
                 'uses' => $action[0].'@'.$action[1],
@@ -51,7 +50,7 @@ class RouteAction
             $action['uses'] = static::findCallable($action);
         }
 
-        if (is_string($action['uses']) && ! Str::contains($action['uses'], '@')) {
+        if (! static::containsSerializedClosure($action) && is_string($action['uses']) && ! Str::contains($action['uses'], '@')) {
             $action['uses'] = static::makeInvokable($action['uses']);
         }
 
@@ -90,7 +89,7 @@ class RouteAction
 
     /**
      * Make an action for an invokable controller.
-	 * 为可调用控制器创建一个动作
+	 * 为可调用控制器创建一个操作
      *
      * @param  string  $action
      * @return string
@@ -104,5 +103,20 @@ class RouteAction
         }
 
         return $action.'@__invoke';
+    }
+
+    /**
+     * Determine if the given array actions contain a serialized Closure.
+	 * 确定给定的数组动作是否包含序列化的闭包
+     *
+     * @param  array  $action
+     * @return bool
+     */
+    public static function containsSerializedClosure(array $action)
+    {
+        return is_string($action['uses']) && Str::startsWith($action['uses'], [
+            'C:32:"Opis\\Closure\\SerializableClosure',
+            'O:47:"Laravel\\SerializableClosure\\SerializableClosure',
+        ]) !== false;
     }
 }

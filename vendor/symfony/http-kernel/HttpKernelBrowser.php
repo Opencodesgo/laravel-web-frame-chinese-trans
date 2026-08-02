@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -25,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Simulates a browser and makes requests to an HttpKernel instance.
- * 模拟浏览器并向 HttpKernel 实例发出请求
+ * 模拟浏览器并向HttpKernel实例发出请求
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -51,6 +52,7 @@ class HttpKernelBrowser extends AbstractBrowser
 
     /**
      * Sets whether to catch exceptions when the kernel is handling a request.
+	 * 设置是否在内核处理请求时捕获异常
      */
     public function catchExceptions(bool $catchExceptions)
     {
@@ -152,6 +154,7 @@ EOF;
 
     /**
      * Filters an array of files.
+	 * 过滤文件数组
      *
      * This method created test instances of UploadedFile so that the move()
      * method can be called on those instances.

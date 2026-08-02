@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集，时间数据采集器
+ * Symfony，Component，HttpKernel，数据采集器，时间数据采集器
  */
 
 /*
@@ -101,6 +101,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
 
     /**
      * Gets the request elapsed time.
+	 * 获取请求运行时间
      */
     public function getDuration(): float
     {
@@ -115,6 +116,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
 
     /**
      * Gets the initialization time.
+	 * 获取初始化时间。
      *
      * This is the time spent until the beginning of the request handling.
      */

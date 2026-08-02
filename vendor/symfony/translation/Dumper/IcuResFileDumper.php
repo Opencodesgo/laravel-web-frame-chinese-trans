@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转储，IcuRes 文件转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IcuResDumper generates an ICU ResourceBundle formatted string representation of a message catalogue.
+ * IcuResDumper生成了一个名为unk bundle格式的消息目录的字符串表示。
  *
  * @author Stealth35
  */

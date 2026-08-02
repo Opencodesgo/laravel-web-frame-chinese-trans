@@ -6,15 +6,16 @@
 namespace Illuminate\Queue;
 
 use Aws\Sqs\SqsClient;
+use Illuminate\Contracts\Queue\ClearableQueue;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Queue\Jobs\SqsJob;
 use Illuminate\Support\Str;
 
-class SqsQueue extends Queue implements QueueContract
+class SqsQueue extends Queue implements QueueContract, ClearableQueue
 {
     /**
      * The Amazon SQS instance.
-	 * SQS实例
+	 * Amazon SQS队列
      *
      * @var \Aws\Sqs\SqsClient
      */
@@ -46,25 +47,31 @@ class SqsQueue extends Queue implements QueueContract
 
     /**
      * Create a new Amazon SQS queue instance.
-	 * 创建新的SQS队列实例
+	 * 创建新的SQL队列实例
      *
      * @param  \Aws\Sqs\SqsClient  $sqs
      * @param  string  $default
      * @param  string  $prefix
      * @param  string  $suffix
+     * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(SqsClient $sqs, $default, $prefix = '', $suffix = '')
+    public function __construct(SqsClient $sqs,
+                                $default,
+                                $prefix = '',
+                                $suffix = '',
+                                $dispatchAfterCommit = false)
     {
         $this->sqs = $sqs;
         $this->prefix = $prefix;
         $this->default = $default;
         $this->suffix = $suffix;
+        $this->dispatchAfterCommit = $dispatchAfterCommit;
     }
 
     /**
      * Get the size of the queue.
-	 * 获取队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
@@ -83,7 +90,7 @@ class SqsQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 推入新的作业至队列
      *
      * @param  string  $job
      * @param  mixed  $data
@@ -92,12 +99,20 @@ class SqsQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushRaw($this->createPayload($job, $queue ?: $this->default, $data), $queue);
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $queue ?: $this->default, $data),
+            $queue,
+            null,
+            function ($payload, $queue) {
+                return $this->pushRaw($payload, $queue);
+            }
+        );
     }
 
     /**
      * Push a raw payload onto the queue.
-	 * 将原始有效负载推入队列
+	 * 推入原始有效负载至队列
      *
      * @param  string  $payload
      * @param  string|null  $queue
@@ -123,11 +138,19 @@ class SqsQueue extends Queue implements QueueContract
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        return $this->sqs->sendMessage([
-            'QueueUrl' => $this->getQueue($queue),
-            'MessageBody' => $this->createPayload($job, $queue ?: $this->default, $data),
-            'DelaySeconds' => $this->secondsUntil($delay),
-        ])->get('MessageId');
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $queue ?: $this->default, $data),
+            $queue,
+            $delay,
+            function ($payload, $queue, $delay) {
+                return $this->sqs->sendMessage([
+                    'QueueUrl' => $this->getQueue($queue),
+                    'MessageBody' => $payload,
+                    'DelaySeconds' => $this->secondsUntil($delay),
+                ])->get('MessageId');
+            }
+        );
     }
 
     /**
@@ -153,8 +176,24 @@ class SqsQueue extends Queue implements QueueContract
     }
 
     /**
+     * Delete all of the jobs from the queue.
+	 * 从队列中删除所有作业
+     *
+     * @param  string  $queue
+     * @return int
+     */
+    public function clear($queue)
+    {
+        return tap($this->size($queue), function () use ($queue) {
+            $this->sqs->purgeQueue([
+                'QueueUrl' => $this->getQueue($queue),
+            ]);
+        });
+    }
+
+    /**
      * Get the queue or return the default.
-	 * 获取队列或返回默认值
+	 * 得到队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -164,13 +203,32 @@ class SqsQueue extends Queue implements QueueContract
         $queue = $queue ?: $this->default;
 
         return filter_var($queue, FILTER_VALIDATE_URL) === false
-            ? rtrim($this->prefix, '/').'/'.Str::finish($queue, $this->suffix)
+            ? $this->suffixQueue($queue, $this->suffix)
             : $queue;
     }
 
     /**
+     * Add the given suffix to the given queue name.
+	 * 将给定的后缀添加到给定的队列名称
+     *
+     * @param  string  $queue
+     * @param  string  $suffix
+     * @return string
+     */
+    protected function suffixQueue($queue, $suffix = '')
+    {
+        if (Str::endsWith($queue, '.fifo')) {
+            $queue = Str::beforeLast($queue, '.fifo');
+
+            return rtrim($this->prefix, '/').'/'.Str::finish($queue, $suffix).'.fifo';
+        }
+
+        return rtrim($this->prefix, '/').'/'.Str::finish($queue, $this->suffix);
+    }
+
+    /**
      * Get the underlying SQS instance.
-	 * 获取底层SQS实例
+	 * 得到底层SQS实例
      *
      * @return \Aws\Sqs\SqsClient
      */

@@ -20,6 +20,7 @@ namespace Monolog;
  * 当调用Logger::reset()时，实现此接口的Handler或Processor将被重置。
  *
  * Resetting ends a log cycle gets them back to their initial state.
+ * 重置结束了一个日志循环，使它们恢复到初始状态。
  *
  * Resetting a Handler or a Processor means flushing/cleaning all buffers, resetting internal
  * state, and getting it back to a state in which it can receive log records again.

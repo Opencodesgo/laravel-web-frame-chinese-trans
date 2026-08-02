@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，Redis，限制器，并发限制器
+ * Illuminate，Redis，限值器，并发限制器
  */
 
 namespace Illuminate\Redis\Limiters;
 
-use Exception;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
 use Illuminate\Support\Str;
+use Throwable;
 
 class ConcurrencyLimiter
 {
@@ -70,7 +70,7 @@ class ConcurrencyLimiter
      * @return bool
      *
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function block($timeout, $callback = null)
     {
@@ -91,7 +91,7 @@ class ConcurrencyLimiter
                 return tap($callback(), function () use ($slot, $id) {
                     $this->release($slot, $id);
                 });
-            } catch (Exception $exception) {
+            } catch (Throwable $exception) {
                 $this->release($slot, $id);
 
                 throw $exception;

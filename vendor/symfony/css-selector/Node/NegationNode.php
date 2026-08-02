@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，异常，否定节点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>:not(<identifier>)" node.
+ * 表示一个“<selector>:not(<identifier>)”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

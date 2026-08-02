@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Helper for filtering out properties in casters.
+ * 用于过滤casters属性的助手。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -39,6 +43,7 @@ class Caster
 
     /**
      * Casts objects to arrays and adds the dynamic property prefix.
+	 * 将对象投射到数组中,并添加动态属性前缀。
      *
      * @param bool $hasDebugInfo Whether the __debugInfo method exists on $obj or not
      */
@@ -108,6 +113,7 @@ class Caster
 
     /**
      * Filters out the specified properties.
+	 * 过滤出指定的属性。
      *
      * By default, a single match in the $filter bit field filters properties out, following an "or" logic.
      * When EXCLUDE_STRICT is set, an "and" logic is applied: all bits must match for a property to be removed.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，VarDumper
+ * Symfony，Component，VarDumper，Var Dumper
  */
 
 /*
@@ -57,6 +57,7 @@ class VarDumper
         $prevHandler = self::$handler;
 
         // Prevent replacing the handler with expected format as soon as the env var was set:
+		// 防止在设置了env变量后立即用预期的格式替换处理程序：
         if (isset($_SERVER['VAR_DUMPER_FORMAT'])) {
             return $prevHandler;
         }

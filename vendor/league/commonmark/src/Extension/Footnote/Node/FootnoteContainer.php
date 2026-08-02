@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，脚注，节点，脚注容器
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -14,26 +17,8 @@ declare(strict_types=1);
 
 namespace League\CommonMark\Extension\Footnote\Node;
 
-use League\CommonMark\Block\Element\AbstractBlock;
-use League\CommonMark\Cursor;
+use League\CommonMark\Node\Block\AbstractBlock;
 
-/**
- * @method children() AbstractBlock[]
- */
 final class FootnoteContainer extends AbstractBlock
 {
-    public function canContain(AbstractBlock $block): bool
-    {
-        return $block instanceof Footnote;
-    }
-
-    public function isCode(): bool
-    {
-        return false;
-    }
-
-    public function matchesNextLine(Cursor $cursor): bool
-    {
-        return false;
-    }
 }

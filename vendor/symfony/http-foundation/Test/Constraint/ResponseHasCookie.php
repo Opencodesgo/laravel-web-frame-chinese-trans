@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，测试，约束，响应 Cookie
+ * Symfony，Component，HttpFoundation，测试，约束，响应有Cookie
  */
 
 /*

@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，Redis管理
- * 服务容器绑定redis
+ * Illuminate，Redis，Redis 管理器
  */
 
 namespace Illuminate\Redis;
@@ -11,6 +10,7 @@ use Illuminate\Contracts\Redis\Factory;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Redis\Connectors\PhpRedisConnector;
 use Illuminate\Redis\Connectors\PredisConnector;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ConfigurationUrlParser;
 use InvalidArgumentException;
 
@@ -60,8 +60,8 @@ class RedisManager implements Factory
     protected $connections;
 
     /**
-     * Indicates whether event dispatcher is set on connections.、
-	 * 指明是否在连接上设置事件调度程序
+     * Indicates whether event dispatcher is set on connections.
+	 * 指示是否在连接上设置事件调度程序
      *
      * @var bool
      */
@@ -69,7 +69,7 @@ class RedisManager implements Factory
 
     /**
      * Create a new Redis manager instance.
-	 * 创建一个新的Redis管理器实例
+	 * 创建新的Redis管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $driver
@@ -121,7 +121,7 @@ class RedisManager implements Factory
         if (isset($this->config[$name])) {
             return $this->connector()->connect(
                 $this->parseConnectionConfiguration($this->config[$name]),
-                $options
+                array_merge(Arr::except($options, 'parameters'), ['parameters' => Arr::get($options, 'parameters.'.$name, Arr::get($options, 'parameters', []))])
             );
         }
 
@@ -209,7 +209,7 @@ class RedisManager implements Factory
         }
 
         return array_filter($parsed, function ($key) {
-            return ! in_array($key, ['driver', 'username'], true);
+            return ! in_array($key, ['driver'], true);
         }, ARRAY_FILTER_USE_KEY);
     }
 
@@ -259,8 +259,22 @@ class RedisManager implements Factory
     }
 
     /**
+     * Disconnect the given connection and remove from local cache.
+	 * 断开给定的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?: 'default';
+
+        unset($this->connections[$name]);
+    }
+
+    /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器闭包
+	 * 注册自定义驱动程序创建器闭包 
      *
      * @param  string  $driver
      * @param  \Closure  $callback

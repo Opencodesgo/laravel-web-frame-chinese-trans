@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，Output，空输出
+ * Symfony，Component，Console，输出，零输出
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * NullOutput suppresses all output.
+ * 零输出抑制所有输出。
  *
  *     $output = new NullOutput();
  *

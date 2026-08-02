@@ -20,7 +20,7 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * Response represents an HTTP response.
- * HTTP响应
+ * Response表示HTTP响应
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -228,6 +228,7 @@ class Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法
      *
      * Example:
      *
@@ -247,6 +248,7 @@ class Response
 
     /**
      * Returns the Response as an HTTP string.
+	 * 以HTTP字符串的形式返回响应
      *
      * The string representation of the Response is the same as the
      * one that will be sent to the client only if the prepare() method
@@ -266,6 +268,7 @@ class Response
 
     /**
      * Clones the current Response instance.
+	 * 克隆当前的Response实例
      */
     public function __clone()
     {
@@ -274,6 +277,7 @@ class Response
 
     /**
      * Prepares the Response before it is sent to the client.
+	 * 在发送到客户端之前准备响应
      *
      * This method tweaks the Response to ensure that it is
      * compliant with RFC 2616. Most of the changes are based on
@@ -348,6 +352,7 @@ class Response
 
     /**
      * Sends HTTP headers.
+	 * 发送HTTP报头
      *
      * @return $this
      */
@@ -379,6 +384,7 @@ class Response
 
     /**
      * Sends content for the current web response.
+	 * 为当前web响应发送内容
      *
      * @return $this
      */
@@ -391,6 +397,7 @@ class Response
 
     /**
      * Sends HTTP headers and content.
+	 * 发送HTTP头和内容
      *
      * @return $this
      */
@@ -426,6 +433,7 @@ class Response
 
     /**
      * Gets the current response content.
+	 * 获取当前响应内容
      *
      * @return string|false
      */
@@ -436,7 +444,7 @@ class Response
 
     /**
      * Sets the HTTP protocol version (1.0 or 1.1).
-	 * 设置HTTP协议版本 (1.0或1.1)
+	 * 设置HTTP协议版本（1.0或1.1）
      *
      * @return $this
      *
@@ -451,6 +459,7 @@ class Response
 
     /**
      * Gets the HTTP protocol version.
+	 * 获取HTTP协议版本
      *
      * @final
      */
@@ -498,6 +507,7 @@ class Response
 
     /**
      * Retrieves the status code for the current web response.
+	 * 检索当前web响应的状态码
      *
      * @final
      */
@@ -508,6 +518,7 @@ class Response
 
     /**
      * Sets the response charset.
+	 * 设置响应字符集
      *
      * @return $this
      *
@@ -522,6 +533,7 @@ class Response
 
     /**
      * Retrieves the response charset.
+	 * 检索响应字符集
      *
      * @final
      */
@@ -532,6 +544,7 @@ class Response
 
     /**
      * Returns true if the response may safely be kept in a shared (surrogate) cache.
+	 * 如果响应可以安全地保存在共享（代理）缓存中，则返回true。
      *
      * Responses marked "private" with an explicit Cache-Control directive are
      * considered uncacheable.
@@ -562,6 +575,7 @@ class Response
 
     /**
      * Returns true if the response is "fresh".
+	 * 如果响应为"fresh"则返回true
      *
      * Fresh responses may be served from cache without any interaction with the
      * origin. A response is considered fresh when it includes a Cache-Control/max-age
@@ -577,6 +591,7 @@ class Response
     /**
      * Returns true if the response includes headers that can be used to validate
      * the response with the origin server using a conditional GET request.
+	 * 如果响应包含可用于验证的标头，则返回true。
      *
      * @final
      */
@@ -587,6 +602,7 @@ class Response
 
     /**
      * Marks the response as "private".
+	 * 将响应标记为"私有"
      *
      * It makes the response ineligible for serving other clients.
      *
@@ -604,6 +620,7 @@ class Response
 
     /**
      * Marks the response as "public".
+	 * 将回复标记为"公开"
      *
      * It makes the response eligible for serving other clients.
      *
@@ -621,6 +638,7 @@ class Response
 
     /**
      * Marks the response as "immutable".
+	 * 将响应标记为"不可变"
      *
      * @return $this
      *
@@ -639,6 +657,7 @@ class Response
 
     /**
      * Returns true if the response is marked as "immutable".
+	 * 如果响应被标记为"不可变"则返回true
      *
      * @final
      */
@@ -649,6 +668,7 @@ class Response
 
     /**
      * Returns true if the response must be revalidated by shared caches once it has become stale.
+	 * 如果响应过时后必须由共享缓存重新验证，则返回true。
      *
      * This method indicates that the response must not be served stale by a
      * cache in any circumstance without first revalidating with the origin.
@@ -664,6 +684,7 @@ class Response
 
     /**
      * Returns the Date header as a DateTime instance.
+	 * 返回Date头作为DateTime实例
      *
      * @throws \RuntimeException When the header is not parseable
      *
@@ -676,6 +697,7 @@ class Response
 
     /**
      * Sets the Date header.
+	 * 设置日期头
      *
      * @return $this
      *
@@ -695,6 +717,7 @@ class Response
 
     /**
      * Returns the age of the response in seconds.
+	 * 以秒为单位返回响应的年纪
      *
      * @final
      */
@@ -709,6 +732,7 @@ class Response
 
     /**
      * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
+	 * 通过将Age头设置为等于响应的最大年龄来标记响应过期。
      *
      * @return $this
      */
@@ -724,6 +748,7 @@ class Response
 
     /**
      * Returns the value of the Expires header as a DateTime instance.
+	 * 返回Expires报头的值作为DateTime实例
      *
      * @final
      */
@@ -739,6 +764,7 @@ class Response
 
     /**
      * Sets the Expires HTTP header with a DateTime instance.
+	 * 使用DateTime实例设置Expires HTTP报头
      *
      * Passing null as value will remove the header.
      *
@@ -767,6 +793,7 @@ class Response
     /**
      * Returns the number of seconds after the time specified in the response's Date
      * header when the response should no longer be considered fresh.
+	 * 返回响应的Date中指定的时间之后的秒数，响应不再被认为是新鲜的。
      *
      * First, it checks for a s-maxage directive, then a max-age directive, and then it falls
      * back on an expires header. It returns null when no maximum age can be established.
@@ -794,6 +821,7 @@ class Response
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh.
+	 * 设置响应不再被视为新鲜的秒数
      *
      * This methods sets the Cache-Control max-age directive.
      *
@@ -810,6 +838,7 @@ class Response
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
+	 * 设置共享缓存不再将响应视为新鲜的秒数。
      *
      * This methods sets the Cache-Control s-maxage directive.
      *
@@ -827,6 +856,7 @@ class Response
 
     /**
      * Returns the response's time-to-live in seconds.
+	 * 返回响应的生存时间，以秒为单位。
      *
      * It returns null when no freshness information is present in the response.
      *
@@ -844,6 +874,7 @@ class Response
 
     /**
      * Sets the response's time-to-live for shared caches in seconds.
+	 * 为共享缓存设置响应的生存时间（以秒为单位）
      *
      * This method adjusts the Cache-Control/s-maxage directive.
      *
@@ -860,6 +891,7 @@ class Response
 
     /**
      * Sets the response's time-to-live for private/client caches in seconds.
+	 * 为私有/客户端缓存设置响应的生存时间（以秒为单位）
      *
      * This method adjusts the Cache-Control/max-age directive.
      *
@@ -876,6 +908,7 @@ class Response
 
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
+	 * 返回最后修改的HTTP报头作为DateTime实例
      *
      * @throws \RuntimeException When the HTTP header is not parseable
      *
@@ -888,6 +921,7 @@ class Response
 
     /**
      * Sets the Last-Modified HTTP header with a DateTime instance.
+	 * 用DateTime实例设置最后修改的HTTP报头
      *
      * Passing null as value will remove the header.
      *
@@ -915,6 +949,7 @@ class Response
 
     /**
      * Returns the literal value of the ETag HTTP header.
+	 * 返回ETag HTTP报头的文字值
      *
      * @final
      */
@@ -925,6 +960,7 @@ class Response
 
     /**
      * Sets the ETag value.
+	 * 设置ETag值
      *
      * @param string|null $etag The ETag unique identifier or null to remove the header
      * @param bool        $weak Whether you want a weak ETag or not
@@ -950,6 +986,7 @@ class Response
 
     /**
      * Sets the response's cache headers (validation and/or expiration).
+	 * 设置响应的缓存头（验证和/或过期）
      *
      * Available options are: must_revalidate, no_cache, no_store, no_transform, public, private, proxy_revalidate, max_age, s_maxage, immutable, last_modified and etag.
      *
@@ -1012,6 +1049,7 @@ class Response
 
     /**
      * Modifies the response so that it conforms to the rules defined for a 304 status code.
+	 * 修改响应，使其符合为304状态码定义的规则。
      *
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
@@ -1037,6 +1075,7 @@ class Response
 
     /**
      * Returns true if the response includes a Vary header.
+	 * 如果响应包含Vary报头，则返回true。
      *
      * @final
      */
@@ -1047,6 +1086,7 @@ class Response
 
     /**
      * Returns an array of header names given in the Vary header.
+	 * 返回Vary头文件中给定的头文件名称数组
      *
      * @final
      */
@@ -1066,6 +1106,7 @@ class Response
 
     /**
      * Sets the Vary header.
+	 * 设置Vary标头
      *
      * @param string|array $headers
      * @param bool         $replace Whether to replace the actual value or not (true by default)
@@ -1131,6 +1172,7 @@ class Response
 
     /**
      * Is response invalid?
+	 * 响应无效吗？
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      *
@@ -1143,6 +1185,7 @@ class Response
 
     /**
      * Is response informative?
+	 * 响应是否有信息？
      *
      * @final
      */
@@ -1153,6 +1196,7 @@ class Response
 
     /**
      * Is response successful?
+	 * 响应成功吗？
      *
      * @final
      */
@@ -1163,6 +1207,7 @@ class Response
 
     /**
      * Is the response a redirect?
+	 * 响应是重定向吗？
      *
      * @final
      */
@@ -1173,6 +1218,7 @@ class Response
 
     /**
      * Is there a client error?
+	 * 是否有客户端错误？
      *
      * @final
      */
@@ -1183,6 +1229,7 @@ class Response
 
     /**
      * Was there a server side error?
+	 * 是否有服务器端错误？
      *
      * @final
      */
@@ -1193,6 +1240,7 @@ class Response
 
     /**
      * Is the response OK?
+	 * 反应还好吗？
      *
      * @final
      */
@@ -1203,6 +1251,7 @@ class Response
 
     /**
      * Is the response forbidden?
+	 * 响应是被禁止的吗？
      *
      * @final
      */
@@ -1213,6 +1262,7 @@ class Response
 
     /**
      * Is the response a not found error?
+	 * 响应是未发现错误吗？
      *
      * @final
      */
@@ -1223,6 +1273,8 @@ class Response
 
     /**
      * Is the response a redirect of some form?
+	 * 响应是某种形式的重定向吗？
+	 * 
      *
      * @final
      */
@@ -1233,6 +1285,7 @@ class Response
 
     /**
      * Is the response empty?
+	 * 回复是空的吗？
      *
      * @final
      */
@@ -1243,6 +1296,7 @@ class Response
 
     /**
      * Cleans or flushes output buffers up to target level.
+	 * 将输出缓冲区清除或刷新到目标级别
      *
      * Resulting level can be greater than target level if a non-removable buffer has been encountered.
      *
@@ -1265,6 +1319,7 @@ class Response
 
     /**
      * Marks a response as safe according to RFC8674.
+	 * 根据RFC8674将响应标记为安全
      *
      * @see https://tools.ietf.org/html/rfc8674
      */
@@ -1281,6 +1336,7 @@ class Response
 
     /**
      * Checks if we need to remove Cache-Control for SSL encrypted downloads when using IE < 9.
+	 * 检查是否需要在使用IE < 9时删除SSL加密下载的缓存控制。
      *
      * @see http://support.microsoft.com/kb/323308
      *

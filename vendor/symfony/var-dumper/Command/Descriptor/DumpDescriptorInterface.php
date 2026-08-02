@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，命令，描述符号，转储描述符接口
+ */
 
 /*
  * This file is part of the Symfony package.

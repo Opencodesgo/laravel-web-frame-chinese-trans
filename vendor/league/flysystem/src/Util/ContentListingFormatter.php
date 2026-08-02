@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，工具，内容列表格式化程序
+ * League，Flysystem，Util，内容列表格式化
  */
 
 namespace League\Flysystem\Util;
@@ -60,6 +60,7 @@ class ContentListingFormatter
 
     /**
      * Determine if the entry is out of scope.
+	 * 确定条目是否在范围之外
      *
      * @param array $entry
      *
@@ -80,6 +81,7 @@ class ContentListingFormatter
 
     /**
      * Check if the entry resides within the parent directory.
+	 * 检查条目是否驻留在父目录中
      *
      * @param array $entry
      *
@@ -98,6 +100,7 @@ class ContentListingFormatter
 
     /**
      * Check if the entry is a direct child of the directory.
+	 * 检查条目是否为目录的直接子
      *
      * @param array $entry
      *

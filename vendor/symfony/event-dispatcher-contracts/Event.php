@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，EventDispatcher，事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
  * Event is the base class for classes containing event data.
+ * 事件是包含事件数据的类的基类。
  *
  * This class contains no event data. It is used by events that do not pass
  * state information to an event handler when an event is raised.
@@ -42,6 +46,7 @@ class Event implements StoppableEventInterface
 
     /**
      * Stops the propagation of the event to further event listeners.
+	 * 停止将事件传播到进一步的事件侦听器。
      *
      * If multiple event listeners are connected to the same event, no
      * further event listener will be triggered once any trigger calls

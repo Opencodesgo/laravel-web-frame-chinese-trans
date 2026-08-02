@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，异常，功能节点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\CssSelector\Parser\Token;
 
 /**
  * Represents a "<selector>:<name>(<arguments>)" node.
+ * 表示一个“<selector>:<name>(<arguments>)”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

@@ -60,7 +60,7 @@ class BoundMethod
         // We will assume an @ sign is used to delimit the class name from the method
         // name. We will split on this @ sign and then build a callable array that
         // we can pass right back into the "call" method for dependency binding.
-		// 我们将假设使用@符号来分隔类名和方法.
+		// 我们将假设使用@符号来分隔类名和方法名。
         $method = count($segments) === 2
                         ? $segments[1] : $defaultMethod;
 
@@ -91,7 +91,7 @@ class BoundMethod
         // Here we need to turn the array callable into a Class@method string we can use to
         // examine the container and see if there are any method bindings for this given
         // method. If there are, we can call this method binding callback immediately.
-		// 这里我们需要将可调用数组转换为 Class@method 字符串。
+		// 这里我们需要将数组callable转换为一个Class@method字符串，以便使用to检查容器，看看是否有任何绑定方法。
         $method = static::normalizeMethod($callback);
 
         if ($container->hasMethodBinding($method)) {
@@ -168,6 +168,8 @@ class BoundMethod
      * @param  array  $parameters
      * @param  array  $dependencies
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected static function addDependencyForCallParameter($container, $parameter,
                                                             array &$parameters, &$dependencies)
@@ -182,7 +184,15 @@ class BoundMethod
 
                 unset($parameters[$className]);
             } else {
-                $dependencies[] = $container->make($className);
+                if ($parameter->isVariadic()) {
+                    $variadicDependencies = $container->make($className);
+
+                    $dependencies = array_merge($dependencies, is_array($variadicDependencies)
+                                ? $variadicDependencies
+                                : [$variadicDependencies]);
+                } else {
+                    $dependencies[] = $container->make($className);
+                }
             }
         } elseif ($parameter->isDefaultValueAvailable()) {
             $dependencies[] = $parameter->getDefaultValue();

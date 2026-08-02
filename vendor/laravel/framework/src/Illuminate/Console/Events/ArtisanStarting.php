@@ -9,7 +9,7 @@ class ArtisanStarting
 {
     /**
      * The Artisan application instance.
-	 * Artisan 应用实例
+	 * Artisan应用实例
      *
      * @var \Illuminate\Console\Application
      */
@@ -17,7 +17,7 @@ class ArtisanStarting
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Console\Application  $artisan
      * @return void

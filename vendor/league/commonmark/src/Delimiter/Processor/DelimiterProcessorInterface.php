@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，分隔符，处理器，分隔符处理器接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -18,54 +23,54 @@
 namespace League\CommonMark\Delimiter\Processor;
 
 use League\CommonMark\Delimiter\DelimiterInterface;
-use League\CommonMark\Inline\Element\AbstractStringContainer;
+use League\CommonMark\Node\Inline\AbstractStringContainer;
 
 /**
  * Interface for a delimiter processor
+ * 分隔符处理器的接口
  */
 interface DelimiterProcessorInterface
 {
     /**
      * Returns the character that marks the beginning of a delimited node.
+	 * 返回标记分隔节点开始的字符。
      *
      * This must not clash with any other processors being added to the environment.
-     *
-     * @return string
      */
     public function getOpeningCharacter(): string;
 
     /**
      * Returns the character that marks the ending of a delimited node.
+	 * 返回标记分隔节点结束的字符。
      *
      * This must not clash with any other processors being added to the environment.
      *
      * Note that for a symmetric delimiter such as "*", this is the same as the opening.
-     *
-     * @return string
      */
     public function getClosingCharacter(): string;
 
     /**
      * Minimum number of delimiter characters that are needed to active this.
+	 * 激活此功能所需的最小分隔符数。
      *
      * Must be at least 1.
-     *
-     * @return int
      */
     public function getMinLength(): int;
 
     /**
      * Determine how many (if any) of the delimiter characters should be used.
+	 * 确定应该使用多少（如果有的话）分隔符。
      *
      * This allows implementations to decide how many characters to be used
      * based on the properties of the delimiter runs. An implementation can also
      * return 0 when it doesn't want to allow this particular combination of
      * delimiter runs.
      *
+     * IMPORTANT: Unless this method returns the same hard-coded value in all cases,
+     * you MUST implement the CacheableDelimiterProcessorInterface interface instead.
+     *
      * @param DelimiterInterface $opener The opening delimiter run
      * @param DelimiterInterface $closer The closing delimiter run
-     *
-     * @return int
      */
     public function getDelimiterUse(DelimiterInterface $opener, DelimiterInterface $closer): int;
 
@@ -79,8 +84,6 @@ interface DelimiterProcessorInterface
      * @param AbstractStringContainer $opener       The node that contained the opening delimiter
      * @param AbstractStringContainer $closer       The node that contained the closing delimiter
      * @param int                     $delimiterUse The number of delimiters that were used
-     *
-     * @return void
      */
-    public function process(AbstractStringContainer $opener, AbstractStringContainer $closer, int $delimiterUse);
+    public function process(AbstractStringContainer $opener, AbstractStringContainer $closer, int $delimiterUse): void;
 }

@@ -5,6 +5,7 @@
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -120,6 +121,7 @@ class Request
 
     /**
      * Uploaded files ($_FILES).
+	 * 上传文件
      *
      * @var FileBag
      */
@@ -127,6 +129,7 @@ class Request
 
     /**
      * Cookies ($_COOKIE).
+	 * Cookie
      *
      * @var InputBag
      */
@@ -134,6 +137,7 @@ class Request
 
     /**
      * Headers (taken from the $_SERVER).
+	 * 头
      *
      * @var HeaderBag
      */
@@ -240,7 +244,7 @@ class Request
     /**
      * Names for headers that can be trusted when
      * using trusted proxies.
-	 * 可信任的标头名称当使用可信代理。
+	 * 可信任的标头名称当使用可信代理
      *
      * The FORWARDED header is the standard as of rfc7239.
      *
@@ -278,6 +282,7 @@ class Request
 	 * 设置此请求的参数
      *
      * This method also re-initializes all properties.
+	 * 此方法还会重新初始化所有属性
      *
      * @param array                $query      The GET parameters
      * @param array                $request    The POST parameters
@@ -312,7 +317,7 @@ class Request
 
     /**
      * Creates a new request with values from PHP's super globals.
-	 * 创建一个新请求用PHP的超全局变量
+	 * 用超全局变量创建一个新请求
      *
      * @return static
      */
@@ -470,6 +475,7 @@ class Request
 
     /**
      * Clones a request and overrides some of its parameters.
+	 * 克隆请求并覆盖它的一些参数
      *
      * @param array|null $query      The GET parameters
      * @param array|null $request    The POST parameters
@@ -526,6 +532,7 @@ class Request
 
     /**
      * Clones the current request.
+	 * 克隆当前请求
      *
      * Note that the session is not cloned as duplicated requests
      * are most of the time sub-requests of the main one.
@@ -543,6 +550,7 @@ class Request
 
     /**
      * Returns the request as a string.
+	 * 以字符串形式返回请求
      *
      * @return string
      */
@@ -570,6 +578,7 @@ class Request
 
     /**
      * Overrides the PHP global variables according to this request instance.
+	 * 根据该请求实例重写PHP全局变量
      *
      * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
      * $_FILES is never overridden, see rfc1867
@@ -608,6 +617,7 @@ class Request
 
     /**
      * Sets a list of trusted proxies.
+	 * 设置受信任代理的列表
      *
      * You should only list the reverse proxies that you manage directly.
      *
@@ -633,6 +643,7 @@ class Request
 
     /**
      * Gets the list of trusted proxies.
+	 * 获取受信任代理的列表
      *
      * @return array
      */
@@ -643,6 +654,7 @@ class Request
 
     /**
      * Gets the set of trusted headers from trusted proxies.
+	 * 从可信代理获取一组可信标头
      *
      * @return int A bit field of Request::HEADER_* that defines which headers are trusted from your proxies
      */
@@ -653,6 +665,7 @@ class Request
 
     /**
      * Sets a list of trusted host patterns.
+	 * 设置受信任主机模式的列表
      *
      * You should only list the hosts you manage using regexs.
      *
@@ -669,6 +682,7 @@ class Request
 
     /**
      * Gets the list of trusted host patterns.
+	 * 获取受信任主机模式的列表
      *
      * @return array
      */
@@ -679,6 +693,7 @@ class Request
 
     /**
      * Normalizes a query string.
+	 * 规范化查询字符串
      *
      * It builds a normalized query string, where keys/value pairs are alphabetized,
      * have consistent escaping and unneeded delimiters are removed.
@@ -716,6 +731,7 @@ class Request
 
     /**
      * Checks whether support for the _method request parameter is enabled.
+	 * 检查是否支持_method请求参数
      *
      * @return bool
      */
@@ -726,6 +742,7 @@ class Request
 
     /**
      * Gets a "parameter" value from any bag.
+	 * 从任何包获取“参数”值。
      *
      * This method is mainly useful for libraries that want to provide some flexibility. If you don't need the
      * flexibility in controllers, it is better to explicitly get request parameters from the appropriate
@@ -758,6 +775,7 @@ class Request
 
     /**
      * Gets the Session.
+	 * 获取会话
      *
      * @return SessionInterface
      */
@@ -778,6 +796,7 @@ class Request
     /**
      * Whether the request contains a Session which was started in one of the
      * previous requests.
+	 * 请求是否包含在其中一个先前的请求中启动的会话
      *
      * @return bool
      */
@@ -789,6 +808,7 @@ class Request
 
     /**
      * Whether the request contains a Session object.
+	 * 请求是否包含Session对象
      *
      * This method does not give any information about the state of the session object,
      * like whether the session is started or not. It is just a way to check if this Request
@@ -822,6 +842,7 @@ class Request
 
     /**
      * Returns the client IP addresses.
+	 * 返回客户端IP地址
      *
      * In the returned array the most trusted IP address is first, and the
      * least trusted one last. The "real" client IP address is the last one,
@@ -846,6 +867,7 @@ class Request
 
     /**
      * Returns the client IP address.
+	 * 返回客户端IP地址
      *
      * This method can read the client IP address from the "X-Forwarded-For" header
      * when trusted proxies were set via "setTrustedProxies()". The "X-Forwarded-For"
@@ -871,6 +893,7 @@ class Request
 
     /**
      * Returns current script name.
+	 * 返回当前脚本名称
      *
      * @return string
      */
@@ -881,6 +904,7 @@ class Request
 
     /**
      * Returns the path being requested relative to the executed script.
+	 * 返回被请求的相对于已执行脚本的路径
      *
      * The path info always starts with a /.
      *
@@ -904,6 +928,7 @@ class Request
 
     /**
      * Returns the root path from which this request is executed.
+	 * 返回执行此请求的根路径
      *
      * Suppose that an index.php file instantiates this request object:
      *
@@ -925,6 +950,7 @@ class Request
 
     /**
      * Returns the root URL from which this request is executed.
+	 * 返回执行此请求的根URL
      *
      * The base URL never ends with a /.
      *
@@ -948,6 +974,7 @@ class Request
     /**
      * Returns the real base URL received by the webserver from which this request is executed.
      * The URL does not include trusted reverse proxy prefix.
+	 * 返回执行此请求的web服务器接收到的真实基本URL。
      *
      * @return string The raw URL (i.e. not urldecoded)
      */
@@ -962,6 +989,7 @@ class Request
 
     /**
      * Gets the request's scheme.
+	 * 获取请求的模式
      *
      * @return string
      */
@@ -972,6 +1000,7 @@ class Request
 
     /**
      * Returns the port on which the request is made.
+	 * 返回发出请求的端口
      *
      * This method can read the client port from the "X-Forwarded-Port" header
      * when trusted proxies were set via "setTrustedProxies()".
@@ -1005,6 +1034,7 @@ class Request
 
     /**
      * Returns the user.
+	 * 返回用户
      *
      * @return string|null
      */
@@ -1015,6 +1045,7 @@ class Request
 
     /**
      * Returns the password.
+	 * 返回密码
      *
      * @return string|null
      */
@@ -1025,6 +1056,7 @@ class Request
 
     /**
      * Gets the user info.
+	 * 获取用户信息
      *
      * @return string|null A user name if any and, optionally, scheme-specific information about how to gain authorization to access the server
      */
@@ -1042,6 +1074,7 @@ class Request
 
     /**
      * Returns the HTTP host being requested.
+	 * 返回被请求的HTTP主机
      *
      * The port name will be appended to the host if it's non-standard.
      *
@@ -1061,6 +1094,7 @@ class Request
 
     /**
      * Returns the requested URI (path and query string).
+	 * 返回请求的URI(路径和查询字符串)
      *
      * @return string The raw URI (i.e. not URI decoded)
      */
@@ -1075,6 +1109,7 @@ class Request
 
     /**
      * Gets the scheme and HTTP host.
+	 * 获取模式和HTTP主机
      *
      * If the URL was called with basic authentication, the user
      * and the password are not added to the generated string.
@@ -1088,6 +1123,7 @@ class Request
 
     /**
      * Generates a normalized URI (URL) for the Request.
+	 * 为请求生成一个规范化的URI （URL）
      *
      * @return string
      *
@@ -1104,6 +1140,7 @@ class Request
 
     /**
      * Generates a normalized URI for the given path.
+	 * 为给定路径生成规范化的URI
      *
      * @param string $path A path to use instead of the current one
      *
@@ -1116,6 +1153,7 @@ class Request
 
     /**
      * Returns the path as relative reference from the current Request path.
+	 * 从当前请求路径返回路径作为相对引用。
      *
      * Only the URIs path component (no schema, host etc.) is relevant and must be given.
      * Both paths must be absolute and not contain relative parts.
@@ -1169,6 +1207,7 @@ class Request
 
     /**
      * Generates the normalized query string for the Request.
+	 * 为请求生成规范化查询字符串
      *
      * It builds a normalized query string, where keys/value pairs are alphabetized
      * and have consistent escaping.
@@ -1184,6 +1223,7 @@ class Request
 
     /**
      * Checks whether the request is secure or not.
+	 * 检查请求是否安全
      *
      * This method can read the client protocol from the "X-Forwarded-Proto" header
      * when trusted proxies were set via "setTrustedProxies()".
@@ -1280,6 +1320,7 @@ class Request
 
     /**
      * Gets the request "intended" method.
+	 * 获取请求"预期"方法
      *
      * If the X-HTTP-Method-Override header is set, and if the method is a POST,
      * then it is used to determine the "real" intended HTTP method.
@@ -1330,6 +1371,7 @@ class Request
 
     /**
      * Gets the "real" request method.
+	 * 获取"真正的"请求方法
      *
      * @return string
      *
@@ -1342,6 +1384,7 @@ class Request
 
     /**
      * Gets the mime type associated with the format.
+	 * 获取与该格式关联的mime类型
      *
      * @return string|null
      */
@@ -1356,6 +1399,7 @@ class Request
 
     /**
      * Gets the mime types associated with the format.
+	 * 获取与该格式关联的mime类型
      *
      * @return array
      */
@@ -1370,6 +1414,7 @@ class Request
 
     /**
      * Gets the format associated with the mime type.
+	 * 获取与mime类型关联的格式
      *
      * @return string|null
      */
@@ -1398,6 +1443,7 @@ class Request
 
     /**
      * Associates a format with mime types.
+	 * 将格式与mime类型关联
      *
      * @param string|array $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
      */
@@ -1412,6 +1458,7 @@ class Request
 
     /**
      * Gets the request format.
+	 * 得到请求格式
      *
      * Here is the process to determine the format:
      *
@@ -1434,6 +1481,7 @@ class Request
 
     /**
      * Sets the request format.
+	 * 设置请求格式
      */
     public function setRequestFormat(?string $format)
     {
@@ -1442,6 +1490,7 @@ class Request
 
     /**
      * Gets the format associated with the request.
+	 * 获取与请求关联的格式
      *
      * @return string|null
      */
@@ -1452,6 +1501,7 @@ class Request
 
     /**
      * Sets the default locale.
+	 * 设置默认区域设置
      */
     public function setDefaultLocale(string $locale)
     {
@@ -1464,6 +1514,7 @@ class Request
 
     /**
      * Get the default locale.
+	 * 得到默认区域
      *
      * @return string
      */
@@ -1474,6 +1525,7 @@ class Request
 
     /**
      * Sets the locale.
+	 * 设置区域
      */
     public function setLocale(string $locale)
     {
@@ -1482,6 +1534,7 @@ class Request
 
     /**
      * Get the locale.
+	 * 获取区域设置
      *
      * @return string
      */
@@ -1492,6 +1545,7 @@ class Request
 
     /**
      * Checks if the request method is of specified type.
+	 * 检查请求方法是否为指定类型
      *
      * @param string $method Uppercase request method (GET, POST etc)
      *
@@ -1504,6 +1558,7 @@ class Request
 
     /**
      * Checks whether or not the method is safe.
+	 * 检查方法是否安全
      *
      * @see https://tools.ietf.org/html/rfc7231#section-4.2.1
      *
@@ -1516,6 +1571,7 @@ class Request
 
     /**
      * Checks whether or not the method is idempotent.
+	 * 检查方法是否幂等
      *
      * @return bool
      */
@@ -1526,6 +1582,7 @@ class Request
 
     /**
      * Checks whether the method is cacheable or not.
+	 * 检查方法是否可缓存
      *
      * @see https://tools.ietf.org/html/rfc7231#section-4.2.3
      *
@@ -1538,6 +1595,7 @@ class Request
 
     /**
      * Returns the protocol version.
+	 * 返回协议版本
      *
      * If the application is behind a proxy, the protocol version used in the
      * requests between the client and the proxy and between the proxy and the
@@ -1562,6 +1620,7 @@ class Request
 
     /**
      * Returns the request body content.
+	 * 返回请求正文内容
      *
      * @param bool $asResource If true, a resource will be returned
      *
@@ -1607,6 +1666,7 @@ class Request
 
     /**
      * Gets the request body decoded as array, typically from a JSON payload.
+	 * 获取解码为数组的请求体，通常来自JSON有效负载。
      *
      * @return array
      *
@@ -1637,6 +1697,7 @@ class Request
 
     /**
      * Gets the Etags.
+	 * 得到Etags
      *
      * @return array
      */
@@ -1657,6 +1718,7 @@ class Request
      * Gets the preferred format for the response by inspecting, in the following order:
      *   * the request format set using setRequestFormat;
      *   * the values of the Accept HTTP header.
+	 * 通过检查，按以下顺序获取响应的首选格式：
      *
      * Note that if you use this method, you should send the "Vary: Accept" header
      * in the response to prevent any issues with intermediary HTTP caches.
@@ -1678,6 +1740,7 @@ class Request
 
     /**
      * Returns the preferred language.
+	 * 返回首选语言
      *
      * @param string[] $locales An array of ordered available locales
      *
@@ -1713,6 +1776,7 @@ class Request
 
     /**
      * Gets a list of languages acceptable by the client browser ordered in the user browser preferences.
+	 * 获取按用户浏览器首选项排序的客户端浏览器可接受的语言列表
      *
      * @return array
      */
@@ -1754,6 +1818,7 @@ class Request
 
     /**
      * Gets a list of charsets acceptable by the client browser in preferable order.
+	 * 按优先顺序获取客户端浏览器可接受的字符集列表
      *
      * @return array
      */
@@ -1768,6 +1833,7 @@ class Request
 
     /**
      * Gets a list of encodings acceptable by the client browser in preferable order.
+	 * 按优先顺序获取客户端浏览器可接受的编码列表
      *
      * @return array
      */
@@ -1782,6 +1848,7 @@ class Request
 
     /**
      * Gets a list of content types acceptable by the client browser in preferable order.
+	 * 按优先顺序获取客户端浏览器可接受的内容类型列表
      *
      * @return array
      */
@@ -1796,6 +1863,7 @@ class Request
 
     /**
      * Returns true if the request is an XMLHttpRequest.
+	 * 如果请求是XMLHttpRequest则返回true
      *
      * It works if your JavaScript library sets an X-Requested-With HTTP header.
      * It is known to work with common JavaScript frameworks:
@@ -1811,6 +1879,7 @@ class Request
 
     /**
      * Checks whether the client browser prefers safe content or not according to RFC8674.
+	 * 根据RFC8674检查客户端浏览器是否偏好安全内容
      *
      * @see https://tools.ietf.org/html/rfc8674
      */
@@ -1830,6 +1899,7 @@ class Request
 
     /*
      * The following methods are derived from code of the Zend Framework (1.10dev - 2010-01-24)
+	 * 下面的方法来自于Zend框架的代码
      *
      * Code subject to the new BSD license (https://framework.zend.com/license).
      *
@@ -1882,6 +1952,7 @@ class Request
 
     /**
      * Prepares the base URL.
+	 * 准备基础URL
      *
      * @return string
      */
@@ -1951,6 +2022,7 @@ class Request
 
     /**
      * Prepares the base path.
+	 * 准备基本路径
      *
      * @return string
      */
@@ -1977,6 +2049,7 @@ class Request
 
     /**
      * Prepares the path info.
+	 * 准备路径信息
      *
      * @return string
      */
@@ -2009,6 +2082,7 @@ class Request
 
     /**
      * Initializes HTTP request formats.
+	 * 初始化HTTP请求格式
      */
     protected static function initializeFormats()
     {
@@ -2043,6 +2117,7 @@ class Request
     /**
      * Returns the prefix as encoded in the string when the string starts with
      * the given prefix, null otherwise.
+	 * 返回字符串开头时在字符串中编码的给定的前缀，否则为空。
      */
     private function getUrlencodedPrefix(string $string, string $prefix): ?string
     {
@@ -2082,6 +2157,7 @@ class Request
 
     /**
      * Indicates whether this request originated from a trusted proxy.
+	 * 指明此请求是否来自受信任的代理
      *
      * This can be useful to determine whether or not to trust the
      * contents of a proxy-specific header.
@@ -2188,6 +2264,7 @@ class Request
 
     /**
      * Is this IIS with UrlRewriteModule?
+	 * 这是IIS与UrlRewriteModule吗
      *
      * This method consumes, caches and removed the IIS_WasUrlRewritten env var,
      * so we don't inherit it to sub-requests.

@@ -1,10 +1,11 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，异常，错误请求 Http 异常
+ * Symfony，Component，HttpKernel，异常，错误请求Http异常
  */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *

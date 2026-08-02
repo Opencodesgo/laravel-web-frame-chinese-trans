@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，上下文
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * The Shell execution context.
+ * Shell执行上下文。
  *
  * This class encapsulates the current variables, most recent return value and
  * exception, and the current namespace.
@@ -38,6 +42,7 @@ class Context
 
     /**
      * Get a context variable.
+	 * 获取一个上下文变量
      *
      * @throws \InvalidArgumentException If the variable is not found in the current context
      *
@@ -91,6 +96,7 @@ class Context
 
     /**
      * Get all defined variables.
+	 * 获取所有已定义的变量
      */
     public function getAll(): array
     {
@@ -123,6 +129,7 @@ class Context
 
     /**
      * Set all scope variables.
+	 * 设置所有作用域变量
      *
      * This method does *not* set any of the magic variables: $_, $_e, $__out,
      * $__class, $__file, etc.
@@ -142,6 +149,7 @@ class Context
 
     /**
      * Set the most recent return value.
+	 * 设置最近的返回值
      *
      * @param mixed $value
      */
@@ -152,6 +160,7 @@ class Context
 
     /**
      * Get the most recent return value.
+	 * 获取最近的返回值
      *
      * @return mixed
      */
@@ -162,6 +171,7 @@ class Context
 
     /**
      * Set the most recent Exception or Error.
+	 * 设置最近的异常或错误
      *
      * @param \Throwable $e
      */
@@ -172,6 +182,7 @@ class Context
 
     /**
      * Get the most recent Exception or Error.
+	 * 获取最近的Exception或Error
      *
      * @throws \InvalidArgumentException If no Exception has been caught
      *
@@ -188,6 +199,7 @@ class Context
 
     /**
      * Set the most recent output from evaluated code.
+	 * 设置已计算代码的最新输出
      */
     public function setLastStdout(string $lastStdout)
     {
@@ -196,6 +208,7 @@ class Context
 
     /**
      * Get the most recent output from evaluated code.
+	 * 从求值的代码中获取最新的输出
      *
      * @throws \InvalidArgumentException If no output has happened yet
      *
@@ -212,6 +225,7 @@ class Context
 
     /**
      * Set the bound object ($this variable) for the interactive shell.
+	 * 为交互式shell设置绑定对象（$this变量）。
      *
      * Note that this unsets the bound class, if any exists.
      *
@@ -225,6 +239,7 @@ class Context
 
     /**
      * Get the bound object ($this variable) for the interactive shell.
+	 * 获取交互shell的绑定对象（$this变量）
      *
      * @return object|null
      */
@@ -235,6 +250,7 @@ class Context
 
     /**
      * Set the bound class (self) for the interactive shell.
+	 * 为交互式shell设置绑定类（self）。
      *
      * Note that this unsets the bound object, if any exists.
      *
@@ -248,6 +264,7 @@ class Context
 
     /**
      * Get the bound class (self) for the interactive shell.
+	 * 获取交互式shell的绑定类（self）
      *
      * @return string|null
      */
@@ -295,6 +312,7 @@ class Context
 
     /**
      * Check whether a variable name is a magic variable.
+	 * 检查变量名是否为幻变量
      */
     public static function isSpecialVariableName(string $name): bool
     {
