@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，代码格式程序
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * A pretty-printer for code.
+ * 一个漂亮的代码打印机。
  */
 class CodeFormatter implements ReflectorFormatter
 {
@@ -75,6 +79,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Format the code represented by $reflector for shell output.
+	 * 为shell输出格式化$reflector表示的代码
      *
      * @param \Reflector $reflector
      *

@@ -37,6 +37,7 @@ class Helpers
 	/**
 	 * Returns the last occurred PHP error or an empty string if no error occurred. Unlike error_get_last(),
 	 * it is nit affected by the PHP directive html_errors and always returns text, not HTML.
+	 * 返回最近发生的 PHP 错误，如果没有错误则返回空字符串。与 error_get_last() 不同，它不受 PHP 选项 html_errors 的影响，始终返回文本，而不是 HTML。
 	 */
 	public static function getLastError(): string
 	{
@@ -49,6 +50,7 @@ class Helpers
 
 	/**
 	 * Converts false to null, does not change other values.
+	 * 将false转换为null，不改变其他值。
 	 * @param  mixed  $value
 	 * @return mixed
 	 */
@@ -60,6 +62,7 @@ class Helpers
 
 	/**
 	 * Returns value clamped to the inclusive range of min and max.
+	 * 返回限制在最小和最大范围内的值
 	 * @param  int|float  $value
 	 * @param  int|float  $min
 	 * @param  int|float  $max
@@ -77,6 +80,7 @@ class Helpers
 
 	/**
 	 * Looks for a string from possibilities that is most similar to value, but not the same (for 8-bit encoding).
+	 * 从与value最相似但不相同的可能性中查找字符串（对于8位编码）
 	 * @param  string[]  $possibilities
 	 */
 	public static function getSuggestion(array $possibilities, string $value): ?string

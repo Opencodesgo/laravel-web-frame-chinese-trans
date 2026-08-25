@@ -22,6 +22,7 @@ use Monolog\Utils;
  * 类FluentdFormatter
  *
  * Serializes a log message to Fluentd unix socket protocol
+ * 序列化日志消息到Fluentd unix套接字协议
  *
  * Fluentd config:
  *

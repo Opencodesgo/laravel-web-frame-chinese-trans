@@ -15,6 +15,7 @@ use Psr\Http\Message\StreamInterface;
  *
  * Allows for easy testing and extension of a provided stream without needing
  * to create a concrete class for a simple extension point.
+ * 允许轻松地测试和扩展提供的流，而无需为简单的扩展点创建具体的类。
  */
 #[\AllowDynamicProperties]
 final class FnStream implements StreamInterface
@@ -78,6 +79,7 @@ final class FnStream implements StreamInterface
     /**
      * Adds custom functionality to an underlying stream by intercepting
      * specific method calls.
+	 * 通过拦截特定方法调用来向底层流添加自定义功能
      *
      * @param StreamInterface         $stream  Stream to decorate
      * @param array<string, callable> $methods Hash of method name to a closure

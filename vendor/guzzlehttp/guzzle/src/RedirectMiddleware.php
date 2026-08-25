@@ -93,6 +93,7 @@ class RedirectMiddleware
         $nextRequest = $this->modifyRequest($request, $options, $response);
 
         // If authorization is handled by curl, unset it if URI is cross-origin.
+		// 如果授权是由curl处理的，如果URI是跨源的，则取消设置。
         if (Psr7\UriComparator::isCrossOrigin($request->getUri(), $nextRequest->getUri()) && defined('\CURLOPT_HTTPAUTH')) {
             unset(
                 $options['curl'][\CURLOPT_HTTPAUTH],
@@ -111,6 +112,7 @@ class RedirectMiddleware
         $promise = $this($nextRequest, $options);
 
         // Add headers to be able to track history of redirects.
+		// 添加标题，以便能够跟踪重定向的历史记录。
         if (!empty($options['allow_redirects']['track_redirects'])) {
             return $this->withTracking(
                 $promise,
@@ -165,6 +167,7 @@ class RedirectMiddleware
     public function modifyRequest(RequestInterface $request, array $options, ResponseInterface $response): RequestInterface
     {
         // Request modifications to apply.
+		// 请求修改以适用。
         $modify = [];
         $protocols = $options['allow_redirects']['protocols'];
 

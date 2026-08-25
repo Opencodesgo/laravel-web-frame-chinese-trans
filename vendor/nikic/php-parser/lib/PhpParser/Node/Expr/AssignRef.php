@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Assign Ref
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -12,6 +16,7 @@ class AssignRef extends Expr {
 
     /**
      * Constructs an assignment node.
+	 * 构造分配节点
      *
      * @param Expr $var Variable
      * @param Expr $expr Expression

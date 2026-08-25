@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，字段表单
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -10,6 +14,7 @@ class YieldFrom extends Expr {
 
     /**
      * Constructs an "yield from" node.
+	 * 构造“yield from”节点
      *
      * @param Expr $expr Expression
      * @param array<string, mixed> $attributes Additional attributes

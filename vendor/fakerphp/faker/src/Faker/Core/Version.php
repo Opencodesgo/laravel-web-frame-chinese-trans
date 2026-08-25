@@ -44,6 +44,7 @@ final class Version implements Extension\VersionExtension
 
     /**
      * Common pre-release identifier
+	 * 通用预发布标识符
      */
     private function semverPreReleaseIdentifier(): string
     {

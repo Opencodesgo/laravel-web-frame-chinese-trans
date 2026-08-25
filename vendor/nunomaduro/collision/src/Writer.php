@@ -67,6 +67,7 @@ final class Writer implements WriterContract
     /**
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
+	 * 忽略文件字符串与提供的正则表达式匹配的痕迹
      *
      * @var string[]
      */
@@ -210,6 +211,7 @@ final class Writer implements WriterContract
                 function ($frame) {
                     // If we are in verbose mode, we always
                     // display the full stack trace.
+					// 如果我们处于冗长模式，我们总是显示完整的堆栈跟踪。
                     if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                         return true;
                     }
@@ -282,6 +284,7 @@ final class Writer implements WriterContract
     /**
      * Renders the editor containing the code that was the
      * origin of the exception.
+	 * 渲染包含引发异常的代码的编辑器
      */
     protected function renderEditor(Frame $frame): WriterContract
     {

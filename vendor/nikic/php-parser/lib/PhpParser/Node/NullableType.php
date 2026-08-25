@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，可空类型
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -10,6 +14,7 @@ class NullableType extends ComplexType {
 
     /**
      * Constructs a nullable type (wrapping another type).
+	 * 构造一个无效类型(包装另一种类型)
      *
      * @param Identifier|Name $type Type
      * @param array<string, mixed> $attributes Additional attributes

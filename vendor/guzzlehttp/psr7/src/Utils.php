@@ -40,6 +40,7 @@ final class Utils
     /**
      * Copy the contents of a stream into another stream until the given number
      * of bytes have been read.
+	 * 将流中的内容复制到另一个流中，直到读取指定的字节数为止。
      *
      * @param StreamInterface $source Stream to read from
      * @param StreamInterface $dest   Stream to write to
@@ -75,6 +76,7 @@ final class Utils
     /**
      * Copy the contents of a stream into a string until the given number of
      * bytes have been read.
+	 * 将流的内容复制到字符串中，直到读取指定的字节数为止。
      *
      * @param StreamInterface $stream Stream to read
      * @param int             $maxLen Maximum number of bytes to read. Pass -1

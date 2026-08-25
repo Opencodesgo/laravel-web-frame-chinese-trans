@@ -2,7 +2,7 @@
 
 /**
  * Monolog，处理器，内省处理机
- *
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -66,6 +66,7 @@ class IntrospectionProcessor implements ProcessorInterface
     public function __invoke(array $record): array
     {
         // return if the level is not high enough
+		// 如果级别不够高，返回。
         if ($record['level'] < $this->level) {
             return $record;
         }
@@ -73,8 +74,10 @@ class IntrospectionProcessor implements ProcessorInterface
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
         // skip first since it's always the current method
+		// 先跳过，因为它总是当前方法。
         array_shift($trace);
         // the call_user_func call is also skipped
+		// call_user_func调用也被跳过
         array_shift($trace);
 
         $i = 0;
@@ -100,6 +103,7 @@ class IntrospectionProcessor implements ProcessorInterface
         $i += $this->skipStackFramesCount;
 
         // we should have the call source now
+		// 我们现在应该有呼叫源了
         $record['extra'] = array_merge(
             $record['extra'],
             [

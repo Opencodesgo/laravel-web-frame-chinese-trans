@@ -16,6 +16,7 @@ use Psr\Http\Message\ResponseInterface;
  * CookieJarInterface instances automatically expire contained cookies when
  * necessary. Subclasses are also responsible for storing and retrieving
  * cookies from a file, database, etc.
+ * 它从HTTP请求中提取cookie，并在HTTP响应中返回它们。
  *
  * @see https://docs.python.org/2/library/cookielib.html Inspiration
  *
@@ -57,6 +58,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Remove cookies currently held in the cookie jar.
+	 * 移除目前保存在cookie jar中的cookies。
      *
      * Invoking this method without arguments will empty the whole cookie jar.
      * If given a $domain argument only cookies belonging to that domain will

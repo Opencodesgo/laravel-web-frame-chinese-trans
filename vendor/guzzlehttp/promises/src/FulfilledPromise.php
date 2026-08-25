@@ -13,6 +13,7 @@ namespace GuzzleHttp\Promise;
  *
  * Thenning off of this promise will invoke the onFulfilled callback
  * immediately and ignore other callbacks.
+ * 取消此承诺将立即调用 onFulfilled 回调函数，并忽略其他回调。
  *
  * @final
  */
@@ -39,6 +40,7 @@ class FulfilledPromise implements PromiseInterface
         ?callable $onRejected = null
     ): PromiseInterface {
         // Return itself if there is no onFulfilled function.
+		// 如果没有oncompleted函数，则返回自身。
         if (!$onFulfilled) {
             return $this;
         }

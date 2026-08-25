@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，闭包使用
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
@@ -12,6 +16,7 @@ class ClosureUse extends NodeAbstract {
 
     /**
      * Constructs a closure use node.
+	 * 构造闭包使用节点
      *
      * @param Expr\Variable $var Variable to use
      * @param bool $byRef Whether to use by reference

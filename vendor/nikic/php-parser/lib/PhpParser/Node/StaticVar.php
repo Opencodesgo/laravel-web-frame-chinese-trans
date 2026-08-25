@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，Static Var
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -13,6 +17,7 @@ class StaticVar extends NodeAbstract {
 
     /**
      * Constructs a static variable node.
+	 * 构造静态变量节点
      *
      * @param Expr\Variable $var Name
      * @param null|Node\Expr $default Default value

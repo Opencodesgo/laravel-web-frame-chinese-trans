@@ -27,6 +27,7 @@ class NameResolver extends NodeVisitorAbstract {
 
     /**
      * Constructs a name resolution visitor.
+	 * 构造名称解析访问器。
      *
      * Options:
      *  * preserveOriginalNames (default false): An "originalName" attribute will be added to

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，AssignOp，Bitwise And
+ */
+
 namespace PhpParser\Node\Expr\AssignOp;
 
 use PhpParser\Node\Expr\AssignOp;

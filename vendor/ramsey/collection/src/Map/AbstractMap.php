@@ -28,6 +28,7 @@ use function var_export;
 /**
  * This class provides a basic implementation of `MapInterface`, to minimize the
  * effort required to implement this interface.
+ * 本类提供了 `MapInterface` 的基本实现，以减少实现该接口所需的劳动量。
  *
  * @template T
  * @extends AbstractArray<T>

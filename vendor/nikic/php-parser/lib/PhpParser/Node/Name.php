@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，名称
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
@@ -20,6 +24,7 @@ class Name extends NodeAbstract {
 
     /**
      * Constructs a name node.
+	 * 构造名称节点
      *
      * @param string|string[]|self $name Name as string, part array or Name instance (copy ctor)
      * @param array<string, mixed> $attributes Additional attributes
@@ -35,6 +40,7 @@ class Name extends NodeAbstract {
 
     /**
      * Get parts of name (split by the namespace separator).
+	 * 获取name的部分（由名称空间分隔符分割）
      *
      * @psalm-return non-empty-list<string>
      * @return string[] Parts of name
@@ -45,6 +51,7 @@ class Name extends NodeAbstract {
 
     /**
      * Gets the first part of the name, i.e. everything before the first namespace separator.
+	 * 获取名称的第一部分，即第一个名称空间分隔符之前的所有内容。
      *
      * @return string First part of the name
      */

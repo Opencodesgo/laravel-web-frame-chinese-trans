@@ -75,6 +75,7 @@ final class TestResult
 
     /**
      * Test constructor.
+	 * 测试构造方法
      */
     private function __construct(string $testCaseName, string $description, string $type, string $icon, string $color, Throwable $throwable = null)
     {

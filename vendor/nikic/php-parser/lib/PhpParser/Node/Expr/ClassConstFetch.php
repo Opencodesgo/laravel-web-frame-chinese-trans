@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Const Fetch 类
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node;
@@ -15,6 +19,7 @@ class ClassConstFetch extends Expr {
 
     /**
      * Constructs a class const fetch node.
+	 * 构造类const获取节点
      *
      * @param Name|Expr $class Class name
      * @param string|Identifier|Expr|Error $name Constant name

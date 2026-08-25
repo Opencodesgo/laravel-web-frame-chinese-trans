@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Yield_
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -12,6 +16,7 @@ class Yield_ extends Expr {
 
     /**
      * Constructs a yield expression node.
+	 * 构造yield表达式节点
      *
      * @param null|Expr $value Value expression
      * @param null|Expr $key Key expression

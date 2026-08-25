@@ -14,6 +14,7 @@ use PhpParser\ErrorHandler;
  * 将所有错误收集到数组中的错误处理程序。
  *
  * This allows graceful handling of errors.
+ * 这允许优雅地处理错误。
  */
 class Collecting implements ErrorHandler {
     /** @var Error[] Collected errors */

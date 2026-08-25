@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，工具，价值提取器特征
+ * Ramsey，Collection，工具，值提取器特征
  */
 
 /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，Isset 通行证
+ */
 
 /*
  * This file is part of Psy Shell.

@@ -64,9 +64,10 @@ class ErrorHandler
 
     /**
      * Registers a new ErrorHandler for a given Logger
-	 * 为给定的Logger注册一个新的ErrorHandler
+	 * 为给定的Logger注册一个新的ErrorHandler。
      *
      * By default it will handle errors, exceptions and fatal errors
+	 * 默认情况下，它将处理错误、异常和致命错误。
      *
      * @param  LoggerInterface                        $logger
      * @param  array<int, LogLevel::*>|false          $errorLevelMap     an array of E_* constant to LogLevel::* constant mapping, or false to disable error handling

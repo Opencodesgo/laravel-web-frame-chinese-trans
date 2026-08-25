@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，许诺，许诺
+ * GuzzleHttp，许诺，Promise
  */
 
 declare(strict_types=1);
@@ -9,6 +9,7 @@ namespace GuzzleHttp\Promise;
 
 /**
  * Promises/A+ implementation that avoids recursion when possible.
+ * 承诺/A+实现，尽可能避免递归。
  *
  * @see https://promisesaplus.com/
  *
@@ -49,6 +50,7 @@ class Promise implements PromiseInterface
         }
 
         // Return a fulfilled promise and immediately invoke any callbacks.
+		// 返回一个完成的promise并立即调用任何回调
         if ($this->state === self::FULFILLED) {
             $promise = Create::promiseFor($this->result);
 

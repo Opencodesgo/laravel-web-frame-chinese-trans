@@ -23,6 +23,7 @@ interface NumberExtension extends Extension
 
     /**
      * Returns a random number between 0 and 9
+	 * 返回0到9之间的随机数
      */
     public function randomDigit(): int;
 
@@ -34,11 +35,13 @@ interface NumberExtension extends Extension
 
     /**
      * Returns a random number between 1 and 9
+	 * 返回1到9之间的随机数
      */
     public function randomDigitNotZero(): int;
 
     /**
      * Return a random float number
+	 * 返回一个随机浮点数
      *
      * @example 48.8932
      */

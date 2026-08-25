@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，运行
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org
@@ -8,6 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 /*
  * Generates the Hamcrest\Matchers factory class and factory functions
  * from the @factory doctags in the various matchers.
+ * 从各个匹配器中的 @factory 文档标签生成 Hamcrest\Matchers 工厂类和工厂函数。
  */
 
 define('GENERATOR_BASE', __DIR__);

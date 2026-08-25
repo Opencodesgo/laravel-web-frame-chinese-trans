@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Cast
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -10,6 +14,7 @@ abstract class Cast extends Expr {
 
     /**
      * Constructs a cast node.
+	 * 构造转换节点
      *
      * @param Expr $expr Expression
      * @param array<string, mixed> $attributes Additional attributes

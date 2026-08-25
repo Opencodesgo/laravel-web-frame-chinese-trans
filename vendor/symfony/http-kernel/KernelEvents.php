@@ -80,6 +80,7 @@ final class KernelEvents
     /**
      * The VIEW event occurs when the return value of a controller
      * is not a Response instance.
+	 * VIEW事件发生在控制器的返回值不是响应实例。
      *
      * This event allows you to create a response for the return value of the
      * controller.

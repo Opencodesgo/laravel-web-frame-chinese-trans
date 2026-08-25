@@ -25,6 +25,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * FallbackBuilder builds a UUID by stepping through a list of UUID builders
  * until a UUID can be constructed without exceptions
+ * FallbackBuilder 通过遍历一系列 UUID 构建器，直到能够无异常地构建出一个 UUID。
  *
  * @psalm-immutable
  */

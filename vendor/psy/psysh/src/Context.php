@@ -20,6 +20,7 @@ namespace Psy;
  *
  * This class encapsulates the current variables, most recent return value and
  * exception, and the current namespace.
+ * 该类封装了当前变量、最近的返回值和异常，以及当前命名空间。
  */
 class Context
 {
@@ -27,6 +28,7 @@ class Context
 
     // Include a very limited number of command-scope magic variable names.
     // This might be a bad idea, but future me can sort it out.
+	// 包含非常有限数量的命令作用域魔法变量名称。这或许是个糟糕的想法，但未来的我能够解决这个问题。
     private const COMMAND_SCOPE_NAMES = [
         '__function', '__method', '__class', '__namespace', '__file', '__line', '__dir',
     ];

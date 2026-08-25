@@ -164,6 +164,7 @@ final class State
 
     /**
      * Moves the a new test case.
+	 * 移动一个新的测试用例
      */
     public function moveTo(TestCase $testCase): void
     {
@@ -176,6 +177,7 @@ final class State
 
     /**
      * Foreach test in the test case.
+	 * 对于测试用例中的每个测试
      */
     public function eachTestCaseTests(callable $callback): void
     {
@@ -195,6 +197,7 @@ final class State
 
     /**
      * Checks if the given test already contains a result.
+	 * 检查给定的测试是否已经包含结果
      */
     public function existsInTestCase(TestCase $test): bool
     {

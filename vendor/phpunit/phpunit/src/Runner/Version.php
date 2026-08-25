@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Runner，版本
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -34,6 +39,7 @@ final class Version
 
     /**
      * Returns the current version of PHPUnit.
+	 * 返回PHPUnit的当前版本
      *
      * @psalm-return non-empty-string
      */

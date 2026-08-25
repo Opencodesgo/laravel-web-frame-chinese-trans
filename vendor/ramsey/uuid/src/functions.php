@@ -24,6 +24,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 /**
  * Returns a version 1 (time-based) UUID from a host ID, sequence number,
  * and the current time
+ * 根据主机ID、序列号和当前时间返回一个版本1（基于时间）的UUID。
  *
  * @param Hexadecimal|int|string|null $node A 48-bit number representing the
  *     hardware address; this number may be represented as an integer or a

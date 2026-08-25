@@ -28,6 +28,7 @@ use League\CommonMark\Node\Inline\AbstractStringContainer;
  * depending on the length of the delimiter run. All child DelimiterProcessors must have different minimum
  * lengths. A given delimiter run is dispatched to the child with the largest acceptable minimum length. If no
  * child is applicable, the one with the largest minimum length is chosen.
+ * 一个实现 DelimiterProcessorInterface 的类，根据分隔符运行的长度将所有调用分发给两个或更多其他 DelimiterProcessors。
  *
  * @internal
  */
@@ -100,6 +101,7 @@ final class StaggeredDelimiterProcessor implements DelimiterProcessorInterface
     private function findProcessor(int $len): DelimiterProcessorInterface
     {
         // Find the "longest" processor which can handle this length
+		// 找到可以处理这个长度的“最长”处理器
         foreach ($this->processors as $processor) {
             if ($processor->getMinLength() <= $len) {
                 return $processor;
@@ -107,6 +109,7 @@ final class StaggeredDelimiterProcessor implements DelimiterProcessorInterface
         }
 
         // Just use the first one in our list
+		// 只要使用我们列表中的第一个
         $first = \reset($this->processors);
         \assert($first instanceof DelimiterProcessorInterface);
 

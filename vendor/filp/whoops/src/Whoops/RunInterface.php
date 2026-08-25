@@ -42,6 +42,7 @@ interface RunInterface
     /**
      * Returns an array with all handlers, in the
      * order they were added to the stack.
+	 * 返回一个包含所有处理程序的数组，按其添加到栈中的顺序排列。
      *
      * @return array
      */
@@ -50,6 +51,7 @@ interface RunInterface
     /**
      * Clears all handlers in the handlerStack, including
      * the default PrettyPage handler.
+	 * 清除 handlerStack 中的所有处理器，包括默认的 PrettyPage 处理器。
      *
      * @return Run
      */

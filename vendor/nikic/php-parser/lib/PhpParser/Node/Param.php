@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，参数
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Modifiers;
@@ -66,6 +70,7 @@ class Param extends NodeAbstract {
 
     /**
      * Whether this parameter uses constructor property promotion.
+	 * 此参数是否使用构造函数属性提升
      */
     public function isPromoted(): bool {
         return $this->flags !== 0 || $this->hooks !== [];

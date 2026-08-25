@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，扩展，未找到的扩展
+ * Faker，扩展，扩展未找到
  */
 
 declare(strict_types=1);

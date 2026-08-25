@@ -1,4 +1,7 @@
 <?php
+/**
+ * swiftmailer，Mime 类型
+ */
 
 /*
  * This file is part of SwiftMailer.
@@ -13,6 +16,7 @@
 
 /*
  * List of MIME type automatically detected in Swift Mailer.
+ * Swift邮件中自动检测的MIME类型列表。
  */
 
 // You may add or take away what you like (lowercase required)

@@ -42,6 +42,7 @@ class CorsServiceProvider extends BaseServiceProvider
         }
 
         // Add the headers on the Request Handled event as fallback in case of exceptions
+		// 在请求处理事件上添加标头，作为发生异常时的回退。
         if (class_exists(RequestHandled::class) && $this->app->bound('events')) {
             $this->app->make('events')->listen(RequestHandled::class, function (RequestHandled $event) {
                 $this->app->make(HandleCors::class)->onRequestHandled($event);
@@ -81,6 +82,7 @@ class CorsServiceProvider extends BaseServiceProvider
         }
 
         // Convert case to supported options
+		// 在请求处理事件上添加标头，作为发生异常时的回退。
         $options = [
             'supportsCredentials' => $config['supports_credentials'],
             'allowedOrigins' => $config['allowed_origins'],

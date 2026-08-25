@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，有效构造函数通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Psy\Exception\FatalErrorException;
 /**
  * Validate that the constructor method is not static, and does not have a
  * return type.
+ * 验证构造方法不是静态的，并且没有返回类型。
  *
  * Checks both explicit __construct methods as well as old-style constructor
  * methods with the same name as the class (for non-namespaced classes).
@@ -45,6 +49,7 @@ class ValidConstructorPass extends CodeCleanerPass
 
     /**
      * Validate that the constructor is not static and does not have a return type.
+	 * 验证构造函数不是静态的，也没有返回类型。
      *
      * @throws FatalErrorException the constructor function is static
      * @throws FatalErrorException the constructor function has a return type

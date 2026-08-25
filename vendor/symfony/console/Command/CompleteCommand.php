@@ -45,6 +45,7 @@ final class CompleteCommand extends Command
     public function __construct(array $completionOutputs = [])
     {
         // must be set before the parent constructor, as the property value is used in configure()
+		// 必须在父构造函数之前设置，因为该属性值在configure（）中使用。
         $this->completionOutputs = $completionOutputs + ['bash' => BashCompletionOutput::class];
 
         parent::__construct();

@@ -190,6 +190,7 @@ class Table
 	 * 获取列的当前样式
      *
      * If style was not set, it returns the global table style.
+	 * 如果未设置样式，则返回全局表样式。
      *
      * @return TableStyle
      */

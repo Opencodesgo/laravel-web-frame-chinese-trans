@@ -77,6 +77,7 @@ final class BacktickParser implements InlineParserInterface
         }
 
         // If we got here, we didn't match a closing backtick sequence
+		// 如果我们到了这里，我们没有找到匹配的结束序列。
         $cursor->restoreState($previousState);
         $inlineContext->getContainer()->appendChild(new Text($ticks));
 
@@ -89,6 +90,7 @@ final class BacktickParser implements InlineParserInterface
      *
      * Leverages some caching to avoid traversing the same cursor multiple times when
      * we've already seen all the potential backtick closers.
+	 * 利用一些缓存机制，避免在已经看到所有可能的反引号闭合符时，再次遍历相同的游标。
      *
      * @see https://github.com/commonmark/cmark/commit/8ed5c9d
      *
@@ -111,6 +113,7 @@ final class BacktickParser implements InlineParserInterface
         }
 
         // Return if we already know there's no closer
+		// 如果我们已经知道没有更近的路，就返回。
         if ($this->lastCursorScanned && isset($this->seenBackticks[$openTickLength]) && $this->seenBackticks[$openTickLength] <= $cursor->getPosition()) {
             return false;
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css，规则，规则
+ * TijsVerkoyen，CssToInlineStyles，Css，规则，Rule
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;

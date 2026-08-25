@@ -18,8 +18,10 @@ class Misc
      *
      * Currently this checks if we are even serving an HTTP request,
      * as opposed to running from a command line.
+	 * 目前这个检查的是我们是否正在处理 HTTP 请求，而不是从命令行运行。
      *
      * If we are serving an HTTP request, we check if it's not too late.
+	 * 如果我们正在提供HTTP请求，我们会检查是否为时不晚。
      *
      * @return bool
      */

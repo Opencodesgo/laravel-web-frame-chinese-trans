@@ -103,6 +103,7 @@ class ClassConst implements PhpParser\Builder {
 
     /**
      * Sets doc comment for the constant.
+	 * 为常量设置文档注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *
@@ -118,6 +119,7 @@ class ClassConst implements PhpParser\Builder {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -131,6 +133,7 @@ class ClassConst implements PhpParser\Builder {
 
     /**
      * Sets the constant type.
+	 * 设置常量类型
      *
      * @param string|Node\Name|Identifier|Node\ComplexType $type
      *

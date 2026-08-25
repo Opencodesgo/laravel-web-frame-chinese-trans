@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Assign Op
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -12,6 +16,7 @@ abstract class AssignOp extends Expr {
 
     /**
      * Constructs a compound assignment operation node.
+	 * 构造复合赋值操作节点
      *
      * @param Expr $var Variable
      * @param Expr $expr Expression

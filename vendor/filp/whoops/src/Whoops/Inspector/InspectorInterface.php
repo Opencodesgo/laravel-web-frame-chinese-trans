@@ -62,6 +62,7 @@ interface InspectorInterface
 
     /**
      * Returns an array of all previous exceptions for this inspector's exception
+	 * 返回此检查器异常的所有先前异常的数组
      * @return \Throwable[]
      */
     public function getPreviousExceptions();

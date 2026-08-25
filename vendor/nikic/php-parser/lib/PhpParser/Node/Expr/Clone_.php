@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Clone_
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;

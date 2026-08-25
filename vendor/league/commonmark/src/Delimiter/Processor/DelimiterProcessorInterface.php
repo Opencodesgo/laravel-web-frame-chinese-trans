@@ -44,6 +44,7 @@ interface DelimiterProcessorInterface
 	 * 返回标记分隔节点结束的字符。
      *
      * This must not clash with any other processors being added to the environment.
+	 * 这不能与添加到环境中的任何其他处理器冲突。
      *
      * Note that for a symmetric delimiter such as "*", this is the same as the opening.
      */

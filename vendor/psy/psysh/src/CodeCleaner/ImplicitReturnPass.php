@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，隐式返回传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -24,6 +27,7 @@ use PhpParser\Node\Stmt\Switch_;
 
 /**
  * Add an implicit "return" to the last statement, provided it can be returned.
+ * 在最后一条语句中添加一个隐式的“return”，前提是它可以被返回。
  */
 class ImplicitReturnPass extends CodeCleanerPass
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，分析程序
+ * Symfony，Component，CssSelector，分析程序，Parser
  */
 
 /*

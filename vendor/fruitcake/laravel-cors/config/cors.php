@@ -1,19 +1,21 @@
 <?php
 /**
- * Fruitcake，Cors，配置
+ * Fruitcake，配置，Cors
  */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laravel CORS Options
+    | Laravel CORS Options	Laravel CORS选项
     |--------------------------------------------------------------------------
     |
     | The allowed_methods and allowed_headers options are case-insensitive.
+	| allowed_methods和allowed_headers选项不区分大小写。
     |
     | You don't need to provide both allowed_origins and allowed_origins_patterns.
     | If one of the strings passed matches, it is considered a valid origin.
+	| 您无需同时提供 allowed_origins 和 allowed_origins_patterns。如果传入的字符串中有一个匹配，则该来源被视为有效。
     |
     | If ['*'] is provided to allowed_methods, allowed_origins or allowed_headers
     | all methods / origins / headers are allowed.

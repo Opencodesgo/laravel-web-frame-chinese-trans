@@ -90,6 +90,7 @@ interface StyleInterface
 
     /**
      * Formats a table.
+	 * 格式化表格
      */
     public function table(array $headers, array $rows);
 

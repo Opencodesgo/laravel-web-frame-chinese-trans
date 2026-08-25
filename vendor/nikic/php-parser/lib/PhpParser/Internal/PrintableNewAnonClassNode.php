@@ -11,6 +11,7 @@ use PhpParser\Node\Expr;
 
 /**
  * This node is used internally by the format-preserving pretty printer to print anonymous classes.
+ * 保持格式的漂亮打印机在内部使用该节点来打印匿名类。
  *
  * The normal anonymous class structure violates assumptions about the order of token offsets.
  * Namely, the constructor arguments are part of the Expr\New_ node and follow the class node, even
@@ -59,6 +60,7 @@ class PrintableNewAnonClassNode extends Expr {
         assert($class instanceof Node\Stmt\Class_);
         // We don't assert that $class->name is null here, to allow consumers to assign unique names
         // to anonymous classes for their own purposes. We simplify ignore the name here.
+		// 我们在此不强制要求 $class->name 为 null，以便允许消费者为匿名类分配唯一名称以满足其自身需求。我们在此简化处理，忽略名称。
         return new self(
             $class->attrGroups, $class->flags, $newNode->args, $class->extends, $class->implements,
             $class->stmts, $newNode->getAttributes()

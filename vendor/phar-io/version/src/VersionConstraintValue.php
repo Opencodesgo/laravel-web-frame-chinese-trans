@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，版本，版本约束值
+ */
+
 namespace PharIo\Version;
 
 class VersionConstraintValue {

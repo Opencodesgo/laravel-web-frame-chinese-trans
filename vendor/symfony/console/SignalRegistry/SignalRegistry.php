@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，信号登记处，信号登记处
+ * Symfony，Component，Console，信号登记处，Signal Registry
  */
 
 /*

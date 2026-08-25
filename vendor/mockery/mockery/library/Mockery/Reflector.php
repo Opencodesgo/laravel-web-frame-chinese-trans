@@ -118,6 +118,7 @@ class Reflector
         $typeInformation = self::getTypeInformation($type, $method->getDeclaringClass());
 
         // return the first primitive type hint
+		// 返回第一个基本类型提示
         foreach ($typeInformation as $info) {
             if ($info['isPrimitive']) {
                 return $info['typeHint'];
@@ -125,6 +126,7 @@ class Reflector
         }
 
         // if no primitive type, return the first type
+		// 如果没有基本类型，则返回第一个类型。
         foreach ($typeInformation as $info) {
             return $info['typeHint'];
         }
@@ -210,16 +212,19 @@ class Reflector
             }
 
             // 'self' needs to be resolved to the name of the declaring class
+			// ‘self’需要被解析为声明类的名称
             if ($typeHint === 'self') {
                 $typeHint = $declaringClass->getName();
             }
 
             // 'parent' needs to be resolved to the name of the parent class
+			// ‘parent’需要解析为父类的名称
             if ($typeHint === 'parent') {
                 $typeHint = $declaringClass->getParentClass()->getName();
             }
 
             // class names need prefixing with a slash
+			// 类名需要用斜杠作为前缀
             return sprintf('\\%s', $typeHint);
         }
 
@@ -270,6 +275,7 @@ class Reflector
     private static function getTypeInformation(ReflectionType $type, ReflectionClass $declaringClass): array
     {
         // PHP 8 union types and PHP 8.1 intersection types can be recursively processed
+		// PHP 8的联合类型和PHP 8.1的交集类型可以递归处理
         if ($type instanceof ReflectionUnionType || $type instanceof ReflectionIntersectionType) {
             $types = [];
 
@@ -310,11 +316,13 @@ class Reflector
         }
 
         // 'self' needs to be resolved to the name of the declaring class
+		// ‘self’需要被解析为声明类的名称
         if ($typeHint === 'self') {
             $typeHint = $declaringClass->getName();
         }
 
         // 'parent' needs to be resolved to the name of the parent class
+		// ‘parent’需要解析为父类的名称
         if ($typeHint === 'parent') {
             $typeHint = $declaringClass->getParentClass()->getName();
         }

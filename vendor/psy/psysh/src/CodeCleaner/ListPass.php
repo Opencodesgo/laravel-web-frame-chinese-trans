@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，List Pass
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -27,11 +30,13 @@ use Psy\Exception\ParseErrorException;
 
 /**
  * Validate that the list assignment.
+ * 验证列表赋值。
  */
 class ListPass extends CodeCleanerPass
 {
     /**
      * Validate use of list assignment.
+	 * 验证列表赋值的使用
      *
      * @throws ParseErrorException if the user used empty with anything but a variable
      *

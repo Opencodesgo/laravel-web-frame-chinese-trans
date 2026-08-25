@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，有效的类名通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,9 +29,11 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that classes exist.
+ * 验证类是否存在。
  *
  * This pass throws a FatalErrorException rather than letting PHP run
  * headfirst into a real fatal error and die.
+ * 此通行证会抛出一个致命错误异常，而不是让 PHP 直接运行到真正的致命错误并终止。
  */
 class ValidClassNamePass extends NamespaceAwarePass
 {
@@ -40,6 +45,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Validate class, interface and trait definitions.
+	 * 验证类、接口和trait定义。
      *
      * Validate them upon entering the node, so that we know about their
      * presence and can validate constant fetches and static calls in class or

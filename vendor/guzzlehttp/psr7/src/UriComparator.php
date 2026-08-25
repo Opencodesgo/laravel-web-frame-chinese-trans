@@ -20,6 +20,7 @@ final class UriComparator
     /**
      * Determines if a modified URL should be considered cross-origin with
      * respect to an original URL.
+	 * 确定修改后的URL是否应被视为相对于原始URL的跨域
      */
     public static function isCrossOrigin(UriInterface $original, UriInterface $modified): bool
     {

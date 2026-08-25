@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Wtf 命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -22,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Show the last uncaught exception.
+ * 显示最后一个未捕获的异常
  */
 class WtfCommand extends TraceCommand implements ContextAware
 {
@@ -29,6 +33,7 @@ class WtfCommand extends TraceCommand implements ContextAware
 
     /**
      * ContextAware interface.
+	 * ContextAware接口
      *
      * @param Context $context
      */

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，词法分析程序，令牌模拟器，显式八进制仿真器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
 use PhpParser\PhpVersion;
@@ -40,6 +44,7 @@ class ExplicitOctalEmulator extends TokenEmulator {
 
     public function reverseEmulate(string $code, array $tokens): array {
         // Explicit octals were not legal code previously, don't bother.
+		// 显式八进制以前不是合法的代码，不用麻烦。
         return $tokens;
     }
 }

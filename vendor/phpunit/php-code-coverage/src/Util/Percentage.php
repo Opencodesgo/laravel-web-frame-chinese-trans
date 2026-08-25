@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，Util，Percentage
+ * SebastianBergmann，CodeCoverage，Util，百分比
  */
 
 /*

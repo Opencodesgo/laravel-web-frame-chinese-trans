@@ -21,7 +21,7 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate that the bytes being operated on are invalid in some way
- * 抛出,以表明在某些方面操作的字节无效
+ * 抛出,以表明在某些方面操作的字节无效。
  */
 class InvalidBytesException extends PhpRuntimeException implements UuidExceptionInterface
 {

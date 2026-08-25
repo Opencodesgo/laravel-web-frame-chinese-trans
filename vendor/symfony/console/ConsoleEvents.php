@@ -31,6 +31,7 @@ final class ConsoleEvents
      * The COMMAND event allows you to attach listeners before any command is
      * executed by the console. It also allows you to modify the command, input and output
      * before they are handed to the command.
+	 * COMMAND 事件允许你在控制台执行任何命令之前添加监听器。它还允许你在命令传递给控制台之前修改命令、输入和输出内容。
      *
      * @Event("Symfony\Component\Console\Event\ConsoleCommandEvent")
      */
@@ -39,6 +40,7 @@ final class ConsoleEvents
     /**
      * The SIGNAL event allows you to perform some actions
      * after the command execution was interrupted.
+	 * SIGNAL 事件允许您在命令执行被中断后执行某些操作。
      *
      * @Event("Symfony\Component\Console\Event\ConsoleSignalEvent")
      */

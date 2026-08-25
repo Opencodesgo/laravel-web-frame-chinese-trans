@@ -257,6 +257,7 @@ class BuilderFactory {
 	 * 规范化参数列表。
      *
      * Creates Arg nodes for all arguments and converts literal values to expressions.
+	 * 为所有参数创建Arg节点并将文字值转换为表达式。
      *
      * @param array $args List of arguments to normalize
      *

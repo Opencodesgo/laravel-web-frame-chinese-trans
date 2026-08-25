@@ -1,10 +1,15 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，名称，完全限定
+ */
+
 namespace PhpParser\Node\Name;
 
 class FullyQualified extends \PhpParser\Node\Name {
     /**
      * Checks whether the name is unqualified. (E.g. Name)
+	 * 检查名称是否不合格
      *
      * @return bool Whether the name is unqualified
      */

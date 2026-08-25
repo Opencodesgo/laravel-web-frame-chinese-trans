@@ -27,6 +27,7 @@ interface UniqueSlugNormalizerInterface extends TextNormalizerInterface
 	 * 当配置的范围更改时调用环境
      *
      * Currently, this will only be called PER_DOCUMENT.
+	 * 目前，它只被称为PER_DOCUMENT。
      */
     public function clearHistory(): void;
 }

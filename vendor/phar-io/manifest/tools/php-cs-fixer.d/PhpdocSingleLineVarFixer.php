@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * PharIo，CSFixer，PhpdocSingleLineVarFixer
+ */
+
 namespace PharIo\CSFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;

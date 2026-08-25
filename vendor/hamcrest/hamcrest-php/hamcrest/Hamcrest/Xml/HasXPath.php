@@ -25,6 +25,7 @@ class HasXPath extends DiagnosingMatcher
 
     /**
      * XPath to apply to the DOM.
+	 * 将XPath应用于DOM
      *
      * @var string
      */
@@ -33,6 +34,7 @@ class HasXPath extends DiagnosingMatcher
     /**
      * Optional matcher to apply to the XPath expression result
      * or the content of the returned nodes.
+	 * 可选的匹配器，用于应用于 XPath 表达式的结果或返回节点的内容。
      *
      * @var Matcher
      */
@@ -46,6 +48,7 @@ class HasXPath extends DiagnosingMatcher
 
     /**
      * Matches if the XPath matches against the DOM node and the matcher.
+	 * 如果XPath与DOM节点和匹配器匹配，则匹配。
      *
      * @param string|\DOMNode $actual
      * @param Description $mismatchDescription

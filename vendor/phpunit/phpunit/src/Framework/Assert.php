@@ -104,6 +104,7 @@ abstract class Assert
 
     /**
      * Asserts that an array has a specified key.
+	 * 断言数组是否具有指定的键
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array

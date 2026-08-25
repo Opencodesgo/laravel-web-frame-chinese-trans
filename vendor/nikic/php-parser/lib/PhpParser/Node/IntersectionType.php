@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，复合类型
+ */
+
 namespace PhpParser\Node;
 
 class IntersectionType extends ComplexType {
@@ -8,6 +12,7 @@ class IntersectionType extends ComplexType {
 
     /**
      * Constructs an intersection type.
+	 * 构造一个交集类型
      *
      * @param (Identifier|Name)[] $types Types
      * @param array<string, mixed> $attributes Additional attributes

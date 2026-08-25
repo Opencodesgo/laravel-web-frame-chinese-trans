@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Runner，基础试验台
+ */
+
 /*
  * This file is part of PHPUnit.
  *

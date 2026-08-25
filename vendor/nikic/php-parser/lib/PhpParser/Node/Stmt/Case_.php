@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，Stmt，Case_
+ */
+
 namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
@@ -12,6 +16,7 @@ class Case_ extends Node\Stmt {
 
     /**
      * Constructs a case node.
+	 * 构造一个用例节点
      *
      * @param null|Node\Expr $cond Condition (null for default)
      * @param Node\Stmt[] $stmts Statements

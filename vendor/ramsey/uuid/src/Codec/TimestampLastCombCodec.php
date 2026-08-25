@@ -21,6 +21,7 @@ namespace Ramsey\Uuid\Codec;
 /**
  * TimestampLastCombCodec encodes and decodes COMBs, with the timestamp as the
  * last 48 bits
+ * TimestampLastCombCodec 用于编码和解码 COMBs，其中时间戳为最后 48 位。
  *
  * The CombGenerator when used with the StringCodec (and, by proxy, the
  * TimestampLastCombCodec) adds the timestamp to the last 48 bits of the COMB.

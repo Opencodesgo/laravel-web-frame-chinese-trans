@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，类似于函数
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -7,6 +11,7 @@ use PhpParser\Node;
 interface FunctionLike extends Node {
     /**
      * Whether to return by reference
+	 * 是否通过引用返回
      */
     public function returnsByRef(): bool;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，转换器，数字转换器接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -17,6 +20,7 @@ namespace Ramsey\Uuid\Converter;
 /**
  * A number converter converts UUIDs from hexadecimal characters into
  * representations of integers and vice versa
+ * 数字转换器可将十六进制字符形式的UUID转换为整数表示，反之亦然。
  *
  * @psalm-immutable
  */

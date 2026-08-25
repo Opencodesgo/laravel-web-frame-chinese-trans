@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，词法分析程序，令牌模拟器，Nullsafe 令牌仿真器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
 use PhpParser\PhpVersion;
@@ -17,6 +21,7 @@ final class NullsafeTokenEmulator extends TokenEmulator {
     public function emulate(string $code, array $tokens): array {
         // We need to manually iterate and manage a count because we'll change
         // the tokens array on the way
+		// 我们需要手动遍历并管理计数，因为途中会修改 tokens 数组。
         for ($i = 0, $c = count($tokens); $i < $c; ++$i) {
             $token = $tokens[$i];
             if ($token->text === '?' && isset($tokens[$i + 1]) && $tokens[$i + 1]->id === \T_OBJECT_OPERATOR) {

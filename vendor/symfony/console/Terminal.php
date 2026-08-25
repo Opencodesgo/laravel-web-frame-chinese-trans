@@ -70,6 +70,7 @@ class Terminal
         }
 
         // skip check if shell_exec function is disabled
+		// 如果shell_exec功能被禁用，跳过检查。
         if (!\function_exists('shell_exec')) {
             return false;
         }

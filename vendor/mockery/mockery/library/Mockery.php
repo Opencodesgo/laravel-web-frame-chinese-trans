@@ -164,6 +164,7 @@ class Mockery
     /**
      * Static shortcut to closing up and verifying all mocks in the global
      * container, and resetting the container static variable to null.
+	 * 静态快捷方式，用于关闭并验证全局容器中的所有模拟对象，并将容器的静态变量重置为 null。
      *
      * @return void
      */

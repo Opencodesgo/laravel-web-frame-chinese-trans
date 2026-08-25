@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Bitwise Not
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -10,6 +14,7 @@ class BitwiseNot extends Expr {
 
     /**
      * Constructs a bitwise not node.
+	 * 构造一个非位节点
      *
      * @param Expr $expr Expression
      * @param array<string, mixed> $attributes Additional attributes

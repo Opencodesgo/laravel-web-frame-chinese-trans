@@ -43,6 +43,7 @@ final class EntryParser
      *
      * That is, turn a raw environment variable entry into a name and possibly
      * a value. We wrap the answer in a result type.
+	 * 也就是说，将原始的环境变量条目转换为名称和可能的值。我们将答案封装在结果类型中。
      *
      * @param string $entry
      *

@@ -13,6 +13,7 @@ use Psr\Http\Message\RequestInterface;
  * 当无法建立连接时抛出的异常。
  *
  * Note that no response is present for a ConnectException
+ * 注意，ConnectException没有响应。
  */
 class ConnectException extends TransferException implements NetworkExceptionInterface
 {

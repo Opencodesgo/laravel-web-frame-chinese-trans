@@ -53,6 +53,7 @@ final class WarningTestCase extends TestCase
 
     /**
      * Returns a string representation of the test case.
+	 * 返回测试用例的字符串表示形式
      */
     public function toString(): string
     {

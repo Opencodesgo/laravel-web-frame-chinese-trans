@@ -383,6 +383,7 @@ class Process implements \IteratorAggregate
 	 * 重新启动进程。
      *
      * Be warned that the process is cloned before being started.
+	 * 请注意，该进程在启动前已被克隆。
      *
      * @param callable|null $callback A PHP callback to run whenever there is some
      *                                output available on STDOUT or STDERR

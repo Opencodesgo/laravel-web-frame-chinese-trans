@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，问题，问题
+ * Symfony，Component，Console，问题，Question
  */
 
 /*
@@ -199,6 +199,7 @@ class Question
 	 * 设置用于自动完成器的回调函数。
      *
      * The callback is passed the user input as argument and should return an iterable of corresponding suggestions.
+	 * 回调函数将用户输入作为参数传递，并且应该返回一个对应建议的可迭代对象。
      *
      * @return $this
      */

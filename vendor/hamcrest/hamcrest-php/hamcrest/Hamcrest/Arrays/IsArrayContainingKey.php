@@ -67,6 +67,7 @@ class IsArrayContainingKey extends TypeSafeMatcher
 
     /**
      * Evaluates to true if any key in an array matches the given matcher.
+	 * 如果数组中的任何键与给定的匹配器匹配，则计算结果为true。
      *
      * @param mixed $key as a {@link Hamcrest\Matcher} or a value.
      *

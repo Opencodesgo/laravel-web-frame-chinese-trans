@@ -19,9 +19,10 @@ use Monolog\Utils;
 
 /**
  * Formats incoming records into a one-line string
- * 将传入的记录格式化为一行字符串
+ * 将传入的记录格式化为一行字符串。
  *
  * This is especially useful for logging to files
+ * 这对于记录文件特别有用。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Christophe Coevoet <stof@notk.org>

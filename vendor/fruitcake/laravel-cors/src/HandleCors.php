@@ -38,11 +38,13 @@ class HandleCors
     public function handle($request, Closure $next)
     {
         // Check if we're dealing with CORS and if we should handle it
+		// 检查一下我们是否在处理CORS以及我们是否应该处理它
         if (! $this->shouldRun($request)) {
             return $next($request);
         }
 
         // For Preflight, return the Preflight response
+		// 对于Preflight，返回Preflight响应。
         if ($this->cors->isPreflightRequest($request)) {
             $response = $this->cors->handlePreflightRequest($request);
 
@@ -53,6 +55,7 @@ class HandleCors
 
 
         // Handle the request
+		// 处理请求
         $response = $next($request);
 
         if ($request->getMethod() === 'OPTIONS') {

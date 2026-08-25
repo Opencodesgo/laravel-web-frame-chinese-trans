@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，FunctionReturnInWriteContextPass
+ */
 
 /*
  * This file is part of Psy Shell.

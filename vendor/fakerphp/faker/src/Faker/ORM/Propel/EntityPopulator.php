@@ -65,6 +65,7 @@ class EntityPopulator
 
         foreach ($tableMap->getColumns() as $columnMap) {
             // skip behavior columns, handled by modifiers
+			// 跳过由修饰符处理的行为列
             if ($this->isColumnBehavior($columnMap)) {
                 continue;
             }

@@ -54,6 +54,7 @@ final class Callback
 
 	/**
 	 * Invokes callback with an array of parameters.
+	 * 用参数数组调用回调函数
 	 * @return mixed
 	 * @deprecated
 	 */
@@ -67,6 +68,7 @@ final class Callback
 
 	/**
 	 * Invokes internal PHP function with own error handler.
+	 * 用自己的错误处理程序调用内部PHP函数
 	 * @return mixed
 	 */
 	public static function invokeSafe(string $function, array $args, callable $onError)

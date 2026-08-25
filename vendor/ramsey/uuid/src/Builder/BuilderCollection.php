@@ -29,7 +29,7 @@ use Traversable;
 
 /**
  * A collection of UuidBuilderInterface objects
- * uuuidbuilderinterface对象的集合
+ * UuidBuilderInterface对象的集合
  *
  * @extends AbstractCollection<UuidBuilderInterface>
  */

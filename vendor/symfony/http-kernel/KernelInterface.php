@@ -56,9 +56,10 @@ interface KernelInterface extends HttpKernelInterface
 
     /**
      * Shutdowns the kernel.
-	 * 关闭内核
+	 * 关闭内核。
      *
      * This method is mainly useful when doing functional testing.
+	 * 这种方法主要在进行功能测试时很有用。
      */
     public function shutdown();
 

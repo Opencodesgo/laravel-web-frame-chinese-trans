@@ -1,11 +1,16 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，标识符
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
 
 /**
  * Represents a non-namespaced name. Namespaced names are represented using Name nodes.
+ * 表示没有名称空间的名称。名称空间名称使用Name节点表示。
  */
 class Identifier extends NodeAbstract {
     /**
@@ -23,6 +28,7 @@ class Identifier extends NodeAbstract {
 
     /**
      * Constructs an identifier node.
+	 * 构造标识符节点
      *
      * @param string $name Identifier as string
      * @param array<string, mixed> $attributes Additional attributes

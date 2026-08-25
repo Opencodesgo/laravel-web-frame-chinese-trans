@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，说明数据项
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;

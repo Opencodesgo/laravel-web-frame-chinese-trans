@@ -46,11 +46,13 @@ final class LimitStream implements StreamInterface
     public function eof(): bool
     {
         // Always return true if the underlying stream is EOF
+		// 如果底层流是EOF，则始终返回true。
         if ($this->stream->eof()) {
             return true;
         }
 
         // No limit and the underlying stream is not at EOF
+		// 没有限制，底层流不在EOF。
         if ($this->limit === -1) {
             return false;
         }

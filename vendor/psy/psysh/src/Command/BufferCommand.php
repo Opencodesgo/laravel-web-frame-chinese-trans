@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，缓冲命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,8 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Interact with the current code buffer.
+ * 与当前代码缓冲区交互。
  *
  * Shows and clears the buffer for the current multi-line expression.
+ * 显示并清除当前多行表达式的缓冲区。
  */
 class BufferCommand extends Command
 {

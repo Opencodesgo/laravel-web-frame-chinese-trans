@@ -1,6 +1,6 @@
 <?php
 /**
- * Factory Class
+ * Hamcrest，Factory Class
  */
 
 /*

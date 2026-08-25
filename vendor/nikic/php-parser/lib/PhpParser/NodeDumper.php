@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点转储
+ * PhpParser，节点转储器
  */
 
 namespace PhpParser;

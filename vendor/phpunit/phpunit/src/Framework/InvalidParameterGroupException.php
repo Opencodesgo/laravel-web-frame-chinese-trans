@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，InvalidParameterGroupException
+ */
+
 /*
  * This file is part of PHPUnit.
  *

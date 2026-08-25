@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，中断指令异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A break exception, used for halting the Psy Shell.
+ * 一个break异常，用于停止Psy Shell。
  */
 class BreakException extends \Exception implements Exception
 {
