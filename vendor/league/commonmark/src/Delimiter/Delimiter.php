@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，分隔符，定界符
+ * League，CommonMark，分隔符，Delimiter
  */
 
 declare(strict_types=1);

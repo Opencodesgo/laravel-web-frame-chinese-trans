@@ -41,7 +41,8 @@ trait BuildsQueries
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
-			// 我们将执行给定页面的查询并获得结果。
+			// 我们将执行给定页面的查询并获得结果。如果没有结果，我们就可以直接退出并返回这里。
+			// 当有结果时，我们将调用回调函数，并传入当前这些结果的分块。
             $results = $this->forPage($page, $count)->get();
 
             $countResults = $results->count();

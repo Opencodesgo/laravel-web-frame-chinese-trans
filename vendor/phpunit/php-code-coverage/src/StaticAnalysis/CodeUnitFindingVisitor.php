@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，静态分析，CodeUnitFindingVisitor
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *

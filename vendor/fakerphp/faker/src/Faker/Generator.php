@@ -615,6 +615,7 @@ class Generator
     /**
      * With the unique generator you are guaranteed to never get the same two
      * values.
+	 * 使用独特的生成器，您将确保永远不会得到相同的两个值。
      *
      * <code>
      * // will never return twice the same value

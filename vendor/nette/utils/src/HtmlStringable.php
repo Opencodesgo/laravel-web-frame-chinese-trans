@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，Html 可伸缩的
+ * Nette，Html 可伸缩的
  */
 
 /**

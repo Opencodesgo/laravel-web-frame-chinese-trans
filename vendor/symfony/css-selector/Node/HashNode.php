@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，异常，散列节点
+ * Symfony，Component，CssSelector，异常，哈希节点
  */
 
 /*

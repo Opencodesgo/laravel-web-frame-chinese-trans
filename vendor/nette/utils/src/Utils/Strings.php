@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，Strings
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)

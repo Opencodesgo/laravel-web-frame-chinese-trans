@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，映射，映射接口
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -18,6 +21,7 @@ use Ramsey\Collection\ArrayInterface;
 
 /**
  * An object that maps keys to values.
+ * 将键映射到值的对象。
  *
  * A map cannot contain duplicate keys; each key can map to at most one value.
  *
@@ -28,6 +32,7 @@ interface MapInterface extends ArrayInterface
 {
     /**
      * Returns `true` if this map contains a mapping for the specified key.
+	 * 如果此映射包含指定键的映射，则返回‘ true ’。
      *
      * @param array-key $key The key to check in the map.
      */

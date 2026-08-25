@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，是否任何测试
+ */
+
 namespace Hamcrest\Core;
 
 class IsAnythingTest extends \Hamcrest\AbstractMatcherTest

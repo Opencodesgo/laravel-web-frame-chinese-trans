@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，分析程序，Php8
+ */
+
 namespace PhpParser\Parser;
 
 use PhpParser\Error;

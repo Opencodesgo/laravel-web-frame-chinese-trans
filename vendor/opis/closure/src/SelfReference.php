@@ -1,4 +1,8 @@
 <?php
+/**
+ * NunoMaduro，闭包，自参照
+ */
+
 /* ===========================================================================
  * Copyright (c) 2018-2021 Zindex Software
  *
@@ -10,6 +14,7 @@ namespace Opis\Closure;
 
 /**
  * Helper class used to indicate a reference to an object
+ * 用于指示对对象的引用的Helper类。
  * @internal
  */
 class SelfReference
@@ -21,6 +26,7 @@ class SelfReference
 
     /**
      * Constructor
+	 * 构造函数
      *
      * @param string $hash
      */

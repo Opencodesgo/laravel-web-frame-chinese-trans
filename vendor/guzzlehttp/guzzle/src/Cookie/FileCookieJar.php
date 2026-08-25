@@ -25,6 +25,7 @@ class FileCookieJar extends CookieJar
 
     /**
      * Create a new FileCookieJar object
+	 * 创建一个新的FileCookieJar对象
      *
      * @param string $cookieFile          File to store the cookie data
      * @param bool   $storeSessionCookies Set to true to store session cookies

@@ -109,6 +109,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Configures styles.
+	 * 配置风格
      *
      * @param array $styles A map of style names to style definitions
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Factory Generator
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org
@@ -14,6 +17,7 @@ class FactoryGenerator
 {
     /**
      * Path to the Hamcrest PHP files to process.
+	 * 处理Hamcrest PHP文件的路径。
      *
      * @var string
      */

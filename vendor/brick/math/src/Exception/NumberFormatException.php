@@ -1,6 +1,6 @@
 <?php
 /**
- * Brick，Math，异常，编号格式异常
+ * Brick，Math，异常，数字格式化异常
  */
 
 declare(strict_types=1);

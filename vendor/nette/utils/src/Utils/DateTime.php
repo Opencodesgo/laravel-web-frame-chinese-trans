@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，日期时间
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)

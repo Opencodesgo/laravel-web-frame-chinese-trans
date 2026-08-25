@@ -7,6 +7,7 @@ namespace Faker\Calculator;
 
 /**
  * Utility class for validating ISBN-10
+ * 用于验证ISBN-10的实用程序类
  */
 class Isbn
 {

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，定时器，Duration
+ */
+
 /*
  * This file is part of phpunit/php-timer.
  *

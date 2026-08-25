@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，辅助
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
@@ -16,6 +19,7 @@ class Helpers
 {
 	/**
 	 * Executes a callback and returns the captured output as a string.
+	 * 执行回调并将捕获的输出作为字符串返回
 	 */
 	public static function capture(callable $func): string
 	{

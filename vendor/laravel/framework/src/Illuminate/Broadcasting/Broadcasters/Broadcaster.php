@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，广播抽象类
+ * Illuminate，广播，广播员，广播 caster
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;

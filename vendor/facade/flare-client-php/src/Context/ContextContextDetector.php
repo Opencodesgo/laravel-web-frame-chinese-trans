@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，FlareClient，上下文，控制台控制台上下文
+ * Facade，FlareClient，上下文，上下文检测器
  */
 
 namespace Facade\FlareClient\Context;

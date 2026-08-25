@@ -15,6 +15,7 @@ namespace Nette;
 
 /**
  * Static class.
+ * 静态类。
  */
 trait StaticClass
 {
@@ -30,6 +31,7 @@ trait StaticClass
 
 	/**
 	 * Call to undefined static method.
+	 * 调用未定义的静态方法
 	 * @return void
 	 * @throws MemberAccessException
 	 */

@@ -24,6 +24,7 @@ class Util
      *
      * Note that this function will return true if an array is empty. Meaning
      * empty arrays will be treated as if they are associative arrays.
+	 * 请注意，如果数组为空，此函数将返回 true。这意味着空数组将被视为关联数组。
      *
      * @param array<mixed> $arr
      *

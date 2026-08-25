@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，回调
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
@@ -15,6 +18,7 @@ use function is_array, is_object, is_string;
 
 /**
  * PHP callable tools.
+ * PHP回调工具
  */
 final class Callback
 {

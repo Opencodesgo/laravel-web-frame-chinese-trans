@@ -71,6 +71,7 @@ interface Node {
 
     /**
      * Gets the token offset of the last token that is part of this node.
+	 * 获取作为此节点一部分的最后一个令牌的令牌偏移量。
      *
      * The offset is an index into the array returned by Lexer::getTokens().
      *

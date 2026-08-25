@@ -17,6 +17,7 @@ use Nette;
 
 /**
  * Provides objects to work as array.
+ * 提供作为数组工作的对象。
  * @template T
  * @implements \RecursiveArrayIterator<array-key, T>
  * @implements \ArrayAccess<array-key, T>

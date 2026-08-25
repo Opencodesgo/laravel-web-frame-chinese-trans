@@ -124,6 +124,7 @@ interface DataInterface
 
     /**
      * Import data from an external data into existing data
+	 * 将数据从外部数据导入到现有数据中
      *
      * @param DataInterface                            $data
      * @param self::PRESERVE|self::REPLACE|self::MERGE $mode

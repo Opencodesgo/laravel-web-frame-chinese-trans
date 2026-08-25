@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否布尔
+ */
+
 namespace Hamcrest\Type;
 
 /*
@@ -8,6 +12,7 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is a boolean.
+ * 测试值是否为布尔值。
  */
 class IsBoolean extends IsTypeOf
 {

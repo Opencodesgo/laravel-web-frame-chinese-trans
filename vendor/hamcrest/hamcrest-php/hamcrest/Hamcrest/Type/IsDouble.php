@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否两倍
+ */
+
 namespace Hamcrest\Type;
 
 /*

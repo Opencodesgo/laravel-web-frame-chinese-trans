@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，映射，关联数组映射
+ */
 
 /**
  * This file is part of the ramsey/collection library

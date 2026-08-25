@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，Type
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
@@ -14,6 +17,7 @@ use Nette;
 
 /**
  * PHP type reflection.
+ * PHP类型反射。
  */
 final class Type
 {

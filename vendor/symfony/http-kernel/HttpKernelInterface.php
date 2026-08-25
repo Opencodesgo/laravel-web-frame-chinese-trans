@@ -31,7 +31,7 @@ interface HttpKernelInterface
 
     /**
      * @deprecated since symfony/http-kernel 5.3, use MAIN_REQUEST instead.
-     *             To ease the migration, this constant won't be removed until Symfony 7.0.
+     * To ease the migration, this constant won't be removed until Symfony 7.0.
      */
     public const MASTER_REQUEST = self::MAIN_REQUEST;
 

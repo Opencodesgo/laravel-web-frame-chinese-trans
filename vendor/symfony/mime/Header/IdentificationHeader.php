@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，Header，识别头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * An ID MIME Header for something like Message-ID or Content-ID (one or more addresses).
+ * 一个ID MIME报头，用于消息ID或内容ID（一个或多个地址）。
  *
  * @author Chris Corbyn
  */

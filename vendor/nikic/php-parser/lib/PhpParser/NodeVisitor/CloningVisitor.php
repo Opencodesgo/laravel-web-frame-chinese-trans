@@ -14,6 +14,7 @@ use PhpParser\NodeVisitorAbstract;
  * 访问者克隆所有节点并使用属性链接到原始节点。
  *
  * This visitor is required to perform format-preserving pretty prints.
+ * 这个访问者需要执行保持格式的漂亮打印。
  */
 class CloningVisitor extends NodeVisitorAbstract {
     public function enterNode(Node $origNode) {

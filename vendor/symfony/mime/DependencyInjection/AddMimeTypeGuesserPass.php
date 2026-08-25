@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，依赖注入，添加Mime类型猜测传递
+ * Symfony，Component，Mime，依赖注入，添加 Mime类型猜测传递
  */
 
 /*

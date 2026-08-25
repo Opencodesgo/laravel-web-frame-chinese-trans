@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，异常，值提取异常
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -18,6 +21,7 @@ use RuntimeException;
 
 /**
  * Thrown when attempting to extract a value for a method or property that does not exist.
+ * 试图提取不存在的方法或属性的值时抛出。
  */
 class ValueExtractionException extends RuntimeException
 {

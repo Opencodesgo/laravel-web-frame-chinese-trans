@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Doctrine，CarbonD 学说类型
+ * Carbon，Doctrine，Carbon 学说类型
  */
 
 namespace Carbon\Doctrine;

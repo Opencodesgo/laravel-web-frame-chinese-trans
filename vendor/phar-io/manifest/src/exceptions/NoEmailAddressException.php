@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，没有电子邮件地址异常
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，Image
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
@@ -14,6 +17,7 @@ use Nette;
 
 /**
  * Basic manipulation with images. Supported types are JPEG, PNG, GIF, WEBP, AVIF and BMP.
+ * 基本的图像操作。支持的类型是JPEG， PNG， GIF， WEBP， AVIF和BMP。
  *
  * <code>
  * $image = Image::fromFile('nette.jpg');
@@ -146,6 +150,7 @@ class Image
 
 	/**
 	 * Reads an image from a file and returns its type in $type.
+	 * 从文件中读取图像并在$type中返回其类型
 	 * @throws Nette\NotSupportedException if gd extension is not loaded
 	 * @throws UnknownImageFileException if file not found or file type is not known
 	 * @return static
@@ -167,6 +172,7 @@ class Image
 
 	/**
 	 * Reads an image from a string and returns its type in $type.
+	 * 从字符串中读取图像并在$type中返回其类型
 	 * @return static
 	 * @throws Nette\NotSupportedException if gd extension is not loaded
 	 * @throws ImageException

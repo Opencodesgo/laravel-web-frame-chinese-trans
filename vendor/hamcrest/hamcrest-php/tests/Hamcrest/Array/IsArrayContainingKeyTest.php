@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否数组包含主键测试
+ */
+
 namespace Hamcrest\Arrays;
 
 use Hamcrest\AbstractMatcherTest;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，数组散列
+ * Nette，工具包，数组列表
  */
 
 /**
@@ -17,6 +17,7 @@ use Nette;
 
 /**
  * Provides the base class for a generic list (items can be accessed by index).
+ * 提供泛型列表的基类（项可以通过索引访问）。
  * @template T
  * @implements \IteratorAggregate<int, T>
  * @implements \ArrayAccess<int, T>
@@ -31,6 +32,7 @@ class ArrayList implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	/**
 	 * Transforms array to ArrayList.
+	 * 将array转换为ArrayList
 	 * @param  list<T>  $array
 	 * @return static
 	 */

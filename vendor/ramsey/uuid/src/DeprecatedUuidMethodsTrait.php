@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，弃用Uuid方法
+ * Ramsey，Uuid，弃用 Uuid方法特征
  */
 
 /**

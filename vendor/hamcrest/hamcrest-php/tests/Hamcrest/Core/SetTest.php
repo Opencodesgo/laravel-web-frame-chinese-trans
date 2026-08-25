@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，设置测试
+ */
+
 namespace Hamcrest\Core;
 
 class SetTest extends \Hamcrest\AbstractMatcherTest

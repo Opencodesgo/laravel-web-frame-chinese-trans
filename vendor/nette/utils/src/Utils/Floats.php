@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，Utils，浮点数
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
@@ -14,6 +17,7 @@ use Nette;
 
 /**
  * Floating-point numbers comparison.
+ * 浮点数比较。
  */
 class Floats
 {

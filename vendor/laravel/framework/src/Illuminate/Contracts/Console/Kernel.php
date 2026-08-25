@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，控制台，内核接口
+ * Illuminate，契约，控制台，内核
  */
 
 namespace Illuminate\Contracts\Console;

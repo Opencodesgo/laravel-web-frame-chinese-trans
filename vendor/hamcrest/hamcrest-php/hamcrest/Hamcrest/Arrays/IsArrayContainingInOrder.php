@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否数组包含排序
+ */
+
 namespace Hamcrest\Arrays;
 
 /*
@@ -10,6 +14,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains a set of items satisfying nested matchers.
+ * 如果数组包含一组满足嵌套匹配器的项，则匹配。
  */
 class IsArrayContainingInOrder extends TypeSafeDiagnosingMatcher
 {
@@ -45,6 +50,7 @@ class IsArrayContainingInOrder extends TypeSafeDiagnosingMatcher
 
     /**
      * An array with elements that match the given matchers in the same order.
+	 * 用同一顺序匹配给定的matchers的元素的数组
      *
      * @factory contains ...
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，文件系统
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
@@ -14,6 +17,7 @@ use Nette;
 
 /**
  * File system tool.
+ * 文件系统工具
  */
 final class FileSystem
 {

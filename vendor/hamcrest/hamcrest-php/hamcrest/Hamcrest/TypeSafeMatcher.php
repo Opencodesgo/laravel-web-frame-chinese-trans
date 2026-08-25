@@ -1,9 +1,14 @@
 <?php
+/**
+ * Hamcrest，类型安全匹配器
+ */
+
 namespace Hamcrest;
 
 /**
  * Convenient base class for Matchers that require a value of a specific type.
  * This simply checks the type.
+ * 适用于需要特定类型值的匹配器的便捷基类。它仅检查类型。
  *
  * While it may seem a useless exercise to have this in PHP, objects cannot
  * be cast to certain data types such as numerics (or even strings if

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，Header，邮箱列表标头
+ */
 
 /*
  * This file is part of the Symfony package.

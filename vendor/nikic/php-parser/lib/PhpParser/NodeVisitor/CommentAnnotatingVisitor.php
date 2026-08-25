@@ -1,4 +1,7 @@
 <?php declare(strict_types=1);
+/**
+ * PhpParser，节点访问器，评论注释访客
+ */
 
 namespace PhpParser\NodeVisitor;
 
@@ -17,6 +20,7 @@ class CommentAnnotatingVisitor extends NodeVisitorAbstract {
 
     /**
      * Create a comment annotation visitor.
+	 * 创建一个注释注释访问者
      *
      * @param Token[] $tokens Token array
      */

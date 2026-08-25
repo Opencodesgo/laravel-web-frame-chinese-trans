@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Collection，异常，无此元素异常
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -18,6 +21,7 @@ use RuntimeException;
 
 /**
  * Thrown when attempting to access an element that does not exist.
+ * 当试图访问不存在的元素时抛出。
  */
 class NoSuchElementException extends RuntimeException
 {

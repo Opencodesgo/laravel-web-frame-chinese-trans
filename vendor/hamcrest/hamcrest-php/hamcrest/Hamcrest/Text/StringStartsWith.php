@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，字符串开始
+ */
+
 namespace Hamcrest\Text;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest\Text;
 
 /**
  * Tests if the argument is a string that contains a substring.
+ * 测试参数是否为包含子字符串的字符串。
  */
 class StringStartsWith extends SubstringMatcher
 {
@@ -18,6 +23,7 @@ class StringStartsWith extends SubstringMatcher
 
     /**
      * Matches if value is a string that starts with $substring.
+	 * 如果value是以$substring开头的字符串匹配
      *
      * @factory
      */

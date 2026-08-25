@@ -152,6 +152,7 @@ class Manager
         // with the Eloquent ORM, allowing for model callbacks while creating and
         // updating "model" instances; however, it is not necessary to operate.
 		// 如果我们有一个事件调度程序实例，我们将继续使用Eloquent ORM注册它。
+		// 在创建和更新“模型”实例时允许模型回调；但无需操作。
         if ($dispatcher = $this->getEventDispatcher()) {
             Eloquent::setEventDispatcher($dispatcher);
         }

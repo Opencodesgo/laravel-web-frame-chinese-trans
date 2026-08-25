@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，描述为测试
+ */
+
 namespace Hamcrest\Core;
 
 class DescribedAsTest extends \Hamcrest\AbstractMatcherTest

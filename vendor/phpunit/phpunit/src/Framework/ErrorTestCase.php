@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，错误测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *

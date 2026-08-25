@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，php版本
+ * PhpParser，php 版本
  */
 
 namespace PhpParser;

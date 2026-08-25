@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，Header，Path Header
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * A Path Header, such a Return-Path (one address).
+ * 一个路径头，如返回路径（一个地址）。
  *
  * @author Chris Corbyn
  */

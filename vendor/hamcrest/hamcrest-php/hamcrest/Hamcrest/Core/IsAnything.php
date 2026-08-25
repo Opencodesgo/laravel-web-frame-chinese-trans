@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，Is Anything
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -9,6 +13,7 @@ use Hamcrest\Description;
 
 /**
  * A matcher that always returns <code>true</code>.
+ * 一个总是返回<code>true</code>的匹配器。
  */
 class IsAnything extends BaseMatcher
 {
@@ -32,6 +37,7 @@ class IsAnything extends BaseMatcher
 
     /**
      * This matcher always evaluates to true.
+	 * 这个匹配器的计算结果总是为true
      *
      * @param string $description A meaningful string used when describing itself.
      *

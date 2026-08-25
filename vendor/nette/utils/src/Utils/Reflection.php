@@ -1,4 +1,7 @@
 <?php
+/**
+ * Nette，工具包，反射
+ */
 
 /**
  * This file is part of the Nette Framework (https://nette.org)

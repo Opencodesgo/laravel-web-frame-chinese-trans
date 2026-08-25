@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数字，Is Close To
+ */
+
 namespace Hamcrest\Number;
 
 /*
@@ -10,6 +14,7 @@ use Hamcrest\TypeSafeMatcher;
 /**
  * Is the value a number equal to a value within some range of
  * acceptable error?
+ * 该值是否等于某个可接受误差范围内的数值？
  */
 class IsCloseTo extends TypeSafeMatcher
 {
@@ -50,6 +55,7 @@ class IsCloseTo extends TypeSafeMatcher
     /**
      * Matches if value is a number equal to $value within some range of
      * acceptable error $delta.
+	 * 如果值是等于 $value 的数字，并且在允许的误差范围 $delta 内，则匹配。
      *
      * @factory
      */

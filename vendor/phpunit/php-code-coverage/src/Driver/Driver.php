@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，驱动，驱动
+ * SebastianBergmann，CodeCoverage，驱动，Driver
  */
 
 /*

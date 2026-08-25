@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，字符串包含忽略大小写
+ */
+
 namespace Hamcrest\Text;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest\Text;
 
 /**
  * Tests if the argument is a string that contains a substring ignoring case.
+ * 测试参数是否为包含忽略大小写的子字符串的字符串。
  */
 class StringContainsIgnoringCase extends SubstringMatcher
 {
@@ -18,6 +23,7 @@ class StringContainsIgnoringCase extends SubstringMatcher
 
     /**
      * Matches if value is a string that contains $substring regardless of the case.
+	 * 如果value是包含$substring的字符串，则匹配。
      *
      * @factory
      */
