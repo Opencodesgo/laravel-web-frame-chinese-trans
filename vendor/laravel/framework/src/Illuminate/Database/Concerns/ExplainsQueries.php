@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，问题，解释查询
+ * Illuminate，数据库，问题，构建查询
  */
 
 namespace Illuminate\Database\Concerns;
@@ -11,7 +11,7 @@ trait ExplainsQueries
 {
     /**
      * Explains the query.
-	 * 解释查询
+	 * 解析查询语句
      *
      * @return \Illuminate\Support\Collection
      */

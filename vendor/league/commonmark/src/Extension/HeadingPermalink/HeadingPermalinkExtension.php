@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，标题永久链接，标题永久链接扩展
+ */
 
 declare(strict_types=1);
 
@@ -21,6 +24,7 @@ use Nette\Schema\Expect;
 
 /**
  * Extension which automatically anchor links to heading elements
+ * 扩展，自动锚定链接到标题元素。
  */
 final class HeadingPermalinkExtension implements ConfigurableExtensionInterface
 {

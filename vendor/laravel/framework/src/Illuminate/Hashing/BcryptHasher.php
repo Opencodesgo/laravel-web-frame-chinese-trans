@@ -12,7 +12,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default cost factor.
-	 * 默认的成本因子
+	 * 默认成本因子
      *
      * @var int
      */
@@ -28,7 +28,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Create a new hasher instance.
-	 * 创建新的哈希实例
+	 * 创建新的散列实例
      *
      * @param  array  $options
      * @return void
@@ -41,7 +41,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Hash the given value.
-	 * 哈希给定值 
+	 * 哈希给定值
      *
      * @param  string  $value
      * @param  array  $options
@@ -84,7 +84,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Check if the given hash has been hashed using the given options.
-	 * 检查给定的散列是否已经使用给定的选项进行了散列
+	 * 检查给定的散列是否已经使用给定的选项进行了散
      *
      * @param  string  $hashedValue
      * @param  array  $options

@@ -1,28 +1,43 @@
 <?php
 /**
- * Illuminate，路由，控制台，make:middleware 中间件设置命令
+ * Illuminate，路由，控制台，make:middleware 中间件 Make命令
  */
 
 namespace Illuminate\Routing\Console;
 
 use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'make:middleware')]
 class MiddlewareMakeCommand extends GeneratorCommand
 {
     use CreatesMatchingTest;
 
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $name = 'make:middleware';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:middleware';
+
+    /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -38,7 +53,7 @@ class MiddlewareMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */

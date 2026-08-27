@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，引用接口
+ * League，CommonMark，参考，引用接口
  */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ namespace League\CommonMark\Reference;
 
 /**
  * Link reference
- * 引用链接
+ * 链引用
  */
 interface ReferenceInterface
 {

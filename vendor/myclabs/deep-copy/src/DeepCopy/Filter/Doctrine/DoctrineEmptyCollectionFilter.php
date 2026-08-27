@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，过滤器，主义，主义空收集过滤器
+ * DeepCopy，过滤器，主义，Doctrine 空集合过滤器
  */
 
 namespace DeepCopy\Filter\Doctrine;
@@ -16,7 +16,7 @@ class DoctrineEmptyCollectionFilter implements Filter
 {
     /**
      * Sets the object property to an empty doctrine collection.
-	 * 将对象属性设置为空的教条集合。
+	 * 将对象属性设置为空原则集合
      *
      * @param object   $object
      * @param string   $property
@@ -25,7 +25,9 @@ class DoctrineEmptyCollectionFilter implements Filter
     public function apply($object, $property, $objectCopier)
     {
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
-        $reflectionProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $reflectionProperty->setAccessible(true);
+        }
 
         $reflectionProperty->setValue($object, new ArrayCollection());
     }

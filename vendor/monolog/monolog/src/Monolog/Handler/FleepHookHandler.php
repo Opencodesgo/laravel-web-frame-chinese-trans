@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，Fleep Hook 处理程序
+ * Monolog，处理器，Fleep Hook 处理器
  */
 
 /*
@@ -21,7 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends logs to Fleep.io using Webhook integrations
- * 向Fleep发送日志。使用Webhook集成。
+ * 向Fleep发送日志。使用Webhook集成
  *
  * You'll need a Fleep.io account to use this handler.
  *

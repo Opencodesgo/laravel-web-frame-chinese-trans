@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，可配置迁移命令
+ * Illuminate，基础，测试，特性，能配置迁移命令
  */
 
 namespace Illuminate\Foundation\Testing\Traits;

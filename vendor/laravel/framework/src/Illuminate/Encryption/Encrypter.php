@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，加密，加密器
+ * Illuminate，加密，加密程序
  */
 
 namespace Illuminate\Encryption;
@@ -23,7 +23,7 @@ class Encrypter implements EncrypterContract, StringEncrypter
 
     /**
      * The algorithm used for encryption.
-	 * 用于加密的算法
+	 * 加密算法
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class Encrypter implements EncrypterContract, StringEncrypter
 
     /**
      * Create a new encrypter instance.
-	 * 创建一个新的加密器实例
+	 * 创建新的加密程序实例
      *
      * @param  string  $key
      * @param  string  $cipher
@@ -109,27 +109,20 @@ class Encrypter implements EncrypterContract, StringEncrypter
     {
         $iv = random_bytes(openssl_cipher_iv_length(strtolower($this->cipher)));
 
-        $tag = '';
-
-        $value = self::$supportedCiphers[strtolower($this->cipher)]['aead']
-            ? \openssl_encrypt(
-                $serialize ? serialize($value) : $value,
-                strtolower($this->cipher), $this->key, 0, $iv, $tag
-            )
-            : \openssl_encrypt(
-                $serialize ? serialize($value) : $value,
-                strtolower($this->cipher), $this->key, 0, $iv
-            );
+        $value = \openssl_encrypt(
+            $serialize ? serialize($value) : $value,
+            strtolower($this->cipher), $this->key, 0, $iv, $tag
+        );
 
         if ($value === false) {
             throw new EncryptException('Could not encrypt the data.');
         }
 
         $iv = base64_encode($iv);
-        $tag = base64_encode($tag);
+        $tag = base64_encode($tag ?? '');
 
         $mac = self::$supportedCiphers[strtolower($this->cipher)]['aead']
-            ? '' // For AEAD-algoritms, the tag / MAC is returned by openssl_encrypt...
+            ? '' // For AEAD-algorithms, the tag / MAC is returned by openssl_encrypt...
             : $this->hash($iv, $value);
 
         $json = json_encode(compact('iv', 'value', 'mac', 'tag'), JSON_UNESCAPED_SLASHES);
@@ -157,7 +150,7 @@ class Encrypter implements EncrypterContract, StringEncrypter
 
     /**
      * Decrypt the given value.
-	 * 解密给定的值
+	 * 解密给定值
      *
      * @param  string  $payload
      * @param  bool  $unserialize
@@ -178,7 +171,7 @@ class Encrypter implements EncrypterContract, StringEncrypter
         // Here we will decrypt the value. If we are able to successfully decrypt it
         // we will then unserialize it and return it out to the caller. If we are
         // unable to decrypt this value we will throw out an exception message.
-		// 这里我们将解密该值。如果我们能成功解密的话，然后将其反序列化并返回给调用者。
+		// 这里我们将解密该值。如果我们能成功解密的话。
         $decrypted = \openssl_decrypt(
             $payload['value'], strtolower($this->cipher), $this->key, 0, $iv, $tag ?? ''
         );
@@ -233,7 +226,7 @@ class Encrypter implements EncrypterContract, StringEncrypter
         // If the payload is not valid JSON or does not have the proper keys set we will
         // assume it is invalid and bail out of the routine since we will not be able
         // to decrypt the given value. We'll also check the MAC for this encryption.
-		// 如果有效负载不是有效的JSON或没有正确的键设置，我们将假设它是无效的，并退出例程。
+		// 如果有效负载不是有效的JSON或没有正确的键集。
         if (! $this->validPayload($payload)) {
             throw new DecryptException('The payload is invalid.');
         }
@@ -254,8 +247,21 @@ class Encrypter implements EncrypterContract, StringEncrypter
      */
     protected function validPayload($payload)
     {
-        return is_array($payload) && isset($payload['iv'], $payload['value'], $payload['mac']) &&
-            strlen(base64_decode($payload['iv'], true)) === openssl_cipher_iv_length(strtolower($this->cipher));
+        if (! is_array($payload)) {
+            return false;
+        }
+
+        foreach (['iv', 'value', 'mac'] as $item) {
+            if (! isset($payload[$item]) || ! is_string($payload[$item])) {
+                return false;
+            }
+        }
+
+        if (isset($payload['tag']) && ! is_string($payload['tag'])) {
+            return false;
+        }
+
+        return strlen(base64_decode($payload['iv'], true)) === openssl_cipher_iv_length(strtolower($this->cipher));
     }
 
     /**
@@ -291,8 +297,8 @@ class Encrypter implements EncrypterContract, StringEncrypter
     }
 
     /**
-     * Get the encryption key.
-	 * 获取加密密钥
+     * Get the encryption key that the encrypter is currently using.
+	 * 获取加密器当前使用的加密密钥
      *
      * @return string
      */

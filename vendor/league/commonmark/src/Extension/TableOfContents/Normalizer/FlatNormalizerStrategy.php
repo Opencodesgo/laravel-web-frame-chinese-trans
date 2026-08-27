@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，标准化者，扁平归一化策略
+ * League，CommonMark，扩展，目次，标准化者，扁平归一化策略
  */
 
 declare(strict_types=1);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，文件助手
+ * Illuminate, Http, 文件助手特征
  */
 
 namespace Illuminate\Http;
@@ -30,7 +30,7 @@ trait FileHelpers
 
     /**
      * Get the file's extension.
-	 * 得到文件的扩展名
+	 * 获取文件的扩展名
      *
      * @return string
      */

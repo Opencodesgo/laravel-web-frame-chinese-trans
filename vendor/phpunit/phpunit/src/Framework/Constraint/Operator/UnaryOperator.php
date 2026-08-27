@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，一元运算符
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -32,6 +37,7 @@ abstract class UnaryOperator extends Operator
 
     /**
      * Returns the number of operands (constraints).
+	 * 返回操作数（约束）的数目
      */
     public function arity(): int
     {
@@ -40,6 +46,7 @@ abstract class UnaryOperator extends Operator
 
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示形式
      */
     public function toString(): string
     {

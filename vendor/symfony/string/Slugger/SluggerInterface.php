@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Contracts，String，重击者，重击者接口
+ * Symfony，Contracts，String，Slugger，Slugger 接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\String\AbstractUnicodeString;
 
 /**
  * Creates a URL-friendly slug from a given string.
- * 从给定字符串创建一个url友好的段塞
+ * 从给定字符串创建一个url友好的段塞。
  *
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */

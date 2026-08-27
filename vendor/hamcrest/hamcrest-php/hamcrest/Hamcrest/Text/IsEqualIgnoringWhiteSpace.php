@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，等于忽略空白吗
- */
-
 namespace Hamcrest\Text;
 
 /*
@@ -14,7 +10,6 @@ use Hamcrest\TypeSafeMatcher;
 /**
  * Tests if a string is equal to another string, ignoring any changes in
  * whitespace.
- * 检查一个字符串是否等于另一个字符串，忽略任何空格变化。
  */
 class IsEqualIgnoringWhiteSpace extends TypeSafeMatcher
 {
@@ -49,7 +44,6 @@ class IsEqualIgnoringWhiteSpace extends TypeSafeMatcher
 
     /**
      * Matches if value is a string equal to $string, regardless of whitespace.
-	 * 匹配如果value是一个等于$string的字符串，不管是否有空格。
      *
      * @factory
      */

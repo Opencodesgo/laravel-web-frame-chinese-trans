@@ -37,7 +37,7 @@ class DatabaseStore implements LockProvider, Store
 
     /**
      * The name of the cache table.
-	 * 缓存表名称
+	 * 缓存表名
      *
      * @var string
      */
@@ -69,7 +69,7 @@ class DatabaseStore implements LockProvider, Store
 
     /**
      * Create a new database store.
-	 * 创建新的数据库存储
+	 * 创建一个新的数据库存储
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
@@ -107,7 +107,7 @@ class DatabaseStore implements LockProvider, Store
         // If we have a cache record we will check the expiration time against current
         // time on the system and see if the record has expired. If it has, we will
         // remove the records from the database table so it isn't returned again.
-		// 如果我们有缓存记录，我们将根据当前记录检查系统的过期时间，看看记录是否已经过期。
+		// 如果我们有缓存记录，我们将根据当前记录检查过期时间。
         if (is_null($cache)) {
             return;
         }
@@ -117,7 +117,6 @@ class DatabaseStore implements LockProvider, Store
         // If this cache expiration date is past the current time, we will remove this
         // item from the cache. Then we will return a null value since the cache is
         // expired. We will use "Carbon" to make this comparison with the column.
-		// 如果此缓存过期日期超过当前时间，我们将从缓存中删除它。
         if ($this->currentTime() >= $cache->expiration) {
             $this->forget($key);
 
@@ -229,7 +228,7 @@ class DatabaseStore implements LockProvider, Store
             // If there is no value in the cache, we will return false here. Otherwise the
             // value will be decrypted and we will proceed with this function to either
             // increment or decrement this value based on the given action callbacks.
-			// 如果缓存中没有值，我们将返回false。否则，值将被解密，我们将继续使用这个函数。
+			// 如果缓存中没有值，我们将返回false。
             if (is_null($cache)) {
                 return false;
             }
@@ -241,7 +240,6 @@ class DatabaseStore implements LockProvider, Store
             // Here we'll call this callback function that was given to the function which
             // is used to either increment or decrement the function. We use a callback
             // so we do not have to recreate all this logic in each of the functions.
-			// 这里我们调用这个回调函数它被赋给了用于增加或减少函数。
             $new = $callback((int) $current, $value);
 
             if (! is_numeric($current)) {
@@ -251,7 +249,6 @@ class DatabaseStore implements LockProvider, Store
             // Here we will update the values in the table. We will also encrypt the value
             // since database cache values are encrypted by default with secure storage
             // that can't be easily read. We will return the new value after storing.
-			// 这里我们将更新表中的值。我们还将加密该值，因为数据库缓存值默认情况下使用安全存储进行加密。
             $this->table()->where('key', $prefixed)->update([
                 'value' => $this->serialize($new),
             ]);
@@ -403,7 +400,7 @@ class DatabaseStore implements LockProvider, Store
     {
         $result = serialize($value);
 
-        if ($this->connection instanceof PostgresConnection && Str::contains($result, "\0")) {
+        if ($this->connection instanceof PostgresConnection && str_contains($result, "\0")) {
             $result = base64_encode($result);
         }
 

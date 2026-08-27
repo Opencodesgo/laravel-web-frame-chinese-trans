@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，migrate:fresh 新的命令
+ * Illuminate，数据库，控制台，迁移，新的命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -25,11 +25,11 @@ class FreshCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
-    protected $description = 'Drop all tables and re-run all migrations';		#删除所有表并重新运行所有迁移
+    protected $description = 'Drop all tables and re-run all migrations';
 
     /**
      * Execute the console command.
@@ -45,12 +45,16 @@ class FreshCommand extends Command
 
         $database = $this->input->getOption('database');
 
-        $this->call('db:wipe', array_filter([
+        $this->newLine();
+
+        $this->components->task('Dropping all tables', fn () => $this->callSilent('db:wipe', array_filter([
             '--database' => $database,
             '--drop-views' => $this->option('drop-views'),
             '--drop-types' => $this->option('drop-types'),
             '--force' => true,
-        ]));
+        ])) == 0);
+
+        $this->newLine();
 
         $this->call('migrate', array_filter([
             '--database' => $database,

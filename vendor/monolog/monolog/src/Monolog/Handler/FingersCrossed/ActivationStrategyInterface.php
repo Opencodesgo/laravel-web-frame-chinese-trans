@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，Curl，手指交叉，激活策略接口
+ * Monolog，处理器，希望成功，激活策略接口
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Monolog\Handler\FingersCrossed;
 
 /**
  * Interface for activation strategies for the FingersCrossedHandler.
- * 为FingersCrossedHandler激活策略的接口
+ * 用于FingersCrossedHandler的激活策略的接口。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *
@@ -27,7 +27,7 @@ interface ActivationStrategyInterface
 {
     /**
      * Returns whether the given record activates the handler.
-	 * 返回给定的记录是否激活处理程序
+	 * 返回给定记录是否激活处理程序
      *
      * @phpstan-param Record $record
      */

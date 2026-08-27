@@ -1,13 +1,12 @@
 <?php
 /**
- * League，CommonMark，Github 风味的降价转换器
+ * League，CommonMark，Github 风味的Markdown转换器
  */
 
 declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
- * 这个文件是league/commonmark包的一部分
  *
  * (c) Colin O'Dell <colinodell@gmail.com>
  *
@@ -23,7 +22,7 @@ use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 
 /**
  * Converts GitHub Flavored Markdown to HTML.
- * 转换GitHub风味Markdown为HTML
+ * 转换GitHub风味Markdown到HTML。
  */
 final class GithubFlavoredMarkdownConverter extends MarkdownConverter
 {

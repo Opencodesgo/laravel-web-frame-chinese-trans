@@ -20,7 +20,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * The controller namespace for the application.
-	 * 应用控制器命名空间
+	 * 应用程序的控制器名称空间
      *
      * @var string|null
      */
@@ -36,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-	 * 注册任何应用服务
+	 * 注册任何应用程序服务
      *
      * @return void
      */
@@ -122,7 +122,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Load the application routes.
-	 * 加载应用路由
+	 * 加载应用程序路由
      *
      * @return void
      */

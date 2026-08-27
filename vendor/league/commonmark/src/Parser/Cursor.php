@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，游标
+ * League，CommonMark，解析器，指针
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ class Cursor
      *
      * It's possible for this to be 1 char past the end, meaning we've parsed all chars and have
      * reached the end.  In this state, any character-returning method MUST return null.
-	 * 这是可能的,因为它已经结束了,这意味着我们已经解析了所有的chars。
+	 * 这有可能是结束后的1个字符，这意味着我们已经解析了所有字符并到达终点。
      */
     private int $currentPosition = 0;
 
@@ -115,7 +115,7 @@ class Cursor
 
     /**
      * Returns the next character which isn't a space (or tab)
-	 * 返回一个不是空格(或选项卡)的下一个字符
+	 * 返回下一个不是空格（或制表符）的字符
      */
     public function getNextNonSpaceCharacter(): ?string
     {
@@ -133,7 +133,7 @@ class Cursor
 
     /**
      * Calculates the current indent (number of spaces after current position)
-	 * 计算当前缩进(当前位置后空间的数量)
+	 * 计算当前缩进（当前位置后的空格数）
      */
     public function getIndent(): int
     {
@@ -146,7 +146,7 @@ class Cursor
 
     /**
      * Whether the cursor is indented to INDENT_LEVEL
-	 * 游标是否缩进INDENT_LEVEL
+	 * 游标是否缩进到INDENT_LEVEL
      */
     public function isIndented(): bool
     {
@@ -177,6 +177,7 @@ class Cursor
 
     /**
      * Slightly-optimized version of getCurrent(null)
+	 * getCurrent（null）的稍微优化版本
      */
     public function getCurrentCharacter(): ?string
     {
@@ -202,7 +203,7 @@ class Cursor
 
     /**
      * Whether the remainder is blank
-	 * 剩下的是空白的
+	 * 余数是否为空
      */
     public function isBlank(): bool
     {
@@ -211,6 +212,7 @@ class Cursor
 
     /**
      * Move the cursor forwards
+	 * 向前移动光标
      */
     public function advance(): void
     {
@@ -219,7 +221,7 @@ class Cursor
 
     /**
      * Move the cursor forwards
-	 * 移动光标向前移动
+	 * 向前移动光标
      *
      * @param int  $characters       Number of characters to advance by
      * @param bool $advanceByColumns Whether to advance by columns instead of spaces
@@ -303,7 +305,7 @@ class Cursor
 
     /**
      * Parse zero or more space/tab characters
-	 * 解析零或多个空格/标签字符
+	 * 解析零个或多个空格/制表符
      *
      * @return int Number of positions moved
      */
@@ -328,7 +330,7 @@ class Cursor
 
     /**
      * Parse zero or more space characters, including at most one newline.
-	 * 解析零或更多的空格字符,包括最多一条新线。
+	 * 解析零个或多个空格字符，最多包括一个换行符。
      *
      * Tab characters are not parsed with this function.
      *
@@ -360,7 +362,7 @@ class Cursor
 
     /**
      * Move the position to the very end of the line
-	 * 把位置移动到直线的末端
+	 * 将位置移动到线的最末端
      *
      * @return int The number of characters moved
      */
@@ -407,9 +409,10 @@ class Cursor
 
     /**
      * Try to match a regular expression
-	 * 试着与正则表达式相匹配
+	 * 尝试匹配正则表达式
      *
      * Returns the matching text and advances to the end of that match
+	 * 返回匹配文本并前进到该匹配的末尾
      *
      * @psalm-param non-empty-string $regex
      */
@@ -462,7 +465,7 @@ class Cursor
 
     /**
      * Restore the cursor to a previous state.
-	 * 将光标恢复到以前的状态。
+	 * 将光标恢复到以前的状态
      *
      * Pass in the value previously obtained by calling saveState().
      */

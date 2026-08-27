@@ -20,7 +20,7 @@ class RedisConnector implements ConnectorInterface
 
     /**
      * The connection name.
-	 * 连接名称
+	 * 连接名
      *
      * @var string
      */
@@ -54,7 +54,8 @@ class RedisConnector implements ConnectorInterface
             $config['connection'] ?? $this->connection,
             $config['retry_after'] ?? 60,
             $config['block_for'] ?? null,
-            $config['after_commit'] ?? null
+            $config['after_commit'] ?? null,
+            $config['migration_batch_size'] ?? -1
         );
     }
 }

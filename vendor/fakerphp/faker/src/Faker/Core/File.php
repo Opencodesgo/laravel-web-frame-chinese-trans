@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，文件
+ * Faker，Core，文件
  */
 
 declare(strict_types=1);
@@ -16,7 +16,7 @@ final class File implements Extension\FileExtension
 {
     /**
      * MIME types from the apache.org file. Some types are truncated.
-	 * 来自apache的MIME类型。org文件。有些类型被截断。
+	 * 来自apache.org文件的MIME类型。有些类型被截断。
      *
      * @var array Map of MIME types => file extension(s)
      *

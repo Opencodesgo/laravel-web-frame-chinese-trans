@@ -45,8 +45,7 @@ class ArraySessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
@@ -56,8 +55,7 @@ class ArraySessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -67,8 +65,7 @@ class ArraySessionHandler implements SessionHandlerInterface
      *
      * @return string|false
      */
-    #[\ReturnTypeWillChange]
-    public function read($sessionId)
+    public function read($sessionId): string|false
     {
         if (! isset($this->storage[$sessionId])) {
             return '';
@@ -90,8 +87,7 @@ class ArraySessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function write($sessionId, $data)
+    public function write($sessionId, $data): bool
     {
         $this->storage[$sessionId] = [
             'data' => $data,
@@ -106,8 +102,7 @@ class ArraySessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function destroy($sessionId)
+    public function destroy($sessionId): bool
     {
         if (isset($this->storage[$sessionId])) {
             unset($this->storage[$sessionId]);
@@ -119,20 +114,22 @@ class ArraySessionHandler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      *
-     * @return int|false
+     * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function gc($lifetime)
+    public function gc($lifetime): int
     {
         $expiration = $this->calculateExpiration($lifetime);
+
+        $deletedSessions = 0;
 
         foreach ($this->storage as $sessionId => $session) {
             if ($session['time'] < $expiration) {
                 unset($this->storage[$sessionId]);
+                $deletedSessions++;
             }
         }
 
-        return true;
+        return $deletedSessions;
     }
 
     /**

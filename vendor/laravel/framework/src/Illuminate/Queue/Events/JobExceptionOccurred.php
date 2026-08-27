@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，作业异常发生
+ * Illuminate，队列，事件，作业出现异常
  */
 
 namespace Illuminate\Queue\Events;
@@ -33,7 +33,7 @@ class JobExceptionOccurred
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，测试，接收报头项
+ * Symfony，Component，HttpFoundation，接收报头项
  */
 
 /*
@@ -16,16 +16,15 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Represents an Accept-* header item.
- * 表示Accept-*报头项
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
 class AcceptHeaderItem
 {
-    private $value;
-    private $quality = 1.0;
-    private $index = 0;
-    private $attributes = [];
+    private string $value;
+    private float $quality = 1.0;
+    private int $index = 0;
+    private array $attributes = [];
 
     public function __construct(string $value, array $attributes = [])
     {
@@ -38,10 +37,8 @@ class AcceptHeaderItem
     /**
      * Builds an AcceptHeaderInstance instance from a string.
 	 * 从字符串构建一个AcceptHeaderInstance实例
-     *
-     * @return self
      */
-    public static function fromString(?string $itemValue)
+    public static function fromString(?string $itemValue): self
     {
         $parts = HeaderUtils::split($itemValue ?? '', ';=');
 
@@ -54,10 +51,8 @@ class AcceptHeaderItem
     /**
      * Returns header value's string representation.
 	 * 返回报头值的字符串表示形式
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $string = $this->value.($this->quality < 1 ? ';q='.$this->quality : '');
         if (\count($this->attributes) > 0) {
@@ -73,7 +68,7 @@ class AcceptHeaderItem
      *
      * @return $this
      */
-    public function setValue(string $value)
+    public function setValue(string $value): static
     {
         $this->value = $value;
 
@@ -83,10 +78,8 @@ class AcceptHeaderItem
     /**
      * Returns the item value.
 	 * 返回项值
-     *
-     * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -97,7 +90,7 @@ class AcceptHeaderItem
      *
      * @return $this
      */
-    public function setQuality(float $quality)
+    public function setQuality(float $quality): static
     {
         $this->quality = $quality;
 
@@ -107,10 +100,8 @@ class AcceptHeaderItem
     /**
      * Returns the item quality.
 	 * 返回项目质量
-     *
-     * @return float
      */
-    public function getQuality()
+    public function getQuality(): float
     {
         return $this->quality;
     }
@@ -121,7 +112,7 @@ class AcceptHeaderItem
      *
      * @return $this
      */
-    public function setIndex(int $index)
+    public function setIndex(int $index): static
     {
         $this->index = $index;
 
@@ -131,10 +122,8 @@ class AcceptHeaderItem
     /**
      * Returns the item index.
 	 * 返回项目索引
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return $this->index;
     }
@@ -142,10 +131,8 @@ class AcceptHeaderItem
     /**
      * Tests if an attribute exists.
 	 * 测试属性是否存在
-     *
-     * @return bool
      */
-    public function hasAttribute(string $name)
+    public function hasAttribute(string $name): bool
     {
         return isset($this->attributes[$name]);
     }
@@ -153,12 +140,8 @@ class AcceptHeaderItem
     /**
      * Returns an attribute by its name.
 	 * 按名称返回属性
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getAttribute(string $name, $default = null)
+    public function getAttribute(string $name, mixed $default = null): mixed
     {
         return $this->attributes[$name] ?? $default;
     }
@@ -166,10 +149,8 @@ class AcceptHeaderItem
     /**
      * Returns all attributes.
 	 * 返回所有属性
-     *
-     * @return array
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -180,7 +161,7 @@ class AcceptHeaderItem
      *
      * @return $this
      */
-    public function setAttribute(string $name, string $value)
+    public function setAttribute(string $name, string $value): static
     {
         if ('q' === $name) {
             $this->quality = (float) $value;

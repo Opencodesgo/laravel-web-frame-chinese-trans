@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，维护期间的预防性请求
+ * Illuminate, 基础, Http, 中间件, 维护期间的预防性请求
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -14,7 +14,7 @@ class PreventRequestsDuringMaintenance
 {
     /**
      * The application implementation.
-	 * 应用实现
+	 * 应用模式
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -24,13 +24,13 @@ class PreventRequestsDuringMaintenance
      * The URIs that should be accessible while maintenance mode is enabled.
 	 * 在启用维护模式时应该可以访问的URI
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [];
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -52,8 +52,8 @@ class PreventRequestsDuringMaintenance
      */
     public function handle($request, Closure $next)
     {
-        if ($this->app->isDownForMaintenance()) {
-            $data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
+        if ($this->app->maintenanceMode()->active()) {
+            $data = $this->app->maintenanceMode()->data();
 
             if (isset($data['secret']) && $request->path() === $data['secret']) {
                 return $this->bypassResponse($data['secret']);
@@ -120,7 +120,7 @@ class PreventRequestsDuringMaintenance
      */
     protected function inExceptArray($request)
     {
-        foreach ($this->except as $except) {
+        foreach ($this->getExcludedPaths() as $except) {
             if ($except !== '/') {
                 $except = trim($except, '/');
             }

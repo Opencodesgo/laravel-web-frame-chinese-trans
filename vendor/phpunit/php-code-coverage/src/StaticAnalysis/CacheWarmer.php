@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，缓存 Warmer
+ * SebastianBergmann，CodeCoverage，静态分析，Cache Warmer
  */
 
 /*

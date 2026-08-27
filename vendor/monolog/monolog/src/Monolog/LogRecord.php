@@ -19,7 +19,7 @@ use ArrayAccess;
 
 /**
  * Monolog log record interface for forward compatibility with Monolog 3.0
- * 独白日志记录接口，向前兼容独白3.0
+ * 独白日志记录接口，向前兼容独白3.0。
  *
  * This is just present in Monolog 2.4+ to allow interoperable code to be written against
  * both versions by type-hinting arguments as `array|\Monolog\LogRecord $record`

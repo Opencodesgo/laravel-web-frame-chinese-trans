@@ -9,7 +9,7 @@ interface Session
 {
     /**
      * Get the name of the session.
-	 * 获取会话的名称
+	 * 得到会话名称
      *
      * @return string
      */
@@ -26,7 +26,7 @@ interface Session
 
     /**
      * Get the current session ID.
-	 * 获取当前会话ID
+	 * 得到当前会话ID
      *
      * @return string
      */
@@ -51,7 +51,7 @@ interface Session
 
     /**
      * Save the session data to storage.
-	 * 将会话数据保存到存储中。
+	 * 将会话数据保存到存储中
      *
      * @return void
      */
@@ -59,7 +59,7 @@ interface Session
 
     /**
      * Get all of the session data.
-	 * 获取所有会话数据
+	 * 得到所有会话数据
      *
      * @return array
      */
@@ -67,7 +67,7 @@ interface Session
 
     /**
      * Checks if a key exists.
-	 * 检查是否存在密钥
+	 * 检查键是否存在
      *
      * @param  string|array  $key
      * @return bool
@@ -131,7 +131,7 @@ interface Session
 
     /**
      * Remove an item from the session, returning its value.
-	 * 从会话中删除项，返回其值
+	 * 从会话中删除项，返回其值。
      *
      * @param  string  $key
      * @return mixed

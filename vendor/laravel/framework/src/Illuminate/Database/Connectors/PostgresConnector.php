@@ -1,17 +1,20 @@
 <?php
 /**
- * Illuminate，数据库，连接器，Postgres 连接器
+ * Illuminate，数据库，连接器，Postgres连接器
  */
 
 namespace Illuminate\Database\Connectors;
 
+use Illuminate\Database\Concerns\ParsesSearchPath;
 use PDO;
 
 class PostgresConnector extends Connector implements ConnectorInterface
 {
+    use ParsesSearchPath;
+
     /**
      * The default PDO connection options.
-	 * 默认的PDO连接选项
+	 * 默认PDO连接选项
      *
      * @var array
      */
@@ -34,7 +37,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // First we'll create the basic DSN and connection instance connecting to the
         // using the configuration option specified by the developer. We will also
         // set the default character set on the connections to UTF-8 by default.
-		// 首先，我们将创建连接到的基本DSN和连接实例使用开发者指定的配置选项。
+		// 首先，我们将创建连接到的基本DSN和连接实例。
         $connection = $this->createConnection(
             $this->getDsn($config), $config, $this->getOptions($config)
         );
@@ -46,15 +49,15 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // Next, we will check to see if a timezone has been specified in this config
         // and if it has we will issue a statement to modify the timezone with the
         // database. Setting this DB timezone is an optional configuration item.
-		// 接下来，我们将检查此配置中是否指定了时区，如果指定了，我们将发出一条语句，使用数据库修改时区。
+		// 接下来，我们将检查是否在该配置中指定了时区。
         $this->configureTimezone($connection, $config);
 
-        $this->configureSchema($connection, $config);
+        $this->configureSearchPath($connection, $config);
 
         // Postgres allows an application_name to be set by the user and this name is
         // used to when monitoring the application with pg_stat_activity. So we'll
         // determine if the option has been specified and run a statement if so.
-		// Postgres允许用户设置application_name，在使用pg_stat_activity监视应用程序时使用此名称。
+		// Postgres允许用户设置application_name。
         $this->configureApplicationName($connection, $config);
 
         $this->configureSynchronousCommit($connection, $config);
@@ -112,41 +115,39 @@ class PostgresConnector extends Connector implements ConnectorInterface
     }
 
     /**
-     * Set the schema on the connection.
-	 * 在连接上设置模式
+     * Set the "search_path" on the database connection.
+	 * 设置数据库连接上的"搜索路径"
      *
      * @param  \PDO  $connection
      * @param  array  $config
      * @return void
      */
-    protected function configureSchema($connection, $config)
+    protected function configureSearchPath($connection, $config)
     {
-        if (isset($config['schema'])) {
-            $schema = $this->formatSchema($config['schema']);
+        if (isset($config['search_path']) || isset($config['schema'])) {
+            $searchPath = $this->quoteSearchPath(
+                $this->parseSearchPath($config['search_path'] ?? $config['schema'])
+            );
 
-            $connection->prepare("set search_path to {$schema}")->execute();
+            $connection->prepare("set search_path to {$searchPath}")->execute();
         }
     }
 
     /**
-     * Format the schema for the DSN.
-	 * 为DSN格式化模式
+     * Format the search path for the DSN.
+	 * 格式化格式DSN的搜索路径
      *
-     * @param  array|string  $schema
+     * @param  array  $searchPath
      * @return string
      */
-    protected function formatSchema($schema)
+    protected function quoteSearchPath($searchPath)
     {
-        if (is_array($schema)) {
-            return '"'.implode('", "', $schema).'"';
-        }
-
-        return '"'.$schema.'"';
+        return count($searchPath) === 1 ? '"'.$searchPath[0].'"' : '"'.implode('", "', $searchPath).'"';
     }
 
     /**
-     * Set the schema on the connection.
-	 * 在连接上设置模式
+     * Set the application name on the connection.
+	 * 在连接上设置应用程序名称
      *
      * @param  \PDO  $connection
      * @param  array  $config
@@ -173,17 +174,21 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
-		// 首先，我们将创建基本的DSN设置以及端口，如果它在在配置选项中。
+		// 首先，我们将创建基本的DSN设置以及端口。
         extract($config, EXTR_SKIP);
 
         $host = isset($host) ? "host={$host};" : '';
+
+        // Sometimes - users may need to connect to a database that has a different
+        // name than the database used for "information_schema" queries. This is
+        // typically the case if using "pgbouncer" type software when pooling.
+        $database = $connect_via_database ?? $database;
 
         $dsn = "pgsql:{$host}dbname='{$database}'";
 
         // If a port was specified, we will add it to this Postgres DSN connections
         // format. Once we have done that we are ready to return this connection
         // string back out for usage, as this has been fully constructed here.
-		// 如果指定了端口，我们将把它添加到这个Postgres DSN连接格式。
         if (isset($config['port'])) {
             $dsn .= ";port={$port}";
         }

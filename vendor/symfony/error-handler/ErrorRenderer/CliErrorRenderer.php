@@ -19,7 +19,6 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 // Help opcache.preload discover always-needed symbols
-// 帮助opcache。预加载发现总是需要的符号
 class_exists(CliDumper::class);
 
 /**
@@ -27,13 +26,10 @@ class_exists(CliDumper::class);
  */
 class CliErrorRenderer implements ErrorRendererInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function render(\Throwable $exception): FlattenException
     {
         $cloner = new VarCloner();
-        $dumper = new class() extends CliDumper {
+        $dumper = new class extends CliDumper {
             protected function supportsColors(): bool
             {
                 $outputStream = $this->outputStream;

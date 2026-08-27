@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，邮件，发送队列可发送
+ * Illuminate，邮件，发送队列 Mailable
  */
 
 namespace Illuminate\Mail;
@@ -9,10 +9,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Mail\Factory as MailFactory;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Queue\InteractsWithQueue;
 
 class SendQueuedMailable
 {
-    use Queueable;
+    use Queueable, InteractsWithQueue;
 
     /**
      * The mailable message instance.
@@ -39,8 +40,16 @@ class SendQueuedMailable
     public $timeout;
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+	 * 在失败之前允许的未处理异常的最大数量
+     *
+     * @return int|null
+     */
+    public $maxExceptions;
+
+    /**
      * Indicates if the job should be encrypted.
-	 * 指示作业是否应该加密
+	 * 指示作业是否应该加
      *
      * @var bool
      */
@@ -48,7 +57,7 @@ class SendQueuedMailable
 
     /**
      * Create a new job instance.
-	 * 创建一个新的作业实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return void
@@ -58,6 +67,7 @@ class SendQueuedMailable
         $this->mailable = $mailable;
         $this->tries = property_exists($mailable, 'tries') ? $mailable->tries : null;
         $this->timeout = property_exists($mailable, 'timeout') ? $mailable->timeout : null;
+        $this->maxExceptions = property_exists($mailable, 'maxExceptions') ? $mailable->maxExceptions : null;
         $this->afterCommit = property_exists($mailable, 'afterCommit') ? $mailable->afterCommit : null;
         $this->shouldBeEncrypted = $mailable instanceof ShouldBeEncrypted;
     }
@@ -75,14 +85,33 @@ class SendQueuedMailable
     }
 
     /**
-     * Get the display name for the queued job.
-	 * 获取排队作业的显示名称
+     * Get the number of seconds before a released mailable will be available.
+	 * 获取发布邮件可用前的秒数。
      *
-     * @return string
+     * @return mixed
      */
-    public function displayName()
+    public function backoff()
     {
-        return get_class($this->mailable);
+        if (! method_exists($this->mailable, 'backoff') && ! isset($this->mailable->backoff)) {
+            return;
+        }
+
+        return $this->mailable->backoff ?? $this->mailable->backoff();
+    }
+
+    /**
+     * Determine the time at which the job should timeout.
+	 * 确定作业应该超时的时间
+     *
+     * @return \DateTime|null
+     */
+    public function retryUntil()
+    {
+        if (! method_exists($this->mailable, 'retryUntil') && ! isset($this->mailable->retryUntil)) {
+            return;
+        }
+
+        return $this->mailable->retryUntil ?? $this->mailable->retryUntil();
     }
 
     /**
@@ -100,18 +129,14 @@ class SendQueuedMailable
     }
 
     /**
-     * Get the number of seconds before a released mailable will be available.
-	 * 获取发布邮件可用前的秒数
+     * Get the display name for the queued job.
+	 * 获取排队作业的显示名称
      *
-     * @return mixed
+     * @return string
      */
-    public function backoff()
+    public function displayName()
     {
-        if (! method_exists($this->mailable, 'backoff') && ! isset($this->mailable->backoff)) {
-            return;
-        }
-
-        return $this->mailable->backoff ?? $this->mailable->backoff();
+        return get_class($this->mailable);
     }
 
     /**

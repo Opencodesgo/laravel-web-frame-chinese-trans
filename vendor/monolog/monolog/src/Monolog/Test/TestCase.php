@@ -2,7 +2,7 @@
 
 /**
  * Monolog，测试，测试用例
- *
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -21,7 +21,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Lets you easily generate log records and a dummy formatter for testing purposes
- * 让您轻松地生成日志记录和一个用于测试目的的虚拟格式化程序。
+ * 允许您轻松生成日志记录和用于测试目的的虚拟格式化程序
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *

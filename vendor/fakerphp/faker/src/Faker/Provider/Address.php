@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，地址
+ */
 
 namespace Faker\Provider;
 
@@ -123,6 +126,7 @@ class Address extends Base
 
     /**
      * Uses signed degrees format (returns a float number between -90 and 90)
+	 * 使用有符号度格式（返回一个介于-90和90之间的浮点数）
      *
      * @example '77.147489'
      *

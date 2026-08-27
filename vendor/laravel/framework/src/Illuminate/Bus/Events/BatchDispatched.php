@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，总线，事件，批调度
+ * Illuminate，总线，事件，批量发送
  */
 
 namespace Illuminate\Bus\Events;
@@ -19,7 +19,7 @@ class BatchDispatched
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \Illuminate\Bus\Batch  $batch
      * @return void

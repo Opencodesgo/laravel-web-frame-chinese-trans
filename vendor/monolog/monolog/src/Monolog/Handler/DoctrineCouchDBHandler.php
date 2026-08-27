@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Doctrine CouchDB 处理程序
+ * Monolog，处理器，Doctrine CouchDB 处理器
  */
 
 /*
@@ -22,7 +22,7 @@ use Doctrine\CouchDB\CouchDBClient;
 
 /**
  * CouchDB handler for Doctrine CouchDB ODM
- * CouchDB处理器的CouchDB处理程序
+ * Doctrine CouchDB ODM 的CouchDB处理器
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */

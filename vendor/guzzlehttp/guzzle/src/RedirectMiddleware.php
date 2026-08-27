@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，重定向中间件
+ * GuzzleHttp，重定向的中间件
  */
 
 namespace GuzzleHttp;
@@ -93,6 +93,7 @@ class RedirectMiddleware
         $nextRequest = $this->modifyRequest($request, $options, $response);
 
         // If authorization is handled by curl, unset it if URI is cross-origin.
+		// 如果授权是由curl处理的，如果URI是跨源的，则取消设置。
         if (Psr7\UriComparator::isCrossOrigin($request->getUri(), $nextRequest->getUri()) && defined('\CURLOPT_HTTPAUTH')) {
             unset(
                 $options['curl'][\CURLOPT_HTTPAUTH],
@@ -111,6 +112,7 @@ class RedirectMiddleware
         $promise = $this($nextRequest, $options);
 
         // Add headers to be able to track history of redirects.
+		// 添加标题，以便能够跟踪重定向的历史记录。
         if (!empty($options['allow_redirects']['track_redirects'])) {
             return $this->withTracking(
                 $promise,
@@ -124,7 +126,7 @@ class RedirectMiddleware
 
     /**
      * Enable tracking on promise.
-	 * 启用跟踪承诺
+	 * 启用承诺跟踪
      */
     private function withTracking(PromiseInterface $promise, string $uri, int $statusCode): PromiseInterface
     {
@@ -146,7 +148,7 @@ class RedirectMiddleware
 
     /**
      * Check for too many redirects.
-	 * 检查太多重定向
+	 * 检查重定向是否过多
      *
      * @throws TooManyRedirectsException Too many redirects.
      */
@@ -213,7 +215,7 @@ class RedirectMiddleware
 
     /**
      * Set the appropriate URL on the request based on the location header.
-	 * 根据位置头设置请求的适当URL
+	 * 根据位置标头在请求上设置适当的URL
      */
     private static function redirectUri(
         RequestInterface $request,

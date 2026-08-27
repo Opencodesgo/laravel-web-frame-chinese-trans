@@ -18,9 +18,10 @@ namespace League\CommonMark\Util;
 
 /**
  * Array collection
- * 数组集合
+ * 数据集合
  *
  * Provides a wrapper around a standard PHP array.
+ * 提供标准PHP数组的包装器。
  *
  * @internal
  *
@@ -38,7 +39,7 @@ final class ArrayCollection implements \IteratorAggregate, \Countable, \ArrayAcc
 
     /**
      * Constructor
-	 * 初始方法
+	 * 构造方法
      *
      * @param array<int|string, mixed> $elements
      *
@@ -109,7 +110,7 @@ final class ArrayCollection implements \IteratorAggregate, \Countable, \ArrayAcc
 
     /**
      * Offset to retrieve
-	 * 检索
+	 * 检索偏移量
      *
      * {@inheritDoc}
      *
@@ -160,7 +161,7 @@ final class ArrayCollection implements \IteratorAggregate, \Countable, \ArrayAcc
 
     /**
      * Returns a subset of the array
-	 * 返回数组的一个子集
+	 * 返回数组的子集
      *
      * @return array<int, mixed>
      *

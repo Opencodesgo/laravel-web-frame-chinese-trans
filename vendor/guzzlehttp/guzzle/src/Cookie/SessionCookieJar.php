@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Cookie，会话 Cookie 压缩
+ * GuzzleHttp，Cookie，会话Cookie 压缩
  */
 
 namespace GuzzleHttp\Cookie;
@@ -18,7 +18,6 @@ class SessionCookieJar extends CookieJar
 
     /**
      * @var bool Control whether to persist session cookies or not.
-	 * 控制是否坚持会话cookie
      */
     private $storeSessionCookies;
 
@@ -41,7 +40,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Saves cookies to session when shutting down
-	 * 关闭时将cookie保存到会话中
+	 * 关机时保存cookie到会话
      */
     public function __destruct()
     {
@@ -67,7 +66,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Load the contents of the client session into the data array
-	 * 将客户端会话的内容加载到数据数组中
+	 * 将客户机会话的内容加载到数据数组中
      */
     protected function load(): void
     {

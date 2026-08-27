@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，代码清洁，调用类通行证
+ * Psy，代码清理，调用类通行证
  */
 
 /*
@@ -26,7 +26,7 @@ use Psy\Exception\ErrorException;
 /**
  * The called class pass throws warnings for get_class() and get_called_class()
  * outside a class context.
- * 被调用的类传递会抛出get_class（）和get_called_class（）在类上下文之外的警告。
+ * 被调用的类传递会抛出get_class（）和get_called_class（）的警告
  */
 class CalledClassPass extends CodeCleanerPass
 {
@@ -44,6 +44,7 @@ class CalledClassPass extends CodeCleanerPass
 
     /**
      * @throws ErrorException if get_class or get_called_class is called without an object from outside a class
+	 * 如果调用get_class或get_called_class时没有从类外部调用对象，则会出现错误。
      *
      * @param Node $node
      *

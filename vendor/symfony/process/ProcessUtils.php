@@ -21,6 +21,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  * ProcessUtils是一堆实用程序方法。
  *
  * This class contains static methods only and is not meant to be instantiated.
+ * 这个类只包含静态方法，不打算被实例化。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
@@ -28,7 +29,7 @@ class ProcessUtils
 {
     /**
      * This class should not be instantiated.
-	 * 不应该实例化这个类。
+	 * 不应该实例化这个类
      */
     private function __construct()
     {
@@ -41,17 +42,12 @@ class ProcessUtils
      * @param string $caller The name of method call that validates the input
      * @param mixed  $input  The input to validate
      *
-     * @return mixed
-     *
      * @throws InvalidArgumentException In case the input is not valid
      */
-    public static function validateInput(string $caller, $input)
+    public static function validateInput(string $caller, mixed $input): mixed
     {
         if (null !== $input) {
             if (\is_resource($input)) {
-                return $input;
-            }
-            if (\is_string($input)) {
                 return $input;
             }
             if (\is_scalar($input)) {
@@ -67,7 +63,7 @@ class ProcessUtils
                 return new \IteratorIterator($input);
             }
 
-            throw new InvalidArgumentException(sprintf('"%s" only accepts strings, Traversable objects or stream resources.', $caller));
+            throw new InvalidArgumentException(\sprintf('"%s" only accepts strings, Traversable objects or stream resources.', $caller));
         }
 
         return $input;

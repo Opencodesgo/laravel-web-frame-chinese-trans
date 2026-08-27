@@ -21,7 +21,7 @@ class ConditionalRules
      * The rules to be added to the attribute.
 	 * 要添加到属性中的规则
      *
-     * @var array|string
+     * @var array|string|\Closure
      */
     protected $rules;
 
@@ -29,7 +29,7 @@ class ConditionalRules
      * The rules to be added to the attribute if the condition fails.
 	 * 如果条件失败，要添加到属性的规则。
      *
-     * @var array|string
+     * @var array|string|\Closure
      */
     protected $defaultRules;
 
@@ -38,8 +38,8 @@ class ConditionalRules
 	 * 创建一个新的条件规则实例
      *
      * @param  callable|bool  $condition
-     * @param  array|string  $rules
-     * @param  array|string  $defaultRules
+     * @param  array|string|\Closure  $rules
+     * @param  array|string|\Closure  $defaultRules
      * @return void
      */
     public function __construct($condition, $rules, $defaultRules = [])
@@ -67,21 +67,27 @@ class ConditionalRules
      * Get the rules.
 	 * 得到规则
      *
+     * @param  array  $data
      * @return array
      */
-    public function rules()
+    public function rules(array $data = [])
     {
-        return is_string($this->rules) ? explode('|', $this->rules) : $this->rules;
+        return is_string($this->rules)
+                    ? explode('|', $this->rules)
+                    : value($this->rules, new Fluent($data));
     }
 
     /**
      * Get the default rules.
 	 * 得到默认规则
      *
+     * @param  array  $data
      * @return array
      */
-    public function defaultRules()
+    public function defaultRules(array $data = [])
     {
-        return is_string($this->defaultRules) ? explode('|', $this->defaultRules) : $this->defaultRules;
+        return is_string($this->defaultRules)
+                    ? explode('|', $this->defaultRules)
+                    : value($this->defaultRules, new Fluent($data));
     }
 }

@@ -22,12 +22,13 @@ use League\CommonMark\Output\RenderedContentInterface;
 /**
  * Renders a parsed Document AST
  * 呈现已解析的文档AST
+ * 
  */
 interface DocumentRendererInterface extends MarkdownRendererInterface
 {
     /**
      * Render the given Document node (and all of its children)
-	 * 渲染给定的文档节点(以及所有的孩子)
+	 * 呈现给定的Document节点(及其所有子节点)
      */
     public function renderDocument(Document $document): RenderedContentInterface;
 }

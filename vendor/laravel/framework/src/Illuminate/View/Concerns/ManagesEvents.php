@@ -32,7 +32,7 @@ trait ManagesEvents
 
     /**
      * Register multiple view composers via an array.
-	 * 通过一个数组注册多个视图作曲家
+	 * 通过一个数组注册多个视图composer
      *
      * @param  array  $composers
      * @return array
@@ -61,7 +61,7 @@ trait ManagesEvents
         $composers = [];
 
         foreach ((array) $views as $view) {
-            $composers[] = $this->addViewEvent($view, $callback, 'composing: ');
+            $composers[] = $this->addViewEvent($view, $callback);
         }
 
         return $composers;
@@ -105,7 +105,7 @@ trait ManagesEvents
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
-		// 当注册一个基于类的视图"composer"时，我们将简单地解析类从应用程序IoC容器中获取。
+		// 当注册一个基于类的视图“composer”时，我们将简单类从应用程序IoC容器中获取地解析。
         $callback = $this->buildClassEventCallback(
             $class, $prefix
         );
@@ -158,12 +158,12 @@ trait ManagesEvents
      */
     protected function classEventMethodForPrefix($prefix)
     {
-        return Str::contains($prefix, 'composing') ? 'compose' : 'create';
+        return str_contains($prefix, 'composing') ? 'compose' : 'create';
     }
 
     /**
      * Add a listener to the event dispatcher.
-	 * 向事件调度程序添加监听器
+	 * 向事件调度程序添加侦听器
      *
      * @param  string  $name
      * @param  \Closure  $callback
@@ -171,7 +171,7 @@ trait ManagesEvents
      */
     protected function addEventListener($name, $callback)
     {
-        if (Str::contains($name, '*')) {
+        if (str_contains($name, '*')) {
             $callback = function ($name, array $data) use ($callback) {
                 return $callback($data[0]);
             };

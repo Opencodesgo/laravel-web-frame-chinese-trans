@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，命令匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\Command\Command;
 
 /**
  * A Psy Command tab completion Matcher.
+ * 一个Psy命令选项卡完成匹配器。
  *
  * This matcher provides completion for all registered Psy Command names and
  * aliases.
@@ -28,6 +32,7 @@ class CommandsMatcher extends AbstractMatcher
 
     /**
      * CommandsMatcher constructor.
+	 * CommandsMatcher构造函数
      *
      * @param Command[] $commands
      */
@@ -38,6 +43,7 @@ class CommandsMatcher extends AbstractMatcher
 
     /**
      * Set Commands for completion.
+	 * 设置完成命令
      *
      * @param Command[] $commands
      */
@@ -53,6 +59,7 @@ class CommandsMatcher extends AbstractMatcher
 
     /**
      * Check whether a command $name is defined.
+	 * 检查是否定义了命令$name
      *
      * @param string $name
      */
@@ -63,6 +70,7 @@ class CommandsMatcher extends AbstractMatcher
 
     /**
      * Check whether input matches a defined command.
+	 * 检查输入是否与定义的命令匹配
      *
      * @param string $name
      */

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，内部，令牌流
+ * PhpParser，构建者，令牌流
  */
 
 namespace PhpParser\Internal;
@@ -191,6 +191,7 @@ class TokenStream {
 
     /**
      * Whether the given position range contains a certain token type.
+	 * 给定的位置范围是否包含某种令牌类型
      *
      * @param int $startPos Starting position (inclusive)
      * @param int $endPos Ending position (exclusive)
@@ -283,7 +284,6 @@ class TokenStream {
         }
 
         // Add a sentinel for one past end of the file
-		// 为文件的过去一端添加一个哨兵
         $indentMap[] = $indent;
 
         return $indentMap;

@@ -17,7 +17,7 @@ interface Filesystem
 
     /**
      * The private visibility setting.
-	 * 私有能见度设置
+	 * 私有可见性设置
      *
      * @var string
      */
@@ -34,12 +34,10 @@ interface Filesystem
 
     /**
      * Get the contents of a file.
-	 * 获取文件的内容
+	 * 得到文件内容
      *
      * @param  string  $path
-     * @return string
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return string|null
      */
     public function get($path);
 
@@ -49,8 +47,6 @@ interface Filesystem
      *
      * @param  string  $path
      * @return resource|null The path resource or null on failure.
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function readStream($path);
 
@@ -73,9 +69,6 @@ interface Filesystem
      * @param  resource  $resource
      * @param  array  $options
      * @return bool
-     *
-     * @throws \InvalidArgumentException If $resource is not a file handle.
-     * @throws \Illuminate\Contracts\Filesystem\FileExistsException
      */
     public function writeStream($path, $resource, array $options = []);
 
@@ -139,7 +132,7 @@ interface Filesystem
 
     /**
      * Move a file to a new location.
-	 * 移动文件到新位置
+	 * 将文件移动到新位置
      *
      * @param  string  $from
      * @param  string  $to

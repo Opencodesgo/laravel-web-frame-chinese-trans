@@ -82,16 +82,13 @@ final class AttributesBlockContinueParser extends AbstractBlockContinueParser
     {
         // Attributes appearing at the very end of the document won't have any last lines to check
         // so we can make that determination here
-		// 出现在文档最末尾的属性将没有任何要检查的最后一行。
-		// 所以我们可以在这里做决定。
         if (! $this->hasSubsequentLine) {
             $this->block->setTarget(Attributes::TARGET_PREVIOUS);
         }
 
         // We know this block must apply to the "previous" block, but that could be a sibling or parent,
         // so we check the containing block to see which one it might be.
-		// 我们知道这个块必须应用于“前一个”块，但它可以是兄弟或父节点，
-		// 所以我们检查包含块，看看它可能是哪一个。
+		// 我们知道这个块必须应用于“前一个”块，但它可以是兄弟或父节点，所以我们检查包含块，看看它可能是哪一个。
         if ($this->block->getTarget() === Attributes::TARGET_PREVIOUS && $this->block->parent() === $this->container) {
             $this->block->setTarget(Attributes::TARGET_PARENT);
         }

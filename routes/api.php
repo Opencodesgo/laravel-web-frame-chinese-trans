@@ -8,14 +8,15 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes 	API路由
+| API Routes	API路由
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
-| 在这里你可以为你的应用程序注册API路由。
-| 在此处可以为您的应用程序注册 API 路由。这些路由由 RouteServiceProvider 在被分配了“api”中间件组的组中加载。
+| 在这里您可以为应用注册API路由。
+| 这些路由被RouteServiceProvider加载并被分配到"api"中间件组。
+| 享受建立你的API !
 |
 */
 

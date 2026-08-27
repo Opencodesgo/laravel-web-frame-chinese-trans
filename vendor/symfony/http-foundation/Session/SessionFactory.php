@@ -1,11 +1,10 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，会话工厂
+ * Symfony，Component，HttpFoundation，会话，会话工厂
  */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -26,15 +25,15 @@ class_exists(Session::class);
  */
 class SessionFactory implements SessionFactoryInterface
 {
-    private $requestStack;
-    private $storageFactory;
-    private $usageReporter;
+    private RequestStack $requestStack;
+    private SessionStorageFactoryInterface $storageFactory;
+    private ?\Closure $usageReporter;
 
     public function __construct(RequestStack $requestStack, SessionStorageFactoryInterface $storageFactory, ?callable $usageReporter = null)
     {
         $this->requestStack = $requestStack;
         $this->storageFactory = $storageFactory;
-        $this->usageReporter = $usageReporter;
+        $this->usageReporter = null === $usageReporter ? null : $usageReporter(...);
     }
 
     public function createSession(): SessionInterface

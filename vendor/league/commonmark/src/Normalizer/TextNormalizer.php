@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，标准化器，文本标准化器
+ * League，CommonMark，标准化者，文本标准化者
  */
 
 /*
@@ -18,7 +18,7 @@ namespace League\CommonMark\Normalizer;
 
 /***
  * Normalize text input using the steps given by the CommonMark spec to normalize labels
- * 使用CommonMark规范给出的代码来规范文本输入,以规范标签
+ * 使用CommonMark规范给出的步骤规范化文本输入以规范化标签
  *
  * @see https://spec.commonmark.org/0.29/#matches
  *

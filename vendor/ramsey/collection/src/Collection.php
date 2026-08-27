@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，采集
+ * Ramsey，集合，集合
  */
 
 /**
@@ -28,7 +28,7 @@ namespace Ramsey\Collection;
  *
  * Example usage:
  *
- * ``` php
+ * ```
  * $collection = new \Ramsey\Collection\Collection('My\\Foo');
  * $collection->add(new \My\Foo());
  * $collection->add(new \My\Foo());
@@ -41,7 +41,7 @@ namespace Ramsey\Collection;
  * It is preferable to subclass `AbstractCollection` to create your own typed
  * collections. For example:
  *
- * ``` php
+ * ```
  * namespace My\Foo;
  *
  * class FooCollection extends \Ramsey\Collection\AbstractCollection
@@ -55,7 +55,7 @@ namespace Ramsey\Collection;
  *
  * And then use it similarly to the earlier example:
  *
- * ``` php
+ * ```
  * $fooCollection = new \My\Foo\FooCollection();
  * $fooCollection->add(new \My\Foo());
  * $fooCollection->add(new \My\Foo());
@@ -68,7 +68,7 @@ namespace Ramsey\Collection;
  * The benefit with this approach is that you may do type-checking on the
  * collection object:
  *
- * ``` php
+ * ```
  * if ($collection instanceof \My\Foo\FooCollection) {
  *     // the collection is a collection of My\Foo objects
  * }
@@ -80,25 +80,16 @@ namespace Ramsey\Collection;
 class Collection extends AbstractCollection
 {
     /**
-     * The type of elements stored in this collection.
-	 * 存储在此集合中的元素类型。
-     *
-     * A collection's type is immutable once it is set. For this reason, this
-     * property is set private.
-     */
-    private string $collectionType;
-
-    /**
      * Constructs a collection object of the specified type, optionally with the
      * specified data.
+	 * 构造指定类型的集合对象，可选地使用规定数据。
      *
-     * @param string $collectionType The type (FQCN) associated with this
+     * @param string $collectionType The type or class name associated with this
      *     collection.
      * @param array<array-key, T> $data The initial items to store in the collection.
      */
-    public function __construct(string $collectionType, array $data = [])
+    public function __construct(private readonly string $collectionType, array $data = [])
     {
-        $this->collectionType = $collectionType;
         parent::__construct($data);
     }
 

@@ -26,7 +26,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * The database table that holds the jobs.
-	 * 保存作业的数据库表
+	 * 保存作业的数据库表。
      *
      * @var string
      */
@@ -123,8 +123,8 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -158,18 +158,22 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
     {
         $queue = $this->getQueue($queue);
 
-        $availableAt = $this->availableAt();
+        $now = $this->availableAt();
 
         return $this->database->table($this->table)->insert(collect((array) $jobs)->map(
-            function ($job) use ($queue, $data, $availableAt) {
-                return $this->buildDatabaseRecord($queue, $this->createPayload($job, $this->getQueue($queue), $data), $availableAt);
+            function ($job) use ($queue, $data, $now) {
+                return $this->buildDatabaseRecord(
+                    $queue,
+                    $this->createPayload($job, $this->getQueue($queue), $data),
+                    isset($job->delay) ? $this->availableAt($job->delay) : $now,
+                );
             }
         )->all());
     }
 
     /**
-     * Release a reserved job back onto the queue.
-	 * 将预留的作业释放回队列
+     * Release a reserved job back onto the queue after (n) seconds.
+	 * 在(n)秒后将预留的作业释放回队列
      *
      * @param  string  $queue
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
@@ -182,8 +186,8 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
     }
 
     /**
-     * Push a raw payload to the database with a given delay.
-	 * 以给定的延迟将原始有效负载推送到数据库
+     * Push a raw payload to the database with a given delay of (n) seconds.
+	 * 以给定的(n)秒延迟将原始负载推送到数据库
      *
      * @param  string|null  $queue
      * @param  string  $payload
@@ -222,7 +226,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出将下一个作业从队列中弹出
+	 * 将下一个作业从队列中弹出
      *
      * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -242,7 +246,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Get the next available job for the queue.
-	 * 得到该队列的下一个可用作业
+	 * 获取该队列的下一个可用作业
      *
      * @param  string|null  $queue
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord|null
@@ -264,7 +268,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Get the lock required for popping the next job.
-	 * 得到弹出下一个任务所需的锁
+	 * 获取弹出下一个任务所需的锁
      *
      * @return string|bool
      */
@@ -276,12 +280,19 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
         if (Str::of($databaseVersion)->contains('MariaDB')) {
             $databaseEngine = 'mariadb';
             $databaseVersion = Str::before(Str::after($databaseVersion, '5.5.5-'), '-');
+        } elseif (Str::of($databaseVersion)->contains(['vitess', 'PlanetScale'])) {
+            $databaseEngine = 'vitess';
+            $databaseVersion = Str::before($databaseVersion, '-');
         }
 
         if (($databaseEngine === 'mysql' && version_compare($databaseVersion, '8.0.1', '>=')) ||
             ($databaseEngine === 'mariadb' && version_compare($databaseVersion, '10.6.0', '>=')) ||
             ($databaseEngine === 'pgsql' && version_compare($databaseVersion, '9.5', '>='))) {
             return 'FOR UPDATE SKIP LOCKED';
+        }
+
+        if ($databaseEngine === 'sqlsrv') {
+            return 'with(rowlock,updlock,readpast)';
         }
 
         return true;
@@ -407,7 +418,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Get the queue or return the default.
-	 * 得到队列或返回默认值
+	 * 获取队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -419,7 +430,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Get the underlying database instance.
-	 * 得到底层数据库实例
+	 * 获取底层数据库实例
      *
      * @return \Illuminate\Database\Connection
      */

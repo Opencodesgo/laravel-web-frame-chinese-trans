@@ -210,6 +210,7 @@ final class DelimiterStack
 
     /**
      * @deprecated This method is no longer used internally and will be removed in 3.0
+	 * 该方法不再在内部使用，并将在3.0中删除。
      *
      * @param string|string[] $characters
      */
@@ -333,7 +334,6 @@ final class DelimiterStack
         }
 
         // Remove all delimiters
-		// 删除所有分隔符
         $this->removeAll($stackBottomPosition);
     }
 

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，代码单元，接口方法单元
+ */
+
 /*
  * This file is part of sebastian/code-unit.
  *

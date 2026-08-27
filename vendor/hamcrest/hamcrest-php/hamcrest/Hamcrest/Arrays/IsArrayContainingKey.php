@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组容器主键
+ * Hamcrest，数组，是否包含键的数组
  */
 
 namespace Hamcrest\Arrays;
@@ -15,7 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains the specified key.
- * 如果数组包含指定的键，则匹配。
+ * 如果数组包含指定的键,则匹配。
  */
 class IsArrayContainingKey extends TypeSafeMatcher
 {
@@ -67,6 +67,7 @@ class IsArrayContainingKey extends TypeSafeMatcher
 
     /**
      * Evaluates to true if any key in an array matches the given matcher.
+	 * 如果数组中的任何键与给定的matcher匹配,则评估为true。
      *
      * @param mixed $key as a {@link Hamcrest\Matcher} or a value.
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，未被攻破的验证者
+ * Illuminate，验证，未被攻破的验证程序
  */
 
 namespace Illuminate\Validation;
@@ -107,7 +107,7 @@ class NotPwnedVerifier implements UncompromisedVerifier
             : '';
 
         return Str::of($body)->trim()->explode("\n")->filter(function ($line) {
-            return Str::contains($line, ':');
+            return str_contains($line, ':');
         });
     }
 }

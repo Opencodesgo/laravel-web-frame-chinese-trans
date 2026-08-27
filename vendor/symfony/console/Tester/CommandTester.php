@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * Eases the testing of console commands.
- * 减轻对控制台命令的测试。
+ * 简化控制台命令的测试
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -28,7 +28,7 @@ class CommandTester
 {
     use TesterTrait;
 
-    private $command;
+    private Command $command;
 
     public function __construct(Command $command)
     {
@@ -37,7 +37,7 @@ class CommandTester
 
     /**
      * Executes the command.
-	 * 执行命令
+	 * 执行命令。
      *
      * Available execution options:
      *
@@ -51,10 +51,11 @@ class CommandTester
      *
      * @return int The command exit code
      */
-    public function execute(array $input, array $options = [])
+    public function execute(array $input, array $options = []): int
     {
         // set the command name automatically if the application requires
         // this argument and no command name was passed
+		// 如果应用程序需要此参数且未传递命令名称，则自动设置命令名称。
         if (!isset($input['command'])
             && (null !== $application = $this->command->getApplication())
             && $application->getDefinition()->hasArgument('command')

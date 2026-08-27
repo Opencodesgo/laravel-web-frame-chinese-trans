@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，定时器，资源使用格式化程序
+ * SebastianBergmann，Timer，资源使用格式化程序
  */
 
 /*

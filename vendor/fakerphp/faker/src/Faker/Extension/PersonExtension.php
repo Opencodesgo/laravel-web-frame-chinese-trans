@@ -1,12 +1,13 @@
 <?php
 /**
- * Faker，核心，扩展，个人扩展
+ * Faker，扩展，个人扩展
  */
 
 namespace Faker\Extension;
 
 /**
  * @experimental This interface is experimental and does not fall under our BC promise
+ * 这个接口是实验性的，不属于我们的BC承诺。
  */
 interface PersonExtension extends Extension
 {

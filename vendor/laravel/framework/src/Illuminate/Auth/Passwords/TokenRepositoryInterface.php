@@ -48,7 +48,7 @@ interface TokenRepositoryInterface
 
     /**
      * Delete expired tokens.
-	 * 删除超时令牌
+	 * 删除过期令牌
      *
      * @return void
      */

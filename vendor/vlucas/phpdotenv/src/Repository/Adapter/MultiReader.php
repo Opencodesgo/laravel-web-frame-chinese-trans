@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，多阅读器
+ * Dotenv，资源库，适配器，多阅读器
  */
 
 declare(strict_types=1);
@@ -13,7 +13,7 @@ final class MultiReader implements ReaderInterface
 {
     /**
      * The set of readers to use.
-	 * 将使用的读者集
+	 * 要使用的读卡器集
      *
      * @var \Dotenv\Repository\Adapter\ReaderInterface[]
      */
@@ -21,7 +21,7 @@ final class MultiReader implements ReaderInterface
 
     /**
      * Create a new multi-reader instance.
-	 * 创建一个新的多读者实例
+	 * 创建一个新的多阅读器实例
      *
      * @param \Dotenv\Repository\Adapter\ReaderInterface[] $readers
      *
@@ -34,7 +34,7 @@ final class MultiReader implements ReaderInterface
 
     /**
      * Read an environment variable, if it exists.
-	 * 读取环境变量,如果存在的话。
+	 * 读取环境变量（如果存在）
      *
      * @param non-empty-string $name
      *

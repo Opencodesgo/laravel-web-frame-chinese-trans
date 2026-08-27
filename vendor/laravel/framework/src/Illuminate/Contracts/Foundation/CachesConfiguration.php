@@ -9,7 +9,7 @@ interface CachesConfiguration
 {
     /**
      * Determine if the application configuration is cached.
-	 * 确定是否缓存了应用程序配置
+	 * 确定是否应用配置被缓存
      *
      * @return bool
      */

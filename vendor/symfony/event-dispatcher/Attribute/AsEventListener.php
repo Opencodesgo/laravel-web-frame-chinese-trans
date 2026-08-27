@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，EventDispatcher，属性，作为事件监听器
+ * Symfony，Component，事件调度器，属性，作为事件侦听器
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\EventDispatcher\Attribute;
 
 /**
  * Service tag to autoconfigure event listeners.
- * 服务标记来自动配置事件侦听器。
+ * 服务标记以自动配置事件侦听器。
  *
  * @author Alexander M. Turek <me@derrabus.de>
  */

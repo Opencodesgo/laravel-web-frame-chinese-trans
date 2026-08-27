@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，处理程序，标识符处理程序
+ * Symfony，Component，CssSelector，解析器，处理器，标识符处理器
  */
 
 /*
@@ -33,8 +33,8 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
  */
 class IdentifierHandler implements HandlerInterface
 {
-    private $patterns;
-    private $escaping;
+    private TokenizerPatterns $patterns;
+    private TokenizerEscaping $escaping;
 
     public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
     {
@@ -42,9 +42,6 @@ class IdentifierHandler implements HandlerInterface
         $this->escaping = $escaping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(Reader $reader, TokenStream $stream): bool
     {
         $match = $reader->findPattern($this->patterns->getIdentifierPattern());

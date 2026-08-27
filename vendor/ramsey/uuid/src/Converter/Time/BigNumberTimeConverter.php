@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，转换器，时间，大数字时间转换器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -20,19 +23,17 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 
 /**
- * Previously used to integrate moontoast/math as a bignum arithmetic library,
- * BigNumberTimeConverter is deprecated in favor of GenericTimeConverter
+ * Previously used to integrate moontoast/math as a bignum arithmetic library, BigNumberTimeConverter is deprecated in
+ * favor of GenericTimeConverter
+ * 以前用于集成moontoast/math作为bigum算术库，BigNumberTimeConverter在支持GenericTimeConverter。
  *
- * @deprecated Transition to {@see GenericTimeConverter}.
+ * @deprecated Please transition to {@see GenericTimeConverter}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class BigNumberTimeConverter implements TimeConverterInterface
 {
-    /**
-     * @var TimeConverterInterface
-     */
-    private $converter;
+    private TimeConverterInterface $converter;
 
     public function __construct()
     {

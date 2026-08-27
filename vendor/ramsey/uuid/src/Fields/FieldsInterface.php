@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，字段，字段接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -17,16 +20,18 @@ namespace Ramsey\Uuid\Fields;
 use Serializable;
 
 /**
- * UUIDs are comprised of unsigned integers, the bytes of which are separated
- * into fields and arranged in a particular layout defined by the specification
- * for the variant
+ * UUIDs consist of unsigned integers, the bytes of which are separated into fields and arranged in a particular layout
+ * defined by the specification for the variant
  *
- * @psalm-immutable
+ * @immutable
  */
 interface FieldsInterface extends Serializable
 {
     /**
      * Returns the bytes that comprise the fields
+	 * 返回组成字段的字节
+     *
+     * @pure
      */
     public function getBytes(): string;
 }

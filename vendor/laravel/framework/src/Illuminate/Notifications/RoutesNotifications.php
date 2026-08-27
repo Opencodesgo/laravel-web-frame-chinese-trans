@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，路由的通知
+ * Illuminate，通知，路由通知
  */
 
 namespace Illuminate\Notifications;
@@ -49,11 +49,10 @@ trait RoutesNotifications
             return $this->{$method}($notification);
         }
 
-        switch ($driver) {
-            case 'database':
-                return $this->notifications();
-            case 'mail':
-                return $this->email;
-        }
+        return match ($driver) {
+            'database' => $this->notifications(),
+            'mail' => $this->email,
+            default => null,
+        };
     }
 }

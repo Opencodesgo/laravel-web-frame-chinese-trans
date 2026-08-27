@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，事件，模式转存
+ * Illuminate，数据库，事件，模式倾倒
  */
 
 namespace Illuminate\Database\Events;
@@ -33,7 +33,7 @@ class SchemaDumped
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建事件实例
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string  $path

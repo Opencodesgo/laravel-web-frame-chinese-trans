@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提供者，筛选供应商
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,9 +24,9 @@ use Symfony\Component\Translation\TranslatorBagInterface;
  */
 class FilteringProvider implements ProviderInterface
 {
-    private $provider;
-    private $locales;
-    private $domains;
+    private ProviderInterface $provider;
+    private array $locales;
+    private array $domains;
 
     public function __construct(ProviderInterface $provider, array $locales, array $domains = [])
     {
@@ -37,9 +40,6 @@ class FilteringProvider implements ProviderInterface
         return (string) $this->provider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function write(TranslatorBagInterface $translatorBag): void
     {
         $this->provider->write($translatorBag);

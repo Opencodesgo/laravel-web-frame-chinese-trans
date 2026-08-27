@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，集合
+ * Illuminate，集合，集合
  */
 
 namespace Illuminate\Support;
@@ -11,24 +11,35 @@ use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Support\Traits\EnumeratesValues;
 use Illuminate\Support\Traits\Macroable;
 use stdClass;
+use Traversable;
 
+/**
+ * @template TKey of array-key
+ * @template TValue
+ *
+ * @implements \ArrayAccess<TKey, TValue>
+ * @implements \Illuminate\Support\Enumerable<TKey, TValue>
+ */
 class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerable
 {
+    /**
+     * @use \Illuminate\Support\Traits\EnumeratesValues<TKey, TValue>
+     */
     use EnumeratesValues, Macroable;
 
     /**
      * The items contained in the collection.
 	 * 集合中包含的项
      *
-     * @var array
+     * @var array<TKey, TValue>
      */
     protected $items = [];
 
     /**
      * Create a new collection.
-	 * 创建新的集合
+	 * 创建一个新集合
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>|null  $items
      * @return void
      */
     public function __construct($items = [])
@@ -42,7 +53,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      *
      * @param  int  $from
      * @param  int  $to
-     * @return static
+     * @return static<int, int>
      */
     public static function range($from, $to)
     {
@@ -53,7 +64,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get all of the items in the collection.
 	 * 获取集合中的所有项
      *
-     * @return array
+     * @return array<TKey, TValue>
      */
     public function all()
     {
@@ -64,7 +75,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get a lazy collection for the items in this collection.
 	 * 获取此集合中的项的惰性集合
      *
-     * @return \Illuminate\Support\LazyCollection
+     * @return \Illuminate\Support\LazyCollection<TKey, TValue>
      */
     public function lazy()
     {
@@ -75,18 +86,16 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the average value of a given key.
 	 * 获取给定键的平均值
      *
-     * @param  callable|string|null  $callback
-     * @return mixed
+     * @param  (callable(TValue): float|int)|string|null  $callback
+     * @return float|int|null
      */
     public function avg($callback = null)
     {
         $callback = $this->valueRetriever($callback);
 
-        $items = $this->map(function ($value) use ($callback) {
-            return $callback($value);
-        })->filter(function ($value) {
-            return ! is_null($value);
-        });
+        $items = $this
+            ->map(fn ($value) => $callback($value))
+            ->filter(fn ($value) => ! is_null($value));
 
         if ($count = $items->count()) {
             return $items->sum() / $count;
@@ -97,15 +106,14 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the median of a given key.
 	 * 求给定键的中值
      *
-     * @param  string|array|null  $key
-     * @return mixed
+     * @param  string|array<array-key, string>|null  $key
+     * @return float|int|null
      */
     public function median($key = null)
     {
         $values = (isset($key) ? $this->pluck($key) : $this)
-            ->filter(function ($item) {
-                return ! is_null($item);
-            })->sort()->values();
+            ->filter(fn ($item) => ! is_null($item))
+            ->sort()->values();
 
         $count = $values->count();
 
@@ -128,8 +136,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the mode of a given key.
 	 * 获取给定键的模式
      *
-     * @param  string|array|null  $key
-     * @return array|null
+     * @param  string|array<array-key, string>|null  $key
+     * @return array<int, float|int>|null
      */
     public function mode($key = null)
     {
@@ -141,24 +149,21 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
         $counts = new static;
 
-        $collection->each(function ($value) use ($counts) {
-            $counts[$value] = isset($counts[$value]) ? $counts[$value] + 1 : 1;
-        });
+        $collection->each(fn ($value) => $counts[$value] = isset($counts[$value]) ? $counts[$value] + 1 : 1);
 
         $sorted = $counts->sort();
 
         $highestValue = $sorted->last();
 
-        return $sorted->filter(function ($value) use ($highestValue) {
-            return $value == $highestValue;
-        })->sort()->keys()->all();
+        return $sorted->filter(fn ($value) => $value == $highestValue)
+            ->sort()->keys()->all();
     }
 
     /**
      * Collapse the collection of items into a single array.
 	 * 将项目集合折叠成单个数组
      *
-     * @return static
+     * @return static<int, mixed>
      */
     public function collapse()
     {
@@ -169,7 +174,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Determine if an item exists in the collection.
 	 * 确定集合中是否存在项
      *
-     * @param  mixed  $key
+     * @param  (callable(TValue, TKey): bool)|TValue|string  $key
      * @param  mixed  $operator
      * @param  mixed  $value
      * @return bool
@@ -190,6 +195,27 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
     }
 
     /**
+     * Determine if an item exists, using strict comparison.
+	 * 使用严格比较确定项是否存在
+     *
+     * @param  (callable(TValue): bool)|TValue|array-key  $key
+     * @param  TValue|null  $value
+     * @return bool
+     */
+    public function containsStrict($key, $value = null)
+    {
+        if (func_num_args() === 2) {
+            return $this->contains(fn ($item) => data_get($item, $key) === $value);
+        }
+
+        if ($this->useAsCallable($key)) {
+            return ! is_null($this->first($key));
+        }
+
+        return in_array($key, $this->items, true);
+    }
+
+    /**
      * Determine if an item is not contained in the collection.
 	 * 确定集合中是否不包含某项
      *
@@ -207,8 +233,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Cross join with the given lists, returning all possible permutations.
 	 * 与给定列表交叉连接，返回所有可能的排列。
      *
-     * @param  mixed  ...$lists
-     * @return static
+     * @template TCrossJoinKey
+     * @template TCrossJoinValue
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<TCrossJoinKey, TCrossJoinValue>|iterable<TCrossJoinKey, TCrossJoinValue>  ...$lists
+     * @return static<int, array<int, TValue|TCrossJoinValue>>
      */
     public function crossJoin(...$lists)
     {
@@ -221,7 +250,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the items in the collection that are not present in the given items.
 	 * 获取集合中未出现在给定项中的项
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TValue>|iterable<array-key, TValue>  $items
      * @return static
      */
     public function diff($items)
@@ -233,8 +262,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the items in the collection that are not present in the given items, using the callback.
 	 * 使用回调获取集合中未出现在给定项中的项
      *
-     * @param  mixed  $items
-     * @param  callable  $callback
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TValue>|iterable<array-key, TValue>  $items
+     * @param  callable(TValue, TValue): int  $callback
      * @return static
      */
     public function diffUsing($items, callable $callback)
@@ -244,9 +273,9 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
     /**
      * Get the items in the collection whose keys and values are not present in the given items.
-	 * 获取集合中键和值未出现在给定项中的项。
+	 * 获取集合中键和值未出现在给定项中的项
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function diffAssoc($items)
@@ -256,10 +285,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
     /**
      * Get the items in the collection whose keys and values are not present in the given items, using the callback.
-	 * 使用回调获取集合中键和值未出现在给定项中的项。
+	 * 使用回调获取集合中键和值未出现在给定项中的项
      *
-     * @param  mixed  $items
-     * @param  callable  $callback
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
+     * @param  callable(TKey, TKey): int  $callback
      * @return static
      */
     public function diffAssocUsing($items, callable $callback)
@@ -269,9 +298,9 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
     /**
      * Get the items in the collection whose keys are not present in the given items.
-	 * 获取集合中键不存在于给定项中的项
+	 * 获取集合中键不存在于给定项中的项。
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function diffKeys($items)
@@ -283,8 +312,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the items in the collection whose keys are not present in the given items, using the callback.
 	 * 使用回调获取集合中键不存在于给定项中的项
      *
-     * @param  mixed  $items
-     * @param  callable  $callback
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
+     * @param  callable(TKey, TKey): int  $callback
      * @return static
      */
     public function diffKeysUsing($items, callable $callback)
@@ -296,7 +325,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Retrieve duplicate items from the collection.
 	 * 从集合中检索重复的项
      *
-     * @param  callable|string|null  $callback
+     * @param  (callable(TValue): bool)|string|null  $callback
      * @param  bool  $strict
      * @return static
      */
@@ -325,7 +354,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Retrieve duplicate items from the collection using strict comparison.
 	 * 使用严格比较从集合中检索重复项
      *
-     * @param  callable|string|null  $callback
+     * @param  (callable(TValue): bool)|string|null  $callback
      * @return static
      */
     public function duplicatesStrict($callback = null)
@@ -338,26 +367,22 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 获取比较函数以检测重复项
      *
      * @param  bool  $strict
-     * @return \Closure
+     * @return callable(TValue, TValue): bool
      */
     protected function duplicateComparator($strict)
     {
         if ($strict) {
-            return function ($a, $b) {
-                return $a === $b;
-            };
+            return fn ($a, $b) => $a === $b;
         }
 
-        return function ($a, $b) {
-            return $a == $b;
-        };
+        return fn ($a, $b) => $a == $b;
     }
 
     /**
      * Get all items except for those with the specified keys.
 	 * 获取除具有指定键的项之外的所有项
      *
-     * @param  \Illuminate\Support\Collection|mixed  $keys
+     * @param  \Illuminate\Support\Enumerable<array-key, TKey>|array<array-key, TKey>  $keys
      * @return static
      */
     public function except($keys)
@@ -375,7 +400,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Run a filter over each of the items.
 	 * 对每个项目运行一个过滤器
      *
-     * @param  callable|null  $callback
+     * @param  (callable(TValue, TKey): bool)|null  $callback
      * @return static
      */
     public function filter(callable $callback = null)
@@ -391,9 +416,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the first item from the collection passing the given truth test.
 	 * 从集合中获取通过给定真值测试的第一项
      *
-     * @param  callable|null  $callback
-     * @param  mixed  $default
-     * @return mixed
+     * @template TFirstDefault
+     *
+     * @param  (callable(TValue, TKey): bool)|null  $callback
+     * @param  TFirstDefault|(\Closure(): TFirstDefault)  $default
+     * @return TValue|TFirstDefault
      */
     public function first(callable $callback = null, $default = null)
     {
@@ -405,7 +432,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 获取集合中项的扁平数组
      *
      * @param  int  $depth
-     * @return static
+     * @return static<int, mixed>
      */
     public function flatten($depth = INF)
     {
@@ -416,7 +443,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Flip the items in the collection.
 	 * 翻转集合中的项目
      *
-     * @return static
+     * @return static<TValue, TKey>
      */
     public function flip()
     {
@@ -427,7 +454,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Remove an item from the collection by key.
 	 * 按键从集合中删除项
      *
-     * @param  string|int|array  $keys
+     * @param  TKey|array<array-key, TKey>  $keys
      * @return $this
      */
     public function forget($keys)
@@ -443,9 +470,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get an item from the collection by key.
 	 * 按键从集合中获取项
      *
-     * @param  mixed  $key
-     * @param  mixed  $default
-     * @return mixed
+     * @template TGetDefault
+     *
+     * @param  TKey  $key
+     * @param  TGetDefault|(\Closure(): TGetDefault)  $default
+     * @return TValue|TGetDefault
      */
     public function get($key, $default = null)
     {
@@ -479,9 +508,9 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Group an associative array by a field or using a callback.
 	 * 按字段或使用回调对关联数组进行分组
      *
-     * @param  array|callable|string  $groupBy
+     * @param  (callable(TValue, TKey): array-key)|array|string  $groupBy
      * @param  bool  $preserveKeys
-     * @return static
+     * @return static<array-key, static<array-key, TValue>>
      */
     public function groupBy($groupBy, $preserveKeys = false)
     {
@@ -503,7 +532,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
             }
 
             foreach ($groupKeys as $groupKey) {
-                $groupKey = is_bool($groupKey) ? (int) $groupKey : $groupKey;
+                $groupKey = match (true) {
+                    is_bool($groupKey) => (int) $groupKey,
+                    $groupKey instanceof \Stringable => (string) $groupKey,
+                    default => $groupKey,
+                };
 
                 if (! array_key_exists($groupKey, $results)) {
                     $results[$groupKey] = new static;
@@ -526,8 +559,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Key an associative array by a field or using a callback.
 	 * 通过字段或使用回调为关联数组设置键
      *
-     * @param  callable|string  $keyBy
-     * @return static
+     * @param  (callable(TValue, TKey): array-key)|array|string  $keyBy
+     * @return static<array-key, TValue>
      */
     public function keyBy($keyBy)
     {
@@ -552,7 +585,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Determine if an item exists in the collection by key.
 	 * 根据键确定集合中是否存在项
      *
-     * @param  mixed  $key
+     * @param  TKey|array<array-key, TKey>  $key
      * @return bool
      */
     public function has($key)
@@ -596,12 +629,16 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Concatenate values of a given key as a string.
 	 * 将给定键的值连接为字符串
      *
-     * @param  string  $value
+     * @param  callable|string  $value
      * @param  string|null  $glue
      * @return string
      */
     public function implode($value, $glue = null)
     {
+        if ($this->useAsCallable($value)) {
+            return implode($glue ?? '', $this->map($value)->all());
+        }
+
         $first = $this->first();
 
         if (is_array($first) || (is_object($first) && ! $first instanceof Stringable)) {
@@ -615,7 +652,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Intersect the collection with the given items.
 	 * 将集合与给定的项目相交
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function intersect($items)
@@ -624,10 +661,48 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
     }
 
     /**
+     * Intersect the collection with the given items, using the callback.
+	 * 使用回调函数将集合与给定项相交
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TValue>|iterable<array-key, TValue>  $items
+     * @param  callable(TValue, TValue): int  $callback
+     * @return static
+     */
+    public function intersectUsing($items, callable $callback)
+    {
+        return new static(array_uintersect($this->items, $this->getArrayableItems($items), $callback));
+    }
+
+    /**
+     * Intersect the collection with the given items with additional index check.
+	 * 通过附加索引检查将集合与给定项相交
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
+     * @return static
+     */
+    public function intersectAssoc($items)
+    {
+        return new static(array_intersect_assoc($this->items, $this->getArrayableItems($items)));
+    }
+
+    /**
+     * Intersect the collection with the given items with additional index check, using the callback.
+	 * 使用回调函数，将集合与具有附加索引检查的给定项相交。
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TValue>|iterable<array-key, TValue>  $items
+     * @param  callable(TValue, TValue): int  $callback
+     * @return static
+     */
+    public function intersectAssocUsing($items, callable $callback)
+    {
+        return new static(array_intersect_uassoc($this->items, $this->getArrayableItems($items), $callback));
+    }
+
+    /**
      * Intersect the collection with the given items by key.
 	 * 通过键将集合与给定的项目相交
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function intersectByKeys($items)
@@ -694,7 +769,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the keys of the collection items.
 	 * 获得收集项目的钥匙
      *
-     * @return static
+     * @return static<int, TKey>
      */
     public function keys()
     {
@@ -705,9 +780,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the last item from the collection.
 	 * 从集合中获取最后一项
      *
-     * @param  callable|null  $callback
-     * @param  mixed  $default
-     * @return mixed
+     * @template TLastDefault
+     *
+     * @param  (callable(TValue, TKey): bool)|null  $callback
+     * @param  TLastDefault|(\Closure(): TLastDefault)  $default
+     * @return TValue|TLastDefault
      */
     public function last(callable $callback = null, $default = null)
     {
@@ -718,9 +795,9 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the values of a given key.
 	 * 获取给定键的值
      *
-     * @param  string|array|int|null  $value
+     * @param  string|int|array<array-key, string>  $value
      * @param  string|null  $key
-     * @return static
+     * @return static<array-key, mixed>
      */
     public function pluck($value, $key = null)
     {
@@ -731,16 +808,14 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Run a map over each of the items.
 	 * 在每个项目上运行一张地图
      *
-     * @param  callable  $callback
-     * @return static
+     * @template TMapValue
+     *
+     * @param  callable(TValue, TKey): TMapValue  $callback
+     * @return static<TKey, TMapValue>
      */
     public function map(callable $callback)
     {
-        $keys = array_keys($this->items);
-
-        $items = array_map($callback, $this->items, $keys);
-
-        return new static(array_combine($keys, $items));
+        return new static(Arr::map($this->items, $callback));
     }
 
     /**
@@ -748,10 +823,13 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 在条目上运行字典映射
      *
      * The callback should return an associative array with a single key/value pair.
-	 * 回调函数应该返回一个具有单个键/值对的关联数组
+	 * 回调函数应该返回一个具有单个键/值对的关联数组。
      *
-     * @param  callable  $callback
-     * @return static
+     * @template TMapToDictionaryKey of array-key
+     * @template TMapToDictionaryValue
+     *
+     * @param  callable(TValue, TKey): array<TMapToDictionaryKey, TMapToDictionaryValue>  $callback
+     * @return static<TMapToDictionaryKey, array<int, TMapToDictionaryValue>>
      */
     public function mapToDictionary(callable $callback)
     {
@@ -781,8 +859,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * The callback should return an associative array with a single key/value pair.
 	 * 回调函数应该返回一个具有单个键/值对的关联数组
      *
-     * @param  callable  $callback
-     * @return static
+     * @template TMapWithKeysKey of array-key
+     * @template TMapWithKeysValue
+     *
+     * @param  callable(TValue, TKey): array<TMapWithKeysKey, TMapWithKeysValue>  $callback
+     * @return static<TMapWithKeysKey, TMapWithKeysValue>
      */
     public function mapWithKeys(callable $callback)
     {
@@ -803,7 +884,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Merge the collection with the given items.
 	 * 将集合与给定的项合并
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function merge($items)
@@ -815,8 +896,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Recursively merge the collection with the given items.
 	 * 递归地将集合与给定项合并
      *
-     * @param  mixed  $items
-     * @return static
+     * @template TMergeRecursiveValue
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TMergeRecursiveValue>|iterable<TKey, TMergeRecursiveValue>  $items
+     * @return static<TKey, TValue|TMergeRecursiveValue>
      */
     public function mergeRecursive($items)
     {
@@ -827,8 +910,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Create a collection by using this collection for keys and another for its values.
 	 * 创建一个集合，将这个集合用于键，另一个用于它的值。
      *
-     * @param  mixed  $values
-     * @return static
+     * @template TCombineValue
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TCombineValue>|iterable<array-key, TCombineValue>  $values
+     * @return static<TValue, TCombineValue>
      */
     public function combine($values)
     {
@@ -839,7 +924,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Union the collection with the given items.
 	 * 将集合与给定项联合
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function union($items)
@@ -876,7 +961,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the items with the specified keys.
 	 * 获取具有指定键的项
      *
-     * @param  mixed  $keys
+     * @param  \Illuminate\Support\Enumerable<array-key, TKey>|array<array-key, TKey>|string|null  $keys
      * @return static
      */
     public function only($keys)
@@ -899,7 +984,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 从集合中获取并删除最后N个项目
      *
      * @param  int  $count
-     * @return mixed
+     * @return static<int, TValue>|TValue|null
      */
     public function pop($count = 1)
     {
@@ -926,8 +1011,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Push an item onto the beginning of the collection.
 	 * 将一个项目推到集合的开头
      *
-     * @param  mixed  $value
-     * @param  mixed  $key
+     * @param  TValue  $value
+     * @param  TKey  $key
      * @return $this
      */
     public function prepend($value, $key = null)
@@ -941,7 +1026,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Push one or more items onto the end of the collection.
 	 * 将一个或多个项目推到集合的末尾
      *
-     * @param  mixed  $values
+     * @param  TValue  ...$values
      * @return $this
      */
     public function push(...$values)
@@ -957,7 +1042,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Push all of the given items onto the collection.
 	 * 将所有给定的项推入集合
      *
-     * @param  iterable  $source
+     * @param  iterable<array-key, TValue>  $source
      * @return static
      */
     public function concat($source)
@@ -975,9 +1060,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get and remove an item from the collection.
 	 * 从集合中获取和删除项
      *
-     * @param  mixed  $key
-     * @param  mixed  $default
-     * @return mixed
+     * @template TPullDefault
+     *
+     * @param  TKey  $key
+     * @param  TPullDefault|(\Closure(): TPullDefault)  $default
+     * @return TValue|TPullDefault
      */
     public function pull($key, $default = null)
     {
@@ -988,8 +1075,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Put an item in the collection by key.
 	 * 按键将项放入集合中
      *
-     * @param  mixed  $key
-     * @param  mixed  $value
+     * @param  TKey  $key
+     * @param  TValue  $value
      * @return $this
      */
     public function put($key, $value)
@@ -1003,8 +1090,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get one or a specified number of items randomly from the collection.
 	 * 从集合中随机获取一个或指定数量的项
      *
-     * @param  int|null  $number
-     * @return static|mixed
+     * @param  (callable(self<TKey, TValue>): int)|int|null  $number
+     * @return static<int, TValue>|TValue
      *
      * @throws \InvalidArgumentException
      */
@@ -1014,6 +1101,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
             return Arr::random($this->items);
         }
 
+        if (is_callable($number)) {
+            return new static(Arr::random($this->items, $number($this)));
+        }
+
         return new static(Arr::random($this->items, $number));
     }
 
@@ -1021,7 +1112,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Replace the collection items with the given items.
 	 * 用给定的项替换集合项
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function replace($items)
@@ -1033,7 +1124,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Recursively replace the collection items with the given items.
 	 * 递归地将集合项替换为给定项
      *
-     * @param  mixed  $items
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
      * @return static
      */
     public function replaceRecursive($items)
@@ -1056,9 +1147,9 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Search the collection for a given value and return the corresponding key if successful.
 	 * 在集合中搜索给定的值，如果成功则返回相应的键。
      *
-     * @param  mixed  $value
+     * @param  TValue|(callable(TValue,TKey): bool)  $value
      * @param  bool  $strict
-     * @return mixed
+     * @return TKey|bool
      */
     public function search($value, $strict = false)
     {
@@ -1080,7 +1171,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 从集合中获取并删除前N个项目
      *
      * @param  int  $count
-     * @return mixed
+     * @return static<int, TValue>|TValue|null
      */
     public function shift($count = 1)
     {
@@ -1117,11 +1208,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
     /**
      * Create chunks representing a "sliding window" view of the items in the collection.
-	 * 创建块，表示集合中项的"滑动窗口"视图。
+	 * 创建块，表示集合中项的"滑动窗口"视图
      *
      * @param  int  $size
      * @param  int  $step
-     * @return static
+     * @return static<int, static>
      */
     public function sliding($size = 2, $step = 1)
     {
@@ -1148,7 +1239,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Skip items in the collection until the given condition is met.
 	 * 跳过集合中的项，直到满足给定的条件。
      *
-     * @param  mixed  $value
+     * @param  TValue|callable(TValue,TKey): bool  $value
      * @return static
      */
     public function skipUntil($value)
@@ -1160,7 +1251,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Skip items in the collection while the given condition is met.
 	 * 在满足给定条件时跳过集合中的项
      *
-     * @param  mixed  $value
+     * @param  TValue|callable(TValue,TKey): bool  $value
      * @return static
      */
     public function skipWhile($value)
@@ -1186,7 +1277,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 将一个集合分成一定数量的组
      *
      * @param  int  $numberOfGroups
-     * @return static
+     * @return static<int, static>
      */
     public function split($numberOfGroups)
     {
@@ -1224,7 +1315,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 将集合分成一定数量的组，并完全填充第一组。
      *
      * @param  int  $numberOfGroups
-     * @return static
+     * @return static<int, static>
      */
     public function splitIn($numberOfGroups)
     {
@@ -1235,10 +1326,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the first item in the collection, but only if exactly one item exists. Otherwise, throw an exception.
 	 * 获取集合中的第一项，但仅当存在一项时。否则，抛出异常。
      *
-     * @param  mixed  $key
+     * @param  (callable(TValue, TKey): bool)|string  $key
      * @param  mixed  $operator
      * @param  mixed  $value
-     * @return mixed
+     * @return TValue
      *
      * @throws \Illuminate\Support\ItemNotFoundException
      * @throws \Illuminate\Support\MultipleItemsFoundException
@@ -1249,14 +1340,16 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
             ? $this->operatorForWhere(...func_get_args())
             : $key;
 
-        $items = $this->when($filter)->filter($filter);
+        $items = $this->unless($filter == null)->filter($filter);
 
-        if ($items->isEmpty()) {
+        $count = $items->count();
+
+        if ($count === 0) {
             throw new ItemNotFoundException;
         }
 
-        if ($items->count() > 1) {
-            throw new MultipleItemsFoundException;
+        if ($count > 1) {
+            throw new MultipleItemsFoundException($count);
         }
 
         return $items->first();
@@ -1266,10 +1359,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get the first item in the collection but throw an exception if no matching items exist.
 	 * 获取集合中的第一项，但如果不存在匹配项则抛出异常。
      *
-     * @param  mixed  $key
+     * @param  (callable(TValue, TKey): bool)|string  $key
      * @param  mixed  $operator
      * @param  mixed  $value
-     * @return mixed
+     * @return TValue
      *
      * @throws \Illuminate\Support\ItemNotFoundException
      */
@@ -1295,7 +1388,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 	 * 将集合分成给定大小的块
      *
      * @param  int  $size
-     * @return static
+     * @return static<int, static>
      */
     public function chunk($size)
     {
@@ -1316,8 +1409,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Chunk the collection into chunks with a callback.
 	 * 使用回调将集合分成块
      *
-     * @param  callable  $callback
-     * @return static
+     * @param  callable(TValue, TKey, static<int, TValue>): bool  $callback
+     * @return static<int, static<int, TValue>>
      */
     public function chunkWhile(callable $callback)
     {
@@ -1330,7 +1423,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Sort through each item with a callback.
 	 * 使用回调对每个项目进行排序
      *
-     * @param  callable|int|null  $callback
+     * @param  (callable(TValue, TValue): int)|null|int  $callback
      * @return static
      */
     public function sort($callback = null)
@@ -1364,7 +1457,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Sort the collection using the given callback.
 	 * 使用给定的回调对集合进行排序
      *
-     * @param  callable|array|string  $callback
+     * @param  array<array-key, (callable(TValue, TValue): mixed)|(callable(TValue, TKey): mixed)|string|array{string, string}>|(callable(TValue, TKey): mixed)|string  $callback
      * @param  int  $options
      * @param  bool  $descending
      * @return static
@@ -1382,7 +1475,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
         // First we will loop through the items and get the comparator from a callback
         // function which we were given. Then, we will sort the returned values and
         // grab all the corresponding values for the sorted keys from this array.
-		// 首先，我们将循环遍历条目和比较器从我们给出的回调函数。
+		// 首先，我们将循环遍历条目并从回调中获取比较器。
         foreach ($this->items as $key => $value) {
             $results[$key] = $callback($value, $key);
         }
@@ -1405,14 +1498,14 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Sort the collection using multiple comparisons.
 	 * 使用多个比较对集合排序
      *
-     * @param  array  $comparisons
+     * @param  array<array-key, (callable(TValue, TValue): mixed)|(callable(TValue, TKey): mixed)|string|array{string, string}>  $comparisons
      * @return static
      */
     protected function sortByMany(array $comparisons = [])
     {
         $items = $this->items;
 
-        usort($items, function ($a, $b) use ($comparisons) {
+        uasort($items, function ($a, $b) use ($comparisons) {
             foreach ($comparisons as $comparison) {
                 $comparison = Arr::wrap($comparison);
 
@@ -1420,8 +1513,6 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
                 $ascending = Arr::get($comparison, 1, true) === true ||
                              Arr::get($comparison, 1, true) === 'asc';
-
-                $result = 0;
 
                 if (! is_string($prop) && is_callable($prop)) {
                     $result = $prop($a, $b);
@@ -1450,7 +1541,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Sort the collection in descending order using the given callback.
 	 * 使用给定的回调按降序对集合进行排序
      *
-     * @param  callable|string  $callback
+     * @param  array<array-key, (callable(TValue, TValue): mixed)|(callable(TValue, TKey): mixed)|string|array{string, string}>|(callable(TValue, TKey): mixed)|string  $callback
      * @param  int  $options
      * @return static
      */
@@ -1492,7 +1583,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Sort the collection keys using a callback.
 	 * 使用回调对集合键进行排序
      *
-     * @param  callable  $callback
+     * @param  callable(TKey, TKey): int  $callback
      * @return static
      */
     public function sortKeysUsing(callable $callback)
@@ -1510,7 +1601,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      *
      * @param  int  $offset
      * @param  int|null  $length
-     * @param  mixed  $replacement
+     * @param  array<array-key, TValue>  $replacement
      * @return static
      */
     public function splice($offset, $length = null, $replacement = [])
@@ -1542,7 +1633,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Take items in the collection until the given condition is met.
 	 * 获取集合中的项，直到满足给定条件。
      *
-     * @param  mixed  $value
+     * @param  TValue|callable(TValue,TKey): bool  $value
      * @return static
      */
     public function takeUntil($value)
@@ -1554,7 +1645,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Take items in the collection while the given condition is met.
 	 * 在满足给定条件时获取集合中的项
      *
-     * @param  mixed  $value
+     * @param  TValue|callable(TValue,TKey): bool  $value
      * @return static
      */
     public function takeWhile($value)
@@ -1566,7 +1657,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Transform each item in the collection using a callback.
 	 * 使用回调转换集合中的每个项
      *
-     * @param  callable  $callback
+     * @param  callable(TValue, TKey): TValue  $callback
      * @return $this
      */
     public function transform(callable $callback)
@@ -1578,7 +1669,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
 
     /**
      * Convert a flatten "dot" notation array into an expanded array.
-	 * 将扁平的"点"表示法数组转换为展开的数组
+	 * 将扁平的“点”表示法数组转换为展开的数组
      *
      * @return static
      */
@@ -1591,7 +1682,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Return only unique items from the collection array.
 	 * 只返回集合数组中唯一的项
      *
-     * @param  string|callable|null  $key
+     * @param  (callable(TValue, TKey): mixed)|string|null  $key
      * @param  bool  $strict
      * @return static
      */
@@ -1618,7 +1709,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Reset the keys on the underlying array.
 	 * 重置基础数组上的键
      *
-     * @return static
+     * @return static<int, TValue>
      */
     public function values()
     {
@@ -1632,18 +1723,16 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * e.g. new Collection([1, 2, 3])->zip([4, 5, 6]);
      *      => [[1, 4], [2, 5], [3, 6]]
      *
-     * @param  mixed  ...$items
-     * @return static
+     * @template TZipValue
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TZipValue>|iterable<array-key, TZipValue>  ...$items
+     * @return static<int, static<int, TValue|TZipValue>>
      */
     public function zip($items)
     {
-        $arrayableItems = array_map(function ($items) {
-            return $this->getArrayableItems($items);
-        }, func_get_args());
+        $arrayableItems = array_map(fn ($items) => $this->getArrayableItems($items), func_get_args());
 
-        $params = array_merge([function () {
-            return new static(func_get_args());
-        }, $this->items], $arrayableItems);
+        $params = array_merge([fn () => new static(func_get_args()), $this->items], $arrayableItems);
 
         return new static(array_map(...$params));
     }
@@ -1652,9 +1741,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Pad collection to the specified length with a value.
 	 * 使用值将集合垫到指定的长度
      *
+     * @template TPadValue
+     *
      * @param  int  $size
-     * @param  mixed  $value
-     * @return static
+     * @param  TPadValue  $value
+     * @return static<int, TValue|TPadValue>
      */
     public function pad($size, $value)
     {
@@ -1665,10 +1756,9 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get an iterator for the items.
 	 * 获取项的迭代器
      *
-     * @return \ArrayIterator
+     * @return \ArrayIterator<TKey, TValue>
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items);
     }
@@ -1679,8 +1769,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }
@@ -1689,8 +1778,8 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Count the number of items in the collection by a field or using a callback.
 	 * 按字段或使用回调计算集合中的项数
      *
-     * @param  callable|string  $countBy
-     * @return static
+     * @param  (callable(TValue, TKey): array-key)|string|null  $countBy
+     * @return static<array-key, int>
      */
     public function countBy($countBy = null)
     {
@@ -1701,7 +1790,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Add an item to the collection.
 	 * 向集合中添加项
      *
-     * @param  mixed  $item
+     * @param  TValue  $item
      * @return $this
      */
     public function add($item)
@@ -1715,7 +1804,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get a base Support collection instance from this collection.
 	 * 从此集合获取基本支持集合实例
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<TKey, TValue>
      */
     public function toBase()
     {
@@ -1726,11 +1815,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Determine if an item exists at an offset.
 	 * 确定某项是否存在于偏移量处
      *
-     * @param  mixed  $key
+     * @param  TKey  $key
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return isset($this->items[$key]);
     }
@@ -1739,11 +1827,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Get an item at a given offset.
 	 * 获取给定偏移量处的项
      *
-     * @param  mixed  $key
-     * @return mixed
+     * @param  TKey  $key
+     * @return TValue
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->items[$key];
     }
@@ -1752,12 +1839,11 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Set the item at a given offset.
 	 * 在给定的偏移量处设置项
      *
-     * @param  mixed  $key
-     * @param  mixed  $value
+     * @param  TKey|null  $key
+     * @param  TValue  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         if (is_null($key)) {
             $this->items[] = $value;
@@ -1770,11 +1856,10 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      * Unset the item at a given offset.
 	 * 在给定的偏移量处取消项的设置
      *
-     * @param  mixed  $key
+     * @param  TKey  $key
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         unset($this->items[$key]);
     }

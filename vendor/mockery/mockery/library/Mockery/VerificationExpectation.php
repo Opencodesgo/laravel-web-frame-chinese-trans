@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，验证异常
+ * Mockery，验证的期望
  */
 
 /**

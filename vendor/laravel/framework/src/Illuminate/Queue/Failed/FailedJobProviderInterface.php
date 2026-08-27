@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，失败，失败的作业提供者接口
+ * Illuminate，队列，失败，失败的作业提供程序接口
  */
 
 namespace Illuminate\Queue\Failed;
@@ -9,7 +9,7 @@ interface FailedJobProviderInterface
 {
     /**
      * Log a failed job into storage.
-	 * 将失败的作业记录到存储中
+	 * 记录失败的作业到存储中
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -21,7 +21,7 @@ interface FailedJobProviderInterface
 
     /**
      * Get a list of all of the failed jobs.
-	 * 得到所有失败任务的列表
+	 * 获取所有失败任务的列表
      *
      * @return array
      */
@@ -29,7 +29,7 @@ interface FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 得到单个失败的作业
+	 * 得到单个失败作业
      *
      * @param  mixed  $id
      * @return object|null
@@ -49,7 +49,8 @@ interface FailedJobProviderInterface
      * Flush all of the failed jobs from storage.
 	 * 从存储中清除所有失败的作业
      *
+     * @param  int|null  $hours
      * @return void
      */
-    public function flush();
+    public function flush($hours = null);
 }

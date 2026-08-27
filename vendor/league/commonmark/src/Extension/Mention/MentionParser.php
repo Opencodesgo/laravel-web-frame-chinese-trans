@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，提到，提到解析器
+ * League，CommonMark，扩展，提及，Mention 解析器
  */
 
 declare(strict_types=1);
@@ -58,7 +58,6 @@ final class MentionParser implements InlineParserInterface
         $cursor = $inlineContext->getCursor();
 
         // The prefix must not have any other characters immediately prior
-		// 前缀前面不能有任何其他字符
         $previousChar = $cursor->peek(-1);
         if ($previousChar !== null && \preg_match('/\w/', $previousChar)) {
             // peek() doesn't modify the cursor, so no need to restore state first

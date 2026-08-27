@@ -29,6 +29,7 @@ abstract class TypeSafeMatcher extends BaseMatcher
 
     /**
      * The type that is required for a safe comparison
+	 * 安全比较所需的类型
      *
      * @var int
      */

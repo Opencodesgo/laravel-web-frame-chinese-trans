@@ -35,7 +35,7 @@ class RequiredIf
 
     /**
      * Convert the rule to a validation string.
-	 * 转换规则为验证字符串
+	 * 将规则转换为验证字符串
      *
      * @return string
      */

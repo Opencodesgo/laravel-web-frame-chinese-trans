@@ -9,7 +9,7 @@ interface CountValidatorInterface
 {
     /**
      * Checks if the validator can accept an additional nth call
-	 * 检查验证器是否接受额外的nth调用
+	 * 检查验证器是否可以接受额外的第n个调用
      *
      * @param int $n
      *
@@ -19,7 +19,7 @@ interface CountValidatorInterface
 
     /**
      * Validate the call count against this validator
-	 * 通过该验证器验证调用计数
+	 * 根据此验证器验证调用计数
      *
      * @param int $n
      *

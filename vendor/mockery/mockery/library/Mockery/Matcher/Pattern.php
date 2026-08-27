@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，模式
+ * Mockery，匹配器，模式
  */
 
 /**
@@ -19,7 +19,7 @@ class Pattern extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
-	 * 返回这个Matcher的字符串表示
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */
@@ -30,7 +30,7 @@ class Pattern extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected pattern.
-	 * 检查实际值是否符合预期模式
+	 * 检查实际值是否与期望的模式匹配
      *
      * @template TMixed
      *

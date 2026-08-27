@@ -11,7 +11,7 @@ interface Application extends Container
 {
     /**
      * Get the version number of the application.
-	 * 获取应用程序的版本号
+	 * 得到应用的版本号
      *
      * @return string
      */
@@ -19,7 +19,7 @@ interface Application extends Container
 
     /**
      * Get the base path of the Laravel installation.
-	 * 获取安装的基本路径
+	 * 获取Laravel安装的基本路径
      *
      * @param  string  $path
      * @return string
@@ -66,15 +66,16 @@ interface Application extends Container
      * Get the path to the storage directory.
 	 * 获取存储目录的路径
      *
+     * @param  string  $path
      * @return string
      */
-    public function storagePath();
+    public function storagePath($path = '');
 
     /**
      * Get or check the current application environment.
 	 * 获取或检查当前应用程序环境
      *
-     * @param  string|array  $environments
+     * @param  string|array  ...$environments
      * @return string|bool
      */
     public function environment(...$environments);
@@ -94,6 +95,14 @@ interface Application extends Container
      * @return bool
      */
     public function runningUnitTests();
+
+    /**
+     * Get an instance of the maintenance mode manager implementation.
+	 * 获取维护模式管理器实现的实例
+     *
+     * @return \Illuminate\Contracts\Foundation\MaintenanceMode
+     */
+    public function maintenanceMode();
 
     /**
      * Determine if the application is currently down for maintenance.
@@ -150,7 +159,7 @@ interface Application extends Container
 
     /**
      * Register a new boot listener.
-	 * 注册一个新的引导监听器
+	 * 注册一个新的引导侦听器
      *
      * @param  callable  $callback
      * @return void
@@ -159,7 +168,7 @@ interface Application extends Container
 
     /**
      * Register a new "booted" listener.
-	 * 注册一个新的"已启动"监听器
+	 * 注册一个新的“已启动”侦听器
      *
      * @param  callable  $callback
      * @return void
@@ -185,7 +194,7 @@ interface Application extends Container
 
     /**
      * Get the application namespace.
-	 * 获取应用程序命名空间
+	 * 获取应用程序名称空间
      *
      * @return string
      *
@@ -236,8 +245,17 @@ interface Application extends Container
     public function shouldSkipMiddleware();
 
     /**
+     * Register a terminating callback with the application.
+	 * 向应用程序注册一个终止回调
+     *
+     * @param  callable|string  $callback
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    public function terminating($callback);
+
+    /**
      * Terminate the application.
-	 * 终止应用
+	 * 按确定终止应用程序
      *
      * @return void
      */

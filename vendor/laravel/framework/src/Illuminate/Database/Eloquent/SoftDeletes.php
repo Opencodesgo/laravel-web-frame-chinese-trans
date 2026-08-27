@@ -6,9 +6,9 @@
 namespace Illuminate\Database\Eloquent;
 
 /**
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withTrashed(bool $withTrashed = true)
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyTrashed()
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withoutTrashed()
  */
 trait SoftDeletes
 {
@@ -52,6 +52,10 @@ trait SoftDeletes
      */
     public function forceDelete()
     {
+        if ($this->fireModelEvent('forceDeleting') === false) {
+            return false;
+        }
+
         $this->forceDeleting = true;
 
         return tap($this->delete(), function ($deleted) {
@@ -61,6 +65,17 @@ trait SoftDeletes
                 $this->fireModelEvent('forceDeleted', false);
             }
         });
+    }
+
+    /**
+     * Force a hard delete on a soft deleted model without raising any events.
+	 * 在不引发任何事件的情况下对软删除模型强制执行硬删除
+     *
+     * @return bool|null
+     */
+    public function forceDeleteQuietly()
+    {
+        return static::withoutEvents(fn () => $this->forceDelete());
     }
 
     /**
@@ -96,7 +111,7 @@ trait SoftDeletes
 
         $this->{$this->getDeletedAtColumn()} = $time;
 
-        if ($this->timestamps && ! is_null($this->getUpdatedAtColumn())) {
+        if ($this->usesTimestamps() && ! is_null($this->getUpdatedAtColumn())) {
             $this->{$this->getUpdatedAtColumn()} = $time;
 
             $columns[$this->getUpdatedAtColumn()] = $this->fromDateTime($time);
@@ -113,14 +128,14 @@ trait SoftDeletes
      * Restore a soft-deleted model instance.
 	 * 恢复软删除的模型实例
      *
-     * @return bool|null
+     * @return bool
      */
     public function restore()
     {
         // If the restoring event does not return false, we will proceed with this
         // restore operation. Otherwise, we bail out so the developer will stop
         // the restore totally. We will clear the deleted timestamp and save.
-		// 如果恢复事件不返回false，我们将继续执行此操作。
+		// 如果恢复事件不返回false，我们将继续执行此恢复操作。
         if ($this->fireModelEvent('restoring') === false) {
             return false;
         }
@@ -130,7 +145,7 @@ trait SoftDeletes
         // Once we have saved the model, we will fire the "restored" event so this
         // developer will do anything they need to after a restore operation is
         // totally finished. Then we will return the result of the save call.
-		// 保存模型之后，我们将触发"已恢复"事件，如下所示。
+		// 一旦我们保存了模型，我们将触发"已恢复"事件。
         $this->exists = true;
 
         $result = $this->save();
@@ -138,6 +153,17 @@ trait SoftDeletes
         $this->fireModelEvent('restored', false);
 
         return $result;
+    }
+
+    /**
+     * Restore a soft-deleted model instance without raising any events.
+	 * 恢复软删除的模型实例而不引发任何事件
+     *
+     * @return bool
+     */
+    public function restoreQuietly()
+    {
+        return static::withoutEvents(fn () => $this->restore());
     }
 
     /**
@@ -165,7 +191,7 @@ trait SoftDeletes
 
     /**
      * Register a "restoring" model event callback with the dispatcher.
-	 * 向调度程序注册一个“恢复”模型事件回调
+	 * 向调度程序注册一个"恢复"模型事件回调
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -177,7 +203,7 @@ trait SoftDeletes
 
     /**
      * Register a "restored" model event callback with the dispatcher.
-	 * 向调度程序注册一个“已恢复的”模型事件回调
+	 * 向调度程序注册一个"已恢复的"模型事件回调
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -185,6 +211,18 @@ trait SoftDeletes
     public static function restored($callback)
     {
         static::registerModelEvent('restored', $callback);
+    }
+
+    /**
+     * Register a "forceDeleting" model event callback with the dispatcher.
+	 * 向调度程序注册一个"forceDeleting"模型事件回调
+     *
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function forceDeleting($callback)
+    {
+        static::registerModelEvent('forceDeleting', $callback);
     }
 
     /**
@@ -212,13 +250,13 @@ trait SoftDeletes
 
     /**
      * Get the name of the "deleted at" column.
-	 * 获取"删除位置"列的名称
+	 * 获取"deleted at"列的名称
      *
      * @return string
      */
     public function getDeletedAtColumn()
     {
-        return defined('static::DELETED_AT') ? static::DELETED_AT : 'deleted_at';
+        return defined(static::class.'::DELETED_AT') ? static::DELETED_AT : 'deleted_at';
     }
 
     /**

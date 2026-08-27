@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，容器
+ * Mockery，匹配器，包含
  */
 
 /**
@@ -20,7 +20,7 @@ class Contains extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
-	 * 返回这个Matcher的字符串表示
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */
@@ -36,7 +36,7 @@ class Contains extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected.
-	 * 检查实际值是否符合预期
+	 * 检查实际值是否与预期值匹配
      *
      * @template TMixed
      *

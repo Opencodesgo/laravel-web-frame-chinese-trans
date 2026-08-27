@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，高阶集合代理
+ * Illuminate，集合，高阶集合代理
  */
 
 namespace Illuminate\Support;

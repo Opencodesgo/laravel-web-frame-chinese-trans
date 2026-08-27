@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，ErrorHandler，异常，分隔错误上下文
+ * Symfony，Component，ErrorHandler，异常，沉默错误背景信息
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\ErrorHandler\Exception;
 
 /**
  * Data Object that represents a Silenced Error.
- * 数据对象,表示一个沉默的错误。
+ * 表示沉默错误的数据对象。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
@@ -24,10 +24,10 @@ class SilencedErrorContext implements \JsonSerializable
 {
     public $count = 1;
 
-    private $severity;
-    private $file;
-    private $line;
-    private $trace;
+    private int $severity;
+    private string $file;
+    private int $line;
+    private array $trace;
 
     public function __construct(int $severity, string $file, int $line, array $trace = [], int $count = 1)
     {

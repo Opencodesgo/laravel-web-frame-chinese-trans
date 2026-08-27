@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，客户端，事件，请求发送
+ * Illuminate，Http，客户端，事件，发送请求
  */
 
 namespace Illuminate\Http\Client\Events;

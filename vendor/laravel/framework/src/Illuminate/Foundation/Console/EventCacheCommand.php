@@ -7,20 +7,35 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'event:cache')]
 class EventCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * 控制台命令的名称和签名 event:cache
+	 * console命令的名称和签名
      *
      * @var string
      */
     protected $signature = 'event:cache';
 
     /**
+     * The name of the console command.
+	 * console命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'event:cache';
+
+    /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -34,19 +49,19 @@ class EventCacheCommand extends Command
      */
     public function handle()
     {
-        $this->call('event:clear');
+        $this->callSilent('event:clear');
 
         file_put_contents(
             $this->laravel->getCachedEventsPath(),
             '<?php return '.var_export($this->getEvents(), true).';'
         );
 
-        $this->info('Events cached successfully!');
+        $this->components->info('Events cached successfully.');
     }
 
     /**
      * Get all of the events and listeners configured for the application.
-	 * 获取为应用程序配置的所有事件和监听器
+	 * 获取为应用程序配置的所有事件和侦听器
      *
      * @return array
      */

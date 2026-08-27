@@ -103,7 +103,7 @@ interface ConnectionInterface
 
     /**
      * Run an SQL statement and get the number of rows affected.
-	 * 运行一条SQL语句，获取受影响的行数。
+	 * 运行一条SQL语句，获取受影响的行数
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -175,7 +175,7 @@ interface ConnectionInterface
 
     /**
      * Execute the given callback in "dry run" mode.
-	 * 以“预演”模式执行给定的回调函数
+	 * 以"预演"模式执行给定的回调函数
      *
      * @param  \Closure  $callback
      * @return array

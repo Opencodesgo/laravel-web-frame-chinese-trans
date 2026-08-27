@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，连接器，Sql Server 连接器
+ * Illuminate，数据库，连接器，SqlServer连接器
  */
 
 namespace Illuminate\Database\Connectors;
@@ -34,7 +34,32 @@ class SqlServerConnector extends Connector implements ConnectorInterface
     {
         $options = $this->getOptions($config);
 
-        return $this->createConnection($this->getDsn($config), $config, $options);
+        $connection = $this->createConnection($this->getDsn($config), $config, $options);
+
+        $this->configureIsolationLevel($connection, $config);
+
+        return $connection;
+    }
+
+    /**
+     * Set the connection transaction isolation level.
+	 * 设置连接事务隔离级别
+     *
+     * https://learn.microsoft.com/en-us/sql/t-sql/statements/set-transaction-isolation-level-transact-sql
+     *
+     * @param  \PDO  $connection
+     * @param  array  $config
+     * @return void
+     */
+    protected function configureIsolationLevel($connection, array $config)
+    {
+        if (! isset($config['isolation_level'])) {
+            return;
+        }
+
+        $connection->prepare(
+            "SET TRANSACTION ISOLATION LEVEL {$config['isolation_level']}"
+        )->execute();
     }
 
     /**
@@ -49,7 +74,7 @@ class SqlServerConnector extends Connector implements ConnectorInterface
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
-		// 首先，我们将创建基本的DSN设置以及端口，如果它在配置选项中。
+		// 首先，我们将创建基本的DSN设置以及端口。
         if ($this->prefersOdbc($config)) {
             return $this->getOdbcDsn($config);
         }
@@ -169,6 +194,10 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
         if (isset($config['login_timeout'])) {
             $arguments['LoginTimeout'] = $config['login_timeout'];
+        }
+
+        if (isset($config['authentication'])) {
+            $arguments['Authentication'] = $config['authentication'];
         }
 
         return $this->buildConnectString('sqlsrv', $arguments);

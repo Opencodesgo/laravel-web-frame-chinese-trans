@@ -12,28 +12,27 @@ declare(strict_types=1);
 
 namespace Nette\Schema;
 
+
 interface Schema
 {
 	/**
 	 * Normalization.
-	 * 标准化
+	 * 标准化 
 	 * @return mixed
 	 */
-	function normalize($value, Context $context);
+	function normalize(mixed $value, Context $context);
 
 	/**
 	 * Merging.
-	 * 合并
 	 * @return mixed
 	 */
-	function merge($value, $base);
+	function merge(mixed $value, mixed $base);
 
 	/**
 	 * Validation and finalization.
-	 * 验证和确定
 	 * @return mixed
 	 */
-	function complete($value, Context $context);
+	function complete(mixed $value, Context $context);
 
 	/**
 	 * @return mixed

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，假队列
+ * Illuminate，支持，测试，佯装，Batch 佯装
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -9,6 +9,7 @@ use BadMethodCallException;
 use Closure;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Queue\QueueManager;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
 
@@ -17,12 +18,68 @@ class QueueFake extends QueueManager implements Queue
     use ReflectsClosures;
 
     /**
+     * The original queue manager.
+	 * 原始队列管理器
+     *
+     * @var \Illuminate\Contracts\Queue\Queue
+     */
+    protected $queue;
+
+    /**
+     * The job types that should be intercepted instead of pushed to the queue.
+	 * 应该拦截而不是推送到队列的作业类型
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $jobsToFake;
+
+    /**
+     * The job types that should be pushed to the queue and not intercepted.
+	 * 应该被推送到队列而不被拦截的作业类型
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $jobsToBeQueued;
+
+    /**
      * All of the jobs that have been pushed.
-	 * 所以已被推送的任务
+	 * 所有的工作都被推迟了
      *
      * @var array
      */
     protected $jobs = [];
+
+    /**
+     * Create a new fake queue instance.
+	 * 创建一个新的伪队列实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  array  $jobsToFake
+     * @param  \Illuminate\Queue\QueueManager|null  $queue
+     * @return void
+     */
+    public function __construct($app, $jobsToFake = [], $queue = null)
+    {
+        parent::__construct($app);
+
+        $this->jobsToFake = Collection::wrap($jobsToFake);
+        $this->jobsToBeQueued = Collection::make();
+        $this->queue = $queue;
+    }
+
+    /**
+     * Specify the jobs that should be queued instead of faked.
+	 * 指定应该排队而不是伪造的作业
+     *
+     * @param  array|string  $jobsToBeQueued
+     * @return $this
+     */
+    public function except($jobsToBeQueued)
+    {
+        $this->jobsToBeQueued = Collection::wrap($jobsToBeQueued)->merge($this->jobsToBeQueued);
+
+        return $this;
+    }
 
     /**
      * Assert if a job was pushed based on a truth-test callback.
@@ -145,14 +202,10 @@ class QueueFake extends QueueManager implements Queue
      */
     protected function assertPushedWithChainOfObjects($job, $expectedChain, $callback)
     {
-        $chain = collect($expectedChain)->map(function ($job) {
-            return serialize($job);
-        })->all();
+        $chain = collect($expectedChain)->map(fn ($job) => serialize($job))->all();
 
         PHPUnit::assertTrue(
-            $this->pushed($job, $callback)->filter(function ($job) use ($chain) {
-                return $job->chained == $chain;
-            })->isNotEmpty(),
+            $this->pushed($job, $callback)->filter(fn ($job) => $job->chained == $chain)->isNotEmpty(),
             'The expected chain was not pushed.'
         );
     }
@@ -190,14 +243,12 @@ class QueueFake extends QueueManager implements Queue
      */
     protected function isChainOfObjects($chain)
     {
-        return ! collect($chain)->contains(function ($job) {
-            return ! is_object($job);
-        });
+        return ! collect($chain)->contains(fn ($job) => ! is_object($job));
     }
 
     /**
      * Determine if a job was pushed based on a truth-test callback.
-	 * 根据true-test回调确定作业是否被推送
+	 * 根据true -test回调确定作业是否被推送
      *
      * @param  string|\Closure  $job
      * @param  callable|null  $callback
@@ -217,7 +268,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert that no jobs were pushed.
-	 * 断言没有工作被推送
+	 * 断言没有作业被推送
      *
      * @return void
      */
@@ -240,13 +291,11 @@ class QueueFake extends QueueManager implements Queue
             return collect();
         }
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: fn () => true;
 
-        return collect($this->jobs[$job])->filter(function ($data) use ($callback) {
-            return $callback($data['job'], $data['queue']);
-        })->pluck('job');
+        return collect($this->jobs[$job])->filter(
+            fn ($data) => $callback($data['job'], $data['queue'], $data['data'])
+        )->pluck('job');
     }
 
     /**
@@ -275,16 +324,16 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Get the size of the queue.
-	 * 获取队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
      */
     public function size($queue = null)
     {
-        return collect($this->jobs)->flatten(1)->filter(function ($job) use ($queue) {
-            return $job['queue'] === $queue;
-        })->count();
+        return collect($this->jobs)->flatten(1)->filter(
+            fn ($job) => $job['queue'] === $queue
+        )->count();
     }
 
     /**
@@ -298,10 +347,57 @@ class QueueFake extends QueueManager implements Queue
      */
     public function push($job, $data = '', $queue = null)
     {
-        $this->jobs[is_object($job) ? get_class($job) : $job][] = [
-            'job' => $job,
-            'queue' => $queue,
-        ];
+        if ($this->shouldFakeJob($job)) {
+            $this->jobs[is_object($job) ? get_class($job) : $job][] = [
+                'job' => $job,
+                'queue' => $queue,
+                'data' => $data,
+            ];
+        } else {
+            is_object($job) && isset($job->connection)
+                ? $this->queue->connection($job->connection)->push($job, $data, $queue)
+                : $this->queue->push($job, $data, $queue);
+        }
+    }
+
+    /**
+     * Determine if a job should be faked or actually dispatched.
+	 * 确定一个工作是应该伪造还是应该实际派遣
+     *
+     * @param  object  $job
+     * @return bool
+     */
+    public function shouldFakeJob($job)
+    {
+        if ($this->shouldDispatchJob($job)) {
+            return false;
+        }
+
+        if ($this->jobsToFake->isEmpty()) {
+            return true;
+        }
+
+        return $this->jobsToFake->contains(
+            fn ($jobToFake) => $job instanceof ((string) $jobToFake)
+        );
+    }
+
+    /**
+     * Determine if a job should be pushed to the queue instead of faked.
+	 * 确定是否应该将作业推送到队列中，而不是伪造。
+     *
+     * @param  object  $job
+     * @return bool
+     */
+    protected function shouldDispatchJob($job)
+    {
+        if ($this->jobsToBeQueued->isEmpty()) {
+            return false;
+        }
+
+        return $this->jobsToBeQueued->contains(
+            fn ($jobToQueue) => $job instanceof ((string) $jobToQueue)
+        );
     }
 
     /**
@@ -319,8 +415,8 @@ class QueueFake extends QueueManager implements Queue
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string|object  $job
@@ -348,8 +444,8 @@ class QueueFake extends QueueManager implements Queue
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto a specific queue after (n) seconds.
+	 * 在(n)秒后将新作业推送到特定队列
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay

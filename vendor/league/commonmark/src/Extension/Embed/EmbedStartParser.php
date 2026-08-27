@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，内嵌，嵌入开始解析器
+ * League，CommonMark，扩展，嵌入，嵌入开始解析器
  */
 
 declare(strict_types=1);
@@ -47,7 +47,7 @@ class EmbedStartParser implements BlockStartParserInterface
         $cursor->advanceToNextNonSpaceOrTab();
 
         // We must be at the end of the line; otherwise, this link was not by itself
-		// 我们必须站在队伍的最后；否则，这个链接本身就不存在了
+		// 我们必须站在队伍的最后；否则，这个链接本身就不存在了。
         if (! $cursor->isAtEnd()) {
             return BlockStart::none();
         }

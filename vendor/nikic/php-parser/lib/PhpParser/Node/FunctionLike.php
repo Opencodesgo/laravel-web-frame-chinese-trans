@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，类似于函数
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -7,11 +11,13 @@ use PhpParser\Node;
 interface FunctionLike extends Node {
     /**
      * Whether to return by reference
+	 * 是否通过引用返回
      */
     public function returnsByRef(): bool;
 
     /**
      * List of parameters
+	 * 参数列表
      *
      * @return Param[]
      */
@@ -19,6 +25,7 @@ interface FunctionLike extends Node {
 
     /**
      * Get the declared return type or null
+	 * 获取声明的返回类型或null
      *
      * @return null|Identifier|Name|ComplexType
      */
@@ -26,6 +33,7 @@ interface FunctionLike extends Node {
 
     /**
      * The function body
+	 * 函数主体
      *
      * @return Stmt[]|null
      */
@@ -33,6 +41,7 @@ interface FunctionLike extends Node {
 
     /**
      * Get PHP attribute groups.
+	 * 获取PHP属性组
      *
      * @return AttributeGroup[]
      */

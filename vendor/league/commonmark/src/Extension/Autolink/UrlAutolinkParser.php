@@ -97,7 +97,6 @@ final class UrlAutolinkParser implements InlineParserInterface
         $cursor = $inlineContext->getCursor();
 
         // Autolinks can only come at the beginning of a line, after whitespace, or certain delimiting characters
-		// 自动链接只能出现在一行的开头、空格或某些分隔字符之后
         $previousChar = $cursor->peek(-1);
         if (! \in_array($previousChar, self::ALLOWED_AFTER, true)) {
             return false;

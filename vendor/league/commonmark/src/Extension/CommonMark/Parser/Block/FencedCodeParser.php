@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，块，隔离代码解析器
+ * League，CommonMark，扩展，共同标记，Parser，代码块，隔离代码解析器
  */
 
 declare(strict_types=1);
@@ -72,6 +72,7 @@ final class FencedCodeParser extends AbstractBlockContinueParser
     public function closeBlock(): void
     {
         // first line becomes info string
+		// 第一行变成信息字符串
         $firstLine = $this->strings->first();
         if ($firstLine === false) {
             $firstLine = '';

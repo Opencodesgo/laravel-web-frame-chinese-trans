@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，总线，等待链
+ * Illuminate，基础，总线，等待中链
  */
 
 namespace Illuminate\Foundation\Bus;
@@ -8,7 +8,7 @@ namespace Illuminate\Foundation\Bus;
 use Closure;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Queue\CallQueuedClosure;
-use Illuminate\Queue\SerializableClosureFactory;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class PendingChain
 {
@@ -22,7 +22,7 @@ class PendingChain
 
     /**
      * The jobs to be chained.
-	 * 这些工作将被捆绑起来
+	 * 作业被链接起来
      *
      * @var array
      */
@@ -30,7 +30,7 @@ class PendingChain
 
     /**
      * The name of the connection the chain should be sent to.
-	 * 应该被发送的链连接名称
+	 * 链应该被发送到的连接的名称
      *
      * @var string|null
      */
@@ -38,7 +38,7 @@ class PendingChain
 
     /**
      * The name of the queue the chain should be sent to.
-	 * 应该被发送到的链队列名称
+	 * 链应该被发送到的队列的名称
      *
      * @var string|null
      */
@@ -103,8 +103,8 @@ class PendingChain
     }
 
     /**
-     * Set the desired delay for the chain.
-	 * 为链设置所需的延迟
+     * Set the desired delay in seconds for the chain.
+	 * 为链设置所需的延迟（以秒为单位）
      *
      * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
@@ -126,7 +126,7 @@ class PendingChain
     public function catch($callback)
     {
         $this->catchCallbacks[] = $callback instanceof Closure
-                        ? SerializableClosureFactory::make($callback)
+                        ? new SerializableClosure($callback)
                         : $callback;
 
         return $this;
@@ -145,7 +145,7 @@ class PendingChain
 
     /**
      * Dispatch the job with the given arguments.
-	 * 使用给定的参数调度任务
+	 * 使用给定的参数调度作业
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */

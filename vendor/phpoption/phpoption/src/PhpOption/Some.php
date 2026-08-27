@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpOption，一些
+ * PhpOption，Some
  */
 
 /*

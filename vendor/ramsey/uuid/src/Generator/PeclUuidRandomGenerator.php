@@ -1,11 +1,10 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，Pecl Uuid随机生成器
+ * Ramsey，Uuid，生成器，Pecl Uuid 随机生成器
  */
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,6 +24,7 @@ use const UUID_TYPE_RANDOM;
 
 /**
  * PeclUuidRandomGenerator generates strings of random binary data using ext-uuid
+ * PeclUuidRandomGenerator 使用ext-uuid生成随机二进制数据字符串
  *
  * @link https://pecl.php.net/package/uuid ext-uuid
  */
@@ -34,6 +34,6 @@ class PeclUuidRandomGenerator implements RandomGeneratorInterface
     {
         $uuid = uuid_create(UUID_TYPE_RANDOM);
 
-        return uuid_parse($uuid);
+        return (string) uuid_parse($uuid);
     }
 }

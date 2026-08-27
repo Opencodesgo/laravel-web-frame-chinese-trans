@@ -33,7 +33,7 @@ class SchemaLoaded
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建事件实例
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string  $path

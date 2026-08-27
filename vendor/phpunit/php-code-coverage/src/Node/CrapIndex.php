@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，节点，CrapIndex
+ * SebastianBergmann，CodeCoverage，节点，垃圾索引
  */
 
 /*

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，单元测试，Mockery PHP单元集成
+ * Mockery，适配器，单元测试，PHP 单元集成
  */
 
 /**
@@ -22,7 +22,7 @@ use function method_exists;
 /**
  * Integrates Mockery into PHPUnit. Ensures Mockery expectations are verified
  * for each test and are included by the assertion counter.
- * 将Mockery与PHPUnit相结合。
+ * 将mock集成到PHPUnit中。
  */
 trait MockeryPHPUnitIntegration
 {
@@ -57,7 +57,7 @@ trait MockeryPHPUnitIntegration
     /**
      * Performs assertions shared by all tests of a test case. This method is
      * called before execution of a test ends and before the tearDown method.
-	 * 执行测试用例的所有测试共享的断言。
+	 * 执行由测试用例的所有测试共享的断言。
      */
     protected function mockeryAssertPostConditions()
     {

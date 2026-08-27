@@ -1,12 +1,15 @@
 <?php
 /**
- * Illuminate，广播，广播员，Redis 广播
+ * Illuminate，广播，广播员，Redis广播
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
+use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Contracts\Redis\Factory as Redis;
 use Illuminate\Support\Arr;
+use Predis\Connection\ConnectionException;
+use RedisException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class RedisBroadcaster extends Broadcaster
@@ -25,7 +28,7 @@ class RedisBroadcaster extends Broadcaster
      * The Redis connection to use for broadcasting.
 	 * 用于广播的Redis连接
      *
-     * @var ?string
+     * @var string|null
      */
     protected $connection = null;
 
@@ -39,7 +42,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * Create a new broadcaster instance.
-	 * 创建新的广播员实例
+	 * 创建新的广播实例
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string|null  $connection
@@ -115,6 +118,8 @@ class RedisBroadcaster extends Broadcaster
      * @param  string  $event
      * @param  array  $payload
      * @return void
+     *
+     * @throws \Illuminate\Broadcasting\BroadcastException
      */
     public function broadcast(array $channels, $event, array $payload = [])
     {
@@ -130,10 +135,16 @@ class RedisBroadcaster extends Broadcaster
             'socket' => Arr::pull($payload, 'socket'),
         ]);
 
-        $connection->eval(
-            $this->broadcastMultipleChannelsScript(),
-            0, $payload, ...$this->formatChannels($channels)
-        );
+        try {
+            $connection->eval(
+                $this->broadcastMultipleChannelsScript(),
+                0, $payload, ...$this->formatChannels($channels)
+            );
+        } catch (ConnectionException|RedisException $e) {
+            throw new BroadcastException(
+                sprintf('Redis error: %s.', $e->getMessage())
+            );
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，Php 文件转储器
+ * Symfony，Component，Translation，转存器，Php 文件转储
  */
 
 /*
@@ -18,24 +18,17 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PhpFileDumper generates PHP files from a message catalogue.
- * phfabledumper从消息目录中生成PHP文件。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
 class PhpFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         return "<?php\n\nreturn ".var_export($messages->all($domain), true).";\n";
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'php';
     }

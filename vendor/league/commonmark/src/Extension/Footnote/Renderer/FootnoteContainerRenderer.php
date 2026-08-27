@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，脚注，渲染器
+ * League，CommonMark，扩展，注脚，渲染器，注脚容器渲染器
  */
 
 /*

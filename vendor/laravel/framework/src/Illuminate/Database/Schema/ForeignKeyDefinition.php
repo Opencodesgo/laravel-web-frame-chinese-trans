@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，外键定义
+ * Illuminate，数据库，语法，外键定义
  */
 
 namespace Illuminate\Database\Schema;
@@ -70,5 +70,16 @@ class ForeignKeyDefinition extends Fluent
     public function nullOnDelete()
     {
         return $this->onDelete('set null');
+    }
+
+    /**
+     * Indicate that deletes should have "no action".
+	 * 表明删除应该是"无动作"
+     *
+     * @return $this
+     */
+    public function noActionOnDelete()
+    {
+        return $this->onDelete('no action');
     }
 }

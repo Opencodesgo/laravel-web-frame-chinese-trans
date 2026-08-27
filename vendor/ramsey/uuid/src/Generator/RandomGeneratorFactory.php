@@ -5,7 +5,6 @@
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,13 +18,14 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Generator;
 
 /**
- * RandomGeneratorFactory retrieves a default random generator, based on the
- * environment
+ * RandomGeneratorFactory retrieves a default random generator, based on the environment
+ * RandomGeneratorFactory 根据环境获取一个默认的随机生成器
  */
 class RandomGeneratorFactory
 {
     /**
      * Returns a default random generator, based on the current environment
+	 * 根据当前环境返回默认随机生成器
      */
     public function getGenerator(): RandomGeneratorInterface
     {

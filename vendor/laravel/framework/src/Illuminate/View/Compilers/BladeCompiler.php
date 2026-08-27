@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，Blade 编译器
+ * Illuminate，视图，编译器，Blade 编译器
  */
 
 namespace Illuminate\View\Compilers;
@@ -24,6 +24,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         Concerns\CompilesConditionals,
         Concerns\CompilesEchos,
         Concerns\CompilesErrors,
+        Concerns\CompilesFragments,
         Concerns\CompilesHelpers,
         Concerns\CompilesIncludes,
         Concerns\CompilesInjections,
@@ -33,6 +34,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         Concerns\CompilesLoops,
         Concerns\CompilesRawPhp,
         Concerns\CompilesStacks,
+        Concerns\CompilesStyles,
         Concerns\CompilesTranslations,
         ReflectsClosures;
 
@@ -54,7 +56,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * All custom "condition" handlers.
-	 * 所有自定义"条件"处理程序
+	 * 所有自定义“条件”处理程序
      *
      * @var array
      */
@@ -136,6 +138,22 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @var array
      */
     protected $rawBlocks = [];
+
+    /**
+     * The array of anonymous component paths to search for components in.
+	 * 要在其中搜索组件的匿名组件路径数组
+     *
+     * @var array
+     */
+    protected $anonymousComponentPaths = [];
+
+    /**
+     * The array of anonymous component namespaces to autoload from.
+	 * 要从中自动加载的匿名组件名称空间数组
+     *
+     * @var array
+     */
+    protected $anonymousComponentNamespaces = [];
 
     /**
      * The array of class component aliases and their class names.
@@ -260,19 +278,19 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // First we will compile the Blade component tags. This is a precompile style
         // step which compiles the component Blade tags into @component directives
         // that may be used by Blade. Then we should call any other precompilers.
-		// 首先，我们将编译Blade组件标签。
+		// 首先，我们将编译Blade组件标签。这是一种预编译样式。
         $value = $this->compileComponentTags(
             $this->compileComments($this->storeUncompiledBlocks($value))
         );
 
         foreach ($this->precompilers as $precompiler) {
-            $value = call_user_func($precompiler, $value);
+            $value = $precompiler($value);
         }
 
         // Here we will loop through all of the tokens returned by the Zend lexer and
         // parse each one into the corresponding valid PHP. We will then have this
         // template as the correctly rendered PHP that can be rendered natively.
-		// 这里，我们将循环遍历Zend词法分析器返回的所有令牌。
+		// 这里我们将循环遍历Zend词法分析器返回的所有令牌。
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -284,7 +302,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // If there are any footer lines that need to get added to a template we will
         // add them here at the end of the template. This gets used mainly for the
         // template inheritance via the extends keyword that should be appended.
-		// 如果有任何页脚行需要添加到模板。
+		// 如果有任何页脚行需要添加到模板，我们将将它们添加到模板的末尾。
         if (count($this->footer) > 0) {
             $result = $this->addFooters($result);
         }
@@ -370,11 +388,11 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function storeUncompiledBlocks($value)
     {
-        if (strpos($value, '@verbatim') !== false) {
+        if (str_contains($value, '@verbatim')) {
             $value = $this->storeVerbatimBlocks($value);
         }
 
-        if (strpos($value, '@php') !== false) {
+        if (str_contains($value, '@php')) {
             $value = $this->storePhpBlocks($value);
         }
 
@@ -522,18 +540,117 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile Blade statements that start with "@".
-	 * 编译以"@"开头的Blade语句
+	 * 编译以“@”开头的Blade语句
      *
-     * @param  string  $value
+     * @param  string  $template
      * @return string
      */
-    protected function compileStatements($value)
+    protected function compileStatements($template)
     {
-        return preg_replace_callback(
-            '/\B@(@?\w+(?:::\w+)?)([ \t]*)(\( ( (?>[^()]+) | (?3) )* \))?/x', function ($match) {
-                return $this->compileStatement($match);
-            }, $value
-        );
+        preg_match_all('/\B@(@?\w+(?:::\w+)?)([ \t]*)(\( ( [\S\s]*? ) \))?/x', $template, $matches);
+
+        $offset = 0;
+
+        for ($i = 0; isset($matches[0][$i]); $i++) {
+            $match = [
+                $matches[0][$i],
+                $matches[1][$i],
+                $matches[2][$i],
+                $matches[3][$i] ?: null,
+                $matches[4][$i] ?: null,
+            ];
+
+            // Here we check to see if we have properly found the closing parenthesis by
+            // regex pattern or not, and will recursively continue on to the next ")"
+            // then check again until the tokenizer confirms we find the right one.
+			// 这里我们检查是否正确地找到了右括号。
+            while (isset($match[4]) &&
+                   Str::endsWith($match[0], ')') &&
+                   ! $this->hasEvenNumberOfParentheses($match[0])) {
+                if (($after = Str::after($template, $match[0])) === $template) {
+                    break;
+                }
+
+                $rest = Str::before($after, ')');
+
+                if (isset($matches[0][$i + 1]) && Str::contains($rest.')', $matches[0][$i + 1])) {
+                    unset($matches[0][$i + 1]);
+                    $i++;
+                }
+
+                $match[0] = $match[0].$rest.')';
+                $match[3] = $match[3].$rest.')';
+                $match[4] = $match[4].$rest;
+            }
+
+            [$template, $offset] = $this->replaceFirstStatement(
+                $match[0],
+                $this->compileStatement($match),
+                $template,
+                $offset
+            );
+        }
+
+        return $template;
+    }
+
+    /**
+     * Replace the first match for a statement compilation operation.
+	 * 替换语句编译操作的第一个匹配项
+     *
+     * @param  string  $search
+     * @param  string  $replace
+     * @param  string  $subject
+     * @param  int  $offset
+     * @return array
+     */
+    protected function replaceFirstStatement($search, $replace, $subject, $offset)
+    {
+        $search = (string) $search;
+
+        if ($search === '') {
+            return $subject;
+        }
+
+        $position = strpos($subject, $search, $offset);
+
+        if ($position !== false) {
+            return [
+                substr_replace($subject, $replace, $position, strlen($search)),
+                $position + strlen($replace),
+            ];
+        }
+
+        return [$subject, 0];
+    }
+
+    /**
+     * Determine if the given expression has the same number of opening and closing parentheses.
+	 * 确定给定表达式是否具有相同数量的左括号和右括号
+     *
+     * @param  string  $expression
+     * @return bool
+     */
+    protected function hasEvenNumberOfParentheses(string $expression)
+    {
+        $tokens = token_get_all('<?php '.$expression);
+
+        if (Arr::last($tokens) !== ')') {
+            return false;
+        }
+
+        $opening = 0;
+        $closing = 0;
+
+        foreach ($tokens as $token) {
+            if ($token == ')') {
+                $closing++;
+            } elseif ($token == '(') {
+                $opening++;
+            }
+        }
+
+        return $opening === $closing;
     }
 
     /**
@@ -545,12 +662,14 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function compileStatement($match)
     {
-        if (Str::contains($match[1], '@')) {
+        if (str_contains($match[1], '@')) {
             $match[0] = isset($match[3]) ? $match[1].$match[3] : $match[1];
         } elseif (isset($this->customDirectives[$match[1]])) {
             $match[0] = $this->callCustomDirective($match[1], Arr::get($match, 3));
         } elseif (method_exists($this, $method = 'compile'.ucfirst($match[1]))) {
             $match[0] = $this->$method(Arr::get($match, 3));
+        } else {
+            return $match[0];
         }
 
         return isset($match[3]) ? $match[0] : $match[0].$match[2];
@@ -566,9 +685,9 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function callCustomDirective($name, $value)
     {
-        $value = $value ?? '';
+        $value ??= '';
 
-        if (Str::startsWith($value, '(') && Str::endsWith($value, ')')) {
+        if (str_starts_with($value, '(') && str_ends_with($value, ')')) {
             $value = Str::substr($value, 1, -1);
         }
 
@@ -616,7 +735,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Register an "if" statement directive.
-	 * 注册一个"if"语句指令
+	 * 注册一个“if”语句指令
      *
      * @param  string  $name
      * @param  callable  $callback
@@ -654,7 +773,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 	 * 检查条件的结果
      *
      * @param  string  $name
-     * @param  array  $parameters
+     * @param  mixed  ...$parameters
      * @return bool
      */
     public function check($name, ...$parameters)
@@ -673,12 +792,12 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     public function component($class, $alias = null, $prefix = '')
     {
-        if (! is_null($alias) && Str::contains($alias, '\\')) {
+        if (! is_null($alias) && str_contains($alias, '\\')) {
             [$class, $alias] = [$alias, $class];
         }
 
         if (is_null($alias)) {
-            $alias = Str::contains($class, '\\View\\Components\\')
+            $alias = str_contains($class, '\\View\\Components\\')
                             ? collect(explode('\\', Str::after($class, '\\View\\Components\\')))->map(function ($segment) {
                                 return Str::kebab($segment);
                             })->implode(':')
@@ -723,6 +842,47 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
+     * Register a new anonymous component path.
+	 * 注册一个新的匿名组件路径
+     *
+     * @param  string  $path
+     * @param  string|null  $prefix
+     * @return void
+     */
+    public function anonymousComponentPath(string $path, string $prefix = null)
+    {
+        $prefixHash = md5($prefix ?: $path);
+
+        $this->anonymousComponentPaths[] = [
+            'path' => $path,
+            'prefix' => $prefix,
+            'prefixHash' => $prefixHash,
+        ];
+
+        Container::getInstance()
+                ->make(ViewFactory::class)
+                ->addNamespace($prefixHash, $path);
+    }
+
+    /**
+     * Register an anonymous component namespace.
+	 * 注册一个匿名组件命名空间
+     *
+     * @param  string  $directory
+     * @param  string|null  $prefix
+     * @return void
+     */
+    public function anonymousComponentNamespace(string $directory, string $prefix = null)
+    {
+        $prefix ??= $directory;
+
+        $this->anonymousComponentNamespaces[$prefix] = Str::of($directory)
+                ->replace('/', '.')
+                ->trim('. ')
+                ->toString();
+    }
+
+    /**
      * Register a class-based component namespace.
 	 * 注册一个基于类的组件命名空间
      *
@@ -733,6 +893,28 @@ class BladeCompiler extends Compiler implements CompilerInterface
     public function componentNamespace($namespace, $prefix)
     {
         $this->classComponentNamespaces[$prefix] = $namespace;
+    }
+
+    /**
+     * Get the registered anonymous component paths.
+	 * 获取已注册的匿名组件路径
+     *
+     * @return array
+     */
+    public function getAnonymousComponentPaths()
+    {
+        return $this->anonymousComponentPaths;
+    }
+
+    /**
+     * Get the registered anonymous component namespaces.
+	 * 获取已注册的匿名组件名称空间
+     *
+     * @return array
+     */
+    public function getAnonymousComponentNamespaces()
+    {
+        return $this->anonymousComponentNamespaces;
     }
 
     /**

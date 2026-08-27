@@ -27,13 +27,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ErrorListener implements EventSubscriberInterface
 {
-    private $logger;
+    private ?LoggerInterface $logger;
 
     public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }
 
+    /**
+     * @return void
+     */
     public function onConsoleError(ConsoleErrorEvent $event)
     {
         if (null === $this->logger) {
@@ -51,6 +54,9 @@ class ErrorListener implements EventSubscriberInterface
         $this->logger->critical('Error thrown while running command "{command}". Message: "{message}"', ['exception' => $error, 'command' => $inputString, 'message' => $error->getMessage()]);
     }
 
+    /**
+     * @return void
+     */
     public function onConsoleTerminate(ConsoleTerminateEvent $event)
     {
         if (null === $this->logger) {
@@ -72,7 +78,7 @@ class ErrorListener implements EventSubscriberInterface
         $this->logger->debug('Command "{command}" exited with code "{code}"', ['command' => $inputString, 'code' => $exitCode]);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConsoleEvents::ERROR => ['onConsoleError', -128],
@@ -82,10 +88,10 @@ class ErrorListener implements EventSubscriberInterface
 
     private static function getInputString(ConsoleEvent $event): ?string
     {
-        $commandName = $event->getCommand() ? $event->getCommand()->getName() : null;
+        $commandName = $event->getCommand()?->getName();
         $input = $event->getInput();
 
-        if (method_exists($input, '__toString')) {
+        if ($input instanceof \Stringable) {
             if ($commandName) {
                 return str_replace(["'$commandName'", "\"$commandName\""], $commandName, (string) $input);
             }

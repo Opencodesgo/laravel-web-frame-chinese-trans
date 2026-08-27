@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，分隔符，处理器，强调分隔符处理器
+ * League，CommonMark，扩展，共同标记，分隔符，处理器，强调分隔符处理器
  */
 
 declare(strict_types=1);
@@ -69,7 +69,6 @@ final class EmphasisDelimiterProcessor implements CacheableDelimiterProcessorInt
         }
 
         // Calculate actual number of delimiters used from this closer
-		// 从更近的角度计算实际数量的分隔符
         if ($opener->getLength() >= 2 && $closer->getLength() >= 2) {
             if ($this->config->get('commonmark/enable_strong')) {
                 return 2;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，Assert，混合
+ * Webmozart，Assert，混入
  */
 
 namespace Webmozart\Assert;
@@ -13,7 +13,7 @@ use Throwable;
 /**
  * This trait provides nurllOr*, all* and allNullOr* variants of assertion base methods.
  * Do not use this trait directly: it will change, and is not designed for reuse.
- * 这个特性提供nurllOr *,所有*和allNullOr *断言基本方法的变体。
+ * 这个特性提供了断言基方法的nurllOr*、all*和allNullOr*变体。
  */
 trait Mixin
 {

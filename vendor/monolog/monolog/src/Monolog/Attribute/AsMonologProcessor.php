@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Attribute，作为 Monolog处理员
+ * Monolog，属性，作为 Monolog处理器
  */
 
 /*

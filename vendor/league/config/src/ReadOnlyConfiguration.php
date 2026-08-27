@@ -18,7 +18,7 @@ namespace League\Config;
 
 /**
  * Provides read-only access to a given Configuration object
- * 为给定的配置对象提供只读访问
+ * 提供对给定Configuration对象的只读访问
  */
 final class ReadOnlyConfiguration implements ConfigurationInterface
 {

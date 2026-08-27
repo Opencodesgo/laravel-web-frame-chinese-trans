@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，CakePHP，普及者
+ * Faker，ORM，Cake PHP，填充器
  */
 
 namespace Faker\ORM\CakePHP;

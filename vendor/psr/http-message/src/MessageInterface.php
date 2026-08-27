@@ -177,7 +177,7 @@ interface MessageInterface
 
     /**
      * Gets the body of the message.
-	 * 获取消息的主体
+	 * 获取消息的主体。
      *
      * @return StreamInterface Returns the body as a stream.
      */

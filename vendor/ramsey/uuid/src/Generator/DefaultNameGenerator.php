@@ -5,7 +5,6 @@
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,28 +24,23 @@ use ValueError;
 use function hash;
 
 /**
- * DefaultNameGenerator generates strings of binary data based on a namespace,
- * name, and hashing algorithm
+ * DefaultNameGenerator generates strings of binary data based on a namespace, name, and hashing algorithm
+ * DefaultNameGenerator 根据命名空间、名称和哈希算法生成二进制数据字符串。
  */
 class DefaultNameGenerator implements NameGeneratorInterface
 {
-    /** @psalm-pure */
+    /**
+     * @pure
+     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         try {
-            /** @var string|bool $bytes */
-            $bytes = @hash($hashAlgorithm, $ns->getBytes() . $name, true);
+            return hash($hashAlgorithm, $ns->getBytes() . $name, true);
         } catch (ValueError $e) {
-            $bytes = false; // keep same behavior than PHP 7
+            throw new NameException(
+                message: sprintf('Unable to hash namespace and name with algorithm \'%s\'', $hashAlgorithm),
+                previous: $e,
+            );
         }
-
-        if ($bytes === false) {
-            throw new NameException(sprintf(
-                'Unable to hash namespace and name with algorithm \'%s\'',
-                $hashAlgorithm
-            ));
-        }
-
-        return (string) $bytes;
     }
 }

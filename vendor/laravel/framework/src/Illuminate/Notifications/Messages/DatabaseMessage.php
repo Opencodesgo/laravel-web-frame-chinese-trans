@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，消息，数据库消息
+ * Illuminate，通知，信息，数据库信息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -17,7 +17,7 @@ class DatabaseMessage
 
     /**
      * Create a new database message.
-	 * 创建新的数据库消息
+	 * 创建一个新的数据库消息
      *
      * @param  array  $data
      * @return void

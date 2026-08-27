@@ -2,7 +2,7 @@
 /**
  * League，CommonMark，扩展，外部链接，外部链接处理器
  */
-
+ 
 declare(strict_types=1);
 
 /*
@@ -102,6 +102,7 @@ final class ExternalLinkProcessor
 
     /**
      * @internal This method is only public so we can easily test it. DO NOT USE THIS OUTSIDE OF THIS EXTENSION!
+	 * 这个方法是公开的，所以我们可以很容易地对它进行测试。不要在这个扩展之外使用这个！
      *
      * @param non-empty-string|list<non-empty-string> $compareTo
      */

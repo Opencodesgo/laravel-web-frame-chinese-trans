@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，可格式化处理程序接口
+ * Monolog，处理器，可格式化处理程序接口
  */
 
 /*
@@ -19,7 +19,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Interface to describe loggers that have a formatter
- * 接口，用于描述具有格式化程序的日志记录器。
+ * 接口，用于描述具有格式化程序的日志记录器
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -36,7 +36,7 @@ interface FormattableHandlerInterface
 
     /**
      * Gets the formatter.
-	 * 得到格式化程序
+	 * 获取格式化程序
      *
      * @return FormatterInterface
      */

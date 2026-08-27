@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，宏指令，宏指令
+ * Illuminate，支持，特征，宏
  */
 
 namespace Illuminate\Support\Traits;

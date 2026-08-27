@@ -1,6 +1,6 @@
 <?php
 /**
- * app，控制台，内核
+ * App, 控制台, 内核
  */
 
 namespace App\Console;
@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
 {
     /**
      * Define the application's command schedule.
-	 * 定义应用的命令调度
+	 * 定义应用程序的命令调度
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
 
     /**
      * Register the commands for the application.
-	 * 注册应用命令
+	 * 为应用程序注册命令
      *
      * @return void
      */

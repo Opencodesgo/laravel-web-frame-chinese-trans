@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，主义，实体普及器
+ * Faker，ORM，主义，实体填充器
  */
 
 namespace Faker\ORM\Doctrine;
@@ -12,7 +12,7 @@ require_once 'backward-compatibility.php';
 
 /**
  * Service class for populating a table through a Doctrine Entity class.
- * 服务类通过一个教条实体类填充表。
+ * 用于通过Doctrine Entity类填充表的服务类
  */
 class EntityPopulator
 {
@@ -171,7 +171,7 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
-	 * 使用实体类插入一个新记录
+	 * 使用Entity类插入一条新记录
      *
      * @param bool $generateId
      *
@@ -203,6 +203,7 @@ class EntityPopulator
         foreach ($this->columnFormatters as $field => $format) {
             if (null !== $format) {
                 // Add some extended debugging information to any errors thrown by the formatter
+				// 向格式化程序抛出的任何错误添加一些扩展的调试信息
                 try {
                     $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
                 } catch (\InvalidArgumentException $ex) {
@@ -214,6 +215,7 @@ class EntityPopulator
                     ));
                 }
                 // Try a standard setter if it's available, otherwise fall back on reflection
+				// 如果有标准设置器，可以尝试使用它，否则就依赖于反射。
                 $setter = sprintf('set%s', ucfirst($field));
 
                 if (is_callable([$obj, $setter])) {

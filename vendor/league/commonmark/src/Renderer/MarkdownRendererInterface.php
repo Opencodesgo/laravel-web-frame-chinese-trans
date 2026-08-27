@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，渲染器，内联，Markdown 渲染器接口
+ * League，CommonMark，渲染器，Markdown 渲染器接口
  */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ use League\CommonMark\Output\RenderedContentInterface;
 
 /**
  * Renders a parsed Document AST
- * 呈现一个解析文档AST
+ * 呈现已解析的文档AST
  *
  * @deprecated since 2.3; use {@link DocumentRendererInterface} instead
  */
@@ -29,7 +29,7 @@ interface MarkdownRendererInterface
 {
     /**
      * Render the given Document node (and all of its children)
-	 * 渲染给定的文档节点(以及所有的孩子)
+	 * 呈现给定的Document节点（及其所有子节点）
      */
     public function renderDocument(Document $document): RenderedContentInterface;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，分页器
+ * Nette，Utils，分页器
  */
 
 /**
@@ -37,24 +37,21 @@ class Paginator
 {
 	use Nette\SmartObject;
 
-	/** @var int */
-	private $base = 1;
+	private int $base = 1;
 
-	/** @var int */
-	private $itemsPerPage = 1;
+	/** @var positive-int */
+	private int $itemsPerPage = 1;
 
-	/** @var int */
-	private $page = 1;
+	private int $page = 1;
 
-	/** @var int|null */
-	private $itemCount;
+	/** @var int<0, max>|null */
+	private ?int $itemCount = null;
 
 
 	/**
 	 * Sets current page number.
-	 * @return static
 	 */
-	public function setPage(int $page)
+	public function setPage(int $page): static
 	{
 		$this->page = $page;
 		return $this;
@@ -63,6 +60,7 @@ class Paginator
 
 	/**
 	 * Returns current page number.
+	 * 返回当前页码
 	 */
 	public function getPage(): int
 	{
@@ -72,6 +70,7 @@ class Paginator
 
 	/**
 	 * Returns first page number.
+	 * 返回第一页编号
 	 */
 	public function getFirstPage(): int
 	{
@@ -81,6 +80,7 @@ class Paginator
 
 	/**
 	 * Returns last page number.
+	 * 返回最后的页码
 	 */
 	public function getLastPage(): ?int
 	{
@@ -114,9 +114,8 @@ class Paginator
 
 	/**
 	 * Sets first page (base) number.
-	 * @return static
 	 */
-	public function setBase(int $base)
+	public function setBase(int $base): static
 	{
 		$this->base = $base;
 		return $this;
@@ -147,6 +146,7 @@ class Paginator
 
 	/**
 	 * Is the current page the first one?
+	 * 当前页面是第一页吗？
 	 */
 	public function isFirst(): bool
 	{
@@ -156,6 +156,7 @@ class Paginator
 
 	/**
 	 * Is the current page the last one?
+	 * 当前页面是最后一页吗？
 	 */
 	public function isLast(): bool
 	{
@@ -179,9 +180,9 @@ class Paginator
 
 	/**
 	 * Sets the number of items to display on a single page.
-	 * @return static
+	 * 设置要在单个页面上显示的项数
 	 */
-	public function setItemsPerPage(int $itemsPerPage)
+	public function setItemsPerPage(int $itemsPerPage): static
 	{
 		$this->itemsPerPage = max(1, $itemsPerPage);
 		return $this;
@@ -200,9 +201,8 @@ class Paginator
 
 	/**
 	 * Sets the total number of items.
-	 * @return static
 	 */
-	public function setItemCount(?int $itemCount = null)
+	public function setItemCount(?int $itemCount = null): static
 	{
 		$this->itemCount = $itemCount === null ? null : max(0, $itemCount);
 		return $this;
@@ -221,6 +221,7 @@ class Paginator
 
 	/**
 	 * Returns the absolute index of the first item on current page.
+	 * 返回当前页面上第一项的绝对索引
 	 * @return int<0, max>
 	 */
 	public function getOffset(): int
@@ -231,6 +232,7 @@ class Paginator
 
 	/**
 	 * Returns the absolute index of the first item on current page in countdown paging.
+	 * 返回倒计时分页中当前页上第一项的绝对索引
 	 * @return int<0, max>|null
 	 */
 	public function getCountdownOffset(): ?int
@@ -243,6 +245,7 @@ class Paginator
 
 	/**
 	 * Returns the number of items on current page.
+	 * 返回当前页上的项数
 	 * @return int<0, max>
 	 */
 	public function getLength(): int

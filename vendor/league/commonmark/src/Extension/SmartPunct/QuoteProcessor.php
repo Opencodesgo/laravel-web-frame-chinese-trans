@@ -69,7 +69,6 @@ final class QuoteProcessor implements DelimiterProcessorInterface
 
     /**
      * Create a double-quote processor
-	 * 创建双引号处理程序
      */
     public static function createDoubleQuoteProcessor(string $opener = Quote::DOUBLE_QUOTE_OPENER, string $closer = Quote::DOUBLE_QUOTE_CLOSER): self
     {
@@ -78,7 +77,6 @@ final class QuoteProcessor implements DelimiterProcessorInterface
 
     /**
      * Create a single-quote processor
-	 * 创建单引号处理程序
      */
     public static function createSingleQuoteProcessor(string $opener = Quote::SINGLE_QUOTE_OPENER, string $closer = Quote::SINGLE_QUOTE_CLOSER): self
     {

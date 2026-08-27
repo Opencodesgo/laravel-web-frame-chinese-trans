@@ -14,7 +14,7 @@ class PendingResourceRegistration
 
     /**
      * The resource registrar.
-	 * 资源注册商
+	 * 资源注册者
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */
@@ -244,6 +244,20 @@ class PendingResourceRegistration
     public function scoped(array $fields = [])
     {
         $this->options['bindingFields'] = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Define which routes should allow "trashed" models to be retrieved when resolving implicit model bindings.
+	 * 定义哪些路由应该允许在解析隐式模型绑定时检索"垃圾"模型
+     *
+     * @param  array  $methods
+     * @return \Illuminate\Routing\PendingResourceRegistration
+     */
+    public function withTrashed(array $methods = [])
+    {
+        $this->options['trashed'] = $methods;
 
         return $this;
     }

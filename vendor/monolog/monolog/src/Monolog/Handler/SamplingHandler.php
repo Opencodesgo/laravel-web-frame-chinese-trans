@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，取样处理程序
- *
+ * Monolog，处理器，采样处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +19,6 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Sampling handler
- * 采样处理程序
  *
  * A sampled event stream can be useful for logging high frequency events in
  * a production environment where you only need an idea of what is happening

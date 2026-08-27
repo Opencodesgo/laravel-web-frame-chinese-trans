@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，输出，显示的内容
+ * League，CommonMark，输出，渲染内容
  */
 
 /*

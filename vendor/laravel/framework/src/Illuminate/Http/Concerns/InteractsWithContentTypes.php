@@ -174,7 +174,7 @@ trait InteractsWithContentTypes
 
     /**
      * Get the data format expected in the response.
-	 * 设置响应中期望的数据格式
+	 * 获取响应中期望的数据格式
      *
      * @param  string  $default
      * @return string

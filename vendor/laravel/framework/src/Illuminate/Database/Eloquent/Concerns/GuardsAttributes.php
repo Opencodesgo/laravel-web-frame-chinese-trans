@@ -5,15 +5,13 @@
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
-use Illuminate\Support\Str;
-
 trait GuardsAttributes
 {
     /**
      * The attributes that are mass assignable.
 	 * 可大量分配的属性
      *
-     * @var string[]
+     * @var array<string>
      */
     protected $fillable = [];
 
@@ -21,13 +19,13 @@ trait GuardsAttributes
      * The attributes that aren't mass assignable.
 	 * 不能大规模分配的属性
      *
-     * @var string[]|bool
+     * @var array<string>|bool
      */
     protected $guarded = ['*'];
 
     /**
      * Indicates if all mass assignment is enabled.
-	 * 指明是否启用了所有的质量分配
+	 * 指示是否启用了所有的质量分配
      *
      * @var bool
      */
@@ -37,7 +35,7 @@ trait GuardsAttributes
      * The actual columns that exist on the database and can be guarded.
 	 * 存在于数据库中并且可以被保护的实际列
      *
-     * @var array
+     * @var array<string>
      */
     protected static $guardableColumns = [];
 
@@ -45,7 +43,7 @@ trait GuardsAttributes
      * Get the fillable attributes for the model.
 	 * 获取模型的可填充属性
      *
-     * @return array
+     * @return array<string>
      */
     public function getFillable()
     {
@@ -56,7 +54,7 @@ trait GuardsAttributes
      * Set the fillable attributes for the model.
 	 * 为模型设置可填充属性
      *
-     * @param  array  $fillable
+     * @param  array<string>  $fillable
      * @return $this
      */
     public function fillable(array $fillable)
@@ -70,7 +68,7 @@ trait GuardsAttributes
      * Merge new fillable attributes with existing fillable attributes on the model.
 	 * 将新的可填充属性与模型上现有的可填充属性合并
      *
-     * @param  array  $fillable
+     * @param  array<string>  $fillable
      * @return $this
      */
     public function mergeFillable(array $fillable)
@@ -82,9 +80,9 @@ trait GuardsAttributes
 
     /**
      * Get the guarded attributes for the model.
-	 * 获取模型的保护属性
+	 * 获取模型的protected属性
      *
-     * @return array
+     * @return array<string>
      */
     public function getGuarded()
     {
@@ -95,9 +93,9 @@ trait GuardsAttributes
 
     /**
      * Set the guarded attributes for the model.
-	 * 设置模型的受保护的属性
+	 * 为模型设置受保护的属性
      *
-     * @param  array  $guarded
+     * @param  array<string>  $guarded
      * @return $this
      */
     public function guard(array $guarded)
@@ -111,7 +109,7 @@ trait GuardsAttributes
      * Merge new guarded attributes with existing guarded attributes on the model.
 	 * 将模型上新的受保护属性与现有的受保护属性合并
      *
-     * @param  array  $guarded
+     * @param  array<string>  $guarded
      * @return $this
      */
     public function mergeGuarded(array $guarded)
@@ -201,14 +199,13 @@ trait GuardsAttributes
         // If the attribute is explicitly listed in the "guarded" array then we can
         // return false immediately. This means this attribute is definitely not
         // fillable and there is no point in going any further in this method.
-		// 如果该属性显式地列在"guarded"数组中。
         if ($this->isGuarded($key)) {
             return false;
         }
 
         return empty($this->getFillable()) &&
-            strpos($key, '.') === false &&
-            ! Str::startsWith($key, '_');
+            ! str_contains($key, '.') &&
+            ! str_starts_with($key, '_');
     }
 
     /**
@@ -225,7 +222,7 @@ trait GuardsAttributes
         }
 
         return $this->getGuarded() == ['*'] ||
-               ! empty(preg_grep('/^'.preg_quote($key).'$/i', $this->getGuarded())) ||
+               ! empty(preg_grep('/^'.preg_quote($key, '/').'$/i', $this->getGuarded())) ||
                ! $this->isGuardableColumn($key);
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，单元测试，模拟PHP单元集成维护Post条件
+ * Mockery，适配器，单元测试，模拟 PHP单元集成断言Post条件
  */
 
 /**

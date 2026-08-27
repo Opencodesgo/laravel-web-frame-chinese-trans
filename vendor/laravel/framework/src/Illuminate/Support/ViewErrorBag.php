@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，视图错误包
+ * Illuminate, 支持, 查看错误包
  */
 
 namespace Illuminate\Support;
@@ -47,7 +47,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Get all the bags.
-	 * 得到所有的包
+	 * 得到所有包
      *
      * @return array
      */
@@ -88,8 +88,7 @@ class ViewErrorBag implements Countable
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return $this->getBag('default')->count();
     }

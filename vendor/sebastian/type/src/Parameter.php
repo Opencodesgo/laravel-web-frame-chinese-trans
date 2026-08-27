@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，类型，参数
+ */
+
 /*
  * This file is part of sebastian/type.
  *

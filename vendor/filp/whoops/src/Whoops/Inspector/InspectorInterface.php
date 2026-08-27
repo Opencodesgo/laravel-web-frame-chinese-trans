@@ -39,7 +39,7 @@ interface InspectorInterface
 
     /**
      * Returns a url to the php-manual related to the underlying error - when available.
-	 * 在可用的时候,将url返回到与基本错误相关的phop手动。
+	 * 返回与底层错误相关的php手册的url -当可用时
      *
      * @return string|null
      */
@@ -47,14 +47,14 @@ interface InspectorInterface
 
     /**
      * Does the wrapped Exception has a previous Exception?
-	 * 包装异常有一个以前的例外吗?
+	 * 包装的异常是否有先前的异常？
      * @return bool
      */
     public function hasPreviousException();
 
     /**
      * Returns an Inspector for a previous Exception, if any.
-	 * 如果有,返回一个检查器。
+	 * 返回先前异常的检查器（如果有的话）
      * @todo   Clean this up a bit, cache stuff a bit better.
      * @return InspectorInterface
      */
@@ -62,6 +62,7 @@ interface InspectorInterface
 
     /**
      * Returns an array of all previous exceptions for this inspector's exception
+	 * 返回此检查器异常的所有先前异常的数组
      * @return \Throwable[]
      */
     public function getPreviousExceptions();
@@ -69,7 +70,7 @@ interface InspectorInterface
     /**
      * Returns an iterator for the inspected exception's
      * frames.
-	 * 返回检查异常框架的迭代器
+	 * 返回被检查异常框架的迭代器
      * 
      * @param array<callable> $frameFilters
      * 

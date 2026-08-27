@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，映射，映射接口
+ * Ramsey，集合，映射，映射接口
  */
 
 /**
@@ -25,6 +25,7 @@ use Ramsey\Collection\ArrayInterface;
  *
  * A map cannot contain duplicate keys; each key can map to at most one value.
  *
+ * @template K of array-key
  * @template T
  * @extends ArrayInterface<T>
  */
@@ -34,9 +35,9 @@ interface MapInterface extends ArrayInterface
      * Returns `true` if this map contains a mapping for the specified key.
 	 * 如果此映射包含指定键的映射，则返回‘ true ’。
      *
-     * @param array-key $key The key to check in the map.
+     * @param K $key The key to check in the map.
      */
-    public function containsKey($key): bool;
+    public function containsKey(int | string $key): bool;
 
     /**
      * Returns `true` if this map maps one or more keys to the specified value.
@@ -45,13 +46,12 @@ interface MapInterface extends ArrayInterface
      *
      * @param T $value The value to check in the map.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function containsValue($value): bool;
+    public function containsValue(mixed $value): bool;
 
     /**
      * Return an array of the keys contained in this map.
      *
-     * @return list<array-key>
+     * @return list<K>
      */
     public function keys(): array;
 
@@ -60,13 +60,12 @@ interface MapInterface extends ArrayInterface
      * map contains no mapping for the key, or (optionally) `$defaultValue` if
      * this map contains no mapping for the key.
      *
-     * @param array-key $key The key to return from the map.
-     * @param T|null $defaultValue The default value to use if `$key` is not found.
+     * @param K $key The key to return from the map.
+     * @param T | null $defaultValue The default value to use if `$key` is not found.
      *
-     * @return T|null the value or `null` if the key could not be found.
+     * @return T | null the value or `null` if the key could not be found.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function get($key, $defaultValue = null);
+    public function get(int | string $key, mixed $defaultValue = null): mixed;
 
     /**
      * Associates the specified value with the specified key in this map.
@@ -74,14 +73,13 @@ interface MapInterface extends ArrayInterface
      * If the map previously contained a mapping for the key, the old value is
      * replaced by the specified value.
      *
-     * @param array-key $key The key to put or replace in the map.
+     * @param K $key The key to put or replace in the map.
      * @param T $value The value to store at `$key`.
      *
-     * @return T|null the previous value associated with key, or `null` if
+     * @return T | null the previous value associated with key, or `null` if
      *     there was no mapping for `$key`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function put($key, $value);
+    public function put(int | string $key, mixed $value): mixed;
 
     /**
      * Associates the specified value with the specified key in this map only if
@@ -90,25 +88,24 @@ interface MapInterface extends ArrayInterface
      * If there is already a value associated with `$key`, this returns that
      * value without replacing it.
      *
-     * @param array-key $key The key to put in the map.
+     * @param K $key The key to put in the map.
      * @param T $value The value to store at `$key`.
      *
-     * @return T|null the previous value associated with key, or `null` if
+     * @return T | null the previous value associated with key, or `null` if
      *     there was no mapping for `$key`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function putIfAbsent($key, $value);
+    public function putIfAbsent(int | string $key, mixed $value): mixed;
 
     /**
      * Removes the mapping for a key from this map if it is present.
+	 * 从此映射中删除键的映射（如果存在）
      *
-     * @param array-key $key The key to remove from the map.
+     * @param K $key The key to remove from the map.
      *
-     * @return T|null the previous value associated with key, or `null` if
+     * @return T | null the previous value associated with key, or `null` if
      *     there was no mapping for `$key`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function remove($key);
+    public function remove(int | string $key): mixed;
 
     /**
      * Removes the entry for the specified key only if it is currently mapped to
@@ -116,39 +113,37 @@ interface MapInterface extends ArrayInterface
      *
      * This performs a strict type check on the value.
      *
-     * @param array-key $key The key to remove from the map.
+     * @param K $key The key to remove from the map.
      * @param T $value The value to match.
      *
      * @return bool true if the value was removed.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function removeIf($key, $value): bool;
+    public function removeIf(int | string $key, mixed $value): bool;
 
     /**
      * Replaces the entry for the specified key only if it is currently mapped
      * to some value.
      *
-     * @param array-key $key The key to replace.
+     * @param K $key The key to replace.
      * @param T $value The value to set at `$key`.
      *
-     * @return T|null the previous value associated with key, or `null` if
+     * @return T | null the previous value associated with key, or `null` if
      *     there was no mapping for `$key`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function replace($key, $value);
+    public function replace(int | string $key, mixed $value): mixed;
 
     /**
      * Replaces the entry for the specified key only if currently mapped to the
      * specified value.
+	 * 方法替换指定键的项指定值。
      *
      * This performs a strict type check on the value.
      *
-     * @param array-key $key The key to remove from the map.
+     * @param K $key The key to remove from the map.
      * @param T $oldValue The value to match.
      * @param T $newValue The value to use as a replacement.
      *
      * @return bool true if the value was replaced.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function replaceIf($key, $oldValue, $newValue): bool;
+    public function replaceIf(int | string $key, mixed $oldValue, mixed $newValue): bool;
 }

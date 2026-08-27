@@ -17,6 +17,7 @@ interface AddressExtension extends Extension
 
     /**
      * Randomly return a real city name.
+	 * 随机返回一个真实的城市名称
      */
     public function city(): string;
 
@@ -37,7 +38,6 @@ interface AddressExtension extends Extension
 
     /**
      * Randomly return a building number.
-	 * 随机返回建筑号
      */
     public function buildingNumber(): string;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，替换的写入者
+ * Dotenv，资源库，适配器，替换的作者
  */
 
 declare(strict_types=1);
@@ -29,7 +29,7 @@ final class ReplacingWriter implements WriterInterface
      * The record of seen variables.
 	 * 已见变量的记录
      *
-     * @var array<string,string>
+     * @var array<string, string>
      */
     private $seen;
 
@@ -92,6 +92,7 @@ final class ReplacingWriter implements WriterInterface
      *
      * Returns true if it currently exists, or existed at any point in the past
      * that we are aware of.
+	 * 如果当前存在，或在我们所知的过去某个时间点存在，则返回 true。
      *
      * @param non-empty-string $name
      *

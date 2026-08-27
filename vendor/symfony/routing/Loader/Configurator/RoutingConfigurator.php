@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，配置，路由配置
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,10 +24,10 @@ class RoutingConfigurator
 {
     use Traits\AddTrait;
 
-    private $loader;
-    private $path;
-    private $file;
-    private $env;
+    private PhpFileLoader $loader;
+    private string $path;
+    private string $file;
+    private ?string $env;
 
     public function __construct(RouteCollection $collection, PhpFileLoader $loader, string $path, string $file, ?string $env = null)
     {
@@ -38,7 +41,7 @@ class RoutingConfigurator
     /**
      * @param string|string[]|null $exclude Glob patterns to exclude from the import
      */
-    final public function import($resource, ?string $type = null, bool $ignoreErrors = false, $exclude = null): ImportConfigurator
+    final public function import(string|array $resource, ?string $type = null, bool $ignoreErrors = false, string|array|null $exclude = null): ImportConfigurator
     {
         $this->loader->setCurrentDir(\dirname($this->path));
 
@@ -62,16 +65,14 @@ class RoutingConfigurator
 
     /**
      * Get the current environment to be able to write conditional configuration.
+	 * 使当前环境能够编写条件配置
      */
     final public function env(): ?string
     {
         return $this->env;
     }
 
-    /**
-     * @return static
-     */
-    final public function withPath(string $path): self
+    final public function withPath(string $path): static
     {
         $clone = clone $this;
         $clone->path = $clone->file = $path;

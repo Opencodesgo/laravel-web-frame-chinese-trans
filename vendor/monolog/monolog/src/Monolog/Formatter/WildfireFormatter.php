@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，Wildfire 格式化
+ * Monolog，格式化，Wildfire 格式化程序
  */
 
 /*
@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 /**
  * Serializes a log message according to Wildfire's header requirements
- * 根据 Wildfire的报头要求序列化日志消息
+ * 根据Wildfire的报头要求序列化日志消息
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  * @author Christophe Coevoet <stof@notk.org>
@@ -31,7 +31,6 @@ class WildfireFormatter extends NormalizerFormatter
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
-	 * 把Monolog的级别转化为Wildfire的级别
      *
      * @var array<Level, string>
      */

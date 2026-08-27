@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，数组
+ * Nette，Utils，数组
  */
 
 /**
@@ -14,12 +14,13 @@ namespace Nette\Utils;
 
 use JetBrains\PhpStorm\Language;
 use Nette;
-use function is_array, is_int, is_object, count;
+use function array_combine, array_intersect_key, array_is_list, array_key_exists, array_key_first, array_key_last, array_keys, array_reverse, array_search, array_slice, array_walk_recursive, count, func_num_args, in_array, is_array, is_int, is_object, key, preg_split, range;
+use const PHP_VERSION_ID, PREG_GREP_INVERT, PREG_SPLIT_DELIM_CAPTURE, PREG_SPLIT_NO_EMPTY;
 
 
 /**
  * Array tools library.
- * 数组工具类。
+ * 数组工具库。
  */
 class Arrays
 {
@@ -27,6 +28,7 @@ class Arrays
 
 	/**
 	 * Returns item from array. If it does not exist, it throws an exception, unless a default value is set.
+	 * 从数组返回项。如果不存在，则抛出异常，除非设置了默认值。
 	 * @template T
 	 * @param  array<T>  $array
 	 * @param  array-key|array-key[]  $key
@@ -34,7 +36,7 @@ class Arrays
 	 * @return ?T
 	 * @throws Nette\InvalidArgumentException if item does not exist and default value is not provided
 	 */
-	public static function get(array $array, $key, $default = null)
+	public static function get(array $array, string|int|array $key, mixed $default = null): mixed
 	{
 		foreach (is_array($key) ? $key : [$key] as $k) {
 			if (is_array($array) && array_key_exists($k, $array)) {
@@ -54,13 +56,14 @@ class Arrays
 
 	/**
 	 * Returns reference to array item. If the index does not exist, new one is created with value null.
+	 * 返回对数组项的引用。如果索引不存在，则创建一个值为null的新索引。
 	 * @template T
 	 * @param  array<T>  $array
 	 * @param  array-key|array-key[]  $key
 	 * @return ?T
 	 * @throws Nette\InvalidArgumentException if traversed item is not an array
 	 */
-	public static function &getRef(array &$array, $key)
+	public static function &getRef(array &$array, string|int|array $key): mixed
 	{
 		foreach (is_array($key) ? $key : [$key] as $k) {
 			if (is_array($array) || $array === null) {
@@ -99,12 +102,11 @@ class Arrays
 
 	/**
 	 * Returns zero-indexed position of given array key. Returns null if key is not found.
-	 * @param  array-key  $key
-	 * @return int|null offset if it is found, null otherwise
+	 * 返回给定数组键的零索引位置。如果没有找到key则返回null。
 	 */
-	public static function getKeyOffset(array $array, $key): ?int
+	public static function getKeyOffset(array $array, string|int $key): ?int
 	{
-		return Helpers::falseToNull(array_search(self::toKey($key), array_keys($array), true));
+		return Helpers::falseToNull(array_search(self::toKey($key), array_keys($array), strict: true));
 	}
 
 
@@ -119,75 +121,121 @@ class Arrays
 
 	/**
 	 * Tests an array for the presence of value.
-	 * @param  mixed  $value
+	 * 测试数组是否存在值
 	 */
-	public static function contains(array $array, $value): bool
+	public static function contains(array $array, mixed $value): bool
 	{
 		return in_array($value, $array, true);
 	}
 
 
 	/**
-	 * Returns the first item from the array or null if array is empty.
-	 * @template T
-	 * @param  array<T>  $array
-	 * @return ?T
+	 * Returns the first item (matching the specified predicate if given). If there is no such item, it returns result of invoking $else or null.
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  ?callable(V, K, array<K, V>): bool  $predicate
+	 * @return ?V
 	 */
-	public static function first(array $array)
+	public static function first(array $array, ?callable $predicate = null, ?callable $else = null): mixed
 	{
-		return count($array) ? reset($array) : null;
+		$key = self::firstKey($array, $predicate);
+		return $key === null
+			? ($else ? $else() : null)
+			: $array[$key];
 	}
 
 
 	/**
-	 * Returns the last item from the array or null if array is empty.
-	 * @template T
-	 * @param  array<T>  $array
-	 * @return ?T
+	 * Returns the last item (matching the specified predicate if given). If there is no such item, it returns result of invoking $else or null.
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  ?callable(V, K, array<K, V>): bool  $predicate
+	 * @return ?V
 	 */
-	public static function last(array $array)
+	public static function last(array $array, ?callable $predicate = null, ?callable $else = null): mixed
 	{
-		return count($array) ? end($array) : null;
+		$key = self::lastKey($array, $predicate);
+		return $key === null
+			? ($else ? $else() : null)
+			: $array[$key];
+	}
+
+
+	/**
+	 * Returns the key of first item (matching the specified predicate if given) or null if there is no such item.
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  ?callable(V, K, array<K, V>): bool  $predicate
+	 * @return ?K
+	 */
+	public static function firstKey(array $array, ?callable $predicate = null): int|string|null
+	{
+		if (!$predicate) {
+			return array_key_first($array);
+		}
+		foreach ($array as $k => $v) {
+			if ($predicate($v, $k, $array)) {
+				return $k;
+			}
+		}
+		return null;
+	}
+
+
+	/**
+	 * Returns the key of last item (matching the specified predicate if given) or null if there is no such item.
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  ?callable(V, K, array<K, V>): bool  $predicate
+	 * @return ?K
+	 */
+	public static function lastKey(array $array, ?callable $predicate = null): int|string|null
+	{
+		return $predicate
+			? self::firstKey(array_reverse($array, preserve_keys: true), $predicate)
+			: array_key_last($array);
 	}
 
 
 	/**
 	 * Inserts the contents of the $inserted array into the $array immediately after the $key.
 	 * If $key is null (or does not exist), it is inserted at the beginning.
-	 * @param  array-key|null  $key
+	 * 将$插入数组的内容插入到紧跟在$key后面的$数组中。
 	 */
-	public static function insertBefore(array &$array, $key, array $inserted): void
+	public static function insertBefore(array &$array, string|int|null $key, array $inserted): void
 	{
 		$offset = $key === null ? 0 : (int) self::getKeyOffset($array, $key);
-		$array = array_slice($array, 0, $offset, true)
+		$array = array_slice($array, 0, $offset, preserve_keys: true)
 			+ $inserted
-			+ array_slice($array, $offset, count($array), true);
+			+ array_slice($array, $offset, count($array), preserve_keys: true);
 	}
 
 
 	/**
 	 * Inserts the contents of the $inserted array into the $array before the $key.
 	 * If $key is null (or does not exist), it is inserted at the end.
-	 * @param  array-key|null  $key
 	 */
-	public static function insertAfter(array &$array, $key, array $inserted): void
+	public static function insertAfter(array &$array, string|int|null $key, array $inserted): void
 	{
 		if ($key === null || ($offset = self::getKeyOffset($array, $key)) === null) {
 			$offset = count($array) - 1;
 		}
 
-		$array = array_slice($array, 0, $offset + 1, true)
+		$array = array_slice($array, 0, $offset + 1, preserve_keys: true)
 			+ $inserted
-			+ array_slice($array, $offset + 1, count($array), true);
+			+ array_slice($array, $offset + 1, count($array), preserve_keys: true);
 	}
 
 
 	/**
 	 * Renames key in array.
-	 * @param  array-key  $oldKey
-	 * @param  array-key  $newKey
+	 * 重命名数组中的键
 	 */
-	public static function renameKey(array &$array, $oldKey, $newKey): bool
+	public static function renameKey(array &$array, string|int $oldKey, string|int $newKey): bool
 	{
 		$offset = self::getKeyOffset($array, $oldKey);
 		if ($offset === null) {
@@ -212,15 +260,17 @@ class Arrays
 		array $array,
 		#[Language('RegExp')]
 		string $pattern,
-		int $flags = 0
+		bool|int $invert = false,
 	): array
 	{
+		$flags = $invert ? PREG_GREP_INVERT : 0;
 		return Strings::pcre('preg_grep', [$pattern, $array, $flags]);
 	}
 
 
 	/**
 	 * Transforms multidimensional array to flat array.
+	 * 将多维数组转换为平面数组
 	 */
 	public static function flatten(array $array, bool $preserveKeys = false): array
 	{
@@ -235,11 +285,13 @@ class Arrays
 
 	/**
 	 * Checks if the array is indexed in ascending order of numeric keys from zero, a.k.a list.
-	 * @param  mixed  $value
+	 * 检查数组是否按从零开始的数字键升序索引，即列表。
+	 * @return ($value is list ? true : false)
 	 */
-	public static function isList($value): bool
+	public static function isList(mixed $value): bool
 	{
-		return is_array($value) && (PHP_VERSION_ID < 80100
+		return is_array($value) && (
+			PHP_VERSION_ID < 80100
 			? !$value || array_keys($value) === range(0, count($value) - 1)
 			: array_is_list($value)
 		);
@@ -249,9 +301,8 @@ class Arrays
 	/**
 	 * Reformats table to associative tree. Path looks like 'field|field[]field->field=field'.
 	 * @param  string|string[]  $path
-	 * @return array|\stdClass
 	 */
-	public static function associate(array $array, $path)
+	public static function associate(array $array, $path): array|\stdClass
 	{
 		$parts = is_array($path)
 			? $path
@@ -303,9 +354,8 @@ class Arrays
 
 	/**
 	 * Normalizes array to associative array. Replace numeric keys with their values, the new value will be $filling.
-	 * @param  mixed  $filling
 	 */
-	public static function normalize(array $array, $filling = null): array
+	public static function normalize(array $array, mixed $filling = null): array
 	{
 		$res = [];
 		foreach ($array as $k => $v) {
@@ -321,12 +371,11 @@ class Arrays
 	 * or returns $default, if provided.
 	 * @template T
 	 * @param  array<T>  $array
-	 * @param  array-key  $key
 	 * @param  ?T  $default
 	 * @return ?T
 	 * @throws Nette\InvalidArgumentException if item does not exist and default value is not provided
 	 */
-	public static function pick(array &$array, $key, $default = null)
+	public static function pick(array &$array, string|int $key, mixed $default = null): mixed
 	{
 		if (array_key_exists($key, $array)) {
 			$value = $array[$key];
@@ -343,13 +392,17 @@ class Arrays
 
 
 	/**
-	 * Tests whether at least one element in the array passes the test implemented by the
-	 * provided callback with signature `function ($value, $key, array $array): bool`.
+	 * Tests whether at least one element in the array passes the test implemented by the provided function.
+	 * 测试数组中是否至少有一个元素通过所提供的函数实现的测试。
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  callable(V, K, array<K, V>): bool  $predicate
 	 */
-	public static function some(iterable $array, callable $callback): bool
+	public static function some(iterable $array, callable $predicate): bool
 	{
 		foreach ($array as $k => $v) {
-			if ($callback($v, $k, $array)) {
+			if ($predicate($v, $k, $array)) {
 				return true;
 			}
 		}
@@ -359,13 +412,17 @@ class Arrays
 
 
 	/**
-	 * Tests whether all elements in the array pass the test implemented by the provided function,
-	 * which has the signature `function ($value, $key, array $array): bool`.
+	 * Tests whether all elements in the array pass the test implemented by the provided function.
+	 * 测试数组中的所有元素是否通过由提供的函数实现的测试。
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  callable(V, K, array<K, V>): bool  $predicate
 	 */
-	public static function every(iterable $array, callable $callback): bool
+	public static function every(iterable $array, callable $predicate): bool
 	{
 		foreach ($array as $k => $v) {
-			if (!$callback($v, $k, $array)) {
+			if (!$predicate($v, $k, $array)) {
 				return false;
 			}
 		}
@@ -375,14 +432,66 @@ class Arrays
 
 
 	/**
-	 * Calls $callback on all elements in the array and returns the array of return values.
-	 * The callback has the signature `function ($value, $key, array $array): bool`.
+	 * Returns a new array containing all key-value pairs matching the given $predicate.
+	 * 返回一个新数组，其中包含与给定$谓词匹配的所有键值对。
+	 * @template K of int|string
+	 * @template V
+	 * @param  array<K, V>  $array
+	 * @param  callable(V, K, array<K, V>): bool  $predicate
+	 * @return array<K, V>
 	 */
-	public static function map(iterable $array, callable $callback): array
+	public static function filter(array $array, callable $predicate): array
 	{
 		$res = [];
 		foreach ($array as $k => $v) {
-			$res[$k] = $callback($v, $k, $array);
+			if ($predicate($v, $k, $array)) {
+				$res[$k] = $v;
+			}
+		}
+		return $res;
+	}
+
+
+	/**
+	 * Returns an array containing the original keys and results of applying the given transform function to each element.
+	 * 返回一个数组，其中包含对每个元素应用给定转换函数的原始键和结果。
+	 * @template K of int|string
+	 * @template V
+	 * @template R
+	 * @param  array<K, V>  $array
+	 * @param  callable(V, K, array<K, V>): R  $transformer
+	 * @return array<K, R>
+	 */
+	public static function map(iterable $array, callable $transformer): array
+	{
+		$res = [];
+		foreach ($array as $k => $v) {
+			$res[$k] = $transformer($v, $k, $array);
+		}
+
+		return $res;
+	}
+
+
+	/**
+	 * Returns an array containing new keys and values generated by applying the given transform function to each element.
+	 * If the function returns null, the element is skipped.
+	 * @template K of int|string
+	 * @template V
+	 * @template ResK of int|string
+	 * @template ResV
+	 * @param  array<K, V>  $array
+	 * @param  callable(V, K, array<K, V>): ?array{ResK, ResV}  $transformer
+	 * @return array<ResK, ResV>
+	 */
+	public static function mapWithKeys(array $array, callable $transformer): array
+	{
+		$res = [];
+		foreach ($array as $k => $v) {
+			$pair = $transformer($v, $k, $array);
+			if ($pair) {
+				$res[$pair[0]] = $pair[1];
+			}
 		}
 
 		return $res;
@@ -391,6 +500,7 @@ class Arrays
 
 	/**
 	 * Invokes all callbacks and returns array of results.
+	 * 调用所有回调函数并返回结果数组
 	 * @param  callable[]  $callbacks
 	 */
 	public static function invoke(iterable $callbacks, ...$args): array
@@ -406,6 +516,7 @@ class Arrays
 
 	/**
 	 * Invokes method on every object in an array and returns array of results.
+	 * 调用数组中每个对象的方法并返回结果数组
 	 * @param  object[]  $objects
 	 */
 	public static function invokeMethod(iterable $objects, string $method, ...$args): array
@@ -421,11 +532,12 @@ class Arrays
 
 	/**
 	 * Copies the elements of the $array array to the $object object and then returns it.
+	 * 将$array数组中的元素复制到$object对象中，然后返回该对象。
 	 * @template T of object
 	 * @param  T  $object
 	 * @return T
 	 */
-	public static function toObject(iterable $array, $object)
+	public static function toObject(iterable $array, object $object): object
 	{
 		foreach ($array as $k => $v) {
 			$object->$k = $v;
@@ -437,10 +549,9 @@ class Arrays
 
 	/**
 	 * Converts value to array key.
-	 * @param  mixed  $value
-	 * @return array-key
+	 * 将值转换为数组键
 	 */
-	public static function toKey($value)
+	public static function toKey(mixed $value): int|string
 	{
 		return key([$value => null]);
 	}
@@ -449,6 +560,7 @@ class Arrays
 	/**
 	 * Returns copy of the $array where every item is converted to string
 	 * and prefixed by $prefix and suffixed by $suffix.
+	 * 返回$数组的副本，其中每个项都被转换为字符串，前缀是$prefix，后缀是$suffix。
 	 * @param  string[]  $array
 	 * @return string[]
 	 */

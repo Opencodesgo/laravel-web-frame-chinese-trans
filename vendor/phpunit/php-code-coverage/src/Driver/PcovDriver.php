@@ -28,7 +28,6 @@ use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for phpunit/php-code-coverage
- * 这个类并没有被phpunit / php - code覆盖的向后兼容承诺所覆盖
  */
 final class PcovDriver extends Driver
 {

@@ -18,7 +18,7 @@ namespace League\Config\Exception;
 
 /**
  * Marker interface for any/all exceptions thrown by this library
- * 该库抛出的任何/所有异常的标记接口
+ * 此库抛出的任何/所有异常的标记接口
  */
 interface ConfigurationExceptionInterface extends \Throwable
 {

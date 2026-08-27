@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，Putenv 适配器
+ * Dotenv，资源库，适配器，Putenv 适配器
  */
 
 declare(strict_types=1);

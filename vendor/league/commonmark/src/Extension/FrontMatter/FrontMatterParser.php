@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，前物质解析器
+ * League，CommonMark，扩展，前言，输出，前事态解析器
  */
 
 declare(strict_types=1);
@@ -53,7 +53,6 @@ final class FrontMatterParser implements FrontMatterParserInterface
         }
 
         // Parse the resulting YAML data
-		// 解析得到的YAML数据
         $data = $this->frontMatterParser->parse($frontMatter);
 
         // Advance through any remaining newlines which separated the front matter from the Markdown text
@@ -61,6 +60,7 @@ final class FrontMatterParser implements FrontMatterParserInterface
 
         // Calculate how many lines the Markdown is offset from the front matter by counting the number of newlines
         // Don't forget to add 1 because we stripped one out when trimming the trailing delims
+		// 通过计算换行符的数目，计算降低标记与前面内容的偏移量。
         $lineOffset = \preg_match_all('/\R/', $frontMatter . $trailingNewlines) + 1;
 
         return new MarkdownInputWithFrontMatter($cursor->getRemainder(), $lineOffset, $data);

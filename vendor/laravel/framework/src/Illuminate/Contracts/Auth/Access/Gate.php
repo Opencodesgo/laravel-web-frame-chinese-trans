@@ -9,7 +9,7 @@ interface Gate
 {
     /**
      * Determine if a given ability has been defined.
-	 * 确定是否已经定义了给定的能力
+	 * 确定是否给定的能力已被定义
      *
      * @param  string  $ability
      * @return bool
@@ -49,7 +49,7 @@ interface Gate
 
     /**
      * Register a callback to run before all Gate checks.
-	 * 注册一个回调，在所有Gate检查之前运行。
+	 * 注册一个回调，以便在所有Gate检查之前运行。
      *
      * @param  callable  $callback
      * @return $this

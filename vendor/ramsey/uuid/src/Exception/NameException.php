@@ -20,8 +20,8 @@ namespace Ramsey\Uuid\Exception;
 use RuntimeException as PhpRuntimeException;
 
 /**
- * Thrown to indicate that an error occurred while attempting to hash a
- * namespace and name
+ * Thrown to indicate that an error occurred while attempting to hash a namespace and name
+ * 抛出以指示在尝试散列命名空间和名称时发生错误
  */
 class NameException extends PhpRuntimeException implements UuidExceptionInterface
 {

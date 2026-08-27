@@ -42,7 +42,7 @@ class RouteBinding
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
             // to run multiple bind methods in a single class for convenience.
-			// 如果绑定有@符号，我们将假定它用于分隔来自绑定方法名的类名。
+			// 如果绑定有@符号，我们将假定它用于分隔绑定方法中的类名。
             [$class, $method] = Str::parseCallback($binding, 'bind');
 
             $callable = [$container->make($class), $method];
@@ -60,7 +60,7 @@ class RouteBinding
      * @param  \Closure|null  $callback
      * @return \Closure
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public static function forModel($container, $class, $callback = null)
     {

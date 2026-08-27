@@ -9,7 +9,7 @@ interface Kernel
 {
     /**
      * Bootstrap the application for artisan commands.
-	 * 为artisan命令引导应用程序
+	 * 引导应用程序为artisan命令
      *
      * @return void
      */
@@ -38,7 +38,6 @@ interface Kernel
 
     /**
      * Queue an Artisan console command by name.
-	 * 按名称将Artisan控制台命令排队
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -64,7 +63,7 @@ interface Kernel
 
     /**
      * Terminate the application.
-	 * 终止应用程序
+	 * 按确定终止应用程序
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  int  $status

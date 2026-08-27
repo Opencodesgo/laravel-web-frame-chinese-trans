@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，容器，没有容器异常
+ * Faker，容器，不在容器异常
  */
 
 declare(strict_types=1);

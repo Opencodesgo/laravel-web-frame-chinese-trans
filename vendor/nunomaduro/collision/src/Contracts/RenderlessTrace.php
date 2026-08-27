@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，契约，Renderless跟踪
+ * NunoMaduro，Collision，契约，Renderless 跟踪
  */
 
 declare(strict_types=1);

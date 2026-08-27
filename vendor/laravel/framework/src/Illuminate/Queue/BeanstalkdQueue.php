@@ -14,7 +14,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 {
     /**
      * The Pheanstalk instance.
-	 * Pheanstalk实列
+	 * Pheanstalk实例
      *
      * @var \Pheanstalk\Pheanstalk
      */
@@ -70,7 +70,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the size of the queue.
-	 * 得到队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
@@ -121,8 +121,8 @@ class BeanstalkdQueue extends Queue implements QueueContract
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -146,6 +146,26 @@ class BeanstalkdQueue extends Queue implements QueueContract
                 );
             }
         );
+    }
+
+    /**
+     * Push an array of jobs onto the queue.
+	 * 将一组作业推入队列
+     *
+     * @param  array  $jobs
+     * @param  mixed  $data
+     * @param  string|null  $queue
+     * @return void
+     */
+    public function bulk($jobs, $data = '', $queue = null)
+    {
+        foreach ((array) $jobs as $job) {
+            if (isset($job->delay)) {
+                $this->later($job->delay, $job, $data, $queue);
+            } else {
+                $this->push($job, $data, $queue);
+            }
+        }
     }
 
     /**
@@ -185,7 +205,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the queue or return the default.
-	 * 得到队列或返回默认值
+	 * 获取队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -197,7 +217,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying Pheanstalk instance.
-	 * 得到底层Pheanstalk实例
+	 * 获取底层Pheanstalk实例
      *
      * @return \Pheanstalk\Pheanstalk
      */

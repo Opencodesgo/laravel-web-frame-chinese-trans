@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，处理程序
+ * Monolog，处理器，处理器
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Base Handler class providing basic close() support as well as handleBatch
- * 基本处理程序类提供基本的close()支持和handleBatch
+ * 基Handler类提供基本的close（）支持以及handleBatch
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */

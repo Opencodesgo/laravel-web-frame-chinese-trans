@@ -9,7 +9,7 @@ interface SupportsPartialRelations
 {
     /**
      * Indicate that the relation is a single result of a larger one-to-many relationship.
-	 * 指明该关系是一个更大的一对多关系的单个结果
+	 * 表明该关系是一个更大的一对多关系的单个结果
      *
      * @param  string|null  $column
      * @param  string|\Closure|null  $aggregate

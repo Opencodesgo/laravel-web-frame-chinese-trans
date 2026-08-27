@@ -19,7 +19,7 @@ use Symfony\Component\RateLimiter\RateLimit;
 
 /**
  * A special type of limiter that deals with requests.
- * 处理请求的一种特殊类型的限制器
+ * 处理请求的一种特殊类型的限制器。
  *
  * This allows to limit on different types of information
  * from the requests.

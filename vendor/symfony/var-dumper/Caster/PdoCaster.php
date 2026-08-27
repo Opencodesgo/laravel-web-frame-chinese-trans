@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Pdo Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts PDO related classes to array representation.
+ * 将PDO相关类强制转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -59,6 +63,9 @@ class PdoCaster
         ],
     ];
 
+    /**
+     * @return array
+     */
     public static function castPdo(\PDO $c, array $a, Stub $stub, bool $isNested)
     {
         $attr = [];
@@ -76,7 +83,7 @@ class PdoCaster
                 if ($v && isset($v[$attr[$k]])) {
                     $attr[$k] = new ConstStub($v[$attr[$k]], $attr[$k]);
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
             }
         }
         if (isset($attr[$k = 'STATEMENT_CLASS'][1])) {
@@ -108,6 +115,9 @@ class PdoCaster
         return $a;
     }
 
+    /**
+     * @return array
+     */
     public static function castPdoStatement(\PDOStatement $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;

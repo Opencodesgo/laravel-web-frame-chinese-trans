@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，信号登记处，信号登记处
+ * Symfony，Component，Console，信号注册表，信号注册表
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\SignalRegistry;
 
 final class SignalRegistry
 {
-    private $signalHandlers = [];
+    private array $signalHandlers = [];
 
     public function __construct()
     {
@@ -37,20 +37,12 @@ final class SignalRegistry
 
         $this->signalHandlers[$signal][] = $signalHandler;
 
-        pcntl_signal($signal, [$this, 'handle']);
+        pcntl_signal($signal, $this->handle(...));
     }
 
     public static function isSupported(): bool
     {
-        if (!\function_exists('pcntl_signal')) {
-            return false;
-        }
-
-        if (\in_array('pcntl_signal', explode(',', \ini_get('disable_functions')))) {
-            return false;
-        }
-
-        return true;
+        return \function_exists('pcntl_signal');
     }
 
     /**

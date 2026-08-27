@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，全局状态，运行时异常
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

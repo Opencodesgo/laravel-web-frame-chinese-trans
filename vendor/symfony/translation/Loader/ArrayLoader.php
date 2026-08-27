@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，载入程序，阵列装载机
+ * Symfony，Component，Translation，加载器，数组加载器
  */
 
 /*
@@ -18,16 +18,12 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * ArrayLoader loads translations from a PHP array.
- * ArrayLoader 从PHP数组中加载翻译。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ArrayLoader implements LoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load($resource, string $locale, string $domain = 'messages')
+    public function load(mixed $resource, string $locale, string $domain = 'messages'): MessageCatalogue
     {
         $resource = $this->flatten($resource);
         $catalogue = new MessageCatalogue($locale);
@@ -38,7 +34,6 @@ class ArrayLoader implements LoaderInterface
 
     /**
      * Flattens an nested array of translations.
-	 * 将一个嵌套的翻译数组压平。
      *
      * The scheme used is:
      *   'key' => ['key2' => ['key3' => 'value']]

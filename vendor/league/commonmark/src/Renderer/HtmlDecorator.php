@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，渲染器，Html 装饰者
+ * League，CommonMark，渲染器，Html 装饰器
  */
 
 declare(strict_types=1);

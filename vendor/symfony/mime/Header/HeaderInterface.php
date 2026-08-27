@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，数据头，头接口
+ * Symfony，Component，Mime，标题，标头接口
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Mime\Header;
 
 /**
  * A MIME Header.
- * MIME标头。
+ * MIME标头
  *
  * @author Chris Corbyn
  */
@@ -24,34 +24,41 @@ interface HeaderInterface
 {
     /**
      * Sets the body.
-	 * 设置主体。
+	 * 设置主体
      *
      * The type depends on the Header concrete class.
      *
-     * @param mixed $body
+     * @return void
      */
-    public function setBody($body);
+    public function setBody(mixed $body);
 
     /**
      * Gets the body.
-	 *得到主体。
+	 * 得到主体
      *
      * The return type depends on the Header concrete class.
-     *
-     * @return mixed
      */
-    public function getBody();
+    public function getBody(): mixed;
 
+    /**
+     * @return void
+     */
     public function setCharset(string $charset);
 
     public function getCharset(): ?string;
 
+    /**
+     * @return void
+     */
     public function setLanguage(string $lang);
 
     public function getLanguage(): ?string;
 
     public function getName(): string;
 
+    /**
+     * @return void
+     */
     public function setMaxLineLength(int $lineLength);
 
     public function getMaxLineLength(): int;

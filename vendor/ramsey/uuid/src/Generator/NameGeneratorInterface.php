@@ -5,7 +5,6 @@
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,14 +20,14 @@ namespace Ramsey\Uuid\Generator;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * A name generator generates strings of binary data created by hashing together
- * a namespace with a name, according to a hashing algorithm
+ * A name generator generates strings of binary data created by hashing together a namespace with a name, according to a
+ * hashing algorithm
  */
 interface NameGeneratorInterface
 {
     /**
-     * Generate a binary string from a namespace and name hashed together with
-     * the specified hashing algorithm
+     * Generate a binary string from a namespace and name hashed together with the specified hashing algorithm
+	 * 使用指定的散列算法从名称空间和名称生成二进制字符串
      *
      * @param UuidInterface $ns The namespace
      * @param string $name The name to use for creating a UUID
@@ -36,7 +35,7 @@ interface NameGeneratorInterface
      *
      * @return string A binary string
      *
-     * @psalm-pure
+     * @pure
      */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string;
 }

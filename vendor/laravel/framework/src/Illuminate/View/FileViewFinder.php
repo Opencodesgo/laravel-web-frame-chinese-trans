@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，文件视图查找器
+ * Illuminate，视图，文件视图查找程序
  */
 
 namespace Illuminate\View;
@@ -159,9 +159,7 @@ class FileViewFinder implements ViewFinderInterface
      */
     protected function getPossibleViewFiles($name)
     {
-        return array_map(function ($extension) use ($name) {
-            return str_replace('.', '/', $name).'.'.$extension;
-        }, $this->extensions);
+        return array_map(fn ($extension) => str_replace('.', '/', $name).'.'.$extension, $this->extensions);
     }
 
     /**
@@ -292,7 +290,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the filesystem instance.
-	 * 得到文件系统实例
+	 * 获取文件系统实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块，块继续
+ * League，CommonMark，解析器，代码块，块继续
  */
 
 declare(strict_types=1);
@@ -62,7 +62,7 @@ final class BlockContinue
 
     /**
      * Signal that we're continuing at the given position
-	 * 我们继续在给定位置的信号
+	 * 表明我们在给定位置继续前进
      */
     public static function at(Cursor $cursor): self
     {

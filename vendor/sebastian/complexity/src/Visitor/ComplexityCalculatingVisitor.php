@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，复杂性，复杂度计算访客
+ */
+
 /*
  * This file is part of sebastian/complexity.
  *

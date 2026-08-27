@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，记录未找到异常
+ * Illuminate，数据库，记录未找到异常，待完善类
  */
 
 namespace Illuminate\Database;

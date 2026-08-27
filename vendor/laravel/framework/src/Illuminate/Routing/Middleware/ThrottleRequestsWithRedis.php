@@ -14,7 +14,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 {
     /**
      * The Redis factory implementation.
-	 * Redis工厂实现
+	 * Redis 工厂实现
      *
      * @var \Illuminate\Contracts\Redis\Factory
      */

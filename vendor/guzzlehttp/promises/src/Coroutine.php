@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，许诺，协同程序
+ * GuzzleHttp，Promise，协同程序
  */
 
 declare(strict_types=1);
@@ -13,6 +13,7 @@ use Throwable;
 /**
  * Creates a promise that is resolved using a generator that yields values or
  * promises (somewhat similar to C#'s async keyword).
+ * 创建一个承诺，该承诺通过一个生成器来解决，该生成器会返回值或承诺（类似于 C# 中的 async 关键字）。
  *
  * When called, the Coroutine::of method will start an instance of the generator
  * and returns a promise that is fulfilled with its final yielded value.
@@ -80,7 +81,7 @@ final class Coroutine implements PromiseInterface
 
     /**
      * Create a new coroutine.
-	 * 创建一个新的coroutine
+	 * 创建一个新的协程
      */
     public static function of(callable $generatorFn): self
     {

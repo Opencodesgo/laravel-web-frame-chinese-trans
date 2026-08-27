@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，异常，确认接口
+ * Dotenv，异常，验证异常
  */
 
 declare(strict_types=1);

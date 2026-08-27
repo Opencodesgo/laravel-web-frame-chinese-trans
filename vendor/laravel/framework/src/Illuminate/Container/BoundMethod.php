@@ -91,7 +91,7 @@ class BoundMethod
         // Here we need to turn the array callable into a Class@method string we can use to
         // examine the container and see if there are any method bindings for this given
         // method. If there are, we can call this method binding callback immediately.
-		// 这里我们需要将数组callable转换为一个Class@method字符串，以便使用to检查容器，看看是否有任何绑定方法。
+		// 这里我们需要将数组callable转换为一个Class@method字符串，以便使用
         $method = static::normalizeMethod($callback);
 
         if ($container->hasMethodBinding($method)) {
@@ -148,7 +148,7 @@ class BoundMethod
      */
     protected static function getCallReflector($callback)
     {
-        if (is_string($callback) && strpos($callback, '::') !== false) {
+        if (is_string($callback) && str_contains($callback, '::')) {
             $callback = explode('::', $callback);
         } elseif (is_object($callback) && ! $callback instanceof Closure) {
             $callback = [$callback, '__invoke'];
@@ -183,16 +183,14 @@ class BoundMethod
                 $dependencies[] = $parameters[$className];
 
                 unset($parameters[$className]);
-            } else {
-                if ($parameter->isVariadic()) {
-                    $variadicDependencies = $container->make($className);
+            } elseif ($parameter->isVariadic()) {
+                $variadicDependencies = $container->make($className);
 
-                    $dependencies = array_merge($dependencies, is_array($variadicDependencies)
-                                ? $variadicDependencies
-                                : [$variadicDependencies]);
-                } else {
-                    $dependencies[] = $container->make($className);
-                }
+                $dependencies = array_merge($dependencies, is_array($variadicDependencies)
+                            ? $variadicDependencies
+                            : [$variadicDependencies]);
+            } else {
+                $dependencies[] = $container->make($className);
             }
         } elseif ($parameter->isDefaultValueAvailable()) {
             $dependencies[] = $parameter->getDefaultValue();
@@ -212,6 +210,6 @@ class BoundMethod
      */
     protected static function isCallableWithAtSign($callback)
     {
-        return is_string($callback) && strpos($callback, '@') !== false;
+        return is_string($callback) && str_contains($callback, '@');
     }
 }

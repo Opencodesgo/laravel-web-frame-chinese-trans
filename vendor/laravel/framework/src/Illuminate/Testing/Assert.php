@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，声称
+ * Illuminate, 测试, PHP 单元抽象类
  */
 
 namespace Illuminate\Testing;
@@ -16,6 +16,7 @@ use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * @internal This class is not meant to be used or overwritten outside the framework itself.
+ * 这个类不打算在框架本身之外使用或覆盖
  */
 abstract class Assert extends PHPUnit
 {

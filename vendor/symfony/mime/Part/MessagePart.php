@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，部分，消息部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +24,7 @@ use Symfony\Component\Mime\RawMessage;
  */
 class MessagePart extends DataPart
 {
-    private $message;
+    private RawMessage $message;
 
     public function __construct(RawMessage $message)
     {
@@ -60,15 +63,12 @@ class MessagePart extends DataPart
         return $this->message->toIterable();
     }
 
-    /**
-     * @return array
-     */
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['message'];
     }
 
-    public function __wakeup()
+    public function __wakeup(): void
     {
         $this->__construct($this->message);
     }

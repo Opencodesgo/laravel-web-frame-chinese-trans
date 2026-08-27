@@ -14,8 +14,7 @@ class NullSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
@@ -25,8 +24,7 @@ class NullSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -34,10 +32,9 @@ class NullSessionHandler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      *
-     * @return string|false
+     * @return string
      */
-    #[\ReturnTypeWillChange]
-    public function read($sessionId)
+    public function read($sessionId): string
     {
         return '';
     }
@@ -47,8 +44,7 @@ class NullSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function write($sessionId, $data)
+    public function write($sessionId, $data): bool
     {
         return true;
     }
@@ -58,8 +54,7 @@ class NullSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function destroy($sessionId)
+    public function destroy($sessionId): bool
     {
         return true;
     }
@@ -67,11 +62,10 @@ class NullSessionHandler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      *
-     * @return int|false
+     * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function gc($lifetime)
+    public function gc($lifetime): int
     {
-        return true;
+        return 0;
     }
 }

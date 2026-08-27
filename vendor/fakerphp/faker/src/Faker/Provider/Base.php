@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，底座
+ */
 
 namespace Faker\Provider;
 
@@ -26,6 +29,7 @@ class Base
 
     /**
      * Returns a random number between 0 and 9
+	 * 返回0到9之间的随机数
      *
      * @return int
      */
@@ -36,6 +40,7 @@ class Base
 
     /**
      * Returns a random number between 1 and 9
+	 * 返回1到9之间的随机数
      *
      * @return int
      */

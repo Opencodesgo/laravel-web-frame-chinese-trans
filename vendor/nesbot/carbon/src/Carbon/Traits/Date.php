@@ -550,6 +550,7 @@ trait Date
 
     /**
      * Names of days of the week.
+	 * 一周中每一天的名称
      *
      * @var array
      */
@@ -579,6 +580,7 @@ trait Date
 
     /**
      * List of unit and magic methods associated as doc-comments.
+	 * 作为文档注释关联的单元方法和魔法方法列表。
      *
      * @var array
      */
@@ -617,6 +619,7 @@ trait Date
 
     /**
      * Creates a DateTimeZone from a string, DateTimeZone or integer offset.
+	 * 从字符串、DateTimeZone或整数偏移量创建一个DateTimeZone。
      *
      * @param DateTimeZone|string|int|null $object     original value to get CarbonTimeZone from it.
      * @param DateTimeZone|string|int|null $objectDump dump of the object for error messages.
@@ -632,6 +635,7 @@ trait Date
 
     /**
      * Get the TimeZone associated with the Carbon instance (as CarbonTimeZone).
+	 * 获取与Carbon实例关联的TimeZone（作为CarbonTimeZone）。
      *
      * @return CarbonTimeZone
      *
@@ -645,6 +649,7 @@ trait Date
 
     /**
      * List of minimum and maximums for each unit.
+	 * 每个单元的最小值和最大值列表
      *
      * @param int $daysInMonth
      *
@@ -670,6 +675,7 @@ trait Date
 
     /**
      * Get a copy of the instance.
+	 * 获取实例的副本
      *
      * @return static
      */
@@ -692,6 +698,7 @@ trait Date
 
     /**
      * Clone the current instance if it's mutable.
+	 * 如果当前实例是可变的，克隆它。
      *
      * This method is convenient to ensure you don't mutate the initial object
      * but avoid to make a useless copy of it if it's already immutable.
@@ -709,6 +716,7 @@ trait Date
 
     /**
      * Returns a present instance in the same timezone.
+	 * 返回同一时区的当前实例
      *
      * @return static
      */
@@ -719,6 +727,7 @@ trait Date
 
     /**
      * Throws an exception if the given object is not a DateTime and does not implement DateTimeInterface.
+	 * 如果给定的对象不是DateTime并且没有实现DateTimeInterface，则抛出异常。
      *
      * @param mixed        $date
      * @param string|array $other
@@ -743,6 +752,7 @@ trait Date
     /**
      * Return the Carbon instance passed through, a now instance in the same timezone
      * if null given or parse the input if string given.
+	 * 返回经过的Carbon实例，即位于同一时区的now实例。
      *
      * @param Carbon|DateTimeInterface|string|null $date
      *
@@ -814,6 +824,7 @@ trait Date
 
     /**
      * Get a part of the Carbon object
+	 * 获取Carbon对象的一部分
      *
      * @param string $name
      *
@@ -828,6 +839,7 @@ trait Date
 
     /**
      * Get a part of the Carbon object
+	 * 获取Carbon对象的一部分
      *
      * @param string $name
      *
@@ -1086,6 +1098,7 @@ trait Date
 
     /**
      * Check if an attribute exists on the object
+	 * 检查对象上是否存在属性
      *
      * @param string $name
      *
@@ -1104,6 +1117,7 @@ trait Date
 
     /**
      * Set a part of the Carbon object
+	 * 设置Carbon对象的一部分
      *
      * @param string                  $name
      * @param string|int|DateTimeZone $value
@@ -1125,6 +1139,7 @@ trait Date
 
     /**
      * Set a part of the Carbon object
+	 * 设置Carbon对象的一部分
      *
      * @param string|array            $name
      * @param string|int|DateTimeZone $value
@@ -1276,6 +1291,7 @@ trait Date
 
     /**
      * Get the translation of the current week day name (with context for languages with multiple forms).
+	 * 获取当前星期名称的翻译（具有多种形式的语言的上下文）。
      *
      * @param string|null $context      whole format string
      * @param string      $keySuffix    "", "_short" or "_min"
@@ -1314,6 +1330,7 @@ trait Date
 
     /**
      * Get the translation of the current month day name (with context for languages with multiple forms).
+	 * 获取当前月份和日期名称的翻译（包含具有多种形式的语言的上下文）。
      *
      * @param string|null $context      whole format string
      * @param string      $keySuffix    "" or "_short"
@@ -1340,6 +1357,7 @@ trait Date
 
     /**
      * Get/set the day of year.
+	 * 获取/设置一年中的日期
      *
      * @param int|null $value new value for day of year if using as setter.
      *
@@ -1354,6 +1372,7 @@ trait Date
 
     /**
      * Get/set the weekday from 0 (Sunday) to 6 (Saturday).
+	 * 获取/设置工作日从0（周日）到6（周六）
      *
      * @param int|null $value new value for weekday if using as setter.
      *
@@ -1373,6 +1392,7 @@ trait Date
 
     /**
      * Get/set the ISO weekday from 1 (Monday) to 7 (Sunday).
+	 * 获取/设置ISO工作日从1（星期一）到7（星期日）
      *
      * @param int|null $value new value for weekday if using as setter.
      *
@@ -1420,6 +1440,7 @@ trait Date
 
     /**
      * Set any unit to a new value without overflowing current other unit given.
+	 * 设置任何单位为一个新的值，没有溢出电流的其他单位给出。
      *
      * @param string $valueUnit    unit name to modify
      * @param int    $value        new value for the input unit
@@ -1449,6 +1470,7 @@ trait Date
 
     /**
      * Add any unit to a new value without overflowing current other unit given.
+	 * 添加任何单位到一个新的值没有溢出电流的其他单位给定
      *
      * @param string $valueUnit    unit name to modify
      * @param int    $value        amount to add to the input unit
@@ -1463,6 +1485,7 @@ trait Date
 
     /**
      * Subtract any unit to a new value without overflowing current other unit given.
+	 * 减去任何单位到一个新的值没有溢出电流的其他单位给定
      *
      * @param string $valueUnit    unit name to modify
      * @param int    $value        amount to subtract to the input unit
@@ -1493,6 +1516,7 @@ trait Date
 
     /**
      * Set the date with gregorian year, month and day numbers.
+	 * 用公历年、月、日数字设置日期。
      *
      * @see https://php.net/manual/en/datetime.setdate.php
      *
@@ -1527,6 +1551,7 @@ trait Date
 
     /**
      * Set the date and time all together.
+	 * 一起设置日期和时间
      *
      * @param int $year
      * @param int $month
@@ -1545,6 +1570,7 @@ trait Date
 
     /**
      * Resets the current time of the DateTime object to a different time.
+	 * 将DateTime对象的当前时间重置为不同的时间
      *
      * @see https://php.net/manual/en/datetime.settime.php
      *
@@ -1563,6 +1589,7 @@ trait Date
 
     /**
      * Set the instance's timestamp.
+	 * 设置实例的时间戳。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -1580,6 +1607,7 @@ trait Date
 
     /**
      * Set the time by time string.
+	 * 设置时间按时间字符串
      *
      * @param string $time
      *
@@ -1608,6 +1636,7 @@ trait Date
 
     /**
      * Set the timezone or returns the timezone name if no arguments passed.
+	 * 设置时区，如果没有传递参数，则返回时区名称。
      *
      * @param DateTimeZone|string $value
      *
@@ -1624,6 +1653,7 @@ trait Date
 
     /**
      * Set the instance's timezone from a string or object.
+	 * 从字符串或对象设置实例的时区
      *
      * @param DateTimeZone|string $value
      *
@@ -1643,6 +1673,7 @@ trait Date
 
     /**
      * Set the instance's timezone from a string or object and add/subtract the offset difference.
+	 * 从字符串或对象设置实例的时区，并添加/减去偏移量差异。
      *
      * @param DateTimeZone|string $value
      *
@@ -1669,6 +1700,7 @@ trait Date
 
     /**
      * Set the year, month, and date for this instance to that of the passed instance.
+	 * 将此实例的年、月和日期设置为传递的实例的年、月和日期。
      *
      * @param Carbon|DateTimeInterface $date now if null
      *
@@ -1683,6 +1715,7 @@ trait Date
 
     /**
      * Set the hour, minute, second and microseconds for this instance to that of the passed instance.
+	 * 将此实例的小时、分钟、秒和微秒设置为已传递实例的小时、分钟、秒和微秒。
      *
      * @param Carbon|DateTimeInterface $date now if null
      *
@@ -1697,6 +1730,7 @@ trait Date
 
     /**
      * Set the date and time for this instance to that of the passed instance.
+	 * 将此实例的日期和时间设置为传递的实例的日期和时间
      *
      * @param Carbon|DateTimeInterface $date
      *
@@ -1711,6 +1745,7 @@ trait Date
 
     /**
      * Get the days of the week
+	 * 得到一周中的每一天
      *
      * @return array
      */
@@ -1733,6 +1768,7 @@ trait Date
 
     /**
      * Get the first day of week
+	 * 得到一周的第一天
      *
      * @return int
      */
@@ -1764,6 +1800,7 @@ trait Date
 
     /**
      * Get the last day of week
+	 * 得到一周的最后一天
      *
      * @return int
      */
@@ -1796,6 +1833,7 @@ trait Date
 
     /**
      * Get weekend days
+	 * 得到周末
      *
      * @return array
      */
@@ -1838,6 +1876,7 @@ trait Date
 
     /**
      * Determine if a time string will produce a relative date.
+	 * 确定时间字符串是否会产生相对日期
      *
      * @param string $time
      *
@@ -1909,6 +1948,7 @@ trait Date
 
     /**
      * Returns list of locale formats for ISO formatting.
+	 * 返回用于ISO格式化的区域设置格式列表
      *
      * @param string|null $locale current locale used if null
      *
@@ -1932,6 +1972,7 @@ trait Date
 
     /**
      * Returns list of calendar formats for ISO formatting.
+	 * 返回用于ISO格式化的日历格式列表
      *
      * @param string|null $locale current locale used if null
      *
@@ -1951,6 +1992,7 @@ trait Date
 
     /**
      * Returns list of locale units for ISO formatting.
+	 * 返回用于ISO格式化的区域设置单元列表
      *
      * @return array
      */
@@ -2080,6 +2122,7 @@ trait Date
 
     /**
      * Returns a unit of the instance padded with 0 by default or any other string if specified.
+	 * 返回实例的一个单位，默认情况下填充0，如果指定，则返回任何其他字符串。
      *
      * @param string $unit      Carbon unit name
      * @param int    $length    Length of the output (2 by default)
@@ -2095,6 +2138,7 @@ trait Date
 
     /**
      * Return a property with its ordinal.
+	 * 返回一个带有序号的属性
      *
      * @param string      $key
      * @param string|null $period
@@ -2114,6 +2158,7 @@ trait Date
 
     /**
      * Return the meridiem of the current time in the current locale.
+	 * 返回当前区域设置中当前时间的子午线
      *
      * @param bool $isLower if true, returns lowercase variant if available in the current locale.
      *
@@ -2154,6 +2199,7 @@ trait Date
 
     /**
      * Returns the alternative number for a given date property if available in the current locale.
+	 * 如果在当前语言环境中可用，则返回给定日期属性的替代数字。
      *
      * @param string $key date property
      *
@@ -2166,6 +2212,7 @@ trait Date
 
     /**
      * Format in the current language using ISO replacement patterns.
+	 * 使用ISO替换模式在当前语言中格式化
      *
      * @param string      $format
      * @param string|null $originalFormat provide context if a chunk has been passed alone
@@ -2264,6 +2311,7 @@ trait Date
 
     /**
      * List of replacements from date() format to isoFormat().
+	 * 从date（）格式到isoFormat（）格式的替换列表
      *
      * @return array
      */
@@ -2438,6 +2486,7 @@ trait Date
 
     /**
      * Dynamically handle calls to the class.
+	 * 动态处理对类的调用
      *
      * @param string $method     magic method name called
      * @param array  $parameters parameters list
@@ -2468,6 +2517,7 @@ trait Date
 
     /**
      * Set specified unit to new given value.
+	 * 将指定的单位设置为新的给定值
      *
      * @param string $unit  year, month, day, hour, minute, second or microsecond
      * @param int    $value new value for given unit
@@ -2570,6 +2620,7 @@ trait Date
 
     /**
      * Dynamically handle calls to the class.
+	 * 动态处理对类的调用
      *
      * @param string $method     magic method name called
      * @param array  $parameters parameters list

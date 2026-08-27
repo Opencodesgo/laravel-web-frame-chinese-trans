@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，载入程序，解析器
+ * Dotenv，加载器，解析器 
  */
 
 declare(strict_types=1);
@@ -17,7 +17,7 @@ final class Resolver
 {
     /**
      * This class is a singleton.
-	 * 此类是单例
+	 * 这个类是单例的
      *
      * @codeCoverageIgnore
      *
@@ -49,7 +49,7 @@ final class Resolver
 
     /**
      * Resolve a single nested variable.
-	 * 解决单个嵌套变量
+	 * 解析单个嵌套变量
      *
      * @param \Dotenv\Repository\RepositoryInterface $repository
      * @param string                                 $str
@@ -61,8 +61,8 @@ final class Resolver
         return Regex::replaceCallback(
             '/\A\${([a-zA-Z0-9_.]+)}/',
             static function (array $matches) use ($repository) {
-                return Option::fromValue($repository->get($matches[1]))
-                    ->getOrElse($matches[0]);
+                /** @var string */
+                return Option::fromValue($repository->get($matches[1]))->getOrElse($matches[0]);
             },
             $str,
             1

@@ -22,7 +22,6 @@ use Symfony\Component\Console\Input\ArrayInput;
  * 简化控制台应用程序的测试。
  *
  * When testing an application, don't forget to disable the auto exit flag:
- * 在测试应用程序时，不要忘记禁用自动退出标志：
  *
  *     $application = new Application();
  *     $application->setAutoExit(false);
@@ -33,7 +32,7 @@ class ApplicationTester
 {
     use TesterTrait;
 
-    private $application;
+    private Application $application;
 
     public function __construct(Application $application)
     {
@@ -42,7 +41,7 @@ class ApplicationTester
 
     /**
      * Executes the application.
-	 * 执行应用程序
+	 * 执行应用程序。
      *
      * Available options:
      *
@@ -53,7 +52,7 @@ class ApplicationTester
      *
      * @return int The command exit code
      */
-    public function run(array $input, array $options = [])
+    public function run(array $input, array $options = []): int
     {
         $prevShellVerbosity = getenv('SHELL_VERBOSITY');
 

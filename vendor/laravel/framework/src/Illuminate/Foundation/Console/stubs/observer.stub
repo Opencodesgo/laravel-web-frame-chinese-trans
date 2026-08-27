@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，观察者模式
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -47,7 +47,7 @@ class {{ class }}
 
     /**
      * Handle the {{ model }} "restored" event.
-	 * 处理{{model}} "restored"事件
+	 * 处理{{model}} "已恢复"事件
      *
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return void

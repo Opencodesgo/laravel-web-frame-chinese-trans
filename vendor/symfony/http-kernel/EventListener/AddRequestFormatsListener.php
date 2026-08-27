@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Adds configured formats to each request.
- * 为每个请求添加配置的格式。
+ * 向每个请求添加配置格式。
  *
  * @author Gildas Quemener <gildas.quemener@gmail.com>
  *
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class AddRequestFormatsListener implements EventSubscriberInterface
 {
-    protected $formats;
+    private array $formats;
 
     public function __construct(array $formats)
     {
@@ -37,9 +37,9 @@ class AddRequestFormatsListener implements EventSubscriberInterface
 
     /**
      * Adds request formats.
-	 * 添加请求格式
+	 * 添加请求格式。
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         foreach ($this->formats as $format => $mimeTypes) {
@@ -47,9 +47,6 @@ class AddRequestFormatsListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => ['onKernelRequest', 100]];

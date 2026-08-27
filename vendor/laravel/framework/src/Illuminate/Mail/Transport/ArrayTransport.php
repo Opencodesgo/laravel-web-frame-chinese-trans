@@ -6,13 +6,16 @@
 namespace Illuminate\Mail\Transport;
 
 use Illuminate\Support\Collection;
-use Swift_Mime_SimpleMessage;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mime\RawMessage;
 
-class ArrayTransport extends Transport
+class ArrayTransport implements TransportInterface
 {
     /**
-     * The collection of Swift Messages.
-	 * Swift消息的集合
+     * The collection of Symfony Messages.
+	 * Symfony消息的集合
      *
      * @var \Illuminate\Support\Collection
      */
@@ -31,16 +34,10 @@ class ArrayTransport extends Transport
 
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
+    public function send(RawMessage $message, Envelope $envelope = null): ?SentMessage
     {
-        $this->beforeSendPerformed($message);
-
-        $this->messages[] = $message;
-
-        return $this->numberOfRecipients($message);
+        return $this->messages[] = new SentMessage($message, $envelope ?? Envelope::create($message));
     }
 
     /**
@@ -63,5 +60,16 @@ class ArrayTransport extends Transport
     public function flush()
     {
         return $this->messages = new Collection;
+    }
+
+    /**
+     * Get the string representation of the transport.
+	 * 获取传输的字符串表示形式
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return 'array';
     }
 }

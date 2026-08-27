@@ -27,11 +27,13 @@ interface DataInterface
 
     /**
      * Append a value to a key (assumes key refers to an array value)
-	 * 向键追加一个值(假设键指向一个数组值)
+	 * 向键追加一个值（假设键指向一个数组值）
      *
      * If the key does not yet exist it will be created.
      * If the key references a non-array it's existing contents will be added into a new array before appending the new value.
-     *
+     * 如果密钥还不存在，将创建它。
+	 * 如果键引用了一个非数组，它的现有内容将在附加新值之前被添加到一个新数组中。
+	 *
      * @param string $key
      * @param mixed  $value
      *
@@ -44,6 +46,7 @@ interface DataInterface
 	 * 设置键的值
      *
      * If the key does not yet exist it will be created.
+	 * 如果密钥还不存在，将创建它。
      *
      * @param string $key
      * @param mixed  $value
@@ -58,6 +61,7 @@ interface DataInterface
 	 * 移除键
      *
      * No exception will be thrown if the key does not exist
+	 * 如果键不存在，则不会抛出异常。
      *
      * @param string $key
      *
@@ -100,7 +104,7 @@ interface DataInterface
 
     /**
      * Get a data instance for a key
-	 * 为密钥获取一个数据实例
+	 * 获取键的数据实例
      *
      * @param string $key
      *
@@ -115,7 +119,7 @@ interface DataInterface
 
     /**
      * Import data into existing data
-	 * 将数据导入现有数据
+	 * 将数据导入到现有数据
      *
      * @param array<string, mixed>                     $data
      * @param self::PRESERVE|self::REPLACE|self::MERGE $mode

@@ -15,7 +15,7 @@ use Illuminate\Support\InteractsWithTime;
 
 class FileStore implements Store, LockProvider
 {
-    use InteractsWithTime, HasCacheLock, RetrievesMultipleKeys;
+    use InteractsWithTime, RetrievesMultipleKeys;
 
     /**
      * The Illuminate Filesystem instance.
@@ -35,7 +35,7 @@ class FileStore implements Store, LockProvider
 
     /**
      * Octal representation of the cache file permissions.
-	 * 缓存文件权限的全局表示形式
+	 * 缓存文件权限的八进制表示
      *
      * @var int|null
      */
@@ -43,7 +43,7 @@ class FileStore implements Store, LockProvider
 
     /**
      * Create a new file cache store instance.
-	 * 创建新的文件缓存存储实例
+	 * 创建一个新的文件缓存存储实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $directory
@@ -216,6 +216,33 @@ class FileStore implements Store, LockProvider
     }
 
     /**
+     * Get a lock instance.
+	 * 获取一个锁实例
+     *
+     * @param  string  $name
+     * @param  int  $seconds
+     * @param  string|null  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function lock($name, $seconds = 0, $owner = null)
+    {
+        return new FileLock($this, $name, $seconds, $owner);
+    }
+
+    /**
+     * Restore a lock instance using the owner identifier.
+	 * 使用所有者标识符恢复锁实例
+     *
+     * @param  string  $name
+     * @param  string  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function restoreLock($name, $owner)
+    {
+        return $this->lock($name, 0, $owner);
+    }
+
+    /**
      * Remove an item from the cache.
 	 * 从缓存中删除项
      *
@@ -268,8 +295,7 @@ class FileStore implements Store, LockProvider
         // If the file doesn't exist, we obviously cannot return the cache so we will
         // just return null. Otherwise, we'll get the contents of the file and get
         // the expiration UNIX timestamps from the start of the file's contents.
-		// 如果文件不存在，我们显然不能返回缓存，所以我们会返回NULL。
-		// 否则，我们将获取文件的内容并获取从文件内容开始的过期UNIX时间戳。
+		// 如果文件不存在，我们显然不能返回缓存以致只返回null。
         try {
             $expire = substr(
                 $contents = $this->files->get($path, true), 0, 10
@@ -281,7 +307,6 @@ class FileStore implements Store, LockProvider
         // If the current time is greater than expiration timestamps we will delete
         // the file and return null. This helps clean up the old files and keeps
         // this directory much cleaner for us as old files aren't hanging out.
-		// 如果当前时间大于过期时间戳，我们将删除创建文件并返回null。
         if ($this->currentTime() >= $expire) {
             $this->forget($key);
 
@@ -299,7 +324,6 @@ class FileStore implements Store, LockProvider
         // Next, we'll extract the number of seconds that are remaining for a cache
         // so that we can properly retain the time for things like the increment
         // operation that may be performed on this cache on a later operation.
-		// 接下来，我们将提取缓存剩余的秒数，这样我们就可以适当地为增量之类的东西保留时间。
         $time = $expire - $this->currentTime();
 
         return compact('data', 'time');
@@ -346,7 +370,7 @@ class FileStore implements Store, LockProvider
 
     /**
      * Get the Filesystem instance.
-	 * 得到文件系统实例
+	 * 获取Filesystem实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，扩展，文件扩展
+ * Faker，扩展，文件扩展名
  */
 
 namespace Faker\Extension;
@@ -12,7 +12,7 @@ interface FileExtension extends Extension
 {
     /**
      * Get a random MIME type
-	 * 随机MIME类型
+	 * 获取一个随机的MIME类型
      *
      * @example 'video/avi'
      */
@@ -20,7 +20,7 @@ interface FileExtension extends Extension
 
     /**
      * Get a random file extension (without a dot)
-	 * 得到一个随机的文件扩展(没有一个点)
+	 * 获取随机文件扩展名（不带点）
      *
      * @example avi
      */
@@ -28,7 +28,7 @@ interface FileExtension extends Extension
 
     /**
      * Get a full path to a new real file on the system.
-	 * 在系统上得到一个新的真实文件的完整路径
+	 * 获取系统上新文件的完整路径
      */
     public function filePath(): string;
 }

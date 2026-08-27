@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，映射，类型映射接口
+ * Ramsey，集合，映射，类型化映射接口
  */
 
 /**
@@ -21,18 +21,21 @@ namespace Ramsey\Collection\Map;
  * A `TypedMapInterface` represents a map of elements where key and value are
  * typed.
  *
+ * @template K of array-key
  * @template T
- * @extends MapInterface<T>
+ * @extends MapInterface<K, T>
  */
 interface TypedMapInterface extends MapInterface
 {
     /**
      * Return the type used on the key.
+	 * 返回键上使用的类型
      */
     public function getKeyType(): string;
 
     /**
      * Return the type forced on the values.
+	 * 返回值的强制类型
      */
     public function getValueType(): string;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Cookie，Cookie 压缩接口
+ * GuzzleHttp，Cookie，cookie 压缩接口
  */
 
 namespace GuzzleHttp\Cookie;
@@ -25,7 +25,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 {
     /**
      * Create a request with added cookie headers.
-	 * 使用添加的cookie头创建请求。
+	 * 创建一个添加了cookie头的请求
      *
      * If no matching cookies are found in the cookie jar, then no Cookie
      * header is added to the request and the same request is returned.
@@ -38,7 +38,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Extract cookies from an HTTP response and store them in the CookieJar.
-	 * 从HTTP响应中提取cookie并将其存储在CookieJar中。
+	 * 从HTTP响应中提取cookie并将其存储在CookieJar中
      *
      * @param RequestInterface  $request  Request that was sent
      * @param ResponseInterface $response Response that was received
@@ -47,7 +47,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Sets a cookie in the cookie jar.
-	 * 在cookie jar中设置一个cookie
+	 * 将饼干放入cookie压缩
      *
      * @param SetCookie $cookie Cookie to set.
      *
@@ -57,6 +57,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Remove cookies currently held in the cookie jar.
+	 * 移除目前保存在cookie压缩包中的cookie。
      *
      * Invoking this method without arguments will empty the whole cookie jar.
      * If given a $domain argument only cookies belonging to that domain will
@@ -73,7 +74,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Discard all sessions cookies.
-	 * 丢弃所有会话cookie。
+	 * 丢弃所有会话cookie
      *
      * Removes cookies that don't have an expire field or a have a discard
      * field set to true. To be called when the user agent shuts down according
@@ -83,6 +84,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Converts the cookie jar to an array.
+	 * 将cookie压缩转换为数组
      */
     public function toArray(): array;
 }

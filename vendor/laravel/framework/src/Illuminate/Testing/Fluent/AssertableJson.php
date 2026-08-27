@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，流畅的，可断言的 Json
+ * Illuminate, 测试, 流利的，可断言的 Json
  */
 
 namespace Illuminate\Testing\Fluent;
@@ -82,7 +82,7 @@ class AssertableJson implements Arrayable
 
     /**
      * Instantiate a new "scope" at the path of the given key.
-	 * 在给定键的路径上实例化一个新的“作用域
+	 * 在给定键的路径上实例化一个新的"作用域"
      *
      * @param  string  $key
      * @param  \Closure  $callback
@@ -167,8 +167,8 @@ class AssertableJson implements Arrayable
     }
 
     /**
-     * Create a new instance from a AssertableJsonString.
-	 * 从AssertableJsonString创建一个新实例
+     * Create a new instance from an AssertableJsonString.
+	 * 从AssertableJsonString 创建一个新实例
      *
      * @param  \Illuminate\Testing\AssertableJsonString  $json
      * @return static

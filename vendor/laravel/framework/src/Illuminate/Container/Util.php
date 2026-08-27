@@ -15,7 +15,7 @@ class Util
 {
     /**
      * If the given value is not an array and not null, wrap it in one.
-	 * 如果给定的值不是数组也不为空，则将其封装在一个数组中。
+	 * 如果给定的值不是数组，也不为空，则将其封装在一个数组中。
      *
      * From Arr::wrap() in Illuminate\Support.
      *
@@ -38,11 +38,12 @@ class Util
      * From global value() helper in Illuminate\Support.
      *
      * @param  mixed  $value
+     * @param  mixed  ...$args
      * @return mixed
      */
-    public static function unwrapIfClosure($value)
+    public static function unwrapIfClosure($value, ...$args)
     {
-        return $value instanceof Closure ? $value() : $value;
+        return $value instanceof Closure ? $value(...$args) : $value;
     }
 
     /**

@@ -20,7 +20,7 @@ use League\Config\Exception\UnknownOptionException;
 
 /**
  * Interface for setting/merging user-defined configuration values into the configuration object
- * 在配置对象中设置/合并用户定义的配置值的接口
+ * 设置/合并自定义配置值到配置对象
  */
 interface MutableConfigurationInterface
 {

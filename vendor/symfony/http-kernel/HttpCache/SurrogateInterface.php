@@ -22,78 +22,68 @@ interface SurrogateInterface
     /**
      * Returns surrogate name.
 	 * 返回代理名称
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns a new cache strategy instance.
 	 * 返回一个新的缓存策略实例
-     *
-     * @return ResponseCacheStrategyInterface
      */
-    public function createCacheStrategy();
+    public function createCacheStrategy(): ResponseCacheStrategyInterface;
 
     /**
      * Checks that at least one surrogate has Surrogate capability.
-	 * 检查至少一个代理有代理能力
-     *
-     * @return bool
+	 * 检查是否至少有一个代理具有代理能力
      */
-    public function hasSurrogateCapability(Request $request);
+    public function hasSurrogateCapability(Request $request): bool;
 
     /**
      * Adds Surrogate-capability to the given Request.
-	 * 将超额能力加到给定的请求中
+	 * 向给定请求添加代理功能
+     *
+     * @return void
      */
     public function addSurrogateCapability(Request $request);
 
     /**
      * Adds HTTP headers to specify that the Response needs to be parsed for Surrogate.
-	 * 添加HTTP头以指定响应需要解析为代理。
+	 * 添加HTTP标头，以指定需要为代理解析响应。
      *
      * This method only adds an Surrogate HTTP header if the Response has some Surrogate tags.
+     *
+     * @return void
      */
     public function addSurrogateControl(Response $response);
 
     /**
      * Checks that the Response needs to be parsed for Surrogate tags.
-	 * 检查响应需要解析为代理标记
-     *
-     * @return bool
+	 * 检查是否需要为代理标记解析响应
      */
-    public function needsParsing(Response $response);
+    public function needsParsing(Response $response): bool;
 
     /**
      * Renders a Surrogate tag.
-	 * 呈现代理标签
+	 * 呈现代理标记
      *
      * @param string|null $alt     An alternate URI
      * @param string      $comment A comment to add as an esi:include tag
-     *
-     * @return string
      */
-    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = '');
+    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = ''): string;
 
     /**
      * Replaces a Response Surrogate tags with the included resource content.
-	 * 用包含的资源内容替换一个响应代理标记
-     *
-     * @return Response
+	 * 用包含的资源内容替换响应代理标记
      */
-    public function process(Request $request, Response $response);
+    public function process(Request $request, Response $response): Response;
 
     /**
      * Handles a Surrogate from the cache.
-	 * 从缓存中处理代理
+	 * 处理缓存中的代理
      *
      * @param string $alt An alternative URI
-     *
-     * @return string
      *
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function handle(HttpCache $cache, string $uri, string $alt, bool $ignoreErrors);
+    public function handle(HttpCache $cache, string $uri, string $alt, bool $ignoreErrors): string;
 }

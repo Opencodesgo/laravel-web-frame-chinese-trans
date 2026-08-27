@@ -1,6 +1,6 @@
 <?php
 /**
- * app，异常，处理程序
+ * App, 异常, 处理程序
  */
 
 namespace App\Exceptions;
@@ -11,18 +11,28 @@ use Throwable;
 class Handler extends ExceptionHandler
 {
     /**
+     * A list of exception types with their corresponding custom log levels.
+	 * 异常类型及其相应的自定义日志级别的列表
+     *
+     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     */
+    protected $levels = [
+        //
+    ];
+
+    /**
      * A list of the exception types that are not reported.
 	 * 未报告的异常类型列表
      *
-     * @var array<int, class-string<Throwable>>
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
         //
     ];
 
     /**
-     * A list of the inputs that are never flashed for validation exceptions.
-	 * 不会为验证异常而闪现的输入列表
+     * A list of the inputs that are never flashed to the session on validation exceptions.
+	 * 在验证异常时不会闪现到会话的输入列表
      *
      * @var array<int, string>
      */

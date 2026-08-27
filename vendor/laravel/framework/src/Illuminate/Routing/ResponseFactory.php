@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，响应工厂
+ * Illuminate，路由，工厂响应
  */
 
 namespace Illuminate\Routing;
@@ -9,10 +9,12 @@ use Illuminate\Contracts\Routing\ResponseFactory as FactoryContract;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Exceptions\StreamedResponseException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class ResponseFactory implements FactoryContract
 {
@@ -28,7 +30,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * The redirector instance.
-	 * 重定向实例
+	 * 得定向实例
      *
      * @var \Illuminate\Routing\Redirector
      */
@@ -36,7 +38,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new response factory instance.
-	 * 创建新的响应工厂实例
+	 * 创建新的工厂实例响应
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @param  \Illuminate\Routing\Redirector  $redirector
@@ -129,7 +131,7 @@ class ResponseFactory implements FactoryContract
      * Create a new streamed response instance.
 	 * 创建一个新的流响应实例
      *
-     * @param  \Closure  $callback
+     * @param  callable  $callback
      * @param  int  $status
      * @param  array  $headers
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
@@ -143,7 +145,7 @@ class ResponseFactory implements FactoryContract
      * Create a new streamed response instance as a file download.
 	 * 创建一个新的流响应实例作为文件下载
      *
-     * @param  \Closure  $callback
+     * @param  callable  $callback
      * @param  string|null  $name
      * @param  array  $headers
      * @param  string|null  $disposition
@@ -151,7 +153,15 @@ class ResponseFactory implements FactoryContract
      */
     public function streamDownload($callback, $name = null, array $headers = [], $disposition = 'attachment')
     {
-        $response = new StreamedResponse($callback, 200, $headers);
+        $withWrappedException = function () use ($callback) {
+            try {
+                $callback();
+            } catch (Throwable $e) {
+                throw new StreamedResponseException($e);
+            }
+        };
+
+        $response = new StreamedResponse($withWrappedException, 200, $headers);
 
         if (! is_null($name)) {
             $response->headers->set('Content-Disposition', $response->headers->makeDisposition(

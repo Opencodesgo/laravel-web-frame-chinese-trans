@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，重定向响应
+ * Illuminate, Http, 重定向响应
  */
 
 namespace Illuminate\Http;
@@ -210,7 +210,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the request instance.
-	 * 获取请求实例
+	 * 得到请求实例
      *
      * @return \Illuminate\Http\Request|null
      */
@@ -233,7 +233,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the session store instance.
-	 * 得到会话存储实例
+	 * 获取会话存储实例
      *
      * @return \Illuminate\Session\Store|null
      */
@@ -270,7 +270,7 @@ class RedirectResponse extends BaseRedirectResponse
             return $this->macroCall($method, $parameters);
         }
 
-        if (Str::startsWith($method, 'with')) {
+        if (str_starts_with($method, 'with')) {
             return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
         }
 

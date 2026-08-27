@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，Qt 文件转储器
+ * Symfony，Component，Translation，转存器，Qt 文件转储
  */
 
 /*
@@ -18,16 +18,12 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * QtFileDumper generates ts files from a message catalogue.
- * QtFileDumper从消息目录中生成ts文件
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class QtFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;
@@ -55,10 +51,7 @@ class QtFileDumper extends FileDumper
         return $dom->saveXML();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'ts';
     }

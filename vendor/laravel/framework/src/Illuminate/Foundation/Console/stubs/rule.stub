@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，规则
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -11,7 +11,7 @@ class {{ class }} implements {{ ruleType }}
 {
     /**
      * Create a new rule instance.
-	 * 创建新的规则实例
+	 * 创建一个新的规则实例
      *
      * @return void
      */

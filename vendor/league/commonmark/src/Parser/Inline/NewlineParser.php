@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，内联，内联解析器
+ * League，CommonMark，解析器，内联，内联解析器
  */
 
 declare(strict_types=1);
@@ -35,7 +35,7 @@ final class NewlineParser implements InlineParserInterface
         $inlineContext->getCursor()->advanceBy(1);
 
         // Check previous inline for trailing spaces
-		// 检查前面的内联
+		// 检查前面的内联是否有尾随空格
         $spaces     = 0;
         $lastInline = $inlineContext->getContainer()->lastChild();
         if ($lastInline instanceof Text) {

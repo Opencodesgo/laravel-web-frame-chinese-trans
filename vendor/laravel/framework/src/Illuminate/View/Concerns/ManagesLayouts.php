@@ -264,7 +264,7 @@ trait ManagesLayouts
 
     /**
      * Flush all of the sections.
-	 * 冲洗所有的部分
+	 * 刷新所有的节段
      *
      * @return void
      */

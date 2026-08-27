@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，提到，提到扩展
+ * League，CommonMark，扩展，提及，Mention 扩展
  */
 
 declare(strict_types=1);

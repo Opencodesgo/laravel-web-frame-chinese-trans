@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Is Same
+ * Hamcrest，核心，是否相同
  */
 
 namespace Hamcrest\Core;
@@ -14,7 +14,7 @@ use Hamcrest\Description;
 /**
  * Is the value the same object as another value?
  * In PHP terms, does $a === $b?
- * 值是否与另一个值是相同的对象？
+ * 值是否值与另一个值相同?
  */
 class IsSame extends BaseMatcher
 {
@@ -41,7 +41,7 @@ class IsSame extends BaseMatcher
 
     /**
      * Creates a new instance of IsSame.
-	 * 创建IsSame的新实例
+	 * 创建一个新的实例
      *
      * @param mixed $object
      *   The predicate evaluates to true only when the argument is

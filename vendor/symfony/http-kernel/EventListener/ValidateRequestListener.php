@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Validates Requests.
- * 验证请求
+ * 验证请求。
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  *
@@ -30,8 +30,9 @@ class ValidateRequestListener implements EventSubscriberInterface
 {
     /**
      * Performs the validation.
+	 * 执行验证
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -45,9 +46,6 @@ class ValidateRequestListener implements EventSubscriberInterface
         $request->getHost();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [

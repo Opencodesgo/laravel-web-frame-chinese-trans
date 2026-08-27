@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，设置快捷键组合
+ * Hamcrest，核心，捷径组合
  */
 
 namespace Hamcrest\Core;

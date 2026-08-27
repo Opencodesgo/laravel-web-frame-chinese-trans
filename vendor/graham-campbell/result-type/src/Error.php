@@ -47,7 +47,7 @@ final class Error extends Result
 
     /**
      * Create a new error value.
-	 * 创建一个新的错误值
+	 * 创建新的错误值
      *
      * @template F
      *
@@ -88,7 +88,6 @@ final class Error extends Result
 
     /**
      * Flat map over the success value.
-	 * 平面地图超过成功值
      *
      * @template S
      * @template F
@@ -105,7 +104,6 @@ final class Error extends Result
 
     /**
      * Get the error option value.
-	 * 获取错误选项值
      *
      * @return \PhpOption\Option<E>
      */

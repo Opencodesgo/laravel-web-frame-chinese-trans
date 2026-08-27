@@ -41,7 +41,7 @@ interface PrettyPrinter {
 
     /**
      * Perform a format-preserving pretty print of an AST.
-	 * 执行AST的保持格式的漂亮打印
+	 * 执行AST的保持格式的漂亮打印。
      *
      * The format preservation is best effort. For some changes to the AST the formatting will not
      * be preserved (at least not locally).

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，自更新
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Self update command.
+ * 自我更新命令。
  *
  * If a new version is available, this command will download it and replace the currently installed version
  */
@@ -39,6 +43,7 @@ class SelfUpdate
 
     /**
      * Allow the downloader to be injected for testing.
+	 * 允许下载程序被注入测试
      *
      * @return void
      */
@@ -49,6 +54,7 @@ class SelfUpdate
 
     /**
      * Get the currently set Downloader or create one based on the capabilities of the php environment.
+	 * 获取当前设置的Downloader或根据php环境的功能创建一个。
      *
      * @throws ErrorException if a downloader cannot be created for the php environment
      */
@@ -63,6 +69,7 @@ class SelfUpdate
 
     /**
      * Build the download URL for the latest release.
+	 * 构建最新版本的下载URL。
      *
      * The file name used in the URL will include the flavour postfix extracted from the current version
      * if it's present
@@ -82,6 +89,7 @@ class SelfUpdate
 
     /**
      * Execute the self-update process.
+	 * 执行自我更新过程
      *
      * @throws ErrorException if the current version is not restored when installation fails
      */
@@ -165,6 +173,7 @@ class SelfUpdate
         }
 
         // Remove the downloaded archive file from the temporary directory
+		// 从临时目录中删除下载的存档文件
         $downloader->cleanup();
 
         $output->writeln("Updated PsySH from $currentVersion to <info>$latestVersion</info>");

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转换器，时间转换接口
+ * Ramsey，Uuid，转换器，时间，时间转换器接口
  */
 
 /**
@@ -21,41 +21,38 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 
 /**
- * A time converter converts timestamps into representations that may be used
- * in UUIDs
+ * A time converter converts timestamps into representations that may be used in UUIDs
+ * 时间转换器将时间戳转换为可以在uid中使用的表示形式
  *
- * @psalm-immutable
+ * @immutable
  */
 interface TimeConverterInterface
 {
     /**
-     * Uses the provided seconds and micro-seconds to calculate the count of
-     * 100-nanosecond intervals since UTC 00:00:00.00, 15 October 1582, for
-     * RFC 4122 variant UUIDs
+     * Uses the provided seconds and micro-seconds to calculate the count of 100-nanosecond intervals since
+     * UTC 00:00:00.00, 15 October 1582, for RFC 9562 (formerly RFC 4122) variant UUIDs
      *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.2.2 RFC 4122, § 4.2.2: Generation Details
+     * @link https://www.rfc-editor.org/rfc/rfc9562#appendix-A RFC 9562, Appendix A. Test Vectors
      *
-     * @param string $seconds A string representation of the number of seconds
-     *     since the Unix epoch for the time to calculate
-     * @param string $microseconds A string representation of the micro-seconds
-     *     associated with the time to calculate
+     * @param string $seconds A string representation of seconds since the Unix epoch for the time to calculate
+     * @param string $microseconds A string representation of the micro-seconds associated with the time to calculate
      *
      * @return Hexadecimal The full UUID timestamp as a Hexadecimal value
      *
-     * @psalm-pure
+     * @pure
      */
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal;
 
     /**
      * Converts a timestamp extracted from a UUID to a Unix timestamp
+	 * 将从UUID提取的时间戳转换为Unix时间戳
      *
-     * @param Hexadecimal $uuidTimestamp A hexadecimal representation of a UUID
-     *     timestamp; a UUID timestamp is a count of 100-nanosecond intervals
-     *     since UTC 00:00:00.00, 15 October 1582.
+     * @param Hexadecimal $uuidTimestamp A hexadecimal representation of a UUID timestamp; a UUID timestamp is a count
+     *     of 100-nanosecond intervals since UTC 00:00:00.00, 15 October 1582.
      *
      * @return Time An instance of {@see Time}
      *
-     * @psalm-pure
+     * @pure
      */
     public function convertTime(Hexadecimal $uuidTimestamp): Time;
 }

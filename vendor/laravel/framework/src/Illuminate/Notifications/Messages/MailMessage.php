@@ -1,13 +1,15 @@
 <?php
 /**
- * Illuminate，通知，消息，邮件消息
+ * Illuminate，通知，消息，notifications::email Mail 信息
  */
 
 namespace Illuminate\Notifications\Messages;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Mail\Attachable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Markdown;
 use Illuminate\Support\Traits\Conditionable;
 
@@ -96,6 +98,22 @@ class MailMessage extends SimpleMessage implements Renderable
     public $rawAttachments = [];
 
     /**
+     * The tags for the message.
+	 * 消息的标签
+     *
+     * @var array
+     */
+    public $tags = [];
+
+    /**
+     * The metadata for the message.
+	 * 消息的元数据
+     *
+     * @var array
+     */
+    public $metadata = [];
+
+    /**
      * Priority level of the message.
 	 * 消息的优先级
      *
@@ -149,7 +167,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Set the default markdown template.
-	 * 设置默认降价模板
+	 * 设置默认markdown模板
      *
      * @param  string  $template
      * @return $this
@@ -192,7 +210,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Set the "reply to" address of the message.
-	 * 设置邮件的"回复"地址
+	 * 设置邮件的“回复”地址
      *
      * @param  array|string  $address
      * @param  string|null  $name
@@ -251,12 +269,20 @@ class MailMessage extends SimpleMessage implements Renderable
      * Attach a file to the message.
 	 * 将文件附加到消息中
      *
-     * @param  string  $file
+     * @param  string|\Illuminate\Contracts\Mail\Attachable|\Illuminate\Mail\Attachment  $file
      * @param  array  $options
      * @return $this
      */
     public function attach($file, array $options = [])
     {
+        if ($file instanceof Attachable) {
+            $file = $file->toMailAttachment();
+        }
+
+        if ($file instanceof Attachment) {
+            return $file->attachTo($this);
+        }
+
         $this->attachments[] = compact('file', 'options');
 
         return $this;
@@ -274,6 +300,35 @@ class MailMessage extends SimpleMessage implements Renderable
     public function attachData($data, $name, array $options = [])
     {
         $this->rawAttachments[] = compact('data', 'name', 'options');
+
+        return $this;
+    }
+
+    /**
+     * Add a tag header to the message when supported by the underlying transport.
+	 * 在底层传输支持的情况下，向消息添加标记标头。
+     *
+     * @param  string  $value
+     * @return $this
+     */
+    public function tag($value)
+    {
+        array_push($this->tags, $value);
+
+        return $this;
+    }
+
+    /**
+     * Add a metadata header to the message when supported by the underlying transport.
+	 * 当底层传输支持时，向消息添加元数据标头。
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return $this
+     */
+    public function metadata($key, $value)
+    {
+        $this->metadata[$key] = $value;
 
         return $this;
     }
@@ -297,7 +352,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Get the data array for the mail message.
-	 * 得到邮件消息的数据数组
+	 * 获取邮件消息的数据数组
      *
      * @return array
      */
@@ -336,7 +391,7 @@ class MailMessage extends SimpleMessage implements Renderable
      * Render the mail notification message into an HTML string.
 	 * 将邮件通知消息呈现为HTML字符串
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function render()
     {
@@ -353,13 +408,13 @@ class MailMessage extends SimpleMessage implements Renderable
     }
 
     /**
-     * Register a callback to be called with the Swift message instance.
-	 * 在Swift消息实例中注册一个回调函数
+     * Register a callback to be called with the Symfony message instance.
+	 * 注册一个要用Symfony消息实例调用的回调
      *
      * @param  callable  $callback
      * @return $this
      */
-    public function withSwiftMessage($callback)
+    public function withSymfonyMessage($callback)
     {
         $this->callbacks[] = $callback;
 

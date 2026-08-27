@@ -18,7 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * OutputInterface is the interface implemented by all Output classes.
- * OutputInterface是所有输出类实现的接口。
+ * OutputInterface 是由所有Output类实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -36,89 +36,88 @@ interface OutputInterface
 
     /**
      * Writes a message to the output.
-	 * 向输出写入消息
+	 * 将消息写入输出。
      *
-     * @param string|iterable $messages The message as an iterable of strings or a single string
-     * @param bool            $newline  Whether to add a newline
-     * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     * @param bool $newline Whether to add a newline
+     * @param int  $options A bitmask of options (one of the OUTPUT or VERBOSITY constants),
+     *                      0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     *
+     * @return void
      */
-    public function write($messages, bool $newline = false, int $options = 0);
+    public function write(string|iterable $messages, bool $newline = false, int $options = 0);
 
     /**
      * Writes a message to the output and adds a newline at the end.
-	 * 设置输出的verbosity
+	 * 将消息写入输出并在末尾添加换行符
      *
-     * @param string|iterable $messages The message as an iterable of strings or a single string
-     * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     * @param int $options A bitmask of options (one of the OUTPUT or VERBOSITY constants),
+     *                     0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     *
+     * @return void
      */
-    public function writeln($messages, int $options = 0);
+    public function writeln(string|iterable $messages, int $options = 0);
 
     /**
      * Sets the verbosity of the output.
-	 * 设置输出的verbosity
+	 * 设置输出的详细程度
+     *
+     * @param self::VERBOSITY_* $level
+     *
+     * @return void
      */
     public function setVerbosity(int $level);
 
     /**
      * Gets the current verbosity of the output.
-	 * 得到当前输出的verbosity
+	 * 获取当前输出的详细信息
      *
-     * @return int
+     * @return self::VERBOSITY_*
      */
-    public function getVerbosity();
+    public function getVerbosity(): int;
 
     /**
      * Returns whether verbosity is quiet (-q).
 	 * 返回verbose是否为quiet （-q）
-     *
-     * @return bool
      */
-    public function isQuiet();
+    public function isQuiet(): bool;
 
     /**
      * Returns whether verbosity is verbose (-v).
-	 * 返回verbose是否为verbose （-v）
-     *
-     * @return bool
      */
-    public function isVerbose();
+    public function isVerbose(): bool;
 
     /**
      * Returns whether verbosity is very verbose (-vv).
-	 * 返回verbose是否非常verbose （-vv）
-     *
-     * @return bool
      */
-    public function isVeryVerbose();
+    public function isVeryVerbose(): bool;
 
     /**
      * Returns whether verbosity is debug (-vvv).
-     *
-     * @return bool
      */
-    public function isDebug();
+    public function isDebug(): bool;
 
     /**
      * Sets the decorated flag.
-	 * 设置装饰的标识
+	 * 设置装饰标识
+     *
+     * @return void
      */
     public function setDecorated(bool $decorated);
 
     /**
      * Gets the decorated flag.
-	 * 得到装饰的标识
-     *
-     * @return bool
+	 * 获得装饰的标识
      */
-    public function isDecorated();
+    public function isDecorated(): bool;
 
+    /**
+     * @return void
+     */
     public function setFormatter(OutputFormatterInterface $formatter);
 
     /**
      * Returns current output formatter instance.
 	 * 返回当前输出格式化程序实例
-     *
-     * @return OutputFormatterInterface
      */
-    public function getFormatter();
+    public function getFormatter(): OutputFormatterInterface;
 }

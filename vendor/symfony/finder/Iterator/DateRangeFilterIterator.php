@@ -18,7 +18,7 @@ use Symfony\Component\Finder\Comparator\DateComparator;
 
 /**
  * DateRangeFilterIterator filters out files that are not in the given date range (last modified dates).
- * DateRangeFilterIterator过滤掉不在给定日期范围（最后修改日期）的文件。
+ * DateRangeFilterIterator过滤掉不在给定日期范围（最后修改日期）的文件
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -26,7 +26,7 @@ use Symfony\Component\Finder\Comparator\DateComparator;
  */
 class DateRangeFilterIterator extends \FilterIterator
 {
-    private $comparators = [];
+    private array $comparators = [];
 
     /**
      * @param \Iterator<string, \SplFileInfo> $iterator
@@ -41,12 +41,8 @@ class DateRangeFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
-	 * 过滤迭代器值
-     *
-     * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function accept()
+    public function accept(): bool
     {
         $fileinfo = $this->current();
 

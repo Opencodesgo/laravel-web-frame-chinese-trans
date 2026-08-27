@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件，无法写文件异常
+ * Symfony，Component，HttpFoundation，文件，异常，无法写文件异常
  */
 
 /*

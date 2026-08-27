@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，转变为
+ * Illuminate，数据库，Eloquent，关系，多态
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -41,7 +41,7 @@ class MorphTo extends BelongsTo
 
     /**
      * A buffer of dynamic calls to query macros.
-	 * 用于动态调用查询宏的缓冲区
+	 * 用于动态调用查询宏的缓冲
      *
      * @var array
      */
@@ -126,7 +126,6 @@ class MorphTo extends BelongsTo
 	 * 得到关系的结果
      *
      * Called via eager load method of Eloquent query builder.
-	 * 通过Eloquent查询生成器的急切加载方法调用
      *
      * @return mixed
      */
@@ -365,7 +364,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Specify constraints on the query for a given morph type.
-	 * 为给定的变形类型指定查询约束
+	 * 为给定的变形类型指定查询约
      *
      * @param  array  $callbacks
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -418,7 +417,7 @@ class MorphTo extends BelongsTo
         // If we tried to call a method that does not exist on the parent Builder instance,
         // we'll assume that we want to call a query macro (e.g. withTrashed) that only
         // exists on related models. We will just store the call and replay it later.
-		// 如果我们试图调用父Builder实例上不存在的方法。
+		// 如果我们试图调用父Builder实例上不存在的方法，我们想调用查询宏。
         catch (BadMethodCallException $e) {
             $this->macroBuffer[] = compact('method', 'parameters');
 

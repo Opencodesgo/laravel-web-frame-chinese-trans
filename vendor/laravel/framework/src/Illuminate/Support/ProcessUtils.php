@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，进程常用工具
+ * Illuminate, 支持, 进程工具套件
  */
 
 namespace Illuminate\Support;
@@ -27,7 +27,7 @@ class ProcessUtils
         // @see https://bugs.php.net/bug.php?id=43784
         // @see https://bugs.php.net/bug.php?id=49446
         if ('\\' === DIRECTORY_SEPARATOR) {
-            if ('' === $argument) {
+            if ($argument === '') {
                 return '""';
             }
 
@@ -35,14 +35,14 @@ class ProcessUtils
             $quote = false;
 
             foreach (preg_split('/(")/', $argument, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $part) {
-                if ('"' === $part) {
+                if ($part === '"') {
                     $escapedArgument .= '\\"';
                 } elseif (self::isSurroundedBy($part, '%')) {
                     // Avoid environment variable expansion
                     $escapedArgument .= '^%"'.substr($part, 1, -1).'"^%';
                 } else {
                     // escape trailing backslash
-                    if ('\\' === substr($part, -1)) {
+                    if (str_ends_with($part, '\\')) {
                         $part .= '\\';
                     }
                     $quote = true;
@@ -70,6 +70,6 @@ class ProcessUtils
      */
     protected static function isSurroundedBy($arg, $char)
     {
-        return 2 < strlen($arg) && $char === $arg[0] && $char === $arg[strlen($arg) - 1];
+        return strlen($arg) > 2 && $char === $arg[0] && $char === $arg[strlen($arg) - 1];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Xml，Xml 节点渲染接口
+ * League，CommonMark，Xml，Xml 节点渲染器接口
  */
 
 declare(strict_types=1);

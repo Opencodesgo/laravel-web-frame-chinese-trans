@@ -12,13 +12,13 @@ use LogicException;
 
 class Response implements ArrayAccess
 {
-    use Macroable {
+    use Concerns\DeterminesStatusCode, Macroable {
         __call as macroCall;
     }
 
     /**
      * The underlying PSR response.
-	 * 底层的PSR响应
+	 * 底层PSR响应
      *
      * @var \Psr\Http\Message\ResponseInterface
      */
@@ -33,8 +33,24 @@ class Response implements ArrayAccess
     protected $decoded;
 
     /**
+     * The request cookies.
+	 * 请求cookie
+     *
+     * @var \GuzzleHttp\Cookie\CookieJar
+     */
+    public $cookies;
+
+    /**
+     * The transfer stats for the request.
+	 * 请求的传输统计信息
+     *
+     * @var \GuzzleHttp\TransferStats|null
+     */
+    public $transferStats;
+
+    /**
      * Create a new response instance.
-	 * 创建新的响应实例
+	 * 创建一个新的响应实例
      *
      * @param  \Psr\Http\Message\MessageInterface  $response
      * @return void
@@ -80,7 +96,7 @@ class Response implements ArrayAccess
      * Get the JSON decoded body of the response as an object.
 	 * 获取响应的JSON解码体作为对象
      *
-     * @return object
+     * @return object|null
      */
     public function object()
     {
@@ -152,7 +168,7 @@ class Response implements ArrayAccess
      */
     public function effectiveUri()
     {
-        return optional($this->transferStats)->getEffectiveUri();
+        return $this->transferStats?->getEffectiveUri();
     }
 
     /**
@@ -167,17 +183,6 @@ class Response implements ArrayAccess
     }
 
     /**
-     * Determine if the response code was "OK".
-	 * 确定响应代码是否为"OK"
-     *
-     * @return bool
-     */
-    public function ok()
-    {
-        return $this->status() === 200;
-    }
-
-    /**
      * Determine if the response was a redirect.
 	 * 确定响应是否为重定向
      *
@@ -186,28 +191,6 @@ class Response implements ArrayAccess
     public function redirect()
     {
         return $this->status() >= 300 && $this->status() < 400;
-    }
-
-    /**
-     * Determine if the response was a 401 "Unauthorized" response.
-	 * 确定响应是否为401"未授权"响应
-     *
-     * @return bool
-     */
-    public function unauthorized()
-    {
-        return $this->status() === 401;
-    }
-
-    /**
-     * Determine if the response was a 403 "Forbidden" response.
-	 * 确定响应是否为403"Forbidden"响应
-     *
-     * @return bool
-     */
-    public function forbidden()
-    {
-        return $this->status() === 403;
     }
 
     /**
@@ -261,7 +244,7 @@ class Response implements ArrayAccess
 
     /**
      * Get the response cookies.
-	 * 获取响应cookie
+	 * 得到响应cookies
      *
      * @return \GuzzleHttp\Cookie\CookieJar
      */
@@ -278,7 +261,7 @@ class Response implements ArrayAccess
      */
     public function handlerStats()
     {
-        return optional($this->transferStats)->getHandlerStats() ?? [];
+        return $this->transferStats?->getHandlerStats() ?? [];
     }
 
     /**
@@ -346,14 +329,79 @@ class Response implements ArrayAccess
      * Throw an exception if a server or client error occurred and the given condition evaluates to true.
 	 * 如果发生服务器或客户端错误并且给定条件的计算结果为true，则抛出异常。
      *
-     * @param  bool  $condition
+     * @param  \Closure|bool  $condition
+     * @param  \Closure|null  $throwCallback
      * @return $this
      *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function throwIf($condition)
     {
-        return $condition ? $this->throw() : $this;
+        return value($condition, $this) ? $this->throw(func_get_args()[1] ?? null) : $this;
+    }
+
+    /**
+     * Throw an exception if the response status code matches the given code.
+	 * 如果响应状态码与给定代码匹配，则抛出异常
+     *
+     * @param  callable|int  $statusCode
+     * @return $this
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function throwIfStatus($statusCode)
+    {
+        if (is_callable($statusCode) &&
+            $statusCode($this->status(), $this)) {
+            return $this->throw();
+        }
+
+        return $this->status() === $statusCode ? $this->throw() : $this;
+    }
+
+    /**
+     * Throw an exception unless the response status code matches the given code.
+	 * 除非响应状态码与给定代码匹配，否则抛出异常。
+     *
+     * @param  callable|int  $statusCode
+     * @return $this
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function throwUnlessStatus($statusCode)
+    {
+        if (is_callable($statusCode) &&
+            ! $statusCode($this->status(), $this)) {
+            return $this->throw();
+        }
+
+        return $this->status() === $statusCode ? $this : $this->throw();
+    }
+
+    /**
+     * Throw an exception if the response status code is a 4xx level code.
+	 * 如果响应状态码是4xx级代码，则抛出异常。
+     *
+     * @return $this
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function throwIfClientError()
+    {
+        return $this->clientError() ? $this->throw() : $this;
+    }
+
+    /**
+     * Throw an exception if the response status code is a 5xx level code.
+	 * 如果响应状态码是5xx级代码，则抛出异常。
+     *
+     * @return $this
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function throwIfServerError()
+    {
+        return $this->serverError() ? $this->throw() : $this;
     }
 
     /**
@@ -363,8 +411,7 @@ class Response implements ArrayAccess
      * @param  string  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->json()[$offset]);
     }
@@ -376,8 +423,7 @@ class Response implements ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->json()[$offset];
     }
@@ -392,8 +438,7 @@ class Response implements ArrayAccess
      *
      * @throws \LogicException
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new LogicException('Response data may not be mutated using array access.');
     }
@@ -407,8 +452,7 @@ class Response implements ArrayAccess
      *
      * @throws \LogicException
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new LogicException('Response data may not be mutated using array access.');
     }

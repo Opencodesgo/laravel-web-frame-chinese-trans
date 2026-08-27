@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
 use Illuminate\Contracts\View\Factory as ViewFactoryContract;
+use Illuminate\Routing\Contracts\CallableDispatcher as CallableDispatcherContract;
 use Illuminate\Routing\Contracts\ControllerDispatcher as ControllerDispatcherContract;
 use Illuminate\Support\ServiceProvider;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -33,6 +34,7 @@ class RoutingServiceProvider extends ServiceProvider
         $this->registerPsrRequest();
         $this->registerPsrResponse();
         $this->registerResponseFactory();
+        $this->registerCallableDispatcher();
         $this->registerControllerDispatcher();
     }
 
@@ -77,7 +79,7 @@ class RoutingServiceProvider extends ServiceProvider
             // Next we will set a few service resolvers on the URL generator so it can
             // get the information it needs to function. This just provides some of
             // the convenience features to this URL generator like "signed" URLs.
-			// 接下来，我们将在URL生成器上设置一些服务解析器。
+			// 接下来，我们将在URL生成器上设置一些服务解析器，以便它可以。
             $url->setSessionResolver(function () {
                 return $this->app['session'] ?? null;
             });
@@ -89,7 +91,7 @@ class RoutingServiceProvider extends ServiceProvider
             // If the route collection is "rebound", for example, when the routes stay
             // cached for the application, we will need to rebind the routes on the
             // URL generator instance so it has the latest version of the routes.
-			// 如果路由采集为"rebound"，例如，当路线停留在应用程序缓存。
+			// 如果路由采集是“反弹”，例如，当路由保留时。
             $app->rebinding('routes', function ($app, $routes) {
                 $app['url']->setRoutes($routes);
             });
@@ -125,7 +127,7 @@ class RoutingServiceProvider extends ServiceProvider
             // If the session is set on the application instance, we'll inject it into
             // the redirector instance. This allows the redirect responses to allow
             // for the quite convenient "with" methods that flash to the session.
-			// 如果在应用程序实例上设置了会话，我们把它注入重定向实例。
+			// 如果会话设置在应用程序实例上，我们将把它注入。
             if (isset($app['session.store'])) {
                 $redirector->setSession($app['session.store']);
             }
@@ -185,6 +187,19 @@ class RoutingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ResponseFactoryContract::class, function ($app) {
             return new ResponseFactory($app[ViewFactoryContract::class], $app['redirect']);
+        });
+    }
+
+    /**
+     * Register the callable dispatcher.
+	 * 注册可调用调度程序
+     *
+     * @return void
+     */
+    protected function registerCallableDispatcher()
+    {
+        $this->app->singleton(CallableDispatcherContract::class, function ($app) {
+            return new CallableDispatcher($app);
         });
     }
 

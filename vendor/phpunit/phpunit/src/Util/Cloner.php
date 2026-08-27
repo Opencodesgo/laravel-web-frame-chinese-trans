@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，克隆
+ */
+
 /*
  * This file is part of PHPUnit.
  *

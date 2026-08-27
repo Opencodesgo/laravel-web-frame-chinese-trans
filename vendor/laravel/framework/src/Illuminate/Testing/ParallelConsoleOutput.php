@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，并行控制台输出
+ * Illuminate, 测试, 并行控制台输出
  */
 
 namespace Illuminate\Testing;

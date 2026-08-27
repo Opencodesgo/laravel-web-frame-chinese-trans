@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Redis Pub Sub 处理程序
- *
+ * Monolog，处理器，Redis Pub Sub 处理器
+ */
 
 /*
  * This file is part of the Monolog package.

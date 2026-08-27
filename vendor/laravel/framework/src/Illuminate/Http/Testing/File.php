@@ -11,7 +11,7 @@ class File extends UploadedFile
 {
     /**
      * The name of the file.
-	 * 文件的名称
+	 * 文件名称
      *
      * @var string
      */
@@ -43,7 +43,7 @@ class File extends UploadedFile
 
     /**
      * Create a new file instance.
-	 * 创建新的文件实例
+	 * 创建一个新的文件实例
      *
      * @param  string  $name
      * @param  resource  $tempFile
@@ -88,7 +88,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake image.
-	 * 创建一个新的假图片
+	 * 创建一个新的假图像
      *
      * @param  string  $name
      * @param  int  $width
@@ -120,8 +120,7 @@ class File extends UploadedFile
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function getSize()
+    public function getSize(): int
     {
         return $this->sizeToReport ?: parent::getSize();
     }
@@ -146,7 +145,7 @@ class File extends UploadedFile
      *
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeTypeToReport ?: MimeType::from($this->name);
     }

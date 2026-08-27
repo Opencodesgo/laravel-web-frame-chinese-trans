@@ -9,7 +9,7 @@ interface StatefulGuard extends Guard
 {
     /**
      * Attempt to authenticate a user using the given credentials.
-	 * 尝试使用给定凭据对用户进行身份验证
+	 * 尝试验证用户使用给定的凭据
      *
      * @param  array  $credentials
      * @param  bool  $remember
@@ -28,7 +28,7 @@ interface StatefulGuard extends Guard
 
     /**
      * Log a user into the application.
-	 * 将用户登录到应用程序
+	 * 用户登录到应用程序
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  bool  $remember
@@ -38,7 +38,7 @@ interface StatefulGuard extends Guard
 
     /**
      * Log the given user ID into the application.
-	 * 记录给定的用户ID到应用程序中
+	 * 将给定的用户ID记录到应用程序中
      *
      * @param  mixed  $id
      * @param  bool  $remember
@@ -48,7 +48,7 @@ interface StatefulGuard extends Guard
 
     /**
      * Log the given user ID into the application without sessions or cookies.
-	 * 记录给定的用户ID到没有会话或cookie的应用程序中
+	 * 将给定的用户ID登录到没有会话或cookie的应用程序中
      *
      * @param  mixed  $id
      * @return \Illuminate\Contracts\Auth\Authenticatable|bool

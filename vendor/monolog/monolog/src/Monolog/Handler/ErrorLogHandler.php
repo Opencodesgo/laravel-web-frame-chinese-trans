@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，错误日志处理程序
+ * Monolog，处理器，Error Log 处理器 (将日志记录到 PHP 的 error_log 中)
  */
 
 /*
@@ -22,7 +22,7 @@ use Monolog\Utils;
 
 /**
  * Stores to PHP error_log() handler.
- * 存储到PHP error_log()处理程序。
+ * 存储到PHP error_log（）处理程序
  *
  * @author Elan Ruusamäe <glen@delfi.ee>
  */

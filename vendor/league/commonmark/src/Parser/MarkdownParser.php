@@ -136,6 +136,7 @@ final class MarkdownParser implements MarkdownParserInterface
 
         // Unless last matched container is a code block, try new container starts,
         // adding children to the last matched container:
+		// 除非最后匹配的容器是一个代码块，否则尝试新容器启动，向最后一个匹配的容器添加子容器：
         $tryBlockStarts = $blockParser->getBlock() instanceof Paragraph || $blockParser->isContainer();
         while ($tryBlockStarts) {
             // this is a little performance optimization
@@ -202,7 +203,6 @@ final class MarkdownParser implements MarkdownParserInterface
     {
         // For each containing block, try to parse the associated line start.
         // The document will always match, so we can skip the first block parser and start at 1 matches
-		// 对于每个包含的块,试着解析关联的行启动。
         $matches = 1;
         for ($i = 1; $i < \count($this->activeBlockParsers); $i++) {
             $blockParser   = $this->activeBlockParsers[$i];
@@ -259,7 +259,7 @@ final class MarkdownParser implements MarkdownParserInterface
      * Finalize a block. Close it and do any necessary postprocessing, e.g. creating string_content from strings,
      * setting the 'tight' or 'loose' status of a list, and parsing the beginnings of paragraphs for reference
      * definitions.
-	 * 最后确定一个块。关闭它并进行任何必要的后处理。
+	 * 完成一个块。关闭它并做任何必要的后处理，例如：
      */
     private function finalize(BlockContinueParserInterface $blockParser, int $endLineNumber): void
     {

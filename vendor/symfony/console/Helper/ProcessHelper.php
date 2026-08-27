@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，助手，过程助手
+ * Symfony，Component，Console，助手，进程状态助手
  */
 
 /*
@@ -21,7 +21,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * The ProcessHelper class provides helpers to run external processes.
- * ProcessHelper类提供帮助来运行外部过程。
+ * ProcessHelper类提供了运行外部进程的帮助程序。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -31,13 +31,12 @@ class ProcessHelper extends Helper
 {
     /**
      * Runs an external process.
-	 * 运行一个外部过程
      *
      * @param array|Process $cmd      An instance of Process or an array of the command and arguments
      * @param callable|null $callback A PHP callback to run whenever there is some
      *                                output available on STDOUT or STDERR
      */
-    public function run(OutputInterface $output, $cmd, ?string $error = null, ?callable $callback = null, int $verbosity = OutputInterface::VERBOSITY_VERY_VERBOSE): Process
+    public function run(OutputInterface $output, array|Process $cmd, ?string $error = null, ?callable $callback = null, int $verbosity = OutputInterface::VERBOSITY_VERY_VERBOSE): Process
     {
         if (!class_exists(Process::class)) {
             throw new \LogicException('The ProcessHelper cannot be run as the Process component is not installed. Try running "compose require symfony/process".');
@@ -53,10 +52,6 @@ class ProcessHelper extends Helper
             $cmd = [$cmd];
         }
 
-        if (!\is_array($cmd)) {
-            throw new \TypeError(sprintf('The "command" argument of "%s()" must be an array or a "%s" instance, "%s" given.', __METHOD__, Process::class, get_debug_type($cmd)));
-        }
-
         if (\is_string($cmd[0] ?? null)) {
             $process = new Process($cmd);
             $cmd = [];
@@ -64,7 +59,7 @@ class ProcessHelper extends Helper
             $process = $cmd[0];
             unset($cmd[0]);
         } else {
-            throw new \InvalidArgumentException(sprintf('Invalid command provided to "%s()": the command should be an array whose first element is either the path to the binary to run or a "Process" object.', __METHOD__));
+            throw new \InvalidArgumentException(\sprintf('Invalid command provided to "%s()": the command should be an array whose first element is either the path to the binary to run or a "Process" object.', __METHOD__));
         }
 
         if ($verbosity <= $output->getVerbosity()) {
@@ -78,12 +73,12 @@ class ProcessHelper extends Helper
         $process->run($callback, $cmd);
 
         if ($verbosity <= $output->getVerbosity()) {
-            $message = $process->isSuccessful() ? 'Command ran successfully' : sprintf('%s Command did not run successfully', $process->getExitCode());
+            $message = $process->isSuccessful() ? 'Command ran successfully' : \sprintf('%s Command did not run successfully', $process->getExitCode());
             $output->write($formatter->stop(spl_object_hash($process), $message, $process->isSuccessful()));
         }
 
         if (!$process->isSuccessful() && null !== $error) {
-            $output->writeln(sprintf('<error>%s</error>', $this->escapeString($error)));
+            $output->writeln(\sprintf('<error>%s</error>', $this->escapeString($error)));
         }
 
         return $process;
@@ -91,7 +86,7 @@ class ProcessHelper extends Helper
 
     /**
      * Runs the process.
-	 * 运行这个过程。
+	 * 运行进程。
      *
      * This is identical to run() except that an exception is thrown if the process
      * exits with a non-zero exit code.
@@ -104,7 +99,7 @@ class ProcessHelper extends Helper
      *
      * @see run()
      */
-    public function mustRun(OutputInterface $output, $cmd, ?string $error = null, ?callable $callback = null): Process
+    public function mustRun(OutputInterface $output, array|Process $cmd, ?string $error = null, ?callable $callback = null): Process
     {
         $process = $this->run($output, $cmd, $error, $callback);
 
@@ -117,7 +112,7 @@ class ProcessHelper extends Helper
 
     /**
      * Wraps a Process callback to add debugging output.
-	 * 包一个流程回调以添加调试输出
+	 * 包装Process回调以添加调试输出
      */
     public function wrapCallback(OutputInterface $output, Process $process, ?callable $callback = null): callable
     {
@@ -141,9 +136,6 @@ class ProcessHelper extends Helper
         return str_replace('<', '\\<', $str);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'process';

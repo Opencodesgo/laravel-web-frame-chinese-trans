@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，Schema，确认异常
+ * Nette，Schema，验证异常
  */
 
 /**
@@ -17,12 +17,12 @@ use Nette;
 
 /**
  * Validation error.
- * 确认错误
+ * 验证错误
  */
 class ValidationException extends Nette\InvalidStateException
 {
 	/** @var Message[] */
-	private $messages;
+	private array $messages;
 
 
 	/**

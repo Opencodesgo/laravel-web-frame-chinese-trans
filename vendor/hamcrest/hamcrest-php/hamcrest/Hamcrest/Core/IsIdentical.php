@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Is Identical
+ * Hamcrest，核心，是一样的
  */
 
 namespace Hamcrest\Core;

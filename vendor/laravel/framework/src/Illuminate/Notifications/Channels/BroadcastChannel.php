@@ -35,7 +35,7 @@ class BroadcastChannel
 
     /**
      * Send the given notification.
-	 * 发送给定通知
+	 * 发送给定的通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -77,6 +77,6 @@ class BroadcastChannel
             return $notification->toArray($notifiable);
         }
 
-        throw new RuntimeException('Notification is missing toArray method.');		#通知缺少toArray方法
+        throw new RuntimeException('Notification is missing toArray method.');
     }
 }

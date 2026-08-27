@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，主体摘要
+ * GuzzleHttp，主体缩写器
  */
 
 namespace GuzzleHttp;
@@ -21,7 +21,7 @@ final class BodySummarizer implements BodySummarizerInterface
 
     /**
      * Returns a summarized message body.
-	 * 返回一个总结消息体
+	 * 返回摘要消息正文
      */
     public function summarize(MessageInterface $message): ?string
     {

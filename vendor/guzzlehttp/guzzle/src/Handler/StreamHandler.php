@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，处理者，流处理程序
+ * GuzzleHttp，处理器，流处理器
  */
 
 namespace GuzzleHttp\Handler;
@@ -20,7 +20,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * HTTP handler that uses PHP's HTTP stream wrapper.
- * 使用PHP HTTP流包装器的HTTP处理程序。
+ * 使用PHP的HTTP流包装器的HTTP处理程序。
  *
  * @final
  */
@@ -33,7 +33,7 @@ class StreamHandler
 
     /**
      * Sends an HTTP request.
-	 * 发送一个HTTP请求
+	 * 发送HTTP请求
      *
      * @param RequestInterface $request Request to send.
      * @param array            $options Request transfer options.
@@ -58,8 +58,14 @@ class StreamHandler
             $request = $request->withoutHeader('Expect');
 
             // Append a content-length header if body size is zero to match
-            // cURL's behavior.
-            if (0 === $request->getBody()->getSize()) {
+            // the behavior of `CurlHandler`
+            if (
+                (
+                    0 === \strcasecmp('PUT', $request->getMethod())
+                    || 0 === \strcasecmp('POST', $request->getMethod())
+                )
+                && 0 === $request->getBody()->getSize()
+            ) {
                 $request = $request->withHeader('Content-Length', '0');
             }
 
@@ -203,7 +209,7 @@ class StreamHandler
 
     /**
      * Drains the source stream into the "sink" client option.
-	 * 将源流排放到“sink”客户端选项中。
+	 * 将源流排入“接收”客户端选项
      *
      * @param string $contentLength Header specifying the amount of
      *                              data to read.
@@ -230,7 +236,7 @@ class StreamHandler
 
     /**
      * Create a resource and check to ensure it was created successfully
-	 * 创建一个资源并检查确保它成功创建
+	 * 创建一个资源，并检查它是否已成功创建。
      *
      * @param callable $callback Callable that returns stream resource
      *
@@ -452,7 +458,7 @@ class StreamHandler
 
     /**
      * Parses the given proxy URL to make it compatible with the format PHP's stream context expects.
-	 * 解析给定的代理URL,使它与PHP流上下文所期望的格式兼容。
+	 * 解析给定的代理URL，使其与PHP流上下文所期望的格式兼容。
      */
     private function parse_proxy(string $url): array
     {

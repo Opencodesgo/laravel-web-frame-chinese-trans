@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，文件处理机
+ * Faker，文件编制程序
  */
 
 namespace Faker;

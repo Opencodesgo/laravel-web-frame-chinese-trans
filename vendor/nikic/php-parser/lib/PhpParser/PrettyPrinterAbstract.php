@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，漂亮的打印机抽象
+ * PhpParser，漂亮的打印机
  */
 
 namespace PhpParser;
@@ -63,9 +63,11 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
         BinaryOp\Mod::class            => [ 40,  41,  40],
         BinaryOp\Plus::class           => [ 50,  51,  50],
         BinaryOp\Minus::class          => [ 50,  51,  50],
+        // FIXME: This precedence is incorrect for PHP 8.
         BinaryOp\Concat::class         => [ 50,  51,  50],
         BinaryOp\ShiftLeft::class      => [ 60,  61,  60],
         BinaryOp\ShiftRight::class     => [ 60,  61,  60],
+        BinaryOp\Pipe::class           => [ 65,  66,  65],
         BinaryOp\Smaller::class        => [ 70,  70,  70],
         BinaryOp\SmallerOrEqual::class => [ 70,  70,  70],
         BinaryOp\Greater::class        => [ 70,  70,  70],
@@ -106,6 +108,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
         Expr\Include_::class           => [220,  -1,  -1],
         Expr\ArrowFunction::class      => [230,  -1,  -1],
         Expr\Throw_::class             => [240,  -1,  -1],
+        Expr\Cast\Void_::class         => [250,  -1,  -1],
     ];
 
     /** @var int Current indentation level. */
@@ -174,7 +177,6 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Creates a pretty printer instance using the given options.
-	 * 使用给定的选项创建漂亮的打印机实例。
      *
      * Supported options:
      *  * PhpVersion $phpVersion: The PHP version to target (default to PHP 7.4). This option
@@ -257,6 +259,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Decrease indentation level.
+	 * 减少缩进水平
      */
     protected function outdent(): void {
         assert($this->indentLevel >= $this->indentWidth);
@@ -293,7 +296,6 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Pretty prints a file of statements (includes the opening <?php tag if it is required).
-	 * Pretty打印语句文件(包括开头的<？PHP标记（如果需要）
      *
      * @param Node[] $stmts Array of statements
      *
@@ -318,7 +320,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Preprocesses the top-level nodes to initialize pretty printer state.
-	 * 预处理顶级节点以初始化漂亮的打印机状态。
+	 * 预处理顶级节点以初始化漂亮的打印机状态
      *
      * @param Node[] $nodes Array of nodes
      */
@@ -787,7 +789,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Perform a format-preserving pretty print of an array.
-	 * 对数组执行保持格式的漂亮打印
+	 * 对数组执行保持格式的漂亮打印。
      *
      * @param Node[] $nodes New nodes
      * @param Node[] $origNodes Original nodes
@@ -1161,7 +1163,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether the LHS of a call must be wrapped in parenthesis.
-	 * 确定是否必须将调用的LHS包装在括号中
+	 * 确定是否必须将调用的LHS包装在括号中。
      *
      * @param Node $node LHS of a call
      *
@@ -1180,7 +1182,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether the LHS of an array/object operation must be wrapped in parentheses.
-	 * 确定是否必须将数组/对象操作的LHS包装在括号中
+	 * 确定是否必须将数组/对象操作的LHS包装在括号中。
      *
      * @param Node $node LHS of dereferencing operation
      *
@@ -1194,7 +1196,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether the LHS of a static operation must be wrapped in parentheses.
-	 * 确定是否必须将静态操作的LHS包装在括号中
+	 * 确定是否必须将静态操作的LHS包装在括号中。
      *
      * @param Node $node LHS of dereferencing operation
      *
@@ -1218,6 +1220,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
 
     /**
      * Determines whether an expression used in "new" or "instanceof" requires parentheses.
+	 * 确定在“new”或“instanceof”中使用的表达式是否需要括号。
      *
      * @param Node $node New or instanceof operand
      *
@@ -1404,7 +1407,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
             BinaryOp\NotIdentical::class, BinaryOp\Spaceship::class, BinaryOp\BitwiseAnd::class,
             BinaryOp\BitwiseXor::class, BinaryOp\BitwiseOr::class, BinaryOp\BooleanAnd::class,
             BinaryOp\BooleanOr::class, BinaryOp\Coalesce::class, BinaryOp\LogicalAnd::class,
-            BinaryOp\LogicalXor::class, BinaryOp\LogicalOr::class,
+            BinaryOp\LogicalXor::class, BinaryOp\LogicalOr::class, BinaryOp\Pipe::class,
         ];
         foreach ($binaryOps as $binaryOp) {
             $this->fixupMap[$binaryOp] = [
@@ -1667,6 +1670,7 @@ abstract class PrettyPrinterAbstract implements PrettyPrinter {
             Stmt\Trait_::class . '->attrGroups' => [null, '', "\n"],
             Expr\ArrowFunction::class . '->attrGroups' => [null, '', ' '],
             Expr\Closure::class . '->attrGroups' => [null, '', ' '],
+            Stmt\Const_::class . '->attrGroups' => [null, '', "\n"],
             PrintableNewAnonClassNode::class . '->attrGroups' => [\T_NEW, ' ', ''],
 
             /* These cannot be empty to start with:

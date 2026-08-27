@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，抽象的匹配器
+ * Mockery，匹配器，匹配器抽象
  */
 
 /**
@@ -21,7 +21,7 @@ abstract class MatcherAbstract implements MatcherInterface
 {
     /**
      * The expected value (or part thereof)
-	 * 预期价值(或部分)
+	 * 期望值（或其中的一部分）
      *
      * @template TExpected
      *
@@ -31,7 +31,7 @@ abstract class MatcherAbstract implements MatcherInterface
 
     /**
      * Set the expected value
-	 * 设定预期值
+	 * 设置期望值
      *
      * @template TExpected
      *

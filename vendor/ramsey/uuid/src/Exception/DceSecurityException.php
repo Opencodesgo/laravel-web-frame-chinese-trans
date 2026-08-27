@@ -20,8 +20,8 @@ namespace Ramsey\Uuid\Exception;
 use RuntimeException as PhpRuntimeException;
 
 /**
- * Thrown to indicate an exception occurred while dealing with DCE Security
- * (version 2) UUIDs
+ * Thrown to indicate an exception occurred while dealing with DCE Security (version 2) UUIDs
+ * 抛出以指示在处理DCE Security（版本2）uid时发生异常
  */
 class DceSecurityException extends PhpRuntimeException implements UuidExceptionInterface
 {

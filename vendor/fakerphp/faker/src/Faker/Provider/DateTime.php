@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，日期时间
+ */
 
 namespace Faker\Provider;
 
@@ -195,6 +198,7 @@ class DateTime extends Base
 
     /**
      * Get a date time object somewhere within a century.
+	 * 获取一个世纪范围内的日期时间对象
      *
      * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
      * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
@@ -208,6 +212,7 @@ class DateTime extends Base
 
     /**
      * Get a date time object somewhere within a decade.
+	 * 获取一个十年之内的日期时间对象
      *
      * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
      * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
@@ -221,6 +226,7 @@ class DateTime extends Base
 
     /**
      * Get a date time object somewhere inside the current year.
+	 * 获取当前年份中的某个日期时间对象
      *
      * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
      * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
@@ -234,6 +240,7 @@ class DateTime extends Base
 
     /**
      * Get a date time object somewhere within a month.
+	 * 获取一个月内某个地方的日期时间对象
      *
      * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
      * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
@@ -347,6 +354,7 @@ class DateTime extends Base
 
     /**
      * Internal method to set the time zone on a DateTime.
+	 * 在DateTime上设置时区的内部方法
      *
      * @param string|null $timezone
      *
@@ -359,6 +367,7 @@ class DateTime extends Base
 
     /**
      * Sets default time zone.
+	 * 设置默认时区
      *
      * @param string $timezone
      */
@@ -369,6 +378,7 @@ class DateTime extends Base
 
     /**
      * Gets default time zone.
+	 * 设置默认时区
      *
      * @return string|null
      */

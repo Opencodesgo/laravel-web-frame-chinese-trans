@@ -78,7 +78,7 @@ class NullStore extends TaggableStore implements LockProvider
 
     /**
      * Get a lock instance.
-	 * 得到锁实例
+	 * 获取一个锁实例
      *
      * @param  string  $name
      * @param  int  $seconds

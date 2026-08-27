@@ -1,11 +1,9 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，变形主
+ * Illuminate，数据库，Eloquent，关系，改变主
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
-
-use Illuminate\Support\Str;
 
 class MorphPivot extends Pivot
 {
@@ -14,7 +12,6 @@ class MorphPivot extends Pivot
 	 * 多态关系的类型
      *
      * Explicitly define this so it's not included in saved attributes.
-	 * 显式地定义它，使它不包含在保存的属性中。
      *
      * @var string
      */
@@ -25,7 +22,6 @@ class MorphPivot extends Pivot
 	 * 多态关系的值
      *
      * Explicitly define this so it's not included in saved attributes.
-	 * 显式地定义它，使它不包含在保存的属性中。
      *
      * @var string
      */
@@ -33,7 +29,7 @@ class MorphPivot extends Pivot
 
     /**
      * Set the keys for a save update query.
-	 * 设置保存更新查询的键
+	 * 为保存更新查询设置键
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -156,7 +152,7 @@ class MorphPivot extends Pivot
             return $this->newQueryForCollectionRestoration($ids);
         }
 
-        if (! Str::contains($ids, ':')) {
+        if (! str_contains($ids, ':')) {
             return parent::newQueryForRestoration($ids);
         }
 
@@ -179,7 +175,7 @@ class MorphPivot extends Pivot
     {
         $ids = array_values($ids);
 
-        if (! Str::contains($ids[0], ':')) {
+        if (! str_contains($ids[0], ':')) {
             return parent::newQueryForRestoration($ids);
         }
 

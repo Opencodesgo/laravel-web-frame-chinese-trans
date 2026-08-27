@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，全局状态，快照
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -35,6 +40,7 @@ use Throwable;
 
 /**
  * A snapshot of global state.
+ * 全局状态的快照。
  */
 class Snapshot
 {
@@ -100,6 +106,7 @@ class Snapshot
 
     /**
      * Creates a snapshot of the current global state.
+	 * 创建当前全局状态的快照
      */
     public function __construct(?ExcludeList $excludeList = null, bool $includeGlobalVariables = true, bool $includeStaticAttributes = true, bool $includeConstants = true, bool $includeFunctions = true, bool $includeClasses = true, bool $includeInterfaces = true, bool $includeTraits = true, bool $includeIniSettings = true, bool $includeIncludedFiles = true)
     {
@@ -315,7 +322,9 @@ class Snapshot
                         continue;
                     }
 
-                    $attribute->setAccessible(true);
+                    if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                        $attribute->setAccessible(true);
+                    }
 
                     if (PHP_VERSION_ID >= 70400 && !$attribute->isInitialized()) {
                         continue;

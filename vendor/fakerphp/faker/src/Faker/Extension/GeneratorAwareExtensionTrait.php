@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，扩展，生成器意识延伸特性
+ * Faker，扩展，生成器感知扩展特性
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ use Faker\Generator;
 
 /**
  * A helper trait to be used with GeneratorAwareExtension.
- * 与GeneratorAwareExtension一起使用的助手特性。
+ * 与GeneratorAwareExtension一起使用的helper trait。
  */
 trait GeneratorAwareExtensionTrait
 {

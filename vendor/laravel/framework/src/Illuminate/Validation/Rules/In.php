@@ -10,6 +10,8 @@ class In
     /**
      * The name of the rule.
 	 * 规则名称
+     *
+     * @var string
      */
     protected $rule = 'in';
 
@@ -23,7 +25,7 @@ class In
 
     /**
      * Create a new in rule instance.
-	 * 创建新的规则实例
+	 * 创建一个新的规则实例
      *
      * @param  array  $values
      * @return void

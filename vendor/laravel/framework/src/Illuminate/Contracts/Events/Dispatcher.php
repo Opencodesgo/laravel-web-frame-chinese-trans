@@ -9,7 +9,7 @@ interface Dispatcher
 {
     /**
      * Register an event listener with the dispatcher.
-	 * 向调度程序注册事件监听器
+	 * 向调度程序注册事件监听程序
      *
      * @param  \Closure|string|array  $events
      * @param  \Closure|string|array|null  $listener
@@ -19,7 +19,7 @@ interface Dispatcher
 
     /**
      * Determine if a given event has listeners.
-	 * 确定给定事件是否有监听器
+	 * 确定给定事件是否有侦听器
      *
      * @param  string  $eventName
      * @return bool
@@ -47,7 +47,7 @@ interface Dispatcher
 
     /**
      * Dispatch an event and call the listeners.
-	 * 分派事件并调用监听器
+	 * 分派事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -77,7 +77,7 @@ interface Dispatcher
 
     /**
      * Remove a set of listeners from the dispatcher.
-	 * 从调度程序中删除一组监听器
+	 * 从调度程序中删除一组侦听器
      *
      * @param  string  $event
      * @return void
@@ -86,7 +86,7 @@ interface Dispatcher
 
     /**
      * Forget all of the queued listeners.
-	 * 忘记所有排队的监听器
+	 * 忘记所有排队的侦听器
      *
      * @return void
      */

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
- * 这个文件是league/commonmark包的一部分
  *
  * (c) Colin O'Dell <colinodell@gmail.com>
  *
@@ -51,7 +50,7 @@ class MarkdownConverter implements ConverterInterface, MarkdownConverterInterfac
 
     /**
      * Converts Markdown to HTML.
-	 * 将标记转换为HTML
+	 * 将标记转换为HTML。
      *
      * @param string $input The Markdown to convert
      *
@@ -68,7 +67,7 @@ class MarkdownConverter implements ConverterInterface, MarkdownConverterInterfac
 
     /**
      * Converts Markdown to HTML.
-	 * 将Markdown转换为HTML
+	 * 将标记转换为HTML。
      *
      * @deprecated since 2.2; use {@link convert()} instead
      *
@@ -87,7 +86,7 @@ class MarkdownConverter implements ConverterInterface, MarkdownConverterInterfac
 
     /**
      * Converts CommonMark to HTML.
-	 * 将common标记转换为HTML
+	 * 将CommonMark转换为HTML。
      *
      * @see MarkdownConverter::convert()
      *

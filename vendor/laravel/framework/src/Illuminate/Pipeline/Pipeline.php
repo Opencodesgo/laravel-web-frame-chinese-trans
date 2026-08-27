@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，管道，管道核心类
+ * Illuminate，分页，管道
  */
 
 namespace Illuminate\Pipeline;
@@ -17,13 +17,13 @@ class Pipeline implements PipelineContract
      * The container implementation.
 	 * 容器实现
      *
-     * @var \Illuminate\Contracts\Container\Container
+     * @var \Illuminate\Contracts\Container\Container|null
      */
     protected $container;
 
     /**
      * The object being passed through the pipeline.
-	 * 正在通过管道传递的对象。
+	 * 正在通过管道传递的对象
      *
      * @var mixed
      */
@@ -47,7 +47,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Create a new class instance.
-	 * 创建新的类实例
+	 * 创建一个新的类实例
      *
      * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
@@ -81,6 +81,20 @@ class Pipeline implements PipelineContract
     public function through($pipes)
     {
         $this->pipes = is_array($pipes) ? $pipes : func_get_args();
+
+        return $this;
+    }
+
+    /**
+     * Push additional pipes onto the pipeline.
+	 * 将额外的管道推到管道上
+     *
+     * @param  array|mixed  $pipes
+     * @return $this
+     */
+    public function pipe($pipes)
+    {
+        array_push($this->pipes, ...(is_array($pipes) ? $pipes : func_get_args()));
 
         return $this;
     }
@@ -130,7 +144,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Get the final piece of the Closure onion.
-	 * 获取闭包的最后碎片
+	 * 获取Closure洋葱的最后一部分
      *
      * @param  \Closure  $destination
      * @return \Closure
@@ -148,7 +162,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Get a Closure that represents a slice of the application onion.
-	 * 得到一个表示应用程序洋葱部分的Closure
+	 * 获取一个表示应用程序洋葱部分的Closure
      *
      * @return \Closure
      */
@@ -161,7 +175,7 @@ class Pipeline implements PipelineContract
                         // If the pipe is a callable, then we will call it directly, but otherwise we
                         // will resolve the pipes out of the dependency container and call it with
                         // the appropriate method and arguments, returning the results back out.
-						// 如果管道是可调用的，那么我们将直接调用它，否则我们将从依赖容器中解析管道。
+						// 如果管道是可调用的，那么我们将直接调用它。
                         return $pipe($passable, $stack);
                     } elseif (! is_object($pipe)) {
                         [$name, $parameters] = $this->parsePipeString($pipe);
@@ -169,7 +183,7 @@ class Pipeline implements PipelineContract
                         // If the pipe is a string we will parse the string and resolve the class out
                         // of the dependency injection container. We can then build a callable and
                         // execute the pipe function giving in the parameters that are required.
-						// 如果管道是字符串，我们将解析字符串并解析出依赖注入容器的类。
+						// 如果管道是字符串，我们将解析该字符串。
                         $pipe = $this->getContainer()->make($name);
 
                         $parameters = array_merge([$passable, $stack], $parameters);
@@ -177,7 +191,7 @@ class Pipeline implements PipelineContract
                         // If the pipe is already an object we'll just make a callable and pass it to
                         // the pipe as-is. There is no need to do any extra parsing and formatting
                         // since the object we're given was already a fully instantiated object.
-						// 如果管道已经是一个对象，我们将创建一个可调用对象并将其传递给管道原样。
+						// 如果管道已经是一个对象，我们就创建一个可调用对象。
                         $parameters = [$passable, $stack];
                     }
 
@@ -267,7 +281,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Handle the given exception.
-	 * 处理给定异常
+	 * 处理给定的异常
      *
      * @param  mixed  $passable
      * @param  \Throwable  $e

@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * PharIo，Manifest，ManifestSerializer
+ * PharIo，Manifest，Manifest 序列化器
  */
 
 /*

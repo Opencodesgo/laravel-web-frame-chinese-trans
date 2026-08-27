@@ -49,7 +49,7 @@ class FileFactory
 
     /**
      * Create a new fake image.
-	 * 创建新的假图片
+	 * 创建一个新的假图像
      *
      * @param  string  $name
      * @param  int  $width

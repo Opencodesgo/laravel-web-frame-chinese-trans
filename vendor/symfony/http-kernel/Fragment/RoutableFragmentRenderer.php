@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，碎片，可路由片段渲染器
+ * Symfony，Component，HttpKernel，片段，路由片段渲染器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\EventListener\FragmentListener;
 
 /**
  * Adds the possibility to generate a fragment URI for a given Controller.
- * 添加生成给定控制器的片段URI的可能性。
+ * 增加了为给定控制器生成片段URI的可能性。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -29,13 +29,15 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface
     /**
      * @internal
      */
-    protected $fragmentPath = '/_fragment';
+    protected string $fragmentPath = '/_fragment';
 
     /**
      * Sets the fragment path that triggers the fragment listener.
 	 * 设置触发片段侦听器的片段路径
      *
      * @see FragmentListener
+     *
+     * @return void
      */
     public function setFragmentPath(string $path)
     {
@@ -44,14 +46,12 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface
 
     /**
      * Generates a fragment URI for a given controller.
-	 * 生成给定控制器的片段URI
+	 * 为给定控制器生成片段URI
      *
      * @param bool $absolute Whether to generate an absolute URL or not
      * @param bool $strict   Whether to allow non-scalar attributes or not
-     *
-     * @return string
      */
-    protected function generateFragmentUri(ControllerReference $reference, Request $request, bool $absolute = false, bool $strict = true)
+    protected function generateFragmentUri(ControllerReference $reference, Request $request, bool $absolute = false, bool $strict = true): string
     {
         return (new FragmentUriGenerator($this->fragmentPath))->generate($reference, $request, $absolute, $strict, false);
     }

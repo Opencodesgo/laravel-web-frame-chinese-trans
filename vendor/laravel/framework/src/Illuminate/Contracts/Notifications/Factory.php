@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Get a channel instance by name.
-	 * 按名称获取通道实例
+	 * 得以信息实例通过名称
      *
      * @param  string|null  $name
      * @return mixed

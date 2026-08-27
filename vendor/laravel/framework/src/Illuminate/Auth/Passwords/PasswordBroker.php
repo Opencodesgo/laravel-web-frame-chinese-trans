@@ -24,7 +24,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * The user provider implementation.
-	 * 用户提供者实现
+	 * 用户提供程序实现
      *
      * @var \Illuminate\Contracts\Auth\UserProvider
      */
@@ -57,7 +57,7 @@ class PasswordBroker implements PasswordBrokerContract
         // First we will check to see if we found a user at the given credentials and
         // if we did not we will redirect back to this current URI with a piece of
         // "flash" data in the session to indicate to the developers the errors.
-		// 首先，我们将检查是否在给定凭据和上找到了用户。
+		// 首先我们将检查看看我们是否在给定的凭据上找到了一个用户。
         $user = $this->getUser($credentials);
 
         if (is_null($user)) {
@@ -76,8 +76,7 @@ class PasswordBroker implements PasswordBrokerContract
             // Once we have the reset token, we are ready to send the message out to this
             // user with a link to reset their password. We will then redirect back to
             // the current URI having nothing set in the session to indicate errors.
-			// 一旦我们有了重置令牌，我们就准备好将消息发送到带有重置密码链接的用户。
-
+			// 一旦我们已经重置令牌，我们发送消息给这个用户链接去重置密码。
             $user->sendPasswordResetNotification($token);
         }
 
@@ -99,7 +98,6 @@ class PasswordBroker implements PasswordBrokerContract
         // If the responses from the validate method is not a user instance, we will
         // assume that it is a redirect and simply return it from this method and
         // the user is properly redirected having an error message on the post.
-		// 如果validate方法的响应不是用户实例，我们将假设它是一个重定向，并简单地返回它。
         if (! $user instanceof CanResetPasswordContract) {
             return $user;
         }
@@ -109,7 +107,6 @@ class PasswordBroker implements PasswordBrokerContract
         // Once the reset has been validated, we'll call the given callback with the
         // new password. This gives the user an opportunity to store the password
         // in their persistent storage. Then we'll delete the token and return.
-		// 一旦重置被确认，我们将使用新密码进行回调。
         $callback($user, $password);
 
         $this->tokens->delete($user);
@@ -161,7 +158,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Create a new password reset token for the given user.
-	 * 为给定用户创建一个新的密码重置令牌
+	 * 创建新的密码重置令牌给指定用户
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string
@@ -173,7 +170,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Delete password reset tokens of the given user.
-	 * 删除给定用户的密码重置令牌
+	 * 删除给定用户的令牌重置
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return void

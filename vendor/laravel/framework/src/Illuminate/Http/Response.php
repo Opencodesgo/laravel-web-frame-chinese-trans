@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，响应
+ * Illuminate, Http, 响应
  */
 
 namespace Illuminate\Http;
@@ -50,14 +50,14 @@ class Response extends SymfonyResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function setContent($content)
+    public function setContent(mixed $content): static
     {
         $this->original = $content;
 
         // If the content is "JSONable" we will set the appropriate header and convert
         // the content to JSON. This is useful when returning something like models
         // from routes that will be automatically transformed to their JSON form.
-		// 如果内容是"JSONable"，我们将设置适当的标头并进行转换内容到JSON。
+		// 如果内容是"JSONable"，我们将设置适当的标头并进行转换内容为JSON。
         if ($this->shouldBeJson($content)) {
             $this->header('Content-Type', 'application/json');
 

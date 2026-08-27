@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，Caste，Cut Stub
+ * Symfony，Component，VarDumper，Caster，Cut 存根
  */
 
 /*
@@ -18,20 +18,20 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents the main properties of a PHP variable, pre-casted by a caster.
- * 表示一个PHP变量的主要属性,由一个施法者预置。
+ * 表示PHP变量的主要属性，由调测器预调测。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
 class CutStub extends Stub
 {
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         $this->value = $value;
 
         switch (\gettype($value)) {
             case 'object':
                 $this->type = self::TYPE_OBJECT;
-                $this->class = \get_class($value);
+                $this->class = get_debug_type($value);
 
                 if ($value instanceof \Closure) {
                     ReflectionCaster::castClosure($value, [], $this, true, Caster::EXCLUDE_VERBOSE);

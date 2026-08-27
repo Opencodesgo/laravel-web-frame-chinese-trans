@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，Uri 标准化
+ * GuzzleHttp，Psr7，Uri 标准化者
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Provides methods to normalize and compare URIs.
- * 提供了规范和比较uri的方法。
+ * 提供标准化和比较uri的方法。
  *
  * @author Tobias Schultze
  *
@@ -21,6 +21,7 @@ final class UriNormalizer
 {
     /**
      * Default normalizations which only include the ones that preserve semantics.
+	 * 默认规范化，只包括保留语义的规范化。
      */
     public const PRESERVING_NORMALIZATIONS =
         self::CAPITALIZE_PERCENT_ENCODING |
@@ -70,7 +71,7 @@ final class UriNormalizer
 
     /**
      * Removes the default port of the given URI scheme from the URI.
-	 * 从URI中删除给定URI方案的默认端口
+	 * 从URI中移除给定URI方案的默认端口
      *
      * Example: http://example.org:80/ → http://example.org/
      */
@@ -78,6 +79,7 @@ final class UriNormalizer
 
     /**
      * Removes unnecessary dot-segments.
+	 * 删除不必要的点段
      *
      * Dot-segments in relative-path references are not removed as it would
      * change the semantics of the URI reference.
@@ -88,7 +90,6 @@ final class UriNormalizer
 
     /**
      * Paths which include two or more adjacent slashes are converted to one.
-	 * 路径包括两个或多个相邻的斜杠转换为1的路径
      *
      * Webservers usually ignore duplicate slashes and treat those URIs equivalent.
      * But in theory those URIs do not need to be equivalent. So this normalization
@@ -100,7 +101,6 @@ final class UriNormalizer
 
     /**
      * Sort query parameters with their values in alphabetical order.
-	 * 按字母顺序排序查询参数。
      *
      * However, the order of parameters in a URI may be significant (this is not defined by the standard).
      * So this normalization is not safe and may change the semantics of the URI.
@@ -114,7 +114,6 @@ final class UriNormalizer
 
     /**
      * Returns a normalized URI.
-	 * 返回规范化URI。
      *
      * The scheme and host component are already normalized to lowercase per PSR-7 UriInterface.
      * This methods adds additional normalizations that can be configured with the $flags parameter.
@@ -172,7 +171,7 @@ final class UriNormalizer
 
     /**
      * Whether two URIs can be considered equivalent.
-	 * 两个uri是否可以被认为是等价的。
+	 * 是否可以认为两个uri是等价的
      *
      * Both URIs are normalized automatically before comparison with the given $normalizations bitmask. The method also
      * accepts relative URI references and returns true when they are equivalent. This of course assumes they will be

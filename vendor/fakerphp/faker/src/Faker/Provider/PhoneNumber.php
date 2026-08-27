@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，电话号码
+ */
 
 namespace Faker\Provider;
 
@@ -252,6 +255,7 @@ class PhoneNumber extends Base
 
     /**
      * International Mobile Equipment Identity (IMEI)
+	 * 国际移动设备识别码（IMEI）
      *
      * @see http://en.wikipedia.org/wiki/International_Mobile_Station_Equipment_Identity
      * @see http://imei-number.com/imei-validation-check/

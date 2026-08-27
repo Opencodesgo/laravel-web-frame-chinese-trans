@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，并行运行
+ * Illuminate, 测试, 平行的运行者
  */
 
 namespace Illuminate\Testing;
@@ -27,7 +27,7 @@ class ParallelRunner implements RunnerInterface
 
     /**
      * The runner resolver callback.
-	 * 跑步者解析器回调
+	 * 运行者解析器回调
      *
      * @var \Closure|null
      */
@@ -51,7 +51,7 @@ class ParallelRunner implements RunnerInterface
 
     /**
      * The original test runner.
-	 * 原来的试车员
+	 * 原始的试车员
      *
      * @var \ParaTest\Runners\PHPUnit\RunnerInterface
      */
@@ -77,7 +77,7 @@ class ParallelRunner implements RunnerInterface
             return new WrapperRunner($options, $output);
         };
 
-        $this->runner = call_user_func($runnerResolver, $options, $output);
+        $this->runner = $runnerResolver($options, $output);
     }
 
     /**
@@ -149,9 +149,7 @@ class ParallelRunner implements RunnerInterface
     {
         collect(range(1, $this->options->processes()))->each(function ($token) use ($callback) {
             tap($this->createApplication(), function ($app) use ($callback, $token) {
-                ParallelTesting::resolveTokenUsing(function () use ($token) {
-                    return $token;
-                });
+                ParallelTesting::resolveTokenUsing(fn () => $token);
 
                 $callback($app);
             })->flush();
@@ -187,6 +185,6 @@ class ParallelRunner implements RunnerInterface
             throw new RuntimeException('Parallel Runner unable to resolve application.');
         };
 
-        return call_user_func($applicationResolver);
+        return $applicationResolver();
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，提及，生成器，回调函数生成器
+ */
 
 declare(strict_types=1);
 
@@ -21,6 +24,7 @@ final class CallbackGenerator implements MentionGeneratorInterface
 {
     /**
      * A callback function which sets the URL on the passed mention and returns the mention, return a new AbstractInline based object or null if the mention is not a match
+	 * 一个回调函数，它在传递的提及上设置URL并返回提及，返回一个新的基于AbstractInline的对象，如果提及不匹配则返回null。
      *
      * @var callable(Mention): ?AbstractInline
      */

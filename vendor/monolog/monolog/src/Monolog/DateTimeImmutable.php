@@ -37,7 +37,7 @@ class DateTimeImmutable extends \DateTimeImmutable implements \JsonSerializable
 
         // if you like to use a custom time to pass to Logger::addRecord directly,
         // call modify() or setTimestamp() on this instance to change the date after creating it
-		// 如果你想使用自定义时间直接传递给Logger::addRecord，
+		// 如果你想使用自定义时间直接传递给Logger::addRecord，在创建实例后调用modify（）或setTimestamp（）来更改日期。
         parent::__construct('now', $timezone);
     }
 

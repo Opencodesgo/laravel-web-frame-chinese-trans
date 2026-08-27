@@ -12,6 +12,7 @@ interface BarcodeExtension extends Extension
 {
     /**
      * Get a random EAN13 barcode.
+	 * 获取一个随机的EAN13条形码
      *
      * @example '4006381333931'
      */

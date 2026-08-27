@@ -2,7 +2,7 @@
 
 /**
  * Monolog，处理器，主机名处理器
- *
+ */
 
 /*
  * This file is part of the Monolog package.

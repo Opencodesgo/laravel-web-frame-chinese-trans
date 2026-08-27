@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据控制器，Ajax 数据收集器
+ * Symfony，Component，HttpKernel，数据收集者，Ajax 数据收集者
  */
 
 /*
@@ -24,12 +24,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AjaxDataCollector extends DataCollector
 {
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         // all collecting is done client side
     }
 
-    public function reset()
+    public function reset(): void
     {
         // all collecting is done client side
     }

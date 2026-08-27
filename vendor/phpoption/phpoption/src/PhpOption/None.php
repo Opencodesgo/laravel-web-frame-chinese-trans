@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpOption，全无
+ * PhpOption，None
  */
 
 /*

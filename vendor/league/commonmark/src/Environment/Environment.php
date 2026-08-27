@@ -277,7 +277,6 @@ final class Environment implements EnvironmentInterface, EnvironmentBuilderInter
         $this->extensionsInitialized = true;
 
         // Create the special delimiter parser if any processors were registered
-		// 如果注册了任何处理器，则创建特殊分隔符解析器
         if ($this->delimiterProcessors->count() > 0) {
             $this->inlineParsers->add(new DelimiterParser($this->delimiterProcessors), PHP_INT_MIN);
         }

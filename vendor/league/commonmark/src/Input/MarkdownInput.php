@@ -3,7 +3,6 @@
  * League，CommonMark，输入，Markdown 输入
  */
 
-
 declare(strict_types=1);
 
 /*
@@ -97,7 +96,6 @@ class MarkdownInput implements MarkdownInputInterface
         // Remove any newline which appears at the very end of the string.
         // We've already split the document by newlines, so we can simply drop
         // any empty element which appears on the end.
-		// 删除出现在字符串末尾的任何换行符。
         if (\end($this->lines) === '') {
             \array_pop($this->lines);
         }

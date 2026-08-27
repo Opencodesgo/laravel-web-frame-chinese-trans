@@ -9,8 +9,10 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 use Illuminate\Filesystem\Filesystem;
 use LogicException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Throwable;
 
+#[AsCommand(name: 'config:cache')]
 class ConfigCacheCommand extends Command
 {
     /**
@@ -22,16 +24,28 @@ class ConfigCacheCommand extends Command
     protected $name = 'config:cache';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'config:cache';
+
+    /**
      * The console command description.
 	 * 控制台命令描述
      *
      * @var string
      */
-    protected $description = 'Create a cache file for faster configuration loading';		#创建缓存文件以加快配置加载
+    protected $description = 'Create a cache file for faster configuration loading';
 
     /**
      * The filesystem instance.
-	 * 系统系统实例
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -61,7 +75,7 @@ class ConfigCacheCommand extends Command
      */
     public function handle()
     {
-        $this->call('config:clear');
+        $this->callSilent('config:clear');
 
         $config = $this->getFreshConfiguration();
 
@@ -79,7 +93,7 @@ class ConfigCacheCommand extends Command
             throw new LogicException('Your configuration files are not serializable.', 0, $e);
         }
 
-        $this->info('Configuration cached successfully!');
+        $this->components->info('Configuration cached successfully.');
     }
 
     /**

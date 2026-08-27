@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，Const Expr 求值异常
+ * PhpParser，Const exp 求值异常
  */
 
 namespace PhpParser;

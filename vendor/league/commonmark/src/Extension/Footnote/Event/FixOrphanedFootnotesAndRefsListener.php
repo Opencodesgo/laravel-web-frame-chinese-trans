@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，注脚，事件，修复孤立的脚注和参考听者
+ */
 
 /*
  * This file is part of the league/commonmark package.

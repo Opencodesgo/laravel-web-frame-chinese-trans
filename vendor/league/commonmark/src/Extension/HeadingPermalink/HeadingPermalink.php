@@ -20,6 +20,7 @@ use League\CommonMark\Node\Inline\AbstractInline;
 
 /**
  * Represents an anchor link within a heading
+ * 表示标题内的锚链接
  */
 final class HeadingPermalink extends AbstractInline
 {

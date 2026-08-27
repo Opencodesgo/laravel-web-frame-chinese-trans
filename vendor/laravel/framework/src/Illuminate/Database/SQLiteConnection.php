@@ -5,8 +5,6 @@
 
 namespace Illuminate\Database;
 
-use Doctrine\DBAL\Driver\PDOSqlite\Driver as DoctrineDriver;
-use Doctrine\DBAL\Version;
 use Illuminate\Database\PDO\SQLiteDriver;
 use Illuminate\Database\Query\Grammars\SQLiteGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\SQLiteProcessor;
@@ -19,7 +17,7 @@ class SQLiteConnection extends Connection
 {
     /**
      * Create a new database connection instance.
-	 * 创建新的数据库连接实例
+	 * 创建一个新的数据库连接实例
      *
      * @param  \PDO|\Closure  $pdo
      * @param  string  $database
@@ -108,11 +106,11 @@ class SQLiteConnection extends Connection
      * Get the Doctrine DBAL driver.
 	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOSqlite\Driver|\Illuminate\Database\PDO\SQLiteDriver
+     * @return \Illuminate\Database\PDO\SQLiteDriver
      */
     protected function getDoctrineDriver()
     {
-        return class_exists(Version::class) ? new DoctrineDriver : new SQLiteDriver;
+        return new SQLiteDriver;
     }
 
     /**

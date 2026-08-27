@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，获取适当的 Readline实现类名
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Reflection;
 
 /**
  * A fake ReflectionFunction but for language constructs.
+ * 一个伪的ReflectionFunction，但用于语言结构。
  */
 class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 {
@@ -71,6 +75,7 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 
     /**
      * Construct a ReflectionLanguageConstruct object.
+	 * 构造一个ReflectionLanguageConstruct对象
      *
      * @param string $keyword
      */
@@ -95,6 +100,7 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 
     /**
      * Get language construct name.
+	 * 获取语言构造名称
      */
     public function getName(): string
     {
@@ -103,6 +109,7 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 
     /**
      * None of these return references.
+	 * 这些都不返回引用
      */
     public function returnsReference(): bool
     {
@@ -111,6 +118,7 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 
     /**
      * Get language construct params.
+	 * 获取语言构造参数
      *
      * @return array
      */
@@ -126,6 +134,7 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 
     /**
      * Gets the file name from a language construct.
+	 * 从语言构造获取文件名。
      *
      * (Hint: it always returns false)
      *
@@ -149,6 +158,7 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
 
     /**
      * Check whether keyword is a (known) language construct.
+	 * 检查keyword是否是（已知的）语言结构
      *
      * @param string $keyword
      */

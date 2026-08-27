@@ -18,7 +18,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * ArgvInput represents an input coming from the CLI arguments.
- * ArgvInput表示来自CLI参数的输入。
+ * ArgvInput 表示来自CLI参数的输入。
  *
  * Usage:
  *
@@ -44,12 +44,12 @@ use Symfony\Component\Console\Exception\RuntimeException;
  */
 class ArgvInput extends Input
 {
-    private $tokens;
-    private $parsed;
+    private array $tokens;
+    private array $parsed;
 
     public function __construct(?array $argv = null, ?InputDefinition $definition = null)
     {
-        $argv = $argv ?? $_SERVER['argv'] ?? [];
+        $argv ??= $_SERVER['argv'] ?? [];
 
         // strip the application name
         array_shift($argv);
@@ -59,13 +59,16 @@ class ArgvInput extends Input
         parent::__construct($definition);
     }
 
+    /**
+     * @return void
+     */
     protected function setTokens(array $tokens)
     {
         $this->tokens = $tokens;
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function parse()
     {
@@ -95,9 +98,9 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option.
-	 * 替换一个简短的选项
+	 * 解析一个短选项
      */
-    private function parseShortOption(string $token)
+    private function parseShortOption(string $token): void
     {
         $name = substr($token, 1);
 
@@ -115,17 +118,17 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option set.
-	 * 解析一个短选项集
+	 * 解析短选项集
      *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function parseShortOptionSet(string $name)
+    private function parseShortOptionSet(string $name): void
     {
         $len = \strlen($name);
         for ($i = 0; $i < $len; ++$i) {
             if (!$this->definition->hasShortcut($name[$i])) {
                 $encoding = mb_detect_encoding($name, null, true);
-                throw new RuntimeException(sprintf('The "-%s" option does not exist.', false === $encoding ? $name[$i] : mb_substr($name, $i, 1, $encoding)));
+                throw new RuntimeException(\sprintf('The "-%s" option does not exist.', false === $encoding ? $name[$i] : mb_substr($name, $i, 1, $encoding)));
             }
 
             $option = $this->definition->getOptionForShortcut($name[$i]);
@@ -141,9 +144,9 @@ class ArgvInput extends Input
 
     /**
      * Parses a long option.
-	 * Parses有一个很长的选择
+	 * 解析长选项
      */
-    private function parseLongOption(string $token)
+    private function parseLongOption(string $token): void
     {
         $name = substr($token, 2);
 
@@ -163,7 +166,7 @@ class ArgvInput extends Input
      *
      * @throws RuntimeException When too many arguments are given
      */
-    private function parseArgument(string $token)
+    private function parseArgument(string $token): void
     {
         $c = \count($this->arguments);
 
@@ -188,14 +191,14 @@ class ArgvInput extends Input
 
             if (\count($all)) {
                 if ($symfonyCommandName) {
-                    $message = sprintf('Too many arguments to "%s" command, expected arguments "%s".', $symfonyCommandName, implode('" "', array_keys($all)));
+                    $message = \sprintf('Too many arguments to "%s" command, expected arguments "%s".', $symfonyCommandName, implode('" "', array_keys($all)));
                 } else {
-                    $message = sprintf('Too many arguments, expected arguments "%s".', implode('" "', array_keys($all)));
+                    $message = \sprintf('Too many arguments, expected arguments "%s".', implode('" "', array_keys($all)));
                 }
             } elseif ($symfonyCommandName) {
-                $message = sprintf('No arguments expected for "%s" command, got "%s".', $symfonyCommandName, $token);
+                $message = \sprintf('No arguments expected for "%s" command, got "%s".', $symfonyCommandName, $token);
             } else {
-                $message = sprintf('No arguments expected, got "%s".', $token);
+                $message = \sprintf('No arguments expected, got "%s".', $token);
             }
 
             throw new RuntimeException($message);
@@ -204,14 +207,14 @@ class ArgvInput extends Input
 
     /**
      * Adds a short option value.
-	 * 添加一个短期选项值
+	 * 添加一个短选项值
      *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function addShortOption(string $shortcut, $value)
+    private function addShortOption(string $shortcut, mixed $value): void
     {
         if (!$this->definition->hasShortcut($shortcut)) {
-            throw new RuntimeException(sprintf('The "-%s" option does not exist.', $shortcut));
+            throw new RuntimeException(\sprintf('The "-%s" option does not exist.', $shortcut));
         }
 
         $this->addLongOption($this->definition->getOptionForShortcut($shortcut)->getName(), $value);
@@ -223,16 +226,16 @@ class ArgvInput extends Input
      *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function addLongOption(string $name, $value)
+    private function addLongOption(string $name, mixed $value): void
     {
         if (!$this->definition->hasOption($name)) {
             if (!$this->definition->hasNegation($name)) {
-                throw new RuntimeException(sprintf('The "--%s" option does not exist.', $name));
+                throw new RuntimeException(\sprintf('The "--%s" option does not exist.', $name));
             }
 
             $optionName = $this->definition->negationToName($name);
             if (null !== $value) {
-                throw new RuntimeException(sprintf('The "--%s" option does not accept a value.', $name));
+                throw new RuntimeException(\sprintf('The "--%s" option does not accept a value.', $name));
             }
             $this->options[$optionName] = false;
 
@@ -242,7 +245,7 @@ class ArgvInput extends Input
         $option = $this->definition->getOption($name);
 
         if (null !== $value && !$option->acceptValue()) {
-            throw new RuntimeException(sprintf('The "--%s" option does not accept a value.', $name));
+            throw new RuntimeException(\sprintf('The "--%s" option does not accept a value.', $name));
         }
 
         if (\in_array($value, ['', null], true) && $option->acceptValue() && \count($this->parsed)) {
@@ -258,7 +261,7 @@ class ArgvInput extends Input
 
         if (null === $value) {
             if ($option->isValueRequired()) {
-                throw new RuntimeException(sprintf('The "--%s" option requires a value.', $name));
+                throw new RuntimeException(\sprintf('The "--%s" option requires a value.', $name));
             }
 
             if (!$option->isArray() && !$option->isValueOptional()) {
@@ -273,10 +276,7 @@ class ArgvInput extends Input
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFirstArgument()
+    public function getFirstArgument(): ?string
     {
         $isOption = false;
         foreach ($this->tokens as $i => $token) {
@@ -308,10 +308,7 @@ class ArgvInput extends Input
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasParameterOption($values, bool $onlyParams = false)
+    public function hasParameterOption(string|array $values, bool $onlyParams = false): bool
     {
         $values = (array) $values;
 
@@ -333,10 +330,7 @@ class ArgvInput extends Input
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParameterOption($values, $default = false, bool $onlyParams = false)
+    public function getParameterOption(string|array $values, string|bool|int|float|array|null $default = false, bool $onlyParams = false): mixed
     {
         $values = (array) $values;
         $tokens = $this->tokens;
@@ -366,11 +360,9 @@ class ArgvInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
-	 * 返回args传递给命令的stringified表示
-     *
-     * @return string
+	 * 返回传递给命令的参数的字符串化表示形式
      */
-    public function __toString()
+    public function __toString(): string
     {
         $tokens = array_map(function ($token) {
             if (preg_match('{^(-[^=]+=)(.+)}', $token, $match)) {

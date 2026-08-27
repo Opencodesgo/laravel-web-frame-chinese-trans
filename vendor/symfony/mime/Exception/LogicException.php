@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，异常，逻辑异常
+ */
 
 /*
  * This file is part of the Symfony package.

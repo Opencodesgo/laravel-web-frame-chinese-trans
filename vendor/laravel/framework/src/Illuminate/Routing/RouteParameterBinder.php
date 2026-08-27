@@ -55,7 +55,7 @@ class RouteParameterBinder
 
     /**
      * Get the parameter matches for the path portion of the URI.
-	 * 得到URI的路径部分的参数匹配
+	 * 获取URI的路径部分的参数匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array

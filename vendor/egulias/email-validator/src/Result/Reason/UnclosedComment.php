@@ -1,0 +1,19 @@
+<?php
+/**
+ * Egulias，EmailValidator，结果，原因，未关闭的评论
+ */
+
+namespace Egulias\EmailValidator\Result\Reason;
+
+class UnclosedComment implements Reason 
+{
+    public function code() : int
+    {
+        return 146;
+    }
+
+    public function description(): string
+    {
+        return 'No closing comment token found';
+    }
+}

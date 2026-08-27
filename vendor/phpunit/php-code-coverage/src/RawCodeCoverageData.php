@@ -31,7 +31,6 @@ use SebastianBergmann\CodeCoverage\StaticAnalysis\FileAnalyser;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for phpunit/php-code-coverage
- * 该类不包括在phpunit/php-code-coverage的向后兼容性承诺中
  */
 final class RawCodeCoverageData
 {
@@ -247,7 +246,6 @@ final class RawCodeCoverageData
      * e.g. a class definition, that line cannot be invoked from a test and results in confusing coverage. This engine
      * implementation detail therefore needs to be masked which is done here by simply ensuring that all empty lines
      * are skipped over for coverage purposes.
-	 * 在文件的末尾，PHP解释器总是看到一个隐式返回。
      *
      * @see https://github.com/sebastianbergmann/php-code-coverage/issues/799
      */

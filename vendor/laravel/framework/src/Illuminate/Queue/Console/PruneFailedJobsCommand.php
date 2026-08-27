@@ -5,10 +5,12 @@
 
 namespace Illuminate\Queue\Console;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Queue\Failed\PrunableFailedJobProvider;
+use Illuminate\Support\Carbon;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'queue:prune-failed')]
 class PruneFailedJobsCommand extends Command
 {
     /**
@@ -19,6 +21,19 @@ class PruneFailedJobsCommand extends Command
      */
     protected $signature = 'queue:prune-failed
                 {--hours=24 : The number of hours to retain failed jobs data}';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'queue:prune-failed';
 
     /**
      * The console command description.
@@ -38,16 +53,14 @@ class PruneFailedJobsCommand extends Command
     {
         $failer = $this->laravel['queue.failer'];
 
-        $count = 0;
-
         if ($failer instanceof PrunableFailedJobProvider) {
             $count = $failer->prune(Carbon::now()->subHours($this->option('hours')));
         } else {
-            $this->error('The ['.class_basename($failer).'] failed job storage driver does not support pruning.');
+            $this->components->error('The ['.class_basename($failer).'] failed job storage driver does not support pruning.');
 
             return 1;
         }
 
-        $this->info("{$count} entries deleted!");
+        $this->components->info("{$count} entries deleted.");
     }
 }

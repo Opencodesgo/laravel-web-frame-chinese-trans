@@ -21,7 +21,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Doctrine related classes to array representation.
- * 将类相关类转换为数组表示。
+ * 将Doctrine相关的类强制转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -29,6 +29,9 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class DoctrineCaster
 {
+    /**
+     * @return array
+     */
     public static function castCommonProxy(CommonProxy $proxy, array $a, Stub $stub, bool $isNested)
     {
         foreach (['__cloner__', '__initializer__'] as $k) {
@@ -41,6 +44,9 @@ class DoctrineCaster
         return $a;
     }
 
+    /**
+     * @return array
+     */
     public static function castOrmProxy(OrmProxy $proxy, array $a, Stub $stub, bool $isNested)
     {
         foreach (['_entityPersister', '_identifier'] as $k) {
@@ -53,6 +59,9 @@ class DoctrineCaster
         return $a;
     }
 
+    /**
+     * @return array
+     */
     public static function castPersistentCollection(PersistentCollection $coll, array $a, Stub $stub, bool $isNested)
     {
         foreach (['snapshot', 'association', 'typeClass'] as $k) {

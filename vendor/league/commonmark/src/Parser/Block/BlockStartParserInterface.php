@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块开始解析器接口
+ * League，CommonMark，解析器，代码块，块开始解析器接口
  */
 
 declare(strict_types=1);
@@ -21,13 +21,13 @@ use League\CommonMark\Parser\MarkdownParserStateInterface;
 
 /**
  * Interface for a block parser which identifies block starts.
- * 一个块解析器的接口,它标识块开始。
+ * 用于标识块开始的块解析器的接口。
  */
 interface BlockStartParserInterface
 {
     /**
      * Check whether we should handle the block at the current position
-	 * 检查我们是否应该处理当前位置的block
+	 * 检查我们是否应该在当前位置处理阻塞
      *
      * @param Cursor                       $cursor      A cloned copy of the cursor at the current parsing location
      * @param MarkdownParserStateInterface $parserState Additional information about the state of the Markdown parser

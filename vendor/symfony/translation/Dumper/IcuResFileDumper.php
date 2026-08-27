@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，IcuRes 文件转储器
+ * Symfony，Component，Translation，转存器，Icu Res 文件转储
  */
 
 /*
@@ -18,21 +18,14 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IcuResDumper generates an ICU ResourceBundle formatted string representation of a message catalogue.
- * IcuResDumper生成了一个名为unk bundle格式的消息目录的字符串表示。
  *
  * @author Stealth35
  */
 class IcuResFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
     protected $relativePathTemplate = '%domain%/%locale%.%extension%';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $data = $indexes = $resources = '';
 
@@ -93,15 +86,12 @@ class IcuResFileDumper extends FileDumper
         return $padding ? str_repeat("\xAA", 4 - $padding) : null;
     }
 
-    private function getPosition(string $data)
+    private function getPosition(string $data): float|int
     {
         return (\strlen($data) + 28) / 4;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'res';
     }

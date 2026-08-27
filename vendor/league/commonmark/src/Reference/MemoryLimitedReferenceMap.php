@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，内存有限参考映射
+ * League，CommonMark，参考，内存有限参考映射
  */
 
 declare(strict_types=1);

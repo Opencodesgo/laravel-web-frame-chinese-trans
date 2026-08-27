@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，输出，渲染内容与前件物质
+ * League，CommonMark，扩展，前言，输出，渲染内容与前面的内容
  */
 
 /*

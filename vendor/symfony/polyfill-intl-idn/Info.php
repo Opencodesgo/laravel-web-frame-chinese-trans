@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，Polyfill，Intl，Idn，信息
- */
 
 /*
  * This file is part of the Symfony package.

@@ -13,7 +13,7 @@ class QueryException extends PDOException
 {
     /**
      * The SQL for the query.
-	 * 用于查询的SQL
+	 * 查询SQL
      *
      * @var string
      */

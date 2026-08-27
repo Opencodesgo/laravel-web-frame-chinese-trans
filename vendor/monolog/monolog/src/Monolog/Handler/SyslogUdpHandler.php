@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，SyslogUdp 处理程序
- *
+ * Monolog，处理器，Syslog Udp 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -22,7 +22,7 @@ use Monolog\Utils;
 
 /**
  * A Handler for logging to a remote syslogd server.
- * 用于登录到远程syslogd服务器的处理程序。
+ * 用于将日志记录到远程syslogd服务器的处理程序。
  *
  * @author Jesper Skovgaard Nielsen <nulpunkt@gmail.com>
  * @author Dominik Kukacka <dominik.kukacka@gmail.com>
@@ -109,7 +109,7 @@ class SyslogUdpHandler extends AbstractSyslogHandler
 
     /**
      * Make common syslog header (see rfc5424 or rfc3164)
-	 * 生成common syslog header(参见rfc5424或rfc3164)
+	 * 生成通用的syslog报头（参见rfc5424或rfc3164）
      */
     protected function makeCommonSyslogHeader(int $severity, DateTimeInterface $datetime): string
     {
@@ -146,7 +146,7 @@ class SyslogUdpHandler extends AbstractSyslogHandler
 
     /**
      * Inject your own socket, mainly used for testing
-	 * 注入您自己的插座,主要用于测试
+	 * 自己注入socket，主要用于测试。
      */
     public function setSocket(UdpSocket $socket): self
     {

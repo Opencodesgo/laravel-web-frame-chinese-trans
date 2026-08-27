@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，集合，异常，出界异常
+ */
 
 /**
  * This file is part of the ramsey/collection library
@@ -14,9 +17,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection\Exception;
 
+use OutOfBoundsException as PhpOutOfBoundsException;
+
 /**
  * Thrown when attempting to access an element out of the range of the collection.
+ * 试图访问集合范围之外的元素时抛出。
  */
-class OutOfBoundsException extends \OutOfBoundsException
+class OutOfBoundsException extends PhpOutOfBoundsException implements CollectionException
 {
 }

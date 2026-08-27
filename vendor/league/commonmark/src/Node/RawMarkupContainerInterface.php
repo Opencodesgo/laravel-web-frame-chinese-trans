@@ -18,7 +18,7 @@ namespace League\CommonMark\Node;
 
 /**
  * Interface for a node which contains raw, unprocessed markup (like HTML)
- * 包含原始的、未处理的标记（如HTML）的节点的接口
+ * 包含原始的、未处理的标记（如HTML）的节点的接口。
  */
 interface RawMarkupContainerInterface extends StringContainerInterface
 {

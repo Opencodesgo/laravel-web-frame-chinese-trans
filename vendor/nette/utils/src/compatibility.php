@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，Nette
+ * Nette，Utils，compatibility
  */
 
 /**

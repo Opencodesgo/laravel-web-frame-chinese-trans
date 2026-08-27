@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建者
+ * PhpParser，建立者
  */
 
 namespace PhpParser;

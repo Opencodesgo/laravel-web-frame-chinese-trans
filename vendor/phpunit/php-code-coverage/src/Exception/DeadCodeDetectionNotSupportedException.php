@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，死码检测不支持异常
+ * SebastianBergmann，CodeCoverage，不支持死代码检测异常
  */
-
+ 
 /*
  * This file is part of phpunit/php-code-coverage.
  *

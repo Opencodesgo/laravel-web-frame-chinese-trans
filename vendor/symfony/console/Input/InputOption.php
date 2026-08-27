@@ -14,6 +14,10 @@
 
 namespace Symfony\Component\Console\Input;
 
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
+use Symfony\Component\Console\Completion\Suggestion;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
 
@@ -33,7 +37,7 @@ class InputOption
 
     /**
      * A value must be passed when the option is used (e.g. --iterations=5 or -i5).
-	 * 当使用选项时，必须传递一个值（例如——iterations=5或-i5）。
+	 * 当使用该选项时，必须传递一个值。
      */
     public const VALUE_REQUIRED = 2;
 
@@ -49,24 +53,25 @@ class InputOption
 
     /**
      * The option may have either positive or negative value (e.g. --ansi or --no-ansi).
-	 * 该选项可以是正值或负值（例如——ansi或——no-ansi）
      */
     public const VALUE_NEGATABLE = 16;
 
-    private $name;
-    private $shortcut;
-    private $mode;
-    private $default;
-    private $description;
+    private string $name;
+    private string|array|null $shortcut;
+    private int $mode;
+    private string|int|bool|array|float|null $default;
+    private array|\Closure $suggestedValues;
+    private string $description;
 
     /**
-     * @param string|array|null                $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-     * @param int|null                         $mode     The option mode: One of the VALUE_* constants
-     * @param string|bool|int|float|array|null $default  The default value (must be null for self::VALUE_NONE)
+     * @param string|array|null                                                             $shortcut        The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     * @param int|null                                                                      $mode            The option mode: One of the VALUE_* constants
+     * @param string|bool|int|float|array|null                                              $default         The default value (must be null for self::VALUE_NONE)
+     * @param array|\Closure(CompletionInput,CompletionSuggestions):list<string|Suggestion> $suggestedValues The values used for input completion
      *
      * @throws InvalidArgumentException If option mode is invalid or incompatible
      */
-    public function __construct(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
+    public function __construct(string $name, string|array|null $shortcut = null, ?int $mode = null, string $description = '', string|bool|int|float|array|null $default = null, array|\Closure $suggestedValues = [])
     {
         if (str_starts_with($name, '--')) {
             $name = substr($name, 2);
@@ -96,14 +101,18 @@ class InputOption
         if (null === $mode) {
             $mode = self::VALUE_NONE;
         } elseif ($mode >= (self::VALUE_NEGATABLE << 1) || $mode < 1) {
-            throw new InvalidArgumentException(sprintf('Option mode "%s" is not valid.', $mode));
+            throw new InvalidArgumentException(\sprintf('Option mode "%s" is not valid.', $mode));
         }
 
         $this->name = $name;
         $this->shortcut = $shortcut;
         $this->mode = $mode;
         $this->description = $description;
+        $this->suggestedValues = $suggestedValues;
 
+        if ($suggestedValues && !$this->acceptValue()) {
+            throw new LogicException('Cannot set suggested values if the option does not accept a value.');
+        }
         if ($this->isArray() && !$this->acceptValue()) {
             throw new InvalidArgumentException('Impossible to have an option mode VALUE_IS_ARRAY if the option does not accept a value.');
         }
@@ -116,11 +125,9 @@ class InputOption
 
     /**
      * Returns the option shortcut.
-	 * 返回选项快捷键
-     *
-     * @return string|null
+	 * 返回选项快捷方式
      */
-    public function getShortcut()
+    public function getShortcut(): ?string
     {
         return $this->shortcut;
     }
@@ -128,54 +135,52 @@ class InputOption
     /**
      * Returns the option name.
 	 * 返回选项名
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Returns true if the option accepts a value.
-	 * 如果选项接受值,返回true
+	 * 如果选项接受值，则返回true。
      *
      * @return bool true if value mode is not self::VALUE_NONE, false otherwise
      */
-    public function acceptValue()
+    public function acceptValue(): bool
     {
         return $this->isValueRequired() || $this->isValueOptional();
     }
 
     /**
      * Returns true if the option requires a value.
-	 * 如果该选项需要一个值,则返回true。
+	 * 如果选项需要值，则返回true。
      *
      * @return bool true if value mode is self::VALUE_REQUIRED, false otherwise
      */
-    public function isValueRequired()
+    public function isValueRequired(): bool
     {
         return self::VALUE_REQUIRED === (self::VALUE_REQUIRED & $this->mode);
     }
 
     /**
      * Returns true if the option takes an optional value.
-	 * 如果选项具有可选值,则返回true。
+	 * 如果该选项接受可选值，则返回true。
      *
      * @return bool true if value mode is self::VALUE_OPTIONAL, false otherwise
      */
-    public function isValueOptional()
+    public function isValueOptional(): bool
     {
         return self::VALUE_OPTIONAL === (self::VALUE_OPTIONAL & $this->mode);
     }
 
     /**
      * Returns true if the option can take multiple values.
-	 * 如果选项可以采用多个值,返回true。
+	 * 如果选项可以接受多个值，则返回true。
      *
      * @return bool true if mode is self::VALUE_IS_ARRAY, false otherwise
      */
-    public function isArray()
+    public function isArray(): bool
     {
         return self::VALUE_IS_ARRAY === (self::VALUE_IS_ARRAY & $this->mode);
     }
@@ -186,10 +191,13 @@ class InputOption
     }
 
     /**
-     * @param string|bool|int|float|array|null $default
+     * @return void
      */
-    public function setDefault($default = null)
+    public function setDefault(string|bool|int|float|array|null $default = null)
     {
+        if (1 > \func_num_args()) {
+            trigger_deprecation('symfony/console', '6.2', 'Calling "%s()" without any arguments is deprecated, pass null explicitly instead.', __METHOD__);
+        }
         if (self::VALUE_NONE === (self::VALUE_NONE & $this->mode) && null !== $default) {
             throw new LogicException('Cannot set a default value when using InputOption::VALUE_NONE mode.');
         }
@@ -208,10 +216,8 @@ class InputOption
     /**
      * Returns the default value.
 	 * 返回默认值
-     *
-     * @return string|bool|int|float|array|null
      */
-    public function getDefault()
+    public function getDefault(): string|bool|int|float|array|null
     {
         return $this->default;
     }
@@ -219,21 +225,39 @@ class InputOption
     /**
      * Returns the description text.
 	 * 返回描述文本
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
+    public function hasCompletion(): bool
+    {
+        return [] !== $this->suggestedValues;
+    }
+
+    /**
+     * Adds suggestions to $suggestions for the current completion input.
+	 * 将当前补全输入的建议添加到$suggestions中。
+     *
+     * @see Command::complete()
+     */
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        $values = $this->suggestedValues;
+        if ($values instanceof \Closure && !\is_array($values = $values($input))) {
+            throw new LogicException(\sprintf('Closure for option "%s" must return an array. Got "%s".', $this->name, get_debug_type($values)));
+        }
+        if ($values) {
+            $suggestions->suggestValues($values);
+        }
+    }
+
     /**
      * Checks whether the given option equals this one.
-	 * 检查给定的选项是否等于这个
-     *
-     * @return bool
+	 * 检查给定的选项是否等于这个选项
      */
-    public function equals(self $option)
+    public function equals(self $option): bool
     {
         return $option->getName() === $this->getName()
             && $option->getShortcut() === $this->getShortcut()

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，匹配 Arm
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -8,7 +12,6 @@ use PhpParser\NodeAbstract;
 class MatchArm extends NodeAbstract {
     /** @var null|list<Node\Expr> */
     public ?array $conds;
-    /** @var Node\Expr */
     public Expr $body;
 
     /**

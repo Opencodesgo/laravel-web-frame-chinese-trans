@@ -9,29 +9,12 @@ use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View as ViewContract;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
 abstract class Component
 {
-    /**
-     * The cache of public property names, keyed by class.
-	 * 公共属性名称的缓存，按类进行键控。
-     *
-     * @var array
-     */
-    protected static $propertyCache = [];
-
-    /**
-     * The cache of public method names, keyed by class.
-	 * 公共方法名的缓存，按类键。
-     *
-     * @var array
-     */
-    protected static $methodCache = [];
-
     /**
      * The properties / methods that should not be exposed to the component.
 	 * 不应该向组件公开的属性/方法
@@ -57,12 +40,105 @@ abstract class Component
     public $attributes;
 
     /**
+     * The view factory instance, if any.
+	 * 视图工厂实例（如果有）
+     *
+     * @var \Illuminate\Contracts\View\Factory|null
+     */
+    protected static $factory;
+
+    /**
+     * The component resolver callback.
+	 * 组件解析器回调
+     *
+     * @var (\Closure(string, array): Component)|null
+     */
+    protected static $componentsResolver;
+
+    /**
+     * The cache of blade view names, keyed by contents.
+	 * 刀片视图名称的缓存，按内容进行键控。
+     *
+     * @var array<string, string>
+     */
+    protected static $bladeViewCache = [];
+
+    /**
+     * The cache of public property names, keyed by class.
+	 * 公共属性名称的缓存，按类进行键控。
+     *
+     * @var array
+     */
+    protected static $propertyCache = [];
+
+    /**
+     * The cache of public method names, keyed by class.
+	 * 公共方法名的缓存，按类键。
+     *
+     * @var array
+     */
+    protected static $methodCache = [];
+
+    /**
+     * The cache of constructor parameters, keyed by class.
+	 * 构造函数参数的缓存，按类键。
+     *
+     * @var array<class-string, array<int, string>>
+     */
+    protected static $constructorParametersCache = [];
+
+    /**
      * Get the view / view contents that represent the component.
 	 * 获取表示组件的视图/视图内容
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
      */
     abstract public function render();
+
+    /**
+     * Resolve the component instance with the given data.
+	 * 使用给定的数据解析组件实例
+     *
+     * @param  array  $data
+     * @return static
+     */
+    public static function resolve($data)
+    {
+        if (static::$componentsResolver) {
+            return call_user_func(static::$componentsResolver, static::class, $data);
+        }
+
+        $parameters = static::extractConstructorParameters();
+
+        $dataKeys = array_keys($data);
+
+        if (empty(array_diff($parameters, $dataKeys))) {
+            return new static(...array_intersect_key($data, array_flip($parameters)));
+        }
+
+        return Container::getInstance()->make(static::class, $data);
+    }
+
+    /**
+     * Extract the constructor parameters for the component.
+	 * 提取组件的构造函数参数
+     *
+     * @return array
+     */
+    protected static function extractConstructorParameters()
+    {
+        if (! isset(static::$constructorParametersCache[static::class])) {
+            $class = new ReflectionClass(static::class);
+
+            $constructor = $class->getConstructor();
+
+            static::$constructorParametersCache[static::class] = $constructor
+                ? collect($constructor->getParameters())->map->getName()->all()
+                : [];
+        }
+
+        return static::$constructorParametersCache[static::class];
+    }
 
     /**
      * Resolve the Blade view or view file that should be used when rendering the component.
@@ -83,17 +159,35 @@ abstract class Component
         }
 
         $resolver = function ($view) {
-            $factory = Container::getInstance()->make('view');
-
-            return strlen($view) <= PHP_MAXPATHLEN && $factory->exists($view)
-                        ? $view
-                        : $this->createBladeViewFromString($factory, $view);
+            return $this->extractBladeViewFromString($view);
         };
 
         return $view instanceof Closure ? function (array $data = []) use ($view, $resolver) {
             return $resolver($view($data));
         }
         : $resolver($view);
+    }
+
+    /**
+     * Create a Blade view with the raw component string content.
+	 * 创建一个带有原始组件字符串内容的Blade视图
+     *
+     * @param  string  $contents
+     * @return string
+     */
+    protected function extractBladeViewFromString($contents)
+    {
+        $key = sprintf('%s::%s', static::class, $contents);
+
+        if (isset(static::$bladeViewCache[$key])) {
+            return static::$bladeViewCache[$key];
+        }
+
+        if (strlen($contents) <= PHP_MAXPATHLEN && $this->factory()->exists($contents)) {
+            return static::$bladeViewCache[$key] = $contents;
+        }
+
+        return static::$bladeViewCache[$key] = $this->createBladeViewFromString($this->factory(), $contents);
     }
 
     /**
@@ -240,7 +334,7 @@ abstract class Component
      */
     protected function shouldIgnore($name)
     {
-        return Str::startsWith($name, '__') ||
+        return str_starts_with($name, '__') ||
                in_array($name, $this->ignoredMethods());
     }
 
@@ -314,5 +408,86 @@ abstract class Component
     public function shouldRender()
     {
         return true;
+    }
+
+    /**
+     * Get the evaluated view contents for the given view.
+	 * 获取给定视图的求值视图内容
+     *
+     * @param  string|null  $view
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $mergeData
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function view($view, $data = [], $mergeData = [])
+    {
+        return $this->factory()->make($view, $data, $mergeData);
+    }
+
+    /**
+     * Get the view factory instance.
+	 * 获取视图工厂实例
+     *
+     * @return \Illuminate\Contracts\View\Factory
+     */
+    protected function factory()
+    {
+        if (is_null(static::$factory)) {
+            static::$factory = Container::getInstance()->make('view');
+        }
+
+        return static::$factory;
+    }
+
+    /**
+     * Flush the component's cached state.
+	 * 刷新组件的缓存状态
+     *
+     * @return void
+     */
+    public static function flushCache()
+    {
+        static::$bladeViewCache = [];
+        static::$constructorParametersCache = [];
+        static::$methodCache = [];
+        static::$propertyCache = [];
+    }
+
+    /**
+     * Forget the component's factory instance.
+	 * 忘记组件的工厂实例吧
+     *
+     * @return void
+     */
+    public static function forgetFactory()
+    {
+        static::$factory = null;
+    }
+
+    /**
+     * Forget the component's resolver callback.
+	 * 忘记组件的解析器回调吧
+     *
+     * @return void
+     *
+     * @internal
+     */
+    public static function forgetComponentsResolver()
+    {
+        static::$componentsResolver = null;
+    }
+
+    /**
+     * Set the callback that should be used to resolve components within views.
+	 * 设置应该用于解析视图内组件的回调
+     *
+     * @param  \Closure(string $component, array $data): Component  $resolver
+     * @return void
+     *
+     * @internal
+     */
+    public static function resolveComponentsUsing($resolver)
+    {
+        static::$componentsResolver = $resolver;
     }
 }

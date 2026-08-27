@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，建立者，类
+ * PhpParser，构建者，类
  */
 
 namespace PhpParser\Builder;
@@ -56,6 +56,7 @@ class Class_ extends Declaration {
 
     /**
      * Implements one or more interfaces.
+	 * 实现一个或多个接口
      *
      * @param Name|string ...$interfaces Names of interfaces to implement
      *
@@ -71,6 +72,7 @@ class Class_ extends Declaration {
 
     /**
      * Makes the class abstract.
+	 * 使类抽象
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -82,6 +84,7 @@ class Class_ extends Declaration {
 
     /**
      * Makes the class final.
+	 * 使这堂课最终结束
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -93,6 +96,7 @@ class Class_ extends Declaration {
 
     /**
      * Makes the class readonly.
+	 * 使类只读
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -104,6 +108,7 @@ class Class_ extends Declaration {
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *
@@ -129,6 +134,7 @@ class Class_ extends Declaration {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -142,6 +148,7 @@ class Class_ extends Declaration {
 
     /**
      * Returns the built class node.
+	 * 返回构建的类节点
      *
      * @return Stmt\Class_ The built class node
      */

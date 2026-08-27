@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，块，列表项解析器
+ * League，CommonMark，扩展，共同标记，解析器，代码块，列解析器
  */
 
 declare(strict_types=1);
@@ -70,6 +70,7 @@ final class ListItemParser extends AbstractBlockContinueParser
         }
 
         // Note: We'll hit this case for lazy continuation lines, they will get added later.
+		// 注意：我们将在延迟延续行中遇到这种情况，它们将在稍后添加。
         return BlockContinue::none();
     }
 

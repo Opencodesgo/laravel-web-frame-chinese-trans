@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，变形为多个
+ * Illuminate，数据库，Eloquent，关系，向许多变形
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -29,7 +29,7 @@ class MorphToMany extends BelongsToMany
 
     /**
      * Indicates if we are connecting the inverse of the relation.
-	 * 指明我们是否连接关系的逆
+	 * 指示我们是否连接关系的逆
      *
      * This primarily affects the morphClass constraint.
      *
@@ -180,7 +180,6 @@ class MorphToMany extends BelongsToMany
 	 * 得到关系的主列
      *
      * "pivot_" is prefixed at each column for easy removal later.
-	 * "pivot_"在每一列前加上前缀，以便稍后删除。
      *
      * @return array
      */

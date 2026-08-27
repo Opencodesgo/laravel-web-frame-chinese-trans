@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，Sql Server 语法
+ * Illuminate，数据库，语法，Sql Server 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
 
+use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Fluent;
 
@@ -117,6 +118,25 @@ class SqlServerGrammar extends Grammar
             $this->wrapTable($blueprint),
             implode(', ', $this->getColumns($blueprint))
         );
+    }
+
+    /**
+     * Compile a rename column command.
+	 * 编译重命名列命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations()
+            ? sprintf("sp_rename '%s', %s, 'COLUMN'",
+                $this->wrap($blueprint->getTable().'.'.$command->from),
+                $this->wrap($command->to)
+            )
+            : parent::compileRenameColumn($blueprint, $command, $connection);
     }
 
     /**
@@ -284,7 +304,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a drop unique key command.
-	 * 编译一个删除唯一键命令
+	 * 编译一个删除唯一键命
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -299,7 +319,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a drop index command.
-	 * 编译一个删除索引命令
+	 * 编写一个删除索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -423,6 +443,28 @@ class SqlServerGrammar extends Grammar
             FROM sys.views;
 
             EXEC sp_executesql @sql;";
+    }
+
+    /**
+     * Compile the SQL needed to retrieve all table names.
+	 * 编译检索所有表名所需的SQL
+     *
+     * @return string
+     */
+    public function compileGetAllTables()
+    {
+        return "select name, type from sys.tables where type = 'U'";
+    }
+
+    /**
+     * Compile the SQL needed to retrieve all view names.
+	 * 编译检索所有视图名所需的SQL
+     *
+     * @return string
+     */
+    public function compileGetAllViews()
+    {
+        return "select name, type from sys.objects where type = 'V'";
     }
 
     /**
@@ -647,7 +689,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Create the column definition for a date type.
-	 * 为日期类型创建列定义
+	 * 为日期类型创建列定
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string

@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，适配器接口
+ * Dotenv，资源库，适配器，适配器接口
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ interface AdapterInterface extends ReaderInterface, WriterInterface
 {
     /**
      * Create a new instance of the adapter, if it is available.
-	 * 如果可用,创建适配器的一个新实例
+	 * 创建适配器的新实例（如果可用）。
      *
      * @return \PhpOption\Option<\Dotenv\Repository\Adapter\AdapterInterface>
      */

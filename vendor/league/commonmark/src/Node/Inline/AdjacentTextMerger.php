@@ -29,7 +29,7 @@ final class AdjacentTextMerger
     public static function mergeChildNodes(Node $node): void
     {
         // No children or just one child node, no need for merging
-		// 没有孩子,也没有一个孩子节点,没有必要合并。
+		// 没有子节点或只有一个子节点，不需要合并。
         if ($node->firstChild() === $node->lastChild() || $node->firstChild() === null || $node->lastChild() === null) {
             return;
         }

@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Get a broadcaster implementation by name.
-	 * 按名称获取广播器实现
+	 * 得到广播器实现通过名称
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster

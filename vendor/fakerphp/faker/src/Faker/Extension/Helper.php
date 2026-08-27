@@ -7,7 +7,7 @@ namespace Faker\Extension;
 
 /**
  * A class with some methods that may make building extensions easier.
- * 有一些方法可以使构建扩展更容易。
+ * 带有一些方法的类，这些方法可以使构建扩展变得更容易。
  *
  * @experimental This class is experimental and does not fall under our BC promise
  */
@@ -15,7 +15,7 @@ final class Helper
 {
     /**
      * Returns a random element from a passed array.
-	 * 从一个传递的数组返回一个随机元素。
+	 * 从传递的数组中返回一个随机元素。
      */
     public static function randomElement(array $array)
     {
@@ -69,7 +69,7 @@ final class Helper
 
     /**
      * Replaces all question mark ('?') occurrences with a random letter.
-	 * 用随机字母替换所有问号(' . ')。
+	 * 替换所有问号('？')的出现与一个随机字母
      *
      * @param string $string String that needs to bet parsed
      */

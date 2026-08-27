@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，文本
+ */
 
 namespace Faker\Provider;
 
@@ -13,6 +16,7 @@ abstract class Text extends Base
 
     /**
      * Generate a text string by the Markov chain algorithm.
+	 * 生成一个文本字符串的马尔可夫链算法
      *
      * Depending on the $maxNbChars, returns a random valid looking text. The algorithm
      * generates a weighted table with the specified number of words as the index and the
@@ -35,6 +39,7 @@ abstract class Text extends Base
 
     /**
      * Generate a text string by the Markov chain algorithm.
+	 * 生成一个文本字符串的马尔可夫链算法
      *
      * Depending on the $maxNbChars, returns a random valid looking text. The algorithm
      * generates a weighted table with the specified number of words as the index and the

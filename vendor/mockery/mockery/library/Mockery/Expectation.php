@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，期待
+ * Mockery，期望
  */
 
 /**
@@ -55,7 +55,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Actual count of calls to this expectation
-	 * 对这个期望的调用的实际计数
+	 * 达到此期望的实际调用数
      *
      * @var int
      */
@@ -63,7 +63,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Exception message
-	 * 异常消息
+	 * 异常信息
      *
      * @var null|string
      */
@@ -72,7 +72,7 @@ class Expectation implements ExpectationInterface
     /**
      * Array of closures executed with given arguments to generate a result
      * to be returned
-	 * 使用给定参数执行以生成结果的闭包数组待归还
+	 * 使用给定参数执行以生成返回结果的闭包数组
      *
      * @var array
      */
@@ -80,7 +80,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * The count validator class to use
-	 * 使用计数验证器类
+	 * 要使用的计数验证器类
      *
      * @var string
      */
@@ -96,7 +96,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Arguments expected by this expectation
-	 * 期望的论点
+	 * 这个期望所期望的参数
      *
      * @var array
      */
@@ -104,7 +104,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Expected count of calls to this expectation
-	 * 预计对这个期望的调用数
+	 * 达到此期望的调用的预期计数
      *
      * @var int
      */
@@ -113,6 +113,7 @@ class Expectation implements ExpectationInterface
     /**
      * Flag indicating whether the order of calling is determined locally or
      * globally
+	 * 指示调用顺序是本地确定还是全局确定的标志
      *
      * @var bool
      */
@@ -120,7 +121,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Integer representing the call order of this expectation on a global basis
-	 * 在全球基础上表示这种期望的调用顺序的整数
+	 * 整数，在全局基础上表示此期望的调用顺序。
      *
      * @var int
      */
@@ -128,7 +129,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Mock object to which this expectation belongs
-	 * 模拟对象,这个期望属于
+	 * 此期望所属的模拟对象
      *
      * @var LegacyMockInterface
      */
@@ -144,7 +145,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Integer representing the call order of this expectation
-	 * 表示期望的调用顺序的整数
+	 * 表示此期望的调用顺序的整数
      *
      * @var int
      */
@@ -153,7 +154,7 @@ class Expectation implements ExpectationInterface
     /**
      * Flag indicating if the return value should be obtained from the original
      * class method instead of returning predefined values from the return queue
-	 * 标志，指示是否应该从原始返回值中获得返回值类方法，而不是从返回队列返回预定义值。
+	 * 标志，指示是否应该从原始返回值中获得返回值。
      *
      * @var bool
      */
@@ -193,6 +194,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Constructor
+	 * 构造方法
      *
      * @param string $name
      */
@@ -205,6 +207,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Cloning logic
+	 * 克隆的逻辑
      */
     public function __clone()
     {
@@ -342,7 +345,7 @@ class Expectation implements ExpectationInterface
      * Set a closure or sequence of closures with which to generate return
      * values. The arguments passed to the expected method are passed to the
      * closures as parameters.
-	 * 设置要生成返回值的闭包或闭包序列值。
+	 * 设置要生成返回值的闭包或闭包序列。
      *
      * @param callable ...$args
      *
@@ -758,7 +761,6 @@ class Expectation implements ExpectationInterface
 
     /**
      * Verify call order
-	 * 验证呼叫顺序
      *
      * @return void
      */
@@ -779,7 +781,6 @@ class Expectation implements ExpectationInterface
 
     /**
      * Verify this expectation
-	 * 验证这个期望
      *
      * @return void
      */
@@ -870,7 +871,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Set with() as no arguments expected
-	 * 设置with()为不需要参数
+	 * 设置with（）为不需要参数
      *
      * @return self
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，PDO，Postgres 驱动
+ * Illuminate，数据库，PDO，Postgres驱动
  */
 
 namespace Illuminate\Database\PDO;
@@ -11,4 +11,12 @@ use Illuminate\Database\PDO\Concerns\ConnectsToDatabase;
 class PostgresDriver extends AbstractPostgreSQLDriver
 {
     use ConnectsToDatabase;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pdo_pgsql';
+    }
 }

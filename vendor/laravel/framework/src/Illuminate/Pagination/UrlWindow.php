@@ -19,7 +19,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
-	 * 创建一个新的URL窗口实例
+	 * 创建新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return void
@@ -43,7 +43,7 @@ class UrlWindow
 
     /**
      * Get the window of URLs to be shown.
-	 * 得到要显示的url窗口
+	 * 获取要显示的url窗口
      *
      * @return array
      */
@@ -75,7 +75,7 @@ class UrlWindow
 
     /**
      * Create a URL slider links.
-	 * 创建一个URL滑块链接
+	 * 创建一个URL滚动链接
      *
      * @param  int  $onEachSide
      * @return array
@@ -99,7 +99,7 @@ class UrlWindow
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
-		// 如果当前页接近页范围的末尾，我们仅得到前几页。
+		// 如果当前页接近页范围的末尾，们会得到前几页。
         elseif ($this->currentPage() > ($this->lastPage() - $window)) {
             return $this->getSliderTooCloseToEnding($window, $onEachSide);
         }
@@ -107,14 +107,13 @@ class UrlWindow
         // If we have enough room on both sides of the current page to build a slider we
         // will surround it with both the beginning and ending caps, with this window
         // of pages in the middle providing a Google style sliding paginator setup.
-		// 如果我们在当前页面的两边都有足够的空间来构建一个滑动条，
-		// 我们将会用开始和结束的大写字母包围它。
+		// 如果我们在当前页面的两边都有足够的空间来构建一个滑动条。
         return $this->getFullSlider($onEachSide);
     }
 
     /**
-     * Get the slider of URLs when too close to beginning of window.
-	 * 当太接近窗口开始时，获取url的滑动条。
+     * Get the slider of URLs when too close to the beginning of the window.
+	 * 当太靠近窗口的开始时，获取url的滑动条。
      *
      * @param  int  $window
      * @param  int  $onEachSide
@@ -130,8 +129,8 @@ class UrlWindow
     }
 
     /**
-     * Get the slider of URLs when too close to ending of window.
-	 * 当太接近窗口结束时获取url的滑动条
+     * Get the slider of URLs when too close to the ending of the window.
+	 * 当太接近窗口结束时获取url滑动条
      *
      * @param  int  $window
      * @param  int  $onEachSide

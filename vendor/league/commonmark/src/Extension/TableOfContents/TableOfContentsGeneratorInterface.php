@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，目录生成器接口
+ * League，CommonMark，扩展，目次，目录生成器接口
  */
 
 declare(strict_types=1);

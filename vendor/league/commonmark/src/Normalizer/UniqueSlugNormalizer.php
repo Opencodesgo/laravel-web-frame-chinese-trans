@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，标准化器， Unique Slug 标准化器
+ * League，CommonMark，标准化者，独特的 Slug标准化者
  */
 
 declare(strict_types=1);
@@ -43,7 +43,7 @@ final class UniqueSlugNormalizer implements UniqueSlugNormalizerInterface
         $normalized = $this->innerNormalizer->normalize($text, $context);
 
         // If it's not unique, add an incremental number to the end until we get a unique version
-		// 如果它不是唯一的，在末尾添加一个增量数字，直到我们得到一个唯一的版本
+		// 如果它不是唯一的，在末尾添加一个增量数字，直到我们得到一个唯一的版本。
         if (\array_key_exists($normalized, $this->alreadyUsed)) {
             $suffix = 0;
             do {

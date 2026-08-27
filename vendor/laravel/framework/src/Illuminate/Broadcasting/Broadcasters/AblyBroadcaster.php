@@ -1,13 +1,14 @@
 <?php
 /**
- * Illuminate，广播，广播员，Ably 广播
- * 默认不自带Ably，需要安装 composer require ably/ably-php
+ * Illuminate，广播，广播员，巧妙地广播
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
 use Ably\AblyRest;
+use Ably\Exceptions\AblyException;
 use Ably\Models\Message as AblyMessage;
+use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -19,7 +20,7 @@ class AblyBroadcaster extends Broadcaster
 {
     /**
      * The AblyRest SDK instance.
-	 * AblyRest SDK实例
+	 * AblyRest SDK 实例
      *
      * @var \Ably\AblyRest
      */
@@ -71,7 +72,7 @@ class AblyBroadcaster extends Broadcaster
      */
     public function validAuthenticationResponse($request, $result)
     {
-        if (Str::startsWith($request->channel_name, 'private')) {
+        if (str_starts_with($request->channel_name, 'private')) {
             $signature = $this->generateAblySignature(
                 $request->channel_name, $request->socket_id
             );
@@ -128,19 +129,27 @@ class AblyBroadcaster extends Broadcaster
      * @param  string  $event
      * @param  array  $payload
      * @return void
+     *
+     * @throws \Illuminate\Broadcasting\BroadcastException
      */
     public function broadcast(array $channels, $event, array $payload = [])
     {
-        foreach ($this->formatChannels($channels) as $channel) {
-            $this->ably->channels->get($channel)->publish(
-                $this->buildAblyMessage($event, $payload)
+        try {
+            foreach ($this->formatChannels($channels) as $channel) {
+                $this->ably->channels->get($channel)->publish(
+                    $this->buildAblyMessage($event, $payload)
+                );
+            }
+        } catch (AblyException $e) {
+            throw new BroadcastException(
+                sprintf('Ably error: %s', $e->getMessage())
             );
         }
     }
 
     /**
      * Build an Ably message object for broadcasting.
-	 * 构建用于广播的消息对象
+	 * 构建用于广播的Ably消息对象
      *
      * @param  string  $event
      * @param  array  $payload
@@ -177,7 +186,7 @@ class AblyBroadcaster extends Broadcaster
     public function normalizeChannelName($channel)
     {
         if ($this->isGuardedChannel($channel)) {
-            return Str::startsWith($channel, 'private-')
+            return str_starts_with($channel, 'private-')
                         ? Str::replaceFirst('private-', '', $channel)
                         : Str::replaceFirst('presence-', '', $channel);
         }
@@ -198,7 +207,7 @@ class AblyBroadcaster extends Broadcaster
             $channel = (string) $channel;
 
             if (Str::startsWith($channel, ['private-', 'presence-'])) {
-                return Str::startsWith($channel, 'private-')
+                return str_starts_with($channel, 'private-')
                     ? Str::replaceFirst('private-', 'private:', $channel)
                     : Str::replaceFirst('presence-', 'presence:', $channel);
             }
@@ -209,7 +218,7 @@ class AblyBroadcaster extends Broadcaster
 
     /**
      * Get the public token value from the Ably key.
-	 * 从密钥获取公共令牌值
+	 * 从able密钥获取公共令牌值
      *
      * @return mixed
      */
@@ -220,7 +229,7 @@ class AblyBroadcaster extends Broadcaster
 
     /**
      * Get the private token value from the Ably key.
-	 * 从密钥获取私有令牌值
+	 * 从able密钥获取私有令牌值
      *
      * @return mixed
      */
@@ -231,7 +240,7 @@ class AblyBroadcaster extends Broadcaster
 
     /**
      * Get the underlying Ably SDK instance.
-	 * 获取底层的SDK实例
+	 * 获取底层的Ably SDK实例
      *
      * @return \Ably\AblyRest
      */

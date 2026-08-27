@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Store，文件，路径
+ * Dotenv，存储，文件，路径
  */
 
 declare(strict_types=1);
@@ -14,7 +14,7 @@ final class Paths
 {
     /**
      * This class is a singleton.
-	 * 这个类是单例
+	 * 这个类是单例的
      *
      * @codeCoverageIgnore
      *

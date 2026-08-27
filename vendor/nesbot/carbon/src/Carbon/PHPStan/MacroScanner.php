@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，PHP Stan，宏扫描仪
+ * Carbon，PHPStan，宏扫描仪 
  */
 
 /**
@@ -28,7 +28,7 @@ final class MacroScanner
 
     /**
      * MacroScanner constructor.
-	 * MacroScanner构造函数
+	 * MacroScanner构造方法
      *
      * @param \PHPStan\Reflection\ReflectionProvider $reflectionProvider
      */

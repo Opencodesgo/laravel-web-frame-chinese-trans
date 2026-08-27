@@ -9,14 +9,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cache Store 	默认缓存存储
+    | Default Cache Store	默认缓存存储
     |--------------------------------------------------------------------------
     |
     | This option controls the default cache connection that gets used while
     | using this caching library. This connection is used when another is
     | not explicitly specified when executing a given caching function.
-	| 此选项控制运行时使用的默认缓存连接使用这个缓存库。
-	| 当执行某个缓存函数时，若未明确指定其他连接，则使用此连接。
+	| 此选项控制使用缓存库的默认缓存连接。
     |
     */
 
@@ -24,14 +23,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores 	缓存存储
+    | Cache Stores	缓存存储
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the cache "stores" for your application as
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
-	| 在这里，您可以将应用程序的所有缓存"存储"定义并作为他们的驱动。
-	| 您甚至可以为同一个缓存驱动器定义多个商店，以将缓存中存储的各类项目进行分组。
+	| 在这里您可以定义应用的所有缓存"存储"。
     |
     | Supported drivers: "apc", "array", "database", "file",
     |         "memcached", "redis", "dynamodb", "octane", "null"
@@ -103,17 +101,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Key Prefix 	缓存键前缀
+    | Cache Key Prefix		缓存键前缀
     |--------------------------------------------------------------------------
     |
-    | When utilizing a RAM based store such as APC or Memcached, there might
-    | be other applications utilizing the same cache. So, we'll specify a
-    | value to get prefixed to all our keys so we can avoid collisions.
-	| 当使用基于内存的存储（如APC或Memcached）时，有可能是使用相同缓存的其他应用程序。
-	| 因此，我们将指定一个值，用于为所有键添加前缀，以避免冲突。
+    | When utilizing the APC, database, memcached, Redis, or DynamoDB cache
+    | stores there might be other applications using the same cache. For
+    | that reason, you may prefix every cache key to avoid collisions.
+	| 当使用APC，数据库，memcached, Redis, or DynamoDB 缓存存储时，
+	| 可能还有其他应用程序使用相同的缓存。
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
 
 ];

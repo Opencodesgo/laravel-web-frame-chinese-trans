@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，测试，约束，响应无法处理
+ * Symfony，Component，HttpFoundation，测试，约束，响应头位置相同
  */
 
 /*
@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ResponseIsUnprocessable extends Constraint
 {
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return 'is unprocessable';
@@ -29,8 +26,6 @@ final class ResponseIsUnprocessable extends Constraint
 
     /**
      * @param Response $other
-     *
-     * {@inheritdoc}
      */
     protected function matches($other): bool
     {
@@ -39,8 +34,6 @@ final class ResponseIsUnprocessable extends Constraint
 
     /**
      * @param Response $other
-     *
-     * {@inheritdoc}
      */
     protected function failureDescription($other): string
     {
@@ -49,8 +42,6 @@ final class ResponseIsUnprocessable extends Constraint
 
     /**
      * @param Response $other
-     *
-     * {@inheritdoc}
      */
     protected function additionalFailureDescription($other): string
     {

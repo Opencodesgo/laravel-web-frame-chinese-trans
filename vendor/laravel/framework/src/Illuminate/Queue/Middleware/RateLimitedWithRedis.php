@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，中间件，Redis的速率限制
+ * Illuminate，队列，中间件，Redis 速率限制
  */
 
 namespace Illuminate\Queue\Middleware;
@@ -88,7 +88,7 @@ class RateLimitedWithRedis extends RateLimited
 
     /**
      * Get the number of seconds that should elapse before the job is retried.
-	 * 得到在重试作业之前应该经过的秒数
+	 * 获取在重试作业之前应该经过的秒数
      *
      * @param  string  $key
      * @return int

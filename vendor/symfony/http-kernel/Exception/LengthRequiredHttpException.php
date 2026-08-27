@@ -1,11 +1,10 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，异常，长度要求Http异常
+ * Symfony，Component，HttpKernel，异常，要求长度 Http异常
  */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -20,19 +19,8 @@ namespace Symfony\Component\HttpKernel\Exception;
  */
 class LengthRequiredHttpException extends HttpException
 {
-    /**
-     * @param string|null     $message  The internal exception message
-     * @param \Throwable|null $previous The previous exception
-     * @param int             $code     The internal exception code
-     */
-    public function __construct(?string $message = '', ?\Throwable $previous = null, int $code = 0, array $headers = [])
+    public function __construct(string $message = '', ?\Throwable $previous = null, int $code = 0, array $headers = [])
     {
-        if (null === $message) {
-            trigger_deprecation('symfony/http-kernel', '5.3', 'Passing null as $message to "%s()" is deprecated, pass an empty string instead.', __METHOD__);
-
-            $message = '';
-        }
-
         parent::__construct(411, $message, $previous, $headers, $code);
     }
 }

@@ -22,7 +22,7 @@ interface ControllerDispatcher
 
     /**
      * Get the middleware for the controller instance.
-	 * 得到控制器实例的中间件
+	 * 获取控制器实例的中间件
      *
      * @param  \Illuminate\Routing\Controller  $controller
      * @param  string  $method

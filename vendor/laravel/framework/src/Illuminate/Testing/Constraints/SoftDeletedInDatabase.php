@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，约束，数据库软删除
+ * Illuminate, 支持, 约束，数据库软删除
  */
 
 namespace Illuminate\Testing\Constraints;
@@ -44,7 +44,7 @@ class SoftDeletedInDatabase extends Constraint
 
     /**
      * Create a new constraint instance.
-	 * 创建新的约束实例
+	 * 创建一个新的约束实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  array  $data

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件，上传异常
+ * Symfony，Component，HttpFoundation，文件，异常，上传异常
  */
 
 /*

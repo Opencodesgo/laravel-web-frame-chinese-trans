@@ -19,15 +19,13 @@ namespace Symfony\Component\Console\Output;
  */
 class BufferedOutput extends Output
 {
-    private $buffer = '';
+    private string $buffer = '';
 
     /**
      * Empties buffer and returns its content.
 	 * 清空缓冲区并返回其内容
-     *
-     * @return string
      */
-    public function fetch()
+    public function fetch(): string
     {
         $content = $this->buffer;
         $this->buffer = '';
@@ -36,7 +34,7 @@ class BufferedOutput extends Output
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function doWrite(string $message, bool $newline)
     {

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，数字比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -19,6 +24,7 @@ use function sprintf;
 
 /**
  * Compares numerical values for equality.
+ * 比较数值是否相等。
  */
 class NumericComparator extends ScalarComparator
 {

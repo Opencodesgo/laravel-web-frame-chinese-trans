@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Provides methods to determine if a modified URL should be considered cross-origin.
- * 提供方法来确定是否应该考虑修改后的URL。
+ * 提供方法来确定是否应将修改的URL视为跨源。
  *
  * @author Graham Campbell
  */

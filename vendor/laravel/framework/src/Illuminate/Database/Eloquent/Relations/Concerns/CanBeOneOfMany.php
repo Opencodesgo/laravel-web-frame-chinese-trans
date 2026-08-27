@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，可以是许多中的一个
+ * Illuminate，数据库，Eloquent，关系，问题，能成为众多中的一个吗
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -9,14 +9,13 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 trait CanBeOneOfMany
 {
     /**
      * Determines whether the relationship is one-of-many.
-	 * 确定该关系是否是众多关系中的一个
+	 * 确定该关系是否是众多关系中的一
      *
      * @var bool
      */
@@ -61,7 +60,7 @@ trait CanBeOneOfMany
      * Add join query constraints for one of many relationships.
 	 * 为多个关系中的一个添加连接查询约束
      *
-     * @param  \Illuminate\Database\Eloquent\JoinClause  $join
+     * @param  \Illuminate\Database\Query\JoinClause  $join
      * @return void
      */
     abstract public function addOneOfManyJoinSubQueryConstraints(JoinClause $join);
@@ -71,7 +70,7 @@ trait CanBeOneOfMany
 	 * 表明该关系是一个更大的一对多关系的单个结果
      *
      * @param  string|array|null  $column
-     * @param  string|Closure|null  $aggregate
+     * @param  string|\Closure|null  $aggregate
      * @param  string|null  $relation
      * @return $this
      *
@@ -148,7 +147,6 @@ trait CanBeOneOfMany
 	 * 表明该关系是一个较大的一对多关系的最新单个结果
      *
      * @param  string|array|null  $column
-     * @param  string|Closure|null  $aggregate
      * @param  string|null  $relation
      * @return $this
      */
@@ -164,7 +162,6 @@ trait CanBeOneOfMany
 	 * 表明该关系是较大的一对多关系中最古老的单个结果
      *
      * @param  string|array|null  $column
-     * @param  string|Closure|null  $aggregate
      * @param  string|null  $relation
      * @return $this
      */
@@ -243,7 +240,7 @@ trait CanBeOneOfMany
      * Merge the relationship query joins to the given query builder.
 	 * 将关系查询连接合并到给定的查询生成器
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return void
      */
     protected function mergeOneOfManyJoinsTo(Builder $query)
@@ -298,7 +295,7 @@ trait CanBeOneOfMany
      */
     protected function qualifyRelatedColumn($column)
     {
-        return Str::contains($column, '.') ? $column : $this->query->getModel()->getTable().'.'.$column;
+        return str_contains($column, '.') ? $column : $this->query->getModel()->getTable().'.'.$column;
     }
 
     /**

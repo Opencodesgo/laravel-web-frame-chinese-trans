@@ -9,7 +9,7 @@ interface ContextualBindingBuilder
 {
     /**
      * Define the abstract target that depends on the context.
-	 * 定义依赖于上下文的抽象目标
+	 * 定义依赖于上下文的抽象对象
      *
      * @param  string  $abstract
      * @return $this
@@ -33,4 +33,14 @@ interface ContextualBindingBuilder
      * @return void
      */
     public function giveTagged($tag);
+
+    /**
+     * Specify the configuration item to bind as a primitive.
+	 * 指定要绑定的配置项作为原语
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return void
+     */
+    public function giveConfig($key, $default = null);
 }

@@ -22,7 +22,7 @@ interface EnvInterface
 {
     /**
      * Get an environment variable by name.
-	 * 按名称获取环境变量。
+	 * 按名称获取环境变量
      *
      * @return string|null
      */

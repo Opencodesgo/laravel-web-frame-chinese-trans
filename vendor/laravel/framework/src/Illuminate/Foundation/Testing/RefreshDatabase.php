@@ -20,6 +20,8 @@ trait RefreshDatabase
      */
     public function refreshDatabase()
     {
+        $this->beforeRefreshingDatabase();
+
         $this->usingInMemoryDatabase()
                         ? $this->refreshInMemoryDatabase()
                         : $this->refreshTestDatabase();
@@ -103,6 +105,12 @@ trait RefreshDatabase
             $connection->unsetEventDispatcher();
             $connection->beginTransaction();
             $connection->setEventDispatcher($dispatcher);
+
+            if ($this->app->resolved('db.transactions')) {
+                $this->app->make('db.transactions')->callbacksShouldIgnore(
+                    $this->app->make('db.transactions')->getTransactions()->first()
+                );
+            }
         }
 
         $this->beforeApplicationDestroyed(function () use ($database) {
@@ -131,8 +139,19 @@ trait RefreshDatabase
     }
 
     /**
+     * Perform any work that should take place before the database has started refreshing.
+	 * 执行在数据库开始刷新之前应该进行的任何工作
+     *
+     * @return void
+     */
+    protected function beforeRefreshingDatabase()
+    {
+        // ...
+    }
+
+    /**
      * Perform any work that should take place once the database has finished refreshing.
-	 * 执行应该在数据库完成刷新后发生的任何工作。
+	 * 执行应该在数据库完成刷新后发生的任何工作
      *
      * @return void
      */

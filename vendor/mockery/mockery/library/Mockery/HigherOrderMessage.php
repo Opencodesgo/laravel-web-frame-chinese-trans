@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，高级指令消息
+ * Mockery，高阶消息
  */
 
 /**

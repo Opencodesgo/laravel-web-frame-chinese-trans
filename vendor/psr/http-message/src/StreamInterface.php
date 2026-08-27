@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，Http，消息，数据流接口
+ * Psr，Http，消息，流接口
  */
 
 namespace Psr\Http\Message;
@@ -17,7 +17,7 @@ interface StreamInterface
 {
     /**
      * Reads all data from the stream into a string, from the beginning to end.
-	 * 从开始到结束,从流中读取所有的数据。
+	 * 将流中的所有数据从头到尾读入字符串。
      *
      * This method MUST attempt to seek to the beginning of the stream before
      * reading data and read the stream until the end is reached.
@@ -52,7 +52,7 @@ interface StreamInterface
 
     /**
      * Get the size of the stream if known.
-	 * 如果知道,就得到流的大小。
+	 * 如果已知，获取流的大小。
      *
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */
@@ -77,7 +77,7 @@ interface StreamInterface
 
     /**
      * Returns whether or not the stream is seekable.
-	 * 返回流是否可寻
+	 * 返回流是否可寻。
      *
      * @return bool
      */
@@ -85,7 +85,6 @@ interface StreamInterface
 
     /**
      * Seek to a position in the stream.
-	 * 在小溪中找个位置
      *
      * @link http://www.php.net/manual/en/function.fseek.php
      * @param int $offset Stream offset
@@ -113,7 +112,7 @@ interface StreamInterface
 
     /**
      * Returns whether or not the stream is writable.
-	 * 返回流是否可写。
+	 * 返回流是否可写
      *
      * @return bool
      */
@@ -139,7 +138,7 @@ interface StreamInterface
 
     /**
      * Read data from the stream.
-	 * 从流中读取数据
+	 * 从流中读取数据。
      *
      * @param int $length Read up to $length bytes from the object and return
      *     them. Fewer than $length bytes may be returned if underlying stream
@@ -162,7 +161,7 @@ interface StreamInterface
 
     /**
      * Get stream metadata as an associative array or retrieve a specific key.
-	 * 将流元数据作为关联数组或检索特定的键。
+	 * 获取流元数据作为关联数组或检索特定键。
      *
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.

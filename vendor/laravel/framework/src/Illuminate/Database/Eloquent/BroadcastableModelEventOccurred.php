@@ -55,6 +55,14 @@ class BroadcastableModelEventOccurred implements ShouldBroadcast
     public $queue;
 
     /**
+     * Indicates whether the job should be dispatched after all database transactions have committed.
+	 * 指示是否应在所有数据库事务提交后分派作业
+     *
+     * @var bool|null
+     */
+    public $afterCommit;
+
+    /**
      * Create a new event instance.
 	 * 创建新的事件实例
      *
@@ -141,7 +149,7 @@ class BroadcastableModelEventOccurred implements ShouldBroadcast
 
     /**
      * Get the event name.
-	 * 得到事件名
+	 * 得到事件名称
      *
      * @return string
      */

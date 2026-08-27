@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，命令，描述符号，Cli 描述符
+ * Symfony，Component，VarDumper，指令，描述符，Cli 描述符
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 /**
  * Describe collected data clones for cli output.
- * 描述为cli输出收集的数据克隆。
+ * 描述收集到的数据克隆，用于cli输出。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *
@@ -30,8 +30,8 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
  */
 class CliDescriptor implements DumpDescriptorInterface
 {
-    private $dumper;
-    private $lastIdentifier;
+    private CliDumper $dumper;
+    private mixed $lastIdentifier = null;
 
     public function __construct(CliDumper $dumper)
     {
@@ -51,7 +51,7 @@ class CliDescriptor implements DumpDescriptorInterface
         if (isset($context['request'])) {
             $request = $context['request'];
             $this->lastIdentifier = $request['identifier'];
-            $section = sprintf('%s %s', $request['method'], $request['uri']);
+            $section = \sprintf('%s %s', $request['method'], $request['uri']);
             if ($controller = $request['controller']) {
                 $rows[] = ['controller', rtrim($this->dumper->dump($controller, true), "\n")];
             }
@@ -66,9 +66,9 @@ class CliDescriptor implements DumpDescriptorInterface
 
         if (isset($context['source'])) {
             $source = $context['source'];
-            $sourceInfo = sprintf('%s on line %d', $source['name'], $source['line']);
+            $sourceInfo = \sprintf('%s on line %d', $source['name'], $source['line']);
             if ($fileLink = $source['file_link'] ?? null) {
-                $sourceInfo = sprintf('<href=%s>%s</>', $fileLink, $sourceInfo);
+                $sourceInfo = \sprintf('<href=%s>%s</>', $fileLink, $sourceInfo);
             }
             $rows[] = ['source', $sourceInfo];
             $file = $source['file_relative'] ?? $source['file'];

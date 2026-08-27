@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+/**
+ * artisan，工匠
+ */
 
 define('LARAVEL_START', microtime(true));
 
@@ -12,6 +15,8 @@ define('LARAVEL_START', microtime(true));
 | for our application. We just need to utilize it! We'll require it
 | into the script here so that we do not have to worry about the
 | loading of any of our classes manually. It's great to relax.
+| Composer 为我们应用程序提供了一个便捷且自动生成的类加载器。
+| 我们只需要使用它！把它引入脚本中，这样就无需手动加载任何类了。放松一下非常棒。
 |
 */
 
@@ -21,12 +26,14 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
-| Run The Artisan Application	运行Artisan应用程序
+| Run The Artisan Application	运行工匠应用程序
 |--------------------------------------------------------------------------
 |
 | When we run the console application, the current CLI command will be
 | executed in this console and the response sent back to a terminal
 | or another output device for the developers. Here goes nothing!
+| 当我们运行控制台应用程序时，当前的命令行界面（CLI）命令将在该控制台中执行，
+| 并将响应发送回终端或其他输出设备，供开发者查看。一切就绪！
 |
 */
 
@@ -45,6 +52,8 @@ $status = $kernel->handle(
 | Once Artisan has finished running, we will fire off the shutdown events
 | so that any final work may be done by the application before we shut
 | down the process. This is the last thing to happen to the request.
+| 一旦 Artisan 完成运行，我们将触发关闭事件，以便应用程序在我们关闭进程前完成任何最后的工作。
+| 这是请求的最后一个处理步骤。
 |
 */
 

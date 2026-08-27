@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，作业请求重试
+ * Illuminate，队列，事件，作业重试请求
  */
 
 namespace Illuminate\Queue\Events;
@@ -25,7 +25,7 @@ class JobRetryRequested
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \stdClass  $job
      * @return void

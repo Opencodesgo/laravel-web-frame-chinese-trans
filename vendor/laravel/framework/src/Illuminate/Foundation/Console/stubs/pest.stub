@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，存根，根据需要实际修改
+ */
 
 test('example', function () {
     $response = $this->get('/');

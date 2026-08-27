@@ -45,6 +45,7 @@ class ConfigPaths
 
     /**
      * Provide `configDir`, `dataDir` and `runtimeDir` overrides.
+	 * 提供‘ configDir ’， ‘ dataDir ’和‘ runtimeDir ’覆盖。
      *
      * If a key is set but empty, the override will be removed. If it is not set
      * at all, any existing override will persist.
@@ -108,7 +109,7 @@ class ConfigPaths
 
     /**
      * Get potential config directory paths.
-	 * 获取可能的配置目录路径
+	 * 获取可能的配置目录路径。
      *
      * Returns `~/.psysh`, `%APPDATA%/PsySH` (when on Windows), and all
      * XDG Base Directory config directories:
@@ -130,7 +131,7 @@ class ConfigPaths
 
     /**
      * Get the current home config directory.
-	 * 获取当前主配置目录
+	 * 获取当前主配置目录。
      *
      * Returns the highest precedence home config directory which actually
      * exists. If none of them exists, returns the highest precedence home
@@ -158,7 +159,7 @@ class ConfigPaths
 
     /**
      * Find real config files in config directories.
-	 * 在配置目录中查找真正的配置文件
+	 * 在配置目录中查找真正的配置文件。
      *
      * @param string[] $names Config file names
      *
@@ -209,7 +210,7 @@ class ConfigPaths
 
     /**
      * Get a runtime directory.
-	 * 获取运行时目录
+	 * 获取运行时目录。
      *
      * Defaults to `/psysh` inside the system's temp dir.
      */
@@ -240,7 +241,7 @@ class ConfigPaths
 
     /**
      * Locate a command (an executable) in $PATH.
-	 * 在$PATH中找到命令（可执行文件）
+	 * 在$PATH中找到命令（可执行文件）。
      *
      * Behaves like 'command -v COMMAND' or 'which COMMAND'.
      * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.

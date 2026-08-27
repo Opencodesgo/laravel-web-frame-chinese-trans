@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，块，抽象的块
+ * League，CommonMark，节点，代码块，抽象的块
  */
 
 declare(strict_types=1);
@@ -24,7 +24,7 @@ use League\CommonMark\Node\Node;
 
 /**
  * Block-level element
- * 块级元素
+ * 区块层级元素
  *
  * @method parent() ?AbstractBlock
  */

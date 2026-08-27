@@ -14,7 +14,8 @@ use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 /**
- * @mixin \Illuminate\Contracts\Cache\Repository
+ * @mixin \Illuminate\Cache\Repository
+ * @mixin \Illuminate\Contracts\Cache\LockProvider
  */
 class CacheManager implements FactoryContract
 {
@@ -44,7 +45,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create a new Cache manager instance.
-	 * 创建新的缓存管理器实例
+	 * 创建一个新的缓存管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -65,7 +66,7 @@ class CacheManager implements FactoryContract
     {
         $name = $name ?: $this->getDefaultDriver();
 
-        return $this->stores[$name] = $this->get($name);
+        return $this->stores[$name] ??= $this->resolve($name);
     }
 
     /**
@@ -78,18 +79,6 @@ class CacheManager implements FactoryContract
     public function driver($driver = null)
     {
         return $this->store($driver);
-    }
-
-    /**
-     * Attempt to get the store from the local cache.
-	 * 尝试从本地缓存获取存储
-     *
-     * @param  string  $name
-     * @return \Illuminate\Contracts\Cache\Repository
-     */
-    protected function get($name)
-    {
-        return $this->stores[$name] ?? $this->resolve($name);
     }
 
     /**
@@ -273,9 +262,9 @@ class CacheManager implements FactoryContract
 
     /**
      * Create new DynamoDb Client instance.
-	 * 创建新的DynamoDb客户端实例
+	 * 创建新的DynamoDb Client实例。
      *
-     * @return DynamoDbClient
+     * @return \Aws\DynamoDb\DynamoDbClient
      */
     protected function newDynamodbClient(array $config)
     {
@@ -285,7 +274,7 @@ class CacheManager implements FactoryContract
             'endpoint' => $config['endpoint'] ?? null,
         ];
 
-        if (isset($config['key']) && isset($config['secret'])) {
+        if (isset($config['key'], $config['secret'])) {
             $dynamoConfig['credentials'] = Arr::only(
                 $config, ['key', 'secret', 'token']
             );
@@ -296,7 +285,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create a new cache repository with the given implementation.
-	 * 使用给定的实现创建一个新的缓存资源库
+	 * 使用给定的实现创建一个新的缓存存储库
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @return \Illuminate\Cache\Repository
@@ -339,7 +328,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Get the cache prefix.
-	 * 得到缓存前缀
+	 * 获取缓存前缀
      *
      * @param  array  $config
      * @return string
@@ -351,10 +340,10 @@ class CacheManager implements FactoryContract
 
     /**
      * Get the cache connection configuration.
-	 * 得到缓存连接配置
+	 * 获取缓存连接配置
      *
      * @param  string  $name
-     * @return array
+     * @return array|null
      */
     protected function getConfig($name)
     {
@@ -397,7 +386,7 @@ class CacheManager implements FactoryContract
      */
     public function forgetDriver($name = null)
     {
-        $name = $name ?? $this->getDefaultDriver();
+        $name ??= $this->getDefaultDriver();
 
         foreach ((array) $name as $cacheName) {
             if (isset($this->stores[$cacheName])) {
@@ -410,14 +399,14 @@ class CacheManager implements FactoryContract
 
     /**
      * Disconnect the given driver and remove from local cache.
-	 * 断开给定的驱动程序并从本地缓存中删除
+	 * 断开给定的驱动程序并从本地缓存中删
      *
      * @param  string|null  $name
      * @return void
      */
     public function purge($name = null)
     {
-        $name = $name ?? $this->getDefaultDriver();
+        $name ??= $this->getDefaultDriver();
 
         unset($this->stores[$name]);
     }

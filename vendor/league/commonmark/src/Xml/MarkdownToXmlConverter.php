@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Xml，Markdown Xml转换器
+ * League，CommonMark，Xml，Markdown To Xml转换器
  */
 
 declare(strict_types=1);

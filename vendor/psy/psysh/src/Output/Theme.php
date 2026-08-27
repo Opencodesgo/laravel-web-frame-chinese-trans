@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输出，主题
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * An output Theme, which controls prompt strings, formatter styles, and compact output.
+ * 输出主题，控制提示字符串、格式化程序样式和紧凑输出。
  */
 class Theme
 {
@@ -148,6 +152,7 @@ class Theme
 
     /**
      * Enable or disable compact output.
+	 * 启用或禁用压缩输出
      */
     public function setCompact(bool $compact)
     {
@@ -156,6 +161,7 @@ class Theme
 
     /**
      * Get whether to use compact output.
+	 * 获取是否使用压缩输出
      */
     public function compact(): bool
     {
@@ -164,6 +170,7 @@ class Theme
 
     /**
      * Set the prompt string.
+	 * 设置提示字符串
      */
     public function setPrompt(string $prompt)
     {
@@ -172,6 +179,7 @@ class Theme
 
     /**
      * Get the prompt string.
+	 * 获取提示字符串
      */
     public function prompt(): string
     {
@@ -180,6 +188,7 @@ class Theme
 
     /**
      * Set the buffer prompt string (used for multi-line input continuation).
+	 * 设置缓冲区提示字符串（用于多行输入延续）
      */
     public function setBufferPrompt(string $bufferPrompt)
     {
@@ -188,6 +197,7 @@ class Theme
 
     /**
      * Get the buffer prompt string (used for multi-line input continuation).
+	 * 获取缓冲区提示字符串（用于多行输入延续）
      */
     public function bufferPrompt(): string
     {
@@ -196,6 +206,7 @@ class Theme
 
     /**
      * Set the prompt string used when replaying history.
+	 * 设置重播历史记录时使用的提示字符串
      */
     public function setReplayPrompt(string $replayPrompt)
     {
@@ -204,6 +215,7 @@ class Theme
 
     /**
      * Get the prompt string used when replaying history.
+	 * 获取重播历史记录时使用的提示字符串
      */
     public function replayPrompt(): string
     {
@@ -212,6 +224,7 @@ class Theme
 
     /**
      * Set the return value marker.
+	 * 设置返回值标记
      */
     public function setReturnValue(string $returnValue)
     {
@@ -220,6 +233,7 @@ class Theme
 
     /**
      * Get the return value marker.
+	 * 获取返回值标记
      */
     public function returnValue(): string
     {
@@ -236,6 +250,7 @@ class Theme
 
     /**
      * Set the shell output formatter styles.
+	 * 设置shell输出格式化程序样式。
      *
      * Accepts a map from style name to [fg, bg, options], for example:
      *
@@ -255,6 +270,7 @@ class Theme
 
     /**
      * Apply the current output formatter styles.
+	 * 应用当前的输出格式化程序样式
      */
     public function applyStyles(OutputFormatterInterface $formatter, bool $useGrayFallback)
     {
@@ -265,6 +281,7 @@ class Theme
 
     /**
      * Apply the current output formatter error styles.
+	 * 应用当前的输出格式化程序错误样式
      */
     public function applyErrorStyles(OutputFormatterInterface $errorFormatter, bool $useGrayFallback)
     {

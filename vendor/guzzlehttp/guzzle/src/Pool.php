@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Pool
+ * GuzzleHttp，集中
  */
 
 namespace GuzzleHttp;
@@ -13,7 +13,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Sends an iterator of requests concurrently using a capped pool size.
- * 同时使用有上限的池大小发送一个迭代器。
+ * 使用限定池大小并发发送请求迭代器。
  *
  * The pool will read from an iterator until it is cancelled or until the
  * iterator is consumed. When a request is yielded, the request is sent after
@@ -73,6 +73,7 @@ class Pool implements PromisorInterface
 
     /**
      * Get promise
+	 * 得到承诺
      */
     public function promise(): PromiseInterface
     {
@@ -90,7 +91,7 @@ class Pool implements PromisorInterface
      * @param ClientInterface $client   Client used to send the requests
      * @param array|\Iterator $requests Requests to send concurrently.
      * @param array           $options  Passes through the options available in
-     *                                  {@see \GuzzleHttp\Pool::__construct}
+     *                                  {@see Pool::__construct}
      *
      * @return array Returns an array containing the response or an exception
      *               in the same order that the requests were sent.
@@ -111,7 +112,6 @@ class Pool implements PromisorInterface
 
     /**
      * Execute callback(s)
-	 * 执行回调
      */
     private static function cmpCallback(array &$options, string $name, array &$results): void
     {

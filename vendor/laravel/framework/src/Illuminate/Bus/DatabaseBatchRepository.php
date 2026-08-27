@@ -67,9 +67,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
         return $this->connection->table($this->table)
                             ->orderByDesc('id')
                             ->take($limit)
-                            ->when($before, function ($q) use ($before) {
-                                return $q->where('id', '<', $before);
-                            })
+                            ->when($before, fn ($q) => $q->where('id', '<', $before))
                             ->get()
                             ->map(function ($batch) {
                                 return $this->toBatch($batch);
@@ -87,6 +85,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
     public function find(string $batchId)
     {
         $batch = $this->connection->table($this->table)
+                            ->useWritePdo()
                             ->where('id', $batchId)
                             ->first();
 
@@ -141,7 +140,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
 
     /**
      * Decrement the total number of pending jobs for the batch.
-	 * 减少批处理的待处理任务总数
+	 * 减少批处理的待处理作业总数
      *
      * @param  string  $batchId
      * @param  string  $jobId
@@ -165,7 +164,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
 
     /**
      * Increment the total number of failed jobs for the batch.
-	 * 增加批处理失败任务的总数
+	 * 增加批处理失败作业的总数
      *
      * @param  string  $batchId
      * @param  string  $jobId
@@ -210,7 +209,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
 
     /**
      * Mark the batch that has the given ID as finished.
-	 * 标记为具有给定ID的批处理为已完成
+	 * 将具有给定ID的批标记为已完成
      *
      * @param  string  $batchId
      * @return void
@@ -298,6 +297,30 @@ class DatabaseBatchRepository implements PrunableBatchRepository
     }
 
     /**
+     * Prune all of the cancelled entries older than the given date.
+	 * 删除所有超过指定日期的已取消条目
+     *
+     * @param  \DateTimeInterface  $before
+     * @return int
+     */
+    public function pruneCancelled(DateTimeInterface $before)
+    {
+        $query = $this->connection->table($this->table)
+            ->whereNotNull('cancelled_at')
+            ->where('created_at', '<', $before->getTimestamp());
+
+        $totalDeleted = 0;
+
+        do {
+            $deleted = $query->take(1000)->delete();
+
+            $totalDeleted += $deleted;
+        } while ($deleted !== 0);
+
+        return $totalDeleted;
+    }
+
+    /**
      * Execute the given Closure within a storage specific transaction.
 	 * 在特定于存储的事务中执行给定的Closure
      *
@@ -306,9 +329,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
      */
     public function transaction(Closure $callback)
     {
-        return $this->connection->transaction(function () use ($callback) {
-            return $callback();
-        });
+        return $this->connection->transaction(fn () => $callback());
     }
 
     /**
@@ -346,7 +367,7 @@ class DatabaseBatchRepository implements PrunableBatchRepository
 
     /**
      * Convert the given raw batch to a Batch object.
-	 * 转换给定的原始批处理为批处理对象
+	 * 将给定的原始批处理转换为批处理对象
      *
      * @param  object  $batch
      * @return \Illuminate\Bus\Batch
@@ -366,5 +387,28 @@ class DatabaseBatchRepository implements PrunableBatchRepository
             $batch->cancelled_at ? CarbonImmutable::createFromTimestamp($batch->cancelled_at) : $batch->cancelled_at,
             $batch->finished_at ? CarbonImmutable::createFromTimestamp($batch->finished_at) : $batch->finished_at
         );
+    }
+
+    /**
+     * Get the underlying database connection.
+	 * 获取底层数据库连接
+     *
+     * @return \Illuminate\Database\Connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * Set the underlying database connection.
+	 * 设置底层数据库连接
+     *
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return void
+     */
+    public function setConnection(Connection $connection)
+    {
+        $this->connection = $connection;
     }
 }

@@ -15,27 +15,25 @@ namespace Nette;
 
 /**
  * Static class.
- * 静态类。
+ * 静态类
  */
 trait StaticClass
 {
 	/**
-	 * @return never
-	 * @throws \Error
+	 * Class is static and cannot be instantiated.
+	 * 类是静态的，不能实例化。
 	 */
-	final public function __construct()
+	private function __construct()
 	{
-		throw new \Error('Class ' . static::class . ' is static and cannot be instantiated.');
 	}
 
 
 	/**
 	 * Call to undefined static method.
 	 * 调用未定义的静态方法
-	 * @return void
 	 * @throws MemberAccessException
 	 */
-	public static function __callStatic(string $name, array $args)
+	public static function __callStatic(string $name, array $args): mixed
 	{
 		Utils\ObjectHelpers::strictStaticCall(static::class, $name);
 	}

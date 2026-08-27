@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，内联，右括号解析器
+ * League，CommonMark，扩展，共同标记，Parser，行内，右括号解析器
  */
 
 declare(strict_types=1);
@@ -70,7 +70,6 @@ final class CloseBracketParser implements InlineParserInterface, EnvironmentAwar
         $cursor->advanceBy(1);
 
         // Check to see if we have a link/image
-		// 检查我们是否有链接/图像
 
         // Inline link?
         if ($result = $this->tryParseInlineLinkAndTitle($cursor)) {
@@ -106,7 +105,6 @@ final class CloseBracketParser implements InlineParserInterface, EnvironmentAwar
         }
 
         // Process delimiters such as emphasis inside link/image
-		// 处理分隔符，如链接/图像中的强调符
         $delimiterStack = $inlineContext->getDelimiterStack();
         $stackBottom    = $opener->getPosition();
         $delimiterStack->processDelimiters($stackBottom, $this->environment->getDelimiterProcessors());

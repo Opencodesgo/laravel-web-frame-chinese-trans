@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，migrate:refresh 刷新命令
+ * Illuminate，数据库，控制台，迁移，刷新指令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -17,7 +17,7 @@ class RefreshCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class RefreshCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -46,7 +46,7 @@ class RefreshCommand extends Command
         // Next we'll gather some of the options so that we can have the right options
         // to pass to the commands. This includes options such as which database to
         // use and the path to use for the migration. Then we'll run the command.
-		// 接下来，我们将收集一些选项，以便我们可以有正确的选择传递命令。
+		// 接下来，我们将收集一些选项，以便我们可以有正确的选择。
         $database = $this->input->getOption('database');
 
         $path = $this->input->getOption('path');
@@ -54,7 +54,7 @@ class RefreshCommand extends Command
         // If the "step" option is specified it means we only want to rollback a small
         // number of migrations before migrating again. For example, the user might
         // only rollback and remigrate the latest four migrations instead of all.
-		// 如果指定了"step"选项，则表示我们只想回滚迁移较小的数。
+		// 如果指定了"step"选项，则表示我们只想回滚一个小的。
         $step = $this->input->getOption('step') ?: 0;
 
         if ($step > 0) {
@@ -89,7 +89,7 @@ class RefreshCommand extends Command
 
     /**
      * Run the rollback command.
-	 * 运行回滚命令
+	 * 执行回滚命令
      *
      * @param  string  $database
      * @param  string  $path
@@ -109,7 +109,7 @@ class RefreshCommand extends Command
 
     /**
      * Run the reset command.
-	 * 运行重置命令
+	 * 执行reset命令
      *
      * @param  string  $database
      * @param  string  $path
@@ -154,7 +154,7 @@ class RefreshCommand extends Command
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

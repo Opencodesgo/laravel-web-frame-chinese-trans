@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，异常，太多重定向异常
+ * GuzzleHttp，异常，过多重定向异常
  */
 
 namespace GuzzleHttp\Exception;

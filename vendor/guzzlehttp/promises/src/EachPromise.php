@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，许诺，每个承诺
+ * GuzzleHttp，Promise，各自的承诺
  */
 
 declare(strict_types=1);
@@ -39,7 +39,7 @@ class EachPromise implements PromisorInterface
 
     /**
      * Configuration hash can include the following key value pairs:
-	 * 配置散列可以包括以下关键值对:
+	 * 配置哈希可以包括以下键值对
      *
      * - fulfilled: (callable) Invoked when a promise fulfills. The function
      *   is invoked with three arguments: the fulfillment value, the index

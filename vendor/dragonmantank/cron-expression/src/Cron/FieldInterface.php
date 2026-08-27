@@ -11,13 +11,12 @@ use DateTimeInterface;
 
 /**
  * CRON field interface.
- * CRON 字段接口。
  */
 interface FieldInterface
 {
     /**
      * Check if the respective value of a DateTime field satisfies a CRON exp.
-	 * 检查DateTime字段的相应值是否满足CRON exp。
+	 * 检查DateTime字段的相应值是否满足CRON exp
      *
      * @internal
      * @param DateTimeInterface $date  DateTime object to check
@@ -30,6 +29,7 @@ interface FieldInterface
     /**
      * When a CRON expression is not satisfied, this method is used to increment
      * or decrement a DateTime object by the unit of the cron field.
+	 * 当不满足CRON表达式时，使用此方法进行自增或者按cron字段的单位减去DateTime对象。
      *
      * @internal
      * @param DateTimeInterface $date DateTime object to change

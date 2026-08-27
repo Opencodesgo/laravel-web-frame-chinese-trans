@@ -85,7 +85,6 @@ class JoinClause extends Builder
 	 * 向联接添加一个"on"子句
      *
      * On clauses can be chained, e.g.
-	 * On子句可以连接起来，例如：
      *
      *  $join->on('contacts.user_id', '=', 'users.id')
      *       ->on('contacts.info_id', '=', 'info.id')

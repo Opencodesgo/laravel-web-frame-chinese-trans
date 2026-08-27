@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，流畅的，问题，有
+ * Illuminate, 测试, 流利的，问题，有
  */
 
 namespace Illuminate\Testing\Fluent\Concerns;
@@ -174,7 +174,7 @@ trait Has
 
     /**
      * Compose the absolute "dot" path to the given key.
-	 * 组成给定键的绝对"点"路径
+	 * 组成给定键的绝对“点”路径
      *
      * @param  string  $key
      * @return string
@@ -192,7 +192,7 @@ trait Has
 
     /**
      * Retrieve a prop within the current scope using "dot" notation.
-	 * 使用"点"表示法检索当前作用域中的道具
+	 * 使用“点”表示法检索当前作用域中的道具
      *
      * @param  string|null  $key
      * @return mixed

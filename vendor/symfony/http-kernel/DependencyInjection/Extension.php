@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，延期 
+ * Symfony，Component，HttpKernel，依赖注入，扩展
  */
 
 /*
@@ -24,24 +24,24 @@ use Symfony\Component\DependencyInjection\Extension\Extension as BaseExtension;
  */
 abstract class Extension extends BaseExtension
 {
-    private $annotatedClasses = [];
+    private array $annotatedClasses = [];
 
     /**
      * Gets the annotated classes to cache.
 	 * 获取要缓存的带注释的类
-     *
-     * @return array
      */
-    public function getAnnotatedClassesToCompile()
+    public function getAnnotatedClassesToCompile(): array
     {
         return $this->annotatedClasses;
     }
 
     /**
      * Adds annotated classes to the class cache.
-	 * 将带注释的类添加到类缓存中
+	 * 将带注释的类添加到类缓存中。
      *
      * @param array $annotatedClasses An array of class patterns
+     *
+     * @return void
      */
     public function addAnnotatedClassesToCompile(array $annotatedClasses)
     {

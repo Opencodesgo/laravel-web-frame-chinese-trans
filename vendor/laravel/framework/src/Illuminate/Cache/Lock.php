@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，锁抽象类
+ * Illuminate，缓存，锁
  */
 
 namespace Illuminate\Cache;
@@ -48,7 +48,7 @@ abstract class Lock implements LockContract
 
     /**
      * Create a new lock instance.
-	 * 创建新的锁实例
+	 * 创建一个新的锁实例
      *
      * @param  string  $name
      * @param  int  $seconds

@@ -97,6 +97,7 @@ abstract class Node
 
     /**
      * Inserts the $sibling node before $this
+	 * 在$this之前插入$sibling节点
      */
     public function insertBefore(Node $sibling): void
     {
@@ -199,7 +200,7 @@ abstract class Node
 
     /**
      * Detaches all child nodes of given node
-	 * 对给定节点的所有子节点进行分离
+	 * 分离给定节点的所有子节点
      */
     public function detachChildren(): void
     {
@@ -212,7 +213,7 @@ abstract class Node
 
     /**
      * Replace all children of given node with collection of another
-	 * 将给定节点的所有子替换为另一个节点
+	 * 将给定节点的所有子节点替换为另一个节点的集合
      *
      * @param iterable<Node> $children
      */
@@ -241,13 +242,14 @@ abstract class Node
 
     /**
      * Clone the current node and its children
-	 * 克隆当前节点及其儿童
+	 * 克隆当前节点及其子节点
      *
      * WARNING: This is a recursive function and should not be called on deeply-nested node trees!
      */
     public function __clone()
     {
         // Cloned nodes are detached from their parents, siblings, and children
+		// 克隆节点与其父节点、兄弟节点和子节点分离。
         $this->parent   = null;
         $this->previous = null;
         $this->next     = null;
@@ -256,6 +258,7 @@ abstract class Node
         $this->detachChildren();
 
         // The original children get cloned and re-added
+		// 最初的子节点被克隆并重新添加
         foreach ($children as $child) {
             $this->appendChild(clone $child);
         }

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，流处理程序
- *
+ * Monolog，处理器，流处理器 
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -23,7 +23,6 @@ use Monolog\Utils;
  * 存储到任何流资源
  *
  * Can be used to store into php://stderr, remote and local files, etc.
- * 可以用来存储到php://stderr，远程和本地文件等。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -108,7 +107,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     /**
      * Return the currently active stream if it is open
-	 * 如果它是开放的,返回当前的活动流
+	 * 如果当前活动流是打开的，则返回当前流。
      *
      * @return resource|null
      */
@@ -119,7 +118,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     /**
      * Return the stream URL if it was configured with a URL and not an active resource
-	 * 如果配置了URL而不是活动资源,则返回流URL
+	 * 如果配置了URL而不是活动资源，则返回流URL。
      *
      * @return string|null
      */
@@ -244,7 +243,7 @@ class StreamHandler extends AbstractProcessingHandler
     private function createDir(string $url): void
     {
         // Do not try to create dir if it has already been tried.
-		// 如果已经尝试了,不要尝试创建dir
+		// 如果已经尝试创建目录，不要尝试创建。
         if ($this->dirCreated) {
             return;
         }

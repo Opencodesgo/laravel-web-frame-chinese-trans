@@ -17,7 +17,7 @@ class AppendableAttributeValue
 
     /**
      * Create a new appendable attribute value.
-	 * 创建一个新的可追加属性值
+	 * 创建新的可追加属性值
      *
      * @param  mixed  $value
      * @return void
@@ -29,7 +29,7 @@ class AppendableAttributeValue
 
     /**
      * Get the string value.
-	 * 获取字符串值
+	 * 得到字符串值
      *
      * @return string
      */

@@ -25,6 +25,7 @@ interface NodeRendererInterface
      * @return \Stringable|string|null
      *
      * @throws InvalidArgumentException if the wrong type of Node is provided
+	 * 如果提供了错误的Node类型，则返回InvalidArgumentException。
      */
     public function render(Node $node, ChildNodeRendererInterface $childRenderer);
 }

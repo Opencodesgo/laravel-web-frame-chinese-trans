@@ -67,5 +67,5 @@ interface PipesInterface
      * Closes file handles and pipes.
 	 * 关闭文件句柄和管道
      */
-    public function close();
+    public function close(): void;
 }

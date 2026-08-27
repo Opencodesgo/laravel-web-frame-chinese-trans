@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，流畅的，问题，排除故障
+ * Illuminate, 测试, 流利的，问题，调试
  */
 
 namespace Illuminate\Testing\Fluent\Concerns;
@@ -26,7 +26,7 @@ trait Debugging
 	 * 转储给定的道具并退出
      *
      * @param  string|null  $prop
-     * @return void
+     * @return never
      */
     public function dd(string $prop = null): void
     {

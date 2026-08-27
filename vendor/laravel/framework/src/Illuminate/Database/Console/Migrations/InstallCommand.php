@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，migrate:install 安装命令
+ * Illuminate，数据库，控制台，安装指令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -21,7 +21,7 @@ class InstallCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -61,7 +61,7 @@ class InstallCommand extends Command
 
         $this->repository->createRepository();
 
-        $this->info('Migration table created successfully.');
+        $this->components->info('Migration table created successfully.');
     }
 
     /**

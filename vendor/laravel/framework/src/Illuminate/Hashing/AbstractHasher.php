@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，哈希抽象
+ * Illuminate，哈希，哈希抽象类
  */
 
 namespace Illuminate\Hashing;
@@ -24,13 +24,13 @@ abstract class AbstractHasher
 	 * 根据散列检查给定的普通值
      *
      * @param  string  $value
-     * @param  string  $hashedValue
+     * @param  string|null  $hashedValue
      * @param  array  $options
      * @return bool
      */
     public function check($value, $hashedValue, array $options = [])
     {
-        if (strlen($hashedValue) === 0) {
+        if (is_null($hashedValue) || strlen($hashedValue) === 0) {
             return false;
         }
 

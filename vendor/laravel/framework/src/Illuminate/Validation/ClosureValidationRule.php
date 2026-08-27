@@ -35,7 +35,7 @@ class ClosureValidationRule implements RuleContract
 
     /**
      * Create a new Closure based validation rule.
-	 * 创建一个新的基于闭包的验证规则
+	 * 创建一个新的基于Closure的验证规则
      *
      * @param  \Closure  $callback
      * @return void

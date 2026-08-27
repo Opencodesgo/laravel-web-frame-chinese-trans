@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，组件标签编译器
+ * Illuminate，视图，编译器，组件标签编译器
  */
 
 namespace Illuminate\View\Compilers;
@@ -40,7 +40,7 @@ class ComponentTagCompiler
 
     /**
      * The component class namespaces.
-	 * 组件类别命名空间
+	 * 组件类名称空间
      *
      * @var array
      */
@@ -123,7 +123,19 @@ class ComponentTagCompiler
                         \s+
                         (?:
                             (?:
+                                @(?:class)(\( (?: (?>[^()]+) | (?-1) )* \))
+                            )
+                            |
+                            (?:
+                                @(?:style)(\( (?: (?>[^()]+) | (?-1) )* \))
+                            )
+                            |
+                            (?:
                                 \{\{\s*\\\$attributes(?:[^}]+?)?\s*\}\}
+                            )
+                            |
+                            (?:
+                                (\:\\\$)(\w+)
                             )
                             |
                             (?:
@@ -177,7 +189,19 @@ class ComponentTagCompiler
                         \s+
                         (?:
                             (?:
+                                @(?:class)(\( (?: (?>[^()]+) | (?-1) )* \))
+                            )
+                            |
+                            (?:
+                                @(?:style)(\( (?: (?>[^()]+) | (?-1) )* \))
+                            )
+                            |
+                            (?:
                                 \{\{\s*\\\$attributes(?:[^}]+?)?\s*\}\}
+                            )
+                            |
+                            (?:
+                                (\:\\\$)(\w+)
                             )
                             |
                             (?:
@@ -229,13 +253,17 @@ class ComponentTagCompiler
             return [Str::camel($key) => $value];
         });
 
-        // If the component doesn't exists as a class we'll assume it's a class-less
+        // If the component doesn't exist as a class, we'll assume it's a class-less
         // component and pass the component as a view parameter to the data so it
         // can be accessed within the component and we can render out the view.
-		// 如果组件不作为类存在，我们假设它是无类的组件。
+		// 如果组件不以类的形式存在，我们就假定它是无类的。
         if (! class_exists($class)) {
+            $view = Str::startsWith($component, 'mail::')
+                ? "\$__env->getContainer()->make(Illuminate\\View\\Factory::class)->make('{$component}')"
+                : "'$class'";
+
             $parameters = [
-                'view' => "'$class'",
+                'view' => $view,
                 'data' => '['.$this->attributesToString($data->all(), $escapeBound = false).']',
             ];
 
@@ -245,6 +273,9 @@ class ComponentTagCompiler
         }
 
         return "##BEGIN-COMPONENT-CLASS##@component('{$class}', '{$component}', [".$this->attributesToString($parameters, $escapeBound = false).'])
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass('.$class.'::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
 <?php $component->withAttributes(['.$this->attributesToString($attributes->all(), $escapeAttributes = $class !== DynamicComponent::class).']); ?>';
     }
 
@@ -283,17 +314,86 @@ class ComponentTagCompiler
             return $class;
         }
 
-        if ($viewFactory->exists($view = $this->guessViewName($component))) {
-            return $view;
+        if (! is_null($guess = $this->guessAnonymousComponentUsingNamespaces($viewFactory, $component)) ||
+            ! is_null($guess = $this->guessAnonymousComponentUsingPaths($viewFactory, $component))) {
+            return $guess;
         }
 
-        if ($viewFactory->exists($view = $this->guessViewName($component).'.index')) {
-            return $view;
+        if (Str::startsWith($component, 'mail::')) {
+            return $component;
         }
 
         throw new InvalidArgumentException(
             "Unable to locate a class or view for component [{$component}]."
         );
+    }
+
+    /**
+     * Attempt to find an anonymous component using the registered anonymous component paths.
+	 * 尝试使用已注册的匿名组件路径查找匿名组件
+     *
+     * @param  \Illuminate\Contracts\View\Factory  $viewFactory
+     * @param  string  $component
+     * @return string|null
+     */
+    protected function guessAnonymousComponentUsingPaths(Factory $viewFactory, string $component)
+    {
+        $delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
+
+        foreach ($this->blade->getAnonymousComponentPaths() as $path) {
+            try {
+                if (str_contains($component, $delimiter) &&
+                    ! str_starts_with($component, $path['prefix'].$delimiter)) {
+                    continue;
+                }
+
+                $formattedComponent = str_starts_with($component, $path['prefix'].$delimiter)
+                        ? Str::after($component, $delimiter)
+                        : $component;
+
+                if (! is_null($guess = match (true) {
+                    $viewFactory->exists($guess = $path['prefixHash'].$delimiter.$formattedComponent) => $guess,
+                    $viewFactory->exists($guess = $path['prefixHash'].$delimiter.$formattedComponent.'.index') => $guess,
+                    default => null,
+                })) {
+                    return $guess;
+                }
+            } catch (InvalidArgumentException $e) {
+                //
+            }
+        }
+    }
+
+    /**
+     * Attempt to find an anonymous component using the registered anonymous component namespaces.
+	 * 尝试使用已注册的匿名组件名称空间查找匿名组件
+     *
+     * @param  \Illuminate\Contracts\View\Factory  $viewFactory
+     * @param  string  $component
+     * @return string|null
+     */
+    protected function guessAnonymousComponentUsingNamespaces(Factory $viewFactory, string $component)
+    {
+        return collect($this->blade->getAnonymousComponentNamespaces())
+            ->filter(function ($directory, $prefix) use ($component) {
+                return Str::startsWith($component, $prefix.'::');
+            })
+            ->prepend('components', $component)
+            ->reduce(function ($carry, $directory, $prefix) use ($component, $viewFactory) {
+                if (! is_null($carry)) {
+                    return $carry;
+                }
+
+                $componentName = Str::after($component, $prefix.'::');
+
+                if ($viewFactory->exists($view = $this->guessViewName($componentName, $directory))) {
+                    return $view;
+                }
+
+                if ($viewFactory->exists($view = $this->guessViewName($componentName, $directory).'.index')) {
+                    return $view;
+                }
+            });
     }
 
     /**
@@ -309,7 +409,7 @@ class ComponentTagCompiler
 
         $prefix = $segments[0];
 
-        if (! isset($this->namespaces[$prefix]) || ! isset($segments[1])) {
+        if (! isset($this->namespaces[$prefix], $segments[1])) {
             return;
         }
 
@@ -357,15 +457,18 @@ class ComponentTagCompiler
 	 * 猜测给定组件的视图名称
      *
      * @param  string  $name
+     * @param  string  $prefix
      * @return string
      */
-    public function guessViewName($name)
+    public function guessViewName($name, $prefix = 'components.')
     {
-        $prefix = 'components.';
+        if (! Str::endsWith($prefix, '.')) {
+            $prefix .= '.';
+        }
 
         $delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
 
-        if (Str::contains($name, $delimiter)) {
+        if (str_contains($name, $delimiter)) {
             return Str::replaceFirst($delimiter, $delimiter.$prefix, $name);
         }
 
@@ -382,7 +485,7 @@ class ComponentTagCompiler
      */
     public function partitionDataAndAttributes($class, array $attributes)
     {
-        // If the class doesn't exists, we'll assume it's a class-less component and
+        // If the class doesn't exist, we'll assume it is a class-less component and
         // return all of the attributes as both data and attributes since we have
         // now way to partition them. The user can exclude attributes manually.
 		// 如果类不存在，我们将假定它是一个无类组件。
@@ -426,12 +529,20 @@ class ComponentTagCompiler
             <
                 \s*
                 x[\-\:]slot
-                \s+
-                (:?)name=(?<name>(\"[^\"]+\"|\\\'[^\\\']+\\\'|[^\s>]+))
+                (?:\:(?<inlineName>\w+(?:-\w+)*))?
+                (?:\s+(:?)name=(?<name>(\"[^\"]+\"|\\\'[^\\\']+\\\'|[^\s>]+)))?
                 (?<attributes>
                     (?:
                         \s+
                         (?:
+                            (?:
+                                @(?:class)(\( (?: (?>[^()]+) | (?-1) )* \))
+                            )
+                            |
+                            (?:
+                                @(?:style)(\( (?: (?>[^()]+) | (?-1) )* \))
+                            )
+                            |
                             (?:
                                 \{\{\s*\\\$attributes(?:[^}]+?)?\s*\}\}
                             )
@@ -458,9 +569,13 @@ class ComponentTagCompiler
         /x";
 
         $value = preg_replace_callback($pattern, function ($matches) {
-            $name = $this->stripQuotes($matches['name']);
+            $name = $this->stripQuotes($matches['inlineName'] ?: $matches['name']);
 
-            if ($matches[1] !== ':') {
+            if (Str::contains($name, '-') && ! empty($matches['inlineName'])) {
+                $name = Str::camel($name);
+            }
+
+            if ($matches[2] !== ':') {
                 $name = "'{$name}'";
             }
 
@@ -483,8 +598,10 @@ class ComponentTagCompiler
      */
     protected function getAttributesFromAttributeString(string $attributeString)
     {
+        $attributeString = $this->parseShortAttributeSyntax($attributeString);
         $attributeString = $this->parseAttributeBag($attributeString);
-
+        $attributeString = $this->parseComponentTagClassStatements($attributeString);
+        $attributeString = $this->parseComponentTagStyleStatements($attributeString);
         $attributeString = $this->parseBindAttributes($attributeString);
 
         $pattern = '/
@@ -519,7 +636,7 @@ class ComponentTagCompiler
 
             $value = $this->stripQuotes($value);
 
-            if (Str::startsWith($attribute, 'bind:')) {
+            if (str_starts_with($attribute, 'bind:')) {
                 $attribute = Str::after($attribute, 'bind:');
 
                 $this->boundAttributes[$attribute] = true;
@@ -527,12 +644,28 @@ class ComponentTagCompiler
                 $value = "'".$this->compileAttributeEchos($value)."'";
             }
 
-            if (Str::startsWith($attribute, '::')) {
+            if (str_starts_with($attribute, '::')) {
                 $attribute = substr($attribute, 1);
             }
 
             return [$attribute => $value];
         })->toArray();
+    }
+
+    /**
+     * Parses a short attribute syntax like :$foo into a fully-qualified syntax like :foo="$foo".
+	 * 将像：$foo这样的短属性语法解析为像：foo="$foo"这样的全限定语法。
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function parseShortAttributeSyntax(string $value)
+    {
+        $pattern = "/\s\:\\\$(\w+)/x";
+
+        return preg_replace_callback($pattern, function (array $matches) {
+            return " :{$matches[1]}=\"\${$matches[1]}\"";
+        }, $value);
     }
 
     /**
@@ -550,6 +683,50 @@ class ComponentTagCompiler
         /x";
 
         return preg_replace($pattern, ' :attributes="$1"', $attributeString);
+    }
+
+    /**
+     * Parse @class statements in a given attribute string into their fully-qualified syntax.
+	 * 将给定属性字符串中的@class语句解析为它们的完全限定语法
+     *
+     * @param  string  $attributeString
+     * @return string
+     */
+    protected function parseComponentTagClassStatements(string $attributeString)
+    {
+        return preg_replace_callback(
+            '/@(class)(\( ( (?>[^()]+) | (?2) )* \))/x', function ($match) {
+                if ($match[1] === 'class') {
+                    $match[2] = str_replace('"', "'", $match[2]);
+
+                    return ":class=\"\Illuminate\Support\Arr::toCssClasses{$match[2]}\"";
+                }
+
+                return $match[0];
+            }, $attributeString
+        );
+    }
+
+    /**
+     * Parse @style statements in a given attribute string into their fully-qualified syntax.
+	 * 将给定属性字符串中的@style语句解析为它们的完全限定语法
+     *
+     * @param  string  $attributeString
+     * @return string
+     */
+    protected function parseComponentTagStyleStatements(string $attributeString)
+    {
+        return preg_replace_callback(
+            '/@(style)(\( ( (?>[^()]+) | (?2) )* \))/x', function ($match) {
+                if ($match[1] === 'style') {
+                    $match[2] = str_replace('"', "'", $match[2]);
+
+                    return ":style=\"\Illuminate\Support\Arr::toCssStyles{$match[2]}\"";
+                }
+
+                return $match[0];
+            }, $attributeString
+        );
     }
 
     /**
@@ -576,7 +753,6 @@ class ComponentTagCompiler
 	 * 编译属性字符串中出现的任何Blade echo语句
      *
      * These echo statements need to be converted to string concatenation statements.
-	 * 这些echo语句需要转换为字符串连接语句
      *
      * @param  string  $attributeString
      * @return string

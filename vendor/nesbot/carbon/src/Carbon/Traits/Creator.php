@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，特性，创造者
+ * Carbon，创造者
  */
 
 /**
@@ -31,7 +31,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Creator.
- * 特征的创造者。
+ * 特征的创造者
  *
  * Static creators.
  *
@@ -53,7 +53,7 @@ trait Creator
 
     /**
      * Create a new Carbon instance.
-	 * 创建一个新的Carbon实例。
+	 * 创建一个新的Carbon实例
      *
      * Please see the testing aids section (specifically static::setTestNow())
      * for more on the possibility of this constructor returning a test instance.
@@ -174,7 +174,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a string.
-	 * 从字符串创建一个carbon实例。
+	 * 从字符串创建一个carbon实例
      *
      * This is an alias for the constructor that allows better fluent syntax
      * as it allows you to do Carbon::parse('Monday next week')->fn() rather
@@ -275,6 +275,7 @@ trait Creator
 
     /**
      * Create a Carbon instance for today.
+	 * 为今天创建一个Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *
@@ -287,6 +288,7 @@ trait Creator
 
     /**
      * Create a Carbon instance for tomorrow.
+	 * 为明天创建一个Carbon实例。
      *
      * @param DateTimeZone|string|null $tz
      *
@@ -299,6 +301,7 @@ trait Creator
 
     /**
      * Create a Carbon instance for yesterday.
+	 * 为昨天创建一个Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *
@@ -311,6 +314,7 @@ trait Creator
 
     /**
      * Create a Carbon instance for the greatest supported date.
+	 * 为支持的最大日期创建一个Carbon实例
      *
      * @return static
      */
@@ -327,6 +331,7 @@ trait Creator
 
     /**
      * Create a Carbon instance for the lowest supported date.
+	 * 为支持的最低日期创建一个Carbon实例
      *
      * @return static
      */
@@ -365,6 +370,7 @@ trait Creator
 
     /**
      * Create a new Carbon instance from a specific date and time.
+	 * 从特定日期和时间创建一个新的Carbon实例。
      *
      * If any of $year, $month or $day are set to null their now() values will
      * be used.
@@ -446,6 +452,7 @@ trait Creator
 
     /**
      * Create a new safe Carbon instance from a specific date and time.
+	 * 从特定日期和时间创建一个新的安全Carbon实例。
      *
      * If any of $year, $month or $day are set to null their now() values will
      * be used.
@@ -502,6 +509,7 @@ trait Creator
 
     /**
      * Create a new Carbon instance from a specific date and time using strict validation.
+	 * 使用严格的验证从特定日期和时间创建新的Carbon实例
      *
      * @see create()
      *
@@ -533,6 +541,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from just a date. The time portion is set to now.
+	 * 仅从日期创建一个Carbon实例。时间部分设置为现在。
      *
      * @param int|null                 $year
      * @param int|null                 $month
@@ -550,6 +559,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from just a date. The time portion is set to midnight.
+	 * 仅从日期创建一个Carbon实例。时间部分设置为午夜。
      *
      * @param int|null                 $year
      * @param int|null                 $month
@@ -567,6 +577,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from just a time. The date portion is set to today.
+	 * 从一个时间创建一个Carbon实例。日期部分设置为今天。
      *
      * @param int|null                 $hour
      * @param int|null                 $minute
@@ -584,6 +595,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a time string. The date portion is set to today.
+	 * 从时间字符串创建一个Carbon实例。日期部分设置为今天。
      *
      * @param string                   $time
      * @param DateTimeZone|string|null $tz
@@ -632,6 +644,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a specific format.
+	 * 从特定格式创建一个Carbon实例
      *
      * @param string                         $format Datetime format
      * @param string                         $time
@@ -708,6 +721,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a specific format.
+	 * 从特定格式创建一个Carbon实例
      *
      * @param string                         $format Datetime format
      * @param string                         $time
@@ -877,6 +891,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a specific format and a string in a given language.
+	 * 从特定格式和给定语言的字符串创建一个Carbon实例
      *
      * @param string                         $format Datetime format
      * @param string                         $locale
@@ -907,6 +922,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a specific ISO format and a string in a given language.
+	 * 从特定的ISO格式和给定语言的字符串创建一个Carbon实例
      *
      * @param string                         $format Datetime ISO format
      * @param string                         $locale
@@ -926,6 +942,7 @@ trait Creator
 
     /**
      * Make a Carbon instance from given variable if possible.
+	 * 如果可能的话，从给定的变量创建一个Carbon实例。
      *
      * Always return a new instance. Parse only strings and only these likely to be dates (skip intervals
      * and recurrences). Throw an exception for invalid format, but otherwise return null.
@@ -960,6 +977,7 @@ trait Creator
 
     /**
      * Set last errors.
+	 * 设置最后错误
      *
      * @param array|bool $lastErrors
      *

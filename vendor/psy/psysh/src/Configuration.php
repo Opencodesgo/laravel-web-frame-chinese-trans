@@ -33,7 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell configuration.
- * Psy Shell配置
+ * Psy Shell配置。
  */
 class Configuration
 {
@@ -455,7 +455,7 @@ class Configuration
 
     /**
      * Get the local PsySH config file.
-	 * 获取本地的PsySH配置文件。
+	 * 获取本地的PsySH配置文件
      *
      * Searches for a project specific config file `.psysh.php` in the current
      * working directory.
@@ -597,6 +597,7 @@ class Configuration
 
     /**
      * Set the shell's data directory location.
+	 * 设置shell的数据目录位置
      *
      * @param string $dir
      */
@@ -641,7 +642,7 @@ class Configuration
 
     /**
      * Get the shell's temporary directory location.
-	 * 获取shell的临时目录位置
+	 * 获取shell的临时目录位置。
      *
      * Defaults to `/psysh` inside the system's temp dir unless explicitly
      * overridden.
@@ -676,7 +677,7 @@ class Configuration
 
     /**
      * Get the readline history file path.
-	 * 获取readline历史文件路径
+	 * 获取readline历史文件路径。
      *
      * Defaults to `/history` inside the shell's base config dir unless
      * explicitly overridden.
@@ -711,7 +712,7 @@ class Configuration
 
     /**
      * Set the readline max history size.
-	 * 设置readline最大历史记录大小。
+	 * 设置readline最大历史记录大小
      *
      * @param int $value
      */
@@ -722,6 +723,7 @@ class Configuration
 
     /**
      * Get the readline max history size.
+	 * 获取readline最大历史记录大小
      *
      * @return int
      */
@@ -732,6 +734,7 @@ class Configuration
 
     /**
      * Sets whether readline erases old duplicate history entries.
+	 * 设置readline是否擦除旧的重复历史条目
      *
      * @param bool $value
      */
@@ -742,6 +745,7 @@ class Configuration
 
     /**
      * Get whether readline erases old duplicate history entries.
+	 * 获取readline是否擦除旧的重复历史条目
      *
      * @return bool|null
      */
@@ -752,6 +756,7 @@ class Configuration
 
     /**
      * Get a temporary file of type $type for process $pid.
+	 * 为进程$pid获取一个$type类型的临时文件。
      *
      * The file will be created inside the current temporary directory.
      *
@@ -769,6 +774,7 @@ class Configuration
 
     /**
      * Get a filename suitable for a FIFO pipe of $type for process $pid.
+	 * 为进程$pid获取一个适合$类型的FIFO管道的文件名。
      *
      * The pipe will be created inside the current temporary directory.
      *
@@ -784,6 +790,7 @@ class Configuration
 
     /**
      * Check whether this PHP instance has Readline available.
+	 * 检查这个PHP实例是否有Readline可用
      *
      * @return bool True if Readline is available
      */
@@ -794,6 +801,7 @@ class Configuration
 
     /**
      * Enable or disable Readline usage.
+	 * 启用或禁用Readline使用
      *
      * @param bool $useReadline
      */
@@ -804,6 +812,7 @@ class Configuration
 
     /**
      * Check whether to use Readline.
+	 * 检查是否使用Readline。
      *
      * If `setUseReadline` as been set to true, but Readline is not actually
      * available, this will return false.
@@ -817,6 +826,7 @@ class Configuration
 
     /**
      * Set the Psy Shell readline service.
+	 * 设置Psy Shell readline服务
      *
      * @param Readline\Readline $readline
      */
@@ -827,6 +837,7 @@ class Configuration
 
     /**
      * Get the Psy Shell readline service.
+	 * 获得Psy Shell readline服务。
      *
      * By default, this service uses (in order of preference):
      *
@@ -852,6 +863,7 @@ class Configuration
 
     /**
      * Get the appropriate Readline implementation class name.
+	 * 获取适当的Readline实现类名
      *
      * @see self::getReadline
      */
@@ -874,6 +886,7 @@ class Configuration
 
     /**
      * Enable or disable bracketed paste.
+	 * 启用或禁用带括号的粘贴。
      *
      * Note that this only works with readline (not libedit) integration for now.
      *
@@ -886,6 +899,7 @@ class Configuration
 
     /**
      * Check whether to use bracketed paste with readline.
+	 * 检查是否使用带括号的readline粘贴。
      *
      * When this works, it's magical. Tabs in pastes don't try to autcomplete.
      * Newlines in paste don't execute code until you get to the end. It makes
@@ -911,6 +925,7 @@ class Configuration
 
     /**
      * Check whether this PHP instance has Pcntl available.
+	 * 检查这个PHP实例是否有可用的Pcntl
      *
      * @return bool True if Pcntl is available
      */
@@ -921,6 +936,7 @@ class Configuration
 
     /**
      * Enable or disable Pcntl usage.
+	 * 启用或禁用Pcntl使用
      *
      * @param bool $usePcntl
      */
@@ -931,6 +947,7 @@ class Configuration
 
     /**
      * Check whether to use Pcntl.
+	 * 检查是否使用Pcntl。
      *
      * If `setUsePcntl` has been set to true, but Pcntl is not actually
      * available, this will return false.
@@ -954,6 +971,7 @@ class Configuration
 
     /**
      * Check whether to use raw output.
+	 * 检查是否使用原始输出。
      *
      * This is set by the --raw-output (-r) flag, and really only makes sense
      * when non-interactive, e.g. executing stdin.
@@ -967,6 +985,7 @@ class Configuration
 
     /**
      * Enable or disable raw output.
+	 * 启用或禁用原始输出
      *
      * @param bool $rawOutput
      */
@@ -977,6 +996,7 @@ class Configuration
 
     /**
      * Enable or disable strict requirement of semicolons.
+	 * 启用或禁用对分号的严格要求
      *
      * @see self::requireSemicolons()
      *
@@ -989,6 +1009,7 @@ class Configuration
 
     /**
      * Check whether to require semicolons on all statements.
+	 * 检查是否需要在所有语句上使用分号。
      *
      * By default, PsySH will automatically insert semicolons at the end of
      * statements if they're missing. To strictly require semicolons, set
@@ -1001,6 +1022,7 @@ class Configuration
 
     /**
      * Enable or disable strict types enforcement.
+	 * 启用或禁用严格类型强制
      */
     public function setStrictTypes($strictTypes)
     {
@@ -1009,6 +1031,7 @@ class Configuration
 
     /**
      * Check whether to enforce strict types.
+	 * 检查是否强制严格类型
      */
     public function strictTypes(): bool
     {
@@ -1017,6 +1040,7 @@ class Configuration
 
     /**
      * Enable or disable Unicode in PsySH specific output.
+	 * 在PsySH特定输出中启用或禁用Unicode。
      *
      * Note that this does not disable Unicode output in general, it just makes
      * it so PsySH won't output any itself.
@@ -1030,7 +1054,7 @@ class Configuration
 
     /**
      * Check whether to use Unicode in PsySH specific output.
-	 * 检查是否在PsySH特定的输出中使用Unicode
+	 * 检查是否在PsySH特定的输出中使用Unicode。
      *
      * Note that this does not disable Unicode output in general, it just makes
      * it so PsySH won't output any itself.
@@ -1064,7 +1088,7 @@ class Configuration
 
     /**
      * Get the current error logging level.
-	 * 获取当前的错误记录级别
+	 * 获取当前的错误记录级别。
      *
      * By default, PsySH will automatically log all errors, regardless of the
      * current `error_reporting` level.
@@ -1093,7 +1117,7 @@ class Configuration
 
     /**
      * Get a CodeCleaner service instance.
-	 * 获取一个codeccleaner服务实例
+	 * 获取一个codeccleaner服务实例。
      *
      * If none has been explicitly defined, this will create a new instance.
      */
@@ -1151,7 +1175,7 @@ class Configuration
 
     /**
      * Check whether to use tab completion.
-	 * 检查是否使用制表符补全
+	 * 检查是否使用制表符补全。
      *
      * If `setUseTabCompletion` has been set to true, but readline is not
      * actually available, this will return false.
@@ -1193,7 +1217,7 @@ class Configuration
 
     /**
      * Get a Shell Output service instance.
-	 * 获取Shell Output服务实例
+	 * 获取Shell Output服务实例。
      *
      * If none has been explicitly provided, this will create a new instance
      * with the configured verbosity and output pager supplied by self::getPager
@@ -1226,6 +1250,7 @@ class Configuration
 
     /**
      * Get the decoration (i.e. color) setting for the Shell Output service.
+	 * 获取Shell Output服务的装饰（即颜色）设置。
      *
      * @return bool|null 3-state boolean corresponding to the current color mode
      */
@@ -1244,6 +1269,7 @@ class Configuration
 
     /**
      * Get the interactive setting for shell input.
+	 * 获取shell输入的交互式设置
      */
     public function getInputInteractive(): bool
     {
@@ -1260,6 +1286,7 @@ class Configuration
 
     /**
      * Set the OutputPager service.
+	 * 设置OutputPager服务。
      *
      * If a string is supplied, a ProcOutputPager will be used which shells out
      * to the specified command.
@@ -1285,6 +1312,7 @@ class Configuration
 
     /**
      * Get an OutputPager instance or a command for an external Proc pager.
+	 * 获取OutputPager实例或外部Proc页导航的命令。
      *
      * If no Pager has been explicitly provided, and Pcntl is available, this
      * will default to `cli.pager` ini value, falling back to `which less`.
@@ -1324,6 +1352,7 @@ class Configuration
 
     /**
      * Set the Shell AutoCompleter service.
+	 * 设置Shell自动完成服务
      *
      * @param AutoCompleter $autoCompleter
      */
@@ -1334,6 +1363,7 @@ class Configuration
 
     /**
      * Get an AutoCompleter service instance.
+	 * 获取AutoCompleter服务实例
      */
     public function getAutoCompleter(): AutoCompleter
     {
@@ -1356,7 +1386,7 @@ class Configuration
 
     /**
      * Add tab completion matchers to the AutoCompleter.
-	 * 向AutoCompleter添加制表符补全匹配器
+	 * 向AutoCompleter添加制表符补全匹配器。
      *
      * This will buffer new matchers in the event that the Shell has not yet
      * been instantiated. This allows the user to specify matchers in their
@@ -1430,6 +1460,7 @@ class Configuration
 
     /**
      * Set the Shell backreference and add any new commands to the Shell.
+	 * 设置Shell反向引用并向Shell添加任何新命令
      *
      * @param Shell $shell
      */
@@ -1442,6 +1473,7 @@ class Configuration
 
     /**
      * Set the PHP manual database file.
+	 * 设置PHP手动数据库文件。
      *
      * This file should be an SQLite database generated from the phpdoc source
      * with the `bin/build_manual` script.
@@ -1455,6 +1487,7 @@ class Configuration
 
     /**
      * Get the current PHP manual database file.
+	 * 获取当前PHP手动数据库文件
      *
      * @return string|null Default: '~/.local/share/psysh/php_manual.sqlite'
      */
@@ -1477,6 +1510,7 @@ class Configuration
 
     /**
      * Get a PHP manual database connection.
+	 * 获取PHP手动数据库连接
      *
      * @return \PDO|null
      */
@@ -1502,6 +1536,7 @@ class Configuration
 
     /**
      * Add an array of casters definitions.
+	 * 添加一个脚轮定义数组
      *
      * @param array $casters
      */
@@ -1512,6 +1547,7 @@ class Configuration
 
     /**
      * Get the Presenter service.
+	 * 获取Presenter服务
      */
     public function getPresenter(): Presenter
     {
@@ -1524,6 +1560,7 @@ class Configuration
 
     /**
      * Enable or disable warnings on multiple configuration or data files.
+	 * 在多个配置文件或数据文件上启用或禁用警告。
      *
      * @see self::warnOnMultipleConfigs()
      *
@@ -1536,6 +1573,7 @@ class Configuration
 
     /**
      * Check whether to warn on multiple configuration or data files.
+	 * 检查是否对多个配置文件或数据文件进行警告。
      *
      * By default, PsySH will use the file with highest precedence, and will
      * silently ignore all others. With this enabled, a warning will be emitted
@@ -1551,6 +1589,7 @@ class Configuration
 
     /**
      * Set the current color mode.
+	 * 设置当前颜色模式
      *
      * @throws \InvalidArgumentException if the color mode isn't auto, forced or disabled
      *
@@ -1573,6 +1612,7 @@ class Configuration
 
     /**
      * Get the current color mode.
+	 * 获取当前颜色模式
      */
     public function colorMode(): string
     {
@@ -1581,6 +1621,7 @@ class Configuration
 
     /**
      * Set the shell's interactive mode.
+	 * 设置shell的交互模式。
      *
      * @throws \InvalidArgumentException if interactive mode isn't disabled, forced, or auto
      *
@@ -1603,6 +1644,7 @@ class Configuration
 
     /**
      * Get the current interactive mode.
+	 * 获取当前交互模式
      */
     public function interactiveMode(): string
     {
@@ -1611,6 +1653,7 @@ class Configuration
 
     /**
      * Set an update checker service instance.
+	 * 设置更新检查器服务实例
      *
      * @param Checker $checker
      */
@@ -1621,6 +1664,7 @@ class Configuration
 
     /**
      * Get an update checker service instance.
+	 * 获取更新检查器服务实例。
      *
      * If none has been explicitly defined, this will create a new instance.
      */
@@ -1655,6 +1699,7 @@ class Configuration
 
     /**
      * Get the current update check interval.
+	 * 获取当前更新检查间隔。
      *
      * One of 'always', 'daily', 'weekly', 'monthly' or 'never'. If none is
      * explicitly set, default to 'weekly'.
@@ -1666,6 +1711,7 @@ class Configuration
 
     /**
      * Set the update check interval.
+	 * 设置更新检查间隔
      *
      * @throws \InvalidArgumentException if the update check interval is unknown
      *
@@ -1690,6 +1736,7 @@ class Configuration
 
     /**
      * Get a cache file path for the update checker.
+	 * 获取更新检查器的缓存文件路径
      *
      * @return string|false Return false if config file/directory is not writable
      */
@@ -1705,6 +1752,7 @@ class Configuration
 
     /**
      * Set the startup message.
+	 * 设置启动消息
      *
      * @param string $message
      */
@@ -1715,6 +1763,7 @@ class Configuration
 
     /**
      * Get the startup message.
+	 * 获取启动消息
      *
      * @return string|null
      */
@@ -1725,6 +1774,7 @@ class Configuration
 
     /**
      * Set the prompt.
+	 * 设置提示符
      *
      * @deprecated The `prompt` configuration has been replaced by Themes and support will
      * eventually be removed. In the meantime, prompt is applied first by the Theme, then overridden
@@ -1743,6 +1793,7 @@ class Configuration
 
     /**
      * Get the prompt.
+	 * 得到提示
      *
      * @return string|null
      */
@@ -1753,6 +1804,7 @@ class Configuration
 
     /**
      * Get the force array indexes.
+	 * 获取力数组索引
      */
     public function forceArrayIndexes(): bool
     {
@@ -1761,6 +1813,7 @@ class Configuration
 
     /**
      * Set the force array indexes.
+	 * 设置力数组索引
      *
      * @param bool $forceArrayIndexes
      */
@@ -1813,6 +1866,7 @@ class Configuration
 
     /**
      * Set the shell output formatter styles.
+	 * 设置shell输出格式化程序样式。
      *
      * Accepts a map from style name to [fg, bg, options], for example:
      *
@@ -1906,6 +1960,7 @@ class Configuration
 
     /**
      * Map the verbosity configuration to OutputInterface verbosity constants.
+	 * 将详细配置映射到OutputInterface详细常量
      *
      * @return int OutputInterface verbosity level
      */
@@ -1928,6 +1983,7 @@ class Configuration
 
     /**
      * Guess whether stdin is piped.
+	 * 猜测stdin是否有管道连接。
      *
      * This is mostly useful for deciding whether to use non-interactive mode.
      */

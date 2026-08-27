@@ -28,7 +28,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * The notification to be sent.
-	 * 要发出的通知
+	 * 要发送的通知
      *
      * @var \Illuminate\Notifications\Notification
      */
@@ -44,7 +44,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该作业的次数。
+	 * 可能尝试该作业的次数
      *
      * @var int
      */
@@ -59,6 +59,14 @@ class SendQueuedNotifications implements ShouldQueue
     public $timeout;
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+	 * 在失败之前允许的未处理异常的最大数量
+     *
+     * @var int
+     */
+    public $maxExceptions;
+
+    /**
      * Indicates if the job should be encrypted.
 	 * 指示作业是否应该加密
      *
@@ -68,7 +76,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Create a new job instance.
-	 * 创建新的任务实例
+	 * 创建一个新的作业实例
      *
      * @param  \Illuminate\Notifications\Notifiable|\Illuminate\Support\Collection  $notifiables
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -82,6 +90,7 @@ class SendQueuedNotifications implements ShouldQueue
         $this->notifiables = $this->wrapNotifiables($notifiables);
         $this->tries = property_exists($notification, 'tries') ? $notification->tries : null;
         $this->timeout = property_exists($notification, 'timeout') ? $notification->timeout : null;
+        $this->maxExceptions = property_exists($notification, 'maxExceptions') ? $notification->maxExceptions : null;
         $this->afterCommit = property_exists($notification, 'afterCommit') ? $notification->afterCommit : null;
         $this->shouldBeEncrypted = $notification instanceof ShouldBeEncrypted;
     }
@@ -157,10 +166,10 @@ class SendQueuedNotifications implements ShouldQueue
     }
 
     /**
-     * Get the expiration for the notification.
-	 * 获取通知的过期时间
+     * Determine the time at which the job should timeout.
+	 * 确定作业应该超时的时间
      *
-     * @return mixed
+     * @return \DateTime|null
      */
     public function retryUntil()
     {

@@ -19,26 +19,21 @@ use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Extends the \RecursiveDirectoryIterator to support relative paths.
- * 扩展\RecursiveDirectoryIterator以支持相对路径。
+ * 扩展\RecursiveDirectoryIterator以支持相对路径
  *
  * @author Victor Berchet <victor@suumit.com>
+ *
+ * @extends \RecursiveDirectoryIterator<string, SplFileInfo>
  */
 class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
 {
-    /**
-     * @var bool
-     */
-    private $ignoreUnreadableDirs;
-
-    /**
-     * @var bool
-     */
-    private $ignoreFirstRewind = true;
+    private bool $ignoreUnreadableDirs;
+    private bool $ignoreFirstRewind = true;
 
     // these 3 properties take part of the performance optimization to avoid redoing the same work in all iterations
-    private $rootPath;
-    private $subPath;
-    private $directorySeparator = '/';
+    private string $rootPath;
+    private string $subPath;
+    private string $directorySeparator = '/';
 
     /**
      * @throws \RuntimeException
@@ -60,17 +55,15 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     /**
      * Return an instance of SplFileInfo with support for relative paths.
 	 * 返回一个支持相对路径的SplFileInfo实例
-     *
-     * @return SplFileInfo
      */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): SplFileInfo
     {
         // the logic here avoids redoing the same work in all iterations
 
-        if (null === $subPathname = $this->subPath) {
-            $subPathname = $this->subPath = $this->getSubPath();
+        if (!isset($this->subPath)) {
+            $this->subPath = $this->getSubPath();
         }
+        $subPathname = $this->subPath;
         if ('' !== $subPathname) {
             $subPathname .= $this->directorySeparator;
         }
@@ -84,13 +77,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
         return new SplFileInfo($basePath.$subPathname, $this->subPath, $subPathname);
     }
 
-    /**
-     * @param bool $allowLinks
-     *
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function hasChildren($allowLinks = false)
+    public function hasChildren(bool $allowLinks = false): bool
     {
         $hasChildren = parent::hasChildren($allowLinks);
 
@@ -102,19 +89,16 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
             parent::getChildren();
 
             return true;
-        } catch (\UnexpectedValueException $e) {
+        } catch (\UnexpectedValueException) {
             // If directory is unreadable and finder is set to ignore it, skip children
             return false;
         }
     }
 
     /**
-     * @return \RecursiveDirectoryIterator
-     *
      * @throws AccessDeniedException
      */
-    #[\ReturnTypeWillChange]
-    public function getChildren()
+    public function getChildren(): \RecursiveDirectoryIterator
     {
         try {
             $children = parent::getChildren();
@@ -133,25 +117,18 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
         }
     }
 
-    /**
-     * @return void
-     */
-    #[\ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         $this->ignoreFirstRewind = false;
 
         parent::next();
     }
 
-    /**
-     * @return void
-     */
-    #[\ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         // some streams like FTP are not rewindable, ignore the first rewind after creation,
         // as newly created DirectoryIterator does not need to be rewound
+		// 有些流如FTP是不可倒带的，忽略创建后的第一次倒带。
         if ($this->ignoreFirstRewind) {
             $this->ignoreFirstRewind = false;
 

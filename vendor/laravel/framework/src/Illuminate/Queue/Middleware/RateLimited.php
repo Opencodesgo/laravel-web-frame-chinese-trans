@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，中间件，速率限制
+ * Illuminate，队列，中间件，限速
  */
 
 namespace Illuminate\Queue\Middleware;
@@ -14,7 +14,7 @@ class RateLimited
 {
     /**
      * The rate limiter instance.
-	 * 速率限制实例
+	 * 速率限制器实例
      *
      * @var \Illuminate\Cache\RateLimiter
      */
@@ -38,7 +38,7 @@ class RateLimited
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  string  $limiterName
      * @return void
@@ -52,7 +52,7 @@ class RateLimited
 
     /**
      * Process the job.
-	 * 处理作业
+	 * 作业过程
      *
      * @param  mixed  $job
      * @param  callable  $next
@@ -64,7 +64,7 @@ class RateLimited
             return $next($job);
         }
 
-        $limiterResponse = call_user_func($limiter, $job);
+        $limiterResponse = $limiter($job);
 
         if ($limiterResponse instanceof Unlimited) {
             return $next($job);
@@ -122,7 +122,7 @@ class RateLimited
 
     /**
      * Get the number of seconds that should elapse before the job is retried.
-	 * 得到在重试作业之前应该经过的秒数
+	 * 获取在重试作业之前应该经过的秒数
      *
      * @param  string  $key
      * @return int

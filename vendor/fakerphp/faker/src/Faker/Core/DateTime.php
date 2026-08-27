@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，日期时间
+ * Faker，Core，日期时间
  */
 
 namespace Faker\Core;
@@ -28,7 +28,7 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
 
     /**
      * Get the POSIX-timestamp of a DateTime, int or string.
-	 * 获取DateTime、int或string的posix时间戳。
+	 * 获取DateTime(int或string)的posix时间戳
      *
      * @param \DateTime|float|int|string $until
      *

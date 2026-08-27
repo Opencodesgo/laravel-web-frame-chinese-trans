@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，建立者，回调建立者
+ * Ramsey，Uuid，构建器，构建器集合
  */
 
 /**
@@ -23,37 +23,30 @@ use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * FallbackBuilder builds a UUID by stepping through a list of UUID builders
- * until a UUID can be constructed without exceptions
+ * FallbackBuilder builds a UUID by stepping through a list of UUID builders until a UUID can be constructed without exceptions
+ * FallbackBuilder 通过逐步遍历UUID构建器列表来构建UUID，直到可以无异常地构建UUID为止
  *
- * @psalm-immutable
+ * @immutable
  */
 class FallbackBuilder implements UuidBuilderInterface
 {
     /**
-     * @var BuilderCollection
+     * @param iterable<UuidBuilderInterface> $builders An array of UUID builders
      */
-    private $builders;
-
-    /**
-     * @param BuilderCollection $builders An array of UUID builders
-     */
-    public function __construct(BuilderCollection $builders)
+    public function __construct(private iterable $builders)
     {
-        $this->builders = $builders;
     }
 
     /**
-     * Builds and returns a UuidInterface instance using the first builder that
-     * succeeds
-	 * 构建并使用第一个构建器返回uuuidinterface实例成功。
+     * Builds and returns a UuidInterface instance using the first builder that succeeds
+	 * 使用第一个成功的构建器构建并返回一个UuidInterface实例
      *
      * @param CodecInterface $codec The codec to use for building this instance
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface an instance of a UUID object
      *
-     * @psalm-pure
+     * @pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
@@ -72,7 +65,7 @@ class FallbackBuilder implements UuidBuilderInterface
         throw new BuilderNotFoundException(
             'Could not find a suitable builder for the provided codec and fields',
             0,
-            $lastBuilderException
+            $lastBuilderException,
         );
     }
 }

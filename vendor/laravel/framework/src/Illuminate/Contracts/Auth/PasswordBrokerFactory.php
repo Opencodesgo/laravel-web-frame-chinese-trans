@@ -9,10 +9,10 @@ interface PasswordBrokerFactory
 {
     /**
      * Get a password broker instance by name.
-	 * 按名称获取密码代理实例
+	 * 得到密码代理实例通过名称
      *
      * @param  string|null  $name
-     * @return mixed
+     * @return \Illuminate\Contracts\Auth\PasswordBroker
      */
     public function broker($name = null);
 }

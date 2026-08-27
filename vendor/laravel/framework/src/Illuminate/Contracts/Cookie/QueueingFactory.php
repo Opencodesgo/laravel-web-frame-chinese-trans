@@ -11,14 +11,14 @@ interface QueueingFactory extends Factory
      * Queue a cookie to send with the next response.
 	 * 将cookie与下一个响应一起排队发送
      *
-     * @param  array  $parameters
+     * @param  mixed  ...$parameters
      * @return void
      */
     public function queue(...$parameters);
 
     /**
      * Remove a cookie from the queue.
-	 * 从队列中删除一个cookie
+	 * 从队列中移除一个cookie
      *
      * @param  string  $name
      * @param  string|null  $path

@@ -20,14 +20,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Asserts that the response is in the given format.
- * 断言响应是否是给定的格式
+ * 断言响应是否是给定的格式。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
 final class ResponseFormatSame extends Constraint
 {
-    private $request;
-    private $format;
+    private Request $request;
+    private ?string $format;
 
     public function __construct(Request $request, ?string $format)
     {
@@ -35,9 +35,6 @@ final class ResponseFormatSame extends Constraint
         $this->format = $format;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return 'format is '.($this->format ?? 'null');
@@ -45,8 +42,6 @@ final class ResponseFormatSame extends Constraint
 
     /**
      * @param Response $response
-     *
-     * {@inheritdoc}
      */
     protected function matches($response): bool
     {
@@ -55,8 +50,6 @@ final class ResponseFormatSame extends Constraint
 
     /**
      * @param Response $response
-     *
-     * {@inheritdoc}
      */
     protected function failureDescription($response): string
     {
@@ -65,8 +58,6 @@ final class ResponseFormatSame extends Constraint
 
     /**
      * @param Response $response
-     *
-     * {@inheritdoc}
      */
     protected function additionalFailureDescription($response): string
     {

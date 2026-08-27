@@ -30,7 +30,7 @@ final class MessageFormatterMapper extends LazyMessageFormatter
 {
     /**
      * Wrapped formatter.
-	 * 格式化程序
+	 * 包装格式化程序
      *
      * @var MessageFormatterInterface
      */

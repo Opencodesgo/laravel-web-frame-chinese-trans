@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，错误异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A custom error Exception for Psy with a formatted $message.
+ * 带有格式化$消息的Psy自定义错误异常。
  */
 class ErrorException extends \ErrorException implements Exception
 {
@@ -20,6 +24,7 @@ class ErrorException extends \ErrorException implements Exception
 
     /**
      * Construct a Psy ErrorException.
+	 * 构造一个Psy ErrorException
      *
      * @param string          $message  (default: "")
      * @param int             $code     (default: 0)
@@ -73,6 +78,7 @@ class ErrorException extends \ErrorException implements Exception
 
     /**
      * Get the raw (unformatted) message for this error.
+	 * 获取此错误的原始（未格式化）消息
      */
     public function getRawMessage(): string
     {
@@ -81,6 +87,7 @@ class ErrorException extends \ErrorException implements Exception
 
     /**
      * Helper for throwing an ErrorException.
+	 * 抛出ErrorException的Helper
      *
      * This allows us to:
      *
@@ -100,6 +107,7 @@ class ErrorException extends \ErrorException implements Exception
 
     /**
      * Create an ErrorException from an Error.
+	 * 从错误中创建一个ErrorException
      *
      * @deprecated PsySH no longer wraps Errors
      *

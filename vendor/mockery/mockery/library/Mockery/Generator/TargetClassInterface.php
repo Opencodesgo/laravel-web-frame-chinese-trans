@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，发生器，目标类接口
+ * Mockery，生成器，目标类接口
  */
 
 /**
@@ -17,7 +17,7 @@ interface TargetClassInterface
 {
     /**
      * Returns a new instance of the current TargetClassInterface's implementation.
-	 * 返回当前TargetClassInterface实现的新实例
+	 * 返回当前TargetClassInterface实现的新实例。
      *
      * @param class-string $name
      *
@@ -59,7 +59,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's namespace name.
-	 * 返回targetClass的名称空间名称
+	 * 返回targetClass的命名空间名称
      *
      * @return string
      */
@@ -93,7 +93,7 @@ interface TargetClassInterface
 
     /**
      * Returns whether the targetClass is in namespace.
-	 * 返回targetClass是否在名称空间中
+	 * 返回targetClass是否在命名空间中
      *
      * @return bool
      */
@@ -101,7 +101,7 @@ interface TargetClassInterface
 
     /**
      * Returns whether the targetClass is abstract.
-	 * 返回目标类是抽象的
+	 * 返回targetClass是否为抽象类
      *
      * @return bool
      */
@@ -109,7 +109,7 @@ interface TargetClassInterface
 
     /**
      * Returns whether the targetClass is final.
-	 * 返回目标类是否最终
+	 * 返回targetClass是否为fina
      *
      * @return bool
      */

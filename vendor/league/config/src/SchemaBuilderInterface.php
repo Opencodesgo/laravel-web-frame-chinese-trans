@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Config，架构生成器接口
+ * League，Config，架构构建器接口
  */
 
 declare(strict_types=1);
@@ -20,13 +20,13 @@ use Nette\Schema\Schema;
 
 /**
  * Interface that allows new schemas to be added to a configuration
- * 接口,允许将新的模式添加到配置中
+ * 接口，允许将新模式添加到配置中。
  */
 interface SchemaBuilderInterface
 {
     /**
      * Registers a new configuration schema at the given top-level key
-	 * 在给定的顶层键注册一个新的配置模式
+	 * 在给定的顶级键处注册新的配置模式
      */
     public function addSchema(string $key, Schema $schema): void;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，文件
+ */
 
 namespace Faker\Provider;
 
@@ -6,6 +9,7 @@ class File extends Base
 {
     /**
      * MIME types from the apache.org file. Some types are truncated.
+	 * 来自apache.org文件的MIME类型。有些类型被截断。
      *
      * @var array Map of MIME types => file extension(s)
      *
@@ -540,6 +544,7 @@ class File extends Base
 
     /**
      * Get a random MIME type
+	 * 获取一个随机的MIME类型
      *
      * @return string
      *
@@ -552,6 +557,7 @@ class File extends Base
 
     /**
      * Get a random file extension (without a dot)
+	 * 获取随机文件扩展名（不带点）
      *
      * @example avi
      *
@@ -566,6 +572,7 @@ class File extends Base
 
     /**
      * Copy a random file from the source directory to the target directory and returns the filename/fullpath
+	 * 从源目录复制一个随机文件到目标目录，并返回文件名/完整路径。
      *
      * @param string $sourceDirectory The directory to look for random file taking
      * @param string $targetDirectory

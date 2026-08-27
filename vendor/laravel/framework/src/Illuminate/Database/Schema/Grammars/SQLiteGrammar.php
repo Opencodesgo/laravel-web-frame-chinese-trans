@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，SQLite 语法
+ * Illuminate，数据库，语法，SQLite 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -97,7 +97,6 @@ class SQLiteGrammar extends Grammar
             // If this foreign key specifies the action to be taken on update we will add
             // that to the statement here. We'll append it to this SQL and then return
             // the SQL so we can keep adding any other foreign constraints onto this.
-			// 如果此外键指定更新时要采取的操作，我们将添加到这里的表述。
             if (! is_null($foreign->onUpdate)) {
                 $sql .= " on update {$foreign->onUpdate}";
             }
@@ -118,7 +117,7 @@ class SQLiteGrammar extends Grammar
         // We need to columnize the columns that the foreign key is being defined for
         // so that it is a properly formatted list. Once we have done this, we can
         // return the foreign key SQL declaration to the calling method for use.
-		// 我们需要对定义外键的列进行列化。
+		// 我们需要对定义外键的列进行列化
         return sprintf(', foreign key(%s) references %s(%s)',
             $this->columnize($foreign->columns),
             $this->wrapTable($foreign->on),
@@ -157,6 +156,26 @@ class SQLiteGrammar extends Grammar
         })->map(function ($column) use ($blueprint) {
             return 'alter table '.$this->wrapTable($blueprint).' '.$column;
         })->all();
+    }
+
+    /**
+     * Compile a rename column command.
+	 * 编译重命名列命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations()
+            ? sprintf('alter table %s rename column %s to %s',
+                $this->wrapTable($blueprint),
+                $this->wrap($command->from),
+                $this->wrap($command->to)
+            )
+            : parent::compileRenameColumn($blueprint, $command, $connection);
     }
 
     /**
@@ -270,6 +289,28 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile the SQL needed to retrieve all table names.
+	 * 编译检索所有表名所需的SQL
+     *
+     * @return string
+     */
+    public function compileGetAllTables()
+    {
+        return 'select type, name from sqlite_master where type = \'table\' and name not like \'sqlite_%\'';
+    }
+
+    /**
+     * Compile the SQL needed to retrieve all view names.
+	 * 编译检索所有视图名所需的SQL
+     *
+     * @return string
+     */
+    public function compileGetAllViews()
+    {
+        return 'select type, name from sqlite_master where type = \'view\'';
+    }
+
+    /**
      * Compile the SQL needed to rebuild the database.
 	 * 编译重建数据库所需的SQL
      *
@@ -291,17 +332,26 @@ class SQLiteGrammar extends Grammar
      */
     public function compileDropColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
-        $tableDiff = $this->getDoctrineTableDiff(
-            $blueprint, $schema = $connection->getDoctrineSchemaManager()
-        );
+        if ($connection->usingNativeSchemaOperations()) {
+            $table = $this->wrapTable($blueprint);
 
-        foreach ($command->columns as $name) {
-            $tableDiff->removedColumns[$name] = $connection->getDoctrineColumn(
-                $this->getTablePrefix().$blueprint->getTable(), $name
+            $columns = $this->prefixArray('drop column', $this->wrapArray($command->columns));
+
+            return collect($columns)->map(fn ($column) => 'alter table '.$table.' '.$column
+            )->all();
+        } else {
+            $tableDiff = $this->getDoctrineTableDiff(
+                $blueprint, $schema = $connection->getDoctrineSchemaManager()
             );
-        }
 
-        return (array) $schema->getDatabasePlatform()->getAlterTableSQL($tableDiff);
+            foreach ($command->columns as $name) {
+                $tableDiff->removedColumns[$name] = $connection->getDoctrineColumn(
+                    $this->getTablePrefix().$blueprint->getTable(), $name
+                );
+            }
+
+            return (array) $schema->getDatabasePlatform()->getAlterTableSQL($tableDiff);
+        }
     }
 
     /**
@@ -321,7 +371,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a drop index command.
-	 * 编写一个删除索引命令
+	 * 编译一个删除索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -932,8 +982,16 @@ class SQLiteGrammar extends Grammar
      */
     protected function modifyVirtualAs(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->virtualAs)) {
-            return " as ({$column->virtualAs})";
+        if (! is_null($virtualAs = $column->virtualAsJson)) {
+            if ($this->isJsonSelector($virtualAs)) {
+                $virtualAs = $this->wrapJsonSelector($virtualAs);
+            }
+
+            return " as ({$virtualAs})";
+        }
+
+        if (! is_null($virtualAs = $column->virtualAs)) {
+            return " as ({$virtualAs})";
         }
     }
 
@@ -947,7 +1005,15 @@ class SQLiteGrammar extends Grammar
      */
     protected function modifyStoredAs(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->storedAs)) {
+        if (! is_null($storedAs = $column->storedAsJson)) {
+            if ($this->isJsonSelector($storedAs)) {
+                $storedAs = $this->wrapJsonSelector($storedAs);
+            }
+
+            return " as ({$storedAs}) stored";
+        }
+
+        if (! is_null($storedAs = $column->storedAs)) {
             return " as ({$column->storedAs}) stored";
         }
     }
@@ -962,7 +1028,10 @@ class SQLiteGrammar extends Grammar
      */
     protected function modifyNullable(Blueprint $blueprint, Fluent $column)
     {
-        if (is_null($column->virtualAs) && is_null($column->storedAs)) {
+        if (is_null($column->virtualAs) &&
+            is_null($column->virtualAsJson) &&
+            is_null($column->storedAs) &&
+            is_null($column->storedAsJson)) {
             return $column->nullable ? '' : ' not null';
         }
 
@@ -981,7 +1050,7 @@ class SQLiteGrammar extends Grammar
      */
     protected function modifyDefault(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->default) && is_null($column->virtualAs) && is_null($column->storedAs)) {
+        if (! is_null($column->default) && is_null($column->virtualAs) && is_null($column->virtualAsJson) && is_null($column->storedAs)) {
             return ' default '.$this->getDefaultValue($column->default);
         }
     }
@@ -999,5 +1068,19 @@ class SQLiteGrammar extends Grammar
         if (in_array($column->type, $this->serials) && $column->autoIncrement) {
             return ' primary key autoincrement';
         }
+    }
+
+    /**
+     * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
+
+        return 'json_extract('.$field.$path.')';
     }
 }

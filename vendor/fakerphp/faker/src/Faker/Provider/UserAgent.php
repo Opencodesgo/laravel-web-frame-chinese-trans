@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，用户代理
+ */
 
 namespace Faker\Provider;
 
@@ -39,6 +42,7 @@ class UserAgent extends Base
 
     /**
      * Generate linux processor
+	 * 生成linux处理器
      *
      * @return string
      */
@@ -49,6 +53,7 @@ class UserAgent extends Base
 
     /**
      * Generate a random user agent
+	 * 生成一个随机用户代理
      *
      * @example 'Mozilla/5.0 (Windows CE) AppleWebKit/5350 (KHTML, like Gecko) Chrome/13.0.888.0 Safari/5350'
      *
@@ -156,6 +161,7 @@ class UserAgent extends Base
 
     /**
      * Generate Opera user agent
+	 * 生成Opera用户代理
      *
      * @example 'Opera/8.25 (Windows NT 5.1; en-US) Presto/2.9.188 Version/10.00'
      *
@@ -173,6 +179,7 @@ class UserAgent extends Base
 
     /**
      * Generate Internet Explorer user agent
+	 * 生成Internet Explorer用户代理
      *
      * @example 'Mozilla/5.0 (compatible; MSIE 7.0; Windows 98; Win 9x 4.90; Trident/3.0)'
      *

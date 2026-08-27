@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，内部，令牌 Polyfill
+ * PhpParser，构建者，内部，令牌 Polyfill
  */
 
 namespace PhpParser\Internal;
@@ -16,6 +16,7 @@ if (\PHP_VERSION_ID >= 80000) {
  * This is a polyfill for the PhpToken class introduced in PHP 8.0. We do not actually polyfill
  * PhpToken, because composer might end up picking a different polyfill implementation, which does
  * not meet our requirements.
+ * 这是PHP 8.0中引入的PhpToken类的polyfill。
  *
  * @internal
  */
@@ -54,6 +55,7 @@ class TokenPolyfill {
     /**
      * Get the name of the token. For single-char tokens this will be the token character.
      * Otherwise it will be a T_* style name, or null if the token ID is unknown.
+	 * 获取令牌的名称。对于单字符标记，这将是标记字符。
      */
     public function getTokenName(): ?string {
         if ($this->id < 256) {
@@ -68,6 +70,7 @@ class TokenPolyfill {
      * Check whether the token is of the given kind. The kind may be either an integer that matches
      * the token ID, a string that matches the token text, or an array of integers/strings. In the
      * latter case, the function returns true if any of the kinds in the array match.
+	 * 检查令牌是否为给定类型。
      *
      * @param int|string|(int|string)[] $kind
      */
@@ -117,6 +120,7 @@ class TokenPolyfill {
 
     /**
      * Tokenize the given source code and return an array of tokens.
+	 * 对给定的源代码进行标记化，并返回一个标记数组。
      *
      * This performs certain canonicalizations to match the PHP 8.0 token format:
      *  * Bad characters are represented using T_BAD_CHARACTER rather than omitted.

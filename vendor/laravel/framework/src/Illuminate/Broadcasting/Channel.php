@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，通道
+ * Illuminate，广播，信道，‌信道(Channel)是消息队列(如 RabbitMQ、Kafka)中‌复用物理连接的虚拟传输管道
  */
 
 namespace Illuminate\Broadcasting;
@@ -11,7 +11,7 @@ class Channel
 {
     /**
      * The channel's name.
-	 * 通道名称
+	 * 信道名称
      *
      * @var string
      */
@@ -19,7 +19,7 @@ class Channel
 
     /**
      * Create a new channel instance.
-	 * 创建新的通道
+	 * 创建新的信道实例
      *
      * @param  \Illuminate\Contracts\Broadcasting\HasBroadcastChannel|string  $name
      * @return void
@@ -31,7 +31,7 @@ class Channel
 
     /**
      * Convert the channel instance to a string.
-	 * 转换通道实例为字符串
+	 * 将信道实例转换为字符串
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，自动连接，电子邮件自动链接解析器
+ * League，CommonMark，扩展，自动连接，电子邮件自动链接分析器
  */
 
 declare(strict_types=1);
@@ -39,7 +39,7 @@ final class EmailAutolinkParser implements InlineParserInterface
         }
 
         // Does the URL end with punctuation that should be stripped?
-		// 自动链接只能出现在一行的开头、空格或某些分隔字符之后
+		// URL是否以应该去掉的标点符号结尾？
         if (\substr($email, -1) === '.') {
             $email = \substr($email, 0, -1);
         }

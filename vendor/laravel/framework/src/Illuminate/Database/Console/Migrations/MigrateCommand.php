@@ -1,17 +1,21 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，migrate 迁移命令
+ * Illuminate，数据库，控制台，迁移，迁移指令
  */
 
 namespace Illuminate\Database\Console\Migrations;
 
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Events\SchemaLoaded;
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Database\SQLiteDatabaseDoesNotExistException;
 use Illuminate\Database\SqlServerConnection;
+use PDOException;
+use Throwable;
 
-class MigrateCommand extends BaseCommand
+class MigrateCommand extends BaseCommand implements Isolatable
 {
     use ConfirmableTrait;
 
@@ -33,7 +37,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -73,7 +77,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return int
      */
@@ -90,8 +94,7 @@ class MigrateCommand extends BaseCommand
             // we will use the path relative to the root of this installation folder
             // so that migrations may be run for any path within the applications.
 			// 接下来，我们将检查是否定义了路径选项。
-			// 如果有，我们将使用相对于此安装文件夹根目录的路径，这样就可以在应用程序内的任何路径上运行迁移。
-            $this->migrator->setOutput($this->output)
+            $migrations = $this->migrator->setOutput($this->output)
                     ->run($this->getMigrationPaths(), [
                         'pretend' => $this->option('pretend'),
                         'step' => $this->option('step'),
@@ -100,7 +103,7 @@ class MigrateCommand extends BaseCommand
             // Finally, if the "seed" option has been given, we will re-run the database
             // seed task to re-populate the database, which is convenient when adding
             // a migration and a seed at the same time, as it is only this command.
-			// 最后，如果给出了"seed"选项，我们将重新运行数据库种子任务。
+			// 最后，如果给出了"seed"选项，我们将重新运行数据库种子任务以重新填充数据库。
             if ($this->option('seed') && ! $this->option('pretend')) {
                 $this->call('db:seed', [
                     '--class' => $this->option('seeder') ?: 'Database\\Seeders\\DatabaseSeeder',
@@ -120,14 +123,115 @@ class MigrateCommand extends BaseCommand
      */
     protected function prepareDatabase()
     {
-        if (! $this->migrator->repositoryExists()) {
-            $this->call('migrate:install', array_filter([
-                '--database' => $this->option('database'),
-            ]));
+        if (! $this->repositoryExists()) {
+            $this->components->info('Preparing database.');
+
+            $this->components->task('Creating migration table', function () {
+                return $this->callSilent('migrate:install', array_filter([
+                    '--database' => $this->option('database'),
+                ])) == 0;
+            });
+
+            $this->newLine();
         }
 
         if (! $this->migrator->hasRunAnyMigrations() && ! $this->option('pretend')) {
             $this->loadSchemaState();
+        }
+    }
+
+    /**
+     * Determine if the migrator repository exists.
+	 * 确定迁移程序存储库是否存在
+     *
+     * @return bool
+     */
+    protected function repositoryExists()
+    {
+        return retry(2, fn () => $this->migrator->repositoryExists(), 0, function ($e) {
+            try {
+                if ($e->getPrevious() instanceof SQLiteDatabaseDoesNotExistException) {
+                    return $this->createMissingSqliteDatbase($e->getPrevious()->path);
+                }
+
+                $connection = $this->migrator->resolveConnection($this->option('database'));
+
+                if (
+                    $e->getPrevious() instanceof PDOException &&
+                    $e->getPrevious()->getCode() === 1049 &&
+                    $connection->getDriverName() === 'mysql') {
+                    return $this->createMissingMysqlDatabase($connection);
+                }
+
+                return false;
+            } catch (Throwable) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Create a missing SQLite database.
+	 * 创建一个缺失的SQLite数据库
+     *
+     * @param  string  $path
+     * @return bool
+     */
+    protected function createMissingSqliteDatbase($path)
+    {
+        if ($this->option('force')) {
+            return touch($path);
+        }
+
+        if ($this->option('no-interaction')) {
+            return false;
+        }
+
+        $this->components->warn('The SQLite database does not exist: '.$path);
+
+        if (! $this->components->confirm('Would you like to create it?')) {
+            return false;
+        }
+
+        return touch($path);
+    }
+
+    /**
+     * Create a missing MySQL database.
+	 * 创建一个丢失的MySQL数据库
+     *
+     * @return bool
+     */
+    protected function createMissingMysqlDatabase($connection)
+    {
+        if ($this->laravel['config']->get("database.connections.{$connection->getName()}.database") !== $connection->getDatabaseName()) {
+            return false;
+        }
+
+        if (! $this->option('force') && $this->option('no-interaction')) {
+            return false;
+        }
+
+        if (! $this->option('force') && ! $this->option('no-interaction')) {
+            $this->components->warn("The database '{$connection->getDatabaseName()}' does not exist on the '{$connection->getName()}' connection.");
+
+            if (! $this->components->confirm('Would you like to create it?')) {
+                return false;
+            }
+        }
+
+        try {
+            $this->laravel['config']->set("database.connections.{$connection->getName()}.database", null);
+
+            $this->laravel['db']->purge();
+
+            $freshConnection = $this->migrator->resolveConnection($this->option('database'));
+
+            return tap($freshConnection->unprepared("CREATE DATABASE IF NOT EXISTS `{$connection->getDatabaseName()}`"), function () {
+                $this->laravel['db']->purge();
+            });
+        } finally {
+            $this->laravel['config']->set("database.connections.{$connection->getName()}.database", $connection->getDatabaseName());
         }
     }
 
@@ -144,37 +248,36 @@ class MigrateCommand extends BaseCommand
         // First, we will make sure that the connection supports schema loading and that
         // the schema file exists before we proceed any further. If not, we will just
         // continue with the standard migration operation as normal without errors.
-		// 首先，我们要确保连接支持模式加载，在我们继续之前，模式文件已经存在。
+		// 首先，我们将确保连接支持模式加载。
         if ($connection instanceof SqlServerConnection ||
             ! is_file($path = $this->schemaPath($connection))) {
             return;
         }
 
-        $this->line('<info>Loading stored database schema:</info> '.$path);
+        $this->components->info('Loading stored database schemas.');
 
-        $startTime = microtime(true);
+        $this->components->task($path, function () use ($connection, $path) {
+            // Since the schema file will create the "migrations" table and reload it to its
+            // proper state, we need to delete it here so we don't get an error that this
+            // table already exists when the stored database schema file gets executed.
+			// 因为模式文件将创建"迁移"表并将其重新加载到它的状态，
+			// 我们需要在这里删除它，这样我们就不会得到错误。
+            $this->migrator->deleteRepository();
 
-        // Since the schema file will create the "migrations" table and reload it to its
-        // proper state, we need to delete it here so we don't get an error that this
-        // table already exists when the stored database schema file gets executed.
-		// 因为模式文件将创建"迁移"表并将其重新加载到它的适当状态，我们需要在这里删除它，这样我们就不会得到错误。
-        $this->migrator->deleteRepository();
+            $connection->getSchemaState()->handleOutputUsing(function ($type, $buffer) {
+                $this->output->write($buffer);
+            })->load($path);
+        });
 
-        $connection->getSchemaState()->handleOutputUsing(function ($type, $buffer) {
-            $this->output->write($buffer);
-        })->load($path);
-
-        $runTime = number_format((microtime(true) - $startTime) * 1000, 2);
+        $this->newLine();
 
         // Finally, we will fire an event that this schema has been loaded so developers
         // can perform any post schema load tasks that are necessary in listeners for
         // this event, which may seed the database tables with some necessary data.
-		// 最后，我们将触发一个事件，表明该模式已经加载给开发人员可以执行任何模式后加载任务。
+		// 最后，我们将触发一个事件，表明该模式已经加载给开发人员。
         $this->dispatcher->dispatch(
             new SchemaLoaded($connection, $path)
         );
-
-        $this->line('<info>Loaded stored database schema.</info> ('.$runTime.'ms)');
     }
 
     /**

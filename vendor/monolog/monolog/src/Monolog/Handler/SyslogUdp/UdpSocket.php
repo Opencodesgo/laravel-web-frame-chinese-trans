@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，Syslog Udp，Udp Socket
+ * Monolog，处理器，Syslog Udp，Udp Socke
  */
 
 /*

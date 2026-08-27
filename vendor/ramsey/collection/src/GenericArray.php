@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，通用数组
+ * Ramsey，集合，通用数组
  */
 
 /**
@@ -19,7 +19,7 @@ namespace Ramsey\Collection;
 
 /**
  * `GenericArray` represents a standard array object.
- * ‘ GenericArray ’表示一个标准数组对象。
+ * GenericArray表示一个标准数组对象。
  *
  * @extends AbstractArray<mixed>
  */

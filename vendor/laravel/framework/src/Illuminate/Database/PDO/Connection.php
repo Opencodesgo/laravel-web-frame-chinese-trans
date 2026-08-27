@@ -28,7 +28,7 @@ class Connection implements ServerInfoAwareConnection
 
     /**
      * Create a new PDO connection instance.
-	 * 创建新的PDO连接实例
+	 * 创建一个新的PDO连接实例
      *
      * @param  \PDO  $connection
      * @return void
@@ -98,7 +98,7 @@ class Connection implements ServerInfoAwareConnection
 
     /**
      * Get the last insert ID.
-	 * 获取最后一个插入ID
+	 * 得到最后插入ID
      *
      * @param  string|null  $name
      * @return mixed

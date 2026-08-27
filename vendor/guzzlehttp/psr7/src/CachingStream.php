@@ -12,7 +12,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Stream decorator that can cache previously read bytes from a sequentially
  * read stream.
- * 可以缓存之前读取字节的流装饰器。
+ * 流装饰器，可以缓存先前从流序列中读取的字节。
  */
 final class CachingStream implements StreamInterface
 {
@@ -31,7 +31,7 @@ final class CachingStream implements StreamInterface
 
     /**
      * We will treat the buffer object as the body of the stream
-	 * 我们将将缓冲区对象视为流的主体
+	 * 我们将把缓冲区对象视为流体
      *
      * @param StreamInterface $stream Stream to cache. The cursor is assumed to be at the beginning of the stream.
      * @param StreamInterface $target Optionally specify where data is cached
@@ -94,7 +94,6 @@ final class CachingStream implements StreamInterface
     public function read($length): string
     {
         // Perform a regular read on any previously read data from the buffer
-		// 对从缓冲区读取数据进行常规读取
         $data = $this->stream->read($length);
         $remaining = $length - strlen($data);
 
@@ -142,7 +141,7 @@ final class CachingStream implements StreamInterface
 
     /**
      * Close both the remote stream and buffer stream
-	 * 关闭远程流和缓冲区流
+	 * 关闭远端流和缓冲流
      */
     public function close(): void
     {

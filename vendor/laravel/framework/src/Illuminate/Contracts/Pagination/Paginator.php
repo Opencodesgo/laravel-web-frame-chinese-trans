@@ -9,7 +9,7 @@ interface Paginator
 {
     /**
      * Get the URL for a given page.
-	 * 获取给定页面的URL
+	 * 得以给定页面的URL
      *
      * @param  int  $page
      * @return string
@@ -20,7 +20,7 @@ interface Paginator
      * Add a set of query string values to the paginator.
 	 * 向分页器添加一组查询字符串值
      *
-     * @param  array|string  $key
+     * @param  array|string|null  $key
      * @param  string|null  $value
      * @return $this
      */
@@ -31,7 +31,7 @@ interface Paginator
 	 * 获取/设置要附加到URL的URL片段
      *
      * @param  string|null  $fragment
-     * @return $this|string
+     * @return $this|string|null
      */
     public function fragment($fragment = null);
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，必须串起来
+ * Hamcrest，核心，Has To String
  */
 
 namespace Hamcrest\Core;
@@ -15,7 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if array size satisfies a nested matcher.
- * 如果数组大小满足嵌套匹配器，则匹配。
+ * 匹配如果数组大小满足一个嵌套matcher。
  */
 class HasToString extends FeatureMatcher
 {
@@ -51,7 +51,7 @@ class HasToString extends FeatureMatcher
 
     /**
      * Does array size satisfy a given matcher?
-	 * 数组大小是否满足给定的匹配器？
+	 * 数组大小是否满足给定的matcher ?
      *
      * @factory
      */

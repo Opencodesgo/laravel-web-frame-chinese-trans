@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图查找器接口
+ * Illuminate，视图，视图查找程序接口
  */
 
 namespace Illuminate\View;
@@ -17,7 +17,7 @@ interface ViewFinderInterface
 
     /**
      * Get the fully qualified location of the view.
-	 * 获取视图的完全限定位
+	 * 获取视图的完全限定位置
      *
      * @param  string  $view
      * @return string

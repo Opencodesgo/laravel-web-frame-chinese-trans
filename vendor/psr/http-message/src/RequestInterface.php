@@ -7,7 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Representation of an outgoing, client-side request.
- * 输出、客户端请求的表示。
+ * 发出的客户端请求的表示形式。
  *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
@@ -69,7 +69,7 @@ interface RequestInterface extends MessageInterface
 
     /**
      * Retrieves the HTTP method of the request.
-	 * 检索请求的HTTP方法
+	 * 检索请求的HTTP方法。
      *
      * @return string Returns the request method.
      */

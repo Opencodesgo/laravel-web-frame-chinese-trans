@@ -65,7 +65,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface, PrunableF
     {
         $failed_at = Date::now();
 
-        $exception = (string) $exception;
+        $exception = (string) mb_convert_encoding($exception, 'UTF-8');
 
         return $this->getTable()->insertGetId(compact(
             'connection', 'queue', 'payload', 'exception', 'failed_at'
@@ -74,7 +74,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface, PrunableF
 
     /**
      * Get a list of all of the failed jobs.
-	 * 得到所有失败任务的列表
+	 * 获取所有失败任务的列表
      *
      * @return array
      */
@@ -111,11 +111,14 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface, PrunableF
      * Flush all of the failed jobs from storage.
 	 * 从存储中清除所有失败的作业
      *
+     * @param  int|null  $hours
      * @return void
      */
-    public function flush()
+    public function flush($hours = null)
     {
-        $this->getTable()->delete();
+        $this->getTable()->when($hours, function ($query, $hours) {
+            $query->where('failed_at', '<=', Date::now()->subHours($hours));
+        })->delete();
     }
 
     /**

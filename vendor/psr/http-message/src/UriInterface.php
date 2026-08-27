@@ -7,6 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Value object representing a URI.
+ * 表示URI的值对象。
  *
  * This interface is meant to represent URIs according to RFC 3986 and to
  * provide methods for most common operations. Additional functionality for
@@ -85,7 +86,7 @@ interface UriInterface
 
     /**
      * Retrieve the host component of the URI.
-	 * 检索URI的主机组件
+	 * 检索URI的主机组件。
      *
      * If no host is present, this method MUST return an empty string.
      *
@@ -117,7 +118,6 @@ interface UriInterface
 
     /**
      * Retrieve the path component of the URI.
-	 * 检索URI的路径组件。
      *
      * The path can either be empty or absolute (starting with a slash) or
      * rootless (not starting with a slash). Implementations MUST support all
@@ -202,6 +202,7 @@ interface UriInterface
 
     /**
      * Return an instance with the specified user information.
+	 * 返回具有指定用户信息的实例。
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified user information.
@@ -218,6 +219,7 @@ interface UriInterface
 
     /**
      * Return an instance with the specified host.
+	 * 返回具有指定主机的实例。
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified host.
@@ -232,6 +234,7 @@ interface UriInterface
 
     /**
      * Return an instance with the specified port.
+	 * 返回具有指定端口的实例。
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified port.
@@ -251,6 +254,7 @@ interface UriInterface
 
     /**
      * Return an instance with the specified path.
+	 * 返回具有指定路径的实例。
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified path.
@@ -275,6 +279,7 @@ interface UriInterface
 
     /**
      * Return an instance with the specified query string.
+	 * 返回具有指定查询字符串的实例。
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified query string.

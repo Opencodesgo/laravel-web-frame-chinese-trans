@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Service，测试，ServiceLocatorTest
+ * Symfony，Contracts，Service，测试，服务定位器测试用例
  */
 
 /*

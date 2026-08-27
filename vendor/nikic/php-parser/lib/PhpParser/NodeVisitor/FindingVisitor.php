@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
+
 /**
- * PhpParser，节点访问器，寻找访客
+ * PhpParser，节点访问器，发现访客
  */
 
 namespace PhpParser\NodeVisitor;
@@ -11,12 +12,11 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * This visitor can be used to find and collect all nodes satisfying some criterion determined by
  * a filter callback.
- * 该访问器可用于查找并收集所有满足由过滤回调函数确定的条件的节点。
  */
 class FindingVisitor extends NodeVisitorAbstract {
     /** @var callable Filter callback */
     protected $filterCallback;
-    /** @var Node[] Found nodes */
+    /** @var list<Node> Found nodes */
     protected array $foundNodes;
 
     public function __construct(callable $filterCallback) {
@@ -29,7 +29,7 @@ class FindingVisitor extends NodeVisitorAbstract {
      *
      * Nodes are returned in pre-order.
      *
-     * @return Node[] Found nodes
+     * @return list<Node> Found nodes
      */
     public function getFoundNodes(): array {
         return $this->foundNodes;

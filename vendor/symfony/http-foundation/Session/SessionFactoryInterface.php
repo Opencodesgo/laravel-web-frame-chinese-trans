@@ -1,11 +1,10 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，会话工厂接口
+ * Symfony，Component，HttpFoundation，会话，会话工厂接口
  */
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *

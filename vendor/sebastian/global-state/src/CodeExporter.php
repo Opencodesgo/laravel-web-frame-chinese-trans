@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，全局状态，代码出口商
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -18,6 +23,7 @@ use function var_export;
 
 /**
  * Exports parts of a Snapshot as PHP code.
+ * 将快照的部分导出为PHP代码。
  */
 final class CodeExporter
 {

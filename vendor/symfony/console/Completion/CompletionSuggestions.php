@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，完成，完成的建议
+ * Symfony，Component，Console，完成，完成建议
  */
 
 /*
@@ -18,24 +18,22 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Stores all completion suggestions for the current input.
- * 存储当前输入的所有补全建议
+ * 存储当前输入的所有补全建议。
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */
 final class CompletionSuggestions
 {
-    private $valueSuggestions = [];
-    private $optionSuggestions = [];
+    private array $valueSuggestions = [];
+    private array $optionSuggestions = [];
 
     /**
      * Add a suggested value for an input option or argument.
-	 * 为输入选项或参数添加一个提示值
-     *
-     * @param string|Suggestion $value
+	 * 为输入选项或参数添加建议值
      *
      * @return $this
      */
-    public function suggestValue($value): self
+    public function suggestValue(string|Suggestion $value): static
     {
         $this->valueSuggestions[] = !$value instanceof Suggestion ? new Suggestion($value) : $value;
 
@@ -44,13 +42,13 @@ final class CompletionSuggestions
 
     /**
      * Add multiple suggested values at once for an input option or argument.
-	 * 同时添加多个建议的值,用于输入选项或参数
+	 * 一次为输入选项或参数添加多个建议值
      *
      * @param list<string|Suggestion> $values
      *
      * @return $this
      */
-    public function suggestValues(array $values): self
+    public function suggestValues(array $values): static
     {
         foreach ($values as $value) {
             $this->suggestValue($value);
@@ -61,11 +59,11 @@ final class CompletionSuggestions
 
     /**
      * Add a suggestion for an input option name.
-	 * 添加一个输入选项名的建议
+	 * 添加对输入选项名称的建议
      *
      * @return $this
      */
-    public function suggestOption(InputOption $option): self
+    public function suggestOption(InputOption $option): static
     {
         $this->optionSuggestions[] = $option;
 
@@ -74,13 +72,13 @@ final class CompletionSuggestions
 
     /**
      * Add multiple suggestions for input option names at once.
-	 * 同时为输入选项添加多个建议
+	 * 一次为输入选项名添加多个建议
      *
      * @param InputOption[] $options
      *
      * @return $this
      */
-    public function suggestOptions(array $options): self
+    public function suggestOptions(array $options): static
     {
         foreach ($options as $option) {
             $this->suggestOption($option);

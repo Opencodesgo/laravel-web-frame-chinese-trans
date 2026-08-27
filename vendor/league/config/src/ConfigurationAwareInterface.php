@@ -18,7 +18,7 @@ namespace League\Config;
 
 /**
  * Implement this class to facilitate setter injection of the configuration where needed
- * 实现这个类,以便在需要时方便setter注入配置。
+ * 实现这个类有助于在需要的地方注入配置的setter
  */
 interface ConfigurationAwareInterface
 {

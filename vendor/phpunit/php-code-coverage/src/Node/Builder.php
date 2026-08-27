@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，节点，构建者
+ * SebastianBergmann，CodeCoverage，节点，构建器
  */
 
 /*
@@ -165,6 +165,7 @@ final class Builder
 
     /**
      * Reduces the paths by cutting the longest common start path.
+	 * 通过切割最长的公共起始路径来减少路径。
      *
      * For instance,
      *

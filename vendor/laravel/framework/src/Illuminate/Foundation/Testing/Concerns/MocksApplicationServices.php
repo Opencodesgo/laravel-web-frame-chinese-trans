@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，模拟应用服务
+ * Illuminate，基础，测试，问题，模拟应用程序服务
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -18,7 +18,7 @@ trait MocksApplicationServices
 {
     /**
      * All of the fired events.
-	 * 所有触发的事件
+	 * 所有被触发的事件
      *
      * @var array
      */

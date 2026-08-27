@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，多写入
+ * Dotenv，资源库，适配器，多作者
  */
 
 declare(strict_types=1);
@@ -52,7 +52,6 @@ final class MultiWriter implements WriterInterface
 
     /**
      * Delete an environment variable, if possible.
-	 * 如果可能，请删除环境变量。
      *
      * @param non-empty-string $name
      *

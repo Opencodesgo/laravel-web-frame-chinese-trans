@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，中间件，节流阀例外
+ * Illuminate，队列，中间件，Throttles 异常
  */
 
 namespace Illuminate\Queue\Middleware;
@@ -77,11 +77,10 @@ class ThrottlesExceptions
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  int  $maxAttempts
      * @param  int  $decayMinutes
-     * @param  string  $key
      * @return void
      */
     public function __construct($maxAttempts = 10, $decayMinutes = 10)
@@ -92,7 +91,7 @@ class ThrottlesExceptions
 
     /**
      * Process the job.
-	 * 处理作业
+	 * 作业过程
      *
      * @param  mixed  $job
      * @param  callable  $next
@@ -165,7 +164,7 @@ class ThrottlesExceptions
 
     /**
      * Get the cache key associated for the rate limiter.
-	 * 得到与速率限制器相关联的缓存键
+	 * 获取与速率限制器相关联的缓存键
      *
      * @param  mixed  $job
      * @return string
@@ -210,7 +209,7 @@ class ThrottlesExceptions
 
     /**
      * Get the number of seconds that should elapse before the job is retried.
-	 * 得到在重试作业之前应该经过的秒数
+	 * 获取在重试作业之前应该经过的秒数
      *
      * @param  string  $key
      * @return int

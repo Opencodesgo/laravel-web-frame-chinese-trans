@@ -28,8 +28,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class ResponseListener implements EventSubscriberInterface
 {
-    private $charset;
-    private $addContentLanguageHeader;
+    private string $charset;
+    private bool $addContentLanguageHeader;
 
     public function __construct(string $charset, bool $addContentLanguageHeader = false)
     {
@@ -41,7 +41,7 @@ class ResponseListener implements EventSubscriberInterface
      * Filters the Response.
 	 * 过滤响应
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;

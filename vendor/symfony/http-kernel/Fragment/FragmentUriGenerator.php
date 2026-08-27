@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，碎片，片段Uri生成器
+ * Symfony，Component，HttpKernel，片段，片段 Uri生成器
  */
 
 /*
@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Symfony\Component\HttpKernel\UriSigner;
 
 /**
  * Generates a fragment URI.
@@ -28,9 +28,9 @@ use Symfony\Component\HttpKernel\UriSigner;
  */
 final class FragmentUriGenerator implements FragmentUriGeneratorInterface
 {
-    private $fragmentPath;
-    private $signer;
-    private $requestStack;
+    private string $fragmentPath;
+    private ?UriSigner $signer;
+    private ?RequestStack $requestStack;
 
     public function __construct(string $fragmentPath, ?UriSigner $signer = null, ?RequestStack $requestStack = null)
     {
@@ -39,9 +39,6 @@ final class FragmentUriGenerator implements FragmentUriGeneratorInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function generate(ControllerReference $controller, ?Request $request = null, bool $absolute = false, bool $strict = true, bool $sign = true): string
     {
         if (null === $request && (null === $this->requestStack || null === $request = $this->requestStack->getCurrentRequest())) {
@@ -61,6 +58,7 @@ final class FragmentUriGenerator implements FragmentUriGeneratorInterface
         // This makes things inconsistent if you switch from rendering a controller
         // to rendering a route if the route pattern does not contain the special
         // _format and _locale placeholders.
+		// 我们需要转发当前的 _format 和 _locale 值，因为我们没有合适的路由模式来完成这项工作。
         if (!isset($controller->attributes['_format'])) {
             $controller->attributes['_format'] = $request->getRequestFormat();
         }
@@ -73,6 +71,7 @@ final class FragmentUriGenerator implements FragmentUriGeneratorInterface
         $path = $this->fragmentPath.'?'.http_build_query($controller->query, '', '&');
 
         // we need to sign the absolute URI, but want to return the path only.
+		// 我们需要对绝对URI进行签名，但只希望返回路径。
         $fragmentUri = $sign || $absolute ? $request->getUriForPath($path) : $request->getBaseUrl().$path;
 
         if (!$sign) {
@@ -90,7 +89,7 @@ final class FragmentUriGenerator implements FragmentUriGeneratorInterface
             if (\is_array($value)) {
                 $this->checkNonScalar($value);
             } elseif (!\is_scalar($value) && null !== $value) {
-                throw new \LogicException(sprintf('Controller attributes cannot contain non-scalar/non-null values (value for key "%s" is not a scalar or null).', $key));
+                throw new \LogicException(\sprintf('Controller attributes cannot contain non-scalar/non-null values (value for key "%s" is not a scalar or null).', $key));
             }
         }
     }

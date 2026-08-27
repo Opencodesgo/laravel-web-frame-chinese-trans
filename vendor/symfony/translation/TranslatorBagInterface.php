@@ -17,24 +17,25 @@ namespace Symfony\Component\Translation;
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
- * TranslatorBagInterface.
- * 翻译包接口
- *
- * @method MessageCatalogueInterface[] getCatalogues() Returns all catalogues of the instance
- *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
 interface TranslatorBagInterface
 {
     /**
      * Gets the catalogue by locale.
-	 * 通过现场获取目录
+	 * 按区域设置获取目录
      *
      * @param string|null $locale The locale or null to use the default
      *
-     * @return MessageCatalogueInterface
-     *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */
-    public function getCatalogue(?string $locale = null);
+    public function getCatalogue(?string $locale = null): MessageCatalogueInterface;
+
+    /**
+     * Returns all catalogues of the instance.
+	 * 返回实例的所有目录
+     *
+     * @return MessageCatalogueInterface[]
+     */
+    public function getCatalogues(): array;
 }

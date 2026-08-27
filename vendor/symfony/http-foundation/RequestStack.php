@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，请求栈
+ * Symfony，Component，HttpFoundation，请求堆栈
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Request stack that controls the lifecycle of requests.
- * 控制请求生命周期的请求堆栈
+ * 控制请求生命周期的请求堆栈。
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -28,14 +28,16 @@ class RequestStack
     /**
      * @var Request[]
      */
-    private $requests = [];
+    private array $requests = [];
 
     /**
      * Pushes a Request on the stack.
-	 * 将请求推送到堆栈上
+	 * 将请求推送到堆栈上。
      *
      * This method should generally not be called directly as the stack
      * management should be taken care of by the application itself.
+     *
+     * @return void
      */
     public function push(Request $request)
     {
@@ -44,16 +46,14 @@ class RequestStack
 
     /**
      * Pops the current request from the stack.
-	 * 从堆栈中弹出当前请求
+	 * 从堆栈中弹出当前请求。
      *
      * This operation lets the current request go out of scope.
      *
      * This method should generally not be called directly as the stack
      * management should be taken care of by the application itself.
-     *
-     * @return Request|null
      */
-    public function pop()
+    public function pop(): ?Request
     {
         if (!$this->requests) {
             return null;
@@ -62,10 +62,7 @@ class RequestStack
         return array_pop($this->requests);
     }
 
-    /**
-     * @return Request|null
-     */
-    public function getCurrentRequest()
+    public function getCurrentRequest(): ?Request
     {
         return end($this->requests) ?: null;
     }
@@ -88,33 +85,16 @@ class RequestStack
     }
 
     /**
-     * Gets the master request.
-	 * 获取主请求
-     *
-     * @return Request|null
-     *
-     * @deprecated since symfony/http-foundation 5.3, use getMainRequest() instead
-     */
-    public function getMasterRequest()
-    {
-        trigger_deprecation('symfony/http-foundation', '5.3', '"%s()" is deprecated, use "getMainRequest()" instead.', __METHOD__);
-
-        return $this->getMainRequest();
-    }
-
-    /**
      * Returns the parent request of the current.
-	 * 返回当前父请求。
+	 * 对象的父请求。
      *
      * Be warned that making your code aware of the parent request
      * might make it un-compatible with other features of your framework
      * like ESI support.
      *
      * If current Request is the main request, it returns null.
-     *
-     * @return Request|null
      */
-    public function getParentRequest()
+    public function getParentRequest(): ?Request
     {
         $pos = \count($this->requests) - 2;
 
@@ -123,7 +103,7 @@ class RequestStack
 
     /**
      * Gets the current session.
-	 * 得到当前会话
+	 * 获取当前会话
      *
      * @throws SessionNotFoundException
      */
@@ -134,5 +114,12 @@ class RequestStack
         }
 
         throw new SessionNotFoundException();
+    }
+
+    public function resetRequestFormats(): void
+    {
+        static $resetRequestFormats;
+        $resetRequestFormats ??= \Closure::bind(static fn () => self::$formats = null, null, Request::class);
+        $resetRequestFormats();
     }
 }

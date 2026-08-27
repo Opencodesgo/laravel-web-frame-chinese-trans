@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，设置
+ * Ramsey，集合，设置
  */
 
 /**
@@ -19,7 +19,7 @@ namespace Ramsey\Collection;
 
 /**
  * A set is a collection that contains no duplicate elements.
- * 集合是一个包含没有重复元素的集合。
+ * 集合是不包含重复元素的集合。
  *
  * Great care must be exercised if mutable objects are used as set elements.
  * The behavior of a set is not specified if the value of an object is changed
@@ -28,11 +28,11 @@ namespace Ramsey\Collection;
  *
  * Example usage:
  *
- * ``` php
+ * ```
  * $foo = new \My\Foo();
  * $set = new Set(\My\Foo::class);
  *
- * $set->add($foo); // returns TRUE, the element don't exists
+ * $set->add($foo); // returns TRUE, the element doesn't exist
  * $set->add($foo); // returns FALSE, the element already exists
  *
  * $bar = new \My\Foo();
@@ -45,23 +45,15 @@ namespace Ramsey\Collection;
 class Set extends AbstractSet
 {
     /**
-     * The type of elements stored in this set
-	 * 存储在这个集合中的元素的类型
-     *
-     * A set's type is immutable. For this reason, this property is private.
-     */
-    private string $setType;
-
-    /**
      * Constructs a set object of the specified type, optionally with the
      * specified data.
+	 * 创建指定类型的集合对象，可选地包含指定的数据。
      *
-     * @param string $setType The type (FQCN) associated with this set.
+     * @param string $setType The type or class name associated with this set.
      * @param array<array-key, T> $data The initial items to store in the set.
      */
-    public function __construct(string $setType, array $data = [])
+    public function __construct(private readonly string $setType, array $data = [])
     {
-        $this->setType = $setType;
         parent::__construct($data);
     }
 

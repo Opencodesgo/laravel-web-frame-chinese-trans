@@ -23,7 +23,7 @@ class JobName
 
     /**
      * Get the resolved name of the queued job class.
-	 * 得到排队作业类的解析名称
+	 * 获取排队作业类的解析名称
      *
      * @param  string  $name
      * @param  array  $payload

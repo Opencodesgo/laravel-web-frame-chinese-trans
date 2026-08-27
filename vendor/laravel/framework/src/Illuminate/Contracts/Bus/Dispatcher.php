@@ -18,7 +18,7 @@ interface Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
-	 * 分派命令给当前进程中相应的处理程序
+	 * 将命令分派给当前进程中相应的处理程序
      *
      * Queueable jobs will be dispatched to the "sync" queue.
      *
@@ -30,7 +30,7 @@ interface Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
-	 * 分派命令给当前进程中相应的处理程序
+	 * 将命令分派给当前进程中相应的处理程序
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -67,7 +67,7 @@ interface Dispatcher
 
     /**
      * Map a command to a handler.
-	 * 映射命令到处理程序
+	 * 将命令映射到处理程序
      *
      * @param  array  $map
      * @return $this

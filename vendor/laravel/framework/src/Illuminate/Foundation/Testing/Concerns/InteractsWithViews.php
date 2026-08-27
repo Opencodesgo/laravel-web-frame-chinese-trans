@@ -16,13 +16,13 @@ trait InteractsWithViews
 {
     /**
      * Create a new TestView from the given view.
-	 * 从给定的视图创建一个新的TestView
+	 * 从给定的视图创建一个新的 TestView
      *
      * @param  string  $view
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @return \Illuminate\Testing\TestView
      */
-    protected function view(string $view, array $data = [])
+    protected function view(string $view, $data = [])
     {
         return new TestView(view($view, $data));
     }
@@ -35,7 +35,7 @@ trait InteractsWithViews
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @return \Illuminate\Testing\TestView
      */
-    protected function blade(string $template, array $data = [])
+    protected function blade(string $template, $data = [])
     {
         $tempDirectory = sys_get_temp_dir();
 
@@ -54,13 +54,13 @@ trait InteractsWithViews
 
     /**
      * Render the given view component.
-	 * 呈现给定视图组件
+	 * 呈现给定的视图组件
      *
      * @param  string  $componentClass
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @return \Illuminate\Testing\TestComponent
      */
-    protected function component(string $componentClass, array $data = [])
+    protected function component(string $componentClass, $data = [])
     {
         $component = $this->app->make($componentClass, $data);
 

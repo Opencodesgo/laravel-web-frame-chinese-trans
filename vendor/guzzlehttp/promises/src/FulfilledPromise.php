@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，许诺，兑现诺言
+ * GuzzleHttp，Promise，满足的许诺
  */
 
 declare(strict_types=1);

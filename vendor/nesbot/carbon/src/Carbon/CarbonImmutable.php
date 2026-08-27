@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Carbon 不变的
+ * Carbon，Carbon 不可变
  */
 
 /**

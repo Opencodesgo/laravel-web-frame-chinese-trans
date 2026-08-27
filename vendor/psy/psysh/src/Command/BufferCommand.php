@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，时间命令，命令缓存
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Interact with the current code buffer.
+ * 与当前代码缓冲区交互。
  *
  * Shows and clears the buffer for the current multi-line expression.
  */
@@ -66,6 +70,7 @@ HELP
 
     /**
      * A helper method for wrapping buffer lines in `<urgent>` and `<return>` formatter strings.
+	 * 在‘ <urgent> ’和‘ <return> ’格式化器字符串中换行缓冲行的辅助方法。
      *
      * @param array  $lines
      * @param string $type  (default: 'return')

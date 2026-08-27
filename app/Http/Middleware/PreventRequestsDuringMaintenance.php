@@ -1,6 +1,6 @@
 <?php
 /**
- * app，Http，中间件，维护期间的预防性请求
+ * App, 基础，Http, 中间件, 维护期间的预防性请求
  */
 
 namespace App\Http\Middleware;

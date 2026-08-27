@@ -22,7 +22,6 @@ interface Container extends ContainerInterface
     /**
      * Alias a type to a different name.
 	 * 将类型别名为不同的名称
-	 * 
      *
      * @param  string  $abstract
      * @param  string  $alias
@@ -92,6 +91,26 @@ interface Container extends ContainerInterface
      * @return void
      */
     public function singletonIf($abstract, $concrete = null);
+
+    /**
+     * Register a scoped binding in the container.
+	 * 在容器中注册一个作用域绑定
+     *
+     * @param  string  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @return void
+     */
+    public function scoped($abstract, $concrete = null);
+
+    /**
+     * Register a scoped binding if it hasn't already been registered.
+	 * 如果绑定尚未注册，请注册它。
+     *
+     * @param  string  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @return void
+     */
+    public function scopedIf($abstract, $concrete = null);
 
     /**
      * "Extend" an abstract type in the container.
@@ -166,7 +185,7 @@ interface Container extends ContainerInterface
 
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure / class@method并注入它的依赖项
+	 * 调用给定的Closure / class@method并注入它的依赖项。
      *
      * @param  callable|string  $callback
      * @param  array  $parameters
@@ -183,6 +202,16 @@ interface Container extends ContainerInterface
      * @return bool
      */
     public function resolved($abstract);
+
+    /**
+     * Register a new before resolving callback.
+	 * 在解析回调之前注册一个new
+     *
+     * @param  \Closure|string  $abstract
+     * @param  \Closure|null  $callback
+     * @return void
+     */
+    public function beforeResolving($abstract, Closure $callback = null);
 
     /**
      * Register a new resolving callback.

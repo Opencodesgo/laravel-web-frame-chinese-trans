@@ -13,7 +13,7 @@ class Authorize
 {
     /**
      * The gate instance.
-	 * gate实例
+	 * 大门实例
      *
      * @var \Illuminate\Contracts\Auth\Access\Gate
      */
@@ -33,7 +33,7 @@ class Authorize
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
+	 * 处理传入的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -72,7 +72,7 @@ class Authorize
 
     /**
      * Get the model to authorize.
-	 * 得到模型授权
+	 * 获取授权模型
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $model
@@ -83,7 +83,7 @@ class Authorize
         if ($this->isClassName($model)) {
             return trim($model);
         } else {
-            return $request->route($model, null) ?:
+            return $request->route($model, null) ??
                 ((preg_match("/^['\"](.*)['\"]$/", trim($model), $matches)) ? $matches[1] : null);
         }
     }
@@ -97,6 +97,6 @@ class Authorize
      */
     protected function isClassName($value)
     {
-        return strpos($value, '\\') !== false;
+        return str_contains($value, '\\');
     }
 }

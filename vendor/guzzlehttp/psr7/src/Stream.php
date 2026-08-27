@@ -11,7 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * PHP stream implementation.
- * PHP流实现
+ * PHP流实现。
  */
 class Stream implements StreamInterface
 {
@@ -39,6 +39,7 @@ class Stream implements StreamInterface
 
     /**
      * This constructor accepts an associative array of options.
+	 * 这个构造函数接受一个选项的关联数组。
      *
      * - size: (int) If a read stream would otherwise have an indeterminate
      *   size, but the size is known due to foreknowledge, then you can
@@ -72,7 +73,6 @@ class Stream implements StreamInterface
 
     /**
      * Closes the stream when the destructed
-	 * 破坏时关闭流
      */
     public function __destruct()
     {

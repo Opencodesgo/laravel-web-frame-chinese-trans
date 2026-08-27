@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，Framework，限制，回调
+ * PHPUnit，框架，约束，回调
  */
 
 /*
@@ -36,6 +36,7 @@ final class Callback extends Constraint
 
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示形式
      */
     public function toString(): string
     {

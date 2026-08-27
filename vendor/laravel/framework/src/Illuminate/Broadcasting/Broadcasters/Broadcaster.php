@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，广播，广播员，广播 caster
+ * Illuminate，广播，广播员，广播抽象类
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
+use Closure;
 use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
@@ -13,13 +14,20 @@ use Illuminate\Contracts\Routing\BindingRegistrar;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Reflector;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionFunction;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 abstract class Broadcaster implements BroadcasterContract
 {
+    /**
+     * The callback to resolve the authenticated user information.
+	 * 解析经过身份验证的用户信息的回调
+     *
+     * @var \Closure|null
+     */
+    protected $authenticatedUserCallback = null;
+
     /**
      * The registered channel authenticators.
 	 * 已注册的通道身份验证器
@@ -43,6 +51,36 @@ abstract class Broadcaster implements BroadcasterContract
      * @var \Illuminate\Contracts\Routing\BindingRegistrar
      */
     protected $bindingRegistrar;
+
+    /**
+     * Resolve the authenticated user payload for the incoming connection request.
+	 * 为传入的连接请求解析经过身份验证的用户负载
+     *
+     * See: https://pusher.com/docs/channels/library_auth_reference/auth-signatures/#user-authentication.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|null
+     */
+    public function resolveAuthenticatedUser($request)
+    {
+        if ($this->authenticatedUserCallback) {
+            return $this->authenticatedUserCallback->__invoke($request);
+        }
+    }
+
+    /**
+     * Register the user retrieval callback used to authenticate connections.
+	 * 注册用于验证连接的用户检索回调
+     *
+     * See: https://pusher.com/docs/channels/library_auth_reference/auth-signatures/#user-authentication.
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function resolveAuthenticatedUserUsing(Closure $callback)
+    {
+        $this->authenticatedUserCallback = $callback;
+    }
 
     /**
      * Register a channel authenticator.
@@ -89,7 +127,11 @@ abstract class Broadcaster implements BroadcasterContract
 
             $handler = $this->normalizeChannelHandlerToCallable($callback);
 
-            if ($result = $handler($this->retrieveUser($request, $channel), ...$parameters)) {
+            $result = $handler($this->retrieveUser($request, $channel), ...$parameters);
+
+            if ($result === false) {
+                throw new AccessDeniedHttpException;
+            } elseif ($result) {
                 return $this->validAuthenticationResponse($request, $result);
             }
         }
@@ -285,7 +327,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Normalize the given callback into a callable.
-	 * 规范化给定的回调函数为可调用对象
+	 * 将给定的回调函数规范化为可调用对象
      *
      * @param  mixed  $callback
      * @return callable
@@ -346,7 +388,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Check if the channel name from the request matches a pattern from registered channels.
-	 * 检查来自请求的频道名称是否与来自已注册频道的模式匹配
+	 * 检查来自请求的通道名称是否与来自已注册通道的模式匹配
      *
      * @param  string  $channel
      * @param  string  $pattern
@@ -354,6 +396,6 @@ abstract class Broadcaster implements BroadcasterContract
      */
     protected function channelNameMatchesPattern($channel, $pattern)
     {
-        return Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel);
+        return preg_match('/^'.preg_replace('/\{(.*?)\}/', '([^\.]+)', $pattern).'$/', $channel);
     }
 }

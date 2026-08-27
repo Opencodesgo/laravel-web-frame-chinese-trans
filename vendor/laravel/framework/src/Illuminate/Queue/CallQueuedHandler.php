@@ -7,6 +7,7 @@ namespace Illuminate\Queue;
 
 use Exception;
 use Illuminate\Bus\Batchable;
+use Illuminate\Bus\UniqueLock;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
@@ -16,7 +17,6 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use RuntimeException;
 
@@ -40,7 +40,7 @@ class CallQueuedHandler
 
     /**
      * Create a new handler instance.
-	 * 创建新的处理程序实例
+	 * 创建一个新的处理程序实例
      *
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $dispatcher
      * @param  \Illuminate\Contracts\Container\Container  $container
@@ -54,7 +54,7 @@ class CallQueuedHandler
 
     /**
      * Handle the queued job.
-	 * 处理队列作业
+	 * 处理排队作业
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  array  $data
@@ -101,7 +101,7 @@ class CallQueuedHandler
      */
     protected function getCommand(array $data)
     {
-        if (Str::startsWith($data['command'], 'O:')) {
+        if (str_starts_with($data['command'], 'O:')) {
             return unserialize($data['command']);
         }
 
@@ -122,6 +122,10 @@ class CallQueuedHandler
      */
     protected function dispatchThroughMiddleware(Job $job, $command)
     {
+        if ($command instanceof \__PHP_Incomplete_Class) {
+            throw new Exception('Job is incomplete class: '.json_encode($command));
+        }
+
         return (new Pipeline($this->container))->send($command)
                 ->through(array_merge(method_exists($command, 'middleware') ? $command->middleware() : [], $command->middleware ?? []))
                 ->then(function ($command) use ($job) {
@@ -169,7 +173,7 @@ class CallQueuedHandler
 
     /**
      * Ensure the next job in the chain is dispatched if applicable.
-	 * 确保链中的下一个作业被调度（如果适用）
+	 * 确保链中的下一个作业被调度(如果适用)
      *
      * @param  mixed  $command
      * @return void
@@ -193,12 +197,13 @@ class CallQueuedHandler
         $uses = class_uses_recursive($command);
 
         if (! in_array(Batchable::class, $uses) ||
-            ! in_array(InteractsWithQueue::class, $uses) ||
-            is_null($command->batch())) {
+            ! in_array(InteractsWithQueue::class, $uses)) {
             return;
         }
 
-        $command->batch()->recordSuccessfulJob($command->job->uuid());
+        if ($batch = $command->batch()) {
+            $batch->recordSuccessfulJob($command->job->uuid());
+        }
     }
 
     /**
@@ -210,21 +215,9 @@ class CallQueuedHandler
      */
     protected function ensureUniqueJobLockIsReleased($command)
     {
-        if (! $command instanceof ShouldBeUnique) {
-            return;
+        if ($command instanceof ShouldBeUnique) {
+            (new UniqueLock($this->container->make(Cache::class)))->release($command);
         }
-
-        $uniqueId = method_exists($command, 'uniqueId')
-                    ? $command->uniqueId()
-                    : ($command->uniqueId ?? '');
-
-        $cache = method_exists($command, 'uniqueVia')
-                    ? $command->uniqueVia()
-                    : $this->container->make(Cache::class);
-
-        $cache->lock(
-            'laravel_unique_job:'.get_class($command).$uniqueId
-        )->forceRelease();
     }
 
     /**
@@ -258,6 +251,7 @@ class CallQueuedHandler
 	 * 在作业实例上调用失败的方法
      *
      * The exception that caused the failure will be passed.
+	 * 导致失败的异常将被传递
      *
      * @param  array  $data
      * @param  \Throwable|null  $e
@@ -270,6 +264,10 @@ class CallQueuedHandler
 
         if (! $command instanceof ShouldBeUniqueUntilProcessing) {
             $this->ensureUniqueJobLockIsReleased($command);
+        }
+
+        if ($command instanceof \__PHP_Incomplete_Class) {
+            return;
         }
 
         $this->ensureFailedBatchJobIsRecorded($uuid, $command, $e);
@@ -291,12 +289,13 @@ class CallQueuedHandler
      */
     protected function ensureFailedBatchJobIsRecorded(string $uuid, $command, $e)
     {
-        if (! in_array(Batchable::class, class_uses_recursive($command)) ||
-            is_null($command->batch())) {
+        if (! in_array(Batchable::class, class_uses_recursive($command))) {
             return;
         }
 
-        $command->batch()->recordFailedJob($uuid, $e);
+        if ($batch = $command->batch()) {
+            $batch->recordFailedJob($uuid, $e);
+        }
     }
 
     /**

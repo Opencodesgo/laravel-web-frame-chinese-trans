@@ -17,7 +17,7 @@ namespace Symfony\Component\Finder\Comparator;
 /**
  * NumberComparator compiles a simple comparison to an anonymous
  * subroutine, which you can call with a value to be tested again.
- * NumberComparator将一个简单的比较编译为一个匿名的子例程，您可以用要再次测试的值调用它。
+ * NumberComparator 会编译一个简单的比较函数，该函数可被匿名子程序调用，并通过一个值来再次进行测试。
  *
  * Now this would be very pointless, if NumberCompare didn't understand
  * magnitudes.
@@ -46,12 +46,12 @@ class NumberComparator extends Comparator
     public function __construct(?string $test)
     {
         if (null === $test || !preg_match('#^\s*(==|!=|[<>]=?)?\s*([0-9\.]+)\s*([kmg]i?)?\s*$#i', $test, $matches)) {
-            throw new \InvalidArgumentException(sprintf('Don\'t understand "%s" as a number test.', $test ?? 'null'));
+            throw new \InvalidArgumentException(\sprintf('Don\'t understand "%s" as a number test.', $test ?? 'null'));
         }
 
         $target = $matches[2];
         if (!is_numeric($target)) {
-            throw new \InvalidArgumentException(sprintf('Invalid number "%s".', $target));
+            throw new \InvalidArgumentException(\sprintf('Invalid number "%s".', $target));
         }
         if (isset($matches[3])) {
             // magnitude

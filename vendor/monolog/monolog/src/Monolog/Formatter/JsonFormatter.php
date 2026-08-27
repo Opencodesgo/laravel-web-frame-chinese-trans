@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，Json 格式化
+ * Monolog，格式化，Json 格式化程序		(将日志格式化为 JSON 格式，便于日志分析和集中管理。)
  */
 
 /*
@@ -68,7 +68,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * True if newlines are appended to every formatted record
-	 * 如果新行被附加到每个格式化的记录
+	 * 如果将换行符附加到每个格式化的记录，则为True。
      */
     public function isAppendingNewlines(): bool
     {
@@ -158,7 +158,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * Normalizes given $data.
-	 * 将给定的$数据规范化
+	 * 规格化给定的$data
      *
      * @param mixed $data
      *

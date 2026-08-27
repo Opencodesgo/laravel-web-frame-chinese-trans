@@ -33,7 +33,7 @@ class GateEvaluated
 
     /**
      * The arguments given during evaluation.
-	 * 在评估期间给出的参数
+	 * 评估期间给出的参数
      *
      * @var array
      */

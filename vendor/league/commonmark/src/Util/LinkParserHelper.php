@@ -71,7 +71,7 @@ final class LinkParserHelper
 
     /**
      * Attempt to parse link title (sans quotes)
-	 * 尝试解析链接标题(sans引号)
+	 * 尝试解析链接标题（无引号）
      *
      * @return string|null The string, or null if no match
      */

@@ -18,7 +18,7 @@ interface Queue
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 推送队列至任务
      *
      * @param  string|object  $job
      * @param  mixed  $data
@@ -50,8 +50,8 @@ interface Queue
     public function pushRaw($payload, $queue = null, array $options = []);
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string|object  $job
@@ -62,8 +62,8 @@ interface Queue
     public function later($delay, $job, $data = '', $queue = null);
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto a specific queue after (n) seconds.
+	 * 在(n)秒后将新作业推送到特定队列
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay

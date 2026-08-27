@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，存储接口
+ * Dotenv，资源库，存储库接口 
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ interface RepositoryInterface
 {
     /**
      * Determine if the given environment variable is defined.
-	 * 确定给定的环境变量是否被定义
+	 * 确定是否定义了给定的环境变量
      *
      * @param string $name
      *
@@ -21,7 +21,7 @@ interface RepositoryInterface
 
     /**
      * Get an environment variable.
-	 * 获取环境变量
+	 * 获取一个环境变量
      *
      * @param string $name
      *
@@ -46,7 +46,7 @@ interface RepositoryInterface
 
     /**
      * Clear an environment variable.
-	 * 清除环境变量
+	 * 清除一个环境变量
      *
      * @param string $name
      *

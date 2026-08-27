@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，事件
+ * Illuminate，控制台，线程调度，事件
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -30,7 +30,7 @@ class Event
      * The command string.
 	 * 命令字符串
      *
-     * @var string
+     * @var string|null
      */
     public $command;
 
@@ -54,7 +54,7 @@ class Event
      * The user the command should run as.
 	 * 命令应该作为用户运行
      *
-     * @var string
+     * @var string|null
      */
     public $user;
 
@@ -68,7 +68,7 @@ class Event
 
     /**
      * Indicates if the command should run in maintenance mode.
-	 * 指明该命令是否在维护模式下运行
+	 * 指示该命令是否在维护模式下运
      *
      * @var bool
      */
@@ -76,7 +76,7 @@ class Event
 
     /**
      * Indicates if the command should not overlap itself.
-	 * 指明命令是否不应该重叠
+	 * 指示命令是否不应该重叠
      *
      * @var bool
      */
@@ -84,15 +84,15 @@ class Event
 
     /**
      * Indicates if the command should only be allowed to run on one server for each cron expression.
-	 * 指明是否应该只允许对每个cron表达式在一台服务器上运行该命令
+	 * 指示是否应该只允许对每个cron表达式在一台服务器上运行该命令
      *
      * @var bool
      */
     public $onOneServer = false;
 
     /**
-     * The amount of time the mutex should be valid.
-	 * 互斥锁有效的时间长度
+     * The number of minutes the mutex should be valid.
+	 * 互斥锁有效的分钟数
      *
      * @var int
      */
@@ -100,7 +100,7 @@ class Event
 
     /**
      * Indicates if the command should run in the background.
-	 * 指明该命令是否应该在后台运行
+	 * 指示该命令是否应该在后台运行
      *
      * @var bool
      */
@@ -132,7 +132,7 @@ class Event
 
     /**
      * Indicates whether output should be appended.
-	 * 指明是否应追加输出
+	 * 指示是否应追加输出
      *
      * @var bool
      */
@@ -158,7 +158,7 @@ class Event
      * The human readable description of the event.
 	 * 人类可读的事件描述
      *
-     * @var string
+     * @var string|null
      */
     public $description;
 
@@ -171,6 +171,14 @@ class Event
     public $mutex;
 
     /**
+     * The mutex name resolver callback.
+	 * 互斥锁名称解析器回调
+     *
+     * @var \Closure|null
+     */
+    public $mutexNameResolver;
+
+    /**
      * The exit status code of the command.
 	 * 命令的退出状态码
      *
@@ -180,7 +188,7 @@ class Event
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @param  string  $command
@@ -209,73 +217,93 @@ class Event
 
     /**
      * Run the given event.
-	 * 运行给定事件
+	 * 运行给定的事件
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
+     *
+     * @throws \Throwable
      */
     public function run(Container $container)
     {
-        if ($this->withoutOverlapping &&
-            ! $this->mutex->create($this)) {
+        if ($this->shouldSkipDueToOverlapping()) {
             return;
         }
 
-        $this->runInBackground
-                    ? $this->runCommandInBackground($container)
-                    : $this->runCommandInForeground($container);
-    }
+        $exitCode = $this->start($container);
 
-    /**
-     * Get the mutex name for the scheduled command.
-	 * 获取计划命令的互斥对象名称
-     *
-     * @return string
-     */
-    public function mutexName()
-    {
-        return 'framework'.DIRECTORY_SEPARATOR.'schedule-'.sha1($this->expression.$this->command);
-    }
-
-    /**
-     * Run the command in the foreground.
-	 * 在前台运行该命令
-     *
-     * @param  \Illuminate\Contracts\Container\Container  $container
-     * @return void
-     */
-    protected function runCommandInForeground(Container $container)
-    {
-        try {
-            $this->callBeforeCallbacks($container);
-
-            $this->exitCode = Process::fromShellCommandline(
-                $this->buildCommand(), base_path(), null, null, null
-            )->run();
-
-            $this->callAfterCallbacks($container);
-        } finally {
-            $this->removeMutex();
+        if (! $this->runInBackground) {
+            $this->finish($container, $exitCode);
         }
     }
 
     /**
-     * Run the command in the background.
-	 * 在后台运行该命令
+     * Determine if the event should skip because another process is overlapping.
+	 * 确定是否应该跳过事件，因为另一个进程正在重叠。
+     *
+     * @return bool
+     */
+    public function shouldSkipDueToOverlapping()
+    {
+        return $this->withoutOverlapping && ! $this->mutex->create($this);
+    }
+
+    /**
+     * Run the command process.
+	 * 执行命令流程
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
-     * @return void
+     * @return int
+     *
+     * @throws \Throwable
      */
-    protected function runCommandInBackground(Container $container)
+    protected function start($container)
     {
         try {
             $this->callBeforeCallbacks($container);
 
-            Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
+            return $this->execute($container);
         } catch (Throwable $exception) {
             $this->removeMutex();
 
             throw $exception;
+        }
+    }
+
+    /**
+     * Run the command process.
+	 * 执行命令流程
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return int
+     */
+    protected function execute($container)
+    {
+        return Process::fromShellCommandline(
+            $this->buildCommand(), base_path(), null, null, null
+        )->run(
+            laravel_cloud()
+                ? fn ($type, $line) => fwrite($type === 'out' ? STDOUT : STDERR, $line)
+                : fn () => true
+        );
+    }
+
+    /**
+     * Mark the command process as finished and run callbacks/cleanup.
+	 * 将命令进程标记为已完成，并运行回调/清理。
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  int  $exitCode
+     * @return void
+     */
+    public function finish(Container $container, $exitCode)
+    {
+        $this->exitCode = (int) $exitCode;
+
+        try {
+            $this->callAfterCallbacks($container);
+        } finally {
+            $this->removeMutex();
         }
     }
 
@@ -304,25 +332,6 @@ class Event
     {
         foreach ($this->afterCallbacks as $callback) {
             $container->call($callback);
-        }
-    }
-
-    /**
-     * Call all of the "after" callbacks for the event.
-	 * 调用事件的所有"after"回调
-     *
-     * @param  \Illuminate\Contracts\Container\Container  $container
-     * @param  int  $exitCode
-     * @return void
-     */
-    public function callAfterCallbacksWithExitCode(Container $container, $exitCode)
-    {
-        $this->exitCode = (int) $exitCode;
-
-        try {
-            $this->callAfterCallbacks($container);
-        } finally {
-            $this->removeMutex();
         }
     }
 
@@ -497,7 +506,7 @@ class Event
 
     /**
      * E-mail the results of the scheduled operation if it fails.
-	 * 如果计划操作失败，则通过电子邮件发送其结果
+	 * 如果计划操作失败，则通过电子邮件发送其结果。
      *
      * @param  array|mixed  $addresses
      * @return $this
@@ -713,6 +722,8 @@ class Event
      * Do not allow the event to overlap each other.
 	 * 不要让事件相互重叠
      *
+     * The expiration time of the underlying cache lock may be specified in minutes.
+     *
      * @param  int  $expiresAt
      * @return $this
      */
@@ -849,7 +860,7 @@ class Event
         }
 
         return $this->then(function (Container $container) use ($callback) {
-            if (0 === $this->exitCode) {
+            if ($this->exitCode === 0) {
                 $container->call($callback);
             }
         });
@@ -886,7 +897,7 @@ class Event
         }
 
         return $this->then(function (Container $container) use ($callback) {
-            if (0 !== $this->exitCode) {
+            if ($this->exitCode !== 0) {
                 $container->call($callback);
             }
         });
@@ -1003,6 +1014,37 @@ class Event
     public function preventOverlapsUsing(EventMutex $mutex)
     {
         $this->mutex = $mutex;
+
+        return $this;
+    }
+
+    /**
+     * Get the mutex name for the scheduled command.
+	 * 获取计划命令的互斥对象名称
+     *
+     * @return string
+     */
+    public function mutexName()
+    {
+        $mutexNameResolver = $this->mutexNameResolver;
+
+        if (! is_null($mutexNameResolver) && is_callable($mutexNameResolver)) {
+            return $mutexNameResolver($this);
+        }
+
+        return 'framework'.DIRECTORY_SEPARATOR.'schedule-'.sha1($this->expression.$this->command);
+    }
+
+    /**
+     * Set the mutex name or name resolver callback.
+	 * 设置互斥对象名称或名称解析器回调
+     *
+     * @param  \Closure|string  $mutexName
+     * @return $this
+     */
+    public function createMutexNameUsing(Closure|string $mutexName)
+    {
+        $this->mutexNameResolver = is_string($mutexName) ? fn () => $mutexName : $mutexName;
 
         return $this;
     }

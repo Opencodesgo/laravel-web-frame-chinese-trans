@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，引用解析器
+ * League，CommonMark，参考，参考解析器
  */
 
 declare(strict_types=1);
@@ -294,6 +294,7 @@ final class ReferenceParser
         }
 
         // We either hit the end delimiter or some extra whitespace
+		// 我们要么击中结束分隔符，要么击中一些额外的空白。
         $cursor->advanceToNextNonSpaceOrTab();
         if (! $cursor->isAtEnd()) {
             // spec: No further non-whitespace characters may occur on the line.

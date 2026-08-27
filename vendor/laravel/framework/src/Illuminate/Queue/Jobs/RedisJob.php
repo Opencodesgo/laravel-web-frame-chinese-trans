@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，Redis作业
+ * Illuminate，队列，作业，Redis 作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -73,7 +73,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 得到工作的原始主体字符串
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */
@@ -96,8 +96,8 @@ class RedisJob extends Job implements JobContract
     }
 
     /**
-     * Release the job back into the queue.
-	 * 将作业释放回队列
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -111,7 +111,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 得到该任务被尝试的次数
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -122,7 +122,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 获取工作标识符
      *
      * @return string|null
      */
@@ -133,7 +133,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying Redis factory implementation.
-	 * 得到底层Redis工厂实现
+	 * 获取底层Redis工厂实现
      *
      * @return \Illuminate\Queue\RedisQueue
      */
@@ -144,7 +144,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying reserved Redis job.
-	 * 得到底层预留的Redis作业
+	 * 获取底层预留的Redis作业
      *
      * @return string
      */

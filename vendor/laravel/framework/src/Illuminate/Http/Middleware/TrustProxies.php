@@ -12,9 +12,9 @@ class TrustProxies
 {
     /**
      * The trusted proxies for the application.
-	 * 应用的可信代理
+	 * 应用程序的可信代理
      *
-     * @var array|string|null
+     * @var array<int, string>|string|null
      */
     protected $proxies;
 
@@ -24,7 +24,7 @@ class TrustProxies
      *
      * @var int
      */
-    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_AWS_ELB;
+    protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_PREFIX | Request::HEADER_X_FORWARDED_AWS_ELB;
 
     /**
      * Handle an incoming request.
@@ -56,9 +56,7 @@ class TrustProxies
     {
         $trustedIps = $this->proxies() ?: config('trustedproxy.proxies');
 
-        if (is_null($trustedIps) &&
-            (($_ENV['LARAVEL_CLOUD'] ?? false) === '1' ||
-            ($_SERVER['LARAVEL_CLOUD'] ?? false) === '1')) {
+        if (is_null($trustedIps) && laravel_cloud()) {
             $trustedIps = '*';
         }
 
@@ -108,41 +106,21 @@ class TrustProxies
      */
     protected function getTrustedHeaderNames()
     {
-        switch ($this->headers) {
-            case 'HEADER_X_FORWARDED_AWS_ELB':
-            case Request::HEADER_X_FORWARDED_AWS_ELB:
-                return Request::HEADER_X_FORWARDED_AWS_ELB;
-
-            case 'HEADER_FORWARDED':
-            case Request::HEADER_FORWARDED:
-                return Request::HEADER_FORWARDED;
-
-            case 'HEADER_X_FORWARDED_FOR':
-            case Request::HEADER_X_FORWARDED_FOR:
-                return Request::HEADER_X_FORWARDED_FOR;
-
-            case 'HEADER_X_FORWARDED_HOST':
-            case Request::HEADER_X_FORWARDED_HOST:
-                return Request::HEADER_X_FORWARDED_HOST;
-
-            case 'HEADER_X_FORWARDED_PORT':
-            case Request::HEADER_X_FORWARDED_PORT:
-                return Request::HEADER_X_FORWARDED_PORT;
-
-            case 'HEADER_X_FORWARDED_PROTO':
-            case Request::HEADER_X_FORWARDED_PROTO:
-                return Request::HEADER_X_FORWARDED_PROTO;
-
-            default:
-                return Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_AWS_ELB;
-        }
-
-        return $this->headers;
+        return match ($this->headers) {
+            'HEADER_X_FORWARDED_AWS_ELB', Request::HEADER_X_FORWARDED_AWS_ELB => Request::HEADER_X_FORWARDED_AWS_ELB,
+            'HEADER_FORWARDED', Request::HEADER_FORWARDED => Request::HEADER_FORWARDED,
+            'HEADER_X_FORWARDED_FOR', Request::HEADER_X_FORWARDED_FOR => Request::HEADER_X_FORWARDED_FOR,
+            'HEADER_X_FORWARDED_HOST', Request::HEADER_X_FORWARDED_HOST => Request::HEADER_X_FORWARDED_HOST,
+            'HEADER_X_FORWARDED_PORT', Request::HEADER_X_FORWARDED_PORT => Request::HEADER_X_FORWARDED_PORT,
+            'HEADER_X_FORWARDED_PROTO', Request::HEADER_X_FORWARDED_PROTO => Request::HEADER_X_FORWARDED_PROTO,
+            'HEADER_X_FORWARDED_PREFIX', Request::HEADER_X_FORWARDED_PREFIX => Request::HEADER_X_FORWARDED_PREFIX,
+            default => Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_PREFIX | Request::HEADER_X_FORWARDED_AWS_ELB,
+        };
     }
 
     /**
      * Get the trusted proxies.
-	 * 得到可信代理
+	 * 获取可信代理
      *
      * @return array|string|null
      */

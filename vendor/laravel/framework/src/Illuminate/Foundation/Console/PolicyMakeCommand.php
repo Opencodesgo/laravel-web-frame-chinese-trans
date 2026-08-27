@@ -8,17 +8,34 @@ namespace Illuminate\Foundation\Console;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use LogicException;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'make:policy')]
 class PolicyMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
     protected $name = 'make:policy';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:policy';
 
     /**
      * The console command description.
@@ -56,7 +73,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Replace the User model namespace.
-	 * 替换User模型命名空间
+	 * 替换User模型名称空间
      *
      * @param  string  $stub
      * @return string
@@ -115,7 +132,7 @@ class PolicyMakeCommand extends GeneratorCommand
     {
         $model = str_replace('/', '\\', $model);
 
-        if (Str::startsWith($model, '\\')) {
+        if (str_starts_with($model, '\\')) {
             $namespacedModel = trim($model, '\\');
         } else {
             $namespacedModel = $this->qualifyModel($model);
@@ -186,7 +203,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -198,15 +215,41 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command arguments.
-	 * 得到控制台命令参数
+	 * 获取控制台命令参数
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the policy already exists'],
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the policy applies to'],
             ['guard', 'g', InputOption::VALUE_OPTIONAL, 'The guard that the policy relies on'],
         ];
+    }
+
+    /**
+     * Interact further with the user if they were prompted for missing arguments.
+	 * 如果提示用户输入缺少的参数，则与用户进一步交互。
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @return void
+     */
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
+    {
+        if ($this->isReservedName($this->getNameInput()) || $this->didReceiveOptions($input)) {
+            return;
+        }
+
+        $model = $this->components->askWithCompletion(
+            'What model should this policy apply to?',
+            $this->possibleModels(),
+            'none'
+        );
+
+        if ($model && $model !== 'none') {
+            $input->setOption('model', $model);
+        }
     }
 }

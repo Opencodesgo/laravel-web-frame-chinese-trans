@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，未定义的
+ * Mockery，不明确的
  */
 
 /**
@@ -19,7 +19,7 @@ class Undefined
 {
     /**
      * Call capturing to merely return this same object.
-	 * 调用捕获只返回相同的对象
+	 * 调用capture只返回相同的对象
      *
      * @param string $method
      * @param array  $args
@@ -33,7 +33,7 @@ class Undefined
 
     /**
      * Return a string, avoiding E_RECOVERABLE_ERROR.
-	 * 返回字符串,避免E_RECOVERABLE_ERROR。
+	 * 返回一个字符串，避免E_RECOVERABLE_ERROR。
      *
      * @return string
      */

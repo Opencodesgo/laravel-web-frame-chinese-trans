@@ -16,10 +16,10 @@ namespace Symfony\Component\HttpFoundation\Exception;
 
 /**
  * Thrown by Request::toArray() when the content cannot be JSON-decoded.
- * 当内容不能被json解码时，由Request::toArray()抛出。
+ * 当内容不能被json解码时，由Request::toArray（）抛出。
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-final class JsonException extends \UnexpectedValueException implements RequestExceptionInterface
+final class JsonException extends UnexpectedValueException implements RequestExceptionInterface
 {
 }

@@ -1,15 +1,17 @@
 <?php
 /**
- * Illuminate，邮件，传输，日志传输
+ * Illuminate，邮件，传输，Log 传输
  */
 
 namespace Illuminate\Mail\Transport;
 
 use Psr\Log\LoggerInterface;
-use Swift_Mime_SimpleMessage;
-use Swift_Mime_SimpleMimeEntity;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mime\RawMessage;
 
-class LogTransport extends Transport
+class LogTransport implements TransportInterface
 {
     /**
      * The Logger instance.
@@ -33,36 +35,12 @@ class LogTransport extends Transport
 
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
+    public function send(RawMessage $message, Envelope $envelope = null): ?SentMessage
     {
-        $this->beforeSendPerformed($message);
+        $this->logger->debug($message->toString());
 
-        $this->logger->debug($this->getMimeEntityString($message));
-
-        $this->sendPerformed($message);
-
-        return $this->numberOfRecipients($message);
-    }
-
-    /**
-     * Get a loggable string out of a Swiftmailer entity.
-	 * 从Swiftmailer实体中获取可记录的字符串
-     *
-     * @param  \Swift_Mime_SimpleMimeEntity  $entity
-     * @return string
-     */
-    protected function getMimeEntityString(Swift_Mime_SimpleMimeEntity $entity)
-    {
-        $string = (string) $entity->getHeaders().PHP_EOL.$entity->getBody();
-
-        foreach ($entity->getChildren() as $children) {
-            $string .= PHP_EOL.PHP_EOL.$this->getMimeEntityString($children);
-        }
-
-        return $string;
+        return new SentMessage($message, $envelope ?? Envelope::create($message));
     }
 
     /**
@@ -74,5 +52,16 @@ class LogTransport extends Transport
     public function logger()
     {
         return $this->logger;
+    }
+
+    /**
+     * Get the string representation of the transport.
+	 * 获取传输的字符串表示形式
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return 'log';
     }
 }

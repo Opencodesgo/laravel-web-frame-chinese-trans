@@ -7,7 +7,7 @@ namespace Illuminate\Broadcasting\Broadcasters;
 
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -18,7 +18,7 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * The Pusher SDK instance.
-	 * 推进器SDK实例
+	 * 推进器 SDK 实例
      *
      * @var \Pusher\Pusher
      */
@@ -26,7 +26,7 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * Create a new broadcaster instance.
-	 * 创建新的广播实例
+	 * 创建一个新的广播程序实例
      *
      * @param  \Pusher\Pusher  $pusher
      * @return void
@@ -37,8 +37,42 @@ class PusherBroadcaster extends Broadcaster
     }
 
     /**
+     * Resolve the authenticated user payload for an incoming connection request.
+	 * 为传入的连接请求解析经过身份验证的用户负载
+     *
+     * See: https://pusher.com/docs/channels/library_auth_reference/auth-signatures/#user-authentication
+     * See: https://pusher.com/docs/channels/server_api/authenticating-users/#response
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|null
+     */
+    public function resolveAuthenticatedUser($request)
+    {
+        if (! $user = parent::resolveAuthenticatedUser($request)) {
+            return;
+        }
+
+        if (method_exists($this->pusher, 'authenticateUser')) {
+            return $this->pusher->authenticateUser($request->socket_id, $user);
+        }
+
+        $settings = $this->pusher->getSettings();
+        $encodedUser = json_encode($user);
+        $decodedString = "{$request->socket_id}::user::{$encodedUser}";
+
+        $auth = $settings['auth_key'].':'.hash_hmac(
+            'sha256', $decodedString, $settings['secret']
+        );
+
+        return [
+            'auth' => $auth,
+            'user_data' => $encodedUser,
+        ];
+    }
+
+    /**
      * Authenticate the incoming request for a given channel.
-	 * 验证给定通道的传入请求
+	 * 验证给定信道的传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
@@ -70,9 +104,12 @@ class PusherBroadcaster extends Broadcaster
      */
     public function validAuthenticationResponse($request, $result)
     {
-        if (Str::startsWith($request->channel_name, 'private')) {
+        if (str_starts_with($request->channel_name, 'private')) {
             return $this->decodePusherResponse(
-                $request, $this->pusher->socket_auth($request->channel_name, $request->socket_id)
+                $request,
+                method_exists($this->pusher, 'authorizeChannel')
+                    ? $this->pusher->authorizeChannel($request->channel_name, $request->socket_id)
+                    : $this->pusher->socket_auth($request->channel_name, $request->socket_id)
             );
         }
 
@@ -86,10 +123,9 @@ class PusherBroadcaster extends Broadcaster
 
         return $this->decodePusherResponse(
             $request,
-            $this->pusher->presence_auth(
-                $request->channel_name, $request->socket_id,
-                $broadcastIdentifier, $result
-            )
+            method_exists($this->pusher, 'authorizePresenceChannel')
+                ? $this->pusher->authorizePresenceChannel($request->channel_name, $request->socket_id, $broadcastIdentifier, $result)
+                : $this->pusher->presence_auth($request->channel_name, $request->socket_id, $broadcastIdentifier, $result)
         );
     }
 
@@ -126,50 +162,24 @@ class PusherBroadcaster extends Broadcaster
     {
         $socket = Arr::pull($payload, 'socket');
 
-        if ($this->pusherServerIsVersionFiveOrGreater()) {
-            $parameters = $socket !== null ? ['socket_id' => $socket] : [];
+        $parameters = $socket !== null ? ['socket_id' => $socket] : [];
 
-            try {
-                $this->pusher->trigger(
-                    $this->formatChannels($channels), $event, $payload, $parameters
-                );
-            } catch (ApiErrorException $e) {
-                throw new BroadcastException(
-                    sprintf('Pusher error: %s.', $e->getMessage())
-                );
-            }
-        } else {
-            $response = $this->pusher->trigger(
-                $this->formatChannels($channels), $event, $payload, $socket, true
-            );
+        $channels = Collection::make($this->formatChannels($channels));
 
-            if ((is_array($response) && $response['status'] >= 200 && $response['status'] <= 299)
-                || $response === true) {
-                return;
-            }
-
+        try {
+            $channels->chunk(100)->each(function ($channels) use ($event, $payload, $parameters) {
+                $this->pusher->trigger($channels->toArray(), $event, $payload, $parameters);
+            });
+        } catch (ApiErrorException $e) {
             throw new BroadcastException(
-                ! empty($response['body'])
-                    ? sprintf('Pusher error: %s.', $response['body'])
-                    : 'Failed to connect to Pusher.'
+                sprintf('Pusher error: %s.', $e->getMessage())
             );
         }
     }
 
     /**
-     * Determine if the Pusher PHP server is version 5.0 or greater.
-	 * 确定push PHP服务器是否为5.0或更高版本
-     *
-     * @return bool
-     */
-    protected function pusherServerIsVersionFiveOrGreater()
-    {
-        return class_exists(ApiErrorException::class);
-    }
-
-    /**
      * Get the Pusher SDK instance.
-	 * 得到Pusher SDK实例
+	 * 获取Pusher SDK实例
      *
      * @return \Pusher\Pusher
      */
@@ -180,7 +190,7 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * Set the Pusher SDK instance.
-	 * 设置推进SDK实例
+	 * 设置Pusher SDK实例
      *
      * @param  \Pusher\Pusher  $pusher
      * @return void

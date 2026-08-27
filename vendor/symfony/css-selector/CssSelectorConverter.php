@@ -24,17 +24,17 @@ use Symfony\Component\CssSelector\XPath\Translator;
 /**
  * CssSelectorConverter is the main entry point of the component and can convert CSS
  * selectors to XPath expressions.
- * CssSelectorConverter是组件的主要入口点，可以转换CSS选择器转换为XPath表达式。
+ * CssSelectorConverter 是该组件的主要入口，可将 CSS 选择器转换为 XPath 表达式。
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
 class CssSelectorConverter
 {
-    private $translator;
-    private $cache;
+    private Translator $translator;
+    private array $cache;
 
-    private static $xmlCache = [];
-    private static $htmlCache = [];
+    private static array $xmlCache = [];
+    private static array $htmlCache = [];
 
     /**
      * @param bool $html Whether HTML support should be enabled. Disable it for XML documents
@@ -60,15 +60,13 @@ class CssSelectorConverter
 
     /**
      * Translates a CSS expression to its XPath equivalent.
-	 * 将CSS表达式翻译为它的XPath。
+	 * 将CSS表达式转换为等价的XPath表达式。
      *
      * Optionally, a prefix can be added to the resulting XPath
      * expression with the $prefix parameter.
-     *
-     * @return string
      */
-    public function toXPath(string $cssExpr, string $prefix = 'descendant-or-self::')
+    public function toXPath(string $cssExpr, string $prefix = 'descendant-or-self::'): string
     {
-        return $this->cache[$prefix][$cssExpr] ?? $this->cache[$prefix][$cssExpr] = $this->translator->cssToXPath($cssExpr, $prefix);
+        return $this->cache[$prefix][$cssExpr] ??= $this->translator->cssToXPath($cssExpr, $prefix);
     }
 }

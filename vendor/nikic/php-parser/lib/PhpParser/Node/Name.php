@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，名字
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
@@ -20,6 +24,7 @@ class Name extends NodeAbstract {
 
     /**
      * Constructs a name node.
+	 * 构造名称节点
      *
      * @param string|string[]|self $name Name as string, part array or Name instance (copy ctor)
      * @param array<string, mixed> $attributes Additional attributes
@@ -35,6 +40,7 @@ class Name extends NodeAbstract {
 
     /**
      * Get parts of name (split by the namespace separator).
+	 * 获取name的部分（由名称空间分隔符分割）
      *
      * @psalm-return non-empty-list<string>
      * @return string[] Parts of name
@@ -45,6 +51,7 @@ class Name extends NodeAbstract {
 
     /**
      * Gets the first part of the name, i.e. everything before the first namespace separator.
+	 * 获取名称的第一部分，即第一个名称空间分隔符之前的所有内容。
      *
      * @return string First part of the name
      */
@@ -57,6 +64,7 @@ class Name extends NodeAbstract {
 
     /**
      * Gets the last part of the name, i.e. everything after the last namespace separator.
+	 * 获取名称的最后一部分，即最后一个名称空间分隔符之后的所有内容。
      *
      * @return string Last part of the name
      */
@@ -69,6 +77,7 @@ class Name extends NodeAbstract {
 
     /**
      * Checks whether the name is unqualified. (E.g. Name)
+	 * 检查名称是否不合格。(例如名称)
      *
      * @return bool Whether the name is unqualified
      */
@@ -78,6 +87,7 @@ class Name extends NodeAbstract {
 
     /**
      * Checks whether the name is qualified. (E.g. Name\Name)
+	 * 检查名称是否合格。(例如名称\名称)
      *
      * @return bool Whether the name is qualified
      */
@@ -87,6 +97,7 @@ class Name extends NodeAbstract {
 
     /**
      * Checks whether the name is fully qualified. (E.g. \Name)
+	 * 检查名称是否完全限定。(例如:\名称)
      *
      * @return bool Whether the name is fully qualified
      */
@@ -96,6 +107,7 @@ class Name extends NodeAbstract {
 
     /**
      * Checks whether the name is explicitly relative to the current namespace. (E.g. namespace\Name)
+	 * 检查名称是否显式地相对于当前名称空间。(如命名空间、名称)
      *
      * @return bool Whether the name is relative
      */
@@ -138,6 +150,7 @@ class Name extends NodeAbstract {
 
     /**
      * Checks whether the identifier is a special class name (self, parent or static).
+	 * 检查标识符是否是一个特殊的类名（self、parent或static）
      *
      * @return bool Whether identifier is a special class name
      */
@@ -158,6 +171,7 @@ class Name extends NodeAbstract {
 
     /**
      * Gets a slice of a name (similar to array_slice).
+	 * 获取名称的切片（类似于array_slice）
      *
      * This method returns a new instance of the same type as the original and with the same
      * attributes.
@@ -208,6 +222,7 @@ class Name extends NodeAbstract {
 
     /**
      * Concatenate two names, yielding a new Name instance.
+	 * 连接两个名称，产生一个新的Name实例。
      *
      * The type of the generated instance depends on which class this method is called on, for
      * example Name\FullyQualified::concat() will yield a Name\FullyQualified instance.

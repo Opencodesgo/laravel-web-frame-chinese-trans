@@ -12,7 +12,7 @@ interface ClientInterface
 {
     /**
      * Sends a PSR-7 request and returns a PSR-7 response.
-	 * 发送一个PSR-7请求并返回PSR-7响应
+	 * 发送PSR-7请求并返回PSR-7响应
      *
      * @param RequestInterface $request
      *

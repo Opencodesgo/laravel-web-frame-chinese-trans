@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，验证输入
+ * Illuminate, 支持, 验证输入
  */
 
 namespace Illuminate\Support;
@@ -8,6 +8,7 @@ namespace Illuminate\Support;
 use ArrayIterator;
 use Illuminate\Contracts\Support\ValidatedData;
 use stdClass;
+use Traversable;
 
 class ValidatedInput implements ValidatedData
 {
@@ -32,10 +33,42 @@ class ValidatedInput implements ValidatedData
     }
 
     /**
+     * Determine if the validated input has one or more keys.
+	 * 确定验证的输入是否有一个或多个键
+     *
+     * @param  mixed  $keys
+     * @return bool
+     */
+    public function has($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        foreach ($keys as $key) {
+            if (! Arr::has($this->input, $key)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if the validated input is missing one or more keys.
+	 * 确定验证的输入是否缺少一个或多个键
+     *
+     * @param  mixed  $keys
+     * @return bool
+     */
+    public function missing($keys)
+    {
+        return ! $this->has($keys);
+    }
+
+    /**
      * Get a subset containing the provided keys with values from the input data.
 	 * 从输入数据中获取包含所提供键值的子集
      *
-     * @param  array|mixed  $keys
+     * @param  mixed  $keys
      * @return array
      */
     public function only($keys)
@@ -61,7 +94,7 @@ class ValidatedInput implements ValidatedData
      * Get all of the input except for a specified array of items.
 	 * 获取除指定项数组外的所有输入
      *
-     * @param  array|mixed  $keys
+     * @param  mixed  $keys
      * @return array
      */
     public function except($keys)
@@ -175,8 +208,7 @@ class ValidatedInput implements ValidatedData
      * @param  mixed  $key
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return isset($this->input[$key]);
     }
@@ -188,8 +220,7 @@ class ValidatedInput implements ValidatedData
      * @param  mixed  $key
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->input[$key];
     }
@@ -202,8 +233,7 @@ class ValidatedInput implements ValidatedData
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         if (is_null($key)) {
             $this->input[] = $value;
@@ -214,13 +244,12 @@ class ValidatedInput implements ValidatedData
 
     /**
      * Unset the item at a given offset.
-	 * 在给定的偏移量处取消项的设置
+	 * 在给定的偏移量处取消项的设
      *
      * @param  string  $key
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         unset($this->input[$key]);
     }
@@ -231,8 +260,7 @@ class ValidatedInput implements ValidatedData
      *
      * @return \ArrayIterator
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->input);
     }

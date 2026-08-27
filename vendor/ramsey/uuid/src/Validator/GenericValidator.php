@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，验证器，通用的验证器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -21,20 +24,20 @@ use function str_replace;
 
 /**
  * GenericValidator validates strings as UUIDs of any variant
+ * GenericValidator 将字符串作为任意变体的uuid进行验证
  *
- * @psalm-immutable
+ * @immutable
  */
 final class GenericValidator implements ValidatorInterface
 {
     /**
      * Regular expression pattern for matching a UUID of any variant.
+	 * 用于匹配任意变体的UUID的正则表达式模式。
      */
     private const VALID_PATTERN = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z';
 
     /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     * @return non-empty-string
      */
     public function getPattern(): string
     {
@@ -43,8 +46,10 @@ final class GenericValidator implements ValidatorInterface
 
     public function validate(string $uuid): bool
     {
+        /** @phpstan-ignore possiblyImpure.functionCall */
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
 
+        /** @phpstan-ignore possiblyImpure.functionCall */
         return $uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
     }
 }

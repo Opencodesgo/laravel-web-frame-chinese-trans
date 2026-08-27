@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Socket 处理程序
- *
+ * Monolog，处理器，Socket 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 /**
  * Stores to any socket - uses fsockopen() or pfsockopen().
- * 存储到任何套接字-使用fsockopen（）或pfsockopen（）。
+ * 存储到任何套接字-使用fsockopen()或pfsockopen()。
  *
  * @author Pablo de Leon Belloc <pablolb@gmail.com>
  * @see    http://php.net/manual/en/function.fsockopen.php
@@ -118,7 +118,6 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Close socket, if open
-	 * 关闭套接字，如果打开
      */
     public function closeSocket(): void
     {
@@ -250,7 +249,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Check to see if the socket is currently available.
-	 * 检查套接字当前是否可用。
+	 * 检查套接字当前是否可用
      *
      * UDP might appear to be connected but might fail when writing.  See http://php.net/fsockopen for details.
      */
@@ -304,6 +303,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @see http://php.net/manual/en/function.stream-set-chunk-size.php
      *
@@ -324,6 +324,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @return int|bool
      */
@@ -338,6 +339,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @return mixed[]|bool
      */

@@ -87,7 +87,7 @@ class NullDispatcher implements DispatcherContract
 
     /**
      * Determine if a given event has listeners.
-	 * 确定给定事件是否有监听器
+	 * 确定给定事件是否有侦听器
      *
      * @param  string  $eventName
      * @return bool
@@ -123,7 +123,7 @@ class NullDispatcher implements DispatcherContract
 
     /**
      * Remove a set of listeners from the dispatcher.
-	 * 从调度程序中删除一组监听器
+	 * 从调度程序中删除一组侦听器
      *
      * @param  string  $event
      * @return void
@@ -135,7 +135,7 @@ class NullDispatcher implements DispatcherContract
 
     /**
      * Forget all of the queued listeners.
-	 * 忘记所有排队的监听器
+	 * 忘记所有排队的侦听
      *
      * @return void
      */
@@ -154,6 +154,6 @@ class NullDispatcher implements DispatcherContract
      */
     public function __call($method, $parameters)
     {
-        return $this->forwardCallTo($this->dispatcher, $method, $parameters);
+        return $this->forwardDecoratedCallTo($this->dispatcher, $method, $parameters);
     }
 }

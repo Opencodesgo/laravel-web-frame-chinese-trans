@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，内联，反引号解析器
+ * League，CommonMark，扩展，共同标记，Parser，行内，Backtick 解析器
  */
 
 declare(strict_types=1);
@@ -30,7 +30,6 @@ final class BacktickParser implements InlineParserInterface
 {
     /**
      * Max bound for backtick code span delimiters.
-	 * 为backtick代码跨越分隔符
      *
      * @see https://github.com/commonmark/cmark/commit/8ed5c9d
      */
@@ -85,7 +84,6 @@ final class BacktickParser implements InlineParserInterface
 
     /**
      * Locates the matching closer for a backtick code span.
-	 * 将匹配的匹配位置定位为backtick代码span。
      *
      * Leverages some caching to avoid traversing the same cursor multiple times when
      * we've already seen all the potential backtick closers.
@@ -130,7 +128,6 @@ final class BacktickParser implements InlineParserInterface
         }
 
         // Got through whole input without finding closer
-		// 没有找到更近的人就完成了整个输入
         $this->lastCursorScanned = true;
 
         return false;

@@ -11,7 +11,7 @@ interface MessageBag extends Arrayable, Countable
 {
     /**
      * Get the keys present in the message bag.
-	 * 得到信使包的当前密钥
+	 * 把钥匙放在留言袋里
      *
      * @return array
      */

@@ -33,7 +33,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The data to be passed to the listener.
-	 * 要传递给监听器的数据
+	 * 要传递给侦听器的数据
      *
      * @var array
      */
@@ -41,7 +41,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该任务的次数
+	 * 可能尝试该作业的次数
      *
      * @var int
      */
@@ -81,7 +81,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Indicates if the job should be encrypted.
-	 * 指明任务是否应该加密
+	 * 指示作业是否应该加密
      *
      * @var bool
      */
@@ -89,7 +89,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Create a new job instance.
-	 * 创建新的任务实例
+	 * 创建一个新的作业实例
      *
      * @param  string  $class
      * @param  string  $method
@@ -105,7 +105,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Handle the queued job.
-	 * 处理队列任务
+	 * 处理排队作业
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void

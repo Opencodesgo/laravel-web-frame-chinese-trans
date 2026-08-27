@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，上传文件
+ * GuzzleHttp，Psr7，文件已上载成功
  */
 
 declare(strict_types=1);
@@ -14,15 +14,15 @@ use RuntimeException;
 
 class UploadedFile implements UploadedFileInterface
 {
-    private const ERRORS = [
-        UPLOAD_ERR_OK,
-        UPLOAD_ERR_INI_SIZE,
-        UPLOAD_ERR_FORM_SIZE,
-        UPLOAD_ERR_PARTIAL,
-        UPLOAD_ERR_NO_FILE,
-        UPLOAD_ERR_NO_TMP_DIR,
-        UPLOAD_ERR_CANT_WRITE,
-        UPLOAD_ERR_EXTENSION,
+    private const ERROR_MAP = [
+        UPLOAD_ERR_OK => 'UPLOAD_ERR_OK',
+        UPLOAD_ERR_INI_SIZE => 'UPLOAD_ERR_INI_SIZE',
+        UPLOAD_ERR_FORM_SIZE => 'UPLOAD_ERR_FORM_SIZE',
+        UPLOAD_ERR_PARTIAL => 'UPLOAD_ERR_PARTIAL',
+        UPLOAD_ERR_NO_FILE => 'UPLOAD_ERR_NO_FILE',
+        UPLOAD_ERR_NO_TMP_DIR => 'UPLOAD_ERR_NO_TMP_DIR',
+        UPLOAD_ERR_CANT_WRITE => 'UPLOAD_ERR_CANT_WRITE',
+        UPLOAD_ERR_EXTENSION => 'UPLOAD_ERR_EXTENSION',
     ];
 
     /**
@@ -82,7 +82,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Depending on the value set file or stream variable
-	 * 取决于值设置文件或流变量
+	 * 取决于值集文件或流变量
      *
      * @param StreamInterface|string|resource $streamOrFile
      *
@@ -108,7 +108,7 @@ class UploadedFile implements UploadedFileInterface
      */
     private function setError(int $error): void
     {
-        if (false === in_array($error, UploadedFile::ERRORS, true)) {
+        if (!isset(UploadedFile::ERROR_MAP[$error])) {
             throw new InvalidArgumentException(
                 'Invalid error status for UploadedFile'
             );
@@ -124,7 +124,6 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Return true if there is no upload error
-	 * 如果没有上传错误,返回true
      */
     private function isOk(): bool
     {
@@ -142,7 +141,7 @@ class UploadedFile implements UploadedFileInterface
     private function validateActive(): void
     {
         if (false === $this->isOk()) {
-            throw new RuntimeException('Cannot retrieve stream due to upload error');
+            throw new RuntimeException(\sprintf('Cannot retrieve stream due to upload error (%s)', self::ERROR_MAP[$this->error]));
         }
 
         if ($this->isMoved()) {

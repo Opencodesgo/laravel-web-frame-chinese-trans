@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，分析程序接口
+ * Symfony，Component，CssSelector，解析器，解析器接口
  */
 
 /*
@@ -31,7 +31,7 @@ interface ParserInterface
 {
     /**
      * Parses given selector source into an array of tokens.
-	 * 将选择器源指定为一个令牌数组
+	 * 将给定的选择器源解析为令牌数组
      *
      * @return SelectorNode[]
      */

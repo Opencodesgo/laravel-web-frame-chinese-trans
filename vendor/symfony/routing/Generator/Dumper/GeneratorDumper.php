@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，生成器，转储器，生成器转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,22 +18,20 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * GeneratorDumper is the base class for all built-in generator dumpers.
+ * GeneratorDumper是所有内置生成器转储器的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 abstract class GeneratorDumper implements GeneratorDumperInterface
 {
-    private $routes;
+    private RouteCollection $routes;
 
     public function __construct(RouteCollection $routes)
     {
         $this->routes = $routes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoutes()
+    public function getRoutes(): RouteCollection
     {
         return $this->routes;
     }

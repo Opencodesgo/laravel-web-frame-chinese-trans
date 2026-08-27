@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，支持，提供商，授权服务提供者
+ * Illuminate，基础，支持，提供商，授权服务提供商
  */
 
 namespace Illuminate\Foundation\Support\Providers;
@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * The policy mappings for the application.
 	 * 应用程序的策略映射
      *
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $policies = [];
 
@@ -26,8 +26,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function registerPolicies()
     {
-        foreach ($this->policies() as $key => $value) {
-            Gate::policy($key, $value);
+        foreach ($this->policies() as $model => $policy) {
+            Gate::policy($model, $policy);
         }
     }
 
@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
      * Get the policies defined on the provider.
 	 * 获取在提供程序上定义的策略
      *
-     * @return array
+     * @return array<class-string, class-string>
      */
     public function policies()
     {

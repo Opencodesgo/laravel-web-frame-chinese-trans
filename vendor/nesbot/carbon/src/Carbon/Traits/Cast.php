@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，特性，Cast
+ * Carbon，Cast
  */
 
 /**
@@ -19,7 +19,7 @@ use DateTimeInterface;
 
 /**
  * Trait Cast.
- * Cast特征
+ * Cast 特征
  *
  * Utils to cast into an other class.
  */

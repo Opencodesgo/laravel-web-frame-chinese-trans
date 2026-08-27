@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，匹配器接口
+ * Mockery，匹配器，匹配器接口
  */
 
 declare(strict_types=1);
@@ -19,7 +19,7 @@ interface MatcherInterface
 {
     /**
      * Return a string representation of this Matcher
-	 * 返回这个Matcher的字符串表示
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */
@@ -29,8 +29,7 @@ interface MatcherInterface
      * Check if the actual value matches the expected.
      * Actual passed by reference to preserve reference trail (where applicable)
      * back to the original method parameter.
-	 * 检查实际值是否符合预期。
-	 * 实际通过引用保存参考跟踪(适用)
+	 * 检查实际值是否与预期值匹配。
      *
      * @template TMixed
      *

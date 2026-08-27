@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，事件，排队闭包
+ * Illuminate，事件，队列闭包
  */
 
 namespace Illuminate\Events;
 
 use Closure;
-use Illuminate\Queue\SerializableClosureFactory;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class QueuedClosure
 {
@@ -20,7 +20,7 @@ class QueuedClosure
 
     /**
      * The name of the connection the job should be sent to.
-	 * 应该将被发送的任务的连接名称
+	 * 应该将作业发送到的连接的名称
      *
      * @var string|null
      */
@@ -91,8 +91,8 @@ class QueuedClosure
     }
 
     /**
-     * Set the desired delay for the job.
-	 * 为作业设置所需的延迟
+     * Set the desired delay in seconds for the job.
+	 * 为作业设置所需的延迟（以秒为单位）
      *
      * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
@@ -128,10 +128,10 @@ class QueuedClosure
     {
         return function (...$arguments) {
             dispatch(new CallQueuedListener(InvokeQueuedClosure::class, 'handle', [
-                'closure' => SerializableClosureFactory::make($this->closure),
+                'closure' => new SerializableClosure($this->closure),
                 'arguments' => $arguments,
                 'catch' => collect($this->catchCallbacks)->map(function ($callback) {
-                    return SerializableClosureFactory::make($callback);
+                    return new SerializableClosure($callback);
                 })->all(),
             ]))->onConnection($this->connection)->onQueue($this->queue)->delay($this->delay);
         };

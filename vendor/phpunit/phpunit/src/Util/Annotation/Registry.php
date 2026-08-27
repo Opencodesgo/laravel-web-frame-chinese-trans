@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，注释，注册
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -42,9 +47,9 @@ final class Registry
     }
 
     /**
-     * @throws Exception
-     *
      * @psalm-param class-string $class
+     *
+     * @throws Exception
      */
     public function forClassName(string $class): DocBlock
     {
@@ -68,9 +73,9 @@ final class Registry
     }
 
     /**
-     * @throws Exception
-     *
      * @psalm-param class-string $classInHierarchy
+     *
+     * @throws Exception
      */
     public function forMethod(string $classInHierarchy, string $method): DocBlock
     {

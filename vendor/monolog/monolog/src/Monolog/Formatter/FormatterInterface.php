@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，格式化接口
+ * Monolog，格式化，格式化程序接口
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Monolog\Formatter;
 
 /**
  * Interface for formatters
- * 格式化器接口
+ * 格式化程序接口
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *

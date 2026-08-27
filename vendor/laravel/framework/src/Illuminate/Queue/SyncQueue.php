@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，同步队列
+ * Illuminate，队列，Sync 队列
  */
 
 namespace Illuminate\Queue;
@@ -17,7 +17,7 @@ class SyncQueue extends Queue implements QueueContract
 {
     /**
      * Get the size of the queue.
-	 * 获取队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
@@ -145,8 +145,8 @@ class SyncQueue extends Queue implements QueueContract
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，节点，目录占位符
+ * League，CommonMark，扩展，目次，节点，目录占位符
  */
 
 declare(strict_types=1);

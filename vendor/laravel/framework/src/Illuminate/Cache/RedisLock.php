@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis 锁
+ * Illuminate，缓存，Redis锁
  */
 
 namespace Illuminate\Cache;
@@ -17,7 +17,7 @@ class RedisLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建新的锁实例
+	 * 创建锁实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $redis
      * @param  string  $name

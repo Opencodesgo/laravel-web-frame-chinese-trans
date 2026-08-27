@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * ResponseHeaderBag is a container for Response HTTP headers.
- * ResponseHeaderBag是HTTP响应头的容器
+ * ResponseHeaderBag是HTTP响应头的容器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -49,10 +49,8 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * Returns the headers, with original capitalizations.
 	 * 返回带有原始大写字母的标头
-     *
-     * @return array
      */
-    public function allPreserveCase()
+    public function allPreserveCase(): array
     {
         $headers = [];
         foreach ($this->all() as $name => $value) {
@@ -62,6 +60,9 @@ class ResponseHeaderBag extends HeaderBag
         return $headers;
     }
 
+    /**
+     * @return array
+     */
     public function allPreserveCaseWithoutCookies()
     {
         $headers = $this->allPreserveCase();
@@ -73,7 +74,7 @@ class ResponseHeaderBag extends HeaderBag
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function replace(array $headers = [])
     {
@@ -90,10 +91,7 @@ class ResponseHeaderBag extends HeaderBag
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all(?string $key = null)
+    public function all(?string $key = null): array
     {
         $headers = parent::all();
 
@@ -111,9 +109,9 @@ class ResponseHeaderBag extends HeaderBag
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function set(string $key, $values, bool $replace = true)
+    public function set(string $key, string|array|null $values, bool $replace = true)
     {
         $uniqueKey = strtr($key, self::UPPER, self::LOWER);
 
@@ -142,7 +140,7 @@ class ResponseHeaderBag extends HeaderBag
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function remove(string $key)
     {
@@ -166,22 +164,19 @@ class ResponseHeaderBag extends HeaderBag
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCacheControlDirective(string $key)
+    public function hasCacheControlDirective(string $key): bool
     {
         return \array_key_exists($key, $this->computedCacheControl);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheControlDirective(string $key)
+    public function getCacheControlDirective(string $key): bool|string|null
     {
         return $this->computedCacheControl[$key] ?? null;
     }
 
+    /**
+     * @return void
+     */
     public function setCookie(Cookie $cookie)
     {
         $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
@@ -191,12 +186,12 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * Removes a cookie from the array, but does not unset it in the browser.
 	 * 从数组中删除cookie，但不会在浏览器中取消对它的设置。
+     *
+     * @return void
      */
     public function removeCookie(string $name, ?string $path = '/', ?string $domain = null)
     {
-        if (null === $path) {
-            $path = '/';
-        }
+        $path ??= '/';
 
         unset($this->cookies[$domain][$path][$name]);
 
@@ -221,10 +216,10 @@ class ResponseHeaderBag extends HeaderBag
      *
      * @throws \InvalidArgumentException When the $format is invalid
      */
-    public function getCookies(string $format = self::COOKIES_FLAT)
+    public function getCookies(string $format = self::COOKIES_FLAT): array
     {
         if (!\in_array($format, [self::COOKIES_FLAT, self::COOKIES_ARRAY])) {
-            throw new \InvalidArgumentException(sprintf('Format "%s" invalid (%s).', $format, implode(', ', [self::COOKIES_FLAT, self::COOKIES_ARRAY])));
+            throw new \InvalidArgumentException(\sprintf('Format "%s" invalid (%s).', $format, implode(', ', [self::COOKIES_FLAT, self::COOKIES_ARRAY])));
         }
 
         if (self::COOKIES_ARRAY === $format) {
@@ -246,14 +241,22 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * Clears a cookie in the browser.
 	 * 清除浏览器中的cookie
+     *
+     * @param bool $partitioned
+     *
+     * @return void
      */
-    public function clearCookie(string $name, ?string $path = '/', ?string $domain = null, bool $secure = false, bool $httpOnly = true, ?string $sameSite = null)
+    public function clearCookie(string $name, ?string $path = '/', ?string $domain = null, bool $secure = false, bool $httpOnly = true, ?string $sameSite = null /* , bool $partitioned = false */)
     {
-        $this->setCookie(new Cookie($name, null, 1, $path, $domain, $secure, $httpOnly, false, $sameSite));
+        $partitioned = 6 < \func_num_args() ? func_get_arg(6) : false;
+
+        $this->setCookie(new Cookie($name, null, 1, $path, $domain, $secure, $httpOnly, false, $sameSite, $partitioned));
     }
 
     /**
      * @see HeaderUtils::makeDisposition()
+     *
+     * @return string
      */
     public function makeDisposition(string $disposition, string $filename, string $filenameFallback = '')
     {
@@ -262,14 +265,12 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * Returns the calculated value of the cache-control header.
-	 * 返回缓存控制标头的计算值
+	 * 返回缓存控制标头的计算值。
      *
      * This considers several other headers and calculates or modifies the
      * cache-control header to a sensible, conservative value.
-     *
-     * @return string
      */
-    protected function computeCacheControlValue()
+    protected function computeCacheControlValue(): string
     {
         if (!$this->cacheControl) {
             if ($this->has('Last-Modified') || $this->has('Expires')) {

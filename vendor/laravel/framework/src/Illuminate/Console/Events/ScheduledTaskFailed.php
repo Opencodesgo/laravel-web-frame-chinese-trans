@@ -20,7 +20,7 @@ class ScheduledTaskFailed
 
     /**
      * The exception that was thrown.
-	 * 抛出的异常
+	 * 被抛出的异常
      *
      * @var \Throwable
      */

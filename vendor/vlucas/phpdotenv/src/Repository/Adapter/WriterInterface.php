@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，写入接口
+ * Dotenv，资源库，适配器，作者接口
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ interface WriterInterface
 {
     /**
      * Write to an environment variable, if possible.
-	 * 如果可能的话,写入环境变量
+	 * 如果可能的话，写入环境变量。
      *
      * @param non-empty-string $name
      * @param string           $value
@@ -22,7 +22,7 @@ interface WriterInterface
 
     /**
      * Delete an environment variable, if possible.
-	 * 如果可能的话,删除一个环境变量
+	 * 如果可能，请删除环境变量。
      *
      * @param non-empty-string $name
      *

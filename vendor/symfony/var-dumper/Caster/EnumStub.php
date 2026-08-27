@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Enum 存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents an enumeration of values.
+ * 表示值的枚举。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

@@ -1,0 +1,121 @@
+<?php
+/**
+ * Illuminate，Http，中间件，处理 CORS
+ */
+
+namespace Illuminate\Http\Middleware;
+
+use Closure;
+use Fruitcake\Cors\CorsService;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Http\Request;
+
+class HandleCors
+{
+    /**
+     * The container instance.
+	 * 容器实例
+     *
+     * @var \Illuminate\Contracts\Container\Container
+     */
+    protected $container;
+
+    /**
+     * The CORS service instance.
+	 * CORS服务实例
+     *
+     * @var \Fruitcake\Cors\CorsService
+     */
+    protected $cors;
+
+    /**
+     * Create a new middleware instance.
+	 * 创建一个新的中间件实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  \Fruitcake\Cors\CorsService  $cors
+     * @return void
+     */
+    public function __construct(Container $container, CorsService $cors)
+    {
+        $this->container = $container;
+        $this->cors = $cors;
+    }
+
+    /**
+     * Handle the incoming request.
+	 * 处理传入请求
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Illuminate\Http\Response
+     */
+    public function handle($request, Closure $next)
+    {
+        if (! $this->hasMatchingPath($request)) {
+            return $next($request);
+        }
+
+        $this->cors->setOptions($this->container['config']->get('cors', []));
+
+        if ($this->cors->isPreflightRequest($request)) {
+            $response = $this->cors->handlePreflightRequest($request);
+
+            $this->cors->varyHeader($response, 'Access-Control-Request-Method');
+
+            return $response;
+        }
+
+        $response = $next($request);
+
+        if ($request->getMethod() === 'OPTIONS') {
+            $this->cors->varyHeader($response, 'Access-Control-Request-Method');
+        }
+
+        return $this->cors->addActualRequestHeaders($response, $request);
+    }
+
+    /**
+     * Get the path from the configuration to determine if the CORS service should run.
+	 * 从配置中获取路径，以确定是否应该运行CORS服务。
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function hasMatchingPath(Request $request): bool
+    {
+        $paths = $this->getPathsByHost($request->getHost());
+
+        foreach ($paths as $path) {
+            if ($path !== '/') {
+                $path = trim($path, '/');
+            }
+
+            if ($request->fullUrlIs($path) || $request->is($path)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the CORS paths for the given host.
+	 * 获取给定主机的CORS路径
+     *
+     * @param  string  $host
+     * @return array
+     */
+    protected function getPathsByHost(string $host)
+    {
+        $paths = $this->container['config']->get('cors.paths', []);
+
+        if (isset($paths[$host])) {
+            return $paths[$host];
+        }
+
+        return array_filter($paths, function ($path) {
+            return is_string($path);
+        });
+    }
+}

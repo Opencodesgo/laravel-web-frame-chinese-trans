@@ -9,7 +9,7 @@ interface SupportsBasicAuth
 {
     /**
      * Attempt to authenticate using HTTP Basic Auth.
-	 * 尝试使用HTTP基本认证进行身份验证
+	 * 尝试验证使用HTTP基本认证
      *
      * @param  string  $field
      * @param  array  $extraConditions

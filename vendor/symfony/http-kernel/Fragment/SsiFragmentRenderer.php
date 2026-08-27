@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，碎片，Ssi 碎片渲染器
+ * Symfony，Component，HttpKernel，片段，Ssi 片段渲染器
  */
 
 /*
@@ -22,10 +22,7 @@ namespace Symfony\Component\HttpKernel\Fragment;
  */
 class SsiFragmentRenderer extends AbstractSurrogateFragmentRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'ssi';
     }

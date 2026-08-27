@@ -79,7 +79,7 @@ class HeaderUtils
 
     /**
      * Combines an array of arrays into one associative array.
-	 * 将数组的数组组合成一个关联数组
+	 * 将数组的数组组合成一个关联数组。
      *
      * Each of the nested arrays should have one or two elements. The first
      * value will be used as the keys in the associative array, and the second
@@ -161,7 +161,7 @@ class HeaderUtils
 
     /**
      * Generates an HTTP Content-Disposition field-value.
-	 * 生成HTTP Content-Disposition字段值
+	 * 生成HTTP Content-Disposition字段值。
      *
      * @param string $disposition      One of "inline" or "attachment"
      * @param string $filename         A unicode string
@@ -176,7 +176,7 @@ class HeaderUtils
     public static function makeDisposition(string $disposition, string $filename, string $filenameFallback = ''): string
     {
         if (!\in_array($disposition, [self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE])) {
-            throw new \InvalidArgumentException(sprintf('The disposition must be either "%s" or "%s".', self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE));
+            throw new \InvalidArgumentException(\sprintf('The disposition must be either "%s" or "%s".', self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE));
         }
 
         if ('' === $filenameFallback) {
@@ -208,7 +208,6 @@ class HeaderUtils
 
     /**
      * Like parse_str(), but preserves dots in variable names.
-	 * 类似于parse_str()，但保留变量名中的点。
      */
     public static function parseQuery(string $query, bool $ignoreBrackets = false, string $separator = '&'): array
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，上下文感知匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Psy\ContextAware;
 
 /**
  * An abstract tab completion Matcher which implements ContextAware.
+ * 一个抽象的选项卡补全匹配器，实现了上下文感知。
  *
  * The AutoCompleter service will inject a Context instance into all
  * ContextAware Matchers.
@@ -26,6 +30,7 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
 {
     /**
      * Context instance (for ContextAware interface).
+	 * 上下文实例（用于ContextAware接口）
      *
      * @var Context
      */
@@ -33,6 +38,7 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
 
     /**
      * ContextAware interface.
+	 * ContextAware接口
      *
      * @param Context $context
      */
@@ -43,6 +49,7 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
 
     /**
      * Get a Context variable by name.
+	 * 按名称获取上下文变量
      *
      * @param string $var Variable name
      *
@@ -55,6 +62,7 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
 
     /**
      * Get all variables in the current Context.
+	 * 获取当前上下文中的所有变量
      *
      * @return array
      */

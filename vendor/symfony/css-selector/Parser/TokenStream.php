@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，令牌流
+ * Symfony，Component，CssSelector，解析器，令牌流
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
 
 /**
  * CSS selector token stream.
- * CSS选择令牌流。
+ * CSS选择器标记流。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -33,34 +33,24 @@ class TokenStream
     /**
      * @var Token[]
      */
-    private $tokens = [];
+    private array $tokens = [];
 
     /**
      * @var Token[]
      */
-    private $used = [];
+    private array $used = [];
 
-    /**
-     * @var int
-     */
-    private $cursor = 0;
-
-    /**
-     * @var Token|null
-     */
-    private $peeked;
-
-    /**
-     * @var bool
-     */
-    private $peeking = false;
+    private int $cursor = 0;
+    private ?Token $peeked;
+    private bool $peeking = false;
 
     /**
      * Pushes a token.
+	 * 推令牌
      *
      * @return $this
      */
-    public function push(Token $token): self
+    public function push(Token $token): static
     {
         $this->tokens[] = $token;
 
@@ -73,7 +63,7 @@ class TokenStream
      *
      * @return $this
      */
-    public function freeze(): self
+    public function freeze(): static
     {
         return $this;
     }
@@ -144,7 +134,7 @@ class TokenStream
 
     /**
      * Returns next identifier or null if star delimiter token is found.
-	 * 如果找到了星分隔符令牌,则返回下一个标识符或null。
+	 * 返回下一个标识符，如果找到星号分隔符标记则返回空。
      *
      * @throws SyntaxErrorException If next token is not an identifier or a star delimiter
      */
@@ -165,9 +155,9 @@ class TokenStream
 
     /**
      * Skips next whitespace if any.
-	 * 如果有的话,就跳过下一个空白。
+	 * 跳过下一个空格（如果有的话）
      */
-    public function skipWhitespace()
+    public function skipWhitespace(): void
     {
         $peek = $this->getPeek();
 

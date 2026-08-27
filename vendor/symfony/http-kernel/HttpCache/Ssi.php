@@ -19,22 +19,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Ssi implements the SSI capabilities to Request and Response instances.
- * Ssi实现了Ssi的请求和响应实例。
+ * Ssi实现了请求和响应实例的Ssi功能。
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
 class Ssi extends AbstractSurrogate
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'ssi';
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function addSurrogateControl(Response $response)
     {
@@ -43,18 +40,12 @@ class Ssi extends AbstractSurrogate
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = '')
+    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = ''): string
     {
-        return sprintf('<!--#include virtual="%s" -->', $uri);
+        return \sprintf('<!--#include virtual="%s" -->', $uri);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Request $request, Response $response)
+    public function process(Request $request, Response $response): Response
     {
         $type = $response->headers->get('Content-Type');
         if (empty($type)) {
@@ -67,6 +58,7 @@ class Ssi extends AbstractSurrogate
         }
 
         // we don't use a proper XML parser here as we can have SSI tags in a plain text response
+		// 这里我们没有使用适当的XML解析器，因为我们可以在纯文本响应中使用SSI标记。
         $content = $response->getContent();
         $boundary = self::generateBodyEvalBoundary();
         $chunks = preg_split('#<!--\#include\s+(.*?)\s*-->#', $content, -1, \PREG_SPLIT_DELIM_CAPTURE);

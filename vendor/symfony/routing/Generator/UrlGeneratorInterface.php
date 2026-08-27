@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Routing，生成器，URL生成器接口
+ * Symfony，Component，Routing，生成器，Url生成器接口
  */
 
 /*
@@ -37,7 +37,6 @@ interface UrlGeneratorInterface extends RequestContextAwareInterface
 {
     /**
      * Generates an absolute URL, e.g. "http://example.com/dir/file".
-	 * 生成绝对URL，例如
      */
     public const ABSOLUTE_URL = 0;
 
@@ -61,7 +60,6 @@ interface UrlGeneratorInterface extends RequestContextAwareInterface
 
     /**
      * Generates a URL or path for a specific route based on the given parameters.
-	 * 根据给定的参数为特定路由生成URL或路径。
      *
      * Parameters that reference placeholders in the route pattern will substitute them in the
      * path or host. Extra params are added as query string to the URL.
@@ -77,12 +75,10 @@ interface UrlGeneratorInterface extends RequestContextAwareInterface
      *
      * The special parameter _fragment will be used as the document fragment suffixed to the final URL.
      *
-     * @return string
-     *
      * @throws RouteNotFoundException              If the named route doesn't exist
      * @throws MissingMandatoryParametersException When some parameters are missing that are mandatory for the route
      * @throws InvalidParameterException           When a parameter value for a placeholder is not correct because
      *                                             it does not match the requirement
      */
-    public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH);
+    public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH): string;
 }

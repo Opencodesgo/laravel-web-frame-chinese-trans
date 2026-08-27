@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，异常，无效前事项异常
+ * League，CommonMark，扩展，前言，异常，无效前事项异常
  */
 
 /*

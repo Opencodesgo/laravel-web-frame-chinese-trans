@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，主义，列式猜测器
+ * Faker，ORM，主义，列类型猜测器
  */
 
 namespace Faker\ORM\Doctrine;
@@ -88,6 +88,7 @@ class ColumnTypeGuesser
 
             default:
                 // no smart way to guess what the user expects here
+				// 没有聪明的方法来猜测用户在这里期望什么
                 return null;
         }
     }

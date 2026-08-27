@@ -5,7 +5,6 @@
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -26,7 +25,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 /**
  * Contains all events thrown in the HttpKernel component.
- * 包含HttpKernel组件中抛出的所有事件
+ * 包含HttpKernel组件中抛出的所有事件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -35,7 +34,7 @@ final class KernelEvents
     /**
      * The REQUEST event occurs at the very beginning of request
      * dispatching.
-	 * REQUEST事件发生在请求调度的最开始
+	 * REQUEST 事件发生在请求分发的最开始阶段。
      *
      * This event allows you to create a response for a request before any
      * other code in the framework is executed.
@@ -101,7 +100,6 @@ final class KernelEvents
 
     /**
      * The FINISH_REQUEST event occurs when a response was generated for a request.
-	 * 当为请求生成响应时，将发生FINISH_REQUEST事件。
      *
      * This event allows you to reset the global and environmental state of
      * the application, when it was changed during the request.

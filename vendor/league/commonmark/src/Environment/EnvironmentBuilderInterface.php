@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，环境，环境生成器接口
+ * League，CommonMark，环境，环境建造者接口
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ interface EnvironmentBuilderInterface extends ConfigurationProviderInterface
 {
     /**
      * Registers the given extension with the Environment
-	 * 将给定的扩展注册为环境
+	 * 向环境注册给定的扩展名
      *
      * @throws AlreadyInitializedException if the Environment has already been initialized
      */

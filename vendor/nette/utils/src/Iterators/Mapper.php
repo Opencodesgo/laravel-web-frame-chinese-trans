@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，迭代器，映射
+ * Nette，Iterators，映射器
  */
 
 /**
@@ -13,9 +13,8 @@ declare(strict_types=1);
 namespace Nette\Iterators;
 
 
-
 /**
- * Applies the callback to the elements of the inner iterator.
+ * @deprecated use Nette\Utils\Iterables::map()
  */
 class Mapper extends \IteratorIterator
 {
@@ -30,8 +29,7 @@ class Mapper extends \IteratorIterator
 	}
 
 
-	#[\ReturnTypeWillChange]
-	public function current()
+	public function current(): mixed
 	{
 		return ($this->callback)(parent::current(), parent::key());
 	}

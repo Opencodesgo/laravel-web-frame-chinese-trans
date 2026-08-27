@@ -7,7 +7,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Third Party Services 	第三方服务
+    | Third Party Services	第三方服务
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such
@@ -15,7 +15,7 @@ return [
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
 	| 此文件用于存储第三方服务的凭据，例如Mailgun，邮戳，AWS等。
-	| 该文件为此类信息提供了默认位置，使软件包能够通过一个常规文件来查找各种服务凭据。
+	| 这个文件为这种类型的信息提供了实际的位置,允许包有一个传统文件来定位各种服务凭证。
     |
     */
 
@@ -23,6 +23,7 @@ return [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
     ],
 
     'postmark' => [

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，事件，文档预呈现事件
+ * League，CommonMark，事件，文档预渲染事件
  */
 
 declare(strict_types=1);

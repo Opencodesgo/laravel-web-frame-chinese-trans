@@ -55,7 +55,7 @@ interface ExtensionInterface
 
     /**
      * Returns pseudo-class translators.
-	 * 返回伪类翻译器
+	 * 返回伪类翻译器。
      *
      * @return callable[]
      */

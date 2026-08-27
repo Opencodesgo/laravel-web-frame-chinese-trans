@@ -13,46 +13,6 @@ trait SerializesModels
     use SerializesAndRestoresModelIdentifiers;
 
     /**
-     * Prepare the instance for serialization.
-	 * 为序列化准备实例
-     *
-     * @return array
-     */
-    public function __sleep()
-    {
-        $properties = (new ReflectionClass($this))->getProperties();
-
-        foreach ($properties as $property) {
-            $property->setValue($this, $this->getSerializedPropertyValue(
-                $this->getPropertyValue($property)
-            ));
-        }
-
-        return array_values(array_filter(array_map(function ($p) {
-            return $p->isStatic() ? null : $p->getName();
-        }, $properties)));
-    }
-
-    /**
-     * Restore the model after serialization.
-	 * 序列化后恢复模型
-     *
-     * @return void
-     */
-    public function __wakeup()
-    {
-        foreach ((new ReflectionClass($this))->getProperties() as $property) {
-            if ($property->isStatic()) {
-                continue;
-            }
-
-            $property->setValue($this, $this->getRestoredPropertyValue(
-                $this->getPropertyValue($property)
-            ));
-        }
-    }
-
-    /**
      * Prepare the instance values for serialization.
 	 * 为序列化准备实例值
      *
@@ -77,6 +37,12 @@ trait SerializesModels
                 continue;
             }
 
+            $value = $this->getPropertyValue($property);
+
+            if ($property->hasDefaultValue() && $value === $property->getDefaultValue()) {
+                continue;
+            }
+
             $name = $property->getName();
 
             if ($property->isPrivate()) {
@@ -85,9 +51,7 @@ trait SerializesModels
                 $name = "\0*\0{$name}";
             }
 
-            $values[$name] = $this->getSerializedPropertyValue(
-                $this->getPropertyValue($property)
-            );
+            $values[$name] = $this->getSerializedPropertyValue($value);
         }
 
         return $values;
@@ -133,7 +97,7 @@ trait SerializesModels
 
     /**
      * Get the property value for the given property.
-	 * 得到给定属性的属性值
+	 * 获取给定属性的属性值
      *
      * @param  \ReflectionProperty  $property
      * @return mixed

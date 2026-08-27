@@ -11,7 +11,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Calculator implementation using only native PHP code.
- * 仅使用本地PHP代码来实现计算器实现。
+ * 计算器实现仅使用本地PHP代码
  *
  * @internal
  *
@@ -22,19 +22,15 @@ class NativeCalculator extends Calculator
     /**
      * The max number of digits the platform can natively add, subtract, multiply or divide without overflow.
      * For multiplication, this represents the max sum of the lengths of both operands.
+	 * 平台可以进行加、减、乘、除运算的最大位数。
      *
-     * For addition, it is assumed that an extra digit can hold a carry (1) without overflowing.
+     * In addition, it is assumed that an extra digit can hold a carry (1) without overflowing.
      * Example: 32-bit: max number 1,999,999,999 (9 digits + carry)
      *          64-bit: max number 1,999,999,999,999,999,999 (18 digits + carry)
-     *
-     * @var int
      */
-    private $maxDigits;
+    private int $maxDigits;
 
     /**
-     * Class constructor.
-	 * 类构造函数
-     *
      * @codeCoverageIgnore
      */
     public function __construct()
@@ -53,9 +49,6 @@ class NativeCalculator extends Calculator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(string $a, string $b) : string
     {
         /**
@@ -87,17 +80,11 @@ class NativeCalculator extends Calculator
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sub(string $a, string $b) : string
     {
         return $this->add($a, $this->neg($b));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mul(string $a, string $b) : string
     {
         /**
@@ -141,25 +128,16 @@ class NativeCalculator extends Calculator
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function divQ(string $a, string $b) : string
     {
         return $this->divQR($a, $b)[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function divR(string $a, string $b): string
     {
         return $this->divQR($a, $b)[1];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function divQR(string $a, string $b) : array
     {
         if ($a === '0') {
@@ -215,9 +193,6 @@ class NativeCalculator extends Calculator
         return [$q, $r];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pow(string $a, int $e) : string
     {
         if ($e === 0) {
@@ -245,8 +220,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Algorithm from: https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
-     *
-     * {@inheritdoc}
      */
     public function modPow(string $base, string $exp, string $mod) : string
     {
@@ -281,8 +254,6 @@ class NativeCalculator extends Calculator
 
     /**
      * Adapted from https://cp-algorithms.com/num_methods/roots_newton.html
-     *
-     * {@inheritDoc}
      */
     public function sqrt(string $n) : string
     {
@@ -311,12 +282,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the addition of two non-signed large integers.
-	 * 执行两个未签署的大型整数的添加
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
-     * @return string
+	 * 执行两个无符号大整数的加法。
      */
     private function doAdd(string $a, string $b) : string
     {
@@ -369,12 +335,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the subtraction of two non-signed large integers.
-	 * 执行两个未签署的大型整数的减法
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
-     * @return string
+	 * 执行两个无符号大整数的减法。
      */
     private function doSub(string $a, string $b) : string
     {
@@ -383,6 +344,7 @@ class NativeCalculator extends Calculator
         }
 
         // Ensure that we always subtract to a positive result: biggest minus smallest.
+		// 确保我们总是减去一个正的结果：最大减去最小。
         $cmp = $this->doCmp($a, $b);
 
         $invert = ($cmp === -1);
@@ -452,12 +414,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the multiplication of two non-signed large integers.
-	 * 执行两个未签署的大型整数的乘法
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
-     * @return string
+	 * 对两个无符号大整数进行乘法运算。
      */
     private function doMul(string $a, string $b) : string
     {
@@ -529,10 +486,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Performs the division of two non-signed large integers.
-	 * 执行两个未签署的大型整数的划分
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+	 * 对两个无符号大整数进行除法。
      *
      * @return string[] The quotient and remainder.
      */
@@ -591,10 +545,7 @@ class NativeCalculator extends Calculator
 
     /**
      * Compares two non-signed large numbers.
-	 * 比较两个非签名的数字
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
+	 * 比较两个无符号大数
      *
      * @return int [-1, 0, 1]
      */
@@ -614,12 +565,9 @@ class NativeCalculator extends Calculator
 
     /**
      * Pads the left of one of the given numbers with zeros if necessary to make both numbers the same length.
-	 * 如果有必要,将给定数字中的一个的左边设为一个,以使两个数字相同的长度。
-     *
+     * 如果有必要，在给定数字的左边填上零，使两个数字的长度相同。
+	 *
      * The numbers must only consist of digits, without leading minus sign.
-     *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
      *
      * @return array{string, string, int}
      */

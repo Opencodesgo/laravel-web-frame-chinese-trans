@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，事件，准备语句
+ * Illuminate，数据库，事件，预编译指令
  */
 
 namespace Illuminate\Database\Events;
@@ -25,7 +25,7 @@ class StatementPrepared
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建事件实例
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  \PDOStatement  $statement

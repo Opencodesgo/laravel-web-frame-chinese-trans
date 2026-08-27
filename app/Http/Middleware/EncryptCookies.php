@@ -1,6 +1,6 @@
 <?php
 /**
- * app，Http，中间件，加密 Cookie
+ * App, Http, 中间件, 加密 Cookie
  */
 
 namespace App\Http\Middleware;

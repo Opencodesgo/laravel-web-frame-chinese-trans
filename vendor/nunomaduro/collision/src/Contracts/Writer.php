@@ -27,17 +27,16 @@ interface Writer
     /**
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
-	 * 忽略与文件字符串匹配的跟踪所提供的正则表达式
+	 * 忽略与文件字符串匹配的跟踪
      *
-     * @param string[] $ignore the regex expressions
-     *
+     * @param  string[]  $ignore the regex expressions
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
     public function ignoreFilesIn(array $ignore): Writer;
 
     /**
      * Declares whether or not the Writer should show the trace.
-	 * 声明Writer是否应该显示跟踪
+	 * 声明Writer是否应该显示跟踪。
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -45,7 +44,7 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the title.
-	 * 声明作者是否应该展示标题
+	 * 声明Writer是否应该显示标题
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -75,7 +74,7 @@ interface Writer
 
     /**
      * Gets the output.
-	 * 获取输出
+	 * 得到输出
      */
     public function getOutput(): OutputInterface;
 }

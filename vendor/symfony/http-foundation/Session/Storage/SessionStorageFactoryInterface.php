@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，储存，会话存储工厂接口
+ * Symfony，Component，HttpFoundation，会话，存储，会话存储工厂接口
  */
 
 /*
@@ -24,7 +24,6 @@ interface SessionStorageFactoryInterface
     /**
      * Creates a new instance of SessionStorageInterface.
 	 * 创建SessionStorageInterface的新实例
-	 *
      */
     public function createStorage(?Request $request): SessionStorageInterface;
 }

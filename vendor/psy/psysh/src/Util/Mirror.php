@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，工具，镜像
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Psy\Reflection\ReflectionNamespace;
 
 /**
  * A utility class for getting Reflectors.
+ * 一个获取反射器的实用程序类。
  */
 class Mirror
 {
@@ -27,6 +31,7 @@ class Mirror
 
     /**
      * Get a Reflector for a function, class or instance, constant, method or property.
+	 * 为函数、类或实例、常量、方法或属性获取一个反射器。
      *
      * Optionally, pass a $filter param to restrict the types of members checked. For example, to only Reflectors for
      * static properties and constants, pass:
@@ -71,6 +76,7 @@ class Mirror
 
     /**
      * Get a ReflectionClass (or ReflectionObject, or ReflectionNamespace) if possible.
+	 * 如果可能，获取一个ReflectionClass（或ReflectionObject，或ReflectionNamespace）。
      *
      * @throws \InvalidArgumentException if $value is not a namespace or class name or instance
      *
@@ -102,6 +108,7 @@ class Mirror
 
     /**
      * Check declared namespaces for a given namespace.
+	 * 检查给定名称空间的已声明名称空间
      */
     private static function namespaceExists(string $value): bool
     {
@@ -110,6 +117,7 @@ class Mirror
 
     /**
      * Get an array of all currently declared namespaces.
+	 * 获取当前声明的所有名称空间的数组。
      *
      * Note that this relies on at least one function, class, interface, trait
      * or constant to have been declared in that namespace.

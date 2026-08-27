@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * A ControllerResolverInterface implementation knows how to determine the
  * controller to execute based on a Request object.
- * ControllerResolverInterface实现知道如何确定基于Request对象执行的控制器。
  *
  * A Controller can be any valid PHP callable.
  *
@@ -42,5 +41,5 @@ interface ControllerResolverInterface
      *
      * @throws \LogicException If a controller was found based on the request but it is not callable
      */
-    public function getController(Request $request);
+    public function getController(Request $request): callable|false;
 }

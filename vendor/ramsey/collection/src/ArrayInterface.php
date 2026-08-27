@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，数组接口
+ * Ramsey，集合，数组接口
  */
 
 /**
@@ -20,11 +20,10 @@ namespace Ramsey\Collection;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use Serializable;
 
 /**
  * `ArrayInterface` provides traversable array functionality to data types.
- * “ArrayInterface”向数据类型提供可传输的数组功能。
+ * ‘ ArrayInterface ’为数据类型提供了可遍历的数组功能。
  *
  * @template T
  * @extends ArrayAccess<array-key, T>
@@ -33,8 +32,7 @@ use Serializable;
 interface ArrayInterface extends
     ArrayAccess,
     Countable,
-    IteratorAggregate,
-    Serializable
+    IteratorAggregate
 {
     /**
      * Removes all items from this array.
@@ -44,7 +42,7 @@ interface ArrayInterface extends
 
     /**
      * Returns a native PHP array representation of this array object.
-	 * 返回这个数组对象的本地PHP数组表示
+	 * 返回此数组对象的本机PHP数组表示形式
      *
      * @return array<array-key, T>
      */
@@ -52,6 +50,7 @@ interface ArrayInterface extends
 
     /**
      * Returns `true` if this array is empty.
+	 * 如果此数组为空，则返回‘ true ’。
      */
     public function isEmpty(): bool;
 }

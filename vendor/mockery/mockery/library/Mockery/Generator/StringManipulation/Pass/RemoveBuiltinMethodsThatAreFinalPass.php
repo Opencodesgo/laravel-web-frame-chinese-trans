@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，发生器，字符串操作，传递，移除最终通过的内置方法
+ * Mockery，生成器，字符串处理，经过，删除最终通过的内置方法
  */
 
 /**
@@ -21,7 +21,6 @@ use function preg_replace;
  * The standard Mockery\Mock class includes some methods to ease mocking, such
  * as __wakeup, however if the target has a final __wakeup method, it can't be
  * mocked. This pass removes the builtin methods where they are final on the
- * 标准的嘲笑\ Mock类包括一些简化的方法,
  * target
  */
 class RemoveBuiltinMethodsThatAreFinalPass implements Pass

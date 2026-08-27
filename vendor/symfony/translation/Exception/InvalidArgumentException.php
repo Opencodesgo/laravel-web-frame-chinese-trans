@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Base InvalidArgumentException for the Translation component.
- * 对翻译组件的基础无效。
+ * 翻译组件的基本InvalidArgumentException。
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */

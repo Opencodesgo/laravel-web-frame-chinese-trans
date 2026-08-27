@@ -1,9 +1,10 @@
 <?php declare(strict_types = 1);
-namespace TheSeer\Tokenizer;
 
 /**
  * TheSeer，Tokenizer，令牌集合
  */
+
+namespace TheSeer\Tokenizer;
 
 class TokenCollection implements \ArrayAccess, \Iterator, \Countable {
 

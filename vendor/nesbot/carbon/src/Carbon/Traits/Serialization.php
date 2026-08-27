@@ -20,7 +20,7 @@ use Throwable;
 
 /**
  * Trait Serialization.
- * 序列化特征。
+ * 特质序列化。
  *
  * Serialization and JSON stuff.
  *
@@ -58,6 +58,7 @@ trait Serialization
 
     /**
      * Locale to dump comes here before serialization.
+	 * 要转储的区域设置在序列化之前来到这里
      *
      * @var string|null
      */
@@ -73,6 +74,7 @@ trait Serialization
 
     /**
      * Return a serialized string of the instance.
+	 * 返回实例的序列化字符串
      *
      * @return string
      */
@@ -83,6 +85,7 @@ trait Serialization
 
     /**
      * Create an instance from a serialized string.
+	 * 从序列化字符串创建实例
      *
      * @param string $value
      *
@@ -125,6 +128,7 @@ trait Serialization
 
     /**
      * Returns the list of properties to dump on serialize() called on.
+	 * 返回要在调用serialize()时转储的属性列表
      *
      * Only used by PHP < 7.4.
      *
@@ -144,6 +148,7 @@ trait Serialization
 
     /**
      * Returns the values to dump on serialize() called on.
+	 * 返回调用serialize()时要转储的值
      *
      * Only used by PHP >= 7.4.
      *
@@ -186,6 +191,7 @@ trait Serialization
 
     /**
      * Set locale if specified on unserialize() called.
+	 * 如果在调用unserialize()时指定，则设置区域设置。
      *
      * Only used by PHP < 7.4.
      *
@@ -222,6 +228,7 @@ trait Serialization
 
     /**
      * Set locale if specified on unserialize() called.
+	 * 如果在调用unserialize()时指定，则设置区域设置。
      *
      * Only used by PHP >= 7.4.
      *
@@ -254,6 +261,7 @@ trait Serialization
 
     /**
      * Prepare the object for JSON serialization.
+	 * 为JSON序列化准备对象
      *
      * @return array|string
      */
@@ -288,6 +296,7 @@ trait Serialization
 
     /**
      * Cleanup properties attached to the public scope of DateTime when a dump of the date is requested.
+	 * 在请求日期转储时附加到DateTime的公共作用域的清理属性。
      * foreach ($date as $_) {}
      * serializer($date)
      * var_export($date)

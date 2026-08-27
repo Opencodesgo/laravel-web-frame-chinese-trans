@@ -18,7 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * StringInput represents an input provided as a string.
- * StringInput表示提供的输入作为字符串。
+ * StringInput 表示作为字符串提供的输入。
  *
  * Usage:
  *
@@ -28,6 +28,9 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  */
 class StringInput extends ArgvInput
 {
+    /**
+     * @deprecated since Symfony 6.1
+     */
     public const REGEX_STRING = '([^\s]+?)(?:\s|(?<!\\\\)"|(?<!\\\\)\'|$)';
     public const REGEX_UNQUOTED_STRING = '([^\s\\\\]+?)';
     public const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"|\'([^\'\\\\]*(?:\\\\.[^\'\\\\]*)*)\')';
@@ -44,7 +47,7 @@ class StringInput extends ArgvInput
 
     /**
      * Tokenizes a string.
-	 * 定义一个字符串
+	 * 标记字符串
      *
      * @throws InvalidArgumentException When unable to parse input (should never happen)
      */
@@ -74,7 +77,7 @@ class StringInput extends ArgvInput
                 $token .= $match[1];
             } else {
                 // should never happen
-                throw new InvalidArgumentException(sprintf('Unable to parse input near "... %s ...".', substr($input, $cursor, 10)));
+                throw new InvalidArgumentException(\sprintf('Unable to parse input near "... %s ...".', substr($input, $cursor, 10)));
             }
 
             $cursor += \strlen($match[0]);

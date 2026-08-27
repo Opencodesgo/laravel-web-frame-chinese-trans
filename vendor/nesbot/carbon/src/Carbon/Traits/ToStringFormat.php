@@ -18,7 +18,7 @@ use Closure;
 
 /**
  * Trait ToStringFormat.
- * ToStringFormat特征
+ * ToStringFormat特征。
  *
  * Handle global format customization for string cast of the object.
  */
@@ -26,7 +26,7 @@ trait ToStringFormat
 {
     /**
      * Format to use for __toString method when type juggling occurs.
-	 * 当类型杂耍发生时用于__toString方法的格式
+	 * 当类型杂耍发生时用于__toString方法的格式。
      *
      * @var string|Closure|null
      */

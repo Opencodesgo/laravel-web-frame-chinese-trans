@@ -101,7 +101,7 @@ class Error extends \RuntimeException {
 
     /**
      * Returns whether the error has start and end column information.
-	 * 返回错误是否包含开始列和结束列信息。
+	 * 返回错误是否包含开始列和结束列信息
      *
      * For column information enable the startFilePos and endFilePos in the lexer options.
      */

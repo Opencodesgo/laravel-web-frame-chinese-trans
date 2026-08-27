@@ -22,7 +22,7 @@ class UniqueGenerator
 
     /**
      * Maps from method names to a map with serialized result keys.
-	 * 将方法名称映射到一个带有序列化结果键的地图
+	 * 将方法名映射到具有序列化结果键的映射
      *
      * @example [
      *   'phone' => ['0123' => null],
@@ -52,7 +52,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls but return only unique values
-	 * 捕获和代理所有生成器调用,但只返回惟一的值
+	 * 捕获并代理所有生成器调用，但只返回唯一的值。
      *
      * @param string $attribute
      *
@@ -67,7 +67,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls with arguments but return only unique values
-	 * 捕获和代理所有使用参数的生成器调用,但只返回惟一的值
+	 * 捕获并代理所有带参数的生成器调用，但只返回唯一的值。
      *
      * @param string $name
      * @param array  $arguments

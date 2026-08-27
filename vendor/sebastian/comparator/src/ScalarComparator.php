@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，标量比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -19,11 +24,13 @@ use function strtolower;
 
 /**
  * Compares scalar or NULL values for equality.
+ * 比较标量值或NULL值是否相等。
  */
 class ScalarComparator extends Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器是否可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare

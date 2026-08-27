@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，特性，比较 
+ * Carbon，比较 
  */
 
 /**
@@ -21,7 +21,7 @@ use InvalidArgumentException;
 
 /**
  * Trait Comparison.
- * 比较特征
+ * 特征的比较。
  *
  * Comparison utils and testers. All the following methods return booleans.
  * nowWithSameTz
@@ -66,6 +66,7 @@ trait Comparison
 
     /**
      * Determines if the instance is equal to another
+	 * 确定实例是否等于另一个实例
      *
      * @example
      * ```
@@ -88,6 +89,7 @@ trait Comparison
 
     /**
      * Determines if the instance is not equal to another
+	 * 确定实例是否不等于另一个实例
      *
      * @example
      * ```
@@ -109,6 +111,7 @@ trait Comparison
 
     /**
      * Determines if the instance is not equal to another
+	 * 确定实例是否不等于另一个实例
      *
      * @example
      * ```
@@ -128,6 +131,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than another
+	 * 确定实例是否大于（小于）另一个实例
      *
      * @example
      * ```
@@ -149,6 +153,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than another
+	 * 确定实例是否大于（小于）另一个实例
      *
      * @example
      * ```
@@ -171,6 +176,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than another
+	 * 确定实例是否大于（小于）另一个实例
      *
      * @example
      * ```
@@ -192,6 +198,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than or equal to another
+	 * 确定实例是否大于或等于另一个实例
      *
      * @example
      * ```
@@ -213,6 +220,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than or equal to another
+	 * 确定实例是否大于或等于另一个实例
      *
      * @example
      * ```
@@ -235,6 +243,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) than another
+	 * 确定实例是否小于（先于）另一个实例
      *
      * @example
      * ```
@@ -256,6 +265,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) than another
+	 * 确定实例是否小于（先于）另一个实例
      *
      * @example
      * ```
@@ -278,6 +288,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) than another
+	 * 确定实例是否小于（先于）另一个实例
      *
      * @example
      * ```
@@ -299,6 +310,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) or equal to another
+	 * 确定实例是小于（大于）还是等于另一个实例
      *
      * @example
      * ```
@@ -320,6 +332,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) or equal to another
+	 * 确定实例是小于（大于）还是等于另一个实例。
      *
      * @example
      * ```
@@ -342,6 +355,7 @@ trait Comparison
 
     /**
      * Determines if the instance is between two others.
+	 * 确定实例是否位于其他两个实例之间。
      *
      * The third argument allow you to specify if bounds are included or not (true by default)
      * but for when you including/excluding bounds may produce different results in your application,
@@ -379,6 +393,7 @@ trait Comparison
 
     /**
      * Determines if the instance is between two others, bounds included.
+	 * 确定实例是否在其他两个实例之间，包括边界。
      *
      * @example
      * ```
@@ -399,6 +414,7 @@ trait Comparison
 
     /**
      * Determines if the instance is between two others, bounds excluded.
+	 * 确定实例是否在其他两个实例之间，排除边界。
      *
      * @example
      * ```
@@ -419,6 +435,7 @@ trait Comparison
 
     /**
      * Determines if the instance is between two others
+	 * 确定实例是否位于其他两个实例之间。
      *
      * @example
      * ```
@@ -441,6 +458,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a weekday.
+	 * 确定实例是否为工作日。
      *
      * @example
      * ```
@@ -457,6 +475,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a weekend day.
+	 * 确定实例是否为周末。
      *
      * @example
      * ```
@@ -473,6 +492,7 @@ trait Comparison
 
     /**
      * Determines if the instance is yesterday.
+	 * 确定实例是否在昨天。
      *
      * @example
      * ```
@@ -489,6 +509,7 @@ trait Comparison
 
     /**
      * Determines if the instance is today.
+	 * 确定实例是否在今天。
      *
      * @example
      * ```
@@ -505,6 +526,7 @@ trait Comparison
 
     /**
      * Determines if the instance is tomorrow.
+	 * 确定实例是否在明天。
      *
      * @example
      * ```
@@ -521,6 +543,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the future, ie. greater (after) than now.
+	 * 确定实例是否在未来，即。（以后）比现在更伟大。
      *
      * @example
      * ```
@@ -537,6 +560,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the past, ie. less (before) than now.
+	 * 确定实例是否在过去，即。（以前）比现在少。
      *
      * @example
      * ```
@@ -553,6 +577,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a leap year.
+	 * 确定实例是否为闰年。
      *
      * @example
      * ```
@@ -569,6 +594,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a long year (using calendar year).
+	 * 确定实例是否是长年份（使用日历年）。
      *
      * ⚠️ This method completely ignores month and day to use the numeric year number,
      * it's not correct if the exact date matters. For instance as `2019-12-30` is already
@@ -592,6 +618,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a long year (using ISO 8601 year).
+	 * 确定实例是否是长年份（使用ISO 8601年份）。
      *
      * @example
      * ```
@@ -613,6 +640,7 @@ trait Comparison
 
     /**
      * Compares the formatted values of the two dates.
+	 * 比较两个日期的格式化值。
      *
      * @example
      * ```
@@ -632,6 +660,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the current unit given.
+	 * 确定实例是否在给定的当前单元中。
      *
      * @example
      * ```
@@ -684,6 +713,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the current unit given.
+	 * 确定实例是否在给定的当前单元中。
      *
      * @example
      * ```
@@ -704,6 +734,7 @@ trait Comparison
 
     /**
      * Checks if the passed in date is in the same quarter as the instance quarter (and year if needed).
+	 * 检查传入日期是否与实例的季度在同一季度（如果需要，还检查年份）。
      *
      * @example
      * ```
@@ -727,6 +758,7 @@ trait Comparison
 
     /**
      * Checks if the passed in date is in the same month as the instance´s month.
+	 * 检查传入的日期是否与实例所在的月份在同一个月。
      *
      * @example
      * ```
@@ -748,6 +780,7 @@ trait Comparison
 
     /**
      * Checks if this day is a specific day of the week.
+	 * 检查这一天是否是一周中特定的一天。
      *
      * @example
      * ```
@@ -772,6 +805,7 @@ trait Comparison
 
     /**
      * Check if its the birthday. Compares the date/month values of the two dates.
+	 * 看看是不是生日。比较两个日期的日期/月值。
      *
      * @example
      * ```
@@ -792,6 +826,7 @@ trait Comparison
 
     /**
      * Check if today is the last day of the Month
+	 * 检查一下今天是不是这个月的最后一天。
      *
      * @example
      * ```
@@ -835,6 +870,7 @@ trait Comparison
 
     /**
      * Check if the instance is end of day.
+	 * 检查实例是否已结束。
      *
      * @example
      * ```
@@ -861,6 +897,7 @@ trait Comparison
 
     /**
      * Check if the instance is start of day / midnight.
+	 * 检查实例是否为一天的开始/午夜
      *
      * @example
      * ```
@@ -878,6 +915,7 @@ trait Comparison
 
     /**
      * Check if the instance is midday.
+	 * 检查实例是否在中午。
      *
      * @example
      * ```
@@ -897,6 +935,7 @@ trait Comparison
 
     /**
      * Checks if the (date)time string is in a given format.
+	 * 检查（date）时间字符串是否为给定格式
      *
      * @example
      * ```
@@ -920,6 +959,7 @@ trait Comparison
 
     /**
      * Checks if the (date)time string is in a given format.
+	 * 检查（date）时间字符串是否为给定格式
      *
      * @example
      * ```
@@ -969,6 +1009,7 @@ trait Comparison
 
     /**
      * Returns true if the current date matches the given string.
+	 * 如果当前日期与给定字符串匹配，则返回true。
      *
      * @example
      * ```
@@ -1110,6 +1151,7 @@ trait Comparison
 
     /**
      * Returns true if the date was created using CarbonImmutable::endOfTime()
+	 * 如果日期是使用CarbonImmutable::endOfTime（）创建的，则返回true
      *
      * @return bool
      */

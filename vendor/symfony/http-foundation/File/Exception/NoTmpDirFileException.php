@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件，异常，无Tmp目录文件异常
+ * Symfony，Component，HttpFoundation，文件，异常，无临时目录文件异常
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 /**
  * Thrown when an UPLOAD_ERR_NO_TMP_DIR error occurred with UploadedFile.
- * 当UploadedFile发生UPLOAD_ERR_NO_TMP_DIR错误时抛出。
+ * 当UploadedFile发生UPLOAD_ERR_NO_TMP_DIR错误时抛出
  *
  * @author Florent Mata <florentmata@gmail.com>
  */

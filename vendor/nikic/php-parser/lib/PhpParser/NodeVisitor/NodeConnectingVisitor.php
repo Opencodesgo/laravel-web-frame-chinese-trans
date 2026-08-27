@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点访问器，节点连接访客
+ * PhpParser，节点访问器，节点连接访问者
  */
 
 namespace PhpParser\NodeVisitor;
@@ -12,12 +12,13 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * Visitor that connects a child node to its parent node
  * as well as its sibling nodes.
- * 连接子节点与其父节点以及兄弟节点的访问者。
  *
- * On the child node, the parent node can be accessed through
+ * With <code>$weakReferences=false</code> on the child node, the parent node can be accessed through
  * <code>$node->getAttribute('parent')</code>, the previous
  * node can be accessed through <code>$node->getAttribute('previous')</code>,
  * and the next node can be accessed through <code>$node->getAttribute('next')</code>.
+ *
+ * With <code>$weakReferences=true</code> attribute names are prefixed by "weak_", e.g. "weak_parent".
  */
 final class NodeConnectingVisitor extends NodeVisitorAbstract {
     /**
@@ -30,6 +31,12 @@ final class NodeConnectingVisitor extends NodeVisitorAbstract {
      */
     private $previous;
 
+    private bool $weakReferences;
+
+    public function __construct(bool $weakReferences = false) {
+        $this->weakReferences = $weakReferences;
+    }
+
     public function beforeTraverse(array $nodes) {
         $this->stack    = [];
         $this->previous = null;
@@ -37,12 +44,26 @@ final class NodeConnectingVisitor extends NodeVisitorAbstract {
 
     public function enterNode(Node $node) {
         if (!empty($this->stack)) {
-            $node->setAttribute('parent', $this->stack[count($this->stack) - 1]);
+            $parent = $this->stack[count($this->stack) - 1];
+            if ($this->weakReferences) {
+                $node->setAttribute('weak_parent', \WeakReference::create($parent));
+            } else {
+                $node->setAttribute('parent', $parent);
+            }
         }
 
-        if ($this->previous !== null && $this->previous->getAttribute('parent') === $node->getAttribute('parent')) {
-            $node->setAttribute('previous', $this->previous);
-            $this->previous->setAttribute('next', $node);
+        if ($this->previous !== null) {
+            if (
+                $this->weakReferences
+            ) {
+                if ($this->previous->getAttribute('weak_parent') === $node->getAttribute('weak_parent')) {
+                    $node->setAttribute('weak_previous', \WeakReference::create($this->previous));
+                    $this->previous->setAttribute('weak_next', \WeakReference::create($node));
+                }
+            } elseif ($this->previous->getAttribute('parent') === $node->getAttribute('parent')) {
+                $node->setAttribute('previous', $this->previous);
+                $this->previous->setAttribute('next', $node);
+            }
         }
 
         $this->stack[] = $node;

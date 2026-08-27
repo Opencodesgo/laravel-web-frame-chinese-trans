@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，版本，Pre-Release 前缀
+ */
+
 namespace PharIo\Version;
 
 class PreReleaseSuffix {

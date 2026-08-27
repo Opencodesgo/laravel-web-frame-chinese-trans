@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，Amqp 处理程序
+ * Monolog，处理器，Amqp 处理器
  */
 
 /*
@@ -44,7 +44,7 @@ class AmqpHandler extends AbstractProcessingHandler
 
     /**
      * Configure extra attributes to pass to the AMQPExchange (if you are using the amqp extension)
-	 * 配置额外属性传递给AMQPExchange(如果您使用amqp扩展)
+	 * 配置传递给AMQPExchange的额外属性（如果您正在使用amqp扩展）
      *
      * @param array<string, mixed> $extraAttributes  One of content_type, content_encoding,
      *                                               message_id, user_id, app_id, delivery_mode,
@@ -144,7 +144,7 @@ class AmqpHandler extends AbstractProcessingHandler
 
     /**
      * Gets the routing key for the AMQP exchange
-	 * 获取AMQP交换的路由键
+	 * 获取AMQP交换的路由密钥
      *
      * @phpstan-param Record $record
      */

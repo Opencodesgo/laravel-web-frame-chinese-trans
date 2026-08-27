@@ -9,7 +9,7 @@ interface StreamFactoryInterface
 {
     /**
      * Create a new stream from a string.
-	 * 从字符串创建一个新的流。
+	 * 从字符串创建一个新流
      *
      * The stream SHOULD be created with a temporary resource.
      *
@@ -21,7 +21,7 @@ interface StreamFactoryInterface
 
     /**
      * Create a stream from an existing file.
-	 * 从现有文件创建流。
+	 * 从现有文件创建流
      *
      * The file MUST be opened using the given mode, which may be any mode
      * supported by the `fopen` function.
@@ -39,7 +39,7 @@ interface StreamFactoryInterface
 
     /**
      * Create a new stream from an existing resource.
-	 * 从现有资源创建一个新的流。
+	 * 从现有资源创建新流
      *
      * The stream MUST be readable and may be writable.
      *

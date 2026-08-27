@@ -16,7 +16,7 @@ final class Utils
 {
     /**
      * Debug function used to describe the provided value type and class.
-	 * 用于描述所提供的值类型和类的调试函数
+	 * 用于描述所提供的值类型和类的调试函数。
      *
      * @param mixed $input
      *
@@ -43,7 +43,7 @@ final class Utils
 
     /**
      * Parses an array of header lines into an associative array of headers.
-	 * 将标题行数组解析成一个关联数组的头
+	 * 将标题行的数组解析为标题的关联数组
      *
      * @param iterable $lines Header lines array of strings in the following
      *                        format: "Name: Value"
@@ -62,7 +62,7 @@ final class Utils
 
     /**
      * Returns a debug stream based on the provided variable.
-	 * 根据所提供的变量返回一个调试流
+	 * 根据所提供的变量返回调试流
      *
      * @param mixed $value Optional value
      *
@@ -82,11 +82,12 @@ final class Utils
 
     /**
      * Chooses and creates a default handler to use based on the environment.
-	 * 选择并创建基于环境的默认处理程序
+	 * 根据环境选择并创建要使用的默认处理程序。
      *
      * The returned handler is not wrapped by any default middlewares.
+	 * 返回的处理程序没有被任何默认中间件包装。
      *
-     * @return callable(\Psr\Http\Message\RequestInterface, array): \GuzzleHttp\Promise\PromiseInterface Returns the best handler for the given system.
+     * @return callable(\Psr\Http\Message\RequestInterface, array): Promise\PromiseInterface Returns the best handler for the given system.
      *
      * @throws \RuntimeException if no viable Handler is available.
      */
@@ -117,7 +118,7 @@ final class Utils
 
     /**
      * Get the default User-Agent string to use with Guzzle.
-	 * 将默认的用户代理字符串与Guzzle一起使用
+	 * 获取用于Guzzle的默认User-Agent字符串
      */
     public static function defaultUserAgent(): string
     {
@@ -212,7 +213,6 @@ EOT
 
     /**
      * Returns true if the provided host matches any of the no proxy areas.
-	 * 如果提供的主机与任何没有代理区域匹配,返回true。
      *
      * This method will strip a port from the host if it is present. Each pattern
      * can be matched with an exact match (e.g., "foo.com" == "foo.com") or a
@@ -267,7 +267,7 @@ EOT
 
     /**
      * Wrapper for json_decode that throws when an error occurs.
-	 * 当发生错误时抛出json_decode的包装器
+	 * 当发生错误时抛出的json_decode的包装器。
      *
      * @param string $json    JSON data to parse
      * @param bool   $assoc   When true, returned objects will be converted
@@ -293,7 +293,7 @@ EOT
 
     /**
      * Wrapper for JSON encoding that throws when an error occurs.
-	 * 当发生错误时抛出的JSON编码包装器
+	 * JSON编码的包装器，在发生错误时抛出。
      *
      * @param mixed $value   The value being encoded
      * @param int   $options JSON encode option bitmask

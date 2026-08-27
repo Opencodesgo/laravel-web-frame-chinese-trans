@@ -9,7 +9,7 @@ interface ResponseFactoryInterface
 {
     /**
      * Create a new response.
-	 * 创建新的响应
+	 * 创建一个新的响应
      *
      * @param int $code HTTP status code; defaults to 200
      * @param string $reasonPhrase Reason phrase to associate with status code

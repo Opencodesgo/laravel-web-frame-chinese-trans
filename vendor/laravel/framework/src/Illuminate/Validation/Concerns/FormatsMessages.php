@@ -33,21 +33,25 @@ trait FormatsMessages
         // First we will retrieve the custom message for the validation rule if one
         // exists. If a custom validation message is being used we'll return the
         // custom message, otherwise we'll keep searching for a valid message.
-		// 首先，我们将检索验证规则的自定义消息。
+		// 首先，我们将检索验证规则的自定义消息是否存在。
         if (! is_null($inlineMessage)) {
             return $inlineMessage;
         }
 
         $lowerRule = Str::snake($rule);
 
+        $customKey = "validation.custom.{$attribute}.{$lowerRule}";
+
         $customMessage = $this->getCustomMessageFromTranslator(
-            $customKey = "validation.custom.{$attribute}.{$lowerRule}"
+            in_array($rule, $this->sizeRules)
+                ? [$customKey.".{$this->getAttributeType($attribute)}", $customKey]
+                : $customKey
         );
 
         // First we check for a custom defined validation message for the attribute
         // and rule. This allows the developer to specify specific messages for
         // only some attributes and rules that need to get specially formed.
-		// 首先，我们检查属性的自定义验证消息。
+		// 首先，我们检查属性和规则的自定义验证消息。
         if ($customMessage !== $customKey) {
             return $customMessage;
         }
@@ -55,7 +59,7 @@ trait FormatsMessages
         // If the rule being validated is a "size" rule, we will need to gather the
         // specific error message for the type of attribute being validated such
         // as a number, file or string which all have different message types.
-		// 如果被验证的规则是一个"大小"规则，我们将需要收集属性类型的特定错误消息。
+		// 如果被验证的规则是“大小”规则，我们将需要收集特定错误信息。
         elseif (in_array($rule, $this->sizeRules)) {
             return $this->getSizeMessage($attributeWithPlaceholders, $rule);
         }
@@ -105,7 +109,7 @@ trait FormatsMessages
     {
         $source = $source ?: $this->customMessages;
 
-        $keys = ["{$attribute}.{$lowerRule}", $lowerRule];
+        $keys = ["{$attribute}.{$lowerRule}", $lowerRule, $attribute];
 
         // First we will check for a custom message for an attribute specific rule
         // message for the fields, then we will check for a general custom line
@@ -113,18 +117,30 @@ trait FormatsMessages
 		// 首先，我们将检查特定于属性的规则的自定义消息。
         foreach ($keys as $key) {
             foreach (array_keys($source) as $sourceKey) {
-                if (strpos($sourceKey, '*') !== false) {
+                if (str_contains($sourceKey, '*')) {
                     $pattern = str_replace('\*', '([^.]*)', preg_quote($sourceKey, '#'));
 
                     if (preg_match('#^'.$pattern.'\z#u', $key) === 1) {
-                        return $source[$sourceKey];
+                        $message = $source[$sourceKey];
+
+                        if (is_array($message) && isset($message[$lowerRule])) {
+                            return $message[$lowerRule];
+                        }
+
+                        return $message;
                     }
 
                     continue;
                 }
 
                 if (Str::is($sourceKey, $key)) {
-                    return $source[$sourceKey];
+                    $message = $source[$sourceKey];
+
+                    if ($sourceKey === $attribute && is_array($message) && isset($message[$lowerRule])) {
+                        return $message[$lowerRule];
+                    }
+
+                    return $message;
                 }
             }
         }
@@ -134,31 +150,39 @@ trait FormatsMessages
      * Get the custom error message from the translator.
 	 * 从翻译程序获取自定义错误消息
      *
-     * @param  string  $key
+     * @param  array|string  $keys
      * @return string
      */
-    protected function getCustomMessageFromTranslator($key)
+    protected function getCustomMessageFromTranslator($keys)
     {
-        if (($message = $this->translator->get($key)) !== $key) {
-            return $message;
+        foreach (Arr::wrap($keys) as $key) {
+            if (($message = $this->translator->get($key)) !== $key) {
+                return $message;
+            }
+
+            // If an exact match was not found for the key, we will collapse all of these
+            // messages and loop through them and try to find a wildcard match for the
+            // given key. Otherwise, we will simply return the key's value back out.
+			// 如果没有找到与密钥完全匹配的，我们将把所有这些都折叠起来。
+            $shortKey = preg_replace(
+                '/^validation\.custom\./', '', $key
+            );
+
+            $message = $this->getWildcardCustomMessages(Arr::dot(
+                (array) $this->translator->get('validation.custom')
+            ), $shortKey, $key);
+
+            if ($message !== $key) {
+                return $message;
+            }
         }
 
-        // If an exact match was not found for the key, we will collapse all of these
-        // messages and loop through them and try to find a wildcard match for the
-        // given key. Otherwise, we will simply return the key's value back out.
-		// 如果没有找到与密钥完全匹配的，我们将把所有这些都折叠起来。
-        $shortKey = preg_replace(
-            '/^validation\.custom\./', '', $key
-        );
-
-        return $this->getWildcardCustomMessages(Arr::dot(
-            (array) $this->translator->get('validation.custom')
-        ), $shortKey, $key);
+        return Arr::last(Arr::wrap($keys));
     }
 
     /**
      * Check the given messages for a wildcard key.
-	 * 检查给定的消息是否有通配符键
+	 * 检查给定的消息是否有通配符键。
      *
      * @param  array  $messages
      * @param  string  $search
@@ -211,7 +235,7 @@ trait FormatsMessages
         // We assume that the attributes present in the file array are files so that
         // means that if the attribute does not have a numeric rule and the files
         // list doesn't have it we'll just consider it a string by elimination.
-		// 我们假设文件数组中的属性都是文件。
+		// 我们假设文件数组中存在的属性是文件，因此表示如果属性没有数字规则。
         if ($this->hasRule($attribute, $this->numericRules)) {
             return 'numeric';
         } elseif ($this->hasRule($attribute, ['Array'])) {
@@ -240,6 +264,8 @@ trait FormatsMessages
         );
 
         $message = $this->replaceInputPlaceholder($message, $attribute);
+        $message = $this->replaceIndexPlaceholder($message, $attribute);
+        $message = $this->replacePositionPlaceholder($message, $attribute);
 
         if (isset($this->replacers[Str::snake($rule)])) {
             return $this->callReplacer($message, $attribute, Str::snake($rule), $parameters, $this);
@@ -285,7 +311,7 @@ trait FormatsMessages
         // When no language line has been specified for the attribute and it is also
         // an implicit attribute we will display the raw attribute's name and not
         // modify it with any of these replacements before we display the name.
-		// 当未为该属性指定语言行时。
+		// 当未为该属性指定语言行时，对于隐式属性，我们将显示原始属性的名称。
         if (isset($this->implicitAttributes[$primaryAttribute])) {
             return ($formatter = $this->implicitAttributesFormatter)
                             ? $formatter($attribute)
@@ -322,6 +348,96 @@ trait FormatsMessages
             [$value, Str::upper($value), Str::ucfirst($value)],
             $message
         );
+    }
+
+    /**
+     * Replace the :index placeholder in the given message.
+	 * 替换给定消息中的：index占位符。
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @return string
+     */
+    protected function replaceIndexPlaceholder($message, $attribute)
+    {
+        return $this->replaceIndexOrPositionPlaceholder(
+            $message, $attribute, 'index'
+        );
+    }
+
+    /**
+     * Replace the :position placeholder in the given message.
+	 * 替换给定消息中的：position占位符。
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @return string
+     */
+    protected function replacePositionPlaceholder($message, $attribute)
+    {
+        return $this->replaceIndexOrPositionPlaceholder(
+            $message, $attribute, 'position', fn ($segment) => $segment + 1
+        );
+    }
+
+    /**
+     * Replace the :index or :position placeholder in the given message.
+	 * 替换给定消息中的：索引或：position占位符。
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $placeholder
+     * @param  \Closure|null  $modifier
+     * @return string
+     */
+    protected function replaceIndexOrPositionPlaceholder($message, $attribute, $placeholder, Closure $modifier = null)
+    {
+        $segments = explode('.', $attribute);
+
+        $modifier ??= fn ($value) => $value;
+
+        $numericIndex = 1;
+
+        foreach ($segments as $segment) {
+            if (is_numeric($segment)) {
+                if ($numericIndex === 1) {
+                    $message = str_ireplace(':'.$placeholder, $modifier((int) $segment), $message);
+                }
+
+                $message = str_ireplace(
+                    ':'.$this->numberToIndexOrPositionWord($numericIndex).'-'.$placeholder,
+                    $modifier((int) $segment),
+                    $message
+                );
+
+                $numericIndex++;
+            }
+        }
+
+        return $message;
+    }
+
+    /**
+     * Get the word for a index or position segment.
+	 * 获取索引或位置段的单词
+     *
+     * @param  int  $value
+     * @return string
+     */
+    protected function numberToIndexOrPositionWord(int $value)
+    {
+        return [
+            1 => 'first',
+            2 => 'second',
+            3 => 'third',
+            4 => 'fourth',
+            5 => 'fifth',
+            6 => 'sixth',
+            7 => 'seventh',
+            8 => 'eighth',
+            9 => 'ninth',
+            10 => 'tenth',
+        ][(int) $value] ?? 'other';
     }
 
     /**
@@ -388,7 +504,7 @@ trait FormatsMessages
         // For each attribute in the list we will simply get its displayable form as
         // this is convenient when replacing lists of parameters like some of the
         // replacement functions do when formatting out the validation message.
-		// 对于列表中的每个属性，我们将简单地获取其可显示属性。
+		// 对于列表中的每个属性，我们将简单地获得其可显示的形式为。
         foreach ($values as $key => $value) {
             $attributes[$key] = $this->getDisplayableAttribute($value);
         }

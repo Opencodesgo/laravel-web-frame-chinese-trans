@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，评论
+ * PhpParser，注释
  */
 
 namespace PhpParser;

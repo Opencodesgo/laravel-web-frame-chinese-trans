@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，文件，数据流
+ * Symfony，Component，HttpFoundation，文件，流
  */
 
 /*
@@ -16,19 +16,13 @@ namespace Symfony\Component\HttpFoundation\File;
 
 /**
  * A PHP stream of unknown size.
- * 大小未知的PHP流
+ * 大小未知的PHP流。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
 class Stream extends File
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @return int|false
-     */
-    #[\ReturnTypeWillChange]
-    public function getSize()
+    public function getSize(): int|false
     {
         return false;
     }

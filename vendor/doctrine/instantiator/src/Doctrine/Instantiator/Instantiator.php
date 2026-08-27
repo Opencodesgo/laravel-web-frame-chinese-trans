@@ -3,6 +3,8 @@
  * Doctrine，Instantiator，实例化器
  */
 
+declare(strict_types=1);
+
 namespace Doctrine\Instantiator;
 
 use ArrayIterator;
@@ -23,8 +25,6 @@ use function sprintf;
 use function strlen;
 use function unserialize;
 
-use const PHP_VERSION_ID;
-
 final class Instantiator implements InstantiatorInterface
 {
     /**
@@ -34,10 +34,8 @@ final class Instantiator implements InstantiatorInterface
      *
      * @deprecated This constant will be private in 2.0
      */
-    public const SERIALIZATION_FORMAT_USE_UNSERIALIZER = 'C';
-
-    /** @deprecated This constant will be private in 2.0 */
-    public const SERIALIZATION_FORMAT_AVOID_UNSERIALIZER = 'O';
+    private const SERIALIZATION_FORMAT_USE_UNSERIALIZER   = 'C';
+    private const SERIALIZATION_FORMAT_AVOID_UNSERIALIZER = 'O';
 
     /**
      * Used to instantiate specific classes, indexed by class name.
@@ -45,27 +43,26 @@ final class Instantiator implements InstantiatorInterface
      *
      * @var callable[]
      */
-    private static $cachedInstantiators = [];
+    private static array $cachedInstantiators = [];
 
     /**
      * Array of objects that can directly be cloned, indexed by class name.
+	 * 可以直接克隆的对象数组，按类名索引。
      *
      * @var object[]
      */
-    private static $cachedCloneables = [];
+    private static array $cachedCloneables = [];
 
     /**
-     * @param string $className
      * @phpstan-param class-string<T> $className
      *
-     * @return object
      * @phpstan-return T
      *
      * @throws ExceptionInterface
      *
      * @template T of object
      */
-    public function instantiate($className)
+    public function instantiate(string $className): object
     {
         if (isset(self::$cachedCloneables[$className])) {
             /** @phpstan-var T */
@@ -85,15 +82,15 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Builds the requested object and caches it in static properties for performance
+	 * 生成所请求的对象并将其缓存到静态属性中以提高性能。
      *
      * @phpstan-param class-string<T> $className
      *
-     * @return object
      * @phpstan-return T
      *
      * @template T of object
      */
-    private function buildAndCacheFromFactory(string $className)
+    private function buildAndCacheFromFactory(string $className): object
     {
         $factory  = self::$cachedInstantiators[$className] = $this->buildFactory($className);
         $instance = $factory();
@@ -107,6 +104,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Builds a callable capable of instantiating the given $className without
+	 * 构建一个可调用对象，能够实例化给定的$className。
      * invoking its constructor.
      *
      * @phpstan-param class-string<T> $className
@@ -131,14 +129,12 @@ final class Instantiator implements InstantiatorInterface
             '%s:%d:"%s":0:{}',
             is_subclass_of($className, Serializable::class) ? self::SERIALIZATION_FORMAT_USE_UNSERIALIZER : self::SERIALIZATION_FORMAT_AVOID_UNSERIALIZER,
             strlen($className),
-            $className
+            $className,
         );
 
         $this->checkIfUnSerializationIsSupported($reflectionClass, $serializedString);
 
-        return static function () use ($serializedString) {
-            return unserialize($serializedString);
-        };
+        return static fn () => unserialize($serializedString);
     }
 
     /**
@@ -157,7 +153,7 @@ final class Instantiator implements InstantiatorInterface
             throw InvalidArgumentException::fromNonExistingClass($className);
         }
 
-        if (PHP_VERSION_ID >= 80100 && enum_exists($className, false)) {
+        if (enum_exists($className, false)) {
             throw InvalidArgumentException::fromEnum($className);
         }
 
@@ -185,7 +181,7 @@ final class Instantiator implements InstantiatorInterface
                 $message,
                 $code,
                 $file,
-                $line
+                $line,
             );
 
             return true;
@@ -230,6 +226,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Verifies whether the given class is to be considered internal
+	 * 验证是否将给定的类视为内部类
      *
      * @phpstan-param ReflectionClass<T> $reflectionClass
      *
@@ -250,6 +247,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Checks if a class is cloneable
+	 * 检查类是否可克隆
      *
      * Classes implementing `__clone` cannot be safely cloned, as that may cause side-effects.
      *

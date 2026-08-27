@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，脚注，解析器，匿名的脚注 Ref解析器
+ * League，CommonMark，扩展，注脚，解析器，匿名注脚 Ref解析器
  */
 
 /*

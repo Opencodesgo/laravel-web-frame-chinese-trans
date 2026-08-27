@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，类型，类型接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -19,12 +22,19 @@ use Serializable;
 
 /**
  * TypeInterface ensures consistency in typed values returned by ramsey/uuid
+ * TypeInterface 保证了ramsey/uuid返回的类型值的一致性
  *
- * @psalm-immutable
+ * @immutable
  */
 interface TypeInterface extends JsonSerializable, Serializable
 {
+    /**
+     * @pure
+     */
     public function toString(): string;
 
+    /**
+     * @pure
+     */
     public function __toString(): string;
 }

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，DynamoDb 处理程序
+ * Monolog，处理器，DynamoDb 处理器
  */
 
 /*
@@ -24,7 +24,7 @@ use Monolog\Logger;
 
 /**
  * Amazon DynamoDB handler (http://aws.amazon.com/dynamodb/)
- * Amazon DynamoDB 处理器
+ * Amazon DynamoDB 处理程序
  *
  * @link https://github.com/aws/aws-sdk-php/
  * @author Andrew Lawson <adlawson@gmail.com>

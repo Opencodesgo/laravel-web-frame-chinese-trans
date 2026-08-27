@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，Blood
+ * Faker，Core，Blood
  */
 
 declare(strict_types=1);

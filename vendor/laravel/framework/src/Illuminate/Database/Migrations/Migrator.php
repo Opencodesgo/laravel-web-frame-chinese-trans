@@ -5,7 +5,13 @@
 
 namespace Illuminate\Database\Migrations;
 
+use Closure;
 use Doctrine\DBAL\Schema\SchemaException;
+use Illuminate\Console\View\Components\BulletList;
+use Illuminate\Console\View\Components\Error;
+use Illuminate\Console\View\Components\Info;
+use Illuminate\Console\View\Components\Task;
+use Illuminate\Console\View\Components\TwoColumnDetail;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use Illuminate\Database\Events\MigrationEnded;
@@ -48,11 +54,19 @@ class Migrator
 
     /**
      * The connection resolver instance.
-	 * 连接解析实例
+	 * 连接解析器实例
      *
      * @var \Illuminate\Database\ConnectionResolverInterface
      */
     protected $resolver;
+
+    /**
+     * The custom connection resolver callback.
+	 * 自定义连接解析器回调
+     *
+     * @var \Closure|null
+     */
+    protected static $connectionResolverCallback;
 
     /**
      * The name of the default connection.
@@ -71,6 +85,14 @@ class Migrator
     protected $paths = [];
 
     /**
+     * The paths that have already been required.
+	 * 已经需要的路径
+     *
+     * @var array<string, \Illuminate\Database\Migrations\Migration|null>
+     */
+    protected static $requiredPathCache = [];
+
+    /**
      * The output interface implementation.
 	 * 输出接口实现
      *
@@ -80,7 +102,7 @@ class Migrator
 
     /**
      * Create a new migrator instance.
-	 * 创建新的迁移实例
+	 * 创建一个新的迁移器实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
      * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
@@ -101,7 +123,7 @@ class Migrator
 
     /**
      * Run the pending migrations at a given path.
-	 * 在给定路径上运行挂起的迁移
+	 * 在给定路径上运行挂起的迁
      *
      * @param  array|string  $paths
      * @param  array  $options
@@ -112,7 +134,7 @@ class Migrator
         // Once we grab all of the migration files for the path, we will compare them
         // against the migrations that have already been run for this package then
         // run each of the outstanding migrations against a database connection.
-		// 获取路径的所有迁移文件后，我们将对它们进行比较。
+		// 一旦我们获取了路径的所有迁移文件，
         $files = $this->getMigrationFiles($paths);
 
         $this->requireFiles($migrations = $this->pendingMigrations(
@@ -122,7 +144,7 @@ class Migrator
         // Once we have all these migrations that are outstanding we are ready to run
         // we will go ahead and run them "up". This will execute each migration as
         // an operation against a database. Then we'll return this list of them.
-		// 一旦我们完成了所有这些迁移，我们就可以开始运行了。
+		// 旦我们有了这些杰出的迁移，
         $this->runPending($migrations, $options);
 
         return $migrations;
@@ -161,7 +183,7 @@ class Migrator
         if (count($migrations) === 0) {
             $this->fireMigrationEvent(new NoPendingMigrations('up'));
 
-            $this->note('<info>Nothing to migrate.</info>');
+            $this->write(Info::class, 'Nothing to migrate');
 
             return;
         }
@@ -169,7 +191,7 @@ class Migrator
         // Next, we will get the next batch number for the migrations so we can insert
         // correct batch number in the database migrations repository when we store
         // each migration's execution. We will also extract a few of the options.
-		// 接下来，我们将获得迁移的下一个批号，以便我们能插入数据库迁移存储库中正确的批编号。
+		// 接下来，我们将获得迁移的下一个批号
         $batch = $this->repository->getNextBatchNumber();
 
         $pretend = $options['pretend'] ?? false;
@@ -178,10 +200,12 @@ class Migrator
 
         $this->fireMigrationEvent(new MigrationsStarted('up'));
 
+        $this->write(Info::class, 'Running migrations.');
+
         // Once we have the array of migrations, we will spin through them and run the
         // migrations "up" so the changes are made to the databases. We'll then log
         // that the migration was run so we don't repeat it next time we execute.
-		// 有了迁移数组之后，我们将遍历它们并运行"向上"迁移，以便对数据库进行更改。
+		// 一旦我们有了一系列的迁徙，我们会穿过它们。
         foreach ($migrations as $file) {
             $this->runUp($file, $batch, $pretend);
 
@@ -191,6 +215,10 @@ class Migrator
         }
 
         $this->fireMigrationEvent(new MigrationsEnded('up'));
+
+        if ($this->output) {
+            $this->output->writeln('');
+        }
     }
 
     /**
@@ -207,7 +235,7 @@ class Migrator
         // First we will resolve a "real" instance of the migration class from this
         // migration file name. Once we have the instances we can run the actual
         // command such as "up" or "down", or we can just simulate the action.
-		// 首先，我们将从这个迁移文件名解析一个迁移类的"真实"实例。
+		// 首先，我们将从中解析一个迁移类的"真实"实例从迁移文件名。
         $migration = $this->resolvePath($file);
 
         $name = $this->getMigrationName($file);
@@ -216,21 +244,13 @@ class Migrator
             return $this->pretendToRun($migration, 'up');
         }
 
-        $this->note("<comment>Migrating:</comment> {$name}");
-
-        $startTime = microtime(true);
-
-        $this->runMigration($migration, 'up');
-
-        $runTime = number_format((microtime(true) - $startTime) * 1000, 2);
+        $this->write(Task::class, $name, fn () => $this->runMigration($migration, 'up'));
 
         // Once we have run a migrations class, we will log that it was run in this
         // repository so that we don't try to run it next time we do a migration
         // in the application. A migration repository keeps the migrate order.
-		// 一旦我们运行了迁移类，我们将记录它在此运行存储库，以便我们在下次进行迁移时不会尝试运行它。
+		// 一旦我们运行了迁移类，我们将记录它在此运行。
         $this->repository->log($name, $batch);
-
-        $this->note("<info>Migrated:</info>  {$name} ({$runTime}ms)");
     }
 
     /**
@@ -252,12 +272,16 @@ class Migrator
         if (count($migrations) === 0) {
             $this->fireMigrationEvent(new NoPendingMigrations('down'));
 
-            $this->note('<info>Nothing to rollback.</info>');
+            $this->write(Info::class, 'Nothing to rollback.');
 
             return [];
         }
 
-        return $this->rollbackMigrations($migrations, $paths, $options);
+        return tap($this->rollbackMigrations($migrations, $paths, $options), function () {
+            if ($this->output) {
+                $this->output->writeln('');
+            }
+        });
     }
 
     /**
@@ -293,15 +317,17 @@ class Migrator
 
         $this->fireMigrationEvent(new MigrationsStarted('down'));
 
+        $this->write(Info::class, 'Rolling back migrations.');
+
         // Next we will run through all of the migrations and call the "down" method
         // which will reverse each migration in order. This getLast method on the
         // repository already returns these migration's names in reverse order.
-		// 接下来，我们将遍历所有迁移并调用“down"方法。
+		// 接下来，我们将遍历所有迁移并调用"down"方法
         foreach ($migrations as $migration) {
             $migration = (object) $migration;
 
             if (! $file = Arr::get($files, $migration->migration)) {
-                $this->note("<fg=red>Migration not found:</> {$migration->migration}");
+                $this->write(TwoColumnDetail::class, $migration->migration, '<fg=yellow;options=bold>Migration not found</>');
 
                 continue;
             }
@@ -332,16 +358,20 @@ class Migrator
         // Next, we will reverse the migration list so we can run them back in the
         // correct order for resetting this database. This will allow us to get
         // the database back into its "empty" state ready for the migrations.
-		// 接下来，我们将反转迁移列表，以便我们可以在。
+		// 接下来，我们将反转迁移列表。
         $migrations = array_reverse($this->repository->getRan());
 
         if (count($migrations) === 0) {
-            $this->note('<info>Nothing to rollback.</info>');
+            $this->write(Info::class, 'Nothing to rollback.');
 
             return [];
         }
 
-        return $this->resetMigrations($migrations, $paths, $pretend);
+        return tap($this->resetMigrations($migrations, $paths, $pretend), function () {
+            if ($this->output) {
+                $this->output->writeln('');
+            }
+        });
     }
 
     /**
@@ -358,7 +388,7 @@ class Migrator
         // Since the getRan method that retrieves the migration name just gives us the
         // migration name, we will format the names into objects with the name as a
         // property on the objects so that we can pass it to the rollback method.
-		// 因为检索迁移名称的getRan方法只给我们提供迁移名称，我们将把名称格式化为对象。
+		// 因为检索迁移名称的getRan方法只给我们提供。
         $migrations = collect($migrations)->map(function ($m) {
             return (object) ['migration' => $m];
         })->all();
@@ -382,30 +412,22 @@ class Migrator
         // First we will get the file name of the migration so we can resolve out an
         // instance of the migration. Once we get an instance we can either run a
         // pretend execution of the migration or we can run the real migration.
-		// 首先，我们将获得迁移的文件名，以便我们可以解析出。
+		// 首先，我们将获得迁移的文件名。
         $instance = $this->resolvePath($file);
 
         $name = $this->getMigrationName($file);
-
-        $this->note("<comment>Rolling back:</comment> {$name}");
 
         if ($pretend) {
             return $this->pretendToRun($instance, 'down');
         }
 
-        $startTime = microtime(true);
-
-        $this->runMigration($instance, 'down');
-
-        $runTime = number_format((microtime(true) - $startTime) * 1000, 2);
+        $this->write(Task::class, $name, fn () => $this->runMigration($instance, 'down'));
 
         // Once we have successfully run the migration "down" we will remove it from
         // the migration repository so it will be considered to have not been run
         // by the application then will be able to fire by any later operation.
-		// 一旦我们成功地"向下"运行迁移，我们从仓库的迁移移除。
+		// 一旦我们成功地"向下"运行迁移，
         $this->repository->delete($migration);
-
-        $this->note("<info>Rolled back:</info>  {$name} ({$runTime}ms)");
     }
 
     /**
@@ -449,21 +471,25 @@ class Migrator
     protected function pretendToRun($migration, $method)
     {
         try {
-            foreach ($this->getQueries($migration, $method) as $query) {
-                $name = get_class($migration);
+            $name = get_class($migration);
 
-                $reflectionClass = new ReflectionClass($migration);
+            $reflectionClass = new ReflectionClass($migration);
 
-                if ($reflectionClass->isAnonymous()) {
-                    $name = $this->getMigrationName($reflectionClass->getFileName());
-                }
-
-                $this->note("<info>{$name}:</info> {$query['query']}");
+            if ($reflectionClass->isAnonymous()) {
+                $name = $this->getMigrationName($reflectionClass->getFileName());
             }
+
+            $this->write(TwoColumnDetail::class, $name);
+            $this->write(BulletList::class, collect($this->getQueries($migration, $method))->map(function ($query) {
+                return $query['query'];
+            }));
         } catch (SchemaException $e) {
             $name = get_class($migration);
 
-            $this->note("<info>{$name}:</info> failed to dump queries. This may be due to changing database columns using Doctrine, which is not supported while pretending to run migrations.");
+            $this->write(Error::class, sprintf(
+                '[%s] failed to dump queries. This may be due to changing database columns using Doctrine, which is not supported while pretending to run migrations.',
+                $name,
+            ));
         }
     }
 
@@ -480,7 +506,6 @@ class Migrator
         // Now that we have the connections we can resolve it and pretend to run the
         // queries against the database returning the array of raw SQL statements
         // that would get fired against the database system for this migration.
-		// 现在我们有了连接，我们可以解析它并假装运行。
         $db = $this->resolveConnection(
             $migration->getConnection()
         );
@@ -543,9 +568,15 @@ class Migrator
             return new $class;
         }
 
-        $migration = $this->files->getRequire($path);
+        $migration = static::$requiredPathCache[$path] ??= $this->files->getRequire($path);
 
-        return is_object($migration) ? $migration : new $class;
+        if (is_object($migration)) {
+            return method_exists($migration, '__construct')
+                    ? $this->files->getRequire($path)
+                    : clone $migration;
+        }
+
+        return new $class;
     }
 
     /**
@@ -570,7 +601,7 @@ class Migrator
     public function getMigrationFiles($paths)
     {
         return Collection::make($paths)->flatMap(function ($path) {
-            return Str::endsWith($path, '.php') ? [$path] : $this->files->glob($path.'/*_*.php');
+            return str_ends_with($path, '.php') ? [$path] : $this->files->glob($path.'/*_*.php');
         })->filter()->values()->keyBy(function ($file) {
             return $this->getMigrationName($file);
         })->sortBy(function ($file, $key) {
@@ -629,7 +660,7 @@ class Migrator
 
     /**
      * Get the default connection name.
-	 * 获取默认连接名称
+	 * 得到默认连接名称
      *
      * @return string
      */
@@ -684,7 +715,27 @@ class Migrator
      */
     public function resolveConnection($connection)
     {
-        return $this->resolver->connection($connection ?: $this->connection);
+        if (static::$connectionResolverCallback) {
+            return call_user_func(
+                static::$connectionResolverCallback,
+                $this->resolver,
+                $connection ?: $this->connection
+            );
+        } else {
+            return $this->resolver->connection($connection ?: $this->connection);
+        }
+    }
+
+    /**
+     * Set a connection resolver callback.
+	 * 设置连接解析器回调
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public static function resolveConnectionsUsing(Closure $callback)
+    {
+        static::$connectionResolverCallback = $callback;
     }
 
     /**
@@ -775,16 +826,23 @@ class Migrator
     }
 
     /**
-     * Write a note to the console's output.
-	 * 在控制台的输出中写入一个注释
+     * Write to the console's output.
+	 * 写入控制台的输出
      *
-     * @param  string  $message
+     * @param  string  $component
+     * @param  array<int, string>|string  ...$arguments
      * @return void
      */
-    protected function note($message)
+    protected function write($component, ...$arguments)
     {
-        if ($this->output) {
-            $this->output->writeln($message);
+        if ($this->output && class_exists($component)) {
+            (new $component($this->output))->render(...$arguments);
+        } else {
+            foreach ($arguments as $argument) {
+                if (is_callable($argument)) {
+                    $argument();
+                }
+            }
         }
     }
 

@@ -5,11 +5,12 @@
 
 namespace Illuminate\Console;
 
+use Illuminate\Console\Contracts\NewLineAware;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class OutputStyle extends SymfonyStyle
+class OutputStyle extends SymfonyStyle implements NewLineAware
 {
     /**
      * The output instance.
@@ -20,8 +21,16 @@ class OutputStyle extends SymfonyStyle
     private $output;
 
     /**
+     * If the last output written wrote a new line.
+	 * 如果最后一个输出写入，则写入新行。
+     *
+     * @var bool
+     */
+    protected $newLineWritten = false;
+
+    /**
      * Create a new Console OutputStyle instance.
-	 * 创建新的控制台输出格式实例
+	 * 创建一个新的控制台OutputStyle实例
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -35,12 +44,60 @@ class OutputStyle extends SymfonyStyle
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @return void
+     */
+    public function write(string|iterable $messages, bool $newline = false, int $options = 0)
+    {
+        $this->newLineWritten = $newline;
+
+        parent::write($messages, $newline, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return void
+     */
+    public function writeln(string|iterable $messages, int $type = self::OUTPUT_NORMAL)
+    {
+        $this->newLineWritten = true;
+
+        parent::writeln($messages, $type);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return void
+     */
+    public function newLine(int $count = 1)
+    {
+        $this->newLineWritten = $count > 0;
+
+        parent::newLine($count);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function newLineWritten()
+    {
+        if ($this->output instanceof static && $this->output->newLineWritten()) {
+            return true;
+        }
+
+        return $this->newLineWritten;
+    }
+
+    /**
      * Returns whether verbosity is quiet (-q).
 	 * 返回verbose是否为quiet （-q）
      *
      * @return bool
      */
-    public function isQuiet()
+    public function isQuiet(): bool
     {
         return $this->output->isQuiet();
     }
@@ -51,29 +108,27 @@ class OutputStyle extends SymfonyStyle
      *
      * @return bool
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return $this->output->isVerbose();
     }
 
     /**
      * Returns whether verbosity is very verbose (-vv).
-	 * 返回verbose是否非常verbose （-vv）
      *
      * @return bool
      */
-    public function isVeryVerbose()
+    public function isVeryVerbose(): bool
     {
         return $this->output->isVeryVerbose();
     }
 
     /**
      * Returns whether verbosity is debug (-vvv).
-	 * 返回verbose是否为debug （-vvv）
      *
      * @return bool
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return $this->output->isDebug();
     }

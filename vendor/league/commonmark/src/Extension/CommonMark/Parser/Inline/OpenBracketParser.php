@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，内联，左括号解析器
+ * League，CommonMark，扩展，共同标记，Parser，行内，左括号解析器
  */
 
 declare(strict_types=1);
@@ -38,7 +38,6 @@ final class OpenBracketParser implements InlineParserInterface
         $inlineContext->getContainer()->appendChild($node);
 
         // Add entry to stack for this opener
-		// 在这个开瓶器的堆栈中添加条目
         $inlineContext->getDelimiterStack()->addBracket($node, $inlineContext->getCursor()->getPosition(), false);
 
         return true;

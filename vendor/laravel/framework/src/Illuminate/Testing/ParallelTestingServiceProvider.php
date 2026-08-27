@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，并行测试服务提供者
+ * Illuminate, 测试, 并行测试服务提供商
  */
 
 namespace Illuminate\Testing;

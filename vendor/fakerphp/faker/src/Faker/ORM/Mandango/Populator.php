@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Mandango，普及者
+ * Faker，ORM，Mandango，填充器
  */
 
 namespace Faker\ORM\Mandango;
@@ -27,7 +27,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
-	 * 为$实体的生成值的生成添加一个订单
+	 * 为$entity添加生成$number记录的订单
      *
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel\EntityPopulator instance
      * @param int   $number The number of entities to populate
@@ -49,7 +49,7 @@ class Populator
 
     /**
      * Populate the database using all the Entity classes previously added.
-	 * 使用之前添加的所有实体类填充数据库
+	 * 使用前面添加的所有Entity类填充数据库
      *
      * @return array A list of the inserted entities.
      */

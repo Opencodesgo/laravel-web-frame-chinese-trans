@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，循环执行，过程 Forker
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Psy\Shell;
 
 /**
  * An execution loop listener that forks the process before executing code.
+ * 执行循环侦听器，在执行代码之前派生进程。
  *
  * This is awesome, as the session won't die prematurely if user input includes
  * a fatal error, such as redeclaring a class or function.
@@ -42,6 +46,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Process forker is supported if pcntl and posix extensions are available.
+	 * 如果pcntl和posix扩展名可用，则支持进程fork。
      */
     public static function isSupported(): bool
     {
@@ -50,6 +55,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Verify that all required pcntl functions are, in fact, available.
+	 * 验证所有必需的pcntl函数实际上都可用
      */
     public static function isPcntlSupported(): bool
     {
@@ -64,6 +70,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Check whether required pcntl functions are disabled.
+	 * 检查所需的pcntl功能是否已关闭
      */
     public static function disabledPcntlFunctions()
     {
@@ -86,6 +93,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Check whether required posix functions are disabled.
+	 * 检查所需posix功能是否已关闭
      */
     public static function disabledPosixFunctions()
     {
@@ -99,6 +107,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Forks into a main and a loop process.
+	 * 分裂成一个主进程和一个循环进程
      *
      * The loop process will handle the evaluation of all instructions, then
      * return its state via a socket upon completion.
@@ -172,6 +181,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Create a savegame at the start of each loop iteration.
+	 * 在每次循环迭代开始时创建一个保存游戏
      *
      * @param Shell $shell
      */
@@ -182,6 +192,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Clean up old savegames at the end of each loop iteration.
+	 * 在每次循环迭代结束时清理旧的保存游戏
      *
      * @param Shell $shell
      */
@@ -213,6 +224,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Create a savegame fork.
+	 * 创建一个保存分支。
      *
      * The savegame contains the current execution state, and can be resumed in
      * the event that the worker dies unexpectedly (for example, by encountering
@@ -242,6 +254,7 @@ class ProcessForker extends AbstractListener
 
     /**
      * Serialize all serializable return values.
+	 * 序列化所有可序列化的返回值。
      *
      * A naïve serialization will run into issues if there is a Closure or
      * SimpleXMLElement (among other things) in scope when exiting the execution

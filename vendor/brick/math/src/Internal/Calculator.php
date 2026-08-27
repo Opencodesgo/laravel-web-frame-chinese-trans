@@ -16,9 +16,13 @@ use Brick\Math\RoundingMode;
  *
  * Unless otherwise specified, all parameters must be validated as non-empty strings of digits,
  * without leading zero, and with an optional leading minus sign if the number is not zero.
+ * 除非另有说明，否则所有参数必须验证为非空数字字符串。
+ * 不带前导零，如果数字不为零，则带一个可选的前导减号。
  *
  * Any other parameter format will lead to undefined behaviour.
  * All methods must return strings respecting this format, unless specified otherwise.
+ * 任何其他参数格式将导致未定义的行为。
+ * 除非另有指定，否则所有方法必须返回符合此格式的字符串。
  *
  * @internal
  *
@@ -28,33 +32,30 @@ abstract class Calculator
 {
     /**
      * The maximum exponent value allowed for the pow() method.
-	 * pow()方法的最大指数值
+	 * pow()方法允许的最大指数值
      */
     public const MAX_POWER = 1000000;
 
     /**
      * The alphabet for converting from and to base 2 to 36, lowercase.
-	 * 字母表从2到36,小写。
+	 * 用于从基数2转换到基数36（小写）的字母表
      */
     public const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 
     /**
      * The Calculator instance in use.
-	 * 使用的计算器实例
-     *
-     * @var Calculator|null
+	 * 正在使用的Calculator实例
      */
-    private static $instance;
+    private static ?Calculator $instance = null;
 
     /**
      * Sets the Calculator instance to use.
-	 * 设置使用的计算器实例。
+	 * 设置要使用的计算器实例
      *
      * An instance is typically set only in unit tests: the autodetect is usually the best option.
+	 * 实例通常只在单元测试中设置：自动检测通常是最好的选择。
      *
      * @param Calculator|null $calculator The calculator instance, or NULL to revert to autodetect.
-     *
-     * @return void
      */
     final public static function set(?Calculator $calculator) : void
     {
@@ -63,11 +64,10 @@ abstract class Calculator
 
     /**
      * Returns the Calculator instance to use.
-	 * 返回计算器实例使用
+	 * 返回要使用的计算器实例
      *
      * If none has been explicitly set, the fastest available implementation will be returned.
-     *
-     * @return Calculator
+	 * 如果没有显式设置，则返回最快的可用实现。
      *
      * @psalm-pure
      * @psalm-suppress ImpureStaticProperty
@@ -84,11 +84,9 @@ abstract class Calculator
 
     /**
      * Returns the fastest available Calculator implementation.
-	 * 返回最快的可用的计算器实现
+	 * 返回最快的可用计算器实现。
      *
      * @codeCoverageIgnore
-     *
-     * @return Calculator
      */
     private static function detect() : Calculator
     {
@@ -107,9 +105,6 @@ abstract class Calculator
      * Extracts the sign & digits of the operands.
 	 * 提取操作数的符号和数字
      *
-     * @param string $a The first operand.
-     * @param string $b The second operand.
-     *
      * @return array{bool, bool, string, string} Whether $a and $b are negative, followed by their digits.
      */
     final protected function init(string $a, string $b) : array
@@ -125,11 +120,7 @@ abstract class Calculator
 
     /**
      * Returns the absolute value of a number.
-	 * 返回一个数字的绝对值
-     *
-     * @param string $n The number.
-     *
-     * @return string The absolute value.
+	 * 返回数字的绝对值
      */
     final public function abs(string $n) : string
     {
@@ -138,10 +129,6 @@ abstract class Calculator
 
     /**
      * Negates a number.
-     *
-     * @param string $n The number.
-     *
-     * @return string The negated value.
      */
     final public function neg(string $n) : string
     {
@@ -158,9 +145,7 @@ abstract class Calculator
 
     /**
      * Compares two numbers.
-     *
-     * @param string $a The first number.
-     * @param string $b The second number.
+	 * 比较两个数字
      *
      * @return int [-1, 0, 1] If the first number is less than, equal to, or greater than the second number.
      */
@@ -192,37 +177,23 @@ abstract class Calculator
 
     /**
      * Adds two numbers.
-     *
-     * @param string $a The augend.
-     * @param string $b The addend.
-     *
-     * @return string The sum.
+	 * 两个数相加
      */
     abstract public function add(string $a, string $b) : string;
 
     /**
      * Subtracts two numbers.
-     *
-     * @param string $a The minuend.
-     * @param string $b The subtrahend.
-     *
-     * @return string The difference.
+	 * 两个数相减
      */
     abstract public function sub(string $a, string $b) : string;
 
     /**
      * Multiplies two numbers.
-     *
-     * @param string $a The multiplicand.
-     * @param string $b The multiplier.
-     *
-     * @return string The product.
      */
     abstract public function mul(string $a, string $b) : string;
 
     /**
      * Returns the quotient of the division of two numbers.
-	 * 返回两个数字的除法
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
@@ -233,7 +204,7 @@ abstract class Calculator
 
     /**
      * Returns the remainder of the division of two numbers.
-	 * 返回两个数字的其余部分
+	 * 返回两个数的除法余数
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
@@ -244,18 +215,18 @@ abstract class Calculator
 
     /**
      * Returns the quotient and remainder of the division of two numbers.
-	 * 返回两个数字的除法和除法
+	 * 返回两个数的除法的商和余数
      *
      * @param string $a The dividend.
      * @param string $b The divisor, must not be zero.
      *
-     * @return string[] An array containing the quotient and remainder.
+     * @return array{string, string} An array containing the quotient and remainder.
      */
     abstract public function divQR(string $a, string $b) : array;
 
     /**
      * Exponentiates a number.
-	 * 取一个数字
+	 * 取一个数字的指数
      *
      * @param string $a The base number.
      * @param int    $e The exponent, validated as an integer between 0 and MAX_POWER.
@@ -265,10 +236,7 @@ abstract class Calculator
     abstract public function pow(string $a, int $e) : string;
 
     /**
-     * @param string $a
      * @param string $b The modulus; must not be zero.
-     *
-     * @return string
      */
     public function mod(string $a, string $b) : string
     {
@@ -277,16 +245,14 @@ abstract class Calculator
 
     /**
      * Returns the modular multiplicative inverse of $x modulo $m.
-	 * 返回模块化乘法逆的x $ m。
+	 * 返回$x模$m的模乘法逆
      *
      * If $x has no multiplicative inverse mod m, this method must return null.
+	 * 如果$x没有对m取模的乘法逆，则此方法必须返回null。
      *
      * This method can be overridden by the concrete implementation if the underlying library has built-in support.
      *
-     * @param string $x
      * @param string $m The modulus; must not be negative or zero.
-     *
-     * @return string|null
      */
     public function modInverse(string $x, string $m) : ?string
     {
@@ -300,9 +266,7 @@ abstract class Calculator
             $modVal = $this->mod($x, $m);
         }
 
-        $x = '0';
-        $y = '0';
-        $g = $this->gcdExtended($modVal, $m, $x, $y);
+        [$g, $x] = $this->gcdExtended($modVal, $m);
 
         if ($g !== '1') {
             return null;
@@ -313,25 +277,20 @@ abstract class Calculator
 
     /**
      * Raises a number into power with modulo.
-	 * 用模块化提高了一个数字
+	 * 将一个数取模为幂
      *
      * @param string $base The base number; must be positive or zero.
      * @param string $exp  The exponent; must be positive or zero.
      * @param string $mod  The modulus; must be strictly positive.
-     *
-     * @return string The power.
      */
     abstract public function modPow(string $base, string $exp, string $mod) : string;
 
     /**
      * Returns the greatest common divisor of the two numbers.
-	 * 返回两个数字中最大的公共除数。
+	 * 返回两个数的最大公约数
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for GCD calculations.
-     *
-     * @param string $a The first number.
-     * @param string $b The second number.
      *
      * @return string The GCD, always positive, or zero if both arguments are zero.
      */
@@ -348,41 +307,35 @@ abstract class Calculator
         return $this->gcd($b, $this->divR($a, $b));
     }
 
-    private function gcdExtended(string $a, string $b, string &$x, string &$y) : string
+    /**
+     * @return array{string, string, string} GCD, X, Y
+     */
+    private function gcdExtended(string $a, string $b) : array
     {
         if ($a === '0') {
-            $x = '0';
-            $y = '1';
-
-            return $b;
+            return [$b, '0', '1'];
         }
 
-        $x1 = '0';
-        $y1 = '0';
-
-        $gcd = $this->gcdExtended($this->mod($b, $a), $a, $x1, $y1);
+        [$gcd, $x1, $y1] = $this->gcdExtended($this->mod($b, $a), $a);
 
         $x = $this->sub($y1, $this->mul($this->divQ($b, $a), $x1));
         $y = $x1;
 
-        return $gcd;
+        return [$gcd, $x, $y];
     }
 
     /**
      * Returns the square root of the given number, rounded down.
-	 * 返回给定数的平方根,向下。
+	 * 返回给定数字的平方根，向下舍入。
      *
      * The result is the largest x such that x² ≤ n.
      * The input MUST NOT be negative.
-     *
-     * @param string $n The number.
-     *
-     * @return string The square root.
      */
     abstract public function sqrt(string $n) : string;
 
     /**
      * Converts a number from an arbitrary base.
+	 * 从任意进制转换数字
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.
@@ -399,6 +352,7 @@ abstract class Calculator
 
     /**
      * Converts a number to an arbitrary base.
+	 * 将数字转换为任意进制
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.
@@ -427,7 +381,7 @@ abstract class Calculator
 
     /**
      * Converts a non-negative number in an arbitrary base using a custom alphabet, to base 10.
-	 * 使用自定义字母表将非负数转换为基本10
+	 * 使用自定义字母表将任意基数中的非负数转换为以10为基数
      *
      * @param string $number   The number to convert, validated as a non-empty string,
      *                         containing only chars in the given alphabet/base.
@@ -475,7 +429,7 @@ abstract class Calculator
 
     /**
      * Converts a non-negative number to an arbitrary base using a custom alphabet.
-	 * 使用自定义字母表将非负数转换为任意的基础
+	 * 使用自定义字母表将非负数转换为任意基数
      *
      * @param string $number   The number to convert, positive or zero, following the Calculator conventions.
      * @param string $alphabet The alphabet that contains every digit, validated as 2 chars minimum.
@@ -504,7 +458,7 @@ abstract class Calculator
 
     /**
      * Performs a rounded division.
-	 * 执行一个圆形的除法。
+	 * 执行四舍五入除法
      *
      * Rounding is performed when the remainder of the division is not zero.
      *
@@ -512,10 +466,10 @@ abstract class Calculator
      * @param string $b            The divisor, must not be zero.
      * @param int    $roundingMode The rounding mode.
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException  If the rounding mode is invalid.
      * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
+     *
+     * @psalm-suppress ImpureFunctionCall
      */
     final public function divRound(string $a, string $b, int $roundingMode) : string
     {
@@ -590,15 +544,10 @@ abstract class Calculator
 
     /**
      * Calculates bitwise AND of two numbers.
-	 * 计算位和两个数字。
+	 * 计算两个数字的与运算
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
-     *
-     * @param string $a
-     * @param string $b
-     *
-     * @return string
      */
     public function and(string $a, string $b) : string
     {
@@ -607,15 +556,10 @@ abstract class Calculator
 
     /**
      * Calculates bitwise OR of two numbers.
-	 * 计算位或两个数字。
+	 * 计算两个数字的按位或
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
-     *
-     * @param string $a
-     * @param string $b
-     *
-     * @return string
      */
     public function or(string $a, string $b) : string
     {
@@ -624,15 +568,10 @@ abstract class Calculator
 
     /**
      * Calculates bitwise XOR of two numbers.
-	 * 计算位x或2个数。
+	 * 计算两个数字的按位异或
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for bitwise operations.
-     *
-     * @param string $a
-     * @param string $b
-     *
-     * @return string
      */
     public function xor(string $a, string $b) : string
     {
@@ -641,12 +580,11 @@ abstract class Calculator
 
     /**
      * Performs a bitwise operation on a decimal number.
+	 * 对十进制数执行按位运算
      *
-     * @param string $operator The operator to use, must be "and", "or" or "xor".
-     * @param string $a        The left operand.
-     * @param string $b        The right operand.
-     *
-     * @return string
+     * @param 'and'|'or'|'xor' $operator The operator to use.
+     * @param string           $a        The left operand.
+     * @param string           $b        The right operand.
      */
     private function bitwise(string $operator, string $a, string $b) : string
     {
@@ -704,8 +642,6 @@ abstract class Calculator
 
     /**
      * @param string $number A positive, binary number.
-     *
-     * @return string
      */
     private function twosComplement(string $number) : string
     {
@@ -733,11 +669,9 @@ abstract class Calculator
 
     /**
      * Converts a decimal number to a binary string.
-	 * 将十进制数字转换为二进制字符串
+	 * 将十进制数转换为二进制字符串
      *
      * @param string $number The number to convert, positive or zero, only digits.
-     *
-     * @return string
      */
     private function toBinary(string $number) : string
     {
@@ -753,11 +687,9 @@ abstract class Calculator
 
     /**
      * Returns the positive decimal representation of a binary number.
-	 * 返回二进制数的正十进制表示
+	 * 返回二进制数的正十进制表示形式
      *
      * @param string $bytes The bytes representing the number.
-     *
-     * @return string
      */
     private function toDecimal(string $bytes) : string
     {

@@ -20,13 +20,13 @@ use Symfony\Component\Console\Completion\CompletionSuggestions;
 
 /**
  * Eases the testing of command completion.
- * 消除命令完成的测试。
+ * 简化命令完成的测试
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
 class CommandCompletionTester
 {
-    private $command;
+    private Command $command;
 
     public function __construct(Command $command)
     {
@@ -35,7 +35,7 @@ class CommandCompletionTester
 
     /**
      * Create completion suggestions from input tokens.
-	 * 从输入令牌创建完成建议
+	 * 根据输入标记创建补全建议
      */
     public function complete(array $input): array
     {

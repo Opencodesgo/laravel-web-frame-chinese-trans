@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，引用映射
+ * League，CommonMark，参考，基准图
  */
 
 declare(strict_types=1);
@@ -23,7 +23,7 @@ use League\CommonMark\Normalizer\TextNormalizer;
 
 /**
  * A collection of references, indexed by label
- * 引用的集合,由标签索引
+ * 引用的集合，按标签索引。
  */
 final class ReferenceMap implements ReferenceMapInterface
 {

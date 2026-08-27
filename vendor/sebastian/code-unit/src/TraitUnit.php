@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，代码单元，特征单元
+ */
+
 /*
  * This file is part of sebastian/code-unit.
  *

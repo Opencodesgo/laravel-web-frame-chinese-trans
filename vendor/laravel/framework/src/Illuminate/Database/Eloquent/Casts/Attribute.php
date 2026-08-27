@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，描述，属性
+ * Illuminate，数据库，Eloquent，生效，属性
  */
 
 namespace Illuminate\Database\Eloquent\Casts;
@@ -24,8 +24,16 @@ class Attribute
     public $set;
 
     /**
+     * Indicates if caching is enabled for this attribute.
+	 * 指示是否为此属性启用缓存
+     *
+     * @var bool
+     */
+    public $withCaching = false;
+
+    /**
      * Indicates if caching of objects is enabled for this attribute.
-	 * 指明是否为此属性启用对象缓存
+	 * 指示是否为此属性启用对象缓存
      *
      * @var bool
      */
@@ -43,6 +51,19 @@ class Attribute
     {
         $this->get = $get;
         $this->set = $set;
+    }
+
+    /**
+     * Create a new attribute accessor / mutator.
+	 * 创建一个新的属性访问器/ mutator
+     *
+     * @param  callable|null  $get
+     * @param  callable|null  $set
+     * @return static
+     */
+    public static function make(callable $get = null, callable $set = null): static
+    {
+        return new static($get, $set);
     }
 
     /**
@@ -78,6 +99,19 @@ class Attribute
     public function withoutObjectCaching()
     {
         $this->withObjectCaching = false;
+
+        return $this;
+    }
+
+    /**
+     * Enable caching for the attribute.
+	 * 为属性启用缓存
+     *
+     * @return static
+     */
+    public function shouldCache()
+    {
+        $this->withCaching = true;
 
         return $this;
     }

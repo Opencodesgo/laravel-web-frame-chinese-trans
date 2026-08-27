@@ -20,7 +20,7 @@ class DatabaseConnector implements ConnectorInterface
 
     /**
      * Create a new connector instance.
-	 * 创建新的连接器实例
+	 * 创建一个新的连接器实例
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $connections
      * @return void

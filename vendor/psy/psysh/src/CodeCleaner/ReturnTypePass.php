@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，返回类型传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -25,6 +28,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Add runtime validation for return types.
+ * 为返回类型添加运行时验证。
  */
 class ReturnTypePass extends CodeCleanerPass
 {

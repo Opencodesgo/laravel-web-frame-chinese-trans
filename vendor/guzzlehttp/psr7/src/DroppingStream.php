@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，滴流
+ * GuzzleHttp，Psr7，丢弃流
  */
 
 declare(strict_types=1);
@@ -12,7 +12,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Stream decorator that begins dropping data once the size of the underlying
  * stream becomes too full.
- * 开始删除数据大小的流装饰器。
+ * 一旦底层的水流太满就开始删除数据的流装饰器
  */
 final class DroppingStream implements StreamInterface
 {
@@ -44,6 +44,7 @@ final class DroppingStream implements StreamInterface
         }
 
         // Write the stream or a subset of the stream if needed.
+		// 如果需要，写入流或流的子集。
         if (strlen($string) < $diff) {
             return $this->stream->write($string);
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，流畅的
+ * Illuminate, 支持, 流畅的
  */
 
 namespace Illuminate\Support;
@@ -10,21 +10,28 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
 
+/**
+ * @template TKey of array-key
+ * @template TValue
+ *
+ * @implements \Illuminate\Contracts\Support\Arrayable<TKey, TValue>
+ * @implements \ArrayAccess<TKey, TValue>
+ */
 class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 {
     /**
      * All of the attributes set on the fluent instance.
 	 * 在流畅实例上设置的所有属性
      *
-     * @var array
+     * @var array<TKey, TValue>
      */
     protected $attributes = [];
 
     /**
      * Create a new fluent instance.
-	 * 创建新的流畅实例
+	 * 创建一个新的流畅实例
      *
-     * @param  array|object  $attributes
+     * @param  iterable<TKey, TValue>  $attributes
      * @return void
      */
     public function __construct($attributes = [])
@@ -38,9 +45,11 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Get an attribute from the fluent instance.
 	 * 从流畅实例获取属性
      *
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return mixed
+     * @template TGetDefault
+     *
+     * @param  TKey  $key
+     * @param  TGetDefault|(\Closure(): TGetDefault)  $default
+     * @return TValue|TGetDefault
      */
     public function get($key, $default = null)
     {
@@ -55,7 +64,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Get the attributes from the fluent instance.
 	 * 从流畅实例获取属性
      *
-     * @return array
+     * @return array<TKey, TValue>
      */
     public function getAttributes()
     {
@@ -64,9 +73,9 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Convert the fluent instance to an array.
-	 * 转换流畅实例为数组
+	 * 将fluent实例转换为数组
      *
-     * @return array
+     * @return array<TKey, TValue>
      */
     public function toArray()
     {
@@ -77,10 +86,9 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Convert the object into something JSON serializable.
 	 * 将对象转换为JSON可序列化的对象
      *
-     * @return array
+     * @return array<TKey, TValue>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -101,11 +109,10 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Determine if the given offset exists.
 	 * 确定给定的偏移量是否存在
      *
-     * @param  string  $offset
+     * @param  TKey  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->attributes[$offset]);
     }
@@ -114,11 +121,10 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Get the value for a given offset.
 	 * 获取给定偏移量的值
      *
-     * @param  string  $offset
-     * @return mixed
+     * @param  TKey  $offset
+     * @return TValue|null
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
@@ -127,12 +133,11 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Set the value at the given offset.
 	 * 在给定的偏移量处设置值
      *
-     * @param  string  $offset
-     * @param  mixed  $value
+     * @param  TKey  $offset
+     * @param  TValue  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->attributes[$offset] = $value;
     }
@@ -141,11 +146,10 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Unset the value at the given offset.
 	 * 在给定偏移量处取消值的设置
      *
-     * @param  string  $offset
+     * @param  TKey  $offset
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset]);
     }
@@ -154,13 +158,13 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Handle dynamic calls to the fluent instance to set attributes.
 	 * 处理对fluent实例的动态调用以设置属性
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param  TKey  $method
+     * @param  array{0: ?TValue}  $parameters
      * @return $this
      */
     public function __call($method, $parameters)
     {
-        $this->attributes[$method] = count($parameters) > 0 ? $parameters[0] : true;
+        $this->attributes[$method] = count($parameters) > 0 ? reset($parameters) : true;
 
         return $this;
     }
@@ -169,8 +173,8 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Dynamically retrieve the value of an attribute.
 	 * 动态检索属性的值
      *
-     * @param  string  $key
-     * @return mixed
+     * @param  TKey  $key
+     * @return TValue|null
      */
     public function __get($key)
     {
@@ -181,8 +185,8 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Dynamically set the value of an attribute.
 	 * 动态设置属性的值
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param  TKey  $key
+     * @param  TValue  $value
      * @return void
      */
     public function __set($key, $value)
@@ -194,7 +198,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Dynamically check if an attribute is set.
 	 * 动态检查是否设置了属性
      *
-     * @param  string  $key
+     * @param  TKey  $key
      * @return bool
      */
     public function __isset($key)
@@ -206,7 +210,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * Dynamically unset an attribute.
 	 * 动态取消设置属性
      *
-     * @param  string  $key
+     * @param  TKey  $key
      * @return void
      */
     public function __unset($key)

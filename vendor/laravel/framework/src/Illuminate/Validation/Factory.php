@@ -33,7 +33,7 @@ class Factory implements FactoryContract
      * The IoC container instance.
 	 * IoC容器实例
      *
-     * @var \Illuminate\Contracts\Container\Container
+     * @var \Illuminate\Contracts\Container\Container|null
      */
     protected $container;
 
@@ -41,7 +41,7 @@ class Factory implements FactoryContract
      * All of the custom validator extensions.
 	 * 所有自定义验证器扩展
      *
-     * @var array
+     * @var array<string, \Closure|string>
      */
     protected $extensions = [];
 
@@ -49,7 +49,7 @@ class Factory implements FactoryContract
      * All of the custom implicit validator extensions.
 	 * 所有自定义隐式验证器扩展
      *
-     * @var array
+     * @var array<string, \Closure|string>
      */
     protected $implicitExtensions = [];
 
@@ -57,7 +57,7 @@ class Factory implements FactoryContract
      * All of the custom dependent validator extensions.
 	 * 所有自定义依赖验证器扩展
      *
-     * @var array
+     * @var array<string, \Closure|string>
      */
     protected $dependentExtensions = [];
 
@@ -65,7 +65,7 @@ class Factory implements FactoryContract
      * All of the custom validator message replacers.
 	 * 所有自定义验证器消息替换程序
      *
-     * @var array
+     * @var array<string, \Closure|string>
      */
     protected $replacers = [];
 
@@ -73,7 +73,7 @@ class Factory implements FactoryContract
      * All of the fallback messages for custom rules.
 	 * 自定义规则的所有回退消息
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $fallbackMessages = [];
 
@@ -83,7 +83,7 @@ class Factory implements FactoryContract
      *
      * @var bool
      */
-    protected $excludeUnvalidatedArrayKeys;
+    protected $excludeUnvalidatedArrayKeys = true;
 
     /**
      * The Validator resolver instance.
@@ -95,7 +95,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator factory instance.
-	 * 创建一个新的验证器工厂实例
+	 * 创建一个新的Validator工厂实例
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @param  \Illuminate\Contracts\Container\Container|null  $container
@@ -109,7 +109,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator instance.
-	 * 创建新的验证器实例
+	 * 创建一个新的Validator实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -126,7 +126,7 @@ class Factory implements FactoryContract
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
-		// 状态验证器负责检查唯一的和存在的数据。
+		// 状态验证器负责检查唯一的和验证器存在的数据。
         if (! is_null($this->verifier)) {
             $validator->setPresenceVerifier($this->verifier);
         }
@@ -134,7 +134,7 @@ class Factory implements FactoryContract
         // Next we'll set the IoC container instance of the validator, which is used to
         // resolve out class based validator extensions. If it is not set then these
         // types of extensions will not be possible on these validation instances.
-		// 接下来，我们将设置验证器的IoC容器实例，这用于解析出基于类的验证器扩展。
+		// 接下来，我们将设置验证器的IoC容器实例，我将被用于解析出基于类的验证器扩展。
         if (! is_null($this->container)) {
             $validator->setContainer($this->container);
         }
@@ -165,7 +165,7 @@ class Factory implements FactoryContract
 
     /**
      * Resolve a new Validator instance.
-	 * 解析一个新的验证器实例
+	 * 解析一个新的Validator实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -194,8 +194,8 @@ class Factory implements FactoryContract
         $validator->addExtensions($this->extensions);
 
         // Next, we will add the implicit extensions, which are similar to the required
-        // and accepted rule in that they are run even if the attributes is not in a
-        // array of data that is given to a validator instances via instantiation.
+        // and accepted rule in that they're run even if the attributes aren't in an
+        // array of data which is given to a validator instance via instantiation.
 		// 接下来，我们将添加隐式扩展，这与必需的扩展类似。
         $validator->addImplicitExtensions($this->implicitExtensions);
 
@@ -274,8 +274,19 @@ class Factory implements FactoryContract
     }
 
     /**
-     * Indicate that unvalidated array keys should be excluded, even if the parent array was validated.
-	 * 指示应排除未验证的数组键，即使父数组已经过验证。
+     * Indicate that unvalidated array keys should be included in validated data when the parent array is validated.
+	 * 指示在验证父数组时，应将未验证的数组键包含在已验证的数据中。
+     *
+     * @return void
+     */
+    public function includeUnvalidatedArrayKeys()
+    {
+        $this->excludeUnvalidatedArrayKeys = false;
+    }
+
+    /**
+     * Indicate that unvalidated array keys should be excluded from the validated data, even if the parent array was validated.
+	 * 指示应将未经验证的数组键从已验证的数据中排除，即使父数组已经过验证。
      *
      * @return void
      */
@@ -334,7 +345,7 @@ class Factory implements FactoryContract
      * Get the container instance used by the validation factory.
 	 * 获取验证工厂使用的容器实例
      *
-     * @return \Illuminate\Contracts\Container\Container
+     * @return \Illuminate\Contracts\Container\Container|null
      */
     public function getContainer()
     {

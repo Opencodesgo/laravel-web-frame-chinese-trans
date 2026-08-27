@@ -9,9 +9,10 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Thrown when the request cannot be completed because of network issues.
- * 当请求不能通过网络问题完成时抛出。
+ * 当由于网络问题而无法完成请求时抛出
  *
  * There is no response object as this exception is thrown when no response has been received.
+ * 没有响应对象，因为当没有收到响应时将引发此异常。
  *
  * Example: the target host name can not be resolved or the connection failed.
  */

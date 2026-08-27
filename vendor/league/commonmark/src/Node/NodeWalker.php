@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，节点步行者
+ * League，CommonMark，节点，节点线程
  */
 
 declare(strict_types=1);
@@ -43,7 +43,7 @@ final class NodeWalker
      * Returns an event which contains node and entering flag
      * (entering is true when we enter a Node from a parent or sibling,
      * and false when we reenter it from child)
-	 * 返回一个包含节点和进入标志的事件
+	 * 返回一个包含节点和进入标志的事件（当从父节点或兄弟节点进入时，进入标志为 true；从子节点重新进入时，进入标志为 false）
      */
     public function next(): ?NodeWalkerEvent
     {

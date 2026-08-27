@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，助手，表式分离器
+ * Symfony，Component，Console，助手，表分隔符
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * Marks a row as being a separator.
- * 标记一行为分隔符
+ * 将一行标记为分隔符。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

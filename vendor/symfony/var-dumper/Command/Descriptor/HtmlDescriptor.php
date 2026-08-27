@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，命令，描述符号，Html 描述符
+ * Symfony，Component，VarDumper，指令，描述符，Html 描述符
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 /**
  * Describe collected data clones for html output.
- * 描述为html输出收集的数据克隆。
+ * 描述为html输出而收集的数据克隆。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *
@@ -28,8 +28,8 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  */
 class HtmlDescriptor implements DumpDescriptorInterface
 {
-    private $dumper;
-    private $initialized = false;
+    private HtmlDumper $dumper;
+    private bool $initialized = false;
 
     public function __construct(HtmlDumper $dumper)
     {
@@ -49,7 +49,7 @@ class HtmlDescriptor implements DumpDescriptorInterface
         if (isset($context['request'])) {
             $request = $context['request'];
             $controller = "<span class='dumped-tag'>{$this->dumper->dump($request['controller'], true, ['maxDepth' => 0])}</span>";
-            $title = sprintf('<code>%s</code> <a href="%s">%s</a>', $request['method'], $uri = $request['uri'], $uri);
+            $title = \sprintf('<code>%s</code> <a href="%s">%s</a>', $request['method'], $uri = $request['uri'], $uri);
             $dedupIdentifier = $request['identifier'];
         } elseif (isset($context['cli'])) {
             $title = '<code>$ </code>'.$context['cli']['command_line'];
@@ -62,9 +62,9 @@ class HtmlDescriptor implements DumpDescriptorInterface
         if (isset($context['source'])) {
             $source = $context['source'];
             $projectDir = $source['project_dir'] ?? null;
-            $sourceDescription = sprintf('%s on line %d', $source['name'], $source['line']);
+            $sourceDescription = \sprintf('%s on line %d', $source['name'], $source['line']);
             if (isset($source['file_link'])) {
-                $sourceDescription = sprintf('<a href="%s">%s</a>', $source['file_link'], $sourceDescription);
+                $sourceDescription = \sprintf('<a href="%s">%s</a>', $source['file_link'], $sourceDescription);
             }
         }
 
@@ -109,7 +109,7 @@ HTML
 
         $renderedTags = '';
         foreach ($tags as $key => $value) {
-            $renderedTags .= sprintf('<li><span class="badge">%s</span>%s</li>', $key, $value);
+            $renderedTags .= \sprintf('<li><span class="badge">%s</span>%s</li>', $key, $value);
         }
 
         return <<<HTML

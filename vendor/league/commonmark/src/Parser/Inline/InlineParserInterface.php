@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，分析器，内联，内联解析器接口
+ * League，CommonMark，解析器，内联，内联解析器接口
  */
 
 declare(strict_types=1);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，异常，命名空间未找到异常
+ * Symfony，Component，Console，异常，未找到命名空间异常
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect namespace typed in the console.
- * 表示在控制台中键入的不正确的名称空间
+ * 表示在控制台中键入的不正确的名称空间。
  *
  * @author Pierre du Plessis <pdples@gmail.com>
  */

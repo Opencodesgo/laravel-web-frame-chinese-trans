@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，异常，时间源异常
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -18,6 +21,7 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate that the source of time encountered an error
+ * 抛出以指示时间源遇到错误
  */
 class TimeSourceException extends PhpRuntimeException implements UuidExceptionInterface
 {

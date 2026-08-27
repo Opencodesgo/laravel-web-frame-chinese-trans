@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集器，异常数据收集器
- */
+ * Symfony，Component，HttpKernel，数据收集者，异常数据收集者
+ *
 
 /*
  * This file is part of the Symfony package.
@@ -25,24 +25,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExceptionDataCollector extends DataCollector
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         if (null !== $exception) {
             $this->data = [
-                'exception' => FlattenException::createFromThrowable($exception),
+                'exception' => FlattenException::createWithDataRepresentation($exception),
             ];
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
-    {
-        $this->data = [];
     }
 
     public function hasException(): bool
@@ -50,10 +39,7 @@ class ExceptionDataCollector extends DataCollector
         return isset($this->data['exception']);
     }
 
-    /**
-     * @return \Exception|FlattenException
-     */
-    public function getException()
+    public function getException(): \Exception|FlattenException
     {
         return $this->data['exception'];
     }
@@ -78,9 +64,6 @@ class ExceptionDataCollector extends DataCollector
         return $this->data['exception']->getTrace();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'exception';

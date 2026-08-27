@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，高亮的
+ * NunoMaduro，Collision，高光色
  */
 
 declare(strict_types=1);
@@ -14,58 +14,76 @@ use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
  */
 final class Highlighter implements HighlighterContract
 {
-    public const TOKEN_DEFAULT    = 'token_default';
-    public const TOKEN_COMMENT    = 'token_comment';
-    public const TOKEN_STRING     = 'token_string';
-    public const TOKEN_HTML       = 'token_html';
-    public const TOKEN_KEYWORD    = 'token_keyword';
-    public const ACTUAL_LINE_MARK = 'actual_line_mark';
-    public const LINE_NUMBER      = 'line_number';
+    public const TOKEN_DEFAULT = 'token_default';
 
-    private const ARROW_SYMBOL        = '>';
-    private const DELIMITER           = '|';
-    private const ARROW_SYMBOL_UTF8   = '➜';
-    private const DELIMITER_UTF8      = '▕'; // '▶';
+    public const TOKEN_COMMENT = 'token_comment';
+
+    public const TOKEN_STRING = 'token_string';
+
+    public const TOKEN_HTML = 'token_html';
+
+    public const TOKEN_KEYWORD = 'token_keyword';
+
+    public const ACTUAL_LINE_MARK = 'actual_line_mark';
+
+    public const LINE_NUMBER = 'line_number';
+
+    private const ARROW_SYMBOL = '>';
+
+    private const DELIMITER = '|';
+
+    private const ARROW_SYMBOL_UTF8 = '➜';
+
+    private const DELIMITER_UTF8 = '▕'; // '▶';
+
     private const LINE_NUMBER_DIVIDER = 'line_divider';
-    private const MARKED_LINE_NUMBER  = 'marked_line';
-    private const WIDTH               = 3;
+
+    private const MARKED_LINE_NUMBER = 'marked_line';
+
+    private const WIDTH = 3;
+
     /**
      * Holds the theme.
+	 * 保持主题
      *
      * @var array
      */
     private const THEME = [
-        self::TOKEN_STRING  => ['light_gray'],
+        self::TOKEN_STRING => ['light_gray'],
         self::TOKEN_COMMENT => ['dark_gray', 'italic'],
         self::TOKEN_KEYWORD => ['magenta', 'bold'],
         self::TOKEN_DEFAULT => ['default', 'bold'],
-        self::TOKEN_HTML    => ['blue', 'bold'],
+        self::TOKEN_HTML => ['blue', 'bold'],
 
-        self::ACTUAL_LINE_MARK    => ['red', 'bold'],
-        self::LINE_NUMBER         => ['dark_gray'],
-        self::MARKED_LINE_NUMBER  => ['italic', 'bold'],
+        self::ACTUAL_LINE_MARK => ['red', 'bold'],
+        self::LINE_NUMBER => ['dark_gray'],
+        self::MARKED_LINE_NUMBER => ['italic', 'bold'],
         self::LINE_NUMBER_DIVIDER => ['dark_gray'],
     ];
+
     /** @var ConsoleColor */
     private $color;
 
     /** @var array */
     private const DEFAULT_THEME = [
-        self::TOKEN_STRING  => 'red',
+        self::TOKEN_STRING => 'red',
         self::TOKEN_COMMENT => 'yellow',
         self::TOKEN_KEYWORD => 'green',
         self::TOKEN_DEFAULT => 'default',
-        self::TOKEN_HTML    => 'cyan',
+        self::TOKEN_HTML => 'cyan',
 
-        self::ACTUAL_LINE_MARK    => 'dark_gray',
-        self::LINE_NUMBER         => 'dark_gray',
-        self::MARKED_LINE_NUMBER  => 'dark_gray',
+        self::ACTUAL_LINE_MARK => 'dark_gray',
+        self::LINE_NUMBER => 'dark_gray',
+        self::MARKED_LINE_NUMBER => 'dark_gray',
         self::LINE_NUMBER_DIVIDER => 'dark_gray',
     ];
+
     /** @var string */
     private $delimiter = self::DELIMITER_UTF8;
+
     /** @var string */
     private $arrow = self::ARROW_SYMBOL_UTF8;
+
     /**
      * @var string
      */
@@ -80,7 +98,7 @@ final class Highlighter implements HighlighterContract
         $this->color = $color ?: new ConsoleColor();
 
         foreach (self::DEFAULT_THEME as $name => $styles) {
-            if (!$this->color->hasTheme($name)) {
+            if (! $this->color->hasTheme($name)) {
                 $this->color->addTheme($name, $styles);
             }
         }
@@ -88,9 +106,9 @@ final class Highlighter implements HighlighterContract
         foreach (self::THEME as $name => $styles) {
             $this->color->addTheme($name, $styles);
         }
-        if (!$UTF8) {
+        if (! $UTF8) {
             $this->delimiter = self::DELIMITER;
-            $this->arrow     = self::ARROW_SYMBOL;
+            $this->arrow = self::ARROW_SYMBOL;
         }
         $this->delimiter .= ' ';
     }
@@ -104,18 +122,18 @@ final class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param string $source
-     * @param int    $lineNumber
-     * @param int    $linesBefore
-     * @param int    $linesAfter
+     * @param  string  $source
+     * @param  int  $lineNumber
+     * @param  int  $linesBefore
+     * @param  int  $linesAfter
      */
     public function getCodeSnippet($source, $lineNumber, $linesBefore = 2, $linesAfter = 2): string
     {
         $tokenLines = $this->getHighlightedLines($source);
 
-        $offset     = $lineNumber - $linesBefore - 1;
-        $offset     = max($offset, 0);
-        $length     = $linesAfter + $linesBefore + 1;
+        $offset = $lineNumber - $linesBefore - 1;
+        $offset = max($offset, 0);
+        $length = $linesAfter + $linesBefore + 1;
         $tokenLines = array_slice($tokenLines, $offset, $length, $preserveKeys = true);
 
         $lines = $this->colorLines($tokenLines);
@@ -124,7 +142,7 @@ final class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param string $source
+     * @param  string  $source
      */
     private function getHighlightedLines($source): array
     {
@@ -135,15 +153,15 @@ final class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param string $source
+     * @param  string  $source
      */
     private function tokenize($source): array
     {
         $tokens = token_get_all($source);
 
-        $output      = [];
+        $output = [];
         $currentType = null;
-        $buffer      = '';
+        $buffer = '';
 
         foreach ($tokens as $token) {
             if (is_array($token)) {
@@ -196,8 +214,8 @@ final class Highlighter implements HighlighterContract
             }
 
             if ($currentType !== $newType) {
-                $output[]    = [$currentType, $buffer];
-                $buffer      = '';
+                $output[] = [$currentType, $buffer];
+                $buffer = '';
                 $currentType = $newType;
             }
 
@@ -220,7 +238,7 @@ final class Highlighter implements HighlighterContract
             foreach (explode("\n", $token[1]) as $count => $tokenLine) {
                 if ($count > 0) {
                     $lines[] = $line;
-                    $line    = [];
+                    $line = [];
                 }
 
                 if ($tokenLine === '') {
@@ -256,14 +274,14 @@ final class Highlighter implements HighlighterContract
     }
 
     /**
-     * @param int|null $markLine
+     * @param  int|null  $markLine
      */
     private function lineNumbers(array $lines, $markLine = null): string
     {
         $lineStrlen = strlen((string) (array_key_last($lines) + 1));
         $lineStrlen = $lineStrlen < self::WIDTH ? self::WIDTH : $lineStrlen;
-        $snippet    = '';
-        $mark       = '  ' . $this->arrow . ' ';
+        $snippet = '';
+        $mark = '  '.$this->arrow.' ';
         foreach ($lines as $i => $line) {
             $coloredLineNumber = $this->coloredLineNumber(self::LINE_NUMBER, $i, $lineStrlen);
 
@@ -285,16 +303,16 @@ final class Highlighter implements HighlighterContract
             $snippet .=
                 $this->color->apply(self::LINE_NUMBER_DIVIDER, $this->delimiter);
 
-            $snippet .= $line . PHP_EOL;
+            $snippet .= $line.PHP_EOL;
         }
 
         return $snippet;
     }
 
     /**
-     * @param string $style
-     * @param int    $i
-     * @param int    $lineStrlen
+     * @param  string  $style
+     * @param  int  $i
+     * @param  int  $lineStrlen
      */
     private function coloredLineNumber($style, $i, $lineStrlen): string
     {

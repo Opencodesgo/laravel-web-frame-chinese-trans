@@ -35,9 +35,9 @@ class Sequence implements Countable
 
     /**
      * Create a new sequence instance.
-	 * 创建新的序列实例
+	 * 创建一个新的序列实例
      *
-     * @param  array  $sequence
+     * @param  mixed  ...$sequence
      * @return void
      */
     public function __construct(...$sequence)

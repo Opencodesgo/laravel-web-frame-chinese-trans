@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，内部，可打印的新匿名类节点
+ * PhpParser，构建者，内部，可打印的新匿名类节点
  */
 
 namespace PhpParser\Internal;
@@ -11,6 +11,7 @@ use PhpParser\Node\Expr;
 
 /**
  * This node is used internally by the format-preserving pretty printer to print anonymous classes.
+ * 保持格式的漂亮打印机在内部使用该节点来打印匿名类。
  *
  * The normal anonymous class structure violates assumptions about the order of token offsets.
  * Namely, the constructor arguments are part of the Expr\New_ node and follow the class node, even

@@ -18,7 +18,7 @@ interface QueueingDispatcher extends Dispatcher
 
     /**
      * Create a new batch of queueable jobs.
-	 * 创建一批新的可排队任务
+	 * 创建一批新的可排队作业
      *
      * @param  \Illuminate\Support\Collection|array  $jobs
      * @return \Illuminate\Bus\PendingBatch

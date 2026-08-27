@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，代码清洁，Empty Array Dim Fetch Pass
+ * Psy，代码清理，空 Array Dim Fetch Pass
  */
 
 /*

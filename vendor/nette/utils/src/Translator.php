@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，定位，翻译器
+ * Nette，定位，翻译机
  */
 
 /**
@@ -21,10 +21,9 @@ interface Translator
 {
 	/**
 	 * Translates the given string.
-	 * @param  mixed  $message
-	 * @param  mixed  ...$parameters
+	 * 翻译给定的字符串
 	 */
-	function translate($message, ...$parameters): string;
+	function translate(string|\Stringable $message, mixed ...$parameters): string|\Stringable;
 }
 
 

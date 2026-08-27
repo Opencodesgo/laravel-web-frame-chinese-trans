@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，类有属性
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -35,6 +40,7 @@ class ClassHasAttribute extends Constraint
 
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示形式
      */
     public function toString(): string
     {
@@ -47,6 +53,7 @@ class ClassHasAttribute extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @param mixed $other value or object to evaluate
      */
@@ -67,9 +74,11 @@ class ClassHasAttribute extends Constraint
 
     /**
      * Returns the description of the failure.
+	 * 返回失败的描述。
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
+	 * 大多数情况下，失败消息的开头是“Failed asserting that”。该方法应返回这句话的后半部分。
      *
      * @param mixed $other evaluated value or object
      */

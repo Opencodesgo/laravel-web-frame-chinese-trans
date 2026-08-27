@@ -36,7 +36,7 @@ class NodeDumper {
 
     /**
      * Constructs a NodeDumper.
-	 * 构造一个nodedump。
+	 * 构造一个 NodeDumper
      *
      * Supported options:
      *  * bool dumpComments: Whether comments should be dumped.
@@ -151,7 +151,7 @@ class NodeDumper {
         } elseif ($node instanceof Comment) {
             $this->res .= \str_replace("\n", $this->nl, $node->getReformattedText());
         } elseif (\is_string($node)) {
-            $this->res .= \str_replace("\n", $this->nl, (string)$node);
+            $this->res .= \str_replace("\n", $this->nl, $node);
         } elseif (\is_int($node) || \is_float($node)) {
             $this->res .= $node;
         } elseif (null === $node) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，编码器，Base64 Mime报头编码器
+ * Symfony，Component，Mime，译码器，Base64 内容编码器
  */
 
 /*

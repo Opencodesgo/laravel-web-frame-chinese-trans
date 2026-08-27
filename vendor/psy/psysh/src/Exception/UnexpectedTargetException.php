@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，意料之外目标异常
+ */
 
 /*
  * This file is part of Psy Shell.

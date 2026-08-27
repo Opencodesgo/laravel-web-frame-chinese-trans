@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，渲染器，块，段落渲染器
+ * League，CommonMark，渲染器，代码块，段渲染器
  */
 
 declare(strict_types=1);
@@ -65,7 +65,7 @@ final class ParagraphRenderer implements NodeRendererInterface, XmlNodeRendererI
     private function inTightList(Paragraph $node): bool
     {
         // Only check up to two (2) levels above this for tightness
-		// 只检查高强度以上的2(2)水平
+		// 只检查两(2)级以上的密封性
         $i = 2;
         while (($node = $node->parent()) && $i--) {
             if ($node instanceof TightBlockInterface) {

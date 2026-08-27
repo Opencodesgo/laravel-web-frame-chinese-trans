@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，异常，普通标记例外
+ * League，CommonMark，异常，普通标记异常
  */
 
 declare(strict_types=1);
@@ -18,7 +18,7 @@ namespace League\CommonMark\Exception;
 
 /**
  * Marker interface for all exceptions thrown by this library.
- * 此库抛出的所有异常的标记接口。
+ * 此库抛出的所有异常的标记接口
  */
 interface CommonMarkException extends \Throwable
 {

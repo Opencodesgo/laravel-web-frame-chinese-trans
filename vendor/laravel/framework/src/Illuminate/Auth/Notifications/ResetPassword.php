@@ -23,7 +23,7 @@ class ResetPassword extends Notification
      * The callback that should be used to create the reset password URL.
 	 * 应该用于创建重置密码URL的回调
      *
-     * @var \Closure|null
+     * @var (\Closure(mixed, string): string)|null
      */
     public static $createUrlCallback;
 
@@ -31,7 +31,7 @@ class ResetPassword extends Notification
      * The callback that should be used to build the mail message.
 	 * 应该用于构建邮件消息的回调
      *
-     * @var \Closure|null
+     * @var (\Closure(mixed, string): \Illuminate\Notifications\Messages\MailMessage)|null
      */
     public static $toMailCallback;
 
@@ -49,7 +49,7 @@ class ResetPassword extends Notification
 
     /**
      * Get the notification's channels.
-	 * 得到通知通道
+	 * 获取通知的通道
      *
      * @param  mixed  $notifiable
      * @return array|string
@@ -115,7 +115,7 @@ class ResetPassword extends Notification
      * Set a callback that should be used when creating the reset password button URL.
 	 * 设置一个在创建重置密码按钮URL时应该使用的回调
      *
-     * @param  \Closure  $callback
+     * @param  \Closure(mixed, string): string  $callback
      * @return void
      */
     public static function createUrlUsing($callback)
@@ -127,7 +127,7 @@ class ResetPassword extends Notification
      * Set a callback that should be used when building the notification mail message.
 	 * 设置在构建通知邮件消息时应使用的回调
      *
-     * @param  \Closure  $callback
+     * @param  \Closure(mixed, string): \Illuminate\Notifications\Messages\MailMessage  $callback
      * @return void
      */
     public static function toMailUsing($callback)

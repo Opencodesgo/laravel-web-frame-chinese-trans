@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，Slack，松弛记录
+ * Monolog，处理器，Slack，Slack 记录
  */
 
 /*
@@ -22,7 +22,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Slack record utility helping to log to Slack webhooks or API.
- * 懈怠记录实用工具,帮助登录到松弛的网络钩子或API。
+ * Slack记录工具，帮助登录Slack webhook或API。
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @author Haralan Dobrev <hkdobrev@gmail.com>
@@ -62,7 +62,7 @@ class SlackRecord
 
     /**
      * Whether the message should be added to Slack as attachment (plain text otherwise)
-	 * 是否应该将消息添加到松弛的附件(否则)
+	 * 是否应该将消息作为附件添加到Slack（否则为纯文本）
      * @var bool
      */
     private $useAttachment;
@@ -83,7 +83,6 @@ class SlackRecord
 
     /**
      * Dot separated list of fields to exclude from slack message. E.g. ['context.field1', 'extra.field2']
-	 * 点分隔的字段列表，以排除slack消息。如。
      * @var string[]
      */
     private $excludeFields;
@@ -212,7 +211,6 @@ class SlackRecord
     /**
      * Returns a Slack message attachment color associated with
      * provided level.
-	 * 返回与此相关的松弛消息附件颜色
      */
     public function getAttachmentColor(int $level): string
     {

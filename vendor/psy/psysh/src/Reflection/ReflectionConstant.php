@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，反射常数
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Reflection;
 
 /**
  * Somehow the standard reflection library doesn't include constants.
+ * 不知何故，标准反射库不包括常量。
  *
  * ReflectionConstant corrects that omission.
  */
@@ -36,6 +40,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Construct a ReflectionConstant object.
+	 * 构造一个ReflectionConstant对象
      *
      * @param string $name
      */
@@ -54,6 +59,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Exports a reflection.
+	 * 导出一个反射
      *
      * @param string $name
      * @param bool   $return pass true to return the export, as opposed to emitting it
@@ -81,6 +87,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Get the constant's docblock.
+	 * 获取常量的docblock
      *
      * @return false
      */
@@ -91,6 +98,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Gets the constant name.
+	 * 获取常量名称
      */
     public function getName(): string
     {
@@ -99,6 +107,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Gets the namespace name.
+	 * 获取命名空间名称
      *
      * Returns '' when the constant is not namespaced.
      */
@@ -113,6 +122,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Gets the value of the constant.
+	 * 获取常量的值
      *
      * @return mixed
      */
@@ -123,6 +133,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Checks if this constant is defined in a namespace.
+	 * 检查该常量是否在命名空间中定义
      */
     public function inNamespace(): bool
     {
@@ -131,6 +142,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * To string.
+	 * 转换为字符串
      */
     public function __toString(): string
     {
@@ -139,6 +151,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Gets the constant's file name.
+	 * 获取常量的文件名。
      *
      * Currently returns null, because if it returns a file name the signature
      * formatter will barf.
@@ -151,6 +164,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Get the code start line.
+	 * 获取代码起始行
      *
      * @throws \RuntimeException
      */
@@ -161,6 +175,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Get the code end line.
+	 * 获取代码结束行
      *
      * @throws \RuntimeException
      */

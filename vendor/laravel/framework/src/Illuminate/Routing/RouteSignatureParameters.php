@@ -17,10 +17,10 @@ class RouteSignatureParameters
 	 * 提取路由动作的签名参数
      *
      * @param  array  $action
-     * @param  string|null  $subClass
+     * @param  array  $conditions
      * @return array
      */
-    public static function fromAction(array $action, $subClass = null)
+    public static function fromAction(array $action, $conditions = [])
     {
         $callback = RouteAction::containsSerializedClosure($action)
                         ? unserialize($action['uses'])->getClosure()
@@ -30,9 +30,11 @@ class RouteSignatureParameters
                         ? static::fromClassMethodString($callback)
                         : (new ReflectionFunction($callback))->getParameters();
 
-        return is_null($subClass) ? $parameters : array_filter($parameters, function ($p) use ($subClass) {
-            return Reflector::isParameterSubclassOf($p, $subClass);
-        });
+        return match (true) {
+            ! empty($conditions['subClass']) => array_filter($parameters, fn ($p) => Reflector::isParameterSubclassOf($p, $conditions['subClass'])),
+            ! empty($conditions['backedEnum']) => array_filter($parameters, fn ($p) => Reflector::isParameterBackedEnumWithStringBackingType($p)),
+            default => $parameters,
+        };
     }
 
     /**

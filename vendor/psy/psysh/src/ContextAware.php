@@ -16,7 +16,7 @@ namespace Psy;
 
 /**
  * ContextAware interface.
- * 上下文感知接口
+ * ContextAware接口。
  *
  * This interface is used to pass the Shell's context into commands and such
  * which require access to the current scope variables.

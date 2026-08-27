@@ -99,10 +99,8 @@ class RateLimiter
      */
     public function tooManyAttempts($key, $maxAttempts)
     {
-        $key = $this->cleanRateLimiterKey($key);
-
         if ($this->attempts($key) >= $maxAttempts) {
-            if ($this->cache->has($key.':timer')) {
+            if ($this->cache->has($this->cleanRateLimiterKey($key).':timer')) {
                 return true;
             }
 
@@ -169,7 +167,6 @@ class RateLimiter
 
     /**
      * Get the number of retries left for the given key.
-	 * 获取给定键剩下的重试次数
      *
      * @param  string  $key
      * @param  int  $maxAttempts
@@ -186,7 +183,6 @@ class RateLimiter
 
     /**
      * Get the number of retries left for the given key.
-	 * 获取给定键剩下的重试次数
      *
      * @param  string  $key
      * @param  int  $maxAttempts

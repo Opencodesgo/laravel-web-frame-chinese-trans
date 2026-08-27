@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，跟踪格式化器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,11 +19,13 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * Output formatter for exception traces.
+ * 异常跟踪的输出格式化程序。
  */
 class TraceFormatter
 {
     /**
      * Format the trace of the given exception.
+	 * 格式化给定异常的跟踪
      *
      * @param \Throwable    $throwable  The error or exception with a backtrace
      * @param FilterOptions $filter     (default: null)

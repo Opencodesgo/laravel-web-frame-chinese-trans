@@ -101,7 +101,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
         // We will create a new, random token for the user so that we can e-mail them
         // a safe link to the password reset form. Then we will insert a record in
         // the database so that we can verify the token within the actual reset.
-		// 我们将为用户创建一个新的随机令牌，以便我们可以向他们发送电子邮件。
+		// 我们将为用户创建一个新的随机令牌以便我们能发送邮件安全链接去重置密码。
         $token = $this->createNewToken();
 
         $this->getTable()->insert($this->getPayload($email, $token));
@@ -213,7 +213,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Delete expired tokens.
-	 * 删除超时令牌
+	 * 删除过期令牌
      *
      * @return void
      */
@@ -226,7 +226,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Create a new token for the user.
-	 * 为用户创建一个新令牌
+	 * 创建新的用户令牌
      *
      * @return string
      */
@@ -259,7 +259,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Get the hasher instance.
-	 * 得到哈希实例
+	 * 获取哈希实例
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */

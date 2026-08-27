@@ -9,9 +9,9 @@ use Closure;
 use Illuminate\Bus\Events\BatchDispatched;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
-use Illuminate\Queue\SerializableClosureFactory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Laravel\SerializableClosure\SerializableClosure;
 use Throwable;
 
 class PendingBatch
@@ -26,7 +26,7 @@ class PendingBatch
 
     /**
      * The batch name.
-	 * 批处理名称
+	 * 批量名称
      *
      * @var string
      */
@@ -42,7 +42,7 @@ class PendingBatch
 
     /**
      * The batch options.
-	 * 批处理选项
+	 * 批选项
      *
      * @var array
      */
@@ -64,13 +64,15 @@ class PendingBatch
 
     /**
      * Add jobs to the batch.
-	 * 添加批处理任务
+	 * 添加任务到批
      *
-     * @param  iterable  $jobs
+     * @param  iterable|object|array  $jobs
      * @return $this
      */
     public function add($jobs)
     {
+        $jobs = is_iterable($jobs) ? $jobs : Arr::wrap($jobs);
+
         foreach ($jobs as $job) {
             $this->jobs->push($job);
         }
@@ -88,7 +90,7 @@ class PendingBatch
     public function then($callback)
     {
         $this->options['then'][] = $callback instanceof Closure
-                        ? SerializableClosureFactory::make($callback)
+                        ? new SerializableClosure($callback)
                         : $callback;
 
         return $this;
@@ -115,7 +117,7 @@ class PendingBatch
     public function catch($callback)
     {
         $this->options['catch'][] = $callback instanceof Closure
-                    ? SerializableClosureFactory::make($callback)
+                    ? new SerializableClosure($callback)
                     : $callback;
 
         return $this;
@@ -142,7 +144,7 @@ class PendingBatch
     public function finally($callback)
     {
         $this->options['finally'][] = $callback instanceof Closure
-                    ? SerializableClosureFactory::make($callback)
+                    ? new SerializableClosure($callback)
                     : $callback;
 
         return $this;
@@ -186,7 +188,7 @@ class PendingBatch
 
     /**
      * Set the name for the batch.
-	 * 设置批处理名称
+	 * 设置批处理的名称
      *
      * @param  string  $name
      * @return $this
@@ -265,7 +267,7 @@ class PendingBatch
 
     /**
      * Dispatch the batch.
-	 * 调度批处理
+	 * 调度批次
      *
      * @return \Illuminate\Bus\Batch
      *
@@ -292,5 +294,52 @@ class PendingBatch
         );
 
         return $batch;
+    }
+
+    /**
+     * Dispatch the batch after the response is sent to the browser.
+	 * 在将响应发送到浏览器后，分派该批处理。
+     *
+     * @return \Illuminate\Bus\Batch
+     */
+    public function dispatchAfterResponse()
+    {
+        $repository = $this->container->make(BatchRepository::class);
+
+        $batch = $repository->store($this);
+
+        if ($batch) {
+            $this->container->terminating(function () use ($batch) {
+                $this->dispatchExistingBatch($batch);
+            });
+        }
+
+        return $batch;
+    }
+
+    /**
+     * Dispatch an existing batch.
+	 * 调度一个存在的批处理
+     *
+     * @param  \Illuminate\Bus\Batch  $batch
+     * @return void
+     *
+     * @throws \Throwable
+     */
+    protected function dispatchExistingBatch($batch)
+    {
+        try {
+            $batch = $batch->add($this->jobs);
+        } catch (Throwable $e) {
+            if (isset($batch)) {
+                $batch->delete();
+            }
+
+            throw $e;
+        }
+
+        $this->container->make(EventDispatcher::class)->dispatch(
+            new BatchDispatched($batch)
+        );
     }
 }

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Fire PHP 处理程序
+ * Monolog，处理器，FirePHP 处理器
  */
 
 /*
@@ -20,7 +20,6 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Simple FirePHP Handler (http://www.firephp.org/), which uses the Wildfire protocol.
- * 简单的FirePHP处理器
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  *
@@ -32,12 +31,13 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * WildFire JSON header message format
-	 * WildFire JSON头消息格式
+	 * 野火JSON报头消息格式
      */
     protected const PROTOCOL_URI = 'http://meta.wildfirehq.org/Protocol/JsonStream/0.2';
 
     /**
      * FirePHP structure for parsing messages & their presentation
+	 * 用于解析消息及其表示的FirePHP结构
      */
     protected const STRUCTURE_URI = 'http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1';
 
@@ -48,7 +48,6 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Header prefix for Wildfire to recognize & parse headers
-	 * Wildfire识别和分析标题的头前缀
      */
     protected const HEADER_PREFIX = 'X-Wf';
 
@@ -60,7 +59,6 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Shared static message index between potentially multiple handlers
-	 * 共享的静态消息索引之间可能有多个处理程序
      * @var int
      */
     protected static $messageIndex = 1;
@@ -70,7 +68,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Base header creation function used by init headers & record headers
-	 * 初始标题创建函数使用初始化标题和记录头
+	 * 初始头和记录头使用的基本头创建函数
      *
      * @param array<int|string> $meta    Wildfire Plugin, Protocol & Structure Indexes
      * @param string            $message Log message
@@ -137,7 +135,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Send header string to the client
-	 * 向客户端发送头字符串
+	 * 发送报头字符串到客户端
      */
     protected function sendHeader(string $header, string $content): void
     {
@@ -148,7 +146,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Creates & sends header for a record, ensuring init headers have been sent prior
-	 * 创建并发送一个记录的头,确保之前发送初始化头
+	 * 创建并发送记录头，确保init头已经提前发送。
      *
      * @see sendHeader()
      * @see sendInitHeaders()
@@ -181,7 +179,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 
     /**
      * Verifies if the headers are accepted by the current user agent
-	 * 验证头是否被当前的用户代理接受
+	 * 验证当前用户代理是否接受标头
      */
     protected function headersAccepted(): bool
     {

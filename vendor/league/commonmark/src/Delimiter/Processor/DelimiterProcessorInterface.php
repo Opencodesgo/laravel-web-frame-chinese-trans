@@ -36,6 +36,7 @@ interface DelimiterProcessorInterface
 	 * 返回标记分隔节点开始的字符。
      *
      * This must not clash with any other processors being added to the environment.
+	 * 这不能与添加到环境中的任何其他处理器冲突。
      */
     public function getOpeningCharacter(): string;
 
@@ -44,6 +45,7 @@ interface DelimiterProcessorInterface
 	 * 返回标记分隔节点结束的字符。
      *
      * This must not clash with any other processors being added to the environment.
+	 * 这不能与添加到环境中的其他处理器发生冲突。
      *
      * Note that for a symmetric delimiter such as "*", this is the same as the opening.
      */
@@ -59,7 +61,7 @@ interface DelimiterProcessorInterface
 
     /**
      * Determine how many (if any) of the delimiter characters should be used.
-	 * 确定应该使用多少（如果有的话）分隔符。
+	 * 确定应该使用多少(如果有)的分隔符字符。
      *
      * This allows implementations to decide how many characters to be used
      * based on the properties of the delimiter runs. An implementation can also
@@ -77,6 +79,7 @@ interface DelimiterProcessorInterface
     /**
      * Process the matched delimiters, e.g. by wrapping the nodes between opener
      * and closer in a new node, or appending a new node after the opener.
+	 * 处理匹配的分隔符,例如,通过在新节点中结束启动器和更近的节点之间的节点,或者在开器后附加一个新节点。
      *
      * Note that removal of the delimiter from the delimiter nodes and detaching
      * them is done by the caller.

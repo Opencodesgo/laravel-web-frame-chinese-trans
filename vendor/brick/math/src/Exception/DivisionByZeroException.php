@@ -1,6 +1,6 @@
 <?php
 /**
- * Brick，Math，异常，零除异常
+ * Brick，Math，异常，除零异常
  */
 
 declare(strict_types=1);
@@ -9,13 +9,11 @@ namespace Brick\Math\Exception;
 
 /**
  * Exception thrown when a division by zero occurs.
- * 当一个分区发生时,异常会发生。
+ * 发生除零时引发的异常
  */
 class DivisionByZeroException extends MathException
 {
     /**
-     * @return DivisionByZeroException
-     *
      * @psalm-pure
      */
     public static function divisionByZero() : DivisionByZeroException
@@ -24,8 +22,6 @@ class DivisionByZeroException extends MathException
     }
 
     /**
-     * @return DivisionByZeroException
-     *
      * @psalm-pure
      */
     public static function modulusMustNotBeZero() : DivisionByZeroException
@@ -34,8 +30,6 @@ class DivisionByZeroException extends MathException
     }
 
     /**
-     * @return DivisionByZeroException
-     *
      * @psalm-pure
      */
     public static function denominatorMustNotBeZero() : DivisionByZeroException

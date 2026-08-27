@@ -7,7 +7,7 @@ namespace Egulias\EmailValidator\Warning;
 
 class AddressLiteral extends Warning
 {
-    const CODE = 12;
+    public const CODE = 12;
 
     public function __construct()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，客户端，事件，响应接收
+ * Illuminate，Http，客户端，事件，接收响应
  */
 
 namespace Illuminate\Http\Client\Events;
@@ -28,7 +28,7 @@ class ResponseReceived
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Http\Client\Request  $request
      * @param  \Illuminate\Http\Client\Response  $response

@@ -32,7 +32,7 @@ class VerifyEmail extends Notification
 
     /**
      * Get the notification's channels.
-	 * 得到通知频道
+	 * 获取通知的通道
      *
      * @param  mixed  $notifiable
      * @return array|string

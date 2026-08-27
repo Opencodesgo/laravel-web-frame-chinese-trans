@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，脚注，节点，脚注
+ * League，CommonMark，扩展，注脚，节点，注脚
  */
 
 /*

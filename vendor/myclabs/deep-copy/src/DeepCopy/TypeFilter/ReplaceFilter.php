@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，类型过滤器，替换过滤器
+ * DeepCopy，类型过滤器，Spl，替换过滤器
  */
 
 namespace DeepCopy\TypeFilter;
@@ -17,6 +17,7 @@ class ReplaceFilter implements TypeFilter
 
     /**
      * @param callable $callable Will be called to get the new value for each element to replace
+	 * $callable将被调用以获取要替换的每个元素的新值
      */
     public function __construct(callable $callable)
     {

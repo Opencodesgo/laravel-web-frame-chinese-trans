@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，Http，消息，服务请求接口
+ * Psr，Http，消息，服务器请求接口
  */
 
 namespace Psr\Http\Message;
@@ -48,7 +48,7 @@ interface ServerRequestInterface extends RequestInterface
 {
     /**
      * Retrieve server parameters.
-	 * 检索服务器参数。
+	 * 检索服务器参数
      *
      * Retrieves data related to the incoming request environment,
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
@@ -60,9 +60,10 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Retrieve cookies.
-	 * 检索cookie。
+	 * 检索cookie.
      *
      * Retrieves cookies sent by the client to the server.
+	 * 检索客户端发送给服务器的cookie。
      *
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
@@ -148,6 +149,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Create a new instance with the specified uploaded files.
+	 * 使用指定上传的文件创建一个新实例。
      *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
@@ -161,6 +163,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Retrieve any parameters provided in the request body.
+	 * 检索请求体中提供的任何参数。
      *
      * If the request Content-Type is either application/x-www-form-urlencoded
      * or multipart/form-data, and the request method is POST, this method MUST
@@ -178,6 +181,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Return an instance with the specified body parameters.
+	 * 返回具有指定体参数的实例。
      *
      * These MAY be injected during instantiation.
      *
@@ -208,6 +212,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Retrieve attributes derived from the request.
+	 * 检索从请求派生的属性。
      *
      * The request "attributes" may be used to allow injection of any
      * parameters derived from the request: e.g., the results of path
@@ -221,6 +226,7 @@ interface ServerRequestInterface extends RequestInterface
 
     /**
      * Retrieve a single derived request attribute.
+	 * 检索单个派生请求属性。
      *
      * Retrieves a single derived request attribute as described in
      * getAttributes(). If the attribute has not been previously set, returns

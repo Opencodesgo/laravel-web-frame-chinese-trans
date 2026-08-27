@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，储存，会话存储接口
+ * Symfony，Component，HttpFoundation，会话，存储，会话存储接口
  */
 
 /*
@@ -29,51 +29,47 @@ interface SessionStorageInterface
      * Starts the session.
 	 * 开始会话
      *
-     * @return bool
-     *
      * @throws \RuntimeException if something goes wrong starting the session
      */
-    public function start();
+    public function start(): bool;
 
     /**
      * Checks if the session is started.
 	 * 检查会话是否启动
-     *
-     * @return bool
      */
-    public function isStarted();
+    public function isStarted(): bool;
 
     /**
      * Returns the session ID.
 	 * 返回会话ID
-     *
-     * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Sets the session ID.
 	 * 设置会话ID
+     *
+     * @return void
      */
     public function setId(string $id);
 
     /**
      * Returns the session name.
 	 * 返回会话名称
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Sets the session name.
 	 * 设置会话名称
+     *
+     * @return void
      */
     public function setName(string $name);
 
     /**
      * Regenerates id that represents this storage.
-	 * 重新生成表示此存储的id
+	 * 重新生成表示此存储的id。
      *
      * This method must invoke session_regenerate_id($destroy) unless
      * this interface is used for a storage object designed for unit
@@ -97,11 +93,9 @@ interface SessionStorageInterface
      *                           to expire with browser session. Time is in seconds, and is
      *                           not a Unix timestamp.
      *
-     * @return bool
-     *
      * @throws \RuntimeException If an error occurs while regenerating this storage
      */
-    public function regenerate(bool $destroy = false, ?int $lifetime = null);
+    public function regenerate(bool $destroy = false, ?int $lifetime = null): bool;
 
     /**
      * Force the session to be saved and closed.
@@ -112,6 +106,8 @@ interface SessionStorageInterface
      * a real PHP session would interfere with testing, in which case
      * it should actually persist the session data if required.
      *
+     * @return void
+     *
      * @throws \RuntimeException if the session is saved without being started, or if the session
      *                           is already closed
      */
@@ -120,6 +116,8 @@ interface SessionStorageInterface
     /**
      * Clear all session data in memory.
 	 * 清除内存中的所有会话数据
+     *
+     * @return void
      */
     public function clear();
 
@@ -127,21 +125,17 @@ interface SessionStorageInterface
      * Gets a SessionBagInterface by name.
 	 * 按名称获取SessionBagInterface
      *
-     * @return SessionBagInterface
-     *
      * @throws \InvalidArgumentException If the bag does not exist
      */
-    public function getBag(string $name);
+    public function getBag(string $name): SessionBagInterface;
 
     /**
      * Registers a SessionBagInterface for use.
 	 * 注册一个SessionBagInterface供使用
-	 *
+     *
+     * @return void
      */
     public function registerBag(SessionBagInterface $bag);
 
-    /**
-     * @return MetadataBag
-     */
-    public function getMetadataBag();
+    public function getMetadataBag(): MetadataBag;
 }

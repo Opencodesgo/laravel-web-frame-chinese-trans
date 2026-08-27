@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，建立者，属性
+ * PhpParser，构建者，属性
  */
 
 namespace PhpParser\Builder;
@@ -32,7 +32,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Creates a property builder.
-	 * 创建一个属性构建器
+	 * 创建属性构建器
      *
      * @param string $name Name of the property
      */
@@ -180,6 +180,7 @@ class Property implements PhpParser\Builder {
 
     /**
      * Sets the property type for PHP 7.4+.
+	 * 为PHP 7.4+设置属性类型
      *
      * @param string|Name|Identifier|ComplexType $type
      *

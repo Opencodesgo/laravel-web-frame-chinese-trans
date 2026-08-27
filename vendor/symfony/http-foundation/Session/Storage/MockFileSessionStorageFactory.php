@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，储存，模拟文件会话存储工厂
+ * Symfony，Component，HttpFoundation，会话，存储，模拟文件会话存储工厂
  */
 
 /*
@@ -24,9 +24,9 @@ class_exists(MockFileSessionStorage::class);
  */
 class MockFileSessionStorageFactory implements SessionStorageFactoryInterface
 {
-    private $savePath;
-    private $name;
-    private $metaBag;
+    private ?string $savePath;
+    private string $name;
+    private ?MetadataBag $metaBag;
 
     /**
      * @see MockFileSessionStorage constructor.

@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Abstract class implementing Surrogate capabilities to Request and Response instances.
- * 抽象类实现了请求和响应实例的代理功能。
+ * 实现请求和响应实例代理功能的抽象类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -28,6 +28,10 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 abstract class AbstractSurrogate implements SurrogateInterface
 {
     protected $contentTypes;
+
+    /**
+     * @deprecated since Symfony 6.3
+     */
     protected $phpEscapeMap = [
         ['<?', '<%', '<s', '<S'],
         ['<?php echo "<?"; ?>', '<?php echo "<%"; ?>', '<?php echo "<s"; ?>', '<?php echo "<S"; ?>'],
@@ -45,55 +49,44 @@ abstract class AbstractSurrogate implements SurrogateInterface
     /**
      * Returns a new cache strategy instance.
 	 * 返回一个新的缓存策略实例
-     *
-     * @return ResponseCacheStrategyInterface
      */
-    public function createCacheStrategy()
+    public function createCacheStrategy(): ResponseCacheStrategyInterface
     {
         return new ResponseCacheStrategy();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasSurrogateCapability(Request $request)
+    public function hasSurrogateCapability(Request $request): bool
     {
         if (null === $value = $request->headers->get('Surrogate-Capability')) {
             return false;
         }
 
-        return str_contains($value, sprintf('%s/1.0', strtoupper($this->getName())));
+        return str_contains($value, \sprintf('%s/1.0', strtoupper($this->getName())));
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function addSurrogateCapability(Request $request)
     {
         $current = $request->headers->get('Surrogate-Capability');
-        $new = sprintf('symfony="%s/1.0"', strtoupper($this->getName()));
+        $new = \sprintf('symfony="%s/1.0"', strtoupper($this->getName()));
 
         $request->headers->set('Surrogate-Capability', $current ? $current.', '.$new : $new);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function needsParsing(Response $response)
+    public function needsParsing(Response $response): bool
     {
         if (!$control = $response->headers->get('Surrogate-Control')) {
             return false;
         }
 
-        $pattern = sprintf('#content="[^"]*%s/1.0[^"]*"#', strtoupper($this->getName()));
+        $pattern = \sprintf('#content="[^"]*%s/1.0[^"]*"#', strtoupper($this->getName()));
 
         return (bool) preg_match($pattern, $control);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(HttpCache $cache, string $uri, string $alt, bool $ignoreErrors)
+    public function handle(HttpCache $cache, string $uri, string $alt, bool $ignoreErrors): string
     {
         $subRequest = Request::create($uri, Request::METHOD_GET, [], $cache->getRequest()->cookies->all(), [], $cache->getRequest()->server->all());
 
@@ -101,7 +94,7 @@ abstract class AbstractSurrogate implements SurrogateInterface
             $response = $cache->handle($subRequest, HttpKernelInterface::SUB_REQUEST, true);
 
             if (!$response->isSuccessful() && Response::HTTP_NOT_MODIFIED !== $response->getStatusCode()) {
-                throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %d).', $subRequest->getUri(), $response->getStatusCode()));
+                throw new \RuntimeException(\sprintf('Error when rendering "%s" (Status code is %d).', $subRequest->getUri(), $response->getStatusCode()));
             }
 
             return $response->getContent();
@@ -120,7 +113,9 @@ abstract class AbstractSurrogate implements SurrogateInterface
 
     /**
      * Remove the Surrogate from the Surrogate-Control header.
-	 * 从回控头删除代理
+	 * 从代理控件标头中删除代理
+     *
+     * @return void
      */
     protected function removeFromControl(Response $response)
     {
@@ -131,19 +126,19 @@ abstract class AbstractSurrogate implements SurrogateInterface
         $value = $response->headers->get('Surrogate-Control');
         $upperName = strtoupper($this->getName());
 
-        if (sprintf('content="%s/1.0"', $upperName) == $value) {
+        if (\sprintf('content="%s/1.0"', $upperName) == $value) {
             $response->headers->remove('Surrogate-Control');
-        } elseif (preg_match(sprintf('#,\s*content="%s/1.0"#', $upperName), $value)) {
-            $response->headers->set('Surrogate-Control', preg_replace(sprintf('#,\s*content="%s/1.0"#', $upperName), '', $value));
-        } elseif (preg_match(sprintf('#content="%s/1.0",\s*#', $upperName), $value)) {
-            $response->headers->set('Surrogate-Control', preg_replace(sprintf('#content="%s/1.0",\s*#', $upperName), '', $value));
+        } elseif (preg_match(\sprintf('#,\s*content="%s/1.0"#', $upperName), $value)) {
+            $response->headers->set('Surrogate-Control', preg_replace(\sprintf('#,\s*content="%s/1.0"#', $upperName), '', $value));
+        } elseif (preg_match(\sprintf('#content="%s/1.0",\s*#', $upperName), $value)) {
+            $response->headers->set('Surrogate-Control', preg_replace(\sprintf('#content="%s/1.0",\s*#', $upperName), '', $value));
         }
     }
 
     protected static function generateBodyEvalBoundary(): string
     {
         static $cookie;
-        $cookie = hash('md5', $cookie ?? $cookie = random_bytes(16), true);
+        $cookie = hash('xxh128', $cookie ?? $cookie = random_bytes(16), true);
         $boundary = base64_encode($cookie);
 
         \assert(HttpCache::BODY_EVAL_BOUNDARY_LENGTH === \strlen($boundary));

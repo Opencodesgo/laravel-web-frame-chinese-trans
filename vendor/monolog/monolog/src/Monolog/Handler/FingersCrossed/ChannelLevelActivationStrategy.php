@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，手指交叉，通道级激活策略
+ * Monolog，处理器，希望成功，渠道级激活策略
  */
 
 /*
@@ -22,6 +22,7 @@ use Psr\Log\LogLevel;
  * Channel and Error level based monolog activation strategy. Allows to trigger activation
  * based on level per channel. e.g. trigger activation on level 'ERROR' by default, except
  * for records of the 'sql' channel; those should trigger activation on level 'WARN'.
+ * 基于通道和错误水平的独白激活策略。
  *
  * Example:
  *

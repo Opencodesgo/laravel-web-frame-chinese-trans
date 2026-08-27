@@ -11,6 +11,7 @@ namespace Psr\SimpleCache;
  *
  * When an invalid argument is passed it must throw an exception which implements
  * this interface
+ * 当传递无效参数时，必须抛出实现此接口的异常。
  */
 interface InvalidArgumentException extends CacheException
 {

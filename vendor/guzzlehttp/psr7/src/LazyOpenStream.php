@@ -12,7 +12,6 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Lazily reads or writes to a file that is opened only after an IO operation
  * take place on the stream.
- * 惰性读或写文件，只有在IO操作后才打开。
  */
 final class LazyOpenStream implements StreamInterface
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块，抽象块继续解析器
+ * League，CommonMark，解析器，代码块，抽象块继续解析器
  */
 
 declare(strict_types=1);
@@ -23,6 +23,7 @@ use League\CommonMark\Node\Block\AbstractBlock;
  * 块解析器的基类
  *
  * Slightly more convenient to extend from vs. implementing the interface
+ * 从接口扩展比实现接口稍微方便一些
  */
 abstract class AbstractBlockContinueParser implements BlockContinueParserInterface
 {

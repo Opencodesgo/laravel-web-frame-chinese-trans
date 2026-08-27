@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限值器，并发限制生成器
+ * Illuminate，Redis，限制器，并发限制生成器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -51,6 +51,14 @@ class ConcurrencyLimiterBuilder
      * @var int
      */
     public $timeout = 3;
+
+    /**
+     * The number of milliseconds to wait between attempts to acquire the lock.
+	 * 两次获取锁的尝试之间等待的毫秒数
+     *
+     * @var int
+     */
+    public $sleep = 250;
 
     /**
      * Create a new builder instance.
@@ -109,6 +117,20 @@ class ConcurrencyLimiterBuilder
     }
 
     /**
+     * The number of milliseconds to wait between lock acquisition attempts.
+	 * 两次锁获取尝试之间等待的毫秒数
+     *
+     * @param  int  $sleep
+     * @return $this
+     */
+    public function sleep($sleep)
+    {
+        $this->sleep = $sleep;
+
+        return $this;
+    }
+
+    /**
      * Execute the given callback if a lock is obtained, otherwise call the failure callback.
 	 * 如果获得了锁，则执行给定的回调，否则调用失败回调。
      *
@@ -123,7 +145,7 @@ class ConcurrencyLimiterBuilder
         try {
             return (new ConcurrencyLimiter(
                 $this->connection, $this->name, $this->maxLocks, $this->releaseAfter
-            ))->block($this->timeout, $callback);
+            ))->block($this->timeout, $callback, $this->sleep);
         } catch (LimiterTimeoutException $e) {
             if ($failure) {
                 return $failure($e);

@@ -13,7 +13,7 @@ class DynamicComponent extends Component
 {
     /**
      * The name of the component.
-	 * 组件的名称
+	 * 组件名称
      *
      * @var string
      */

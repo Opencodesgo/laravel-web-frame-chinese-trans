@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Laravel，异常处理者
+ * NunoMaduro，Collision，适配器，Laravel，异常处理程序
  */
 
 declare(strict_types=1);
@@ -40,7 +40,7 @@ final class ExceptionHandler implements ExceptionHandlerContract
      */
     public function __construct(Container $container, ExceptionHandlerContract $appExceptionHandler)
     {
-        $this->container           = $container;
+        $this->container = $container;
         $this->appExceptionHandler = $appExceptionHandler;
     }
 
@@ -68,8 +68,10 @@ final class ExceptionHandler implements ExceptionHandlerContract
         if ($e instanceof SymfonyConsoleExceptionInterface) {
             $this->appExceptionHandler->renderForConsole($output, $e);
         } else {
-            $handler = $this->container->make(ProviderContract::class)
-                ->register()
+            /** @var \NunoMaduro\Collision\Contracts\Provider $provider */
+            $provider = $this->container->make(ProviderContract::class);
+
+            $handler = $provider->register()
                 ->getHandler()
                 ->setOutput($output);
 

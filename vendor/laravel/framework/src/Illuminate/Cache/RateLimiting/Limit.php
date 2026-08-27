@@ -11,7 +11,7 @@ class Limit
      * The rate limit signature key.
 	 * 速率限制签名密钥
      *
-     * @var mixed|string
+     * @var mixed
      */
     public $key;
 
@@ -41,9 +41,9 @@ class Limit
 
     /**
      * Create a new limit instance.
-	 * 创建新的限制实例
+	 * 创建一个新的限制实例
      *
-     * @param  mixed|string  $key
+     * @param  mixed  $key
      * @param  int  $maxAttempts
      * @param  int  $decayMinutes
      * @return void
@@ -57,7 +57,7 @@ class Limit
 
     /**
      * Create a new rate limit.
-	 * 创建新的限制速率
+	 * 创建一个新的速率限制
      *
      * @param  int  $maxAttempts
      * @return static
@@ -121,7 +121,7 @@ class Limit
      * Set the key of the rate limit.
 	 * 设置速率限制的关键字
      *
-     * @param  string  $key
+     * @param  mixed  $key
      * @return $this
      */
     public function by($key)

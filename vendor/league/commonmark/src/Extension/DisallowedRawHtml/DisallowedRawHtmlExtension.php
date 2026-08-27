@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，不允许的原始Html，不允许的原始Html扩展
+ * League，CommonMark，扩展，不允许的原始Html，不允许的原始 Html扩展
  */
 
 declare(strict_types=1);

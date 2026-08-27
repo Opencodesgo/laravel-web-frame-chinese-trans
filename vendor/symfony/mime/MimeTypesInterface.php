@@ -21,7 +21,7 @@ interface MimeTypesInterface extends MimeTypeGuesserInterface
 {
     /**
      * Gets the extensions for the given MIME type in decreasing order of preference.
-	 * 按首选项降序获取给定MIME类型的扩展名
+	 * 按首选项降序获取给定MIME类型的扩展名。
      *
      * @return string[]
      */

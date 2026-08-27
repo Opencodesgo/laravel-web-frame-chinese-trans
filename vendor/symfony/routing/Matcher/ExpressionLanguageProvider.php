@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，Component，Routing，匹配程序，表达式语言提供程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,35 +17,27 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /**
  * Exposes functions defined in the request context to route conditions.
- * 将请求上下文中定义的函数公开给路由条件。
  *
  * @author Ahmed TAILOULOUTE <ahmed.tailouloute@gmail.com>
  */
 class ExpressionLanguageProvider implements ExpressionFunctionProviderInterface
 {
-    private $functions;
+    private ServiceProviderInterface $functions;
 
     public function __construct(ServiceProviderInterface $functions)
     {
         $this->functions = $functions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         $functions = [];
 
         foreach ($this->functions->getProvidedServices() as $function => $type) {
             $functions[] = new ExpressionFunction(
                 $function,
-                static function (...$args) use ($function) {
-                    return sprintf('($context->getParameter(\'_functions\')->get(%s)(%s))', var_export($function, true), implode(', ', $args));
-                },
-                function ($values, ...$args) use ($function) {
-                    return $values['context']->getParameter('_functions')->get($function)(...$args);
-                }
+                static fn (...$args) => \sprintf('($context->getParameter(\'_functions\')->get(%s)(%s))', var_export($function, true), implode(', ', $args)),
+                fn ($values, ...$args) => $values['context']->getParameter('_functions')->get($function)(...$args)
             );
         }
 

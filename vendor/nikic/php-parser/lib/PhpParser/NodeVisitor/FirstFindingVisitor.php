@@ -13,7 +13,7 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * This visitor can be used to find the first node satisfying some criterion determined by
  * a filter callback.
- * 该访问器可用于查找满足由过滤回调确定的某个条件的第一个节点。
+ * 此访问器可用于查找满足由确定的某些标准的第一个节点。
  */
 class FirstFindingVisitor extends NodeVisitorAbstract {
     /** @var callable Filter callback */
@@ -27,7 +27,7 @@ class FirstFindingVisitor extends NodeVisitorAbstract {
 
     /**
      * Get found node satisfying the filter callback.
-	 * 找到满足过滤器回调的节点。
+	 * 获取满足过滤器回调的找到节点
      *
      * Returns null if no node satisfies the filter callback.
      *

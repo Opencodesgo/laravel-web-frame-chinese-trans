@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，Schema，元素，结构
+ * Nette，Schema，元素，构造
  */
 
 /**
@@ -21,34 +21,31 @@ use Nette\Schema\Schema;
 final class Structure implements Schema
 {
 	use Base;
-	use Nette\SmartObject;
 
 	/** @var Schema[] */
-	private $items;
+	private array $items;
 
-	/** @var Schema|null  for array|list */
-	private $otherItems;
+	/** for array|list */
+	private ?Schema $otherItems = null;
 
 	/** @var array{?int, ?int} */
-	private $range = [null, null];
-
-	/** @var bool */
-	private $skipDefaults = false;
+	private array $range = [null, null];
+	private bool $skipDefaults = false;
 
 
 	/**
-	 * @param  Schema[]  $items
+	 * @param  Schema[]  $shape
 	 */
-	public function __construct(array $items)
+	public function __construct(array $shape)
 	{
-		(function (Schema ...$items) {})(...array_values($items));
-		$this->items = $items;
+		(function (Schema ...$items) {})(...array_values($shape));
+		$this->items = $shape;
 		$this->castTo('object');
 		$this->required = true;
 	}
 
 
-	public function default($value): self
+	public function default(mixed $value): self
 	{
 		throw new Nette\InvalidStateException('Structure cannot have default value.');
 	}
@@ -68,10 +65,7 @@ final class Structure implements Schema
 	}
 
 
-	/**
-	 * @param  string|Schema  $type
-	 */
-	public function otherItems($type = 'mixed'): self
+	public function otherItems(string|Schema $type = 'mixed'): self
 	{
 		$this->otherItems = $type instanceof Schema ? $type : new Type($type);
 		return $this;
@@ -85,10 +79,23 @@ final class Structure implements Schema
 	}
 
 
+	public function extend(array|self $shape): self
+	{
+		$shape = $shape instanceof self ? $shape->items : $shape;
+		return new self(array_merge($this->items, $shape));
+	}
+
+
+	public function getShape(): array
+	{
+		return $this->items;
+	}
+
+
 	/********************* processing ****************d*g**/
 
 
-	public function normalize($value, Context $context)
+	public function normalize(mixed $value, Context $context): mixed
 	{
 		if ($prevent = (is_array($value) && isset($value[Helpers::PreventMerging]))) {
 			unset($value[Helpers::PreventMerging]);
@@ -118,7 +125,7 @@ final class Structure implements Schema
 	}
 
 
-	public function merge($value, $base)
+	public function merge(mixed $value, mixed $base): mixed
 	{
 		if (is_array($value) && isset($value[Helpers::PreventMerging])) {
 			unset($value[Helpers::PreventMerging]);
@@ -126,29 +133,26 @@ final class Structure implements Schema
 		}
 
 		if (is_array($value) && is_array($base)) {
-			$index = 0;
+			$index = $this->otherItems === null ? null : 0;
 			foreach ($value as $key => $val) {
 				if ($key === $index) {
 					$base[] = $val;
 					$index++;
-				} elseif (array_key_exists($key, $base)) {
-					$itemSchema = $this->items[$key] ?? $this->otherItems;
-					$base[$key] = $itemSchema
-						? $itemSchema->merge($val, $base[$key])
-						: Helpers::merge($val, $base[$key]);
 				} else {
-					$base[$key] = $val;
+					$base[$key] = array_key_exists($key, $base) && ($itemSchema = $this->items[$key] ?? $this->otherItems)
+						? $itemSchema->merge($val, $base[$key])
+						: $val;
 				}
 			}
 
 			return $base;
 		}
 
-		return Helpers::merge($value, $base);
+		return $value ?? $base;
 	}
 
 
-	public function complete($value, Context $context)
+	public function complete(mixed $value, Context $context): mixed
 	{
 		if ($value === null) {
 			$value = []; // is unable to distinguish null from array in NEON
@@ -174,11 +178,11 @@ final class Structure implements Schema
 			} else {
 				$keys = array_map('strval', array_keys($items));
 				foreach ($extraKeys as $key) {
-					$hint = Nette\Utils\ObjectHelpers::getSuggestion($keys, (string) $key);
+					$hint = Nette\Utils\Helpers::getSuggestion($keys, (string) $key);
 					$context->addError(
 						'Unexpected item %path%' . ($hint ? ", did you mean '%hint%'?" : '.'),
 						Nette\Schema\Message::UnexpectedItem,
-						['hint' => $hint]
+						['hint' => $hint],
 					)->path[] = $key;
 				}
 			}
@@ -200,7 +204,7 @@ final class Structure implements Schema
 	}
 
 
-	public function completeDefault(Context $context)
+	public function completeDefault(Context $context): mixed
 	{
 		return $this->required
 			? $this->complete([], $context)

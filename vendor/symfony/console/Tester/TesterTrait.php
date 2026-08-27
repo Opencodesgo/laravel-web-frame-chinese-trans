@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，测试员，测试员特征
+ * Symfony，Component，Console，测试员，测试人员特征
  */
 
 /*
@@ -26,26 +26,21 @@ use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
  */
 trait TesterTrait
 {
-    /** @var StreamOutput */
-    private $output;
-    private $inputs = [];
-    private $captureStreamsIndependently = false;
-    /** @var InputInterface */
-    private $input;
-    /** @var int */
-    private $statusCode;
+    private StreamOutput $output;
+    private array $inputs = [];
+    private bool $captureStreamsIndependently = false;
+    private InputInterface $input;
+    private int $statusCode;
 
     /**
      * Gets the display returned by the last execution of the command or application.
-	 * 获取最后执行命令或应用程序返回的显示
-     *
-     * @return string
+	 * 获取命令或应用程序最后一次执行时返回的显示。
      *
      * @throws \RuntimeException If it's called before the execute method
      */
-    public function getDisplay(bool $normalize = false)
+    public function getDisplay(bool $normalize = false): string
     {
-        if (null === $this->output) {
+        if (!isset($this->output)) {
             throw new \RuntimeException('Output not initialized, did you execute the command before requesting the display?');
         }
 
@@ -62,13 +57,11 @@ trait TesterTrait
 
     /**
      * Gets the output written to STDERR by the application.
-	 * 通过应用程序获取写入STDERR的输出。
+	 * 获取由应用程序写入STDERR的输出。
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
-     *
-     * @return string
      */
-    public function getErrorOutput(bool $normalize = false)
+    public function getErrorOutput(bool $normalize = false): string
     {
         if (!$this->captureStreamsIndependently) {
             throw new \LogicException('The error output is not available when the tester is run without "capture_stderr_separately" option set.');
@@ -87,41 +80,31 @@ trait TesterTrait
 
     /**
      * Gets the input instance used by the last execution of the command or application.
-	 * 获取命令或应用程序最后执行的输入实例
-     *
-     * @return InputInterface
+	 * 获取命令或应用程序最后一次执行时使用的输入实例
      */
-    public function getInput()
+    public function getInput(): InputInterface
     {
         return $this->input;
     }
 
     /**
      * Gets the output instance used by the last execution of the command or application.
-	 * 获取命令或应用程序最后执行的输出实例
-     *
-     * @return OutputInterface
+	 * 获取命令或应用程序最后一次执行时使用的输出实例
      */
-    public function getOutput()
+    public function getOutput(): OutputInterface
     {
         return $this->output;
     }
 
     /**
      * Gets the status code returned by the last execution of the command or application.
-	 * 获取最后执行命令或应用程序返回的状态代码
-     *
-     * @return int
+	 * 获取命令或应用程序最后一次执行时返回的状态码
      *
      * @throws \RuntimeException If it's called before the execute method
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
-        if (null === $this->statusCode) {
-            throw new \RuntimeException('Status code not initialized, did you execute the command before requesting the status code?');
-        }
-
-        return $this->statusCode;
+        return $this->statusCode ?? throw new \RuntimeException('Status code not initialized, did you execute the command before requesting the status code?');
     }
 
     public function assertCommandIsSuccessful(string $message = ''): void
@@ -138,7 +121,7 @@ trait TesterTrait
      *
      * @return $this
      */
-    public function setInputs(array $inputs)
+    public function setInputs(array $inputs): static
     {
         $this->inputs = $inputs;
 
@@ -155,9 +138,9 @@ trait TesterTrait
      *  * verbosity:                 Sets the output verbosity flag
      *  * capture_stderr_separately: Make output of stdOut and stdErr separately available
      */
-    private function initOutput(array $options)
+    private function initOutput(array $options): void
     {
-        $this->captureStreamsIndependently = \array_key_exists('capture_stderr_separately', $options) && $options['capture_stderr_separately'];
+        $this->captureStreamsIndependently = $options['capture_stderr_separately'] ?? false;
         if (!$this->captureStreamsIndependently) {
             $this->output = new StreamOutput(fopen('php://memory', 'w', false));
             if (isset($options['decorated'])) {
@@ -179,12 +162,10 @@ trait TesterTrait
 
             $reflectedOutput = new \ReflectionObject($this->output);
             $strErrProperty = $reflectedOutput->getProperty('stderr');
-            $strErrProperty->setAccessible(true);
             $strErrProperty->setValue($this->output, $errorOutput);
 
             $reflectedParent = $reflectedOutput->getParentClass();
             $streamProperty = $reflectedParent->getProperty('stream');
-            $streamProperty->setAccessible(true);
             $streamProperty->setValue($this->output, fopen('php://memory', 'w', false));
         }
     }

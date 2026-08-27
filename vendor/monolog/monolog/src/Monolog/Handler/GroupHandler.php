@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Group 处理程序
+ * Monolog，处理器，Group 处理器	(允许将日志同时发送到多个处理器)
  */
 
 /*

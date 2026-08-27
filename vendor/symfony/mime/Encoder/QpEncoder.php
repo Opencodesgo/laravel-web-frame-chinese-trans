@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，译码器，Qp 编码器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -76,16 +79,17 @@ class QpEncoder implements EncoderInterface
         255 => '=FF',
     ];
 
-    private static $safeMapShare = [];
+    private static array $safeMapShare = [];
 
     /**
      * A map of non-encoded ascii characters.
+	 * 非编码ascii字符的映射
      *
      * @var string[]
      *
      * @internal
      */
-    protected $safeMap = [];
+    protected array $safeMap = [];
 
     public function __construct()
     {
@@ -106,9 +110,8 @@ class QpEncoder implements EncoderInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Takes an unencoded string and produces a QP encoded string from it.
+	 * 获取一个未编码字符串并从中生成一个QP编码字符串。
      *
      * QP encoded strings have a maximum line length of 76 characters.
      * If the first line needs to be shorter, indicate the difference with
@@ -160,6 +163,7 @@ class QpEncoder implements EncoderInterface
 
     /**
      * Encode the given byte array into a verbatim QP form.
+	 * 将给定的字节数组逐字编码为QP形式
      */
     private function encodeByteSequence(array $bytes, int &$size): string
     {
@@ -180,16 +184,16 @@ class QpEncoder implements EncoderInterface
 
     /**
      * Make sure CRLF is correct and HT/SPACE are in valid places.
+	 * 确保CRLF是正确的，HT/SPACE在有效的地方。
      */
     private function standardize(string $string): string
     {
         $string = str_replace(["\t=0D=0A", ' =0D=0A', '=0D=0A'], ["=09\r\n", "=20\r\n", "\r\n"], $string);
-        switch ($end = \ord(substr($string, -1))) {
-            case 0x09:
-            case 0x20:
-                $string = substr_replace($string, self::QP_MAP[$end], -1);
-        }
 
-        return $string;
+        return match ($end = \ord(substr($string, -1))) {
+            0x09,
+            0x20 => substr_replace($string, self::QP_MAP[$end], -1),
+            default => $string,
+        };
     }
 }

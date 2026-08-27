@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，内嵌，嵌入渲染器
+ * League，CommonMark，扩展，嵌入，嵌入渲染器
  */
 
 declare(strict_types=1);

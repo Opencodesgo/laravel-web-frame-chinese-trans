@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，工具，Xml
+ * League，CommonMark，工具，数组集合
  */
 
 declare(strict_types=1);

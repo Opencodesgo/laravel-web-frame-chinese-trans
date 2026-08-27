@@ -1,11 +1,10 @@
 <?php
 /**
- * Ramsey，Uuid，编解码器，编解码接口
+ * Ramsey，Uuid，编解码器，编解码器接口
  */
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,54 +21,57 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * A codec encodes and decodes a UUID according to defined rules
+ * 编解码器根据定义的规则对UUID进行编码和解码
  *
- * @psalm-immutable
+ * @immutable
  */
 interface CodecInterface
 {
     /**
      * Returns a hexadecimal string representation of a UuidInterface
+	 * 返回uidinterface的十六进制字符串表示形式
      *
-     * @param UuidInterface $uuid The UUID for which to create a hexadecimal
-     *     string representation
+     * @param UuidInterface $uuid The UUID for which to create a hexadecimal string representation
      *
-     * @return string Hexadecimal string representation of a UUID
+     * @return non-empty-string Hexadecimal string representation of a UUID
      *
-     * @psalm-return non-empty-string
+     * @pure
      */
     public function encode(UuidInterface $uuid): string;
 
     /**
      * Returns a binary string representation of a UuidInterface
+	 * 返回uidinterface的二进制字符串表示形式
      *
-     * @param UuidInterface $uuid The UUID for which to create a binary string
-     *     representation
+     * @param UuidInterface $uuid The UUID for which to create a binary string representation
      *
-     * @return string Binary string representation of a UUID
+     * @return non-empty-string Binary string representation of a UUID
      *
-     * @psalm-return non-empty-string
+     * @pure
      */
     public function encodeBinary(UuidInterface $uuid): string;
 
     /**
      * Returns a UuidInterface derived from a hexadecimal string representation
+	 * 返回从十六进制字符串表示派生的UuidInterface
      *
-     * @param string $encodedUuid The hexadecimal string representation to
-     *     convert into a UuidInterface instance
+     * @param string $encodedUuid The hexadecimal string representation to convert into a UuidInterface instance
      *
-     * @return UuidInterface An instance of a UUID decoded from a hexadecimal
-     *     string representation
+     * @return UuidInterface An instance of a UUID decoded from a hexadecimal string representation
+     *
+     * @pure
      */
     public function decode(string $encodedUuid): UuidInterface;
 
     /**
      * Returns a UuidInterface derived from a binary string representation
+	 * 返回从二进制字符串表示派生的UuidInterface
      *
-     * @param string $bytes The binary string representation to convert into a
-     *     UuidInterface instance
+     * @param string $bytes The binary string representation to convert into a UuidInterface instance
      *
-     * @return UuidInterface An instance of a UUID decoded from a binary string
-     *     representation
+     * @return UuidInterface An instance of a UUID decoded from a binary string representation
+     *
+     * @pure
      */
     public function decodeBytes(string $bytes): UuidInterface;
 }

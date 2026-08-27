@@ -68,7 +68,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
-	 * 在某些场景中,如在关机处理程序中,我们不能抛出异常。
+	 * 在某些情况下，比如在shutdown处理程序中，我们不能抛出异常。
      *
      * @var bool
      */
@@ -76,7 +76,6 @@ final class Run implements RunInterface
 
     /**
      * The inspector factory to create inspectors.
-	 * 检查员工厂要制造检查员
      *
      * @var InspectorFactoryInterface
      */
@@ -93,9 +92,14 @@ final class Run implements RunInterface
         $this->inspectorFactory = new InspectorFactory();
     }
 
+    public function __destruct()
+    {
+        $this->unregister();
+    }
+
     /**
      * Explicitly request your handler runs as the last of all currently registered handlers.
-	 * 显式地请求您的处理程序运行为当前所有注册处理程序的最后一个
+	 * 显式请求您的处理程序作为所有当前注册的处理程序中的最后一个运行。
      *
      * @param callable|HandlerInterface $handler
      *
@@ -109,7 +113,6 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the first of all currently registered handlers.
-	 * 显式请求您的处理程序作为所有当前注册的处理程序中的第一个运行
      *
      * @param callable|HandlerInterface $handler
      *
@@ -123,7 +126,6 @@ final class Run implements RunInterface
     /**
      * Register your handler as the last of all currently registered handlers (to be executed first).
      * Prefer using appendHandler and prependHandler for clarity.
-	 * 将您的处理程序注册为最后一个已注册的处理程序(要先执行)。
      *
      * @param callable|HandlerInterface $handler
      *
@@ -139,7 +141,6 @@ final class Run implements RunInterface
 
     /**
      * Removes and returns the last handler pushed to the handler stack.
-	 * 移除并返回最后一个推入处理程序堆栈的处理程序
      *
      * @see Run::removeFirstHandler(), Run::removeLastHandler()
      *
@@ -152,7 +153,6 @@ final class Run implements RunInterface
 
     /**
      * Removes the first handler.
-	 * 删除第一个处理程序
      *
      * @return void
      */
@@ -163,7 +163,6 @@ final class Run implements RunInterface
 
     /**
      * Removes the last handler.
-	 * 删除最后一个处理程序
      *
      * @return void
      */
@@ -174,7 +173,6 @@ final class Run implements RunInterface
 
     /**
      * Returns an array with all handlers, in the order they were added to the stack.
-	 * 返回一个包含所有处理程序的数组，按照它们被添加到堆栈中的顺序。
      *
      * @return array
      */
@@ -208,7 +206,6 @@ final class Run implements RunInterface
 
     /**
      * Registers this instance as an error handler.
-	 * 将此实例注册为错误处理程序
      *
      * @return Run
      */
@@ -235,7 +232,6 @@ final class Run implements RunInterface
 
     /**
      * Unregisters all handlers registered by this Whoops\Run instance.
-	 * 注销此Whoops\Run实例注册的所有处理程序
      *
      * @return Run
      */
@@ -253,7 +249,6 @@ final class Run implements RunInterface
 
     /**
      * Should Whoops allow Handlers to force the script to quit?
-	 * Whoops是否允许处理程序强制脚本退出？
      *
      * @param bool|int $exit
      *
@@ -270,7 +265,6 @@ final class Run implements RunInterface
 
     /**
      * Silence particular errors in particular files.
-	 * 沉默特定文件中的特定错误
      *
      * @param array|string $patterns List or a single regex pattern to match.
      * @param int          $levels   Defaults to E_STRICT | E_DEPRECATED.
@@ -297,7 +291,6 @@ final class Run implements RunInterface
 
     /**
      * Returns an array with silent errors in path configuration.
-	 * 返回一个在路径配置中有静默错误的数组
      *
      * @return array
      */
@@ -310,7 +303,6 @@ final class Run implements RunInterface
      * Should Whoops send HTTP error code to the browser if possible?
      * Whoops will by default send HTTP code 500, but you may wish to
      * use 502, 503, or another 5xx family code.
-	 * 如果可能的话,谁应该将HTTP错误代码发送到浏览器?
      *
      * @param bool|int $code
      *
@@ -525,6 +517,11 @@ final class Run implements RunInterface
         // to the exception handler. Pass that information along.
         $this->canThrowExceptions = false;
 
+        // If we are not currently registered, we should not do anything
+        if (!$this->isRegistered) {
+            return;
+        }
+
         $error = $this->system->getLastError();
         if ($error && Misc::isLevelFatal($error['type'])) {
             // If there was a fatal error,
@@ -554,7 +551,7 @@ final class Run implements RunInterface
     {
         if (!is_callable($filterCallback)) {
             throw new \InvalidArgumentException(sprintf(
-                "A frame filter must be of type callable, %s type given.", 
+                "A frame filter must be of type callable, %s type given.",
                 gettype($filterCallback)
             ));
         }

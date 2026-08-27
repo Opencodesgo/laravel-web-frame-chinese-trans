@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，字符串按顺序包含
- */
-
 namespace Hamcrest\Text;
 
 /*
@@ -13,7 +9,6 @@ use Hamcrest\TypeSafeMatcher;
 
 /**
  * Tests if the value contains a series of substrings in a constrained order.
- * 测试值是否包含按约束顺序排列的一系列子字符串。
  */
 class StringContainsInOrder extends TypeSafeMatcher
 {
@@ -55,7 +50,6 @@ class StringContainsInOrder extends TypeSafeMatcher
 
     /**
      * Matches if value contains $substrings in a constrained order.
-	 * 如果value包含$substrings，则匹配。
      *
      * @factory ...
      */

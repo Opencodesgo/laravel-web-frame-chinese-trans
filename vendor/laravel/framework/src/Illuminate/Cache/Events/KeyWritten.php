@@ -25,7 +25,7 @@ class KeyWritten extends CacheEvent
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  string  $key
      * @param  mixed  $value

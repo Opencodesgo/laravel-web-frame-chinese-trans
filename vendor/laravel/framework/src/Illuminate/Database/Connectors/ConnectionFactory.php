@@ -156,7 +156,7 @@ class ConnectionFactory
 
     /**
      * Merge a configuration for a read / write connection.
-	 * 合并读写连接的配置
+	 * 合并读写连接的配
      *
      * @param  array  $config
      * @param  array  $merge
@@ -193,7 +193,7 @@ class ConnectionFactory
     protected function createPdoResolverWithHosts(array $config)
     {
         return function () use ($config) {
-            foreach (Arr::shuffle($hosts = $this->parseHosts($config)) as $key => $host) {
+            foreach (Arr::shuffle($this->parseHosts($config)) as $host) {
                 $config['host'] = $host;
 
                 try {
@@ -236,9 +236,7 @@ class ConnectionFactory
      */
     protected function createPdoResolverWithoutHosts(array $config)
     {
-        return function () use ($config) {
-            return $this->createConnector($config)->connect($config);
-        };
+        return fn () => $this->createConnector($config)->connect($config);
     }
 
     /**
@@ -260,18 +258,13 @@ class ConnectionFactory
             return $this->container->make($key);
         }
 
-        switch ($config['driver']) {
-            case 'mysql':
-                return new MySqlConnector;
-            case 'pgsql':
-                return new PostgresConnector;
-            case 'sqlite':
-                return new SQLiteConnector;
-            case 'sqlsrv':
-                return new SqlServerConnector;
-        }
-
-        throw new InvalidArgumentException("Unsupported driver [{$config['driver']}].");
+        return match ($config['driver']) {
+            'mysql' => new MySqlConnector,
+            'pgsql' => new PostgresConnector,
+            'sqlite' => new SQLiteConnector,
+            'sqlsrv' => new SqlServerConnector,
+            default => throw new InvalidArgumentException("Unsupported driver [{$config['driver']}]."),
+        };
     }
 
     /**
@@ -293,17 +286,12 @@ class ConnectionFactory
             return $resolver($connection, $database, $prefix, $config);
         }
 
-        switch ($driver) {
-            case 'mysql':
-                return new MySqlConnection($connection, $database, $prefix, $config);
-            case 'pgsql':
-                return new PostgresConnection($connection, $database, $prefix, $config);
-            case 'sqlite':
-                return new SQLiteConnection($connection, $database, $prefix, $config);
-            case 'sqlsrv':
-                return new SqlServerConnection($connection, $database, $prefix, $config);
-        }
-
-        throw new InvalidArgumentException("Unsupported driver [{$driver}].");
+        return match ($driver) {
+            'mysql' => new MySqlConnection($connection, $database, $prefix, $config),
+            'pgsql' => new PostgresConnection($connection, $database, $prefix, $config),
+            'sqlite' => new SQLiteConnection($connection, $database, $prefix, $config),
+            'sqlsrv' => new SqlServerConnection($connection, $database, $prefix, $config),
+            default => throw new InvalidArgumentException("Unsupported driver [{$driver}]."),
+        };
     }
 }

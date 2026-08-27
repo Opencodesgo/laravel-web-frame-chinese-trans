@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Elastica 处理程序
+ * Monolog，处理器，Elastica 处理器
  */
 
 /*
@@ -24,7 +24,7 @@ use Elastica\Exception\ExceptionInterface;
 
 /**
  * Elastic Search handler
- * Elastica 处理程序
+ * Elastic Search 处理程序
  *
  * Usage example:
  *
@@ -116,7 +116,7 @@ class ElasticaHandler extends AbstractProcessingHandler
 
     /**
      * Use Elasticsearch bulk API to send list of documents
-	 * 使用弹性搜索批量API发送文档列表
+	 * 使用Elasticsearch批量API发送文档列表
      *
      * @param Document[] $documents
      *

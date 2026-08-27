@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，默认属性，申请默认属性处理器
+ * League，CommonMark，扩展，默认属性，应用默认属性处理器
  */
 
 declare(strict_types=1);
@@ -55,7 +55,6 @@ final class ApplyDefaultAttributesProcessor implements ConfigurationAwareInterfa
             }
 
             // Merge these attributes into the node
-			// 将这些属性合并到节点中
             if (\count($newAttributes) > 0) {
                 $node->data->set('attributes', AttributesHelper::mergeAttributes($node, $newAttributes));
             }

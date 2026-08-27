@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，类变形违规异常
+ * Illuminate，数据库，类变形违反异常
  */
 
 namespace Illuminate\Database;
@@ -19,7 +19,7 @@ class ClassMorphViolationException extends RuntimeException
 
     /**
      * Create a new exception instance.
-	 * 创建新的异常实例
+	 * 创建一个新的异常实例
      *
      * @param  object  $model
      */

@@ -66,7 +66,7 @@ class DatabaseNotification extends Model
 
     /**
      * Mark the notification as read.
-	 * 将通知标记为已读
+	 * 标记通知为已读
      *
      * @return void
      */
@@ -138,7 +138,7 @@ class DatabaseNotification extends Model
 
     /**
      * Create a new database notification collection instance.
-	 * 创建新的数据库通知集合实例
+	 * 创建一个新的数据库通知集合实例
      *
      * @param  array  $models
      * @return \Illuminate\Notifications\DatabaseNotificationCollection

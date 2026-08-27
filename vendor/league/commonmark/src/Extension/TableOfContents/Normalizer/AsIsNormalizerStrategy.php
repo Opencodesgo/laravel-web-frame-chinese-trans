@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，标准化者，标准化者策略也是如此
+ * League，CommonMark，扩展，目次，标准化者，Normalizer 策略也是如此
  */
 
 declare(strict_types=1);
@@ -40,6 +40,7 @@ final class AsIsNormalizerStrategy implements NormalizerStrategyInterface
     {
         while ($level > $this->parentLevel) {
             // Descend downwards, creating new ListBlocks if needed, until we reach the correct depth
+			// 向下下降，如果需要，创建新的listblock，直到我们到达正确的深度。
             if ($this->lastListItem === null) {
                 $this->lastListItem = new ListItem($this->parentListBlock->getListData());
                 $this->parentListBlock->appendChild($this->lastListItem);
@@ -57,6 +58,7 @@ final class AsIsNormalizerStrategy implements NormalizerStrategyInterface
 
         while ($level < $this->parentLevel) {
             // Search upwards for the previous parent list block
+			// 向上搜索前一个父列表块
             $search = $this->parentListBlock;
             while ($search = $search->parent()) {
                 if ($search instanceof ListBlock) {

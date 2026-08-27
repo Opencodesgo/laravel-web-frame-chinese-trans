@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis 存储
+ * Illuminate，缓存，Redis存储
  */
 
 namespace Illuminate\Cache;
@@ -78,13 +78,16 @@ class RedisStore extends TaggableStore implements LockProvider
 	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array
      */
     public function many(array $keys)
     {
+        if (count($keys) === 0) {
+            return [];
+        }
+
         $results = [];
 
         $values = $this->connection()->mget(array_map(function ($key) {
@@ -258,7 +261,6 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Begin executing a new tags operation.
-	 * 开始执行一个新的标记操作
      *
      * @param  array|mixed  $names
      * @return \Illuminate\Cache\RedisTaggedCache
@@ -320,7 +322,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Get the Redis database instance.
-	 * 得到Redis数据库实例
+	 * 获取Redis数据库实例
      *
      * @return \Illuminate\Contracts\Redis\Factory
      */
@@ -354,7 +356,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Serialize the value.
-	 * 序列化该值
+	 * 序列化值
      *
      * @param  mixed  $value
      * @return mixed
@@ -366,7 +368,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Unserialize the value.
-	 * 反序列化该值
+	 * 反序列化值
      *
      * @param  mixed  $value
      * @return mixed

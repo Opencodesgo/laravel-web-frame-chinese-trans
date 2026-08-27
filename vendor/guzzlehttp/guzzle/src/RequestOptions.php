@@ -7,7 +7,6 @@ namespace GuzzleHttp;
 
 /**
  * This class contains a list of built-in Guzzle request options.
- * 这个类包含一个内置的Guzzle请求选项列表。
  *
  * @see https://docs.guzzlephp.org/en/latest/request-options.html
  */

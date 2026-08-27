@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，消息，简单消息
+ * Illuminate，通知，信息，简单消息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -60,7 +60,7 @@ class SimpleMessage
 
     /**
      * The text / label for the action.
-	 * 操作的文本/标签
+	 * 动作的文本/标签
      *
      * @var string
      */
@@ -177,6 +177,23 @@ class SimpleMessage
     }
 
     /**
+     * Add a line of text to the notification if the given condition is true.
+	 * 如果给定的条件为真，则向通知添加一行文本。
+     *
+     * @param  bool  $boolean
+     * @param  mixed  $line
+     * @return $this
+     */
+    public function lineIf($boolean, $line)
+    {
+        if ($boolean) {
+            return $this->line($line);
+        }
+
+        return $this;
+    }
+
+    /**
      * Add lines of text to the notification.
 	 * 向通知添加文本行
      *
@@ -187,6 +204,23 @@ class SimpleMessage
     {
         foreach ($lines as $line) {
             $this->line($line);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add lines of text to the notification if the given condition is true.
+	 * 如果给定条件为真，则向通知添加文本行。
+     *
+     * @param  bool  $boolean
+     * @param  iterable  $lines
+     * @return $this
+     */
+    public function linesIf($boolean, $lines)
+    {
+        if ($boolean) {
+            return $this->lines($lines);
         }
 
         return $this;

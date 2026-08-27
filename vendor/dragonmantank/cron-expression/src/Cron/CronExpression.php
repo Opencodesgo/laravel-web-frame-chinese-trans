@@ -83,7 +83,7 @@ class CronExpression
 
     /**
      * Registered a user defined CRON Expression Alias.
-	 * 注册了一个用户定义的CRON表达别名
+	 * 注册了一个用户定义的CRON表达式别名
      *
      * @throws LogicException If the expression or the alias name are invalid
      *                         or if the alias is already registered.
@@ -110,7 +110,7 @@ class CronExpression
 
     /**
      * Unregistered a user defined CRON Expression Alias.
-	 * 未注册用户定义CRON表达别名
+	 * 注销用户定义的CRON表达式别名
      *
      * @throws LogicException If the user tries to unregister a built-in alias
      */
@@ -132,7 +132,7 @@ class CronExpression
 
     /**
      * Tells whether a CRON Expression alias is registered.
-	 * 说明CRON表达式别名是否注册
+	 * 告诉是否注册了CRON表达式别名
      */
     public static function supportsAlias(string $alias): bool
     {
@@ -142,6 +142,7 @@ class CronExpression
     /**
      * Returns all registered aliases as an associated array where the aliases are the key
      * and their associated expressions are the values.
+	 * 将所有注册的别名作为关联数组返回，其中别名为键且它们的关联表达式是值。
      *
      * @return array<string, string>
      */
@@ -161,7 +162,7 @@ class CronExpression
 
     /**
      * Validate a CronExpression.
-	 * 验证一个CronExpression
+	 * 验证CronExpression
      *
      * @param string $expression the CRON expression to validate
      *
@@ -180,7 +181,7 @@ class CronExpression
 
     /**
      * Parse a CRON expression.
-	 * 解析一个CRON表达式
+	 * 解析CRON表达式
      *
      * @param string $expression CRON expression (e.g. '8 * * * *')
      * @param null|FieldFactoryInterface $fieldFactory Factory to create cron fields
@@ -197,7 +198,7 @@ class CronExpression
 
     /**
      * Set or change the CRON expression.
-	 * 设置或更改CRON表达式
+	 * 设置或修改CRON表达式
      *
      * @param string $value CRON expression (e.g. 8 * * * *)
      *
@@ -240,7 +241,7 @@ class CronExpression
 
     /**
      * Set part of the CRON expression.
-	 * 设置CRON表达式的一部分
+	 * 设置部分CRON表达式
      *
      * @param int $position The position of the CRON expression to set
      * @param string $value The value to set
@@ -264,7 +265,7 @@ class CronExpression
 
     /**
      * Set max iteration count for searching next run dates.
-	 * 为搜索下一个运行日期设置max迭代计数
+	 * 设置搜索下一个运行日期的最大迭代计数
      *
      * @param int $maxIterationCount Max iteration count when searching for next run date
      *
@@ -279,7 +280,7 @@ class CronExpression
 
     /**
      * Get a next run date relative to the current date or a specific date
-	 * 相对于当前日期或特定日期获得下一次运行日期
+	 * 获取相对于当前日期或特定日期的下一个运行日期
      *
      * @param string|\DateTimeInterface $currentTime      Relative calculation date
      * @param int                       $nth              Number of matches to skip before returning a
@@ -305,7 +306,7 @@ class CronExpression
 
     /**
      * Get a previous run date relative to the current date or a specific date.
-	 * 相对于当前日期或特定日期获得先前的运行日期
+	 * 获取相对于当前日期或特定日期的上一个运行日期
      *
      * @param string|\DateTimeInterface $currentTime      Relative calculation date
      * @param int                       $nth              Number of matches to skip before returning
@@ -327,7 +328,7 @@ class CronExpression
 
     /**
      * Get multiple run dates starting at the current date or a specific date.
-	 * 从当前日期或特定日期获得多个运行日期
+	 * 获取从当前日期或特定日期开始的多个运行日期
      *
      * @param int $total Set the total number of dates to calculate
      * @param string|\DateTimeInterface|null $currentTime Relative calculation date
@@ -376,7 +377,7 @@ class CronExpression
 
     /**
      * Get all or part of the CRON expression.
-	 * 得到所有或部分的CRON表达式
+	 * 获取全部或部分CRON表达式
      *
      * @param int|string|null $part specify the part to retrieve or NULL to get the full
      *                     cron schedule string
@@ -399,7 +400,7 @@ class CronExpression
 
     /**
      * Gets the parts of the cron expression as an array.
-	 * 将cron表达式的部分作为数组
+	 * 获取作为数组的cron表达式的各部分
      *
      * @return string[]
      *   The array of parts that make up this expression.
@@ -411,7 +412,7 @@ class CronExpression
 
     /**
      * Helper method to output the full expression.
-	 * 帮助方法输出完整的表达式
+	 * 方法输出完整表达式
      *
      * @return string Full CRON expression
      */
@@ -462,7 +463,7 @@ class CronExpression
 
     /**
      * Get the next or previous run date of the expression relative to a date.
-	 * 将表达式的下一个或之前运行的日期与日期相关。
+	 * 获取表达式相对于日期的下一个或上一个运行日期
      *
      * @param string|\DateTimeInterface|null $currentTime Relative calculation date
      * @param int $nth Number of matches to skip before returning
@@ -588,7 +589,7 @@ class CronExpression
 
     /**
      * Workout what timeZone should be used.
-	 * 锻炼什么时区应该使用
+	 * 练习应该使用哪个时区
      *
      * @param string|\DateTimeInterface|null $currentTime Relative calculation date
      * @param string|null $timeZone TimeZone to use instead of the system default

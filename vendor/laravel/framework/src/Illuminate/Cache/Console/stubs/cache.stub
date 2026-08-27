@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，缓存，控制台，存根，创建缓存表
+ * Illuminate，缓存，控制台，存根，根据需要实际修改
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCacheTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -41,4 +41,4 @@ class CreateCacheTable extends Migration
         Schema::dropIfExists('cache');
         Schema::dropIfExists('cache_locks');
     }
-}
+};

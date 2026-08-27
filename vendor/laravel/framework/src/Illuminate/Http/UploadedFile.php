@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，已上传成功文件
+ * Illuminate, Http, 上传文件
  */
 
 namespace Illuminate\Http;
@@ -30,7 +30,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 将上传的文件存储在文件系统磁盘上
+	 * 将上传的文件存储在文件系统磁盘上。
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -78,7 +78,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 将上传的文件存储在文件系统磁盘上
+	 * 将上传的文件存储在文件系统磁盘上。
      *
      * @param  string  $path
      * @param  string  $name

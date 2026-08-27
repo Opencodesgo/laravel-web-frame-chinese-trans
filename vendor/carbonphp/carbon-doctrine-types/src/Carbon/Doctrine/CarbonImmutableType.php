@@ -1,7 +1,9 @@
 <?php
 /**
- * Carbon，Doctrine，内部，计算器，Carbon 不变的类型
+ * Carbon，Doctrine，Carbon 不可变类型
  */
+
+declare(strict_types=1);
 
 namespace Carbon\Doctrine;
 

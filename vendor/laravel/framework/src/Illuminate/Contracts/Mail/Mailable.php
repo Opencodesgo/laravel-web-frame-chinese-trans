@@ -11,10 +11,10 @@ interface Mailable
 {
     /**
      * Send the message using the given mailer.
-	 * 使用给定的邮件发送器发送消息
+	 * 发送消息使用给定邮件发送程序
      *
      * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
-     * @return void
+     * @return \Illuminate\Mail\SentMessage|null
      */
     public function send($mailer);
 
@@ -28,8 +28,8 @@ interface Mailable
     public function queue(Queue $queue);
 
     /**
-     * Deliver the queued message after the given delay.
-	 * 在给定的延迟之后交付排队消息
+     * Deliver the queued message after (n) seconds.
+	 * 在(n)秒后交付排队消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Queue\Factory  $queue

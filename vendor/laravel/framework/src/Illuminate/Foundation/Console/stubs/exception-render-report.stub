@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，异常呈现报告
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -22,7 +22,7 @@ class {{ class }} extends Exception
 
     /**
      * Render the exception as an HTTP response.
-	 * 呈现异常为HTTP响应
+	 * 将异常呈现为HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

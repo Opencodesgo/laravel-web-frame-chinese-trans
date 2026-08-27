@@ -52,7 +52,7 @@ class SortedMiddleware extends Collection
                 // This middleware is in the priority map. If we have encountered another middleware
                 // that was also in the priority map and was at a lower priority than the current
                 // middleware, we will move this middleware to be above the previous encounter.
-				// 此中间件位于优先级映射中。
+				// 此中间件位于优先级映射中。如果我们遇到了另一个中间件。
                 if (isset($lastPriorityIndex) && $priorityIndex < $lastPriorityIndex) {
                     return $this->sortMiddleware(
                         $priorityMap, array_values($this->moveMiddleware($middlewares, $index, $lastIndex))
@@ -62,7 +62,7 @@ class SortedMiddleware extends Collection
                 // This middleware is in the priority map; but, this is the first middleware we have
                 // encountered from the map thus far. We'll save its current index plus its index
                 // from the priority map so we can compare against them on the next iterations.
-				// 这个中间件位于优先级图中；
+				// 这个中间件位于优先级图中；但是，这是我们拥有的第一个中间件。
                 $lastIndex = $index;
 
                 $lastPriorityIndex = $priorityIndex;

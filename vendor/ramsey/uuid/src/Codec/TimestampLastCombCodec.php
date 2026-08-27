@@ -1,11 +1,10 @@
 <?php
 /**
- * Ramsey，Uuid，编解码器，时间戳最后梳理编解码器
+ * Ramsey，Uuid，编解码器， 时间戳最后梳编解码器
  */
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,36 +18,33 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Codec;
 
 /**
- * TimestampLastCombCodec encodes and decodes COMBs, with the timestamp as the
- * last 48 bits
+ * TimestampLastCombCodec encodes and decodes COMBs, with the timestamp as the last 48 bits
  *
- * The CombGenerator when used with the StringCodec (and, by proxy, the
- * TimestampLastCombCodec) adds the timestamp to the last 48 bits of the COMB.
- * The TimestampLastCombCodec is provided for the sake of consistency. In
- * practice, it is identical to the standard StringCodec but, it may be used
- * with the CombGenerator for additional context when reading code.
+ * The CombGenerator when used with the StringCodec (and, by proxy, the TimestampLastCombCodec) adds the timestamp to
+ * the last 48 bits of the COMB. The TimestampLastCombCodec is provided for the sake of consistency. In practice, it is
+ * identical to the standard StringCodec, but it may be used with the CombGenerator for additional context when reading
+ * code.
  *
- * Consider the following code. By default, the codec used by UuidFactory is the
- * StringCodec, but here, we explicitly set the TimestampLastCombCodec. It is
- * redundant, but it is clear that we intend this COMB to be generated with the
+ * Consider the following code. By default, the codec used by UuidFactory is the StringCodec, but here, we explicitly
+ * set the TimestampLastCombCodec. It is redundant, but it is clear that we intend this COMB to be generated with the
  * timestamp appearing at the end.
  *
- * ``` php
+ * ```
  * $factory = new UuidFactory();
  *
  * $factory->setCodec(new TimestampLastCombCodec($factory->getUuidBuilder()));
  *
  * $factory->setRandomGenerator(new CombGenerator(
  *     $factory->getRandomGenerator(),
- *     $factory->getNumberConverter()
+ *     $factory->getNumberConverter(),
  * ));
  *
  * $timestampLastComb = $factory->uuid4();
  * ```
  *
- * @link https://www.informit.com/articles/printerfriendly/25862 The Cost of GUIDs as Primary Keys
+ * @deprecated Please use {@see StringCodec} instead.
  *
- * @psalm-immutable
+ * @immutable
  */
 class TimestampLastCombCodec extends StringCodec
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，输出，流输出
+ * Symfony，Component，Console，输出，流式输出
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * StreamOutput writes the output to a given stream.
- * StreamOutput将输出写入给定的流。
+ * StreamOutput将输出写入给定流。
  *
  * Usage:
  *
@@ -33,6 +33,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  */
 class StreamOutput extends Output
 {
+    /** @var resource */
     private $stream;
 
     /**
@@ -51,16 +52,14 @@ class StreamOutput extends Output
 
         $this->stream = $stream;
 
-        if (null === $decorated) {
-            $decorated = $this->hasColorSupport();
-        }
+        $decorated ??= $this->hasColorSupport();
 
         parent::__construct($verbosity, $decorated, $formatter);
     }
 
     /**
      * Gets the stream attached to this StreamOutput instance.
-	 * 获取附加到这个StreamOutput实例的流
+	 * 获取附加到此StreamOutput实例的流
      *
      * @return resource
      */
@@ -69,6 +68,9 @@ class StreamOutput extends Output
         return $this->stream;
     }
 
+    /**
+     * @return void
+     */
     protected function doWrite(string $message, bool $newline)
     {
         if ($newline) {
@@ -82,7 +84,7 @@ class StreamOutput extends Output
 
     /**
      * Returns true if the stream supports colorization.
-	 * 如果流支持着色,返回true。
+	 * 如果流支持着色，则返回true。
      *
      * Colorization is disabled if not supported by the stream:
      *
@@ -94,7 +96,7 @@ class StreamOutput extends Output
      *
      * @return bool true if the stream supports colorization, false otherwise
      */
-    protected function hasColorSupport()
+    protected function hasColorSupport(): bool
     {
         // Follow https://no-color.org/
         if ('' !== (($_SERVER['NO_COLOR'] ?? getenv('NO_COLOR'))[0] ?? '')) {

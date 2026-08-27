@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，中间件，节流异常与Redis
+ * Illuminate，队列，中间件，节流异常与 Redis
  */
 
 namespace Illuminate\Queue\Middleware;
@@ -33,7 +33,7 @@ class ThrottlesExceptionsWithRedis extends ThrottlesExceptions
 
     /**
      * Process the job.
-	 * 处理作业
+	 * 过程作业
      *
      * @param  mixed  $job
      * @param  callable  $next

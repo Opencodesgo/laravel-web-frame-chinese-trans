@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，常量
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
@@ -15,6 +19,7 @@ class Const_ extends NodeAbstract {
 
     /**
      * Constructs a const node for use in class const and const statements.
+	 * 构造const节点，用于类const和const语句。
      *
      * @param string|Identifier $name Name
      * @param Expr $value Value

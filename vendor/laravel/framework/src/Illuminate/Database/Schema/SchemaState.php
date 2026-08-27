@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，模式状态
+ * Illuminate，数据库，模式，模式状态
  */
 
 namespace Illuminate\Database\Schema;
@@ -29,7 +29,7 @@ abstract class SchemaState
 
     /**
      * The name of the application's migration table.
-	 * 应用迁移表的名称
+	 * 应用程序迁移表的名称
      *
      * @var string
      */
@@ -77,7 +77,7 @@ abstract class SchemaState
 
     /**
      * Dump the database's schema into a file.
-	 * 转储数据库的模式到文件
+	 * 将数据库的模式转储到文件中
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string  $path
@@ -87,7 +87,7 @@ abstract class SchemaState
 
     /**
      * Load the given schema file into the database.
-	 * 加载给定的模式文件到数据库
+	 * 将给定的模式文件加载到数据库中
      *
      * @param  string  $path
      * @return void
@@ -98,7 +98,7 @@ abstract class SchemaState
      * Create a new process instance.
 	 * 创建一个新的流程实例
      *
-     * @param  array  $arguments
+     * @param  mixed  ...$arguments
      * @return \Symfony\Component\Process\Process
      */
     public function makeProcess(...$arguments)

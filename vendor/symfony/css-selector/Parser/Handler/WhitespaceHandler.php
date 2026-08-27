@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，处理器，空白处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector whitespace handler.
+ * CSS选择器空白处理程序。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,9 +31,6 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
  */
 class WhitespaceHandler implements HandlerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function handle(Reader $reader, TokenStream $stream): bool
     {
         $match = $reader->findPattern('~^[ \t\r\n\f]+~');

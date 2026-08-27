@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Exception，意外的编码异常
+ * League，CommonMark，异常，出乎意料编码异常
  */
 
 declare(strict_types=1);

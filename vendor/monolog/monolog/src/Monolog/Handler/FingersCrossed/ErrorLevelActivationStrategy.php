@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，手指交叉，错误级激活策略
+ * Monolog，处理器，希望成功，错误级别激活策略
  */
 
 /*
@@ -20,7 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Error level based activation strategy.
- * 基于错误的激活策略。
+ * 基于错误级别的激活策略。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *

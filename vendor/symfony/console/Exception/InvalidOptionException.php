@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect option name or value typed in the console.
- * 在控制台中表示错误的选项名称或值。
+ * 表示在控制台中键入的选项名称或值不正确。
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */

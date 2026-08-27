@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，编码器，地址编码器接口
+ * Symfony，Component，Mime，译码器，地址编码器接口
  */
 
 /*
@@ -23,7 +23,7 @@ interface AddressEncoderInterface
 {
     /**
      * Encodes an email address.
-	 * 编码电子邮件地址
+	 * 对电子邮件地址进行编码
      *
      * @throws AddressEncoderException if the email cannot be represented in
      *                                 the encoding implemented by this class

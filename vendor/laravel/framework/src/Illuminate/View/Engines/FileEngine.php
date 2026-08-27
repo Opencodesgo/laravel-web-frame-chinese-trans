@@ -20,7 +20,7 @@ class FileEngine implements Engine
 
     /**
      * Create a new file engine instance.
-	 * 创建新的文件引擎实例
+	 * 创建文件引擎实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void

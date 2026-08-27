@@ -26,7 +26,7 @@ use Symfony\Component\Finder\Comparator\NumberComparator;
  */
 class SizeRangeFilterIterator extends \FilterIterator
 {
-    private $comparators = [];
+    private array $comparators = [];
 
     /**
      * @param \Iterator<string, \SplFileInfo> $iterator
@@ -42,11 +42,8 @@ class SizeRangeFilterIterator extends \FilterIterator
     /**
      * Filters the iterator values.
 	 * 过滤迭代器值
-     *
-     * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function accept()
+    public function accept(): bool
     {
         $fileinfo = $this->current();
         if (!$fileinfo->isFile()) {

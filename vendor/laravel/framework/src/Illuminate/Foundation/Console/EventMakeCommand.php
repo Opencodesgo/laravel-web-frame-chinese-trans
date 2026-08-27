@@ -1,25 +1,41 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:event 命令
+ * Illuminate，基础，控制台，make:event 事件生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:event')]
 class EventMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称 make:event
+	 * 控制台命令名
      *
      * @var string
      */
     protected $name = 'make:event';
 
     /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:event';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -27,7 +43,7 @@ class EventMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成器类类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -48,7 +64,7 @@ class EventMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -73,7 +89,7 @@ class EventMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -81,5 +97,18 @@ class EventMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\Events';
+    }
+
+    /**
+     * Get the console command options.
+	 * 获取控制台命令选项
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the event already exists'],
+        ];
     }
 }

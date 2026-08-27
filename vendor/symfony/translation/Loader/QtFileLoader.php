@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，加载器，Qt 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,27 +28,24 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 class QtFileLoader implements LoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load($resource, string $locale, string $domain = 'messages')
+    public function load(mixed $resource, string $locale, string $domain = 'messages'): MessageCatalogue
     {
         if (!class_exists(XmlUtils::class)) {
             throw new RuntimeException('Loading translations from the QT format requires the Symfony Config component.');
         }
 
         if (!stream_is_local($resource)) {
-            throw new InvalidResourceException(sprintf('This is not a local file "%s".', $resource));
+            throw new InvalidResourceException(\sprintf('This is not a local file "%s".', $resource));
         }
 
         if (!file_exists($resource)) {
-            throw new NotFoundResourceException(sprintf('File "%s" not found.', $resource));
+            throw new NotFoundResourceException(\sprintf('File "%s" not found.', $resource));
         }
 
         try {
             $dom = XmlUtils::loadFile($resource);
         } catch (\InvalidArgumentException $e) {
-            throw new InvalidResourceException(sprintf('Unable to load "%s".', $resource), $e->getCode(), $e);
+            throw new InvalidResourceException(\sprintf('Unable to load "%s".', $resource), $e->getCode(), $e);
         }
 
         $internalErrors = libxml_use_internal_errors(true);
@@ -67,7 +67,6 @@ class QtFileLoader implements LoaderInterface
                         $domain
                     );
                 }
-                $translation = $translation->nextSibling;
             }
 
             if (class_exists(FileResource::class)) {

@@ -11,7 +11,7 @@ interface PasswordBroker
 {
     /**
      * Constant representing a successfully sent reminder.
-	 * 表示成功发送提醒的常量
+	 * 成功发送提醒的常量
      *
      * @var string
      */

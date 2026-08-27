@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，小时字段
+ * Cron，时间字段
  */
 
 declare(strict_types=1);
@@ -52,7 +52,6 @@ class HoursField extends AbstractField
         }
 
         // Are we on the edge of a transition
-		// 我们在过渡的边缘吗
         $lastTransition = $this->getPastTransition($date);
         if (($lastTransition !== null) && ($lastTransition["ts"] > ((int) $date->format('U') - 3600))) {
             $dtLastOffset = clone $date;
@@ -87,6 +86,7 @@ class HoursField extends AbstractField
         ) {
             // We start a day before current time so we can differentiate between the first transition entry
             // and a change that happens now
+			// 我们在当前时间的前一天开始，这样我们可以区分第一个转换条目，现在发生的变化。
             $dtLimitStart = clone $date;
             $dtLimitStart = $dtLimitStart->modify("-12 months");
             $dtLimitEnd = clone $date;

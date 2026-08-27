@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Telegram Bot 处理程序
- *
+ * Monolog，处理器，电报机器人处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -52,12 +52,14 @@ class TelegramBotHandler extends AbstractProcessingHandler
 
     /**
      * The maximum number of characters allowed in a message according to the Telegram api documentation
+	 * 根据Telegram api文档，消息中允许的最大字符数。
      */
     private const MAX_MESSAGE_LENGTH = 4096;
 
     /**
      * Telegram bot access token provided by BotFather.
      * Create telegram bot with https://telegram.me/BotFather and use access token from it.
+	 * 由BotFather提供的Telegram bot访问令牌。
      * @var string
      */
     private $apiKey;
@@ -65,6 +67,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
     /**
      * Telegram channel name.
      * Since to start with '@' symbol as prefix.
+	 * 电报频道名称。
      * @var string
      */
     private $channel;
@@ -73,18 +76,21 @@ class TelegramBotHandler extends AbstractProcessingHandler
      * The kind of formatting that is used for the message.
      * See available options at https://core.telegram.org/bots/api#formatting-options
      * or in AVAILABLE_PARSE_MODES
+	 * 用于消息的格式类型。
      * @var ?string
      */
     private $parseMode;
 
     /**
      * Disables link previews for links in the message.
+	 * 禁用消息中链接的链接预览。
      * @var ?bool
      */
     private $disableWebPagePreview;
 
     /**
      * Sends the message silently. Users will receive a notification with no sound.
+	 * 以静默方式发送消息。用户将会收到一个没有声音的通知。
      * @var ?bool
      */
     private $disableNotification;
@@ -265,7 +271,7 @@ class TelegramBotHandler extends AbstractProcessingHandler
 
     /**
      * Handle a message that is too long: truncates or splits into several
-	 * 处理太长的消息：截断或分成几个
+	 * 处理太长的消息：截断或分成几个。
      * @param string $message
      * @return string[]
      */

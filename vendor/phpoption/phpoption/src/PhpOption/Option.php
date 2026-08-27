@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpOption，选项
+ * PhpOption，Option
  */
 
 /*
@@ -180,6 +180,7 @@ abstract class Option implements IteratorAggregate
                 false
             );
             // if at least one parameter is empty, return None
+			// 如果至少有一个参数为空，则返回None。
             if ($reduced_args) {
                 return None::create();
             }
@@ -223,7 +224,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Returns the value if available, or the results of the callable.
-	 * 返回值（如果可用）或可调用对象的结果
+	 * 返回值（如果可用）或可调用对象的结果。
      *
      * This is preferable over ``getOrElse`` if the computation of the default
      * value is expensive.
@@ -307,6 +308,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * This is similar to map() except that the return value of the callable has no meaning.
+	 * 这类似于map()，只是可调用对象的返回值没有意义。
      *
      * The passed callable is simply executed if the option is non-empty, and ignored if the
      * option is empty. This method is preferred for callables with side-effects, while map()
@@ -353,6 +355,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * If the option is empty, it is returned immediately without applying the callable.
+	 * 如果该选项为空，则立即返回，而不应用可调用对象。
      *
      * If the option is non-empty, the callable is applied, and if it returns true,
      * the option itself is returned; otherwise, None is returned.
@@ -365,6 +368,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * If the option is empty, it is returned immediately without applying the callable.
+	 * 如果该选项为空，则立即返回，而不应用可调用对象。
      *
      * If the option is non-empty, the callable is applied, and if it returns false,
      * the option itself is returned; otherwise, None is returned.
@@ -377,6 +381,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * If the option is empty, it is returned immediately.
+	 * 如果该选项为空，则立即返回。
      *
      * If the option is non-empty, and its value does not equal the passed value
      * (via a shallow comparison ===), then None is returned. Otherwise, the
@@ -392,6 +397,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * If the option is empty, it is returned immediately.
+	 * 如果该选项为空，则立即返回。
      *
      * If the option is non-empty, and its value does equal the passed value (via
      * a shallow comparison ===), then None is returned; otherwise, the Option is
@@ -407,6 +413,7 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Binary operator for the initial value and the option's value.
+	 * 初始值和选项值的二进制运算符。
      *
      * If empty, the initial value is returned. If non-empty, the callable
      * receives the initial value and the option's value as arguments.

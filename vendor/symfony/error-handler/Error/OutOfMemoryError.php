@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，ErrorHandler，错误，内存错误
+ * Symfony，Component，ErrorHandler，错误，内存溢出错误
  */
 
 /*

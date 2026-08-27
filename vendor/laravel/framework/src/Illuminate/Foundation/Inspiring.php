@@ -7,11 +7,47 @@ namespace Illuminate\Foundation;
 
 use Illuminate\Support\Collection;
 
+/*
+                                                   .~))>>
+                                                  .~)>>
+                                                .~))))>>>
+                                              .~))>>             ___
+                                            .~))>>)))>>      .-~))>>
+                                          .~)))))>>       .-~))>>)>
+                                        .~)))>>))))>>  .-~)>>)>
+                    )                 .~))>>))))>>  .-~)))))>>)>
+                 ( )@@*)             //)>))))))  .-~))))>>)>
+               ).@(@@               //))>>))) .-~))>>)))))>>)>
+             (( @.@).              //))))) .-~)>>)))))>>)>
+           ))  )@@*.@@ )          //)>))) //))))))>>))))>>)>
+        ((  ((@@@.@@             |/))))) //)))))>>)))>>)>
+       )) @@*. )@@ )   (\_(\-\b  |))>)) //)))>>)))))))>>)>
+     (( @@@(.@(@ .    _/`-`  ~|b |>))) //)>>)))))))>>)>
+      )* @@@ )@*     (@)  (@) /\b|))) //))))))>>))))>>
+    (( @. )@( @ .   _/  /    /  \b)) //))>>)))))>>>_._
+     )@@ (@@*)@@.  (6///6)- / ^  \b)//))))))>>)))>>   ~~-.
+  ( @jgs@@. @@@.*@_ VvvvvV//  ^  \b/)>>))))>>      _.     `bb
+   ((@@ @@@*.(@@ . - | o |' \ (  ^   \b)))>>        .'       b`,
+    ((@@).*@@ )@ )   \^^^/  ((   ^  ~)_        \  /           b `,
+      (@@. (@@ ).     `-'   (((   ^    `\ \ \ \ \|             b  `.
+        (*.@*              / ((((        \| | |  \       .       b `.
+                          / / (((((  \    \ /  _.-~\     Y,      b  ;
+                         / / / (((((( \    \.-~   _.`" _.-~`,    b  ;
+                        /   /   `(((((()    )    (((((~      `,  b  ;
+                      _/  _/      `"""/   /'                  ; b   ;
+                  _.-~_.-~           /  /'                _.'~bb _.'
+                ((((~~              / /'              _.'~bb.--~
+                                   ((((          __.-~bb.-~
+                                               .'  b .~~
+                                               :bb ,'
+                                               ~~~~
+ */
+
 class Inspiring
 {
     /**
      * Get an inspiring quote.
-	 * 引用一句鼓舞人心的话
+	 * 得到一句鼓舞人心的话
      *
      * Taylor & Dayle made this commit from Jungfraujoch. (11,333 ft.)
      *
@@ -22,6 +58,19 @@ class Inspiring
      * @return string
      */
     public static function quote()
+    {
+        return static::quotes()
+            ->map(fn ($quote) => static::formatForConsole($quote))
+            ->random();
+    }
+
+    /**
+     * Get the collection of inspiring quotes.
+	 * 收集鼓舞人心的名言
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function quotes()
     {
         return Collection::make([
             'Act only according to that maxim whereby you can, at the same time, will that it should become a universal law. - Immanuel Kant',
@@ -60,6 +109,27 @@ class Inspiring
             'Life is available only in the present moment. - Thich Nhat Hanh',
             'The best way to take care of the future is to take care of the present moment. - Thich Nhat Hanh',
             'Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie',
-        ])->random();
+            'The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk',
+            'Always remember that you are absolutely unique. Just like everyone else. - Margaret Mead',
+            'You must be the change you wish to see in the world. - Mahatma Gandhi',
+        ]);
+    }
+
+    /**
+     * Formats the given quote for a pretty console output.
+	 * 格式化给定的报价以获得漂亮的控制台输出
+     *
+     * @param  string  $quote
+     * @return string
+     */
+    protected static function formatForConsole($quote)
+    {
+        [$text, $author] = str($quote)->explode('-');
+
+        return sprintf(
+            "\n  <options=bold>“ %s ”</>\n  <fg=gray>— %s</>\n",
+            trim($text),
+            trim($author),
+        );
     }
 }

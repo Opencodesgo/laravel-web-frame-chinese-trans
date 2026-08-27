@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Cookie，Cookie 压缩包
+ * Illuminate，Cookie，Cookie压缩包
  */
 
 namespace Illuminate\Cookie;
@@ -27,7 +27,7 @@ class CookieJar implements JarContract
      * The default domain (if specified).
 	 * 默认域（如果指定）
      *
-     * @var string
+     * @var string|null
      */
     protected $domain;
 
@@ -57,7 +57,7 @@ class CookieJar implements JarContract
 
     /**
      * Create a new cookie instance.
-	 * 创建新的cookie实例
+	 * 创建一个新的cookie实例
      *
      * @param  string  $name
      * @param  string  $value
@@ -80,8 +80,8 @@ class CookieJar implements JarContract
     }
 
     /**
-     * Create a cookie that lasts "forever" (five years).
-	 * 创建一个"永远"（5年）的cookie
+     * Create a cookie that lasts "forever" (400 days).
+	 * 制作一个"永远"（400天）的cookie
      *
      * @param  string  $name
      * @param  string  $value
@@ -95,7 +95,7 @@ class CookieJar implements JarContract
      */
     public function forever($name, $value, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null)
     {
-        return $this->make($name, $value, 2628000, $path, $domain, $secure, $httpOnly, $raw, $sameSite);
+        return $this->make($name, $value, 576000, $path, $domain, $secure, $httpOnly, $raw, $sameSite);
     }
 
     /**
@@ -149,7 +149,7 @@ class CookieJar implements JarContract
      * Queue a cookie to send with the next response.
 	 * 将cookie与下一个响应一起排队发送
      *
-     * @param  array  $parameters
+     * @param  mixed  ...$parameters
      * @return void
      */
     public function queue(...$parameters)
@@ -209,7 +209,7 @@ class CookieJar implements JarContract
 	 * 获取路径和域，或默认值。
      *
      * @param  string  $path
-     * @param  string  $domain
+     * @param  string|null  $domain
      * @param  bool|null  $secure
      * @param  string|null  $sameSite
      * @return array
@@ -224,8 +224,8 @@ class CookieJar implements JarContract
 	 * 为jar设置默认路径和域
      *
      * @param  string  $path
-     * @param  string  $domain
-     * @param  bool  $secure
+     * @param  string|null  $domain
+     * @param  bool|null  $secure
      * @param  string|null  $sameSite
      * @return $this
      */

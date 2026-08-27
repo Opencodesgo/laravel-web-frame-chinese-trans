@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，XdebugNotAvailableException
+ * SebastianBergmann，CodeCoverage，Xdebug 不可用异常
  */
 
 /*

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，计数器对象，计数器
+ */
+
 /*
  * This file is part of sebastian/object-enumerator.
  *
@@ -19,6 +24,7 @@ use SebastianBergmann\RecursionContext\Context;
 /**
  * Traverses array structures and object graphs
  * to enumerate all referenced objects.
+ * 遍历数组结构和对象图，以枚举所有被引用的对象。
  */
 class Enumerator
 {

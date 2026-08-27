@@ -21,6 +21,7 @@ trait Dispatchable
     /**
      * Dispatch the event with the given arguments if the given truth test passes.
 	 * 如果给定的真值测试通过，则使用给定的参数调度事件。
+	 * 
      *
      * @param  bool  $boolean
      * @param  mixed  ...$arguments

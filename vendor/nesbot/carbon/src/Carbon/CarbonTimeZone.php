@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Carbon 时区
+ * Carbon，Carbon 时区 
  */
 
 /**
@@ -157,6 +157,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Get the offset as string "sHH:MM" (such as "+00:00" or "-12:30").
+	 * 获取字符串“sHH:MM”的偏移量
      *
      * @param DateTimeInterface|null $date
      *
@@ -290,7 +291,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from int/float hour offset.
-	 * 从int / float小时偏移处创建一个碳时区
+	 * 从int/float小时偏移量创建一个CarbonTimeZone
      *
      * @param float $hourOffset number of hour of the timezone shift (can be decimal).
      *
@@ -303,7 +304,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from int/float minute offset.
-	 * 从int / float分钟偏移处创建一个碳时区
+	 * 从int/float分钟偏移量创建一个CarbonTimeZone
      *
      * @param float $minuteOffset number of total minutes of the timezone shift.
      *
@@ -316,7 +317,7 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Convert a total minutes offset into a standardized timezone offset string.
-	 * 将每分钟转换为标准化时区偏移串
+	 * 将总分钟偏移量转换为标准时区偏移量字符串
      *
      * @param float $minutes number of total minutes of the timezone shift.
      *

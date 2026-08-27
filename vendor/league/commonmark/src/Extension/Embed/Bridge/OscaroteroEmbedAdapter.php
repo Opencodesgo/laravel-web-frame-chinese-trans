@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，内嵌，桥，Oscarotero 嵌入适配器
+ * League，CommonMark，扩展，嵌入，桥，Oscarotero 嵌入适配器
  */
 
 declare(strict_types=1);

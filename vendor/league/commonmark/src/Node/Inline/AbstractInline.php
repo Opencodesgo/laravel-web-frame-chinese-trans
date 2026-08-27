@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，内联，抽象内联
+ * League，CommonMark，节点，内联，抽象的内联
  */
 
 declare(strict_types=1);

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，操作员
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,11 +21,13 @@ abstract class Operator extends Constraint
 {
     /**
      * Returns the name of this operator.
+	 * 返回此操作符的名称
      */
     abstract public function operator(): string;
 
     /**
      * Returns this operator's precedence.
+	 * 返回此操作符的名称
      *
      * @see https://www.php.net/manual/en/language.operators.precedence.php
      */
@@ -28,11 +35,13 @@ abstract class Operator extends Constraint
 
     /**
      * Returns the number of operands.
+	 * 返回操作数的数目
      */
     abstract public function arity(): int;
 
     /**
      * Validates $constraint argument.
+	 * 验证$constraint参数
      */
     protected function checkConstraint($constraint): Constraint
     {

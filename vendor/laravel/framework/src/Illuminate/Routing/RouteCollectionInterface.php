@@ -98,7 +98,7 @@ interface RouteCollectionInterface
 
     /**
      * Get all of the routes keyed by their HTTP verb / method.
-	 * 得到所有由HTTP动词/方法指定的路由
+	 * 获取所有由HTTP动词/方法指定的路由
      *
      * @return array
      */

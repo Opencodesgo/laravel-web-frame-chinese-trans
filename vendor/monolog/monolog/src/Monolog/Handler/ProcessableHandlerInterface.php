@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，可处理处理程序接口
- *
+ * Monolog，处理器，可加工的处理程序接口
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +19,7 @@ use Monolog\Processor\ProcessorInterface;
 
 /**
  * Interface to describe loggers that have processors
- * 接口来描述拥有处理器的日志记录器
+ * 接口来描述具有处理器的记录器
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -29,7 +29,7 @@ interface ProcessableHandlerInterface
 {
     /**
      * Adds a processor in the stack.
-	 * 在堆栈中添加一个处理器
+	 * 在堆栈中添加处理器
      *
      * @psalm-param ProcessorInterface|callable(Record): Record $callback
      *
@@ -40,7 +40,7 @@ interface ProcessableHandlerInterface
 
     /**
      * Removes the processor on top of the stack and returns it.
-	 * 在堆栈顶部删除处理器并返回它
+	 * 移除堆栈顶部的处理器并返回它
      *
      * @psalm-return ProcessorInterface|callable(Record): Record $callback
      *

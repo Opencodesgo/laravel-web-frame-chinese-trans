@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，许诺，许诺
+ * GuzzleHttp，Promise，承诺
  */
 
 declare(strict_types=1);
@@ -140,6 +140,7 @@ class Promise implements PromiseInterface
         }
 
         // Clear out the state of the promise but stash the handlers.
+		// 清除承诺的状态，但隐藏处理程序。
         $this->state = $state;
         $this->result = $value;
         $handlers = $this->handlers;
@@ -183,7 +184,7 @@ class Promise implements PromiseInterface
 
     /**
      * Call a stack of handlers using a specific callback index and value.
-	 * 使用特定的回调索引和值调用一堆处理器
+	 * 使用特定的回调索引和值调用处理程序堆栈
      *
      * @param int   $index   1 (resolve) or 2 (reject).
      * @param mixed $value   Value to pass to the callback.

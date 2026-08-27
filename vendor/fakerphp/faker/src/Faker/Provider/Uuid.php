@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，Uuid
+ */
 
 namespace Faker\Provider;
 
@@ -6,6 +9,7 @@ class Uuid extends Base
 {
     /**
      * Generate name based md5 UUID (version 3).
+	 * 生成基于名称的md5 UUID(版本3)
      *
      * @example '7e57d004-2b97-0e7a-b45f-5387367791cd'
      *

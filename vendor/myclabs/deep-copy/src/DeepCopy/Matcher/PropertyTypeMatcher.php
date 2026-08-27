@@ -10,7 +10,7 @@ use ReflectionException;
 
 /**
  * Matches a property by its type.
- * 按其类型匹配属性。
+ * 按类型匹配属性
  *
  * It is recommended to use {@see DeepCopy\TypeFilter\TypeFilter} instead, as it applies on all occurrences
  * of given type in copied context (eg. array elements), not just on object properties.
@@ -43,10 +43,11 @@ class PropertyTypeMatcher implements Matcher
             return false;
         }
 
-        $reflectionProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $reflectionProperty->setAccessible(true);
+        }
 
         // Uninitialized properties (for PHP >7.4)
-		// 未初始化属性（适用于PHP >7.4）
         if (method_exists($reflectionProperty, 'isInitialized') && !$reflectionProperty->isInitialized($object)) {
             // null instanceof $this->propertyType
             return false;

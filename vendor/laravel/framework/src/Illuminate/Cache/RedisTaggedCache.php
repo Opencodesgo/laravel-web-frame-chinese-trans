@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis 标记缓存
+ * Illuminate，缓存，Redis标记缓存
  */
 
 namespace Illuminate\Cache;
@@ -9,7 +9,7 @@ class RedisTaggedCache extends TaggedCache
 {
     /**
      * Forever reference key.
-	 * 永远参考键
+	 * 永久参考键
      *
      * @var string
      */
@@ -205,8 +205,7 @@ class RedisTaggedCache extends TaggedCache
             // PhpRedis client returns false if set does not exist or empty. Array destruction
             // on false stores null in each variable. If valuesChunk is null, it means that
             // there were not results from the previously executed "sscan" Redis command.
-			// PhpRedis客户端返回false，如果set不存在或为空。
-			// 数组破坏如果为false，则在每个变量中存储null。
+			// PhpRedis客户端返回false，如果set不存在或为空。数组中毁灭。
             if (is_null($valuesChunk)) {
                 break;
             }

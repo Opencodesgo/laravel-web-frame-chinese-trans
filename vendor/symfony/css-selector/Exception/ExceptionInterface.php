@@ -16,7 +16,7 @@ namespace Symfony\Component\CssSelector\Exception;
 
 /**
  * Interface for exceptions.
- * 异常接口。
+ * 异常接口
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

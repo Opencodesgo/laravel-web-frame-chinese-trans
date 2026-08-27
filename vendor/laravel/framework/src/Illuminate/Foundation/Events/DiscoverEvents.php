@@ -17,7 +17,7 @@ class DiscoverEvents
 {
     /**
      * Get all of the events and listeners by searching the given listener directory.
-	 * 通过搜索给定的监听器目录获取所有事件和监听器
+	 * 通过搜索给定的侦听器目录获取所有事件和侦听器
      *
      * @param  string  $listenerPath
      * @param  string  $basePath
@@ -46,7 +46,7 @@ class DiscoverEvents
 
     /**
      * Get all of the listeners and their corresponding events.
-	 * 获取所有的监听器及其相应的事件
+	 * 获取所有的侦听器及其相应的事件
      *
      * @param  iterable  $listeners
      * @param  string  $basePath
@@ -70,7 +70,7 @@ class DiscoverEvents
             }
 
             foreach ($listener->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-                if (! Str::is('handle*', $method->name) ||
+                if ((! Str::is('handle*', $method->name) && ! Str::is('__invoke', $method->name)) ||
                     ! isset($method->getParameters()[0])) {
                     continue;
                 }

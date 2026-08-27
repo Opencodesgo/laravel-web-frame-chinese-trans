@@ -19,7 +19,7 @@ class GenericUser implements UserContract
 
     /**
      * Create a new generic User object.
-	 * 创建一个新的通用User对象
+	 * 创建新的通用用户对象
      *
      * @param  array  $attributes
      * @return void
@@ -42,7 +42,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the unique identifier for the user.
-	 * 得到用户的唯一标识符
+	 * 获取用户的唯一标识符
      *
      * @return mixed
      */

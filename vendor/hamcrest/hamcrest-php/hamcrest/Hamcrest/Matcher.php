@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，匹配程序
+ * Hamcrest，匹配器
  */
 
 namespace Hamcrest;
@@ -12,6 +12,8 @@ namespace Hamcrest;
 /**
  * A matcher over acceptable values.
  * A matcher is able to describe itself to give feedback when it fails.
+ * 一种超越可接受的价值观。
+ * matcher能够在失败时描述自己给出反馈。
  * <p/>
  * Matcher implementations should <b>NOT directly implement this interface</b>.
  * Instead, <b>extend</b> the {@link Hamcrest\BaseMatcher} abstract class,
@@ -29,7 +31,7 @@ interface Matcher extends SelfDescribing
 
     /**
      * Evaluates the matcher for argument <var>$item</var>.
-	 * 计算参数<var>$item</var>的匹配器
+	 * 计算参数<var>$item</var>
      *
      * @param mixed $item the object against which the matcher is evaluated.
      *
@@ -46,6 +48,8 @@ interface Matcher extends SelfDescribing
          * failed, so it should be concise.
          * This method assumes that <code>matches($item)</code> is false, but
          * will not check this.
+		 * 生成一个描述为什么matcher没有接受这个项目的描述。
+		 * 描述将是对匹配失败的更大描述的一部分,所以它应该是简洁的。
          *
          * @param mixed $item The item that the Matcher has rejected.
          * @param Description $description

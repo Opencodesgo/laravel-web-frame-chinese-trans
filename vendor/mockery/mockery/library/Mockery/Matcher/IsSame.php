@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，是一样的
+ * Mockery，匹配器，Is Same
  */
 
 /**
@@ -17,7 +17,7 @@ class IsSame extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
-	 * 返回这个Matcher的字符串表示
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */

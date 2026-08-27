@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，数据，前端问题数据解析器接口
+ * League，CommonMark，扩展，前言，数据，前端问题数据解析器接口
  */
 
 declare(strict_types=1);
@@ -22,6 +22,7 @@ interface FrontMatterDataParserInterface
 {
     /**
      * @return mixed|null The parsed data (which may be null, if the input represents a null value)
+	 * 解析的数据（如果输入表示空值，则可能为空）
      *
      * @throws InvalidFrontMatterException if parsing fails
      */

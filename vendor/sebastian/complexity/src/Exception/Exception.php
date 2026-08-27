@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，复杂性，异常
+ */
+
 /*
  * This file is part of sebastian/complexity.
  *

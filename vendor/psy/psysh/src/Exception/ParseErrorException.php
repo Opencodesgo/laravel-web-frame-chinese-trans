@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，中断异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ class ParseErrorException extends \PhpParser\Error implements Exception
 {
     /**
      * Constructor!
+	 * 构造方法
      *
      * @param string    $message    (default: '')
      * @param array|int $attributes Attributes of node/token where error occurred
@@ -36,6 +40,7 @@ class ParseErrorException extends \PhpParser\Error implements Exception
 
     /**
      * Create a ParseErrorException from a PhpParser Error.
+	 * 从PhpParser错误中创建一个ParseErrorException
      *
      * @param \PhpParser\Error $e
      */

@@ -17,6 +17,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
  * 任意大的有理数
  *
  * This class is immutable.
+ * 这个类是不可变的
  *
  * @psalm-immutable
  */
@@ -25,18 +26,14 @@ final class BigRational extends BigNumber
     /**
      * The numerator.
 	 * 分子
-     *
-     * @var BigInteger
      */
-    private $numerator;
+    private BigInteger $numerator;
 
     /**
      * The denominator. Always strictly positive.
 	 * 分母。绝对是正的。
-     *
-     * @var BigInteger
      */
-    private $denominator;
+    private BigInteger $denominator;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
@@ -67,17 +64,13 @@ final class BigRational extends BigNumber
 
     /**
      * Creates a BigRational of the given value.
-	 * 创建给定值的二粒度
-     *
-     * @param BigNumber|int|float|string $value
-     *
-     * @return BigRational
+	 * 创建给定值的BigRational。
      *
      * @throws MathException If the value cannot be converted to a BigRational.
      *
      * @psalm-pure
      */
-    public static function of($value) : BigNumber
+    public static function of(BigNumber|int|float|string $value) : BigRational
     {
         return parent::of($value)->toBigRational();
     }
@@ -92,16 +85,16 @@ final class BigRational extends BigNumber
      * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
      *
-     * @return BigRational
-     *
      * @throws NumberFormatException      If an argument does not represent a valid number.
      * @throws RoundingNecessaryException If an argument represents a non-integer number.
      * @throws DivisionByZeroException    If the denominator is zero.
      *
      * @psalm-pure
      */
-    public static function nd($numerator, $denominator) : BigRational
-    {
+    public static function nd(
+        BigNumber|int|float|string $numerator,
+        BigNumber|int|float|string $denominator,
+    ) : BigRational {
         $numerator   = BigInteger::of($numerator);
         $denominator = BigInteger::of($denominator);
 
@@ -110,9 +103,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing zero.
-	 * 返回代表零的二化
-     *
-     * @return BigRational
+	 * 返回一个表示0的BigRational
      *
      * @psalm-pure
      */
@@ -133,9 +124,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing one.
-	 * 返回代表1的双粒度
-     *
-     * @return BigRational
+	 * 返回一个表示1的BigRational
      *
      * @psalm-pure
      */
@@ -156,9 +145,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns a BigRational representing ten.
-	 * 返回代表10的二度
-     *
-     * @return BigRational
+	 * 返回一个表示10的BigRational
      *
      * @psalm-pure
      */
@@ -177,17 +164,11 @@ final class BigRational extends BigNumber
         return $ten;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getNumerator() : BigInteger
     {
         return $this->numerator;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getDenominator() : BigInteger
     {
         return $this->denominator;
@@ -195,9 +176,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the quotient of the division of the numerator by the denominator.
-	 * 以分母的形式返回分子的除法
-     *
-     * @return BigInteger
+	 * 返回分子除以分母的商。
      */
     public function quotient() : BigInteger
     {
@@ -206,9 +185,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the remainder of the division of the numerator by the denominator.
-	 * 将分子的其余部分通过分母返回
-     *
-     * @return BigInteger
+	 * 返回分子除以分母的余数
      */
     public function remainder() : BigInteger
     {
@@ -217,7 +194,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the quotient and remainder of the division of the numerator by the denominator.
-	 * 从分母中返回分子的除法和余数
+	 * 返回分子除以分母的商和余数
      *
      * @return BigInteger[]
      */
@@ -228,15 +205,13 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the sum of this number and the given one.
-	 * 返回这个数字和给定的和
+	 * 返回该数字与给定数字的和。
      *
      * @param BigNumber|int|float|string $that The number to add.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the number is not valid.
      */
-    public function plus($that) : BigRational
+    public function plus(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -249,14 +224,13 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the difference of this number and the given one.
+	 * 返回此数与给定数之差
      *
      * @param BigNumber|int|float|string $that The number to subtract.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the number is not valid.
      */
-    public function minus($that) : BigRational
+    public function minus(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -269,15 +243,13 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the product of this number and the given one.
-	 * 返回这个数字和给定的乘积
+	 * 返回该数与给定数的乘积
      *
      * @param BigNumber|int|float|string $that The multiplier.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the multiplier is not a valid number.
      */
-    public function multipliedBy($that) : BigRational
+    public function multipliedBy(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -289,14 +261,13 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the result of the division of this number by the given one.
+	 * 返回该数除以给定数的结果
      *
      * @param BigNumber|int|float|string $that The divisor.
      *
-     * @return BigRational The result.
-     *
      * @throws MathException If the divisor is not a valid number, or is zero.
      */
-    public function dividedBy($that) : BigRational
+    public function dividedBy(BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -308,10 +279,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns this number exponentiated to the given value.
-     *
-     * @param int $exponent The exponent.
-     *
-     * @return BigRational The result.
+	 * 返回该数字的指数为给定值
      *
      * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
@@ -336,11 +304,9 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the reciprocal of this BigRational.
-	 * 回报这二化的倒数
+	 * 返回此BigRational的倒数
      *
      * The reciprocal has the numerator and denominator swapped.
-     *
-     * @return BigRational
      *
      * @throws DivisionByZeroException If the numerator is zero.
      */
@@ -351,9 +317,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the absolute value of this BigRational.
-	 * 返回这个BigRational的绝对值
-     *
-     * @return BigRational
+	 * 返回此BigRational的绝对值。
      */
     public function abs() : BigRational
     {
@@ -362,8 +326,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the negated value of this BigRational.
-     *
-     * @return BigRational
+	 * 返回此BigRational的负值
      */
     public function negated() : BigRational
     {
@@ -372,8 +335,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the simplified value of this BigRational.
-     *
-     * @return BigRational
+	 * 返回此BigRational的简化值
      */
     public function simplified() : BigRational
     {
@@ -385,25 +347,16 @@ final class BigRational extends BigNumber
         return new BigRational($numerator, $denominator, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function compareTo($that) : int
+    public function compareTo(BigNumber|int|float|string $that) : int
     {
         return $this->minus($that)->getSign();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSign() : int
     {
         return $this->numerator->getSign();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigInteger() : BigInteger
     {
         $simplified = $this->simplified();
@@ -415,49 +368,32 @@ final class BigRational extends BigNumber
         return $simplified->numerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigDecimal() : BigDecimal
     {
         return $this->numerator->toBigDecimal()->exactlyDividedBy($this->denominator);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigRational() : BigRational
     {
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         return $this->numerator->toBigDecimal()->dividedBy($this->denominator, $scale, $roundingMode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toInt() : int
     {
         return $this->toBigInteger()->toInt();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toFloat() : float
     {
-        return $this->numerator->toFloat() / $this->denominator->toFloat();
+        $simplified = $this->simplified();
+        return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string
     {
         $numerator   = (string) $this->numerator;
@@ -472,7 +408,7 @@ final class BigRational extends BigNumber
 
     /**
      * This method is required for serializing the object and SHOULD NOT be accessed directly.
-	 * 该方法需要序列化对象,不应该直接访问
+	 * 这个方法是序列化对象所必需的，不应该被直接访问。
      *
      * @internal
      *
@@ -485,14 +421,12 @@ final class BigRational extends BigNumber
 
     /**
      * This method is only here to allow unserializing the object and cannot be accessed directly.
-	 * 这个方法只是在这里允许不序列化对象,不能直接访问。
+	 * 此方法仅允许对对象进行反序列化，不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
      *
      * @param array{numerator: BigInteger, denominator: BigInteger} $data
-     *
-     * @return void
      *
      * @throws \LogicException
      */
@@ -508,11 +442,9 @@ final class BigRational extends BigNumber
 
     /**
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
-	 * 该方法需要接口序列化,不应该直接访问。
+	 * 接口Serializable需要这个方法，不应该直接访问。
      *
      * @internal
-     *
-     * @return string
      */
     public function serialize() : string
     {
@@ -521,14 +453,10 @@ final class BigRational extends BigNumber
 
     /**
      * This method is only here to implement interface Serializable and cannot be accessed directly.
-	 * 此方法仅在这里实现接口序列化,不能直接访问。
+	 * 此方法仅用于实现接口Serializable，不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @param string $value
-     *
-     * @return void
      *
      * @throws \LogicException
      */

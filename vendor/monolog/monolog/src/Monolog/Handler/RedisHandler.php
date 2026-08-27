@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Redis 处理程序
- *
+ * Monolog，处理器，Redis 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -21,7 +21,7 @@ use Monolog\Logger;
 
 /**
  * Logs to a Redis key using rpush
- * 使用rpush的Redis键
+ * 使用rpush将日志记录到Redis密钥
  *
  * usage example:
  *
@@ -76,7 +76,6 @@ class RedisHandler extends AbstractProcessingHandler
      * Write and cap the collection
      * Writes the record to the redis list and caps its
 	 * 编写和封盖集合
-	 * 将记录写入redis列表并将其大写
      *
      * @phpstan-param FormattedRecord $record
      */

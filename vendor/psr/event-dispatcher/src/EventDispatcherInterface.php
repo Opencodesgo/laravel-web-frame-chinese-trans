@@ -9,13 +9,13 @@ namespace Psr\EventDispatcher;
 
 /**
  * Defines a dispatcher for events.
- * 定义事件的dispatcher。
+ * 定义事件调度程序
  */
 interface EventDispatcherInterface
 {
     /**
      * Provide all relevant listeners with an event to process.
-	 * 向所有相关的侦听器提供一个事件来处理
+	 * 为所有相关的侦听器提供要处理的事件。
      *
      * @param object $event
      *   The object to process.

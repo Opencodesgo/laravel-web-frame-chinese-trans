@@ -57,7 +57,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Shell extends Application
 {
-    const VERSION = 'v0.12.8';
+    const VERSION = 'v0.12.10';
 
     private Configuration $config;
     private CodeCleaner $cleaner;
@@ -133,7 +133,7 @@ class Shell extends Application
 
     /**
      * Check if the currently running PsySH bin is a phar archive.
-	 * 检查当前运行的PsySH bin是否是phar归档文件
+	 * 检查当前运行的PsySH bin是否是phar归档文件。
      */
     public static function isPhar(): bool
     {
@@ -161,7 +161,7 @@ class Shell extends Application
 
     /**
      * Adds a command object.
-	 * 添加命令对象
+	 * 添加命令对象。
      *
      * {@inheritdoc}
      *
@@ -325,6 +325,7 @@ class Shell extends Application
 
     /**
      * Runs PsySH.
+	 * PsySH 运行
      *
      * @param InputInterface|null  $input  An Input instance
      * @param OutputInterface|null $output An Output instance
@@ -412,7 +413,7 @@ class Shell extends Application
 
     /**
      * Run PsySH in non-interactive mode.
-	 * 在非交互模式下运行PsySH
+	 * 在非交互模式下运行PsySH。
      *
      * Note that this isn't very useful unless you supply "include" arguments at
      * the command line, or code via stdin.
@@ -471,7 +472,6 @@ class Shell extends Application
 
     /**
      * Load user-defined includes.
-	 * 加载用户定义的包含
      */
     private function loadIncludes()
     {
@@ -500,7 +500,7 @@ class Shell extends Application
 
     /**
      * Read user input.
-	 * 读取用户输入
+	 * 读取用户输入。
      *
      * This will continue fetching user input until the code buffer contains
      * valid code.
@@ -561,6 +561,7 @@ class Shell extends Application
 
     /**
      * Check whether the code buffer (plus current input) is in an open string or comment.
+	 * 检查代码缓冲区（加上当前输入）是否在开放字符串或注释中。
      *
      * @param string $input current line of input
      *
@@ -583,6 +584,7 @@ class Shell extends Application
 
     /**
      * Run execution loop listeners before the shell session.
+	 * 在shell会话之前运行执行循环侦听器
      */
     protected function beforeRun()
     {
@@ -593,6 +595,7 @@ class Shell extends Application
 
     /**
      * Run execution loop listeners at the start of each loop.
+	 * 在每个循环开始时运行执行循环侦听器
      */
     public function beforeLoop()
     {
@@ -603,6 +606,7 @@ class Shell extends Application
 
     /**
      * Run execution loop listeners on user input.
+	 * 对用户输入运行执行循环监听器
      *
      * @param string $input
      */
@@ -619,6 +623,7 @@ class Shell extends Application
 
     /**
      * Run execution loop listeners on code to be executed.
+	 * 对要执行的代码运行执行循环侦听器
      *
      * @param string $code
      */
@@ -644,6 +649,7 @@ class Shell extends Application
 
     /**
      * Run execution loop listeners after each loop.
+	 * 在每个循环后运行执行循环侦听器
      */
     public function afterLoop()
     {
@@ -654,6 +660,7 @@ class Shell extends Application
 
     /**
      * Run execution loop listers after the shell session.
+	 * 在shell会话之后运行执行循环列表
      */
     protected function afterRun()
     {
@@ -664,6 +671,7 @@ class Shell extends Application
 
     /**
      * Set the variables currently in scope.
+	 * 设置当前范围内的变量
      *
      * @param array $vars
      */
@@ -674,6 +682,7 @@ class Shell extends Application
 
     /**
      * Return the set of variables currently in scope.
+	 * 返回当前范围内的变量集
      *
      * @param bool $includeBoundObject Pass false to exclude 'this'. If you're
      *                                 passing the scope variables to `extract`
@@ -694,6 +703,7 @@ class Shell extends Application
 
     /**
      * Return the set of magic variables currently in scope.
+	 * 返回当前在作用域中的魔术变量集
      *
      * @param bool $includeBoundObject Pass false to exclude 'this'. If you're
      *                                 passing the scope variables to `extract`
@@ -738,6 +748,7 @@ class Shell extends Application
 
     /**
      * Get the set of unused command-scope variable names.
+	 * 获取未使用的命令作用域变量名集
      *
      * @return array Array of unused variable names
      */
@@ -748,6 +759,7 @@ class Shell extends Application
 
     /**
      * Get the set of variable names currently in scope.
+	 * 获取当前范围内的变量名称集
      *
      * @return array Array of variable names
      */
@@ -758,6 +770,7 @@ class Shell extends Application
 
     /**
      * Get a scope variable value by name.
+	 * 按名称获取作用域变量值
      *
      * @param string $name
      *
@@ -770,6 +783,7 @@ class Shell extends Application
 
     /**
      * Set the bound object ($this variable) for the interactive shell.
+	 * 为交互式shell设置绑定对象（$this变量）
      *
      * @param object|null $boundObject
      */
@@ -790,6 +804,7 @@ class Shell extends Application
 
     /**
      * Set the bound class (self) for the interactive shell.
+	 * 为交互式shell设置绑定类（self）
      *
      * @param string|null $boundClass
      */
@@ -810,6 +825,7 @@ class Shell extends Application
 
     /**
      * Add includes, to be parsed and executed before running the interactive shell.
+	 * 添加要在运行交互式shell之前解析和执行的包含
      *
      * @param array $includes
      */
@@ -820,6 +836,7 @@ class Shell extends Application
 
     /**
      * Get PHP files to be parsed and executed before running the interactive shell.
+	 * 在运行交互式shell之前，获取要解析和执行的PHP文件。
      *
      * @return string[]
      */
@@ -830,6 +847,7 @@ class Shell extends Application
 
     /**
      * Check whether this shell's code buffer contains code.
+	 * 检查这个shell的代码缓冲区是否包含代码
      *
      * @return bool True if the code buffer contains code
      */
@@ -840,6 +858,7 @@ class Shell extends Application
 
     /**
      * Check whether the code in this shell's code buffer is valid.
+	 * 检查这个shell的代码缓冲区中的代码是否有效。
      *
      * If the code is valid, the code buffer should be flushed and evaluated.
      *
@@ -852,6 +871,7 @@ class Shell extends Application
 
     /**
      * Add code to the code buffer.
+	 * 将代码添加到代码缓冲区
      *
      * @param string $code
      * @param bool   $silent
@@ -879,6 +899,7 @@ class Shell extends Application
 
     /**
      * Set the code buffer.
+	 * 设置代码缓冲区。
      *
      * This is mostly used by `Shell::execute`. Any existing code in the input
      * buffer is pushed onto a stack and will come back after this new code is
@@ -913,6 +934,7 @@ class Shell extends Application
 
     /**
      * Get the current code buffer.
+	 * 获取当前代码缓冲区。
      *
      * This is useful for commands which manipulate the buffer.
      *
@@ -925,6 +947,7 @@ class Shell extends Application
 
     /**
      * Run a Psy Shell command given the user input.
+	 * 运行给定用户输入的Psy Shell命令
      *
      * @throws \InvalidArgumentException if the input is not a valid command
      *
@@ -970,6 +993,7 @@ class Shell extends Application
 
     /**
      * Check whether a given input error would benefit from --help.
+	 * 检查给定的输入错误是否会从——help中受益
      *
      * @return bool
      */
@@ -998,6 +1022,7 @@ class Shell extends Application
 
     /**
      * Reset the current code buffer.
+	 * 重置当前代码缓冲区。
      *
      * This should be run after evaluating user input, catching exceptions, or
      * on demand by commands such as BufferCommand.
@@ -1010,6 +1035,7 @@ class Shell extends Application
 
     /**
      * Inject input into the input buffer.
+	 * 将输入注入输入缓冲区。
      *
      * This is useful for commands which want to replay history.
      *
@@ -1025,6 +1051,7 @@ class Shell extends Application
 
     /**
      * Flush the current (valid) code buffer.
+	 * 刷新当前（有效）代码缓冲区。
      *
      * If the code buffer is valid, resets the code buffer and returns the
      * current code.
@@ -1044,6 +1071,7 @@ class Shell extends Application
 
     /**
      * Reset the code buffer and restore any code pushed during `execute` calls.
+	 * 重置代码缓冲区并恢复在‘ execute ’调用期间推送的任何代码
      */
     private function popCodeStack()
     {
@@ -1062,6 +1090,7 @@ class Shell extends Application
 
     /**
      * (Possibly) add a line to the readline history.
+	 * （可能）在readline历史记录中添加一行。
      *
      * Like Bash, if the line starts with a space character, it will be omitted
      * from history. Note that an entire block multi-line code input will be
@@ -1086,6 +1115,7 @@ class Shell extends Application
 
     /**
      * Filter silent input from code buffer, write the rest to readline history.
+	 * 从代码缓冲区中过滤静默输入，将其余部分写入读行历史。
      */
     private function addCodeBufferToHistory()
     {
@@ -1098,6 +1128,7 @@ class Shell extends Application
 
     /**
      * Get the current evaluation scope namespace.
+	 * 获取当前求值范围命名空间
      *
      * @see CodeCleaner::getNamespace
      *
@@ -1112,6 +1143,7 @@ class Shell extends Application
 
     /**
      * Write a string to stdout.
+	 * 将字符串写入标准输出。
      *
      * This is used by the shell loop for rendering output from evaluated code.
      *
@@ -1161,6 +1193,7 @@ class Shell extends Application
 
     /**
      * Write a return value to stdout.
+	 * 将返回值写入标准输出。
      *
      * The return value is formatted or pretty-printed, and rendered in a
      * visibly distinct manner (in this case, as cyan).
@@ -1200,6 +1233,7 @@ class Shell extends Application
 
     /**
      * Renders a caught Exception or Error.
+	 * 呈现捕获的异常或错误。
      *
      * Exceptions are formatted according to severity. ErrorExceptions which were
      * warnings or Strict errors aren't rendered as harshly as real errors.
@@ -1253,6 +1287,7 @@ class Shell extends Application
 
     /**
      * Check whether the last exec was successful.
+	 * 检查最后一次执行是否成功。
      *
      * Returns true if a return value was logged rather than an exception.
      */
@@ -1263,6 +1298,7 @@ class Shell extends Application
 
     /**
      * Helper for formatting an exception or error for writeException().
+	 * 格式化writeException（）的异常或错误的帮助器
      *
      * @todo extract this to somewhere it makes more sense
      *
@@ -1309,6 +1345,7 @@ class Shell extends Application
 
     /**
      * Helper for getting an output style for the given ErrorException's level.
+	 * 获取给定ErrorException级别的输出样式的Helper
      *
      * @param \ErrorException $e
      */
@@ -1342,6 +1379,7 @@ class Shell extends Application
 
     /**
      * Helper for getting an output style for the given ErrorException's level.
+	 * 获取给定ErrorException级别的输出样式的Helper
      *
      * @param \Throwable $e
      */
@@ -1398,6 +1436,7 @@ class Shell extends Application
 
     /**
      * Execute code in the shell execution context.
+	 * 在shell执行上下文中执行代码。
      *
      * @param string $code
      * @param bool   $throwExceptions
@@ -1422,6 +1461,7 @@ class Shell extends Application
 
     /**
      * Helper for throwing an ErrorException.
+	 * 抛出ErrorException的Helper。
      *
      * This allows us to:
      *
@@ -1467,6 +1507,7 @@ class Shell extends Application
 
     /**
      * Format a value for display.
+	 * 格式化要显示的值
      *
      * @see Presenter::present
      *
@@ -1481,6 +1522,7 @@ class Shell extends Application
 
     /**
      * Get a command (if one exists) for the current input string.
+	 * 获取当前输入字符串的命令（如果存在）
      *
      * @param string $input
      *
@@ -1496,6 +1538,7 @@ class Shell extends Application
 
     /**
      * Check whether a command is set for the current input string.
+	 * 检查是否为当前输入字符串设置了命令
      *
      * @param string $input
      *
@@ -1512,6 +1555,7 @@ class Shell extends Application
 
     /**
      * Get the current input prompt.
+	 * 获取当前输入提示符
      *
      * @return string|null
      */
@@ -1532,6 +1576,7 @@ class Shell extends Application
 
     /**
      * Read a line of user input.
+	 * 读取一行用户输入。
      *
      * This will return a line from the input buffer (if any exist). Otherwise,
      * it will ask the user for input.
@@ -1573,6 +1618,7 @@ class Shell extends Application
 
     /**
      * Get the shell output header.
+	 * 获取shell输出头
      */
     protected function getHeader(): string
     {
@@ -1581,6 +1627,7 @@ class Shell extends Application
 
     /**
      * Get the current version of Psy Shell.
+	 * 获取当前版本的Psy Shell
      *
      * @deprecated call self::getVersionHeader instead
      */
@@ -1593,6 +1640,7 @@ class Shell extends Application
 
     /**
      * Get a pretty header including the current version of Psy Shell.
+	 * 获得一个漂亮的标题，包括当前版本的Psy Shell。
      *
      * @param bool $useUnicode
      */
@@ -1605,6 +1653,7 @@ class Shell extends Application
 
     /**
      * Get a PHP manual database instance.
+	 * 获取一个PHP手动数据库实例
      *
      * @return \PDO|null
      */
@@ -1615,6 +1664,7 @@ class Shell extends Application
 
     /**
      * Initialize tab completion matchers.
+	 * 初始化制表符补全匹配器。
      *
      * If tab completion is enabled this adds tab completion matchers to the
      * auto completer and sets context if needed.
@@ -1637,6 +1687,7 @@ class Shell extends Application
 
     /**
      * Add matchers to the auto completer, setting context if needed.
+	 * 向自动补全器添加匹配器，如果需要设置上下文。
      *
      * @param array $matchers
      */
@@ -1673,6 +1724,7 @@ class Shell extends Application
 
     /**
      * Write a startup message if set.
+	 * 如果设置，则写入启动消息。
      */
     protected function writeStartupMessage()
     {

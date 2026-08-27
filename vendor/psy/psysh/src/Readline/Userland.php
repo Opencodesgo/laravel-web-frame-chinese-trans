@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，逐行读取，用户空间
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -22,6 +25,7 @@ use Psy\Readline\Hoa\Ustring as HoaUstring;
 
 /**
  * Userland Readline implementation.
+ * Userland Readline 实现。
  */
 class Userland implements Readline
 {
@@ -48,6 +52,7 @@ class Userland implements Readline
 
     /**
      * Doesn't (currently) support history file, size or erase dupes configs.
+	 * 不（目前）支持历史文件，大小或擦除备份配置。
      */
     public function __construct($historyFile = null, $historySize = 0, $eraseDups = false)
     {
@@ -72,6 +77,7 @@ class Userland implements Readline
 
     /**
      * Bootstrap some things that Hoa used to do itself.
+	 * 引导一些Hoa过去自己做的事情
      */
     public static function bootstrapHoa(bool $withTerminalResize = false)
     {

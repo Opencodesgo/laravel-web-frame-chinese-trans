@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，模拟
+ * Mockery，Mockery
  */
 
 /**
@@ -51,7 +51,7 @@ class Mockery
 
     /**
      * Global configuration handler containing configuration options.
-	 * 包含配置选项的全局配置处理程序
+	 * 包含配置选项的全局配置处理程序。
      *
      * @var Configuration
      */
@@ -164,6 +164,7 @@ class Mockery
     /**
      * Static shortcut to closing up and verifying all mocks in the global
      * container, and resetting the container static variable to null.
+	 * 静态快捷方式，用于关闭并验证全局容器中的所有模拟对象，并将容器的静态变量重置为 null。
      *
      * @return void
      */
@@ -654,7 +655,6 @@ class Mockery
 
     /**
      * Static shortcut to Container::self().
-	 * Container::self（）的静态快捷方式
      *
      * @throws LogicException
      *
@@ -691,6 +691,7 @@ class Mockery
 
     /**
      * Setter for the $_loader static property.
+	 * $_loader静态属性的Setter
      */
     public static function setLoader(Loader $loader)
     {
@@ -700,6 +701,7 @@ class Mockery
     /**
      * Static and semantic shortcut for getting a mock from the container
      * and applying the spy's expected behavior into it.
+	 * 用于从容器获取模拟的静态和语义快捷方式
      *
      * @template TSpy
      *
@@ -813,7 +815,7 @@ class Mockery
 
     /**
      * Utility method for recursively generating a representation of the given array.
-	 * 递归地生成给定数组的表示的实用方法
+	 * 递归生成给定数组表示的实用程序方法
      *
      * @template TArray or array
      *
@@ -990,7 +992,7 @@ class Mockery
 
     /**
      * Gets a specific demeter mock from the ones kept by the container.
-	 * 从容器中保存一个特定的demeter模拟
+	 * 从容器保存的模拟中获取特定的直径模拟。
      *
      * @template TMock of object
      *
@@ -1060,6 +1062,7 @@ class Mockery
     /**
      * Checks if the passed array representing a demeter
      * chain with the method names is empty.
+	 * 检查传入的数组是否表示一个距离带有方法名的链为空。
      *
      * @return bool
      */
@@ -1070,7 +1073,7 @@ class Mockery
 
     /**
      * Utility function to turn public properties and public get* and is* method values into an array.
-	 * 效用函数将公共属性和公共属性变成*,并将方法值变为一个数组。
+	 * 将公共属性和公共get*和is*方法值转换为数组的实用函数
      *
      * @param object $object
      * @param int    $nesting

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理器，处理程序接口
- *
+ * Monolog，处理器，处理器接口
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,7 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * An optional interface to allow labelling Monolog processors.
- * 一个可选的接口,允许标签独白处理器。
+ * 允许标记独白处理器的可选接口。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

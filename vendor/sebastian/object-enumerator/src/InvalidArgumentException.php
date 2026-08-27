@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，计数器对象，无效参数异常
+ */
+
 /*
  * This file is part of sebastian/object-enumerator.
  *

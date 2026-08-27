@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，事件，控制台终止事件
+ * Symfony，Component，Console，事件，控制台终端事件
  */
 
 /*
@@ -20,19 +20,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Allows to manipulate the exit code of a command after its execution.
- * 允许在执行后操作命令的退出代码。
+ * 允许在命令执行后操作命令的退出代码。
  *
  * @author Francesco Levorato <git@flevour.net>
+ * @author Jules Pietri <jules@heahprod.com>
  */
 final class ConsoleTerminateEvent extends ConsoleEvent
 {
-    private $exitCode;
-
-    public function __construct(Command $command, InputInterface $input, OutputInterface $output, int $exitCode)
-    {
+    public function __construct(
+        Command $command,
+        InputInterface $input,
+        OutputInterface $output,
+        private int $exitCode,
+        private readonly ?int $interruptingSignal = null,
+    ) {
         parent::__construct($command, $input, $output);
-
-        $this->setExitCode($exitCode);
     }
 
     public function setExitCode(int $exitCode): void
@@ -43,5 +45,10 @@ final class ConsoleTerminateEvent extends ConsoleEvent
     public function getExitCode(): int
     {
         return $this->exitCode;
+    }
+
+    public function getInterruptingSignal(): ?int
+    {
+        return $this->interruptingSignal;
     }
 }

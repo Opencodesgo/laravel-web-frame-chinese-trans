@@ -18,7 +18,7 @@ final class Reader
 {
     /**
      * This class is a singleton.
-	 * 这个类是单例
+	 * 这个类是单例的
      *
      * @codeCoverageIgnore
      *
@@ -43,7 +43,7 @@ final class Reader
      *
      * @throws \Dotenv\Exception\InvalidEncodingException
      *
-     * @return array<string,string>
+     * @return array<string, string>
      */
     public static function read(array $filePaths, bool $shortCircuit = true, ?string $fileEncoding = null)
     {

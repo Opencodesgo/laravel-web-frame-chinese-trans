@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，分页，游标分页器抽象类
+ * Illuminate，分页，游标分页器抽象
  */
 
 namespace Illuminate\Pagination;
@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Tappable;
+use Traversable;
 
 /**
  * @mixin \Illuminate\Support\Collection
@@ -117,7 +118,7 @@ abstract class AbstractCursorPaginator implements Htmlable
         // If we have any extra query string key / value pairs that need to be added
         // onto the URL, we will put them in query string form and then attach it
         // to the URL. This allows for extra information like sortings storage.
-		// 如果我们有任何额外的查询字符串键/值对需要添加到URL，我们将把它们放在查询字符串的形式，然后附加它到URL。
+		// 如果我们有任何额外的查询字符串键/值对。
         $parameters = is_null($cursor) ? [] : [$this->cursorName => $cursor->encode()];
 
         if (count($this->query) > 0) {
@@ -125,7 +126,7 @@ abstract class AbstractCursorPaginator implements Htmlable
         }
 
         return $this->path()
-            .(Str::contains($this->path(), '?') ? '&' : '?')
+            .(str_contains($this->path(), '?') ? '&' : '?')
             .Arr::query($parameters)
             .$this->buildFragment();
     }
@@ -182,7 +183,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get the "cursor" that points to the next set of items.
-	 * 得到指向下一组项目的"光标"
+	 * 获取指向下一组项目的"光标"
      *
      * @return \Illuminate\Pagination\Cursor|null
      */
@@ -202,7 +203,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get a cursor instance for the given item.
-	 * 得到给定项的游标实例
+	 * 获取给定项的游标实例
      *
      * @param  \ArrayAccess|\stdClass  $item
      * @param  bool  $isNext
@@ -274,7 +275,6 @@ abstract class AbstractCursorPaginator implements Htmlable
 	 * 确保参数是基本类型
      *
      * This can resolve issues that arise the developer uses a value object for an attribute.
-	 * 这可以解决开发人员为属性使用值对象时出现的问题
      *
      * @param  mixed  $parameter
      * @return mixed
@@ -306,7 +306,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Add a set of query string values to the paginator.
-	 * 向分页器添加一组查询字符串值
+	 * 向分页器添加一组查询字符串值。
      *
      * @param  array|string|null  $key
      * @param  string|null  $value
@@ -416,7 +416,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get the slice of items being paginated.
-	 * 得到正在分页的项的切片
+	 * 获取正在分页的项的切片
      *
      * @return array
      */
@@ -441,7 +441,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get the number of items shown per page.
-	 * 得到每页显示的项目数
+	 * 获取每页显示的项目数
      *
      * @return int
      */
@@ -452,7 +452,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get the current cursor being paginated.
-	 * 得到正在分页的当前游标
+	 * 获取正在分页的当前游
      *
      * @return \Illuminate\Pagination\Cursor|null
      */
@@ -463,7 +463,7 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get the query string variable used to store the cursor.
-	 * 得到用于存储游标的查询字符串变量
+	 * 获取用于存储游标的查询字符串变量
      *
      * @return string
      */
@@ -568,8 +568,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      *
      * @return \ArrayIterator
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->items->getIterator();
     }
@@ -598,19 +597,18 @@ abstract class AbstractCursorPaginator implements Htmlable
 
     /**
      * Get the number of items for the current page.
-	 * 得到当前页面的项数
+	 * 获取当前页面的项数
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return $this->items->count();
     }
 
     /**
      * Get the paginator's underlying collection.
-	 * 得到分页器的底层集合
+	 * 获取分页器的底层集合
      *
      * @return \Illuminate\Support\Collection
      */
@@ -651,21 +649,19 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $key
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return $this->items->has($key);
     }
 
     /**
      * Get the item at the given offset.
-	 * 得到给定偏移量处的项
+	 * 获取给定偏移量处的项
      *
      * @param  mixed  $key
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->items->get($key);
     }
@@ -678,8 +674,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->items->put($key, $value);
     }
@@ -691,8 +686,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $key
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->items->forget($key);
     }

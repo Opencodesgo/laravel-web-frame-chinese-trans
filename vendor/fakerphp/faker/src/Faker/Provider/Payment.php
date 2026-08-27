@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，支付
+ */
 
 namespace Faker\Provider;
 
@@ -298,6 +301,7 @@ class Payment extends Base
 
     /**
      * Return the String of a SWIFT/BIC number
+	 * 返回SWIFT/BIC号码字符串
      *
      * @example 'RZTIAT22263'
      *

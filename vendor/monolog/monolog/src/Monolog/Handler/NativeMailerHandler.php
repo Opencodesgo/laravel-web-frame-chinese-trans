@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Native Mailer 处理程序
- *
+ * Monolog，处理器，本机邮件处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -20,7 +20,7 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * NativeMailerHandler uses the mail() function to send the emails
- * NativeMailerHandler使用邮件()函数发送邮件
+ * nativeemailerhandler使用mail（）函数发送电子邮件
  *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Mark Garrett <mark@moderndeveloperllc.com>
@@ -50,24 +50,28 @@ class NativeMailerHandler extends MailHandler
 
     /**
      * Optional parameters for the message
+	 * 消息的可选参数
      * @var string[]
      */
     protected $parameters = [];
 
     /**
      * The wordwrap length for the message
+	 * 消息的换行长度
      * @var int
      */
     protected $maxColumnWidth;
 
     /**
      * The Content-type for the message
+	 * 消息的内容类型
      * @var string|null
      */
     protected $contentType;
 
     /**
      * The encoding for the message
+	 * 消息的编码
      * @var string
      */
     protected $encoding = 'utf-8';
@@ -89,7 +93,7 @@ class NativeMailerHandler extends MailHandler
 
     /**
      * Add headers to the message
-	 * 在消息中添加头
+	 * 向消息添加标题
      *
      * @param string|string[] $headers Custom added headers
      */
@@ -107,7 +111,7 @@ class NativeMailerHandler extends MailHandler
 
     /**
      * Add parameters to the message
-	 * 在消息中添加参数
+	 * 向消息添加参数
      *
      * @param string|string[] $parameters Custom added parameters
      */
@@ -159,6 +163,7 @@ class NativeMailerHandler extends MailHandler
 
     /**
      * @param string $contentType The content type of the email - Defaults to text/plain. Use text/html for HTML messages.
+	 * 电子邮件的内容类型-默认为文本/普通。对html消息使用text/html。
      */
     public function setContentType(string $contentType): self
     {

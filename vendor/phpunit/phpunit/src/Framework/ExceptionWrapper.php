@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，Framework，异常包装
+ * PHPUnit，框架，异常包装
  */
 
 /*
@@ -24,6 +24,7 @@ use WeakReference;
 
 /**
  * Wraps Exceptions thrown by code under test.
+ * 封装被测代码抛出的异常。
  *
  * Re-instantiates Exceptions thrown by user-space code to retain their original
  * class names, properties, and stack traces (but without arguments).

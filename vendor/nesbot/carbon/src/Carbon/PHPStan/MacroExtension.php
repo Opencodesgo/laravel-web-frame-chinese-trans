@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，PHP Stan，宏扩展
+ * Carbon，PHPStan，宏观扩展 
  */
 
 /**
@@ -24,7 +24,7 @@ use PHPStan\Type\TypehintHelper;
 
 /**
  * Class MacroExtension.
- * 类MacroExtension
+ * 类 MacroExtension
  *
  * @codeCoverageIgnore Pure PHPStan wrapper.
  */
@@ -42,7 +42,7 @@ final class MacroExtension implements MethodsClassReflectionExtension
 
     /**
      * Extension constructor.
-	 * 扩展的构造函数
+	 * 扩展构造方法
      *
      * @param PhpMethodReflectionFactory $methodReflectionFactory
      * @param ReflectionProvider         $reflectionProvider

@@ -1,7 +1,9 @@
 <?php
 /**
- * Carbon，Doctrine，日期时间默认精度
+ * Carbon，Doctrine，日期和时间默认精度
  */
+
+declare(strict_types=1);
 
 namespace Carbon\Doctrine;
 
@@ -11,7 +13,7 @@ class DateTimeDefaultPrecision
 
     /**
      * Change the default Doctrine datetime and datetime_immutable precision.
-	 * 更改默认Doctrine datetime和datetime_immutable精度
+	 * 更改默认Doctrine datetime和datetime_immutable精度。
      *
      * @param int $precision
      */

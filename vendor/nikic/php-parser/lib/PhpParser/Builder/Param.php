@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，建立者，参数
+ * PhpParser，构建者，参数
  */
 
 namespace PhpParser\Builder;
@@ -89,6 +89,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Makes the (promoted) parameter public.
+	 * 使（提升的）参数公开
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -100,6 +101,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Makes the (promoted) parameter protected.
+	 * 使（提升的）参数受到保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -111,6 +113,7 @@ class Param implements PhpParser\Builder {
 
     /**
      * Makes the (promoted) parameter private.
+	 * 将（提升的）参数设为私有
      *
      * @return $this The builder instance (for fluid interface)
      */

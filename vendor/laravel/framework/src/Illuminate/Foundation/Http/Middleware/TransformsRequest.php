@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，转换请求
+ * Illuminate, 基础, Http, 中间件, 转换请求
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -27,7 +27,7 @@ class TransformsRequest
 
     /**
      * Clean the request's data.
-	 * 清除请求数据
+	 * 清理请求的数据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -69,7 +69,7 @@ class TransformsRequest
             $data[$key] = $this->cleanValue($keyPrefix.$key, $value);
         }
 
-        return collect($data)->all();
+        return $data;
     }
 
     /**

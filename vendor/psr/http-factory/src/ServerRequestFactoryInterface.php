@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，Http，消息，服务请求工厂接口
+ * Psr，Http，消息，服务器请求工厂接口
  */
 
 namespace Psr\Http\Message;
@@ -9,7 +9,7 @@ interface ServerRequestFactoryInterface
 {
     /**
      * Create a new server request.
-	 * 创建一个新的服务器请求。
+	 * 创建一个新的服务器请求
      *
      * Note that server-params are taken precisely as given - no parsing/processing
      * of the given values is performed, and, in particular, no attempt is made to

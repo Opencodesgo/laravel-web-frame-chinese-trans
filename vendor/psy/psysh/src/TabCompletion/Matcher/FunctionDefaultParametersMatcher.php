@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，函数默认参数匹配器
+ */
 
 /*
  * This file is part of Psy Shell.

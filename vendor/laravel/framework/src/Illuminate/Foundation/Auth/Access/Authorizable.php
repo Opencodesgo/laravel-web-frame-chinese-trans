@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，进入，可授权的特征
+ * Illuminate，基础，认证, 访问, 可被授权的
  */
 
 namespace Illuminate\Foundation\Auth\Access;

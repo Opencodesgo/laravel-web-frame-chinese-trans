@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，转发呼叫
+ * Illuminate，支持，特征，佯装，转发调用
  */
 
 namespace Illuminate\Support\Traits;

@@ -18,6 +18,6 @@ namespace Symfony\Component\HttpFoundation\Exception;
  * Raised when a user sends a malformed request.
  * 当用户发送格式错误的请求时引发
  */
-class BadRequestException extends \UnexpectedValueException implements RequestExceptionInterface
+class BadRequestException extends UnexpectedValueException implements RequestExceptionInterface
 {
 }

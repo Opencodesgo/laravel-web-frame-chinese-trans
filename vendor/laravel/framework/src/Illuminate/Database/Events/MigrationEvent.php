@@ -28,7 +28,7 @@ abstract class MigrationEvent implements MigrationEventContract
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Database\Migrations\Migration  $migration
      * @param  string  $method

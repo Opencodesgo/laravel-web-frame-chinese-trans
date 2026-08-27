@@ -36,7 +36,7 @@ interface Kernel
 
     /**
      * Get the Laravel application instance.
-	 * 得到应用实例
+	 * 获取Laravel应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

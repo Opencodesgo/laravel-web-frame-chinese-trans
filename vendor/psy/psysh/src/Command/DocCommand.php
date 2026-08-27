@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Doc 命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Read the documentation for an object, class, constant, method or property.
+ * 阅读对象、类、常量、方法或属性的文档。
  */
 class DocCommand extends ReflectingCommand
 {
@@ -164,6 +168,7 @@ HELP
 
     /**
      * Get all all parent Reflectors for a given Reflector.
+	 * 获取给定Reflector的所有父Reflector。
      *
      * For example, passing a Class, Object or TraitReflector will yield all
      * traits and parent classes. Passing a Method or PropertyReflector will

@@ -18,10 +18,11 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
  * Event is the base class for classes containing event data.
- * 事件是包含事件数据的类的基类。
+ * Event是包含事件数据的类的基类。
  *
  * This class contains no event data. It is used by events that do not pass
  * state information to an event handler when an event is raised.
+ * 此类不包含任何事件数据。它用于在事件被触发时，事件未向事件处理程序传递状态信息的事件。
  *
  * You can call the method stopPropagation() to abort the execution of
  * further listeners in your event listener.
@@ -34,11 +35,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
  */
 class Event implements StoppableEventInterface
 {
-    private $propagationStopped = false;
+    private bool $propagationStopped = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPropagationStopped(): bool
     {
         return $this->propagationStopped;
@@ -46,7 +44,7 @@ class Event implements StoppableEventInterface
 
     /**
      * Stops the propagation of the event to further event listeners.
-	 * 停止将事件传播到进一步的事件侦听器。
+	 * 停止将事件传播到其他事件侦听器。
      *
      * If multiple event listeners are connected to the same event, no
      * further event listener will be triggered once any trigger calls

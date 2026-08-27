@@ -81,7 +81,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
             // creating the classes that accept queue configs and instantiate queues.
-			// 一旦我们有了队列管理器的实例，我们将登记各种队列连接器的解析器。
+			// 一旦我们有了队列管理器的实例，我们将注册各种队列连接器的解析器。
             return tap(new QueueManager($app), function ($manager) {
                 $this->registerConnectors($manager);
             });
@@ -201,7 +201,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the queue worker.
-	 * 注册队列工作者
+	 * 注册队列工作器
      *
      * @return void
      */
@@ -215,6 +215,13 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
             $resetScope = function () use ($app) {
                 if (method_exists($app['log']->driver(), 'withoutContext')) {
                     $app['log']->withoutContext();
+                }
+
+                if (method_exists($app['db'], 'getConnections')) {
+                    foreach ($app['db']->getConnections() as $connection) {
+                        $connection->resetTotalQueryDuration();
+                        $connection->allowQueryDurationHandlersToRunAgain();
+                    }
                 }
 
                 $app->forgetScopedInstances();
@@ -234,7 +241,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the queue listener.
-	 * 注册队列监听者
+	 * 注册队列侦听器
      *
      * @return void
      */
@@ -331,7 +338,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Get the services provided by the provider.
-	 * 得到提供者提供的服务
+	 * 获取提供者提供的服务
      *
      * @return array
      */

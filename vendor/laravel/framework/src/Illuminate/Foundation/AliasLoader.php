@@ -17,7 +17,7 @@ class AliasLoader
 
     /**
      * Indicates if a loader has been registered.
-	 * 指明加载器是否已被注册
+	 * 指示是否已注册加载程序
      *
      * @var bool
      */
@@ -25,7 +25,7 @@ class AliasLoader
 
     /**
      * The namespace for all real-time facades.
-	 * 所有实时门面的命名空间
+	 * 所有实时facade的名称空间
      *
      * @var string
      */
@@ -41,7 +41,7 @@ class AliasLoader
 
     /**
      * Create a new AliasLoader instance.
-	 * 创建新的别名加载器实例
+	 * 创建一个新的AliasLoader实例
      *
      * @param  array  $aliases
      * @return void
@@ -53,7 +53,7 @@ class AliasLoader
 
     /**
      * Get or create the singleton alias loader instance.
-	 * 得到或创建别名加载器单例实例
+	 * 获取或创建单例别名加载器实例
      *
      * @param  array  $aliases
      * @return \Illuminate\Foundation\AliasLoader
@@ -73,14 +73,14 @@ class AliasLoader
 
     /**
      * Load a class alias if it is registered.
-	 * 如果类别名已注册，则装入该类别名。
+	 * 如果类别名已注册，则装入该类别名
      *
      * @param  string  $alias
      * @return bool|null
      */
     public function load($alias)
     {
-        if (static::$facadeNamespace && strpos($alias, static::$facadeNamespace) === 0) {
+        if (static::$facadeNamespace && str_starts_with($alias, static::$facadeNamespace)) {
             $this->loadFacade($alias);
 
             return true;
@@ -185,7 +185,7 @@ class AliasLoader
 
     /**
      * Get the registered aliases.
-	 * 得到已注册别名
+	 * 获取注册别名
      *
      * @return array
      */
@@ -196,7 +196,7 @@ class AliasLoader
 
     /**
      * Set the registered aliases.
-	 * 设置已注册别名
+	 * 设置注册别名
      *
      * @param  array  $aliases
      * @return void
@@ -208,7 +208,7 @@ class AliasLoader
 
     /**
      * Indicates if the loader has been registered.
-	 * 指明加载程序是否已注册
+	 * 指示加载程序是否已注册
      *
      * @return bool
      */
@@ -231,7 +231,7 @@ class AliasLoader
 
     /**
      * Set the real-time facade namespace.
-	 * 设置实时门面命名空间
+	 * 设置实时facade名称空间
      *
      * @param  string  $namespace
      * @return void

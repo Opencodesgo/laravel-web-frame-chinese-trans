@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，容器，容器建立者
+ * Faker，容器，容器生成器
  */
 
 declare(strict_types=1);
@@ -12,7 +12,6 @@ use Faker\Extension;
 
 /**
  * @experimental This class is experimental and does not fall under our BC promise
- * 这个课程是实验性的,不会在我们的BC承诺下倒下。
  */
 final class ContainerBuilder
 {

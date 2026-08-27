@@ -1,7 +1,9 @@
 <?php
 /**
- * Carbon，Doctrine，Carbon 学说类型
+ * Carbon，Doctrine，Carbon 主义类型
  */
+
+declare(strict_types=1);
 
 namespace Carbon\Doctrine;
 
@@ -11,7 +13,7 @@ interface CarbonDoctrineType
 {
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
 
-    public function convertToPHPValue($value, AbstractPlatform $platform);
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform);
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform);
 }

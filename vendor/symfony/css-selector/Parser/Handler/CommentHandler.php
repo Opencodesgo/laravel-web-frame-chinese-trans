@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，处理程序，注释处理程序
+ * Symfony，Component，CssSelector，解析器，处理器，注释处理器
  */
 
 /*
@@ -30,9 +30,6 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
  */
 class CommentHandler implements HandlerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function handle(Reader $reader, TokenStream $stream): bool
     {
         if ('/*' !== $reader->getSubstring(2)) {

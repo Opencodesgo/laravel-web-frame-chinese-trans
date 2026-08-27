@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，表，表行
+ * League，CommonMark，扩展，表格，表格行
  */
 
 declare(strict_types=1);

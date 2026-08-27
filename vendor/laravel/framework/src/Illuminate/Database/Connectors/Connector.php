@@ -31,7 +31,7 @@ class Connector
 
     /**
      * Create a new PDO connection.
-	 * 创建一个新的PDO连接
+	 * 创建PDO连接
      *
      * @param  string  $dsn
      * @param  array  $config

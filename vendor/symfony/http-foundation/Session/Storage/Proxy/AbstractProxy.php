@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，储存，代理，抽象代理
+ * Symfony，Component，HttpFoundation，会话，存储，代理，抽象代理
  */
 
 /*
@@ -35,10 +35,8 @@ abstract class AbstractProxy
     /**
      * Gets the session.save_handler name.
 	 * 获取会话。save_handler名字。
-     *
-     * @return string|null
      */
-    public function getSaveHandlerName()
+    public function getSaveHandlerName(): ?string
     {
         return $this->saveHandlerName;
     }
@@ -46,10 +44,8 @@ abstract class AbstractProxy
     /**
      * Is this proxy handler and instance of \SessionHandlerInterface.
 	 * 是这个代理处理程序和\SessionHandlerInterface的实例
-     *
-     * @return bool
      */
-    public function isSessionHandlerInterface()
+    public function isSessionHandlerInterface(): bool
     {
         return $this instanceof \SessionHandlerInterface;
     }
@@ -57,21 +53,17 @@ abstract class AbstractProxy
     /**
      * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
 	 * 如果此处理程序使用\SessionHandler包装内部PHP会话保存处理程序，则返回true。
-     *
-     * @return bool
      */
-    public function isWrapper()
+    public function isWrapper(): bool
     {
         return $this->wrapper;
     }
 
     /**
      * Has a session started?
-	 * 会话开始了吗
-     *
-     * @return bool
+	 * 会话开始了吗？
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return \PHP_SESSION_ACTIVE === session_status();
     }
@@ -79,10 +71,8 @@ abstract class AbstractProxy
     /**
      * Gets the session ID.
 	 * 获取会话ID
-     *
-     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return session_id();
     }
@@ -90,6 +80,8 @@ abstract class AbstractProxy
     /**
      * Sets the session ID.
 	 * 设置会话ID
+     *
+     * @return void
      *
      * @throws \LogicException
      */
@@ -105,10 +97,8 @@ abstract class AbstractProxy
     /**
      * Gets the session name.
 	 * 获取会话名称
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return session_name();
     }
@@ -116,6 +106,8 @@ abstract class AbstractProxy
     /**
      * Sets the session name.
 	 * 设置会话名称
+     *
+     * @return void
      *
      * @throws \LogicException
      */

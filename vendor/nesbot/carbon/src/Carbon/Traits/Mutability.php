@@ -19,7 +19,7 @@ use Carbon\CarbonImmutable;
 
 /**
  * Trait Mutability.
- * 可变性特征。
+ * 可变性特征
  *
  * Utils to know if the current object is mutable or immutable and convert it.
  */
@@ -40,7 +40,6 @@ trait Mutability
 
     /**
      * Returns true if the current class/instance is immutable.
-	 * 如果当前类/实例是不可变的，则返回true。
      *
      * @return bool
      */
@@ -51,7 +50,6 @@ trait Mutability
 
     /**
      * Return a mutable copy of the instance.
-	 * 返回实例的可变副本
      *
      * @return Carbon
      */

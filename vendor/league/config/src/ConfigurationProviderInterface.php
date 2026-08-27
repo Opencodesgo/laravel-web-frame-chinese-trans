@@ -18,7 +18,7 @@ namespace League\Config;
 
 /**
  * Interface for a service which provides a readable configuration object
- * 提供一个服务的接口,它提供可读的配置对象
+ * 用于提供可读配置对象的服务的接口
  */
 interface ConfigurationProviderInterface
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，契约，Renderless编辑器
+ * NunoMaduro，Collision，契约，Renderless 编辑器
  */
 
 declare(strict_types=1);

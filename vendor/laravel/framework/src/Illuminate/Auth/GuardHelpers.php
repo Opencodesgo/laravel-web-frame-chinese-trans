@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\UserProvider;
 
 /**
  * These methods are typically the same across all guards.
- * 这些方法在所有守卫中通常是相同的
  */
 trait GuardHelpers
 {
@@ -18,13 +17,13 @@ trait GuardHelpers
      * The currently authenticated user.
 	 * 当前认证的用户
      *
-     * @var \Illuminate\Contracts\Auth\Authenticatable
+     * @var \Illuminate\Contracts\Auth\Authenticatable|null
      */
     protected $user;
 
     /**
      * The user provider implementation.
-	 * 用户提供者实现
+	 * 用户提供程序实现
      *
      * @var \Illuminate\Contracts\Auth\UserProvider
      */
@@ -71,7 +70,7 @@ trait GuardHelpers
 
     /**
      * Determine if the current user is a guest.
-	 * 确定当前用户是否是来宾
+	 * 确定当前用户是否是访客
      *
      * @return bool
      */
@@ -108,6 +107,19 @@ trait GuardHelpers
     }
 
     /**
+     * Forget the current user.
+	 * 忘记当前用户
+     *
+     * @return $this
+     */
+    public function forgetUser()
+    {
+        $this->user = null;
+
+        return $this;
+    }
+
+    /**
      * Get the user provider used by the guard.
 	 * 获取守卫使用的用户提供者
      *
@@ -120,7 +132,7 @@ trait GuardHelpers
 
     /**
      * Set the user provider used by the guard.
-	 * 设置守卫使用的用户提供者
+	 * 设置守卫使用的用户提供程序
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @return void

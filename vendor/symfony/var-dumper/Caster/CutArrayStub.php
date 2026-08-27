@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，Caster，切断阵列存根
+ * Symfony，Component，VarDumper，Caster，Cut 数组存根
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\VarDumper\Caster;
 
 /**
  * Represents a cut array.
- * 表示一个切割阵列。
+ * 表示一个剪切数组。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

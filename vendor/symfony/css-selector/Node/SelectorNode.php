@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>(::|:)<pseudoElement>" node.
- * 表示一个“<selector>(::|:)<pseudoElement>”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,8 +26,8 @@ namespace Symfony\Component\CssSelector\Node;
  */
 class SelectorNode extends AbstractNode
 {
-    private $tree;
-    private $pseudoElement;
+    private NodeInterface $tree;
+    private ?string $pseudoElement;
 
     public function __construct(NodeInterface $tree, ?string $pseudoElement = null)
     {
@@ -46,9 +45,6 @@ class SelectorNode extends AbstractNode
         return $this->pseudoElement;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSpecificity(): Specificity
     {
         return $this->tree->getSpecificity()->plus(new Specificity(0, 0, $this->pseudoElement ? 1 : 0));
@@ -56,6 +52,6 @@ class SelectorNode extends AbstractNode
 
     public function __toString(): string
     {
-        return sprintf('%s[%s%s]', $this->getNodeName(), $this->tree, $this->pseudoElement ? '::'.$this->pseudoElement : '');
+        return \sprintf('%s[%s%s]', $this->getNodeName(), $this->tree, $this->pseudoElement ? '::'.$this->pseudoElement : '');
     }
 }

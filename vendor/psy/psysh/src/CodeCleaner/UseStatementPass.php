@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，使用语句传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use PhpParser\NodeTraverser;
 
 /**
  * Provide implicit use statements for subsequent execution.
+ * 为后续执行提供隐式使用语句。
  *
  * The use statement pass remembers the last use statement line encountered:
  *
@@ -39,6 +43,7 @@ class UseStatementPass extends CodeCleanerPass
 
     /**
      * Re-load the last set of use statements on re-entering a namespace.
+	 * 重新进入命名空间时重新加载最后一组use语句。
      *
      * This isn't how namespaces normally work, but because PsySH has to spin
      * up a new namespace for every line of code, we do this to make things
@@ -61,6 +66,7 @@ class UseStatementPass extends CodeCleanerPass
 
     /**
      * If this statement is a namespace, forget all the aliases we had.
+	 * 如果这个语句是一个名称空间，那么忘掉所有的别名。
      *
      * If it's a use statement, remember the alias for later. Otherwise, apply
      * remembered aliases to the code.
@@ -123,6 +129,7 @@ class UseStatementPass extends CodeCleanerPass
 
     /**
      * Find class/namespace aliases.
+	 * 查找类/命名空间别名
      *
      * @param Name $name
      *

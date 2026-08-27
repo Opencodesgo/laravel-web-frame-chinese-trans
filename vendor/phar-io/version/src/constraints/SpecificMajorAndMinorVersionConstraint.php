@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，版本，特定的主要和次要版本约束
+ */
+
 /*
  * This file is part of PharIo\Version.
  *

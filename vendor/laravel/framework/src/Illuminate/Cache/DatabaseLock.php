@@ -37,7 +37,7 @@ class DatabaseLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建新的锁实例
+	 * 创建一个新的锁实例
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string  $table
@@ -64,8 +64,6 @@ class DatabaseLock extends Lock
      */
     public function acquire()
     {
-        $acquired = false;
-
         try {
             $this->connection->table($this->table)->insert([
                 'key' => $this->name,
@@ -96,7 +94,7 @@ class DatabaseLock extends Lock
 
     /**
      * Get the UNIX timestamp indicating when the lock should expire.
-	 * 获取指明锁何时到期的UNIX时间戳
+	 * 获取指示锁何时到期的UNIX时间戳
      *
      * @return int
      */

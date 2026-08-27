@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，分析程序，入口
+ * Dotenv，解析器，入口 
  */
 
 declare(strict_types=1);
@@ -44,7 +44,7 @@ final class Entry
 
     /**
      * Get the entry name.
-	 * 得到入口名称
+	 * 获取条目名称
      *
      * @return string
      */
@@ -55,7 +55,7 @@ final class Entry
 
     /**
      * Get the entry value.
-	 * 得到入口名称
+	 * 获取条目值
      *
      * @return \PhpOption\Option<\Dotenv\Parser\Value>
      */

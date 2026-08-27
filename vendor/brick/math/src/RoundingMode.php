@@ -49,7 +49,7 @@ final class RoundingMode
 
     /**
      * Rounds towards zero.
-	 * 向零转
+	 * 向零四舍五入
      *
      * Never increments the digit prior to a discarded fraction (i.e., truncates).
      * Note that this rounding mode never increases the magnitude of the calculated value.
@@ -58,7 +58,7 @@ final class RoundingMode
 
     /**
      * Rounds towards positive infinity.
-	 * 向正无穷转
+	 * 趋于正无穷
      *
      * If the result is positive, behaves as for UP; if negative, behaves as for DOWN.
      * Note that this rounding mode never decreases the calculated value.
@@ -67,7 +67,7 @@ final class RoundingMode
 
     /**
      * Rounds towards negative infinity.
-	 * 向负无穷转
+	 * 趋于负无穷
      *
      * If the result is positive, behave as for DOWN; if negative, behave as for UP.
      * Note that this rounding mode never increases the calculated value.
@@ -76,7 +76,7 @@ final class RoundingMode
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.
-	 * 向“最近邻居”舍入，除非两个邻居距离相等，在这种情况下，舍入。
+	 * 向"最近邻居"舍入，除非两个邻居距离相等，在这种情况下，舍入。
      *
      * Behaves as for UP if the discarded fraction is >= 0.5; otherwise, behaves as for DOWN.
      * Note that this is the rounding mode commonly taught at school.
@@ -85,6 +85,7 @@ final class RoundingMode
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.
+	 * 向"最近邻"舍入，除非两个近邻的距离相等，在这种情况下，舍入向下。
      *
      * Behaves as for UP if the discarded fraction is > 0.5; otherwise, behaves as for DOWN.
      */
@@ -92,6 +93,7 @@ final class RoundingMode
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive infinity.
+	 * 向“最近邻”四舍五入，除非两个近邻的距离相等，在这种情况下，四舍五入到正无穷。
      *
      * If the result is positive, behaves as for HALF_UP; if negative, behaves as for HALF_DOWN.
      */
@@ -99,6 +101,7 @@ final class RoundingMode
 
     /**
      * Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative infinity.
+	 * 向“最近邻”四舍五入，除非两个近邻的距离相等，在这种情况下，向负无穷四舍五入。
      *
      * If the result is positive, behaves as for HALF_DOWN; if negative, behaves as for HALF_UP.
      */
@@ -106,7 +109,7 @@ final class RoundingMode
 
     /**
      * Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the even neighbor.
-	 * “最近的邻居”,除非两个邻居都是等距离的,在这种情况下,他们会向邻居们。
+	 * 向"最近邻居"舍入，除非两个邻居是等距的，在这种情况下，向偶数邻居舍入。
      *
      * Behaves as for HALF_UP if the digit to the left of the discarded fraction is odd;
      * behaves as for HALF_DOWN if it's even.

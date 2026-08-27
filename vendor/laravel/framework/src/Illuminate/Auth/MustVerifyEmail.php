@@ -11,7 +11,7 @@ trait MustVerifyEmail
 {
     /**
      * Determine if the user has verified their email address.
-	 * 确定用户是否验证了他们的电子邮件地址
+	 * 确定用户是否验证了他们的邮件地址
      *
      * @return bool
      */
@@ -22,7 +22,7 @@ trait MustVerifyEmail
 
     /**
      * Mark the given user's email as verified.
-	 * 标记定用户的电子邮件为已验证
+	 * 标记给定用户的电子邮件为已验证
      *
      * @return bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，数据头
+ * GuzzleHttp，Psr7，头
  */
 
 declare(strict_types=1);

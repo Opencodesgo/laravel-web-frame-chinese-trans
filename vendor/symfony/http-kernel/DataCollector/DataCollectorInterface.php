@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集器，数据采集器接口
- */
+ * Symfony，Component，HttpKernel，数据收集者，数据收集者接口
+ *
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +20,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * DataCollectorInterface.
- * 数据采集器接口
+ * 数据收集者接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -29,6 +29,8 @@ interface DataCollectorInterface extends ResetInterface
     /**
      * Collects data for the given Request and Response.
 	 * 收集给定请求和响应的数据
+     *
+     * @return void
      */
     public function collect(Request $request, Response $response, ?\Throwable $exception = null);
 

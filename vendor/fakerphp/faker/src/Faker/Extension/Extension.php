@@ -12,6 +12,7 @@ namespace Faker\Extension;
  * 扩展是为Faker添加新功能的唯一方法。
  *
  * @experimental This interface is experimental and does not fall under our BC promise
+ * 这个接口是实验性的，不属于我们的BC承诺。
  */
 interface Extension
 {

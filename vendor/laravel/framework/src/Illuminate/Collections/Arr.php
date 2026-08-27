@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，支持，数组
+ * Illuminate，集合，数组
  */
 
 namespace Illuminate\Support;
 
+use ArgumentCountError;
 use ArrayAccess;
 use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
@@ -27,10 +28,10 @@ class Arr
 
     /**
      * Add an element to an array using "dot" notation if it doesn't exist.
-	 * 在数组中添加一个不存在的元素，使用"点"符号。
+	 * 在数组中添加一个不存在的元素，使用“点”符号。
      *
      * @param  array  $array
-     * @param  string  $key
+     * @param  string|int|float  $key
      * @param  mixed  $value
      * @return array
      */
@@ -153,7 +154,7 @@ class Arr
 	 * 获取除指定键数组外的所有给定数组
      *
      * @param  array  $array
-     * @param  array|string  $keys
+     * @param  array|string|int|float  $keys
      * @return array
      */
     public static function except($array, $keys)
@@ -179,6 +180,10 @@ class Arr
 
         if ($array instanceof ArrayAccess) {
             return $array->offsetExists($key);
+        }
+
+        if (is_float($key)) {
+            $key = (string) $key;
         }
 
         return array_key_exists($key, $array);
@@ -268,7 +273,7 @@ class Arr
 	 * 使用"点"符号从给定数组中删除一个或多个数组项
      *
      * @param  array  $array
-     * @param  array|string  $keys
+     * @param  array|string|int|float  $keys
      * @return void
      */
     public static function forget(&$array, $keys)
@@ -297,7 +302,7 @@ class Arr
             while (count($parts) > 1) {
                 $part = array_shift($parts);
 
-                if (isset($array[$part]) && is_array($array[$part])) {
+                if (isset($array[$part]) && static::accessible($array[$part])) {
                     $array = &$array[$part];
                 } else {
                     continue 2;
@@ -331,7 +336,7 @@ class Arr
             return $array[$key];
         }
 
-        if (strpos($key, '.') === false) {
+        if (! str_contains($key, '.')) {
             return $array[$key] ?? value($default);
         }
 
@@ -419,7 +424,6 @@ class Arr
 	 * 确定数组是否是关联的
      *
      * An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
-	 * 如果数组没有以零开头的顺序数字键，则该数组是"关联的"。
      *
      * @param  array  $array
      * @return bool
@@ -436,7 +440,6 @@ class Arr
 	 * 确定数组是否为列表
      *
      * An array is a "list" if all array keys are sequential integers starting from 0 with no gaps in between.
-	 * 如果数组的所有键都是从0开始的连续整数，没有间隔，那么数组就是一个"列表"。
      *
      * @param  array  $array
      * @return bool
@@ -444,6 +447,62 @@ class Arr
     public static function isList($array)
     {
         return ! self::isAssoc($array);
+    }
+
+    /**
+     * Join all items using a string. The final items can use a separate glue string.
+	 * 使用字符串连接所有项。最后的项目可以使用一个单独的胶水线。
+     *
+     * @param  array  $array
+     * @param  string  $glue
+     * @param  string  $finalGlue
+     * @return string
+     */
+    public static function join($array, $glue, $finalGlue = '')
+    {
+        if ($finalGlue === '') {
+            return implode($glue, $array);
+        }
+
+        if (count($array) === 0) {
+            return '';
+        }
+
+        if (count($array) === 1) {
+            return end($array);
+        }
+
+        $finalItem = array_pop($array);
+
+        return implode($glue, $array).$finalGlue.$finalItem;
+    }
+
+    /**
+     * Key an associative array by a field or using a callback.
+	 * 通过字段或使用回调为关联数组设置键
+     *
+     * @param  array  $array
+     * @param  callable|array|string  $keyBy
+     * @return array
+     */
+    public static function keyBy($array, $keyBy)
+    {
+        return Collection::make($array)->keyBy($keyBy)->all();
+    }
+
+    /**
+     * Prepend the key names of an associative array.
+	 * 前置关联数组的键名
+     *
+     * @param  array  $array
+     * @param  string  $prependWith
+     * @return array
+     */
+    public static function prependKeysWith($array, $prependWith)
+    {
+        return Collection::make($array)->mapWithKeys(function ($item, $key) use ($prependWith) {
+            return [$prependWith.$key => $item];
+        })->all();
     }
 
     /**
@@ -480,7 +539,6 @@ class Arr
             // If the key is "null", we will just append the value to the array and keep
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
-			// 如果键值为"null"，我们将把该值附加到数组中并保持循环。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {
@@ -512,6 +570,27 @@ class Arr
         $key = is_null($key) || is_array($key) ? $key : explode('.', $key);
 
         return [$value, $key];
+    }
+
+    /**
+     * Run a map over each of the items in the array.
+	 * 对数组中的每个项运行一个映射
+     *
+     * @param  array  $array
+     * @param  callable  $callback
+     * @return array
+     */
+    public static function map(array $array, callable $callback)
+    {
+        $keys = array_keys($array);
+
+        try {
+            $items = array_map($callback, $array, $keys);
+        } catch (ArgumentCountError) {
+            $items = array_map($callback, $array);
+        }
+
+        return array_combine($keys, $items);
     }
 
     /**
@@ -570,7 +649,7 @@ class Arr
      *
      * @param  array  $array
      * @param  int|null  $number
-     * @param  bool|false  $preserveKeys
+     * @param  bool  $preserveKeys
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -617,10 +696,9 @@ class Arr
 	 * 使用"点"表示法将数组项设置为给定值
      *
      * If no key is given to the method, the entire array will be replaced.
-	 * 如果没有给方法提供键，整个数组将被替换。
      *
      * @param  array  $array
-     * @param  string|null  $key
+     * @param  string|int|null  $key
      * @param  mixed  $value
      * @return array
      */
@@ -642,7 +720,6 @@ class Arr
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-			// 如果键在这个深度不存在，我们将创建一个空数组保存下一个值，允许我们创建保存final的数组在正确的深度值。
             if (! isset($array[$key]) || ! is_array($array[$key])) {
                 $array[$key] = [];
             }
@@ -687,6 +764,19 @@ class Arr
     public static function sort($array, $callback = null)
     {
         return Collection::make($array)->sortBy($callback)->all();
+    }
+
+    /**
+     * Sort the array in descending order using the given callback or "dot" notation.
+	 * 使用给定的回调或"点"符号按降序对数组进行排序
+     *
+     * @param  array  $array
+     * @param  callable|array|string|null  $callback
+     * @return array
+     */
+    public static function sortDesc($array, $callback = null)
+    {
+        return Collection::make($array)->sortByDesc($callback)->all();
     }
 
     /**
@@ -744,6 +834,30 @@ class Arr
     }
 
     /**
+     * Conditionally compile styles from an array into a style list.
+	 * 有条件地将数组中的样式编译为样式列表
+     *
+     * @param  array  $array
+     * @return string
+     */
+    public static function toCssStyles($array)
+    {
+        $styleList = static::wrap($array);
+
+        $styles = [];
+
+        foreach ($styleList as $class => $constraint) {
+            if (is_numeric($class)) {
+                $styles[] = Str::finish($constraint, ';');
+            } elseif ($constraint) {
+                $styles[] = Str::finish($class, ';');
+            }
+        }
+
+        return implode(' ', $styles);
+    }
+
+    /**
      * Filter the array using the given callback.
 	 * 使用给定的回调筛选数组
      *
@@ -765,14 +879,12 @@ class Arr
      */
     public static function whereNotNull($array)
     {
-        return static::where($array, function ($value) {
-            return ! is_null($value);
-        });
+        return static::where($array, fn ($value) => ! is_null($value));
     }
 
     /**
      * If the given value is not an array and not null, wrap it in one.
-	 * 如果给定的值不是数组也不为空，则将其封装在一个数组中。
+	 * 如果给定的值不是数组，也不为空，则将其封装在一个数组中。
      *
      * @param  mixed  $value
      * @return array

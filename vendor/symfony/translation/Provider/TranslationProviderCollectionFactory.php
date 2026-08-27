@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提供者，抽象提供者集合工厂
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,8 +21,8 @@ use Symfony\Component\Translation\Exception\UnsupportedSchemeException;
  */
 class TranslationProviderCollectionFactory
 {
-    private $factories;
-    private $enabledLocales;
+    private iterable $factories;
+    private array $enabledLocales;
 
     /**
      * @param iterable<mixed, ProviderFactoryInterface> $factories

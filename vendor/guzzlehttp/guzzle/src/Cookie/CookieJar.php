@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Cookie，Cookie 压缩
+ * GuzzleHttp，Cookie，cookie 压缩
  */
 
 namespace GuzzleHttp\Cookie;
@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Cookie jar that stores cookies as an array
- * 将Cookie存储为数组的Cookie压缩
+ * 将Cookie存储为数组的Cookie 压缩
  */
 class CookieJar implements CookieJarInterface
 {
@@ -45,7 +45,7 @@ class CookieJar implements CookieJarInterface
 
     /**
      * Create a new Cookie jar from an associative array and domain.
-	 * 从关联数组和域创建一个新的Cookie jar
+	 * 从关联数组和域创建一个新的Cookie jar。
      *
      * @param array  $cookies Cookies to create the jar from
      * @param string $domain  Domain to set the cookies to
@@ -299,7 +299,6 @@ class CookieJar implements CookieJarInterface
     /**
      * If a cookie already exists and the server asks to set it again with a
      * null value, the cookie must be deleted.
-	 * 如果一个cookie已经存在,服务器要求重新设置一个空值。
      */
     private function removeCookieIfEmpty(SetCookie $cookie): void
     {

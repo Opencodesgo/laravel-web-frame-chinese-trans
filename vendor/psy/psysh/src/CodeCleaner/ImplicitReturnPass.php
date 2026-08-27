@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，隐式返回传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -24,6 +27,7 @@ use PhpParser\Node\Stmt\Switch_;
 
 /**
  * Add an implicit "return" to the last statement, provided it can be returned.
+ * 在最后一条语句中添加一个隐式的"return"，前提是它可以被返回。
  */
 class ImplicitReturnPass extends CodeCleanerPass
 {
@@ -80,7 +84,7 @@ class ImplicitReturnPass extends CodeCleanerPass
                 'startLine' => $last->getStartLine(),
                 'endLine'   => $last->getEndLine(),
             ]);
-        // @codeCoverageIgnoreEnd
+            // @codeCoverageIgnoreEnd
         } elseif ($last instanceof Expression && !($last->expr instanceof Exit_)) {
             $nodes[\count($nodes) - 1] = new Return_($last->expr, [
                 'startLine' => $last->getStartLine(),
@@ -109,6 +113,7 @@ class ImplicitReturnPass extends CodeCleanerPass
 
     /**
      * Check whether a given node is a non-expression statement.
+	 * 检查给定节点是否为非表达式语句。
      *
      * As of PHP Parser 4.x, Expressions are now instances of Stmt as well, so
      * we'll exclude them here.

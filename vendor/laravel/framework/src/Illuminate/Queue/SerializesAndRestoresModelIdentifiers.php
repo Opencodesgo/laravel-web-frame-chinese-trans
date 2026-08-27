@@ -16,7 +16,7 @@ trait SerializesAndRestoresModelIdentifiers
 {
     /**
      * Get the property value prepared for serialization.
-	 * 得到为序列化准备的属性值
+	 * 获取为序列化准备的属性值
      *
      * @param  mixed  $value
      * @return mixed
@@ -24,11 +24,15 @@ trait SerializesAndRestoresModelIdentifiers
     protected function getSerializedPropertyValue($value)
     {
         if ($value instanceof QueueableCollection) {
-            return new ModelIdentifier(
+            return (new ModelIdentifier(
                 $value->getQueueableClass(),
                 $value->getQueueableIds(),
                 $value->getQueueableRelations(),
                 $value->getQueueableConnection()
+            ))->useCollectionClass(
+                ($collectionClass = get_class($value)) !== EloquentCollection::class
+                    ? $collectionClass
+                    : null
             );
         }
 
@@ -46,7 +50,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Get the restored property value after deserialization.
-	 * 得到反序列化后恢复的属性值
+	 * 获取反序列化后恢复的属性值
      *
      * @param  mixed  $value
      * @return mixed
@@ -72,7 +76,9 @@ trait SerializesAndRestoresModelIdentifiers
     protected function restoreCollection($value)
     {
         if (! $value->class || count($value->id) === 0) {
-            return new EloquentCollection;
+            return ! is_null($value->collectionClass ?? null)
+                ? new $value->collectionClass
+                : new EloquentCollection;
         }
 
         $collection = $this->getQueryForModelRestoration(
@@ -111,7 +117,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Get the query for model restoration.
-	 * 得到模型恢复的查询
+	 * 获取模型恢复的查询
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array|int  $ids

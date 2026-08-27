@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，图片
+ */
 
 namespace Faker\Provider;
 
@@ -28,6 +31,7 @@ class Image extends Base
 
     /**
      * Generate the URL that will return a random image
+	 * 生成将返回随机图像的URL
      *
      * Set randomize to false to remove the random GET parameter at the end of the url.
      *
@@ -98,6 +102,7 @@ class Image extends Base
 
     /**
      * Download a remote random image to disk and return its location
+	 * 将远程随机映像下载到磁盘并返回其位置
      *
      * Requires curl, or allow_url_fopen to be on in php.ini.
      *

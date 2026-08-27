@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，抽象翻译
+ * Carbon，抽象翻译程序
  */
 
 /**
@@ -58,7 +58,6 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of locales aliases.
-	 * 区域设置别名列表
      *
      * @var array<string, string>
      */
@@ -125,7 +124,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Add a directory to the list translation files are searched in.
-	 * 将目录添加到搜索翻译文件的列表中。
+	 * 将目录添加到搜索翻译文件的列表中
      *
      * @param string $directory new directory
      *
@@ -308,6 +307,7 @@ abstract class AbstractTranslator extends Translation\Translator
     /**
      * Get messages of a locale, if none given, return all the
      * languages.
+	 * 获取区域设置的消息，如果没有给出，则返回所有的语言。
      *
      * @param string|null $locale
      *
@@ -387,7 +387,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Show locale on var_dump().
-	 * 在var_dump（）上显示区域设置
+	 * 在var_dump()上显示区域设置。
      *
      * @return array
      */

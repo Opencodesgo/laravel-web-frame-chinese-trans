@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，丢失扩展异常
- *
+ * Monolog，处理器，丢失扩展异常
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,7 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Exception can be thrown if an extension for a handler is missing
- * 如果一个处理程序的扩展缺失,则可以抛出异常。
+ * 如果缺少处理程序的扩展，则会引发异常。
  *
  * @author Christian Bergau <cbergau86@gmail.com>
  */

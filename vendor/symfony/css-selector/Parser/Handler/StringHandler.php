@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，处理器，字符串处理器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector comment handler.
+ * CSS选择器注释处理程序。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -31,8 +35,8 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
  */
 class StringHandler implements HandlerInterface
 {
-    private $patterns;
-    private $escaping;
+    private TokenizerPatterns $patterns;
+    private TokenizerEscaping $escaping;
 
     public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
     {
@@ -40,9 +44,6 @@ class StringHandler implements HandlerInterface
         $this->escaping = $escaping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(Reader $reader, TokenStream $stream): bool
     {
         $quote = $reader->getSubstring(1);
@@ -55,7 +56,7 @@ class StringHandler implements HandlerInterface
         $match = $reader->findPattern($this->patterns->getQuotedStringPattern($quote));
 
         if (!$match) {
-            throw new InternalErrorException(sprintf('Should have found at least an empty match at %d.', $reader->getPosition()));
+            throw new InternalErrorException(\sprintf('Should have found at least an empty match at %d.', $reader->getPosition()));
         }
 
         // check unclosed strings

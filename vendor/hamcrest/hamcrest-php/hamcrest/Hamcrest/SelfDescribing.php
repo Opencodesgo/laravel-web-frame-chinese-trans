@@ -11,7 +11,7 @@ namespace Hamcrest;
 
 /**
  * The ability of an object to describe itself.
- * 物体描述自身的能力。
+ * 对象描述自身的能力。
  */
 interface SelfDescribing
 {
@@ -20,7 +20,7 @@ interface SelfDescribing
      * Generates a description of the object.  The description may be part
      * of a description of a larger object of which this is just a component,
      * so it should be worded appropriately.
-	 * 生成对象的描述。描述可能是对一个更大物体的说明，而该物体只是其中的一部分，因此应适当表述。
+	 * 生成对象的描述。描述可能是描述一个更大的对象的一部分,它只是一个组件,所以它应该被适当地处理。
      *
      * @param \Hamcrest\Description $description
      *   The description to be built or appended to.

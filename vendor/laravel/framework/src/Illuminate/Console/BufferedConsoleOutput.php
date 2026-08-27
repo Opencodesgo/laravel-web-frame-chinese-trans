@@ -11,7 +11,7 @@ class BufferedConsoleOutput extends ConsoleOutput
 {
     /**
      * The current buffer.
-	 * 当前缓冲区
+	 * 当前缓冲
      *
      * @var string
      */
@@ -32,6 +32,8 @@ class BufferedConsoleOutput extends ConsoleOutput
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
     protected function doWrite(string $message, bool $newline)
     {

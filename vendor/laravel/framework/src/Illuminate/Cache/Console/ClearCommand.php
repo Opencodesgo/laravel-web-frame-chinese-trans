@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，控制台，cache:clear 清除命令
+ * Illuminate，缓存，控制台，清除命令
  */
 
 namespace Illuminate\Cache\Console;
@@ -8,9 +8,11 @@ namespace Illuminate\Cache\Console;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'cache:clear')]
 class ClearCommand extends Command
 {
     /**
@@ -22,8 +24,21 @@ class ClearCommand extends Command
     protected $name = 'cache:clear';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'cache:clear';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令描述 
      *
      * @var string
      */
@@ -47,7 +62,7 @@ class ClearCommand extends Command
 
     /**
      * Create a new cache clear command instance.
-	 * 创建新的缓存清除命令实例
+	 * 创建一个新的缓存清除命令实例
      *
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @param  \Illuminate\Filesystem\Filesystem  $files
@@ -78,14 +93,14 @@ class ClearCommand extends Command
         $this->flushFacades();
 
         if (! $successful) {
-            return $this->error('Failed to clear cache. Make sure you have the appropriate permissions.');
+            return $this->components->error('Failed to clear cache. Make sure you have the appropriate permissions.');
         }
 
         $this->laravel['events']->dispatch(
             'cache:cleared', [$this->argument('store'), $this->tags()]
         );
 
-        $this->info('Application cache cleared!');
+        $this->components->info('Application cache cleared successfully.');
     }
 
     /**
@@ -146,7 +161,7 @@ class ClearCommand extends Command
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */

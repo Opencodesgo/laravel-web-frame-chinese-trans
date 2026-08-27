@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Gelf 处理程序
+ * Monolog，处理器，Gelf 处理器
  */
 
 /*
@@ -22,7 +22,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Handler to send messages to a Graylog2 (http://www.graylog2.org) server
- * 将消息发送到Graylog2的处理程序
+ * 处理程序发送消息到一个Graylog2
  *
  * @author Matt Lehner <mlehner@gmail.com>
  * @author Benjamin Zikarsky <benjamin@zikarsky.de>

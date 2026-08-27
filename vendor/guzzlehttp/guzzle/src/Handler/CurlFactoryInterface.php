@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，处理者，Curl 工厂接口
+ * GuzzleHttp，处理器，Curl 工厂接口
  */
 
 namespace GuzzleHttp\Handler;
@@ -11,7 +11,7 @@ interface CurlFactoryInterface
 {
     /**
      * Creates a cURL handle resource.
-	 * 创建一个cURL处理资源
+	 * 创建一个cURL句柄资源
      *
      * @param RequestInterface $request Request
      * @param array            $options Transfer options
@@ -22,7 +22,7 @@ interface CurlFactoryInterface
 
     /**
      * Release an easy handle, allowing it to be reused or closed.
-	 * 释放一个简单的句柄,允许它被重用或关闭。
+	 * 释放一个简单句柄，允许它被重用或关闭。
      *
      * This function must call unset on the easy handle's "handle" property.
      */

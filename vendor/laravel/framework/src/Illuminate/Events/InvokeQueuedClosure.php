@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，事件，调用队列闭包
+ * Illuminate，事件，调度队列闭包
  */
 
 namespace Illuminate\Events;
@@ -22,7 +22,7 @@ class InvokeQueuedClosure
 
     /**
      * Handle a job failure.
-	 * 处理任务失败
+	 * 处理作业失败
      *
      * @param  \Laravel\SerializableClosure\SerializableClosure  $closure
      * @param  array  $arguments

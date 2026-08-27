@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Taggable 缓存
+ * Illuminate，缓存，Taggable缓存
  */
 
 namespace Illuminate\Cache;
@@ -23,7 +23,7 @@ class TaggedCache extends Repository
 
     /**
      * Create a new tagged cache instance.
-	 * 创建新的标记缓存实例
+	 * 创建新的标记集缓存实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @param  \Illuminate\Cache\TagSet  $tags

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，SQLite 语法
+ * Illuminate，数据库，PDO，语法，SQLite 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -63,7 +63,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where day" clause.
-	 * 编写一个"where day"子句
+	 * 编译一个"where day"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -76,7 +76,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where month" clause.
-	 * 编写"where month"子句
+	 * 编译一个"where month"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -89,7 +89,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where year" clause.
-	 * 编写一个"where year"子句
+	 * 编译一个"where year"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -102,7 +102,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
-	 * 编写一个"where time"子句
+	 * 编译一个"where time"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -130,6 +130,21 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile the index hints for the query.
+	 * 为查询编译索引提示
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Query\IndexHint  $indexHint
+     * @return string
+     */
+    protected function compileIndexHint(Builder $query, $indexHint)
+    {
+        return $indexHint->type === 'force'
+                ? "indexed by {$indexHint->index}"
+                : '';
+    }
+
+    /**
      * Compile a "JSON length" statement into SQL.
 	 * 将"JSON长度"语句编译成SQL
      *
@@ -143,6 +158,20 @@ class SQLiteGrammar extends Grammar
         [$field, $path] = $this->wrapJsonFieldAndPath($column);
 
         return 'json_array_length('.$field.$path.') '.$operator.' '.$value;
+    }
+
+    /**
+     * Compile a "JSON contains key" statement into SQL.
+	 * 将"JSON contains key"语句编译成SQL
+     *
+     * @param  string  $column
+     * @return string
+     */
+    protected function compileJsonContainsKey($column)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+
+        return 'json_type('.$field.$path.') is not null';
     }
 
     /**
@@ -225,7 +254,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Group the nested JSON columns.
-	 * 对嵌套的JSON列进行分组
+	 * 对嵌套的JSON列进行分
      *
      * @param  array  $values
      * @return array

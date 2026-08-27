@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输入，过滤器选项
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -28,6 +31,7 @@ class FilterOptions
 
     /**
      * Get input option definitions for filtering.
+	 * 获取用于过滤的输入选项定义
      *
      * @return InputOption[]
      */
@@ -42,6 +46,7 @@ class FilterOptions
 
     /**
      * Bind input and prepare filter.
+	 * 绑定输入并准备过滤器
      *
      * @param InputInterface $input
      */
@@ -73,6 +78,7 @@ class FilterOptions
 
     /**
      * Check whether the bound input has filter options.
+	 * 检查绑定的输入是否有过滤器选项
      */
     public function hasFilter(): bool
     {
@@ -81,6 +87,7 @@ class FilterOptions
 
     /**
      * Check whether a string matches the current filter options.
+	 * 检查字符串是否与当前过滤器选项匹配
      *
      * @param string $string
      * @param array  $matches
@@ -92,6 +99,7 @@ class FilterOptions
 
     /**
      * Validate that grep, invert and insensitive input options are consistent.
+	 * 验证grep、invert和insensitive输入选项是否一致。
      *
      * @throws RuntimeException if input is invalid
      *
@@ -110,6 +118,7 @@ class FilterOptions
 
     /**
      * Check whether a string appears to be a regular expression.
+	 * 检查字符串是否显示为正则表达式
      *
      * @param string $string
      */
@@ -120,6 +129,7 @@ class FilterOptions
 
     /**
      * Validate that $pattern is a valid regular expression.
+	 * 验证$pattern是一个有效的正则表达式
      *
      * @throws RuntimeException if pattern is invalid
      *

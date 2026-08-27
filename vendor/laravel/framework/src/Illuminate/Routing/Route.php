@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由核心类，还有一个Router核心类
+ * Illuminate，路由，路由
  */
 
 namespace Illuminate\Routing;
@@ -9,7 +9,9 @@ use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Contracts\CallableDispatcher;
 use Illuminate\Routing\Contracts\ControllerDispatcher as ControllerDispatcherContract;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Matching\HostValidator;
 use Illuminate\Routing\Matching\MethodValidator;
 use Illuminate\Routing\Matching\SchemeValidator;
@@ -19,8 +21,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Laravel\SerializableClosure\SerializableClosure;
 use LogicException;
-use Opis\Closure\SerializableClosure as OpisSerializableClosure;
-use ReflectionFunction;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 
 class Route
@@ -53,7 +53,7 @@ class Route
 
     /**
      * Indicates whether the route is a fallback route.
-	 * 指明是否为回退路由
+	 * 是否为回退路由
      *
      * @var bool
      */
@@ -69,7 +69,7 @@ class Route
 
     /**
      * The default values for the route.
-	 * 路由的默认值
+	 * 路由默认值 
      *
      * @var array
      */
@@ -109,7 +109,7 @@ class Route
 
     /**
      * Indicates "trashed" models can be retrieved when resolving implicit model bindings for this route.
-	 * 表示在解析此路由的隐式模型绑定时可以检索"被丢弃"的模型
+	 * 表示在解析此路由的隐式模型绑定时可以检索“被丢弃”的模型
      *
      * @var bool
      */
@@ -261,9 +261,7 @@ class Route
             $callable = unserialize($this->action['uses'])->getClosure();
         }
 
-        return $callable(...array_values($this->resolveMethodDependencies(
-            $this->parametersWithoutNulls(), new ReflectionFunction($callable)
-        )));
+        return $this->container[CallableDispatcher::class]->dispatch($this, $callable);
     }
 
     /**
@@ -294,19 +292,30 @@ class Route
 
     /**
      * Get the controller instance for the route.
-	 * 得到路由的控制器实例
+	 * 获取路由的控制器实例
      *
      * @return mixed
      */
     public function getController()
     {
         if (! $this->controller) {
-            $class = $this->parseControllerCallback()[0];
+            $class = $this->getControllerClass();
 
             $this->controller = $this->container->make(ltrim($class, '\\'));
         }
 
         return $this->controller;
+    }
+
+    /**
+     * Get the controller class used for the route.
+	 * 获取用于路由的控制器类
+     *
+     * @return string
+     */
+    public function getControllerClass()
+    {
+        return $this->parseControllerCallback()[0];
     }
 
     /**
@@ -526,14 +535,12 @@ class Route
      */
     public function parametersWithoutNulls()
     {
-        return array_filter($this->parameters(), function ($p) {
-            return ! is_null($p);
-        });
+        return array_filter($this->parameters(), fn ($p) => ! is_null($p));
     }
 
     /**
      * Get all of the parameter names for the route.
-	 * 得到路由的所有参数名
+	 * 获取路由的所有参数名
      *
      * @return array
      */
@@ -548,7 +555,7 @@ class Route
 
     /**
      * Get the parameter names for the route.
-	 * 得到路由的参数名
+	 * 获取路由的参数名
      *
      * @return array
      */
@@ -556,26 +563,28 @@ class Route
     {
         preg_match_all('/\{(.*?)\}/', $this->getDomain().$this->uri, $matches);
 
-        return array_map(function ($m) {
-            return trim($m, '?');
-        }, $matches[1]);
+        return array_map(fn ($m) => trim($m, '?'), $matches[1]);
     }
 
     /**
      * Get the parameters that are listed in the route / controller signature.
-	 * 得到路由/控制器签名中列出的参数
+	 * 获取路由/控制器签名中列出的参数
      *
-     * @param  string|null  $subClass
+     * @param  array  $conditions
      * @return array
      */
-    public function signatureParameters($subClass = null)
+    public function signatureParameters($conditions = [])
     {
-        return RouteSignatureParameters::fromAction($this->action, $subClass);
+        if (is_string($conditions)) {
+            $conditions = ['subClass' => $conditions];
+        }
+
+        return RouteSignatureParameters::fromAction($this->action, $conditions);
     }
 
     /**
      * Get the binding field for the given parameter.
-	 * 得到给定参数的绑定字段
+	 * 获取给定参数的绑定字段
      *
      * @param  string|int  $parameter
      * @return string|null
@@ -614,7 +623,7 @@ class Route
 
     /**
      * Get the parent parameter of the given parameter.
-	 * 得到给定参数的父参数
+	 * 获取给定参数的父参数
      *
      * @param  string  $parameter
      * @return string
@@ -646,7 +655,7 @@ class Route
 
     /**
      * Determines if the route allows "trashed" models to be retrieved when resolving implicit model bindings.
-	 * 确定路由是否允许在解析隐式模型绑定时检索"废弃"模型
+	 * 确定路由是否允许在解析隐式模型绑定时检索“废弃”模型
      *
      * @return bool
      */
@@ -759,7 +768,7 @@ class Route
 
     /**
      * Get the HTTP verbs the route responds to.
-	 * 得到路由响应的HTTP动词
+	 * 获取路由响应的HTTP动词
      *
      * @return array
      */
@@ -827,7 +836,7 @@ class Route
 
     /**
      * Get the domain defined for the route.
-	 * 得到为路由定义的域
+	 * 获取为路由定义的域
      *
      * @return string|null
      */
@@ -839,7 +848,7 @@ class Route
 
     /**
      * Get the prefix of the route instance.
-	 * 得到路由实例的前缀
+	 * 获取路由实例的前缀
      *
      * @return string|null
      */
@@ -850,14 +859,14 @@ class Route
 
     /**
      * Add a prefix to the route URI.
-	 * 为路由URI添加前缀
+	 * 为路由URI添加前
      *
      * @param  string  $prefix
      * @return $this
      */
     public function prefix($prefix)
     {
-        $prefix = $prefix ?? '';
+        $prefix ??= '';
 
         $this->updatePrefixOnAction($prefix);
 
@@ -1000,7 +1009,7 @@ class Route
     {
         $groupStack = last($this->router->getGroupStack());
 
-        if (isset($groupStack['namespace']) && strpos($action, '\\') !== 0) {
+        if (isset($groupStack['namespace']) && ! str_starts_with($action, '\\')) {
             return $groupStack['namespace'].'\\'.$action;
         }
 
@@ -1009,7 +1018,7 @@ class Route
 
     /**
      * Get the action name for the route.
-	 * 得到路由的动作名称
+	 * 获取路由的动作名称
      *
      * @return string
      */
@@ -1020,7 +1029,7 @@ class Route
 
     /**
      * Get the method name of the route action.
-	 * 得到路由操作的方法名
+	 * 获取路由操作的方法名
      *
      * @return string
      */
@@ -1071,7 +1080,6 @@ class Route
 
         return is_string($missing) &&
             Str::startsWith($missing, [
-                'C:32:"Opis\\Closure\\SerializableClosure',
                 'O:47:"Laravel\\SerializableClosure\\SerializableClosure',
             ]) ? unserialize($missing) : $missing;
     }
@@ -1139,7 +1147,7 @@ class Route
 
     /**
      * Specify that the "Authorize" / "can" middleware should be applied to the route with the given options.
-	 * 指定应该将"Authorize"/"can"中间件应用于具有给定选项的路由
+	 * 指定应该将"Authorize"/"can"中间件应用于具有给定选项的路由。
      *
      * @param  string  $ability
      * @param  array|string  $models
@@ -1154,7 +1162,7 @@ class Route
 
     /**
      * Get the middleware for the route's controller.
-	 * 得到路由控制器的中间件
+	 * 获取路由控制器的中间件
      *
      * @return array
      */
@@ -1164,9 +1172,41 @@ class Route
             return [];
         }
 
-        return $this->controllerDispatcher()->getMiddleware(
-            $this->getController(), $this->getControllerMethod()
-        );
+        [$controllerClass, $controllerMethod] = [
+            $this->getControllerClass(),
+            $this->getControllerMethod(),
+        ];
+
+        if (is_a($controllerClass, HasMiddleware::class, true)) {
+            return $this->staticallyProvidedControllerMiddleware(
+                $controllerClass, $controllerMethod
+            );
+        }
+
+        if (method_exists($controllerClass, 'getMiddleware')) {
+            return $this->controllerDispatcher()->getMiddleware(
+                $this->getController(), $controllerMethod
+            );
+        }
+
+        return [];
+    }
+
+    /**
+     * Get the statically provided controller middleware for the given class and method.
+	 * 获取为给定类和方法静态提供的控制器中间件
+     *
+     * @param  string  $class
+     * @param  string  $method
+     * @return array
+     */
+    protected function staticallyProvidedControllerMiddleware(string $class, string $method)
+    {
+        return collect($class::middleware())->reject(function ($middleware) use ($method) {
+            return $this->controllerDispatcher()::methodExcludedByOptions(
+                $method, ['only' => $middleware->only, 'except' => $middleware->except]
+            );
+        })->map->middleware->values()->all();
     }
 
     /**
@@ -1174,7 +1214,7 @@ class Route
 	 * 指定应该从给定路由中删除的中间件
      *
      * @param  array|string  $middleware
-     * @return $this|array
+     * @return $this
      */
     public function withoutMiddleware($middleware)
     {
@@ -1187,7 +1227,7 @@ class Route
 
     /**
      * Get the middleware should be removed from the route.
-	 * 得到应该从路由中被移除的中间件
+	 * Get中间件应该从路由中移除
      *
      * @return array
      */
@@ -1200,11 +1240,24 @@ class Route
      * Indicate that the route should enforce scoping of multiple implicit Eloquent bindings.
 	 * 指示路由应该强制多个隐式Eloquent绑定的作用域
      *
-     * @return bool
+     * @return $this
      */
     public function scopeBindings()
     {
         $this->action['scope_bindings'] = true;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the route should not enforce scoping of multiple implicit Eloquent bindings.
+	 * 指示路由不应该强制多个隐式Eloquent绑定的作用域
+     *
+     * @return $this
+     */
+    public function withoutScopedBindings()
+    {
+        $this->action['scope_bindings'] = false;
 
         return $this;
     }
@@ -1218,6 +1271,17 @@ class Route
     public function enforcesScopedBindings()
     {
         return (bool) ($this->action['scope_bindings'] ?? false);
+    }
+
+    /**
+     * Determine if the route should prevent scoping of multiple implicit Eloquent bindings.
+	 * 确定路由是否应该防止多个隐式Eloquent绑定的作用域
+     *
+     * @return bool
+     */
+    public function preventsScopedBindings()
+    {
+        return isset($this->action['scope_bindings']) && $this->action['scope_bindings'] === false;
     }
 
     /**
@@ -1249,7 +1313,7 @@ class Route
 
     /**
      * Get the maximum number of seconds the route's session lock should be held for.
-	 * 得到路由会话锁应该保持的最大秒数
+	 * 获取路由会话锁应该保持的最大秒数
      *
      * @return int|null
      */
@@ -1316,7 +1380,7 @@ class Route
     {
         return new SymfonyRoute(
             preg_replace('/\{(\w+?)\?\}/', '{$1}', $this->uri()), $this->getOptionalParameterNames(),
-            $this->wheres, ['utf8' => true, 'action' => $this->action],
+            $this->wheres, ['utf8' => true],
             $this->getDomain() ?: '', [], $this->methods
         );
     }
@@ -1324,7 +1388,6 @@ class Route
     /**
      * Get the optional parameter names for the route.
 	 * 获取路由的可选参数名
-	 * 
      *
      * @return array
      */
@@ -1385,16 +1448,14 @@ class Route
     public function prepareForSerialization()
     {
         if ($this->action['uses'] instanceof Closure) {
-            $this->action['uses'] = serialize(\PHP_VERSION_ID < 70400
-                ? new OpisSerializableClosure($this->action['uses'])
-                : new SerializableClosure($this->action['uses'])
+            $this->action['uses'] = serialize(
+                new SerializableClosure($this->action['uses'])
             );
         }
 
         if (isset($this->action['missing']) && $this->action['missing'] instanceof Closure) {
-            $this->action['missing'] = serialize(\PHP_VERSION_ID < 70400
-                ? new OpisSerializableClosure($this->action['missing'])
-                : new SerializableClosure($this->action['missing'])
+            $this->action['missing'] = serialize(
+                new SerializableClosure($this->action['missing'])
             );
         }
 

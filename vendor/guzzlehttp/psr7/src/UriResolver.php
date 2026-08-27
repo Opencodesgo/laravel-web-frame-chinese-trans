@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Resolves a URI reference in the context of a base URI and the opposite way.
- * 在基本URI和相反的方式下解析URI引用。
+ * 在基URI上下文中解析URI引用，反之亦然。
  *
  * @author Tobias Schultze
  *
@@ -21,6 +21,7 @@ final class UriResolver
 {
     /**
      * Removes dot segments from a path and returns the new path.
+	 * 从路径中移除点段并返回新路径。
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.4
      */
@@ -56,7 +57,7 @@ final class UriResolver
 
     /**
      * Converts the relative URI into a new URI that is resolved against the base URI.
-	 * 将相对URI转换为在基本URI上解决的新URI
+	 * 将相对URI转换为根据基URI解析的新URI。
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3986#section-5.2
      */
@@ -111,7 +112,7 @@ final class UriResolver
 
     /**
      * Returns the target URI as a relative reference from the base URI.
-	 * 将目标URI作为基本URI的相对引用返回。
+	 * 返回目标URI作为基URI的相对引用
      *
      * This method is the counterpart to resolve():
      *

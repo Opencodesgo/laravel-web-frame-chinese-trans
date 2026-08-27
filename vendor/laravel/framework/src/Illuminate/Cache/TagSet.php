@@ -27,7 +27,7 @@ class TagSet
 
     /**
      * Create a new TagSet instance.
-	 * 创建新的标签集实例
+	 * 创建一个新的TagSet实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @param  array  $names

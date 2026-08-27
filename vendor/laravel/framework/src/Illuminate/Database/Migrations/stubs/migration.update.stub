@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，数据库，迁移，存根，虚拟类，根据需要实际修改
+ * Illuminate，数据库，迁移，存根，继承迁移返回新的类名，根据需要实际修改
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class {{ class }} extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -34,4 +34,4 @@ class {{ class }} extends Migration
             //
         });
     }
-}
+};

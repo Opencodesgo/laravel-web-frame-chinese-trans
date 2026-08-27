@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，报告，Xml，Directory
+ * SebastianBergmann，CodeCoverage，报告，Xml，目录
  */
 
 /*

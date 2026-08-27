@@ -19,6 +19,16 @@ use Symfony\Component\Console\Question\Question;
 trait InteractsWithIO
 {
     /**
+     * The console components factory.
+	 * 控制台组件工厂
+     *
+     * @var \Illuminate\Console\View\Components\Factory
+     *
+     * @internal This property is not meant to be used or overwritten outside the framework.
+     */
+    protected $components;
+
+    /**
      * The input interface implementation.
 	 * 输入接口实现
      *
@@ -73,7 +83,7 @@ trait InteractsWithIO
 	 * 获取命令参数的值
      *
      * @param  string|null  $key
-     * @return string|array|null
+     * @return array|string|bool|null
      */
     public function argument($key = null)
     {
@@ -217,7 +227,7 @@ trait InteractsWithIO
      *
      * @param  string  $question
      * @param  array  $choices
-     * @param  string|null  $default
+     * @param  string|int|null  $default
      * @param  mixed|null  $attempts
      * @param  bool  $multiple
      * @return string|array
@@ -237,7 +247,7 @@ trait InteractsWithIO
      *
      * @param  array  $headers
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $rows
-     * @param  string  $tableStyle
+     * @param  \Symfony\Component\Console\Helper\TableStyle|string  $tableStyle
      * @param  array  $columnStyles
      * @return void
      */
@@ -383,17 +393,18 @@ trait InteractsWithIO
 	 * 在警告框中写一个字符串
      *
      * @param  string  $string
+     * @param  int|string|null  $verbosity
      * @return void
      */
-    public function alert($string)
+    public function alert($string, $verbosity = null)
     {
         $length = Str::length(strip_tags($string)) + 12;
 
-        $this->comment(str_repeat('*', $length));
-        $this->comment('*     '.$string.'     *');
-        $this->comment(str_repeat('*', $length));
+        $this->comment(str_repeat('*', $length), $verbosity);
+        $this->comment('*     '.$string.'     *', $verbosity);
+        $this->comment(str_repeat('*', $length), $verbosity);
 
-        $this->newLine();
+        $this->comment('', $verbosity);
     }
 
     /**
@@ -401,11 +412,13 @@ trait InteractsWithIO
 	 * 写一个空行
      *
      * @param  int  $count
-     * @return void
+     * @return $this
      */
     public function newLine($count = 1)
     {
         $this->output->newLine($count);
+
+        return $this;
     }
 
     /**

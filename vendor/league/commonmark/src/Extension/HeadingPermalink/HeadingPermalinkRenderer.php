@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，标题永久链接，标题永久链接渲染器
+ */
 
 declare(strict_types=1);
 
@@ -23,6 +26,7 @@ use League\Config\ConfigurationInterface;
 
 /**
  * Renders the HeadingPermalink elements
+ * 渲染HeadingPermalink元素
  */
 final class HeadingPermalinkRenderer implements NodeRendererInterface, XmlNodeRendererInterface, ConfigurationAwareInterface
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，检查维护模式
+ * Illuminate, 基础, Http, 中间件, 验证Csrf令牌
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -40,7 +40,7 @@ class VerifyCsrfToken
      * The URIs that should be excluded from CSRF verification.
 	 * 应该从CSRF验证中排除的URI
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [];
 
@@ -54,7 +54,7 @@ class VerifyCsrfToken
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
@@ -96,7 +96,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the HTTP request uses a ‘read’ verb.
-	 * 确定HTTP请求是否使用'read'谓词
+	 * 确定HTTP请求是否使用"read"谓词
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -141,7 +141,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the session and input CSRF tokens match.
-	 * 确定会话和输入CSRF令牌是否匹配
+	 * 确定会话和输入CSRF令牌是否匹
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -160,7 +160,7 @@ class VerifyCsrfToken
 	 * 从请求中获取CSRF令牌
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return string
+     * @return string|null
      */
     protected function getTokenFromRequest($request)
     {
@@ -204,14 +204,32 @@ class VerifyCsrfToken
             $response = $response->toResponse($request);
         }
 
-        $response->headers->setCookie(
-            new Cookie(
-                'XSRF-TOKEN', $request->session()->token(), $this->availableAt(60 * $config['lifetime']),
-                $config['path'], $config['domain'], $config['secure'], false, false, $config['same_site'] ?? null
-            )
-        );
+        $response->headers->setCookie($this->newCookie($request, $config));
 
         return $response;
+    }
+
+    /**
+     * Create a new "XSRF-TOKEN" cookie that contains the CSRF token.
+	 * 创建一个包含CSRF令牌的新"XSRF-TOKEN"cookie
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $config
+     * @return \Symfony\Component\HttpFoundation\Cookie
+     */
+    protected function newCookie($request, $config)
+    {
+        return new Cookie(
+            'XSRF-TOKEN',
+            $request->session()->token(),
+            $this->availableAt(60 * $config['lifetime']),
+            $config['path'],
+            $config['domain'],
+            $config['secure'],
+            false,
+            false,
+            $config['same_site'] ?? null
+        );
     }
 
     /**

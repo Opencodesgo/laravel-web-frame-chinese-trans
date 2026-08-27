@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，事件，Artisan 开始
+ * Illuminate，控制台，事件，Artisan开始
  */
 
 namespace Illuminate\Console\Events;
@@ -17,7 +17,7 @@ class ArtisanStarting
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \Illuminate\Console\Application  $artisan
      * @return void

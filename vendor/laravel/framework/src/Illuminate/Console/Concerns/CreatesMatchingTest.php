@@ -33,17 +33,17 @@ trait CreatesMatchingTest
 	 * 如果需要，创建匹配的测试用例。
      *
      * @param  string  $path
-     * @return void
+     * @return bool
      */
     protected function handleTestCreation($path)
     {
         if (! $this->option('test') && ! $this->option('pest')) {
-            return;
+            return false;
         }
 
-        $this->call('make:test', [
+        return $this->callSilent('make:test', [
             'name' => Str::of($path)->after($this->laravel['path'])->beforeLast('.php')->append('Test')->replace('\\', '/'),
             '--pest' => $this->option('pest'),
-        ]);
+        ]) == 0;
     }
 }

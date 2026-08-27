@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Base LogicException for Translation component.
- * 翻译组件的基本LogicException。
+ * 翻译组件的Base LogicException。
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */

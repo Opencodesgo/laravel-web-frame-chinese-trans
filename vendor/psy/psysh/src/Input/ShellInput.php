@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输入，Shell 输入
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Input\StringInput;
 
 /**
  * A StringInput subclass specialized for code arguments.
+ * 专门用于代码参数的StringInput子类。
  */
 class ShellInput extends StringInput
 {
@@ -73,6 +77,7 @@ class ShellInput extends StringInput
 
     /**
      * Tokenizes a string.
+	 * 标记字符串。
      *
      * The version of this on StringInput is good, but doesn't handle code
      * arguments if they're at all complicated. This does :)
@@ -120,6 +125,7 @@ class ShellInput extends StringInput
 
     /**
      * Same as parent, but with some bonus handling for code arguments.
+	 * 与父类相同，但对代码参数有一些额外的处理。
      */
     protected function parse(): void
     {
@@ -146,6 +152,7 @@ class ShellInput extends StringInput
 
     /**
      * Parses an argument, with bonus handling for code arguments.
+	 * 解析参数，附带对代码参数的额外处理。
      *
      * @param string $token The current token
      * @param string $rest  The remaining unparsed input, including the current token
@@ -220,6 +227,7 @@ class ShellInput extends StringInput
 
     /**
      * Parses a short option set.
+	 * 解析短选项集
      *
      * @param string $name The current token
      *
@@ -246,6 +254,7 @@ class ShellInput extends StringInput
 
     /**
      * Parses a long option.
+	 * 解析长选项
      *
      * @param string $token The current token
      */
@@ -265,6 +274,7 @@ class ShellInput extends StringInput
 
     /**
      * Adds a short option value.
+	 * 添加一个短选项值
      *
      * @param string $shortcut The short option key
      * @param mixed  $value    The value for the option
@@ -282,6 +292,7 @@ class ShellInput extends StringInput
 
     /**
      * Adds a long option value.
+	 * 添加一个长选项值
      *
      * @param string $name  The long option key
      * @param mixed  $value The value for the option

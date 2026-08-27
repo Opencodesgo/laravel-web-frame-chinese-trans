@@ -11,6 +11,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Laravel\SerializableClosure\SerializableClosure;
 use ReflectionFunction;
 
 class CallQueuedClosure implements ShouldQueue
@@ -43,7 +44,7 @@ class CallQueuedClosure implements ShouldQueue
 
     /**
      * Create a new job instance.
-	 * 创建一个新的作业实例
+	 * 创建新的作业实例
      *
      * @param  \Laravel\SerializableClosure\SerializableClosure  $closure
      * @return void
@@ -62,7 +63,7 @@ class CallQueuedClosure implements ShouldQueue
      */
     public static function create(Closure $job)
     {
-        return new self(SerializableClosureFactory::make($job));
+        return new self(new SerializableClosure($job));
     }
 
     /**
@@ -87,7 +88,7 @@ class CallQueuedClosure implements ShouldQueue
     public function onFailure($callback)
     {
         $this->failureCallbacks[] = $callback instanceof Closure
-                        ? SerializableClosureFactory::make($callback)
+                        ? new SerializableClosure($callback)
                         : $callback;
 
         return $this;
@@ -95,7 +96,7 @@ class CallQueuedClosure implements ShouldQueue
 
     /**
      * Handle a job failure.
-	 * 处理工作失败
+	 * 处理作业失败
      *
      * @param  \Throwable  $e
      * @return void
@@ -109,7 +110,7 @@ class CallQueuedClosure implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
-	 * 得到排队作业的显示名称
+	 * 获取排队作业的显示名称
      *
      * @return string
      */

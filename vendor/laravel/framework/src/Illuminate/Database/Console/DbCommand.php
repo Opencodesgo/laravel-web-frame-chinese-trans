@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，Db 命令
+ * Illuminate，数据库，控制台，Db命令
  */
 
 namespace Illuminate\Database\Console;
@@ -24,7 +24,7 @@ class DbCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令描述
      *
      * @var string
      */
@@ -39,6 +39,14 @@ class DbCommand extends Command
     public function handle()
     {
         $connection = $this->getConnection();
+
+        if (! isset($connection['host']) && $connection['driver'] !== 'sqlite') {
+            $this->components->error('No host specified for this database connection.');
+            $this->line('  Use the <options=bold>[--read]</> and <options=bold>[--write]</> options to specify a read or write connection.');
+            $this->newLine();
+
+            return Command::FAILURE;
+        }
 
         (new Process(
             array_merge([$this->getCommand($connection)], $this->commandArguments($connection)),

@@ -17,6 +17,7 @@ class Formatter
     /**
      * Returns all basic information about the exception in a simple array
      * for further convertion to other languages
+	 * 返回异常的基本信息，以简单的数组形式，便于进一步转换为其他语言。
      * @param  InspectorInterface $inspector
      * @param  bool               $shouldAddTrace
      * @param  array<callable>    $frameFilters

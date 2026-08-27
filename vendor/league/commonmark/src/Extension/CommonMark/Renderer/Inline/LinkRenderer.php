@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，渲染器，内联，链接渲染器
+ * League，CommonMark，扩展，共同标记，渲染器，行内，链接渲染器
  */
 
 declare(strict_types=1);

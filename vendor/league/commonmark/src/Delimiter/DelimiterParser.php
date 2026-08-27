@@ -17,7 +17,7 @@ use League\CommonMark\Util\RegexHelper;
 
 /**
  * Delimiter parsing is implemented as an Inline Parser with the lowest-possible priority
- * 分隔符解析是作为具有最低优先级的内联解析器实现的。
+ * 分隔符解析是作为具有最低优先级的内联解析器实现的
  *
  * @internal
  */
@@ -78,6 +78,7 @@ final class DelimiterParser implements InlineParserInterface
         $inlineContext->getContainer()->appendChild($node);
 
         // Add entry to stack to this opener
+		// 添加入口到这个开瓶器
         $delimiter = new Delimiter($character, $numDelims, $node, $canOpen, $canClose, $inlineContext->getCursor()->getPosition());
         $inlineContext->getDelimiterStack()->push($delimiter);
 

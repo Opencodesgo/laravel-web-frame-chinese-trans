@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存回暖，缓存回暖接口
+ * Symfony，Component，HttpKernel，缓存Warmer，缓存加热接口
  */
 
 /*
@@ -24,7 +24,7 @@ interface CacheWarmerInterface extends WarmableInterface
 {
     /**
      * Checks whether this warmer is optional or not.
-	 * 检查加热器是否是可选的
+	 * 检查加热器是否是可选的。
      *
      * Optional warmers can be ignored on certain conditions.
      *

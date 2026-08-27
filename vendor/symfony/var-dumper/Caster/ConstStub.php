@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，Caster，Const Stub
+ * Symfony，Component，VarDumper，Caster，常量存根
  */
 
 /*
@@ -18,22 +18,19 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents a PHP constant and its value.
- * 表示一个PHP常量及其值。
+ * 表示一个PHP常量及其值
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
 class ConstStub extends Stub
 {
-    public function __construct(string $name, $value = null)
+    public function __construct(string $name, string|int|float|null $value = null)
     {
         $this->class = $name;
         $this->value = 1 < \func_num_args() ? $value : $name;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->value;
     }

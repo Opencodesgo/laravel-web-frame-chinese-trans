@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，Header，非结构化的头
+ * Symfony，Component，Mime，标题，非结构化的头
  */
 
 /*
@@ -16,12 +16,13 @@ namespace Symfony\Component\Mime\Header;
 
 /**
  * A Simple MIME Header.
+ * 一个简单的MIME头。
  *
  * @author Chris Corbyn
  */
 class UnstructuredHeader extends AbstractHeader
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $name, string $value)
     {
@@ -32,16 +33,15 @@ class UnstructuredHeader extends AbstractHeader
 
     /**
      * @param string $body
+     *
+     * @return void
      */
-    public function setBody($body)
+    public function setBody(mixed $body)
     {
         $this->setValue($body);
     }
 
-    /**
-     * @return string
-     */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->getValue();
     }
@@ -56,6 +56,9 @@ class UnstructuredHeader extends AbstractHeader
 
     /**
      * Set the (unencoded) value of this header.
+	 * 设置报头的（未编码的）值
+     *
+     * @return void
      */
     public function setValue(string $value)
     {
@@ -64,6 +67,7 @@ class UnstructuredHeader extends AbstractHeader
 
     /**
      * Get the value of this header prepared for rendering.
+	 * 获取为渲染准备的头部值
      */
     public function getBodyAsString(): string
     {

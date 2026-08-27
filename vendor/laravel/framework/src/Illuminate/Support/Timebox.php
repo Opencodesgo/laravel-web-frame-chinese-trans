@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，时间盒
+ * Illuminate, 支持, 时间盒
  */
 
 namespace Illuminate\Support;
@@ -9,7 +9,7 @@ class Timebox
 {
     /**
      * Indicates if the timebox is allowed to return early.
-	 * 指明是否允许时间框提前返回
+	 * 指示是否允许时间框提前返回
      *
      * @var bool
      */
@@ -19,9 +19,11 @@ class Timebox
      * Invoke the given callback within the specified timebox minimum.
 	 * 在指定的最小时间框内调用给定的回调
      *
-     * @param  callable  $callback
+     * @template TCallReturnType
+     *
+     * @param  (callable($this): TCallReturnType)  $callback
      * @param  int  $microseconds
-     * @return mixed
+     * @return TCallReturnType
      */
     public function call(callable $callback, int $microseconds)
     {
@@ -29,7 +31,7 @@ class Timebox
 
         $result = $callback($this);
 
-        $remainder = $microseconds - ((microtime(true) - $start) * 1000000);
+        $remainder = intval($microseconds - ((microtime(true) - $start) * 1000000));
 
         if (! $this->earlyReturn && $remainder > 0) {
             $this->usleep($remainder);
@@ -68,10 +70,10 @@ class Timebox
      * Sleep for the specified number of microseconds.
 	 * 休眠指定的微秒数
      *
-     * @param  $microseconds
+     * @param  int  $microseconds
      * @return void
      */
-    protected function usleep($microseconds)
+    protected function usleep(int $microseconds)
     {
         usleep($microseconds);
     }

@@ -57,7 +57,7 @@ class RequestGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
-		// 如果我们已经为当前请求检索了用户，我们就可以立即返回。
+		// 如果我们已经为当前请求检索了用户，我们就可以立即退回。
         if (! is_null($this->user)) {
             return $this->user;
         }

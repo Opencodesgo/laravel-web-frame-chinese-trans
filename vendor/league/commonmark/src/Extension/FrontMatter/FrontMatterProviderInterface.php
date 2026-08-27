@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，前端事项提供者接口
+ * League，CommonMark，扩展，前言，前事态提供者接口
  */
 
 /*

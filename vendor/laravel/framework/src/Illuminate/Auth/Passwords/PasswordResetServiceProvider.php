@@ -40,7 +40,7 @@ class PasswordResetServiceProvider extends ServiceProvider implements Deferrable
 
     /**
      * Get the services provided by the provider.
-	 * 得到提供者提供的服务
+	 * 得到服务提供者提供的服务
      *
      * @return array
      */

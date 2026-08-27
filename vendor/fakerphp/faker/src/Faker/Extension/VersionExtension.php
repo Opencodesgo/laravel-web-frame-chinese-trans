@@ -1,19 +1,19 @@
 <?php
 /**
- * Faker，核心，扩展，版本扩展
+ * Faker，扩展，版本扩展
  */
 
 namespace Faker\Extension;
 
 /**
  * @experimental This interface is experimental and does not fall under our BC promise
- * 这个接口是实验性的,不会在我们的BC承诺下下降。
+ * 这个接口是实验性的，不属于我们的BC承诺。
  */
 interface VersionExtension extends Extension
 {
     /**
      * Get a version number in semantic versioning syntax 2.0.0. (https://semver.org/spec/v2.0.0.html)
-	 * 在语义版本化语法2.0.0中获取一个版本号。
+	 * 在语义版本控制语法2.0.0中获取版本号
      *
      * @param bool $preRelease Pre release parts may be randomly included
      * @param bool $build      Build parts may be randomly included

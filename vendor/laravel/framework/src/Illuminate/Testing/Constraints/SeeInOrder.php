@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，约束，请参阅顺序
+ * Illuminate, 支持, 看见排序
  */
 
 namespace Illuminate\Testing\Constraints;
@@ -28,7 +28,7 @@ class SeeInOrder extends Constraint
 
     /**
      * Create a new constraint instance.
-	 * 创建约束实例
+	 * 创建一个新的约束实例
      *
      * @param  string  $content
      * @return void

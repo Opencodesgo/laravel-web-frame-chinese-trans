@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，分析程序，行
+ * Dotenv，解析器，线 
  */
 
 declare(strict_types=1);
@@ -14,7 +14,7 @@ final class Lines
 {
     /**
      * This class is a singleton.
-	 * 这个类是单例
+	 * 这个类是单例的
      *
      * @codeCoverageIgnore
      *
@@ -30,6 +30,7 @@ final class Lines
 	 * 处理环境变量行数组。
      *
      * This will produce an array of raw entries, one per variable.
+	 * 这将生成一个原始条目数组，每个变量一个。
      *
      * @param string[] $lines
      *
@@ -60,13 +61,14 @@ final class Lines
      * @param string   $line
      * @param string[] $buffer
      *
-     * @return array{bool,string,string[]}
+     * @return array{bool,string, string[]}
      */
     private static function multilineProcess(bool $multiline, string $line, array $buffer)
     {
         $startsOnCurrentLine = $multiline ? false : self::looksLikeMultilineStart($line);
 
         // check if $line can be multiline variable
+		// 检查$line是否可以是多行变量
         if ($startsOnCurrentLine) {
             $multiline = true;
         }

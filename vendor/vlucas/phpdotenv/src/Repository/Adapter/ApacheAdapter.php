@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，Apache 适配器
+ * Dotenv，资源库，适配器，Apache 适配器
  */
 
 declare(strict_types=1);
@@ -26,7 +26,7 @@ final class ApacheAdapter implements AdapterInterface
 
     /**
      * Create a new instance of the adapter, if it is available.
-	 * 如果可用,创建适配器的一个新实例
+	 * 创建适配器的新实例（如果可用）
      *
      * @return \PhpOption\Option<\Dotenv\Repository\Adapter\AdapterInterface>
      */
@@ -42,9 +42,10 @@ final class ApacheAdapter implements AdapterInterface
 
     /**
      * Determines if the adapter is supported.
-	 * 确定适配器是否被支持
+	 * 确定是否支持适配器。
      *
      * This happens if PHP is running as an Apache module.
+	 * 如果PHP作为Apache模块运行，就会发生这种情况。
      *
      * @return bool
      */
@@ -55,7 +56,7 @@ final class ApacheAdapter implements AdapterInterface
 
     /**
      * Read an environment variable, if it exists.
-	 * 读取环境变量,如果存在的话
+	 * 读取环境变量（如果存在）
      *
      * @param non-empty-string $name
      *
@@ -71,7 +72,7 @@ final class ApacheAdapter implements AdapterInterface
 
     /**
      * Write to an environment variable, if possible.
-	 * 如果可能的话,写入环境变量
+	 * 如果可能的话，写入环境变量。
      *
      * @param non-empty-string $name
      * @param string           $value
@@ -85,7 +86,7 @@ final class ApacheAdapter implements AdapterInterface
 
     /**
      * Delete an environment variable, if possible.
-	 * 如果可能的话,删除一个环境变量
+	 * 如果可能，请删除环境变量。
      *
      * @param non-empty-string $name
      *

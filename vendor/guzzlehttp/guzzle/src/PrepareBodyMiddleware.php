@@ -11,7 +11,6 @@ use Psr\Http\Message\RequestInterface;
 /**
  * Prepares requests that contain a body, adding the Content-Length,
  * Content-Type, and Expect headers.
- * 准备包含一个体的请求,并添加内容长度,内容类型,以及预期的标题。
  *
  * @final
  */
@@ -35,6 +34,7 @@ class PrepareBodyMiddleware
         $fn = $this->nextHandler;
 
         // Don't do anything if the request has no body.
+		// 如果请求没有主体,就不要做任何事情。
         if ($request->getBody()->getSize() === 0) {
             return $fn($request, $options);
         }
@@ -70,6 +70,7 @@ class PrepareBodyMiddleware
 
     /**
      * Add expect header
+	 * 添加expect标头
      */
     private function addExpectHeader(RequestInterface $request, array $options, array &$modify): void
     {

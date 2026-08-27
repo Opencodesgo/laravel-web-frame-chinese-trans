@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，回调事件
+ * Illuminate，控制台，线程调度，回调事件
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Reflector;
 use InvalidArgumentException;
 use LogicException;
+use RuntimeException;
 use Throwable;
 
 class CallbackEvent extends Event
@@ -30,11 +31,27 @@ class CallbackEvent extends Event
     protected $parameters;
 
     /**
+     * The result of the callback's execution.
+	 * 回调函数执行的结果
+     *
+     * @var mixed
+     */
+    protected $result;
+
+    /**
+     * The exception that was thrown when calling the callback, if any.
+	 * 调用回调时抛出的异常（如果有的话）
+     *
+     * @var \Throwable|null
+     */
+    protected $exception;
+
+    /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
-     * @param  string  $callback
+     * @param  string|callable  $callback
      * @param  array  $parameters
      * @param  \DateTimeZone|string|null  $timezone
      * @return void
@@ -56,66 +73,76 @@ class CallbackEvent extends Event
     }
 
     /**
-     * Run the given event.
-	 * 运行给定事件
+     * Run the callback event.
+	 * 运行回调事件
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function run(Container $container)
     {
-        if ($this->description && $this->withoutOverlapping &&
-            ! $this->mutex->create($this)) {
-            return;
+        parent::run($container);
+
+        if ($this->exception) {
+            throw $this->exception;
         }
 
-        $pid = getmypid();
-
-        register_shutdown_function(function () use ($pid) {
-            if ($pid === getmypid()) {
-                $this->removeMutex();
-            }
-        });
-
-        parent::callBeforeCallbacks($container);
-
-        try {
-            $response = is_object($this->callback)
-                        ? $container->call([$this->callback, '__invoke'], $this->parameters)
-                        : $container->call($this->callback, $this->parameters);
-
-            $this->exitCode = $response === false ? 1 : 0;
-        } catch (Throwable $e) {
-            $this->exitCode = 1;
-
-            throw $e;
-        } finally {
-            $this->removeMutex();
-
-            parent::callAfterCallbacks($container);
-        }
-
-        return $response;
+        return $this->result;
     }
 
     /**
-     * Clear the mutex for the event.
-	 * 清除事件的互斥锁
+     * Determine if the event should skip because another process is overlapping.
+	 * 确定是否应该跳过事件，因为另一个进程正在重叠。
+     *
+     * @return bool
+     */
+    public function shouldSkipDueToOverlapping()
+    {
+        return $this->description && parent::shouldSkipDueToOverlapping();
+    }
+
+    /**
+     * Indicate that the callback should run in the background.
+	 * 指示回调应该在后台运行
      *
      * @return void
+     *
+     * @throws \RuntimeException
      */
-    protected function removeMutex()
+    public function runInBackground()
     {
-        if ($this->description && $this->withoutOverlapping) {
-            $this->mutex->forget($this);
+        throw new RuntimeException('Scheduled closures can not be run in the background.');
+    }
+
+    /**
+     * Run the callback.
+	 * 运行回调
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return int
+     */
+    protected function execute($container)
+    {
+        try {
+            $this->result = is_object($this->callback)
+                ? $container->call([$this->callback, '__invoke'], $this->parameters)
+                : $container->call($this->callback, $this->parameters);
+
+            return $this->result === false ? 1 : 0;
+        } catch (Throwable $e) {
+            $this->exception = $e;
+
+            return 1;
         }
     }
 
     /**
      * Do not allow the event to overlap each other.
 	 * 不要让事件相互重叠
+     *
+     * The expiration time of the underlying cache lock may be specified in minutes.
      *
      * @param  int  $expiresAt
      * @return $this
@@ -130,13 +157,7 @@ class CallbackEvent extends Event
             );
         }
 
-        $this->withoutOverlapping = true;
-
-        $this->expiresAt = $expiresAt;
-
-        return $this->skip(function () {
-            return $this->mutex->exists($this);
-        });
+        return parent::withoutOverlapping($expiresAt);
     }
 
     /**
@@ -153,23 +174,9 @@ class CallbackEvent extends Event
             throw new LogicException(
                 "A scheduled event name is required to only run on one server. Use the 'name' method before 'onOneServer'."
             );
-			// 计划事件名称只需要在一台服务器上运行，在onOneServer之前使用name方法。
         }
 
-        $this->onOneServer = true;
-
-        return $this;
-    }
-
-    /**
-     * Get the mutex name for the scheduled command.
-	 * 获取计划命令的互斥对象名称
-     *
-     * @return string
-     */
-    public function mutexName()
-    {
-        return 'framework/schedule-'.sha1($this->description);
+        return parent::onOneServer();
     }
 
     /**
@@ -185,5 +192,29 @@ class CallbackEvent extends Event
         }
 
         return is_string($this->callback) ? $this->callback : 'Callback';
+    }
+
+    /**
+     * Get the mutex name for the scheduled command.
+	 * 获取计划命令的互斥对象名称
+     *
+     * @return string
+     */
+    public function mutexName()
+    {
+        return 'framework/schedule-'.sha1($this->description ?? '');
+    }
+
+    /**
+     * Clear the mutex for the event.
+	 * 清除事件的互斥锁
+     *
+     * @return void
+     */
+    protected function removeMutex()
+    {
+        if ($this->description) {
+            parent::removeMutex();
+        }
     }
 }

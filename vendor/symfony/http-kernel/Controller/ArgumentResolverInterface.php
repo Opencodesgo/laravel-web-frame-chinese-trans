@@ -29,9 +29,9 @@ interface ArgumentResolverInterface
      * Returns the arguments to pass to the controller.
 	 * 返回要传递给控制器的参数
      *
-     * @return array
+     * @param \ReflectionFunctionAbstract|null $reflector
      *
      * @throws \RuntimeException When no value could be provided for a required argument
      */
-    public function getArguments(Request $request, callable $controller);
+    public function getArguments(Request $request, callable $controller/* , \ReflectionFunctionAbstract $reflector = null */): array;
 }

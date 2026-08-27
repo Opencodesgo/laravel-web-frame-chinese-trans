@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点，属性
+ * PhpParser，节点，表达式，属性
  */
 
 namespace PhpParser\Node;

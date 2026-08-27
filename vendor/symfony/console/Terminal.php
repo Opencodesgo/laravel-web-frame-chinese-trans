@@ -14,19 +14,82 @@
 
 namespace Symfony\Component\Console;
 
+use Symfony\Component\Console\Output\AnsiColorMode;
+
 class Terminal
 {
-    private static $width;
-    private static $height;
-    private static $stty;
+    public const DEFAULT_COLOR_MODE = AnsiColorMode::Ansi4;
+
+    private static ?AnsiColorMode $colorMode = null;
+    private static ?int $width = null;
+    private static ?int $height = null;
+    private static ?bool $stty = null;
+
+    /**
+     * About Ansi color types: https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+     * For more information about true color support with terminals https://github.com/termstandard/colors/.
+     */
+    public static function getColorMode(): AnsiColorMode
+    {
+        // Use Cache from previous run (or user forced mode)
+		// 使用以前运行的缓存（或用户强制模式）
+        if (null !== self::$colorMode) {
+            return self::$colorMode;
+        }
+
+        // Try with $COLORTERM first
+        if (\is_string($colorterm = getenv('COLORTERM'))) {
+            $colorterm = strtolower($colorterm);
+
+            if (str_contains($colorterm, 'truecolor')) {
+                self::setColorMode(AnsiColorMode::Ansi24);
+
+                return self::$colorMode;
+            }
+
+            if (str_contains($colorterm, '256color')) {
+                self::setColorMode(AnsiColorMode::Ansi8);
+
+                return self::$colorMode;
+            }
+        }
+
+        // Try with $TERM
+        if (\is_string($term = getenv('TERM'))) {
+            $term = strtolower($term);
+
+            if (str_contains($term, 'truecolor')) {
+                self::setColorMode(AnsiColorMode::Ansi24);
+
+                return self::$colorMode;
+            }
+
+            if (str_contains($term, '256color')) {
+                self::setColorMode(AnsiColorMode::Ansi8);
+
+                return self::$colorMode;
+            }
+        }
+
+        self::setColorMode(self::DEFAULT_COLOR_MODE);
+
+        return self::$colorMode;
+    }
+
+    /**
+     * Force a terminal color mode rendering.
+	 * 强制终端颜色模式呈现。
+     */
+    public static function setColorMode(?AnsiColorMode $colorMode): void
+    {
+        self::$colorMode = $colorMode;
+    }
 
     /**
      * Gets the terminal width.
 	 * 获取终端宽度
-     *
-     * @return int
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         $width = getenv('COLUMNS');
         if (false !== $width) {
@@ -43,10 +106,8 @@ class Terminal
     /**
      * Gets the terminal height.
 	 * 获取终端高度
-     *
-     * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         $height = getenv('LINES');
         if (false !== $height) {
@@ -70,6 +131,7 @@ class Terminal
         }
 
         // skip check if shell_exec function is disabled
+		// 如果shell_exec功能被禁用，跳过检查。
         if (!\function_exists('shell_exec')) {
             return false;
         }
@@ -77,7 +139,7 @@ class Terminal
         return self::$stty = (bool) shell_exec('stty 2> '.('\\' === \DIRECTORY_SEPARATOR ? 'NUL' : '/dev/null'));
     }
 
-    private static function initDimensions()
+    private static function initDimensions(): void
     {
         if ('\\' === \DIRECTORY_SEPARATOR) {
             $ansicon = getenv('ANSICON');
@@ -113,14 +175,14 @@ class Terminal
      * Initializes dimensions using the output of an stty columns line.
 	 * 使用stty列行的输出初始化维度
      */
-    private static function initDimensionsUsingStty()
+    private static function initDimensionsUsingStty(): void
     {
         if ($sttyString = self::getSttyColumns()) {
-            if (preg_match('/rows.(\d+);.columns.(\d+);/i', $sttyString, $matches)) {
+            if (preg_match('/rows.(\d+);.columns.(\d+);/is', $sttyString, $matches)) {
                 // extract [w, h] from "rows h; columns w;"
                 self::$width = (int) $matches[2];
                 self::$height = (int) $matches[1];
-            } elseif (preg_match('/;.(\d+).rows;.(\d+).columns/i', $sttyString, $matches)) {
+            } elseif (preg_match('/;.(\d+).rows;.(\d+).columns/is', $sttyString, $matches)) {
                 // extract [w, h] from "; h rows; w columns"
                 self::$width = (int) $matches[2];
                 self::$height = (int) $matches[1];
@@ -130,7 +192,7 @@ class Terminal
 
     /**
      * Runs and parses mode CON if it's available, suppressing any error output.
-	 * 运行和解析模式CON,如果它可用,抑制任何错误输出。
+	 * 运行并解析模式CON（如果它可用），抑制任何错误输出。
      *
      * @return int[]|null An array composed of the width and the height or null if it could not be parsed
      */
@@ -147,14 +209,14 @@ class Terminal
 
     /**
      * Runs and parses stty -a if it's available, suppressing any error output.
-	 * 运行和解析stty a -如果它可用,抑制任何错误输出。
+	 * 运行并解析可用的stty -a，抑制任何错误输出。
      */
     private static function getSttyColumns(): ?string
     {
-        return self::readFromProcess('stty -a | grep columns');
+        return self::readFromProcess(['stty', '-a']);
     }
 
-    private static function readFromProcess(string $command): ?string
+    private static function readFromProcess(string|array $command): ?string
     {
         if (!\function_exists('proc_open')) {
             return null;

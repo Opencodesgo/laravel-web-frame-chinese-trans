@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，加密，App Key 丢失异常
+ * Illuminate，加密，App Key丢失异常
  */
 
 namespace Illuminate\Encryption;

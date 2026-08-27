@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，函数枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Function Enumerator class.
+ * 函数枚举器类。
  */
 class FunctionEnumerator extends Enumerator
 {
@@ -60,6 +64,7 @@ class FunctionEnumerator extends Enumerator
 
     /**
      * Get defined functions.
+	 * 获取已定义的函数。
      *
      * Optionally limit functions to "user" or "internal" functions.
      *
@@ -80,6 +85,7 @@ class FunctionEnumerator extends Enumerator
 
     /**
      * Prepare formatted function array.
+	 * 准备格式化的函数数组
      *
      * @param array  $functions
      * @param string $prefix

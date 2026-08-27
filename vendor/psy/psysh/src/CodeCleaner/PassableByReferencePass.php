@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，代码清理员通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,6 +29,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that only variables (and variable-like things) are passed by reference.
+ * 验证只有变量（和类似变量的东西）通过引用传递。
  */
 class PassableByReferencePass extends CodeCleanerPass
 {
@@ -100,6 +104,7 @@ class PassableByReferencePass extends CodeCleanerPass
 
     /**
      * Because array_multisort has a problematic signature...
+	 * 因为array_multisort有一个有问题的签名…
      *
      * The argument order is all sorts of wonky, and whether something is passed
      * by reference or not depends on the values of the two arguments before it.

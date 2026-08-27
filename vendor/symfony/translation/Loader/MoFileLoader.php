@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，载入程序，Mo 文件装入器
+ * Symfony，Component，Translation，加载器，Mo 文件加载器
  */
 
 /*
@@ -41,10 +41,8 @@ class MoFileLoader extends FileLoader
     /**
      * Parses machine object (MO) format, independent of the machine's endian it
      * was created on. Both 32bit and 64bit systems are supported.
-     *
-     * {@inheritdoc}
      */
-    protected function loadResource(string $resource)
+    protected function loadResource(string $resource): array
     {
         $stream = fopen($resource, 'r');
 
@@ -130,7 +128,6 @@ class MoFileLoader extends FileLoader
 
     /**
      * Reads an unsigned long from stream respecting endianness.
-	 * 从小溪上读一篇没有签名的人,尊重求求性
      *
      * @param resource $stream
      */

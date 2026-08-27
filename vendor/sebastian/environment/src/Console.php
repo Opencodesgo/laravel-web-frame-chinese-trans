@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，环境，控制台
+ */
+
 /*
  * This file is part of sebastian/environment.
  *
@@ -48,6 +53,7 @@ final class Console
 
     /**
      * Returns true if STDOUT supports colorization.
+	 * 如果STDOUT支持着色，则返回true。
      *
      * This code has been copied and adapted from
      * Symfony\Component\Console\Output\StreamOutput.

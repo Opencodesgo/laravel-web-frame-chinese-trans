@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，颜色
+ * Faker，Core，颜色
  */
 
 declare(strict_types=1);

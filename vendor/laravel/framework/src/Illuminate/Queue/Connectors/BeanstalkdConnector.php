@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，连接器，Beanstalkd 连接器
+ * Illuminate，队列，问题，Beanstalkd 连接器
  */
 
 namespace Illuminate\Queue\Connectors;
@@ -31,7 +31,7 @@ class BeanstalkdConnector implements ConnectorInterface
 
     /**
      * Create a Pheanstalk instance.
-	 * 创建Pheanstalk实例
+	 * 创建一个Pheanstalk实例
      *
      * @param  array  $config
      * @return \Pheanstalk\Pheanstalk

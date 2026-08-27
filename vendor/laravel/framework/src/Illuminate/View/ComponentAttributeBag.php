@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use IteratorAggregate;
+use Traversable;
 
 class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
 {
@@ -74,6 +75,18 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
     public function has($key)
     {
         return array_key_exists($key, $this->attributes);
+    }
+
+    /**
+     * Determine if a given attribute is missing from the attribute array.
+	 * 确定属性数组中是否缺少给定属性
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    public function missing($key)
+    {
+        return ! $this->has($key, $this->attributes);
     }
 
     /**
@@ -169,6 +182,18 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
     }
 
     /**
+     * Only include the given attribute from the attribute array.
+	 * 只包含属性数组中的给定属性
+     *
+     * @param  mixed|array  $keys
+     * @return static
+     */
+    public function onlyProps($keys)
+    {
+        return $this->only($this->extractPropNames($keys));
+    }
+
+    /**
      * Exclude the given attribute from the attribute array.
 	 * 从属性数组中排除给定的属性
      *
@@ -176,6 +201,18 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * @return static
      */
     public function exceptProps($keys)
+    {
+        return $this->except($this->extractPropNames($keys));
+    }
+
+    /**
+     * Extract prop names from given keys.
+	 * 从给定的键中提取道具名称
+     *
+     * @param  mixed|array  $keys
+     * @return array
+     */
+    protected function extractPropNames($keys)
     {
         $props = [];
 
@@ -186,7 +223,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
             $props[] = Str::kebab($key);
         }
 
-        return $this->except($props);
+        return $props;
     }
 
     /**
@@ -201,6 +238,20 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
         $classList = Arr::wrap($classList);
 
         return $this->merge(['class' => Arr::toCssClasses($classList)]);
+    }
+
+    /**
+     * Conditionally merge styles into the attribute bag.
+	 * 有条件地将样式合并到属性包中
+     *
+     * @param  mixed|array  $styleList
+     * @return static
+     */
+    public function style($styleList)
+    {
+        $styleList = Arr::wrap($styleList);
+
+        return $this->merge(['style' => Arr::toCssStyles($styleList)]);
     }
 
     /**
@@ -221,15 +272,20 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
 
         [$appendableAttributes, $nonAppendableAttributes] = collect($this->attributes)
                     ->partition(function ($value, $key) use ($attributeDefaults) {
-                        return $key === 'class' ||
-                               (isset($attributeDefaults[$key]) &&
-                                $attributeDefaults[$key] instanceof AppendableAttributeValue);
+                        return $key === 'class' || $key === 'style' || (
+                            isset($attributeDefaults[$key]) &&
+                            $attributeDefaults[$key] instanceof AppendableAttributeValue
+                        );
                     });
 
         $attributes = $appendableAttributes->mapWithKeys(function ($value, $key) use ($attributeDefaults, $escape) {
             $defaultsValue = isset($attributeDefaults[$key]) && $attributeDefaults[$key] instanceof AppendableAttributeValue
                         ? $this->resolveAppendableAttributeDefault($attributeDefaults, $key, $escape)
                         : ($attributeDefaults[$key] ?? '');
+
+            if ($key === 'style') {
+                $value = Str::finish($value, ';');
+            }
 
             return [$key => implode(' ', array_unique(array_filter([$defaultsValue, $value])))];
         })->merge($nonAppendableAttributes)->all();
@@ -348,8 +404,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * @param  string  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->attributes[$offset]);
     }
@@ -361,8 +416,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * @param  string  $offset
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
@@ -375,8 +429,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->attributes[$offset] = $value;
     }
@@ -388,8 +441,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      * @param  string  $offset
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset]);
     }
@@ -400,8 +452,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
      *
      * @return \ArrayIterator
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->attributes);
     }

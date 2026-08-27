@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，版本
+ * Faker，Core，版本
  */
 
 declare(strict_types=1);
@@ -12,6 +12,7 @@ use Faker\Provider\DateTime;
 
 /**
  * @experimental This class is experimental and does not fall under our BC promise
+ * 这门课是实验性的，不属于我们BC的承诺。
  */
 final class Version implements Extension\VersionExtension
 {

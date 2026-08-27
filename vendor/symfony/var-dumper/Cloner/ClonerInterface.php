@@ -22,10 +22,6 @@ interface ClonerInterface
     /**
      * Clones a PHP variable.
 	 * 克隆一个PHP变量
-     *
-     * @param mixed $var Any PHP variable
-     *
-     * @return Data
      */
-    public function cloneVar($var);
+    public function cloneVar(mixed $var): Data;
 }

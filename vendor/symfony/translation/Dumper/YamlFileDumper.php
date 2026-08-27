@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，Yaml File 转储器
+ * Symfony，Component，Translation，转储器，Yaml 文件转储
  */
 
 /*
@@ -21,23 +21,20 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlFileDumper generates yaml files from a message catalogue.
- * YamlFileDumper从信息目录中生成yaml文件
+ * YamlFileDumper从消息目录生成yaml文件。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
 class YamlFileDumper extends FileDumper
 {
-    private $extension;
+    private string $extension;
 
     public function __construct(string $extension = 'yml')
     {
         $this->extension = $extension;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         if (!class_exists(Yaml::class)) {
             throw new LogicException('Dumping translations in the YAML format requires the Symfony Yaml component.');
@@ -56,10 +53,7 @@ class YamlFileDumper extends FileDumper
         return Yaml::dump($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return $this->extension;
     }

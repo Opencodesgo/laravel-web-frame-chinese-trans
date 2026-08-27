@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，令牌
+ * Symfony，Component，CssSelector，解析器，令牌
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\CssSelector\Parser;
 
 /**
  * CSS selector token.
- * CSS选择牌。
+ * CSS选择令牌。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -35,9 +35,9 @@ class Token
     public const TYPE_NUMBER = 'number';
     public const TYPE_STRING = 'string';
 
-    private $type;
-    private $value;
-    private $position;
+    private ?string $type;
+    private ?string $value;
+    private ?int $position;
 
     public function __construct(?string $type, ?string $value, ?int $position)
     {
@@ -72,7 +72,7 @@ class Token
             return false;
         }
 
-        if (empty($values)) {
+        if (!$values) {
             return true;
         }
 
@@ -107,9 +107,9 @@ class Token
     public function __toString(): string
     {
         if ($this->value) {
-            return sprintf('<%s "%s" at %s>', $this->type, $this->value, $this->position);
+            return \sprintf('<%s "%s" at %s>', $this->type, $this->value, $this->position);
         }
 
-        return sprintf('<%s at %s>', $this->type, $this->position);
+        return \sprintf('<%s at %s>', $this->type, $this->position);
     }
 }

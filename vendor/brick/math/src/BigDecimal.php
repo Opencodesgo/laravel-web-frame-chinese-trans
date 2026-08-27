@@ -1,6 +1,6 @@
 <?php
 /**
- * Brick，Math，大浮点数
+ * Brick，Math，大的十进制
  */
 
 declare(strict_types=1);
@@ -14,7 +14,7 @@ use Brick\Math\Internal\Calculator;
 
 /**
  * Immutable, arbitrary-precision signed decimal numbers.
- * 不可变的,任意性的十进制数字。
+ * 不可变的、任意精度的带符号十进制数。
  *
  * @psalm-immutable
  */
@@ -22,29 +22,26 @@ final class BigDecimal extends BigNumber
 {
     /**
      * The unscaled value of this decimal number.
-	 * 这个小数的未按比例值。
+	 * 此十进制数的未缩放值。
      *
      * This is a string of digits with an optional leading minus sign.
      * No leading zero must be present.
      * No leading minus sign must be present if the value is 0.
-     *
-     * @var string
      */
-    private $value;
+    private string $value;
 
     /**
      * The scale (number of digits after the decimal point) of this decimal number.
-	 * 小数点后小数点后的数字(数点小数)。
+	 * 十进制数的比例（小数点后的位数）
      *
      * This must be zero or more.
-     *
-     * @var int
+	 * 这个必须大于等于零
      */
-    private $scale;
+    private int $scale;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
-	 * 保护构造函数。使用工厂方法获取实例。
+	 * 受保护的构造函数。使用工厂方法获取实例。
      *
      * @param string $value The unscaled value, validated.
      * @param int    $scale The scale, validated.
@@ -57,37 +54,31 @@ final class BigDecimal extends BigNumber
 
     /**
      * Creates a BigDecimal of the given value.
-	 * 创建一个大数点的给定值
-     *
-     * @param BigNumber|int|float|string $value
-     *
-     * @return BigDecimal
+	 * 创建给定值的BigDecimal
      *
      * @throws MathException If the value cannot be converted to a BigDecimal.
      *
      * @psalm-pure
      */
-    public static function of($value) : BigNumber
+    public static function of(BigNumber|int|float|string $value) : BigDecimal
     {
         return parent::of($value)->toBigDecimal();
     }
 
     /**
      * Creates a BigDecimal from an unscaled value and a scale.
-	 * 从未缩放的值和规模创建一个大数点。
+	 * 从未缩放的值和刻度创建BigDecimal
      *
      * Example: `(12345, 3)` will result in the BigDecimal `12.345`.
      *
      * @param BigNumber|int|float|string $value The unscaled value. Must be convertible to a BigInteger.
      * @param int                        $scale The scale of the number, positive or zero.
      *
-     * @return BigDecimal
-     *
      * @throws \InvalidArgumentException If the scale is negative.
      *
      * @psalm-pure
      */
-    public static function ofUnscaledValue($value, int $scale = 0) : BigDecimal
+    public static function ofUnscaledValue(BigNumber|int|float|string $value, int $scale = 0) : BigDecimal
     {
         if ($scale < 0) {
             throw new \InvalidArgumentException('The scale cannot be negative.');
@@ -98,9 +89,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a BigDecimal representing zero, with a scale of zero.
-	 * 返回一个大写为0的大数点,规模为零。
-     *
-     * @return BigDecimal
+	 * 返回一个表示零的BigDecimal，其刻度为零。
      *
      * @psalm-pure
      */
@@ -121,8 +110,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a BigDecimal representing one, with a scale of zero.
-     *
-     * @return BigDecimal
+	 * 返回一个表示1的BigDecimal，其刻度为0。
      *
      * @psalm-pure
      */
@@ -143,9 +131,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a BigDecimal representing ten, with a scale of zero.
-	 * 返回一个大写小数,代表10,规模为零。
-     *
-     * @return BigDecimal
+	 * 返回一个表示10的BigDecimal，其刻度为0。
      *
      * @psalm-pure
      */
@@ -166,16 +152,16 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the sum of this number and the given one.
+	 * 返回该数字与给定数字的和。
      *
      * The result has a scale of `max($this->scale, $that->scale)`.
+	 * 结果的尺度为“max（$this->scale, $that->scale）”。
      *
      * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigDecimal.
      *
-     * @return BigDecimal The result.
-     *
      * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      */
-    public function plus($that) : BigDecimal
+    public function plus(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -197,17 +183,15 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the difference of this number and the given one.
-	 * 返回这个数字和给定的值的差值。
+	 * 返回此数与给定数之差。
      *
      * The result has a scale of `max($this->scale, $that->scale)`.
      *
      * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigDecimal.
      *
-     * @return BigDecimal The result.
-     *
      * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
      */
-    public function minus($that) : BigDecimal
+    public function minus(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -225,17 +209,15 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the product of this number and the given one.
-	 * 返回这个数字和给定的乘积。
+	 * 返回该数与给定数的乘积。
      *
      * The result has a scale of `$this->scale + $that->scale`.
      *
      * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigDecimal.
      *
-     * @return BigDecimal The result.
-     *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
      */
-    public function multipliedBy($that) : BigDecimal
+    public function multipliedBy(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -255,18 +237,16 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the result of the division of this number by the given one, at the given scale.
-	 * 根据给定的刻度返回这个数字的除法的结果
+	 * 返回该数除以给定数，按给定比例的结果。
      *
      * @param BigNumber|int|float|string $that         The divisor.
      * @param int|null                   $scale        The desired scale, or null to use the scale of this number.
      * @param int                        $roundingMode An optional rounding mode.
      *
-     * @return BigDecimal
-     *
      * @throws \InvalidArgumentException If the scale or rounding mode is invalid.
      * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
      */
-    public function dividedBy($that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
+    public function dividedBy(BigNumber|int|float|string $that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -294,18 +274,17 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the exact result of the division of this number by the given one.
-	 * 返回这个数字的确切结果。
+	 * 返回该数除以给定数的确切结果。
      *
      * The scale of the result is automatically calculated to fit all the fraction digits.
+	 * 结果的比例将自动计算以适合所有分数数字。
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
-     *
-     * @return BigDecimal The result.
      *
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
      *                       or the result yields an infinite number of digits.
      */
-    public function exactlyDividedBy($that) : BigDecimal
+    public function exactlyDividedBy(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -338,12 +317,9 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns this number exponentiated to the given value.
+	 * 返回该数字的指数为给定值。
      *
      * The result has a scale of `$this->scale * $exponent`.
-     *
-     * @param int $exponent The exponent.
-     *
-     * @return BigDecimal The result.
      *
      * @throws \InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
      */
@@ -370,16 +346,15 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the quotient of the division of this number by this given one.
+	 * 返回这个数除以这个给定数的商。
      *
      * The quotient has a scale of `0`.
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @return BigDecimal The quotient.
-     *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
-    public function quotient($that) : BigDecimal
+    public function quotient(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -397,16 +372,15 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the remainder of the division of this number by this given one.
+	 * 返回这个数除以这个给定数的余数。
      *
      * The remainder has a scale of `max($this->scale, $that->scale)`.
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
      *
-     * @return BigDecimal The remainder.
-     *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
-    public function remainder($that) : BigDecimal
+    public function remainder(BigNumber|int|float|string $that) : BigDecimal
     {
         $that = BigDecimal::of($that);
 
@@ -426,6 +400,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the quotient and remainder of the division of this number by the given one.
+	 * 返回该数除以给定数的商和余数。
      *
      * The quotient has a scale of `0`, and the remainder has a scale of `max($this->scale, $that->scale)`.
      *
@@ -435,7 +410,7 @@ final class BigDecimal extends BigNumber
      *
      * @throws MathException If the divisor is not a valid decimal number, or is zero.
      */
-    public function quotientAndRemainder($that) : array
+    public function quotientAndRemainder(BigNumber|int|float|string $that) : array
     {
         $that = BigDecimal::of($that);
 
@@ -458,10 +433,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the square root of this number, rounded down to the given number of decimals.
-     *
-     * @param int $scale
-     *
-     * @return BigDecimal
+	 * 返回该数字的平方根，舍入到给定的小数位数。
      *
      * @throws \InvalidArgumentException If the scale is negative.
      * @throws NegativeNumberException If this number is negative.
@@ -503,10 +475,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a copy of this BigDecimal with the decimal point moved $n places to the left.
-     *
-     * @param int $n
-     *
-     * @return BigDecimal
+	 * 返回这个BigDecimal的副本，小数点向左移动$n位。
      */
     public function withPointMovedLeft(int $n) : BigDecimal
     {
@@ -523,10 +492,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a copy of this BigDecimal with the decimal point moved $n places to the right.
-     *
-     * @param int $n
-     *
-     * @return BigDecimal
+	 * 返回这个BigDecimal的副本，小数点向右移动$n位。
      */
     public function withPointMovedRight(int $n) : BigDecimal
     {
@@ -553,8 +519,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a copy of this BigDecimal with any trailing zeros removed from the fractional part.
-     *
-     * @return BigDecimal
+	 * 返回此BigDecimal的副本，并从小数部分删除任何末尾的零。
      */
     public function stripTrailingZeros() : BigDecimal
     {
@@ -586,8 +551,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the absolute value of this number.
-     *
-     * @return BigDecimal
+	 * 返回此数字的绝对值。
      */
     public function abs() : BigDecimal
     {
@@ -596,18 +560,14 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns the negated value of this number.
-     *
-     * @return BigDecimal
+	 * 返回该数字的负值。
      */
     public function negated() : BigDecimal
     {
         return new BigDecimal(Calculator::get()->neg($this->value), $this->scale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function compareTo($that) : int
+    public function compareTo(BigNumber|int|float|string $that) : int
     {
         $that = BigNumber::of($that);
 
@@ -624,25 +584,16 @@ final class BigDecimal extends BigNumber
         return - $that->compareTo($this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSign() : int
     {
         return ($this->value === '0') ? 0 : (($this->value[0] === '-') ? -1 : 1);
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getUnscaledValue() : BigInteger
     {
-        return BigInteger::create($this->value);
+        return self::newBigInteger($this->value);
     }
 
-    /**
-     * @return int
-     */
     public function getScale() : int
     {
         return $this->scale;
@@ -650,10 +601,9 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a string representing the integral part of this decimal number.
+	 * 返回表示此十进制数整部分的字符串。
      *
      * Example: `-123.456` => `-123`.
-     *
-     * @return string
      */
     public function getIntegralPart() : string
     {
@@ -668,13 +618,11 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns a string representing the fractional part of this decimal number.
-	 * 返回代表小数部分的字符串的字符串
+	 * 返回表示此十进制数的小数部分的字符串。
      *
      * If the scale is zero, an empty string is returned.
      *
      * Examples: `-123.456` => '456', `123` => ''.
-     *
-     * @return string
      */
     public function getFractionalPart() : string
     {
@@ -689,47 +637,33 @@ final class BigDecimal extends BigNumber
 
     /**
      * Returns whether this decimal number has a non-zero fractional part.
-	 * 返回这个十进制数是否有一个非零小数部分
-     *
-     * @return bool
+	 * 返回此十进制数是否有非零的小数部分。
      */
     public function hasNonZeroFractionalPart() : bool
     {
         return $this->getFractionalPart() !== \str_repeat('0', $this->scale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigInteger() : BigInteger
     {
         $zeroScaleDecimal = $this->scale === 0 ? $this : $this->dividedBy(1, 0);
 
-        return BigInteger::create($zeroScaleDecimal->value);
+        return self::newBigInteger($zeroScaleDecimal->value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigDecimal() : BigDecimal
     {
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toBigRational() : BigRational
     {
-        $numerator = BigInteger::create($this->value);
-        $denominator = BigInteger::create('1' . \str_repeat('0', $this->scale));
+        $numerator = self::newBigInteger($this->value);
+        $denominator = self::newBigInteger('1' . \str_repeat('0', $this->scale));
 
-        return BigRational::create($numerator, $denominator, false);
+        return self::newBigRational($numerator, $denominator, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toScale(int $scale, int $roundingMode = RoundingMode::UNNECESSARY) : BigDecimal
     {
         if ($scale === $this->scale) {
@@ -739,25 +673,16 @@ final class BigDecimal extends BigNumber
         return $this->dividedBy(BigDecimal::one(), $scale, $roundingMode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toInt() : int
     {
         return $this->toBigInteger()->toInt();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toFloat() : float
     {
         return (float) (string) $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString() : string
     {
         if ($this->scale === 0) {
@@ -771,7 +696,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * This method is required for serializing the object and SHOULD NOT be accessed directly.
-	 * 该方法需要序列化对象,不应该直接访问。
+	 * 这个方法是序列化对象所必需的，不应该被直接访问。
      *
      * @internal
      *
@@ -784,13 +709,12 @@ final class BigDecimal extends BigNumber
 
     /**
      * This method is only here to allow unserializing the object and cannot be accessed directly.
+	 * 此方法仅允许对对象进行反序列化，不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
      *
      * @param array{value: string, scale: int} $data
-     *
-     * @return void
      *
      * @throws \LogicException
      */
@@ -806,10 +730,9 @@ final class BigDecimal extends BigNumber
 
     /**
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
+	 * 接口Serializable需要这个方法，不应该直接访问。
      *
      * @internal
-     *
-     * @return string
      */
     public function serialize() : string
     {
@@ -818,14 +741,10 @@ final class BigDecimal extends BigNumber
 
     /**
      * This method is only here to implement interface Serializable and cannot be accessed directly.
-	 * 此方法仅在这里实现接口序列化,不能直接访问。
+	 * 此方法仅用于实现接口Serializable，不能直接访问。
      *
      * @internal
      * @psalm-suppress RedundantPropertyInitializationCheck
-     *
-     * @param string $value
-     *
-     * @return void
      *
      * @throws \LogicException
      */
@@ -843,10 +762,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Puts the internal values of the given decimal numbers on the same scale.
-	 * 将给定十进制数的内部值放在相同的尺度上
-     *
-     * @param BigDecimal $x The first decimal number.
-     * @param BigDecimal $y The second decimal number.
+	 * 将给定十进制数的内部值置于相同的刻度上。
      *
      * @return array{string, string} The scaled integer values of $x and $y.
      */
@@ -864,11 +780,6 @@ final class BigDecimal extends BigNumber
         return [$a, $b];
     }
 
-    /**
-     * @param int $scale
-     *
-     * @return string
-     */
     private function valueWithMinScale(int $scale) : string
     {
         $value = $this->value;
@@ -882,9 +793,7 @@ final class BigDecimal extends BigNumber
 
     /**
      * Adds leading zeros if necessary to the unscaled value to represent the full decimal number.
-	 * 如果有必要的未缩放值来表示完整的十进制数,则添加引导零。
-     *
-     * @return string
+	 * 必要时向未缩放的值添加前导零，以表示完整的十进制数。
      */
     private function getUnscaledValueWithLeadingZeros() : string
     {

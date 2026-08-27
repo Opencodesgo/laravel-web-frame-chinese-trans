@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，配置，路由配置器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -35,14 +38,22 @@ class RouteConfigurator
 
     /**
      * Sets the host to use for all child routes.
+	 * 设置要用于所有子路由的主机
      *
      * @param string|array $host the host, or the localized hosts
      *
      * @return $this
      */
-    final public function host($host): self
+    final public function host(string|array $host): static
     {
+        $previousRoutes = clone $this->route;
         $this->addHost($this->route, $host);
+        foreach ($previousRoutes as $name => $route) {
+            if (!$this->route->get($name)) {
+                $this->collection->remove($name);
+            }
+        }
+        $this->collection->addCollection($this->route);
 
         return $this;
     }

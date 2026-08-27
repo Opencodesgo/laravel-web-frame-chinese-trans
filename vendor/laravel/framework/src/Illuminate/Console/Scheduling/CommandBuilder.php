@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，命令生成器
+ * Illuminate，控制台，线程调度，命令构建器
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -37,9 +37,9 @@ class CommandBuilder
     {
         $output = ProcessUtils::escapeArgument($event->output);
 
-        return $this->ensureCorrectUser(
-            $event, $event->command.($event->shouldAppendOutput ? ' >> ' : ' > ').$output.' 2>&1'
-        );
+        return laravel_cloud()
+            ? $this->ensureCorrectUser($event, $event->command.' 2>&1 | tee '.($event->shouldAppendOutput ? '-a ' : '').$output)
+            : $this->ensureCorrectUser($event, $event->command.($event->shouldAppendOutput ? ' >> ' : ' > ').$output.' 2>&1');
     }
 
     /**

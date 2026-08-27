@@ -8,6 +8,9 @@ namespace Illuminate\Hashing;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Support\Manager;
 
+/**
+ * @mixin \Illuminate\Contracts\Hashing\Hasher
+ */
 class HashManager extends Manager implements Hasher
 {
     /**
@@ -57,7 +60,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Hash the given value.
-	 * 哈希给定值
+	 * 对给定值进行散列
      *
      * @param  string  $value
      * @param  array  $options
@@ -97,7 +100,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Get the default driver name.
-	 * 得到默认驱动名称
+	 * 获取默认驱动程序名称
      *
      * @return string
      */

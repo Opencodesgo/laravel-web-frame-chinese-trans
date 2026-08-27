@@ -37,7 +37,7 @@ interface Node {
 
     /**
      * Gets line the node started in.
-	 * 获取节点开始所在的行。
+	 * 获取节点开始所在的行
      *
      * Requires the 'startLine' attribute to be enabled in the lexer (enabled by default).
      *
@@ -83,6 +83,7 @@ interface Node {
 
     /**
      * Gets the file offset of the first character that is part of this node.
+	 * 获取作为此节点一部分的第一个字符的文件偏移量。
      *
      * Requires the 'startFilePos' attribute to be enabled in the lexer (DISABLED by default).
      *
@@ -92,6 +93,7 @@ interface Node {
 
     /**
      * Gets the file offset of the last character that is part of this node.
+	 * 获取作为该节点一部分的最后一个字符的文件偏移量。
      *
      * Requires the 'endFilePos' attribute to be enabled in the lexer (DISABLED by default).
      *
@@ -101,6 +103,7 @@ interface Node {
 
     /**
      * Gets all comments directly preceding this node.
+	 * 获取直接在此节点前面的所有注释。
      *
      * The comments are also available through the "comments" attribute.
      *
@@ -110,6 +113,7 @@ interface Node {
 
     /**
      * Gets the doc comment of the node.
+	 * 获取节点的文档注释。
      *
      * @return null|Comment\Doc Doc comment object or null
      */
@@ -117,6 +121,7 @@ interface Node {
 
     /**
      * Sets the doc comment of the node.
+	 * 设置节点的文档注释。
      *
      * This will either replace an existing doc comment or add it to the comments array.
      *
@@ -126,6 +131,7 @@ interface Node {
 
     /**
      * Sets an attribute on a node.
+	 * 设置节点上的属性
      *
      * @param mixed $value
      */
@@ -133,11 +139,13 @@ interface Node {
 
     /**
      * Returns whether an attribute exists.
+	 * 返回属性是否存在
      */
     public function hasAttribute(string $key): bool;
 
     /**
      * Returns the value of an attribute.
+	 * 返回属性的值
      *
      * @param mixed $default
      *

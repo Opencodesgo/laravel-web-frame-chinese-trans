@@ -12,9 +12,9 @@ class BelongsToManyRelationship
 {
     /**
      * The related factory instance.
-	 * 相关的工厂实例
+	 * 关联的工厂实例
      *
-     * @var \Illuminate\Database\Eloquent\Factories\Factory|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Factories\Factory|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array
      */
     protected $factory;
 
@@ -28,7 +28,7 @@ class BelongsToManyRelationship
 
     /**
      * The relationship name.
-	 * 关联名称
+	 * 关系名称
      *
      * @var string
      */
@@ -38,7 +38,7 @@ class BelongsToManyRelationship
      * Create a new attached relationship definition.
 	 * 创建一个新的附加关系定义
      *
-     * @param  \Illuminate\Database\Eloquent\Factories\Factory|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model  $factory
+     * @param  \Illuminate\Database\Eloquent\Factories\Factory|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $factory
      * @param  callable|array  $pivot
      * @param  string  $relationship
      * @return void
@@ -65,5 +65,21 @@ class BelongsToManyRelationship
                 is_callable($this->pivot) ? call_user_func($this->pivot, $model) : $this->pivot
             );
         });
+    }
+
+    /**
+     * Specify the model instances to always use when creating relationships.
+	 * 指定在创建关系时始终使用的模型实例
+     *
+     * @param  \Illuminate\Support\Collection  $recycle
+     * @return $this
+     */
+    public function recycle($recycle)
+    {
+        if ($this->factory instanceof Factory) {
+            $this->factory = $this->factory->recycle($recycle);
+        }
+
+        return $this;
     }
 }

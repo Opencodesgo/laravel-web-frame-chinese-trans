@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，Url 可路由的
+ * Illuminate，契约，路由，Url可路由的
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -9,7 +9,7 @@ interface UrlRoutable
 {
     /**
      * Get the value of the model's route key.
-	 * 获取模型的路由键值
+	 * 得到模型的路由主键值
      *
      * @return mixed
      */

@@ -6,6 +6,7 @@
 namespace Illuminate\Foundation\Validation;
 
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Foundation\Precognition;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -13,7 +14,7 @@ trait ValidatesRequests
 {
     /**
      * Run the validation routine against the given validator.
-	 * 针对给定的验证器运行验证例程
+	 * 运行给定routine针对给定的验证程序
      *
      * @param  \Illuminate\Contracts\Validation\Validator|array  $validator
      * @param  \Illuminate\Http\Request|null  $request
@@ -29,12 +30,19 @@ trait ValidatesRequests
             $validator = $this->getValidationFactory()->make($request->all(), $validator);
         }
 
+        if ($request->isPrecognitive()) {
+            $validator->after(Precognition::afterValidationHook($request))
+                ->setRules(
+                    $request->filterPrecognitiveRules($validator->getRulesWithoutPlaceholders())
+                );
+        }
+
         return $validator->validate();
     }
 
     /**
      * Validate the given request with the given rules.
-	 * 用给定的规则验证给定的请求
+	 * 用给定的规则验证给定的请求。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $rules
@@ -47,9 +55,18 @@ trait ValidatesRequests
     public function validate(Request $request, array $rules,
                              array $messages = [], array $customAttributes = [])
     {
-        return $this->getValidationFactory()->make(
+        $validator = $this->getValidationFactory()->make(
             $request->all(), $rules, $messages, $customAttributes
-        )->validate();
+        );
+
+        if ($request->isPrecognitive()) {
+            $validator->after(Precognition::afterValidationHook($request))
+                ->setRules(
+                    $request->filterPrecognitiveRules($validator->getRulesWithoutPlaceholders())
+                );
+        }
+
+        return $validator->validate();
     }
 
     /**

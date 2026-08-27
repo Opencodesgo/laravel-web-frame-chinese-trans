@@ -55,7 +55,7 @@ class MorphMany extends MorphOneOrMany
 
     /**
      * Create a new instance of the related model. Allow mass-assignment.
-	 * 创建相关模型的新实例。允许质量确定。
+	 * 创建相关模型的新实例。允许质量确定
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model

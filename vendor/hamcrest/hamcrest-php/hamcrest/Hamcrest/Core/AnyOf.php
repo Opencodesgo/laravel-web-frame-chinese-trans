@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Any Of
+ * Hamcrest，核心，AnyOf
  */
 
 namespace Hamcrest\Core;
@@ -15,7 +15,7 @@ use Hamcrest\Util;
  * Calculates the logical disjunction of multiple matchers. Evaluation is
  * shortcut, so subsequent matchers are not called if an earlier matcher
  * returns <code>true</code>.
- * 计算多个匹配器的逻辑析取。评估是快捷方式，因此如果前面的匹配器返回 <code>true</code>，后续的匹配器将不会被调用。
+ * 计算多个摄场的逻辑分解。评估是快捷方式,因此如果更早的matcher返回< code > true < / code >,则不会调用后续的matchers。
  */
 class AnyOf extends ShortcutCombination
 {
@@ -37,7 +37,7 @@ class AnyOf extends ShortcutCombination
 
     /**
      * Evaluates to true if ANY of the passed in matchers evaluate to true.
-	 * 如果传入的匹配器中的任何一个求值为真，则求值为真。
+	 * 如果在matchers中通过的任何一个被通过的人都评估为真
      *
      * @factory ...
      */
@@ -50,6 +50,7 @@ class AnyOf extends ShortcutCombination
 
     /**
      * Evaluates to false if ANY of the passed in matchers evaluate to true.
+	 * 如果在matchers中通过的任何一个被通过的人都评估为真
      *
      * @factory ...
      */

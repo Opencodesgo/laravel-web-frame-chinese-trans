@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Base RuntimeException for the Translation component.
- * 翻译组件的基础RuntimeException。
+ * 翻译组件的基本运行时异常
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */

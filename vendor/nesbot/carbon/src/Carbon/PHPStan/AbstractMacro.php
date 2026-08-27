@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，PHP Stan，抽象宏指令
+ * Carbon，PHPStan，抽象的宏观 
  */
 
 declare(strict_types=1);
@@ -77,7 +77,6 @@ abstract class AbstractMacro implements BuiltinMethodReflection
 
     /**
      * Macro constructor.
-	 * 宏观构造函数
      *
      * @param class-string $className
      * @param string       $methodName

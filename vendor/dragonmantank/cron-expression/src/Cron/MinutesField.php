@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，分字段
+ * Cron，分钟字段
  */
 
 declare(strict_types=1);
@@ -11,6 +11,7 @@ use DateTimeInterface;
 
 /**
  * Minutes field.  Allows: * , / -.
+ * 分钟字段
  */
 class MinutesField extends AbstractField
 {

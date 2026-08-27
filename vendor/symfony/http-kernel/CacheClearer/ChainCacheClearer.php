@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存清除，链缓存清理器
+ * Symfony，Component，HttpKernel，缓存清除器，缓存清理接口
  */
 
 /*
@@ -24,7 +24,7 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
  */
 class ChainCacheClearer implements CacheClearerInterface
 {
-    private $clearers;
+    private iterable $clearers;
 
     /**
      * @param iterable<mixed, CacheClearerInterface> $clearers
@@ -34,10 +34,7 @@ class ChainCacheClearer implements CacheClearerInterface
         $this->clearers = $clearers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clear(string $cacheDir)
+    public function clear(string $cacheDir): void
     {
         foreach ($this->clearers as $clearer) {
             $clearer->clear($cacheDir);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，双端队列接口
+ * Ramsey，集合，双端队列接口
  */
 
 /**
@@ -22,7 +22,7 @@ use RuntimeException;
 
 /**
  * A linear collection that supports element insertion and removal at both ends.
- * 支持元素插入和删除两端的线性集合。
+ * 支持在两端插入和移除元素的线性集合。
  *
  * Most `DoubleEndedQueueInterface` implementations place no fixed limits on the
  * number of elements they may contain, but this interface supports
@@ -185,8 +185,7 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *     Implementations should use a more-specific exception that extends
      *     `\RuntimeException`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function addFirst($element): bool;
+    public function addFirst(mixed $element): bool;
 
     /**
      * Inserts the specified element at the end of this queue if it is possible
@@ -206,8 +205,7 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *     Implementations should use a more-specific exception that extends
      *     `\RuntimeException`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function addLast($element): bool;
+    public function addLast(mixed $element): bool;
 
     /**
      * Inserts the specified element at the front of this queue if it is
@@ -221,8 +219,7 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *
      * @return bool `true` if the element was added to this queue, else `false`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function offerFirst($element): bool;
+    public function offerFirst(mixed $element): bool;
 
     /**
      * Inserts the specified element at the end of this queue if it is possible
@@ -236,12 +233,11 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *
      * @return bool `true` if the element was added to this queue, else `false`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function offerLast($element): bool;
+    public function offerLast(mixed $element): bool;
 
     /**
      * Retrieves and removes the head of this queue.
-	 * 检索并删除此队列的头部
+	 * 检索并删除此队列的头部。
      *
      * This method differs from `pollFirst()` only in that it throws an
      * exception if this queue is empty.
@@ -250,7 +246,7 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *
      * @throws NoSuchElementException if this queue is empty.
      */
-    public function removeFirst();
+    public function removeFirst(): mixed;
 
     /**
      * Retrieves and removes the tail of this queue.
@@ -262,26 +258,27 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *
      * @throws NoSuchElementException if this queue is empty.
      */
-    public function removeLast();
+    public function removeLast(): mixed;
 
     /**
      * Retrieves and removes the head of this queue, or returns `null` if this
      * queue is empty.
      *
-     * @return T|null the head of this queue, or `null` if this queue is empty.
+     * @return T | null the head of this queue, or `null` if this queue is empty.
      */
-    public function pollFirst();
+    public function pollFirst(): mixed;
 
     /**
      * Retrieves and removes the tail of this queue, or returns `null` if this
      * queue is empty.
      *
-     * @return T|null the tail of this queue, or `null` if this queue is empty.
+     * @return T | null the tail of this queue, or `null` if this queue is empty.
      */
-    public function pollLast();
+    public function pollLast(): mixed;
 
     /**
      * Retrieves, but does not remove, the head of this queue.
+	 * 检索但不删除此队列的头部。
      *
      * This method differs from `peekFirst()` only in that it throws an
      * exception if this queue is empty.
@@ -290,10 +287,11 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *
      * @throws NoSuchElementException if this queue is empty.
      */
-    public function firstElement();
+    public function firstElement(): mixed;
 
     /**
      * Retrieves, but does not remove, the tail of this queue.
+	 * 检索（但不删除）此队列的尾部。
      *
      * This method differs from `peekLast()` only in that it throws an exception
      * if this queue is empty.
@@ -302,22 +300,21 @@ interface DoubleEndedQueueInterface extends QueueInterface
      *
      * @throws NoSuchElementException if this queue is empty.
      */
-    public function lastElement();
+    public function lastElement(): mixed;
 
     /**
      * Retrieves, but does not remove, the head of this queue, or returns `null`
      * if this queue is empty.
      *
-     * @return T|null the head of this queue, or `null` if this queue is empty.
+     * @return T | null the head of this queue, or `null` if this queue is empty.
      */
-    public function peekFirst();
+    public function peekFirst(): mixed;
 
     /**
      * Retrieves, but does not remove, the tail of this queue, or returns `null`
      * if this queue is empty.
-	 * 检索但不删除此队列的尾部，如队列为空，或返回“null”
      *
-     * @return T|null the tail of this queue, or `null` if this queue is empty.
+     * @return T | null the tail of this queue, or `null` if this queue is empty.
      */
-    public function peekLast();
+    public function peekLast(): mixed;
 }

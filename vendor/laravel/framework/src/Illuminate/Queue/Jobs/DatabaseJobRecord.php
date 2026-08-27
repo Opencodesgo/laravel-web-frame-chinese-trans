@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，数据库作业记录
+ * Illuminate，队列，作业，数据库作业日志
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -21,7 +21,7 @@ class DatabaseJobRecord
 
     /**
      * Create a new job record instance.
-	 * 创建一个新的作业记录实例
+	 * 创建新的作业记录实例
      *
      * @param  \stdClass  $record
      * @return void

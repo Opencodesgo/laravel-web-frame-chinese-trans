@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，查询，表达接口
+ * League，CommonMark，节点，查询，表达式接口
  */
 
 declare(strict_types=1);

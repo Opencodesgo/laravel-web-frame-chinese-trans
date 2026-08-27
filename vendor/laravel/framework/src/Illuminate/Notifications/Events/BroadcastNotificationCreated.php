@@ -8,7 +8,9 @@ namespace Illuminate\Notifications\Events;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 
 class BroadcastNotificationCreated implements ShouldBroadcast
 {
@@ -40,7 +42,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -56,13 +58,18 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-	 * 得到该事件应该播放的通道
+	 * 获取该事件应该播放的频道
      *
      * @return array
      */
     public function broadcastOn()
     {
-        $channels = $this->notification->broadcastOn();
+        if ($this->notifiable instanceof AnonymousNotifiable &&
+            $this->notifiable->routeNotificationFor('broadcast')) {
+            $channels = Arr::wrap($this->notifiable->routeNotificationFor('broadcast'));
+        } else {
+            $channels = $this->notification->broadcastOn();
+        }
 
         if (! empty($channels)) {
             return $channels;
@@ -79,7 +86,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the broadcast channel name for the event.
-	 * 得到事件的广播通道名称
+	 * 获取事件的广播频道名称
      *
      * @return array|string
      */
@@ -96,7 +103,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the data that should be sent with the broadcasted event.
-	 * 得到应该随广播事件一起发送的数据
+	 * 获取应该随广播事件一起发送的数据
      *
      * @return array
      */
@@ -114,7 +121,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the type of the notification being broadcast.
-	 * 得到正在广播的通知的类型
+	 * 获取正在广播的通知的类型
      *
      * @return string
      */

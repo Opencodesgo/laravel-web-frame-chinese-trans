@@ -39,7 +39,7 @@ interface Validator extends MessageProvider
 
     /**
      * Get the failed validation rules.
-	 * 得到失败验证规则
+	 * 获取失败的验证规则
      *
      * @return array
      */

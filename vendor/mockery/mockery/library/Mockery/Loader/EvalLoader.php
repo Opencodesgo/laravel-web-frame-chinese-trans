@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，载入程序，Eval 装载机
+ * Mockery，加载器，Eval 加载器
  */
 
 /**

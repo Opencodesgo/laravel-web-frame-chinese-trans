@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Memcached 锁
+ * Illuminate，缓存，Memcached锁
  */
 
 namespace Illuminate\Cache;
@@ -17,7 +17,7 @@ class MemcachedLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建新的锁实例
+	 * 创建一个新的锁实例
      *
      * @param  \Memcached  $memcached
      * @param  string  $name

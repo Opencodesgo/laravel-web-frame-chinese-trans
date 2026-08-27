@@ -34,6 +34,14 @@ class Response implements Arrayable
     protected $code;
 
     /**
+     * The HTTP response status code.
+	 * HTTP响应状态码
+     *
+     * @var int|null
+     */
+    protected $status;
+
+    /**
      * Create a new response.
 	 * 创建新的响应
      *
@@ -51,7 +59,7 @@ class Response implements Arrayable
 
     /**
      * Create a new "allow" Response.
-	 * 创建一个新的"allow"响应
+	 * 创建新的"allow"响应
      *
      * @param  string|null  $message
      * @param  mixed  $code
@@ -64,7 +72,7 @@ class Response implements Arrayable
 
     /**
      * Create a new "deny" Response.
-	 * 创建一个新的"deny"响应
+	 * 创建新的"deny"响应
      *
      * @param  string|null  $message
      * @param  mixed  $code
@@ -76,8 +84,35 @@ class Response implements Arrayable
     }
 
     /**
+     * Create a new "deny" Response with a HTTP status code.
+	 * 用HTTP状态码创建一个新的"deny"响应
+     *
+     * @param  int  $status
+     * @param  string|null  $message
+     * @param  mixed  $code
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public static function denyWithStatus($status, $message = null, $code = null)
+    {
+        return static::deny($message, $code)->withStatus($status);
+    }
+
+    /**
+     * Create a new "deny" Response with a 404 HTTP status code.
+	 * 创建一个新的带有404 HTTP状态码的"deny"响应。
+     *
+     * @param  string|null  $message
+     * @param  mixed  $code
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public static function denyAsNotFound($message = null, $code = null)
+    {
+        return static::denyWithStatus(404, $message, $code);
+    }
+
+    /**
      * Determine if the response was allowed.
-	 * 确定是否允许响应
+	 * 确定是否响应被允许
      *
      * @return bool
      */
@@ -88,7 +123,7 @@ class Response implements Arrayable
 
     /**
      * Determine if the response was denied.
-	 * 确定响应是否被拒绝
+	 * 确定是否响应被拒绝
      *
      * @return bool
      */
@@ -110,7 +145,7 @@ class Response implements Arrayable
 
     /**
      * Get the response code / reason.
-	 * 获取响应代码/原因
+	 * 获取响应代码或原因
      *
      * @return mixed
      */
@@ -131,10 +166,47 @@ class Response implements Arrayable
     {
         if ($this->denied()) {
             throw (new AuthorizationException($this->message(), $this->code()))
-                        ->setResponse($this);
+                ->setResponse($this)
+                ->withStatus($this->status);
         }
 
         return $this;
+    }
+
+    /**
+     * Set the HTTP response status code.
+	 * 设置HTTP响应状态码
+     *
+     * @param  null|int  $status
+     * @return $this
+     */
+    public function withStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Set the HTTP response status code to 404.
+	 * 设置HTTP响应状态码为404
+     *
+     * @return $this
+     */
+    public function asNotFound()
+    {
+        return $this->withStatus(404);
+    }
+
+    /**
+     * Get the HTTP status code.
+	 * 获取HTTP状态码
+     *
+     * @return int|null
+     */
+    public function status()
+    {
+        return $this->status;
     }
 
     /**

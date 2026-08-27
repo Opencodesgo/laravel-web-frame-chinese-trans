@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，分词器，记号赋予器逃离
+ * Symfony，Component，CssSelector，解析器，编译器，记号赋予器逃离
  */
 
 /*
@@ -27,7 +27,7 @@ namespace Symfony\Component\CssSelector\Parser\Tokenizer;
  */
 class TokenizerEscaping
 {
-    private $patterns;
+    private TokenizerPatterns $patterns;
 
     public function __construct(TokenizerPatterns $patterns)
     {

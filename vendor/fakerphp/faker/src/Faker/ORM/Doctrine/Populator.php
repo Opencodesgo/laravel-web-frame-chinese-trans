@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，主义，普及者
+ * Faker，ORM，主义，填充器
  */
 
 namespace Faker\ORM\Doctrine;
@@ -13,7 +13,7 @@ require_once 'backward-compatibility.php';
 /**
  * Service class for populating a database using the Doctrine ORM or ODM.
  * A Populator can populate several tables using ActiveRecord classes.
- * 服务类,用于填充一个使用“ORM或ODM”的数据库。
+ * 用于使用Doctrine ORM或ODM填充数据库的服务类。
  */
 class Populator
 {
@@ -49,7 +49,7 @@ class Populator
 
     /**
      * Populator constructor.
-	 * 填充构造函数
+	 * Populator将构造函数
      *
      * @param int $batchSize
      */
@@ -62,7 +62,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
-	 * 为$实体的生成值的生成添加一个订单
+	 * 为$entity添加生成$number记录的订单
      *
      * @param mixed $entity A Doctrine classname, or a \Faker\ORM\Doctrine\EntityPopulator instance
      * @param int   $number The number of entities to populate
@@ -90,7 +90,7 @@ class Populator
 
     /**
      * Populate the database using all the Entity classes previously added.
-	 * 使用之前添加的所有实体类填充数据库
+	 * 使用前面添加的所有Entity类填充数据库
      *
      * Please note that large amounts of data will result in more memory usage since the the Populator will return
      * all newly created primary keys after executing.

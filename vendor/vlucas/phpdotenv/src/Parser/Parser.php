@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，分析程序，分析程序
+ * Dotenv，解析器，解析器 
  */
 
 declare(strict_types=1);
@@ -41,11 +41,11 @@ final class Parser implements ParserInterface
      *
      * @param string[] $entries
      *
-     * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[],string>
+     * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[], string>
      */
     private static function process(array $entries)
     {
-        /** @var \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[],string> */
+        /** @var \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[], string> */
         return \array_reduce($entries, static function (Result $result, string $raw) {
             return $result->flatMap(static function (array $entries) use ($raw) {
                 return EntryParser::parse($raw)->map(static function (Entry $entry) use ($entries) {

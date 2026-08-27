@@ -28,7 +28,7 @@ class HigherOrderBuilderProxy
 
     /**
      * Create a new proxy instance.
-	 * 创建新的代理实例
+	 * 创建一个新的代理实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string  $method

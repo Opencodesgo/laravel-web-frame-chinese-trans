@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，时间命令，时间游客
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -25,6 +28,7 @@ use Psy\Command\TimeitCommand;
 
 /**
  * A node visitor for instrumenting code to be executed by the `timeit` command.
+ * 一个节点访问器，用于检测将由‘ timeit ’命令执行的代码。
  *
  * Injects `TimeitCommand::markStart()` at the start of code to be executed, and
  * `TimeitCommand::markEnd()` at the end, and on top-level return statements.
@@ -105,6 +109,7 @@ class TimeitVisitor extends NodeVisitorAbstract
 
     /**
      * Get PhpParser AST nodes for a `markStart` call.
+	 * 获取`markStart`调用的PhpParser AST节点
      *
      * @return \PhpParser\Node\Expr\StaticCall
      */
@@ -115,6 +120,7 @@ class TimeitVisitor extends NodeVisitorAbstract
 
     /**
      * Get PhpParser AST nodes for a `markEnd` call.
+	 * 获取`markEnd '调用的PhpParser AST节点
      *
      * Optionally pass in a return value.
      *

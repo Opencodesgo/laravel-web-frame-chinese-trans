@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，可格式化的处理程序特性
+ * Monolog，处理器，可格式化的处理程序特征
  */
 
 /*
@@ -58,7 +58,6 @@ trait FormattableHandlerTrait
 	 * 获取默认格式化程序。
      *
      * Overwrite this if the LineFormatter is not a good default for your handler.
-	 * 如果线性格式化程序对您的处理程序没有良好的默认值,则将此重写。
      */
     protected function getDefaultFormatter(): FormatterInterface
     {

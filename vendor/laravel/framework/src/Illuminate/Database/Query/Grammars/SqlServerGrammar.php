@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，Sql Server 语法
+ * Illuminate，数据库，PDO，语法，Sql Server 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -49,7 +49,7 @@ class SqlServerGrammar extends Grammar
         // If an offset is present on the query, we will need to wrap the query in
         // a big "ANSI" offset syntax block. This is very nasty compared to the
         // other database systems but is necessary for implementing features.
-		// 如果查询中存在偏移量，则需要将查询封装在一个大的"ANSI"偏移语法块。
+		// 如果查询中存在偏移量，我们需要将查询封装在一个大的"ANSI"中。
         return $this->compileAnsiOffset(
             $query, $components
         );
@@ -74,7 +74,7 @@ class SqlServerGrammar extends Grammar
         // If there is a limit on the query, but not an offset, we will add the top
         // clause to the query, which serves as a "limit" type clause within the
         // SQL Server system similar to the limit keywords available in MySQL.
-		// 如果查询上有限制，但没有偏移量，我们将添加顶部子句到查询。
+		// 如果查询有限制，
         if (is_numeric($query->limit) && $query->limit > 0 && $query->offset <= 0) {
             $select .= 'top '.((int) $query->limit).' ';
         }
@@ -103,6 +103,21 @@ class SqlServerGrammar extends Grammar
         }
 
         return $from;
+    }
+
+    /**
+     * Compile the index hints for the query.
+	 * 为查询编译索引提示
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Query\IndexHint  $indexHint
+     * @return string
+     */
+    protected function compileIndexHint(Builder $query, $indexHint)
+    {
+        return $indexHint->type === 'force'
+                    ? "with (index({$indexHint->index}))"
+                    : '';
     }
 
     /**
@@ -138,7 +153,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
-	 * 编写一个"where time"子句
+	 * 编译一个"where time"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -179,6 +194,32 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON contains key" statement into SQL.
+	 * 将"JSON contains key"语句编译成SQL
+     *
+     * @param  string  $column
+     * @return string
+     */
+    protected function compileJsonContainsKey($column)
+    {
+        $segments = explode('->', $column);
+
+        $lastSegment = array_pop($segments);
+
+        if (preg_match('/\[([0-9]+)\]$/', $lastSegment, $matches)) {
+            $segments[] = Str::beforeLast($lastSegment, $matches[0]);
+
+            $key = $matches[1];
+        } else {
+            $key = "'".str_replace("'", "''", $lastSegment)."'";
+        }
+
+        [$field, $path] = $this->wrapJsonFieldAndPath(implode('->', $segments));
+
+        return $key.' in (select [key] from openjson('.$field.$path.'))';
+    }
+
+    /**
      * Compile a "JSON length" statement into SQL.
 	 * 将"JSON长度"语句编译成SQL
      *
@@ -195,7 +236,20 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
-     * {@inheritdoc}
+     * Compile a "JSON value cast" statement into SQL.
+	 * 将"JSON值转换"语句编译成SQL
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function compileJsonValueCast($value)
+    {
+        return 'json_query('.$value.')';
+    }
+
+    /**
+     * Compile a single having clause.
+	 * 编译单个having子句
      *
      * @param  array  $having
      * @return string
@@ -222,7 +276,7 @@ class SqlServerGrammar extends Grammar
 
         $parameter = $this->parameter($having['value']);
 
-        return $having['boolean'].' ('.$column.' '.$having['operator'].' '.$parameter.') != 0';
+        return '('.$column.' '.$having['operator'].' '.$parameter.') != 0';
     }
 
     /**
@@ -238,7 +292,7 @@ class SqlServerGrammar extends Grammar
         // An ORDER BY clause is required to make this offset query work, so if one does
         // not exist we'll just create a dummy clause to trick the database and so it
         // does not complain about the queries for not having an "order by" clause.
-		// 要使这个偏移量查询工作，需要一个ORDER BY子句。
+		// 要使偏移量查询工作，需要一个ORDER BY子句。
         if (empty($components['orders'])) {
             $components['orders'] = 'order by (select 0)';
         }
@@ -365,7 +419,7 @@ class SqlServerGrammar extends Grammar
      * Compile the random statement into SQL.
 	 * 将随机语句编译成SQL
      *
-     * @param  string  $seed
+     * @param  string|int  $seed
      * @return string
      */
     public function compileRandom($seed)
@@ -610,7 +664,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
-	 * 用关键字标识符包装表
+	 * 用关键字标识符包装
      *
      * @param  string  $table
      * @return string

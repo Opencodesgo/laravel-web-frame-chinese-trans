@@ -28,7 +28,7 @@ class Cursor implements Arrayable
 
     /**
      * Create a new cursor instance.
-	 * 创建一个新的游标实例
+	 * 创建新的游标实例
      *
      * @param  array  $parameters
      * @param  bool  $pointsToNextItems
@@ -84,7 +84,7 @@ class Cursor implements Arrayable
 
     /**
      * Determine whether the cursor points to the previous set of items.
-	 * 确定光标是否指向前一组项
+	 * 确定游标是否指向前一组项
      *
      * @return bool
      */
@@ -126,7 +126,7 @@ class Cursor implements Arrayable
      */
     public static function fromEncoded($encodedString)
     {
-        if (is_null($encodedString) || ! is_string($encodedString)) {
+        if (! is_string($encodedString)) {
             return null;
         }
 

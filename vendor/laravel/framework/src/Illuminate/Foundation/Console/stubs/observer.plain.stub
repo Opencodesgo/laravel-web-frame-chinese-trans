@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，观察者模式基本
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};

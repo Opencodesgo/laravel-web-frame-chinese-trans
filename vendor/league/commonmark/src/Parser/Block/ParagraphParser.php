@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块，分段解析器
+ * League，CommonMark，解析器，代码块，段落解析器
  */
 
 declare(strict_types=1);

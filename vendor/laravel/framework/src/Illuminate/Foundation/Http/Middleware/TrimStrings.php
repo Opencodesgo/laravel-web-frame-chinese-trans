@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，裁剪字符串
+ * Illuminate, 基础, Http, 中间件, 裁剪字符串
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -19,9 +19,9 @@ class TrimStrings extends TransformsRequest
 
     /**
      * The attributes that should not be trimmed.
-	 * 不应该被修剪的属性
+	 * 不应该修剪的属性
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [
         //
@@ -48,7 +48,7 @@ class TrimStrings extends TransformsRequest
 
     /**
      * Transform the given value.
-	 * 变换给定的值
+	 * 转换给定的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -56,11 +56,11 @@ class TrimStrings extends TransformsRequest
      */
     protected function transform($key, $value)
     {
-        if (in_array($key, $this->except, true)) {
+        if (in_array($key, $this->except, true) || ! is_string($value)) {
             return $value;
         }
 
-        return is_string($value) ? trim($value) : $value;
+        return preg_replace('~^[\s\x{FEFF}\x{200B}]+|[\s\x{FEFF}\x{200B}]+$~u', '', $value) ?? trim($value);
     }
 
     /**

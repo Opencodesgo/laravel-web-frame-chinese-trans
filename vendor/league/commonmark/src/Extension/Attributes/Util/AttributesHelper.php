@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，属性，工具，属性辅助
+ * League，CommonMark，扩展，属性，Util，属性助手
  */
 
 /*
@@ -26,7 +26,7 @@ use League\CommonMark\Util\RegexHelper;
  */
 final class AttributesHelper
 {
-    private const SINGLE_ATTRIBUTE = '\s*([.]-?[_a-z][^\s}]*|[#][^\s}]+|' . RegexHelper::PARTIAL_ATTRIBUTENAME . RegexHelper::PARTIAL_ATTRIBUTEVALUESPEC . ')\s*';
+    private const SINGLE_ATTRIBUTE = '\s*([.]-?[_a-z][^\s.}]*|[#][^\s}]+|' . RegexHelper::PARTIAL_ATTRIBUTENAME . RegexHelper::PARTIAL_ATTRIBUTEVALUESPEC . ')\s*';
     private const ATTRIBUTE_LIST   = '/^{:?(' . self::SINGLE_ATTRIBUTE . ')+}/i';
 
     /**
@@ -138,6 +138,44 @@ final class AttributesHelper
 
         if (isset($attributes['class'])) {
             $attributes['class'] = \implode(' ', $attributes['class']);
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * @param array<string, mixed> $attributes
+     * @param list<string>         $allowList
+     *
+     * @return array<string, mixed>
+     */
+    public static function filterAttributes(array $attributes, array $allowList, bool $allowUnsafeLinks): array
+    {
+        $allowList = \array_fill_keys($allowList, true);
+
+        foreach ($attributes as $name => $value) {
+            $attrNameLower = \strtolower($name);
+
+            // Remove any unsafe links
+            if (! $allowUnsafeLinks && ($attrNameLower === 'href' || $attrNameLower === 'src') && \is_string($value) && RegexHelper::isLinkPotentiallyUnsafe($value)) {
+                unset($attributes[$name]);
+                continue;
+            }
+
+            // No allowlist?
+            if ($allowList === []) {
+                // Just remove JS event handlers
+                if (\str_starts_with($attrNameLower, 'on')) {
+                    unset($attributes[$name]);
+                }
+
+                continue;
+            }
+
+            // Remove any attributes not in that allowlist (case-sensitive)
+            if (! isset($allowList[$name])) {
+                unset($attributes[$name]);
+            }
         }
 
         return $attributes;

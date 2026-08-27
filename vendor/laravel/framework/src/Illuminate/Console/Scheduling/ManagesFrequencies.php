@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，管理频率
+ * Illuminate，控制台，线程调度，管理频率
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -67,9 +67,9 @@ trait ManagesFrequencies
 
         if ($endTime->lessThan($startTime)) {
             if ($startTime->greaterThan($now)) {
-                $startTime->subDay(1);
+                $startTime = $startTime->subDay(1);
             } else {
-                $endTime->addDay(1);
+                $endTime = $endTime->addDay(1);
             }
         }
 
@@ -146,7 +146,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run every fifteen minutes.
-	 * 将事件安排为每十五分钟运行一次
+	 * 将活动安排为每15分钟一次
      *
      * @return $this
      */
@@ -157,7 +157,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run every thirty minutes.
-	 * 将事件安排为每三十分钟运行一次
+	 * 将活动安排为每30分钟进行一次
      *
      * @return $this
      */
@@ -189,6 +189,17 @@ trait ManagesFrequencies
         $offset = is_array($offset) ? implode(',', $offset) : $offset;
 
         return $this->spliceIntoPosition(1, $offset);
+    }
+
+    /**
+     * Schedule the event to run every odd hour.
+	 * 将活动安排在每隔一小时进行一次
+     *
+     * @return $this
+     */
+    public function everyOddHour()
+    {
+        return $this->spliceIntoPosition(1, 0)->spliceIntoPosition(2, '1-23/2');
     }
 
     /**
@@ -387,7 +398,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Saturdays.
-	 * 把活动安排在周六进行
+	 * 把活动安排在周六
      *
      * @return $this
      */
@@ -398,7 +409,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Sundays.
-	 * 把活动安排在星期天进行
+	 * 把活动安排在周日
      *
      * @return $this
      */
@@ -409,7 +420,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run weekly.
-	 * 将活动安排为每周一次
+	 * 将活动安排为每周运行一次
      *
      * @return $this
      */
@@ -497,7 +508,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run quarterly.
-	 * 计划该活动每季度一次
+	 * 将活动安排为每季度一次
      *
      * @return $this
      */
@@ -506,6 +517,22 @@ trait ManagesFrequencies
         return $this->spliceIntoPosition(1, 0)
                     ->spliceIntoPosition(2, 0)
                     ->spliceIntoPosition(3, 1)
+                    ->spliceIntoPosition(4, '1-12/3');
+    }
+
+    /**
+     * Schedule the event to run quarterly on a given day and time.
+	 * 将活动安排为每季度在给定的日期和时间运行
+     *
+     * @param  int  $dayOfQuarter
+     * @param  int  $time
+     * @return $this
+     */
+    public function quarterlyOn($dayOfQuarter = 1, $time = '0:0')
+    {
+        $this->dailyAt($time);
+
+        return $this->spliceIntoPosition(3, $dayOfQuarter)
                     ->spliceIntoPosition(4, '1-12/3');
     }
 
@@ -578,7 +605,7 @@ trait ManagesFrequencies
      */
     protected function spliceIntoPosition($position, $value)
     {
-        $segments = explode(' ', $this->expression);
+        $segments = preg_split("/\s+/", $this->expression);
 
         $segments[$position - 1] = $value;
 

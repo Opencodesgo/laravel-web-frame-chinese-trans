@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，目录占位符解析器
+ * League，CommonMark，扩展，目次，目录占位符解析器
  */
 
 declare(strict_types=1);
@@ -61,6 +61,7 @@ final class TableOfContentsPlaceholderParser extends AbstractBlockContinueParser
                 }
 
                 // The placeholder must be the only thing on the line
+				// 占位符必须是行中唯一的内容
                 if ($cursor->match('/^' . \preg_quote($placeholder, '/') . '$/') === null) {
                     return BlockStart::none();
                 }

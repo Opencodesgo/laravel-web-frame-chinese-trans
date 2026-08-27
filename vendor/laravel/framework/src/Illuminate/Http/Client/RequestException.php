@@ -17,7 +17,7 @@ class RequestException extends HttpClientException
 
     /**
      * Create a new exception instance.
-	 * 创建新的异常实例
+	 * 创建一个新的异常实例
      *
      * @param  \Illuminate\Http\Client\Response  $response
      * @return void

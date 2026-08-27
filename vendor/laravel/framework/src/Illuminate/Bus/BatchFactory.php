@@ -20,7 +20,7 @@ class BatchFactory
 
     /**
      * Create a new batch factory instance.
-	 * 创建一个新的批处理工厂实例
+	 * 创建新的批处理工厂实例
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
      * @return void
@@ -32,7 +32,7 @@ class BatchFactory
 
     /**
      * Create a new batch instance.
-	 * 创建一个新的批处理实例
+	 * 创建新的批处理实例
      *
      * @param  \Illuminate\Bus\BatchRepository  $repository
      * @param  string  $id

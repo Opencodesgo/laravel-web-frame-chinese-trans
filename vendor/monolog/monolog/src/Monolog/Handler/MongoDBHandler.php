@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，MongoDB 处理程序
- *
+ * Monolog，处理器，MongoDB 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -24,7 +24,7 @@ use Monolog\Formatter\MongoDBFormatter;
 
 /**
  * Logs to a MongoDB database.
- * 日志到MongoDB数据库。
+ * MongoDB数据库的日志。
  *
  * Usage example:
  *

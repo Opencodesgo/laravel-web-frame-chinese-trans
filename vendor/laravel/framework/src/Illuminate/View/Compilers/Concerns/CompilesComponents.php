@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，编译组件
+ * Illuminate，视图，编译器，问题，编译组件
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -28,7 +28,7 @@ trait CompilesComponents
      */
     protected function compileComponent($expression)
     {
-        [$component, $alias, $data] = strpos($expression, ',') !== false
+        [$component, $alias, $data] = str_contains($expression, ',')
                     ? array_map('trim', explode(',', trim($expression, '()'), 3)) + ['', '', '']
                     : [trim($expression, '()'), '', ''];
 
@@ -71,7 +71,7 @@ trait CompilesComponents
     {
         return implode("\n", [
             '<?php if (isset($component)) { $__componentOriginal'.$hash.' = $component; } ?>',
-            '<?php $component = $__env->getContainer()->make('.Str::finish($component, '::class').', '.($data ?: '[]').'); ?>',
+            '<?php $component = '.$component.'::resolve('.($data ?: '[]').' + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>',
             '<?php $component->withName('.$alias.'); ?>',
             '<?php if ($component->shouldRender()): ?>',
             '<?php $__env->startComponent($component->resolveView(), $component->data()); ?>',
@@ -122,7 +122,7 @@ trait CompilesComponents
 
     /**
      * Compile the end-slot statements into valid PHP.
-	 * 将结束槽语句编译成有效的PHP
+	 * 将结束槽语句编译成有效的PH
      *
      * @return string
      */
@@ -163,7 +163,11 @@ trait CompilesComponents
      */
     protected function compileProps($expression)
     {
-        return "<?php \$attributes = \$attributes->exceptProps{$expression}; ?>
+        return "<?php \$attributes ??= new \\Illuminate\\View\\ComponentAttributeBag; ?>
+<?php foreach(\$attributes->onlyProps{$expression} as \$__key => \$__value) {
+    \$\$__key = \$\$__key ?? \$__value;
+} ?>
+<?php \$attributes = \$attributes->exceptProps{$expression}; ?>
 <?php foreach (array_filter({$expression}, 'is_string', ARRAY_FILTER_USE_KEY) as \$__key => \$__value) {
     \$\$__key = \$\$__key ?? \$__value;
 } ?>
@@ -198,7 +202,7 @@ trait CompilesComponents
      */
     public static function sanitizeComponentAttribute($value)
     {
-        if (is_object($value) && $value instanceof CanBeEscapedWhenCastToString) {
+        if ($value instanceof CanBeEscapedWhenCastToString) {
             return $value->escapeWhenCastingToString();
         }
 

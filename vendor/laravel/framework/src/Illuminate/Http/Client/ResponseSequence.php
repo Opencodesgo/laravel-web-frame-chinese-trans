@@ -14,7 +14,7 @@ class ResponseSequence
 
     /**
      * The responses in the sequence.
-	 * 序列中的响应
+	 * 队列中响应
      *
      * @var array
      */
@@ -38,7 +38,7 @@ class ResponseSequence
 
     /**
      * Create a new response sequence.
-	 * 创建新的响应序列
+	 * 创建一个新的响应序列
      *
      * @param  array  $responses
      * @return void
@@ -52,15 +52,13 @@ class ResponseSequence
      * Push a response to the sequence.
 	 * 向序列推送响应
      *
-     * @param  string|array  $body
+     * @param  string|array|null  $body
      * @param  int  $status
      * @param  array  $headers
      * @return $this
      */
-    public function push($body = '', int $status = 200, array $headers = [])
+    public function push($body = null, int $status = 200, array $headers = [])
     {
-        $body = is_array($body) ? json_encode($body) : $body;
-
         return $this->pushResponse(
             Factory::response($body, $status, $headers)
         );
@@ -160,11 +158,11 @@ class ResponseSequence
      */
     public function __invoke()
     {
-        if ($this->failWhenEmpty && count($this->responses) === 0) {
+        if ($this->failWhenEmpty && $this->isEmpty()) {
             throw new OutOfBoundsException('A request was made, but the response sequence is empty.');
         }
 
-        if (! $this->failWhenEmpty && count($this->responses) === 0) {
+        if (! $this->failWhenEmpty && $this->isEmpty()) {
             return value($this->emptyResponse ?? Factory::response());
         }
 

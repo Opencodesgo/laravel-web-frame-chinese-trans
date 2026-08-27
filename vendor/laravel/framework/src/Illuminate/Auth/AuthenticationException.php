@@ -19,7 +19,7 @@ class AuthenticationException extends Exception
 
     /**
      * The path the user should be redirected to.
-	 * 用户应该重定向到的路径
+	 * 用户路径应该被重定向的
      *
      * @var string|null
      */
@@ -27,7 +27,7 @@ class AuthenticationException extends Exception
 
     /**
      * Create a new authentication exception.
-	 * 创建一个新的身份验证异常
+	 * 创建新的身份验证异常
      *
      * @param  string  $message
      * @param  array  $guards
@@ -44,7 +44,7 @@ class AuthenticationException extends Exception
 
     /**
      * Get the guards that were checked.
-	 * 得到检查过的守卫
+	 * 得到已检查守卫
      *
      * @return array
      */

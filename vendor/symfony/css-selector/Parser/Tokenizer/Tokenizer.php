@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，分词器，分词器
+ * Symfony，Component，CssSelector，解析器，编译器，编译器
  */
 
 /*
@@ -35,7 +35,7 @@ class Tokenizer
     /**
      * @var Handler\HandlerInterface[]
      */
-    private $handlers;
+    private array $handlers;
 
     public function __construct()
     {

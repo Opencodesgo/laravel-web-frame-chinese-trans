@@ -8,20 +8,35 @@ namespace Illuminate\Foundation\Console;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Encryption\Encrypter;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'key:generate')]
 class KeyGenerateCommand extends Command
 {
     use ConfirmableTrait;
 
     /**
      * The name and signature of the console command.
-	 * console命令的名称和签名
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
     protected $signature = 'key:generate
                     {--show : Display the key instead of modifying files}
                     {--force : Force the operation to run when in production}';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'key:generate';
 
     /**
      * The console command description.
@@ -48,14 +63,14 @@ class KeyGenerateCommand extends Command
         // Next, we will replace the application key in the environment file so it is
         // automatically setup for this developer. This key gets generated using a
         // secure random byte generator and is later base64 encoded for storage.
-		// 接下来，我们将替换环境文件中的应用程序密钥，因此为该开发人员自动设置。
+		// 接下来，我们将替换环境文件中的应用程序密钥。
         if (! $this->setKeyInEnvironmentFile($key)) {
             return;
         }
 
         $this->laravel['config']['app.key'] = $key;
 
-        $this->info('Application key set successfully.');
+        $this->components->info('Application key set successfully.');
     }
 
     /**
@@ -86,7 +101,9 @@ class KeyGenerateCommand extends Command
             return false;
         }
 
-        $this->writeNewEnvironmentFileWith($key);
+        if (! $this->writeNewEnvironmentFileWith($key)) {
+            return false;
+        }
 
         return true;
     }
@@ -96,15 +113,25 @@ class KeyGenerateCommand extends Command
 	 * 用给定的键写一个新的环境文件
      *
      * @param  string  $key
-     * @return void
+     * @return bool
      */
     protected function writeNewEnvironmentFileWith($key)
     {
-        file_put_contents($this->laravel->environmentFilePath(), preg_replace(
+        $replaced = preg_replace(
             $this->keyReplacementPattern(),
             'APP_KEY='.$key,
-            file_get_contents($this->laravel->environmentFilePath())
-        ));
+            $input = file_get_contents($this->laravel->environmentFilePath())
+        );
+
+        if ($replaced === $input || $replaced === null) {
+            $this->error('Unable to set application key. No APP_KEY variable was found in the .env file.');
+
+            return false;
+        }
+
+        file_put_contents($this->laravel->environmentFilePath(), $replaced);
+
+        return true;
     }
 
     /**

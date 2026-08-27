@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，月天字段
+ * Cron，月日字段
  */
 
 declare(strict_types=1);
@@ -12,7 +12,7 @@ use DateTimeInterface;
 
 /**
  * Day of month field.  Allows: * , / - ? L W.
- * 月天。允许:*,/ - ?L W。
+ * 日期字段。允许：*，/ - ？L W。
  *
  * 'L' stands for "last" and specifies the last day of the month.
  *
@@ -43,7 +43,7 @@ class DayOfMonthField extends AbstractField
 
     /**
      * Get the nearest day of the week for a given day in a month.
-	 * 在一个月的一个月里度过最最近的一天
+	 * 获取一个月中给定的某一天中最接近的一天
      *
      * @param int $currentYear Current year
      * @param int $currentMonth Current month

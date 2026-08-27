@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，有一个通过
+ * Illuminate，数据库，Eloquent，关系，有一
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -58,7 +58,7 @@ class HasOneThrough extends HasManyThrough
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 一旦我们有了字典，我们可以简单地通过父模型旋转到用关键字字典把他们和他们的孩子联系起来。
+		// 有了字典之后，我们可以简单地通过父模型旋转到。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $this->getDictionaryKey($model->getAttribute($this->localKey))])) {
                 $value = $dictionary[$key];

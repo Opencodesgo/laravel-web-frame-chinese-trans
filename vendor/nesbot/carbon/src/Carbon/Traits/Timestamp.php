@@ -16,7 +16,7 @@ namespace Carbon\Traits;
 
 /**
  * Trait Timestamp.
- * 时间戳特征。
+ * 时间戳特征
  */
 trait Timestamp
 {
@@ -60,6 +60,7 @@ trait Timestamp
 
     /**
      * Create a Carbon instance from a timestamp in milliseconds.
+	 * 从以毫秒为单位的时间戳创建一个Carbon实例。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -84,6 +85,7 @@ trait Timestamp
 
     /**
      * Create a Carbon instance from a timestamp in milliseconds.
+	 * 从以毫秒为单位的时间戳创建一个Carbon实例。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -100,6 +102,7 @@ trait Timestamp
 
     /**
      * Set the instance's timestamp.
+	 * 设置实例的时间戳。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -137,6 +140,7 @@ trait Timestamp
 
     /**
      * Returns the milliseconds timestamps used amongst other by Date javascript objects.
+	 * 返回由Date javascript对象使用的毫秒时间戳。
      *
      * @return float
      */
@@ -147,7 +151,7 @@ trait Timestamp
 
     /**
      * Returns the timestamp with millisecond precision.
-	 * 返回毫秒精度的时间戳
+	 * 返回由Date javascript对象使用的毫秒时间戳
      *
      * @return int
      */

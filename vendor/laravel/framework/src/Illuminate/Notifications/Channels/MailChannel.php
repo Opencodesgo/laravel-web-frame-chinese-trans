@@ -12,6 +12,8 @@ use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Symfony\Component\Mailer\Header\MetadataHeader;
+use Symfony\Component\Mailer\Header\TagHeader;
 
 class MailChannel
 {
@@ -25,7 +27,7 @@ class MailChannel
 
     /**
      * The markdown implementation.
-	 * 降价实现
+	 * markdownp实现
      *
      * @var \Illuminate\Mail\Markdown
      */
@@ -47,7 +49,7 @@ class MailChannel
 
     /**
      * Send the given notification.
-	 * 发送给定的通知
+	 * 发送给定通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -75,7 +77,7 @@ class MailChannel
 
     /**
      * Get the mailer Closure for the message.
-	 * 得到邮件的邮件封包
+	 * 获取邮件的邮件封包
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -152,7 +154,19 @@ class MailChannel
         $this->addAttachments($mailMessage, $message);
 
         if (! is_null($message->priority)) {
-            $mailMessage->setPriority($message->priority);
+            $mailMessage->priority($message->priority);
+        }
+
+        if ($message->tags) {
+            foreach ($message->tags as $tag) {
+                $mailMessage->getHeaders()->add(new TagHeader($tag));
+            }
+        }
+
+        if ($message->metadata) {
+            foreach ($message->metadata as $key => $value) {
+                $mailMessage->getHeaders()->add(new MetadataHeader($key, $value));
+            }
         }
 
         $this->runCallbacks($mailMessage, $message);
@@ -210,7 +224,7 @@ class MailChannel
 
     /**
      * Get the recipients of the given message.
-	 * 得到给定消息的收件人
+	 * 获取给定消息的收件人
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -260,7 +274,7 @@ class MailChannel
     protected function runCallbacks($mailMessage, $message)
     {
         foreach ($message->callbacks as $callback) {
-            $callback($mailMessage->getSwiftMessage());
+            $callback($mailMessage->getSymfonyMessage());
         }
 
         return $this;

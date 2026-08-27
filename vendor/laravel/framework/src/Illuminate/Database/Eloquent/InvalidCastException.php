@@ -35,7 +35,7 @@ class InvalidCastException extends RuntimeException
 
     /**
      * Create a new exception instance.
-	 * 创建一个新的异常实例
+	 * 创建新的异常实例
      *
      * @param  object  $model
      * @param  string  $column

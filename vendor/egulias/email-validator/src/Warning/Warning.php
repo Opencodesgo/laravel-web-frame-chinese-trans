@@ -1,10 +1,16 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，Warning
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
 abstract class Warning
 {
-    const CODE = 0;
+    /**
+     * @var int CODE
+     */
+    public const CODE = 0;
 
     /**
      * @var string
@@ -29,7 +35,7 @@ abstract class Warning
      */
     public function code()
     {
-        return static::CODE;
+        return self::CODE;
     }
 
     /**
@@ -40,8 +46,11 @@ abstract class Warning
         return $this->rfcNumber;
     }
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
-        return $this->message() . " rfc: " .  $this->rfcNumber . "interal code: " . static::CODE;
+        return $this->message() . " rfc: " .  $this->rfcNumber . "internal code: " . static::CODE;
     }
 }

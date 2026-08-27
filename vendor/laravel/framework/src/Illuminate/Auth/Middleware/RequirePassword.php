@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，中间件，需要密码
+ * Illuminate，认证，中间件，需要密码，表示必须输入正确的密码才能继续
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -37,7 +37,7 @@ class RequirePassword
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Routing\ResponseFactory  $responseFactory
      * @param  \Illuminate\Contracts\Routing\UrlGenerator  $urlGenerator
@@ -58,11 +58,12 @@ class RequirePassword
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string|null  $redirectToRoute
+     * @param  int|null  $passwordTimeoutSeconds
      * @return mixed
      */
-    public function handle($request, Closure $next, $redirectToRoute = null)
+    public function handle($request, Closure $next, $redirectToRoute = null, $passwordTimeoutSeconds = null)
     {
-        if ($this->shouldConfirmPassword($request)) {
+        if ($this->shouldConfirmPassword($request, $passwordTimeoutSeconds)) {
             if ($request->expectsJson()) {
                 return $this->responseFactory->json([
                     'message' => 'Password confirmation required.',
@@ -82,12 +83,13 @@ class RequirePassword
 	 * 确定确认超时是否已过期
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int|null  $passwordTimeoutSeconds
      * @return bool
      */
-    protected function shouldConfirmPassword($request)
+    protected function shouldConfirmPassword($request, $passwordTimeoutSeconds = null)
     {
         $confirmedAt = time() - $request->session()->get('auth.password_confirmed_at', 0);
 
-        return $confirmedAt > $this->passwordTimeout;
+        return $confirmedAt > ($passwordTimeoutSeconds ?? $this->passwordTimeout);
     }
 }

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，Framework，执行顺序依赖性
+ * PHPUnit，框架，执行顺序依赖性
  */
 
 /*
@@ -51,6 +51,7 @@ final class ExecutionOrderDependency
     public static function createFromDependsAnnotation(string $className, string $annotation): self
     {
         // Split clone option and target
+		// 分裂克隆选项和目标
         $parts = explode(' ', trim($annotation), 2);
 
         if (count($parts) === 1) {

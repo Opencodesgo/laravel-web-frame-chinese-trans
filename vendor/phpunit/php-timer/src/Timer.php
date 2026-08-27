@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，定时器，Timer
+ * SebastianBergmann，Timer，Timer
  */
 
 /*

@@ -1,9 +1,11 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，编译循环
+ * Illuminate，视图，编译器，问题，编译循环
  */
 
 namespace Illuminate\View\Compilers\Concerns;
+
+use Illuminate\Contracts\View\ViewCompilationException;
 
 trait CompilesLoops
 {
@@ -21,12 +23,18 @@ trait CompilesLoops
      *
      * @param  string  $expression
      * @return string
+     *
+     * @throws \Illuminate\Contracts\View\ViewCompilationException
      */
     protected function compileForelse($expression)
     {
         $empty = '$__empty_'.++$this->forElseCounter;
 
-        preg_match('/\( *(.*) +as *(.*)\)$/is', $expression, $matches);
+        preg_match('/\( *(.+) +as +(.+)\)$/is', $expression ?? '', $matches);
+
+        if (count($matches) === 0) {
+            throw new ViewCompilationException('Malformed @forelse statement.');
+        }
 
         $iteratee = trim($matches[1]);
 
@@ -97,10 +105,16 @@ trait CompilesLoops
      *
      * @param  string  $expression
      * @return string
+     *
+     * @throws \Illuminate\Contracts\View\ViewCompilationException
      */
     protected function compileForeach($expression)
     {
-        preg_match('/\( *(.*) +as *(.*)\)$/is', $expression, $matches);
+        preg_match('/\( *(.+) +as +(.*)\)$/is', $expression ?? '', $matches);
+
+        if (count($matches) === 0) {
+            throw new ViewCompilationException('Malformed @foreach statement.');
+        }
 
         $iteratee = trim($matches[1]);
 

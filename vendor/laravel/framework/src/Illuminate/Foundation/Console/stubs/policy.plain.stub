@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，基本策略
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};

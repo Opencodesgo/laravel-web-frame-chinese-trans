@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，储存，模拟阵列会话存储
+ * Symfony，Component，HttpFoundation，会话，存储，模拟阵列会话存储
  */
 
 /*
@@ -72,15 +72,15 @@ class MockArraySessionStorage implements SessionStorageInterface
         $this->setMetadataBag($metaBag);
     }
 
+    /**
+     * @return void
+     */
     public function setSessionData(array $array)
     {
         $this->data = $array;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function start()
+    public function start(): bool
     {
         if ($this->started) {
             return true;
@@ -95,10 +95,7 @@ class MockArraySessionStorage implements SessionStorageInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function regenerate(bool $destroy = false, ?int $lifetime = null)
+    public function regenerate(bool $destroy = false, ?int $lifetime = null): bool
     {
         if (!$this->started) {
             $this->start();
@@ -110,16 +107,13 @@ class MockArraySessionStorage implements SessionStorageInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function setId(string $id)
     {
@@ -130,16 +124,13 @@ class MockArraySessionStorage implements SessionStorageInterface
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function setName(string $name)
     {
@@ -147,7 +138,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function save()
     {
@@ -160,7 +151,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function clear()
     {
@@ -177,20 +168,17 @@ class MockArraySessionStorage implements SessionStorageInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function registerBag(SessionBagInterface $bag)
     {
         $this->bags[$bag->getName()] = $bag;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBag(string $name)
+    public function getBag(string $name): SessionBagInterface
     {
         if (!isset($this->bags[$name])) {
-            throw new \InvalidArgumentException(sprintf('The SessionBagInterface "%s" is not registered.', $name));
+            throw new \InvalidArgumentException(\sprintf('The SessionBagInterface "%s" is not registered.', $name));
         }
 
         if (!$this->started) {
@@ -200,52 +188,53 @@ class MockArraySessionStorage implements SessionStorageInterface
         return $this->bags[$name];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isStarted()
+    public function isStarted(): bool
     {
         return $this->started;
     }
 
+    /**
+     * @return void
+     */
     public function setMetadataBag(?MetadataBag $bag = null)
     {
-        if (null === $bag) {
-            $bag = new MetadataBag();
+        if (1 > \func_num_args()) {
+            trigger_deprecation('symfony/http-foundation', '6.2', 'Calling "%s()" without any arguments is deprecated, pass null explicitly instead.', __METHOD__);
         }
-
-        $this->metadataBag = $bag;
+        $this->metadataBag = $bag ?? new MetadataBag();
     }
 
     /**
      * Gets the MetadataBag.
 	 * 获取元数据包
-     *
-     * @return MetadataBag
      */
-    public function getMetadataBag()
+    public function getMetadataBag(): MetadataBag
     {
         return $this->metadataBag;
     }
 
     /**
      * Generates a session ID.
-	 * 生成会话ID
+	 * 生成会话ID。
      *
-     * @return string
+     * This doesn't need to be particularly cryptographically secure since this is just
+     * a mock.
      */
-    protected function generateId()
+    protected function generateId(): string
     {
         return bin2hex(random_bytes(16));
     }
 
+    /**
+     * @return void
+     */
     protected function loadSession()
     {
         $bags = array_merge($this->bags, [$this->metadataBag]);
 
         foreach ($bags as $bag) {
             $key = $bag->getStorageKey();
-            $this->data[$key] = $this->data[$key] ?? [];
+            $this->data[$key] ??= [];
             $bag->initialize($this->data[$key]);
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，异常，否定节点
+ * Symfony，Component，CssSelector，节点，否定节点
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>:not(<identifier>)" node.
- * 表示一个“<selector>:not(<identifier>)”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,8 +26,8 @@ namespace Symfony\Component\CssSelector\Node;
  */
 class NegationNode extends AbstractNode
 {
-    private $selector;
-    private $subSelector;
+    private NodeInterface $selector;
+    private NodeInterface $subSelector;
 
     public function __construct(NodeInterface $selector, NodeInterface $subSelector)
     {
@@ -46,9 +45,6 @@ class NegationNode extends AbstractNode
         return $this->subSelector;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSpecificity(): Specificity
     {
         return $this->selector->getSpecificity()->plus($this->subSelector->getSpecificity());
@@ -56,6 +52,6 @@ class NegationNode extends AbstractNode
 
     public function __toString(): string
     {
-        return sprintf('%s[%s:not(%s)]', $this->getNodeName(), $this->selector, $this->subSelector);
+        return \sprintf('%s[%s:not(%s)]', $this->getNodeName(), $this->selector, $this->subSelector);
     }
 }

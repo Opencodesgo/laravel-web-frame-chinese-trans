@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，引用
+ * League，CommonMark，参考，参考
  */
 
 declare(strict_types=1);

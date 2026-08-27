@@ -8,16 +8,31 @@ namespace Illuminate\Notifications\Console;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'notifications:table')]
 class NotificationTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
     protected $name = 'notifications:table';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'notifications:table';
 
     /**
      * The console command description.
@@ -68,7 +83,7 @@ class NotificationTableCommand extends Command
 
         $this->files->put($fullPath, $this->files->get(__DIR__.'/stubs/notifications.stub'));
 
-        $this->info('Migration created successfully!');
+        $this->components->info('Migration created successfully.');
 
         $this->composer->dumpAutoloads();
     }

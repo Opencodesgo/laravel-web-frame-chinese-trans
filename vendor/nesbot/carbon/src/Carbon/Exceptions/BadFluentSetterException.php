@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，糟糕流畅的Setter异常
+ * Carbon，异常，错误的流畅 Setter异常 
  */
 
 /**

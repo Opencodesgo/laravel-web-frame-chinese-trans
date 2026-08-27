@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，倍比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -14,6 +19,7 @@ use function is_numeric;
 
 /**
  * Compares doubles for equality.
+ * 比较双精度是否相等。
  *
  * @deprecated since v3.0.5 and v4.0.8
  */
@@ -21,6 +27,7 @@ class DoubleComparator extends NumericComparator
 {
     /**
      * Smallest value available in PHP.
+	 * PHP中可用的最小值
      *
      * @var float
      */
@@ -28,6 +35,7 @@ class DoubleComparator extends NumericComparator
 
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器是否可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare
@@ -41,6 +49,7 @@ class DoubleComparator extends NumericComparator
 
     /**
      * Asserts that two values are equal.
+	 * 断言两个值是否相等
      *
      * @param mixed $expected     First value to compare
      * @param mixed $actual       Second value to compare

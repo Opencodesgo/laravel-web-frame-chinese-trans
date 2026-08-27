@@ -7,6 +7,7 @@ namespace Illuminate\Container;
 
 use Countable;
 use IteratorAggregate;
+use Traversable;
 
 class RewindableGenerator implements Countable, IteratorAggregate
 {
@@ -20,7 +21,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
 
     /**
      * The number of tagged services.
-	 * 标记服务的数量
+	 * 已标记服务的数量
      *
      * @var callable|int
      */
@@ -44,10 +45,9 @@ class RewindableGenerator implements Countable, IteratorAggregate
      * Get an iterator from the generator.
 	 * 从生成器获取迭代器
      *
-     * @return mixed
+     * @return \Traversable
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return ($this->generator)();
     }
@@ -58,8 +58,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         if (is_callable($count = $this->count)) {
             $this->count = $count();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，资源集合
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -11,7 +11,7 @@ class {{ class }} extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
-	 * 转换资源集合为数组
+	 * 将资源集合转换为数组
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable

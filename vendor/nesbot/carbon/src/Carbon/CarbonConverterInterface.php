@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Carbon 变换器接口
+ * Carbon，Carbon 转化器接口
  */
 
 /**

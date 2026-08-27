@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\Command;
 
 /**
  * Interface for command reacting to signal.
- * 命令对信号作出反应的接口
+ * 命令对信号作出反应的接口。
  *
  * @author Grégoire Pineau <lyrixx@lyrix.info>
  */
@@ -24,13 +24,17 @@ interface SignalableCommandInterface
 {
     /**
      * Returns the list of signals to subscribe.
-	 * 返回订阅的信号列表
+	 * 返回要订阅的信号列表
      */
     public function getSubscribedSignals(): array;
 
     /**
      * The method will be called when the application is signaled.
-	 * 当应用程序发出信号时,该方法将被调用
+	 * 该方法将在应用程序收到信号时调用
+     *
+     * @param int|false $previousExitCode
+     *
+     * @return int|false The exit code to return or false to continue the normal execution
      */
-    public function handleSignal(int $signal): void;
+    public function handleSignal(int $signal/* , int|false $previousExitCode = 0 */);
 }

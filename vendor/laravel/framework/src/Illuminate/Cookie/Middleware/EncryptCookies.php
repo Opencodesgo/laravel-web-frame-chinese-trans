@@ -27,13 +27,13 @@ class EncryptCookies
      * The names of the cookies that should not be encrypted.
 	 * 不应加密的cookie的名称
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [];
 
     /**
      * Indicates if cookies should be serialized.
-	 * 指明是否应该序列化cookie
+	 * 指示是否应该序列化cookie
      *
      * @var bool
      */
@@ -86,24 +86,54 @@ class EncryptCookies
     protected function decrypt(Request $request)
     {
         foreach ($request->cookies as $key => $cookie) {
-            if ($this->isDisabled($key) || is_array($cookie)) {
+            if ($this->isDisabled($key)) {
                 continue;
             }
 
             try {
                 $value = $this->decryptCookie($key, $cookie);
 
-                $hasValidPrefix = strpos($value, CookieValuePrefix::create($key, $this->encrypter->getKey())) === 0;
-
-                $request->cookies->set(
-                    $key, $hasValidPrefix ? CookieValuePrefix::remove($value) : null
-                );
+                $request->cookies->set($key, $this->validateValue($key, $value));
             } catch (DecryptException $e) {
                 $request->cookies->set($key, null);
             }
         }
 
         return $request;
+    }
+
+    /**
+     * Validate and remove the cookie value prefix from the value.
+	 * 验证并从值中删除cookie值前缀
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return string|array|null
+     */
+    protected function validateValue(string $key, $value)
+    {
+        return is_array($value)
+                    ? $this->validateArray($key, $value)
+                    : CookieValuePrefix::validate($key, $value, $this->encrypter->getKey());
+    }
+
+    /**
+     * Validate and remove the cookie value prefix from all values of an array.
+	 * 验证并从数组的所有值中删除cookie值前缀
+     *
+     * @param  string  $key
+     * @param  array  $value
+     * @return array
+     */
+    protected function validateArray(string $key, array $value)
+    {
+        $validated = [];
+
+        foreach ($value as $index => $subValue) {
+            $validated[$index] = $this->validateValue("{$key}[{$index}]", $subValue);
+        }
+
+        return $validated;
     }
 
     /**
@@ -135,6 +165,10 @@ class EncryptCookies
         foreach ($cookie as $key => $value) {
             if (is_string($value)) {
                 $decrypted[$key] = $this->encrypter->decrypt($value, static::serialized($key));
+            }
+
+            if (is_array($value)) {
+                $decrypted[$key] = $this->decryptArray($value);
             }
         }
 

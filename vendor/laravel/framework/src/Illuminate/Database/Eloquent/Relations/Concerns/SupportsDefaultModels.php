@@ -11,10 +11,9 @@ trait SupportsDefaultModels
 {
     /**
      * Indicates if a default model instance should be used.
-	 * 指明是否应使用默认模型实例
+	 * 指示是否应使用默认模型实例
      *
      * Alternatively, may be a Closure or array.
-	 * 也可以是闭包或数组
      *
      * @var \Closure|array|bool
      */

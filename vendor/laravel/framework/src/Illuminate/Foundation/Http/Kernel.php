@@ -1,22 +1,28 @@
 <?php
 /**
- * Illuminate，基础，Http，内核
+ * Illuminate, 基础, Http, 内核
  */
 
 namespace Illuminate\Foundation\Http;
 
+use Carbon\CarbonInterval;
+use DateTimeInterface;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\InteractsWithTime;
 use InvalidArgumentException;
 use Throwable;
 
 class Kernel implements KernelContract
 {
+    use InteractsWithTime;
+
     /**
      * The application implementation.
 	 * 应用实现
@@ -35,7 +41,7 @@ class Kernel implements KernelContract
 
     /**
      * The bootstrap classes for the application.
-	 * 应用的引导类
+	 * 应用程序的引导类
      *
      * @var string[]
      */
@@ -52,7 +58,7 @@ class Kernel implements KernelContract
      * The application's middleware stack.
 	 * 应用程序的中间件堆栈
      *
-     * @var array
+     * @var array<int, class-string|string>
      */
     protected $middleware = [];
 
@@ -60,17 +66,33 @@ class Kernel implements KernelContract
      * The application's route middleware groups.
 	 * 应用程序的路由中间件组
      *
-     * @var array
+     * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [];
 
     /**
      * The application's route middleware.
-	 * 应用的路由中间件
+	 * 应用程序的路由中间件
+     *
+     * @var array<string, class-string|string>
+     */
+    protected $routeMiddleware = [];
+
+    /**
+     * All of the registered request duration handlers.
+	 * 所有注册的请求持续时间处理程序
      *
      * @var array
      */
-    protected $routeMiddleware = [];
+    protected $requestLifecycleDurationHandlers = [];
+
+    /**
+     * When the kernel starting handling the current request.
+	 * 当内核开始处理当前请求时
+     *
+     * @var \Illuminate\Support\Carbon|null
+     */
+    protected $requestStartedAt;
 
     /**
      * The priority-sorted list of middleware.
@@ -82,20 +104,21 @@ class Kernel implements KernelContract
      * @var string[]
      */
     protected $middlewarePriority = [
+        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \Illuminate\Contracts\Session\Middleware\AuthenticatesSessions::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
     ];
 
     /**
      * Create a new HTTP kernel instance.
-	 * 创建新的HTTP内核实例
+	 * 创建一个新的HTTP内核实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Routing\Router  $router
@@ -111,13 +134,15 @@ class Kernel implements KernelContract
 
     /**
      * Handle an incoming HTTP request.
-	 * 处理传入HTTP请求
+	 * 处理传入的HTTP请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function handle($request)
     {
+        $this->requestStartedAt = Carbon::now();
+
         try {
             $request->enableHttpMethodParameterOverride();
 
@@ -197,6 +222,16 @@ class Kernel implements KernelContract
         $this->terminateMiddleware($request, $response);
 
         $this->app->terminate();
+
+        foreach ($this->requestLifecycleDurationHandlers as ['threshold' => $threshold, 'handler' => $handler]) {
+            $end ??= Carbon::now();
+
+            if ($this->requestStartedAt->diffInMilliseconds($end) > $threshold) {
+                $handler($this->requestStartedAt, $request, $response);
+            }
+        }
+
+        $this->requestStartedAt = null;
     }
 
     /**
@@ -227,6 +262,41 @@ class Kernel implements KernelContract
                 $instance->terminate($request, $response);
             }
         }
+    }
+
+    /**
+     * Register a callback to be invoked when the requests lifecycle duration exceeds a given amount of time.
+	 * 注册一个回调，以便在请求生命周期持续时间超过给定时间时调用。
+     *
+     * @param  \DateTimeInterface|\Carbon\CarbonInterval|float|int  $threshold
+     * @param  callable  $handler
+     * @return void
+     */
+    public function whenRequestLifecycleIsLongerThan($threshold, $handler)
+    {
+        $threshold = $threshold instanceof DateTimeInterface
+            ? $this->secondsUntil($threshold) * 1000
+            : $threshold;
+
+        $threshold = $threshold instanceof CarbonInterval
+            ? $threshold->totalMilliseconds
+            : $threshold;
+
+        $this->requestLifecycleDurationHandlers[] = [
+            'threshold' => $threshold,
+            'handler' => $handler,
+        ];
+    }
+
+    /**
+     * When the request being handled started.
+	 * 被处理的请求何时开始
+     *
+     * @return \Illuminate\Support\Carbon|null
+     */
+    public function requestStartedAt()
+    {
+        return $this->requestStartedAt;
     }
 
     /**
@@ -265,7 +335,7 @@ class Kernel implements KernelContract
 
     /**
      * Determine if the kernel has a given middleware.
-	 * 确定是否内核有给定中间件
+	 * 确定内核是否有给定的中间件
      *
      * @param  string  $middleware
      * @return bool
@@ -448,7 +518,7 @@ class Kernel implements KernelContract
 
     /**
      * Render the exception to a response.
-	 * 呈现响应异常
+	 * 将异常呈现给响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Throwable  $e
@@ -472,7 +542,7 @@ class Kernel implements KernelContract
 
     /**
      * Get the application's route middleware.
-	 * 得到应用中由中间件
+	 * 获取应用程序的路由中间件
      *
      * @return array
      */
@@ -483,7 +553,7 @@ class Kernel implements KernelContract
 
     /**
      * Get the Laravel application instance.
-	 * 得到应用实例
+	 * 获取Laravel应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -494,7 +564,7 @@ class Kernel implements KernelContract
 
     /**
      * Set the Laravel application instance.
-	 * 设置应用实例
+	 * 设置Laravel应用实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return $this

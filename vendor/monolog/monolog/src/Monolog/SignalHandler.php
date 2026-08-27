@@ -90,6 +90,7 @@ class SignalHandler
         if (!$signals && extension_loaded('pcntl')) {
             $pcntl = new ReflectionExtension('pcntl');
             // HHVM 3.24.2 returns an empty array.
+			// HHVM 3.24.2返回一个空数组。
             foreach ($pcntl->getConstants() ?: get_defined_constants(true)['Core'] as $name => $value) {
                 if (substr($name, 0, 3) === 'SIG' && $name[3] !== '_' && is_int($value)) {
                     $signals[$value] = $name;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Is Equal
+ * Hamcrest，核心，是否相等
  */
 
 namespace Hamcrest\Core;
@@ -14,7 +14,7 @@ use Hamcrest\Description;
 /**
  * Is the value equal to another value, as tested by the use of the "=="
  * comparison operator?
- * 该值是否等于另一个值，通过使用“==”比较运算符进行测试？
+ * 值是否等于另一个值,就像使用"=="比较操作符一样?
  */
 class IsEqual extends BaseMatcher
 {

@@ -9,7 +9,7 @@ interface CursorPaginator
 {
     /**
      * Get the URL for a given cursor.
-	 * 获取给定游标的URL
+	 * 得到给定游标的URL
      *
      * @param  \Illuminate\Pagination\Cursor|null  $cursor
      * @return string
@@ -37,7 +37,7 @@ interface CursorPaginator
 
     /**
      * Get the URL for the previous page, or null.
-	 * 获取前一页的URL，否则为空
+	 * 获取前一页的URL，否则为空。
      *
      * @return string|null
      */

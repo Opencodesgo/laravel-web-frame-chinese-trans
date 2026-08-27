@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Apc 封装器
+ * Illuminate，缓存，Apc封装器
  */
 
 namespace Illuminate\Cache;
@@ -17,7 +17,7 @@ class ApcWrapper
 
     /**
      * Create a new APC wrapper instance.
-	 * 创建一个新的APC封装器实例
+	 * 创建一个新的APC包装器实例
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class ApcWrapper
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项的值
+	 * 减少缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value

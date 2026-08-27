@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，数学，计算器接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -20,87 +23,111 @@ use Ramsey\Uuid\Type\NumberInterface;
 
 /**
  * A calculator performs arithmetic operations on numbers
+ * 计算器对数字进行算术运算
  *
- * @psalm-immutable
+ * @immutable
  */
 interface CalculatorInterface
 {
     /**
      * Returns the sum of all the provided parameters
+	 * 返回所有提供参数的和
      *
      * @param NumberInterface $augend The first addend (the integer being added to)
      * @param NumberInterface ...$addends The additional integers to a add to the augend
      *
      * @return NumberInterface The sum of all the parameters
+     *
+     * @pure
      */
     public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface;
 
     /**
      * Returns the difference of all the provided parameters
+	 * 返回所有提供的参数之差
      *
      * @param NumberInterface $minuend The integer being subtracted from
      * @param NumberInterface ...$subtrahends The integers to subtract from the minuend
      *
      * @return NumberInterface The difference after subtracting all parameters
+     *
+     * @pure
      */
     public function subtract(NumberInterface $minuend, NumberInterface ...$subtrahends): NumberInterface;
 
     /**
      * Returns the product of all the provided parameters
+	 * 返回所有提供参数的乘积
      *
      * @param NumberInterface $multiplicand The integer to be multiplied
      * @param NumberInterface ...$multipliers The factors by which to multiply the multiplicand
      *
      * @return NumberInterface The product of multiplying all the provided parameters
+     *
+     * @pure
      */
     public function multiply(NumberInterface $multiplicand, NumberInterface ...$multipliers): NumberInterface;
 
     /**
      * Returns the quotient of the provided parameters divided left-to-right
+	 * 返回所提供参数从左到右除以的商
      *
      * @param int $roundingMode The RoundingMode constant to use for this operation
      * @param int $scale The scale to use for this operation
      * @param NumberInterface $dividend The integer to be divided
-     * @param NumberInterface ...$divisors The integers to divide $dividend by, in
-     *     the order in which the division operations should take place
-     *     (left-to-right)
+     * @param NumberInterface ...$divisors The integers to divide $dividend by, in the order in which the division
+     *     operations should take place (left-to-right)
      *
      * @return NumberInterface The quotient of dividing the provided parameters left-to-right
+     *
+     * @pure
      */
     public function divide(
         int $roundingMode,
         int $scale,
         NumberInterface $dividend,
-        NumberInterface ...$divisors
+        NumberInterface ...$divisors,
     ): NumberInterface;
 
     /**
      * Converts a value from an arbitrary base to a base-10 integer value
+	 * 将值从任意基数转换为以10为基数的整数值
      *
      * @param string $value The value to convert
      * @param int $base The base to convert from (i.e., 2, 16, 32, etc.)
      *
      * @return IntegerObject The base-10 integer value of the converted value
+     *
+     * @pure
      */
     public function fromBase(string $value, int $base): IntegerObject;
 
     /**
      * Converts a base-10 integer value to an arbitrary base
+	 * 将以10为基数的整数值转换为任意基数
      *
      * @param IntegerObject $value The integer value to convert
      * @param int $base The base to convert to (i.e., 2, 16, 32, etc.)
      *
      * @return string The value represented in the specified base
+     *
+     * @pure
      */
     public function toBase(IntegerObject $value, int $base): string;
 
     /**
      * Converts an Integer instance to a Hexadecimal instance
+	 * 将整型实例转换为十六进制实例
+     *
+     * @pure
      */
     public function toHexadecimal(IntegerObject $value): Hexadecimal;
 
     /**
      * Converts a Hexadecimal instance to an Integer instance
+	 * 将十六进制实例转换为整数实例
+     *
+     * @pure
      */
     public function toInteger(Hexadecimal $value): IntegerObject;
 }

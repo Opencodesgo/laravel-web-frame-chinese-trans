@@ -11,7 +11,7 @@ class FilesystemServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
-	 * 注册服务提供者
+	 * 注册服务提供程序
      *
      * @return void
      */

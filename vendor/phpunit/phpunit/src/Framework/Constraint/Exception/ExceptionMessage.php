@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，异常消息
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -40,6 +45,7 @@ final class ExceptionMessage extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @param Throwable $other
      */
@@ -54,6 +60,7 @@ final class ExceptionMessage extends Constraint
 
     /**
      * Returns the description of the failure.
+	 * 返回失败的描述。
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.

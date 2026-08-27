@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，反射语言构造参数
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Reflection;
 
 /**
  * A fake ReflectionParameter but for language construct parameters.
+ * 一个假的ReflectionParameter，但用于语言构造参数。
  *
  * It stubs out all the important bits and returns whatever was passed in $opts.
  */
@@ -38,6 +42,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * No class here.
+	 * 这里没有课
      */
     public function getClass(): ?\ReflectionClass
     {
@@ -46,6 +51,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * Is the param an array?
+	 * 参数是一个数组吗？
      *
      * @return bool
      */
@@ -56,6 +62,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * Get param default value.
+	 * 获取参数的默认值
      *
      * @todo remove \ReturnTypeWillChange attribute after dropping support for PHP 7.x (when we can use mixed type)
      *
@@ -73,6 +80,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * Get param name.
+	 * 获取参数名
      *
      * @return string
      */
@@ -83,6 +91,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * Is the param optional?
+	 * 参数是可选的吗？
      *
      * @return bool
      */
@@ -93,6 +102,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * Does the param have a default value?
+	 * 参数是否有默认值
      *
      * @return bool
      */
@@ -103,6 +113,7 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter
 
     /**
      * Is the param passed by reference?
+	 * 参数是通过引用传递的吗
      *
      * (I don't think this is true for anything we need to fake a param for)
      *

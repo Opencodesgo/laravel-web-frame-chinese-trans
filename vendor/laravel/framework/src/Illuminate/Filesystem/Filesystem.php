@@ -9,6 +9,7 @@ use ErrorException;
 use FilesystemIterator;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
 use SplFileObject;
@@ -18,11 +19,12 @@ use Symfony\Component\Mime\MimeTypes;
 
 class Filesystem
 {
+    use Conditionable;
     use Macroable;
 
     /**
      * Determine if a file or directory exists.
-	 * 确定文件或目录是否存在
+	 * 确定是否文件或目录存在
      *
      * @param  string  $path
      * @return bool
@@ -46,7 +48,7 @@ class Filesystem
 
     /**
      * Get the contents of a file.
-	 * 获取文件的内容
+	 * 得到文件内容
      *
      * @param  string  $path
      * @param  bool  $lock
@@ -121,7 +123,7 @@ class Filesystem
 
     /**
      * Require the given file once.
-	 * 需求给定的文件一次
+	 * 引入给定的文件一次
      *
      * @param  string  $path
      * @param  array  $data
@@ -174,15 +176,16 @@ class Filesystem
     }
 
     /**
-     * Get the MD5 hash of the file at the given path.
-	 * 获取给定路径上文件的MD5哈希值
+     * Get the hash of the file at the given path.
+	 * 获取给定路径上文件的哈希值
      *
      * @param  string  $path
+     * @param  string  $algorithm
      * @return string
      */
-    public function hash($path)
+    public function hash($path, $algorithm = 'md5')
     {
-        return md5_file($path);
+        return hash_file($algorithm, $path);
     }
 
     /**
@@ -205,9 +208,10 @@ class Filesystem
      *
      * @param  string  $path
      * @param  string  $content
+     * @param  int|null  $mode
      * @return void
      */
-    public function replace($path, $content)
+    public function replace($path, $content, $mode = null)
     {
         // If the path already exists and is a symlink, get the real path...
         clearstatcache(true, $path);
@@ -217,8 +221,11 @@ class Filesystem
         $tempPath = tempnam(dirname($path), basename($path));
 
         // Fix permissions of tempPath because `tempnam()` creates it with permissions set to 0600...
-		// 修复tempPath的权限，因为'tempnam()'创建它时权限设置为0600…
-        chmod($tempPath, 0777 - umask());
+        if (! is_null($mode)) {
+            chmod($tempPath, $mode);
+        } else {
+            chmod($tempPath, 0777 - umask());
+        }
 
         file_put_contents($tempPath, $content);
 
@@ -329,7 +336,7 @@ class Filesystem
 
     /**
      * Copy a file to a new location.
-	 * 复制文件到新位置
+	 * 将文件复制到新位置
      *
      * @param  string  $path
      * @param  string  $target
@@ -379,7 +386,7 @@ class Filesystem
 
         $relativeTarget = (new SymfonyFilesystem)->makePathRelative($target, dirname($link));
 
-        $this->link($relativeTarget, $link);
+        $this->link($this->isFile($target) ? rtrim($relativeTarget, '/') : $relativeTarget, $link);
     }
 
     /**
@@ -511,6 +518,19 @@ class Filesystem
     }
 
     /**
+     * Determine if the given path is a directory that does not contain any other files or directories.
+	 * 确定给定的路径是否为不包含任何其他文件或目录的目录
+     *
+     * @param  string  $directory
+     * @param  bool  $ignoreDotFiles
+     * @return bool
+     */
+    public function isEmptyDirectory($directory, $ignoreDotFiles = false)
+    {
+        return ! Finder::create()->ignoreDotFiles($ignoreDotFiles)->in($directory)->depth(0)->hasResults();
+    }
+
+    /**
      * Determine if the given path is readable.
 	 * 确定给定的路径是否可读
      *
@@ -532,6 +552,21 @@ class Filesystem
     public function isWritable($path)
     {
         return is_writable($path);
+    }
+
+    /**
+     * Determine if two files are the same by comparing their hashes.
+	 * 通过比较两个文件的哈希值来确定它们是否相同
+     *
+     * @param  string  $firstFile
+     * @param  string  $secondFile
+     * @return bool
+     */
+    public function hasSameHash($firstFile, $secondFile)
+    {
+        $hash = @md5_file($firstFile);
+
+        return $hash && $hash === @md5_file($secondFile);
     }
 
     /**
@@ -627,7 +662,7 @@ class Filesystem
 
     /**
      * Create a directory.
-	 * 创建目录
+	 * 创建一个目录
      *
      * @param  string  $path
      * @param  int  $mode
@@ -665,7 +700,6 @@ class Filesystem
     /**
      * Copy a directory from one location to another.
 	 * 将目录从一个位置复制到另一个位置
-	 * 
      *
      * @param  string  $directory
      * @param  string  $destination
@@ -683,7 +717,7 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-		// 如果目标目录实际上不存在，我们将继续递归地创建它。
+		// 如果目标目录实际上不存在，我们将继续执行。
         $this->ensureDirectoryExists($destination, 0777);
 
         $items = new FilesystemIterator($directory, $options);
@@ -692,7 +726,7 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
-			// 在遍历项时，我们将检查当前文件实际上是否目录或文件。
+			// 在遍历项时，我们将检查当前文件是否实际为一个目录或文件。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -706,11 +740,9 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
-			// 如果当前项目只是一个常规文件，我们将把它复制到新的定位并循环。
-            else {
-                if (! $this->copy($item->getPathname(), $target)) {
-                    return false;
-                }
+			// 如果当前项目只是一个常规文件，我们将把它复制到新的定位并继续循环。
+            elseif (! $this->copy($item->getPathname(), $target)) {
+                return false;
             }
         }
 
@@ -739,7 +771,7 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
-			// 如果项是一个目录，我们可以递归到函数，否则删除该子目录。
+			// 如果项是一个目录，我们可以递归到函数且删除该子目录。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }

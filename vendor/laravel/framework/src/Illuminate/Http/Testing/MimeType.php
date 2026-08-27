@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，测试，MIME 类型
+ * Illuminate，Http，测试，MIME类型
  */
 
 namespace Illuminate\Http\Testing;
@@ -20,7 +20,7 @@ class MimeType
 
     /**
      * Get the mime types instance.
-	 * 得到mime类型实例
+	 * 获取mime类型实例
      *
      * @return \Symfony\Component\Mime\MimeTypesInterface
      */
@@ -49,7 +49,7 @@ class MimeType
 
     /**
      * Get the MIME type for a given extension or return all mimes.
-	 * 获取给定扩展的MIME类型或返回所有MIME
+	 * 获取给定扩展的MIME类型或返回所有MI
      *
      * @param  string  $extension
      * @return string

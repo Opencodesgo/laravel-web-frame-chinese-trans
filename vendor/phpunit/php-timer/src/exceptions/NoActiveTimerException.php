@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Timer，无 Active Timer异常
+ */
+
 /*
  * This file is part of phpunit/php-timer.
  *

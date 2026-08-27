@@ -67,7 +67,7 @@ final class Configuration implements ConfigurationBuilderInterface, Configuratio
 
     /**
      * Registers a new configuration schema at the given top-level key
-	 * 在给定的顶层键注册一个新的配置模式
+	 * 在给定的顶级键处注册新的配置模式
      *
      * @psalm-allow-private-mutation
      */
@@ -165,7 +165,7 @@ final class Configuration implements ConfigurationBuilderInterface, Configuratio
 
     /**
      * Applies the schema against the configuration to return the final configuration
-	 * 将模式应用于配置以返回最终配置
+	 * 针对配置应用模式以返回最终配置
      *
      * @throws ValidationException|UnknownOptionException|InvalidPathException
      *

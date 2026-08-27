@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，环境变量
+ * Illuminate, 支持, 环境
  */
 
 namespace Illuminate\Support;
@@ -105,8 +105,6 @@ class Env
 
                 return $value;
             })
-            ->getOrCall(function () use ($default) {
-                return value($default);
-            });
+            ->getOrCall(fn () => value($default));
     }
 }

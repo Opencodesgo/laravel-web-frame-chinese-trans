@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Spot，列式猜测器
+ * Faker，ORM，地点，列类型猜测器
  */
 
 namespace Faker\ORM\Spot;

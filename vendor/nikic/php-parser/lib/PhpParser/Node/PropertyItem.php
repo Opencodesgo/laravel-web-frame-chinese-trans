@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，模型项目属性
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -13,6 +17,7 @@ class PropertyItem extends NodeAbstract {
 
     /**
      * Constructs a class property item node.
+	 * 构造类属性项节点
      *
      * @param string|Node\VarLikeIdentifier $name Name
      * @param null|Node\Expr $default Default value

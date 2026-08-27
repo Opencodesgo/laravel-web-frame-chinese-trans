@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，逻辑与
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,6 +21,7 @@ final class LogicalAnd extends BinaryOperator
 {
     /**
      * Returns the name of this operator.
+	 * 返回此操作符的名称
      */
     public function operator(): string
     {
@@ -24,6 +30,7 @@ final class LogicalAnd extends BinaryOperator
 
     /**
      * Returns this operator's precedence.
+	 * 返回此操作符的优先级
      *
      * @see https://www.php.net/manual/en/language.operators.precedence.php
      */
@@ -35,6 +42,7 @@ final class LogicalAnd extends BinaryOperator
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @param mixed $other value or object to evaluate
      */

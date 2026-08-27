@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，扩展，编号扩展
+ * Faker，扩展，编号扩展
  */
 
 namespace Faker\Extension;
@@ -12,7 +12,7 @@ interface NumberExtension extends Extension
 {
     /**
      * Returns a random number between $int1 and $int2 (any order)
-	 * 返回int1和$ int2之间的随机数(任何订单)
+	 * 返回$int1和$int2之间的随机数（任意顺序）
      *
      * @param int $min default to 0
      * @param int $max defaults to 32 bit max integer, ie 2147483647
@@ -23,12 +23,12 @@ interface NumberExtension extends Extension
 
     /**
      * Returns a random number between 0 and 9
+	 * 返回0到9之间的随机数
      */
     public function randomDigit(): int;
 
     /**
      * Generates a random digit, which cannot be $except
-	 * 生成一个随机数字,不能是$除外
      */
     public function randomDigitNot(int $except): int;
 
@@ -46,7 +46,7 @@ interface NumberExtension extends Extension
 
     /**
      * Returns a random integer with 0 to $nbDigits digits.
-	 * 返回一个随机整数,0到$ nb位数
+	 * 返回一个从0到$nbDigits的随机整数。
      *
      * The maximum value returned is mt_getrandmax()
      *

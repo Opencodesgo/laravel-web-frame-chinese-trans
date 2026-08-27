@@ -1253,7 +1253,7 @@ final class MimeType
 
     /**
      * Maps a file extensions to a mimetype.
-	 * 将文件扩展映射到mimetype
+	 * 将文件扩展名映射到mime类型
      *
      * @see https://raw.githubusercontent.com/jshttp/mime-db/master/db.json
      */

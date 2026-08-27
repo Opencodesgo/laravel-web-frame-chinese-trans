@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，zh_CN，日期时间
+ */
 
 namespace Faker\Provider\zh_CN;
 

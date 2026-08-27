@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Diff，输出，AbstractChunkOutputBuilder
+ */
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -16,6 +21,7 @@ abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
     /**
      * Takes input of the diff array and returns the common parts.
      * Iterates through diff line by line.
+	 * 接收差值数组的输入并返回共同部分，逐行遍历差值。
      */
     protected function getCommonChunks(array $diff, int $lineThreshold = 5): array
     {

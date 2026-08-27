@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，转储，上下文提供者，源上下文提供者
+ * Symfony，Component，VarDumper，转储器，内容提供程序，源上下文提供程序
  */
 
 /*
@@ -14,7 +14,8 @@
 
 namespace Symfony\Component\VarDumper\Dumper\ContextProvider;
 
-use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
+use Symfony\Component\ErrorHandler\ErrorRenderer\FileLinkFormatter;
+use Symfony\Component\HttpKernel\Debug\FileLinkFormatter as LegacyFileLinkFormatter;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\VarDumper;
@@ -22,19 +23,19 @@ use Twig\Template;
 
 /**
  * Tries to provide context from sources (class name, file, line, code excerpt, ...).
- * 试图从源(类名、文件、行、代码摘录、…)中提供上下文。
+ * 尝试从源（类名、文件、行、代码摘录等）提供上下文。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 final class SourceContextProvider implements ContextProviderInterface
 {
-    private $limit;
-    private $charset;
-    private $projectDir;
-    private $fileLinkFormatter;
+    private int $limit;
+    private ?string $charset;
+    private ?string $projectDir;
+    private FileLinkFormatter|LegacyFileLinkFormatter|null $fileLinkFormatter;
 
-    public function __construct(?string $charset = null, ?string $projectDir = null, ?FileLinkFormatter $fileLinkFormatter = null, int $limit = 9)
+    public function __construct(?string $charset = null, ?string $projectDir = null, FileLinkFormatter|LegacyFileLinkFormatter|null $fileLinkFormatter = null, int $limit = 9)
     {
         $this->charset = $charset;
         $this->projectDir = $projectDir;

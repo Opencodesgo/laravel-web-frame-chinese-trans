@@ -1,18 +1,18 @@
 <?php
 /**
- * app，提供者，Auth 认证服务提供者
+ * App, 提供者, 认证服务提供者
  */
 
 namespace App\Providers;
 
+// use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
-	 * 应用程序的策略映射
+     * The model to policy mappings for the application.
+	 * 应用程序的模型到策略映射
      *
      * @var array<class-string, class-string>
      */

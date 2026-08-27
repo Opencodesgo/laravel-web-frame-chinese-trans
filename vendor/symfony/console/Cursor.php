@@ -21,7 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Cursor
 {
-    private $output;
+    private OutputInterface $output;
+    /** @var resource */
     private $input;
 
     /**
@@ -36,9 +37,9 @@ final class Cursor
     /**
      * @return $this
      */
-    public function moveUp(int $lines = 1): self
+    public function moveUp(int $lines = 1): static
     {
-        $this->output->write(sprintf("\x1b[%dA", $lines));
+        $this->output->write(\sprintf("\x1b[%dA", $lines));
 
         return $this;
     }
@@ -46,9 +47,9 @@ final class Cursor
     /**
      * @return $this
      */
-    public function moveDown(int $lines = 1): self
+    public function moveDown(int $lines = 1): static
     {
-        $this->output->write(sprintf("\x1b[%dB", $lines));
+        $this->output->write(\sprintf("\x1b[%dB", $lines));
 
         return $this;
     }
@@ -56,9 +57,9 @@ final class Cursor
     /**
      * @return $this
      */
-    public function moveRight(int $columns = 1): self
+    public function moveRight(int $columns = 1): static
     {
-        $this->output->write(sprintf("\x1b[%dC", $columns));
+        $this->output->write(\sprintf("\x1b[%dC", $columns));
 
         return $this;
     }
@@ -66,9 +67,9 @@ final class Cursor
     /**
      * @return $this
      */
-    public function moveLeft(int $columns = 1): self
+    public function moveLeft(int $columns = 1): static
     {
-        $this->output->write(sprintf("\x1b[%dD", $columns));
+        $this->output->write(\sprintf("\x1b[%dD", $columns));
 
         return $this;
     }
@@ -76,9 +77,9 @@ final class Cursor
     /**
      * @return $this
      */
-    public function moveToColumn(int $column): self
+    public function moveToColumn(int $column): static
     {
-        $this->output->write(sprintf("\x1b[%dG", $column));
+        $this->output->write(\sprintf("\x1b[%dG", $column));
 
         return $this;
     }
@@ -86,9 +87,9 @@ final class Cursor
     /**
      * @return $this
      */
-    public function moveToPosition(int $column, int $row): self
+    public function moveToPosition(int $column, int $row): static
     {
-        $this->output->write(sprintf("\x1b[%d;%dH", $row + 1, $column));
+        $this->output->write(\sprintf("\x1b[%d;%dH", $row + 1, $column));
 
         return $this;
     }
@@ -96,7 +97,7 @@ final class Cursor
     /**
      * @return $this
      */
-    public function savePosition(): self
+    public function savePosition(): static
     {
         $this->output->write("\x1b7");
 
@@ -106,7 +107,7 @@ final class Cursor
     /**
      * @return $this
      */
-    public function restorePosition(): self
+    public function restorePosition(): static
     {
         $this->output->write("\x1b8");
 
@@ -116,7 +117,7 @@ final class Cursor
     /**
      * @return $this
      */
-    public function hide(): self
+    public function hide(): static
     {
         $this->output->write("\x1b[?25l");
 
@@ -126,7 +127,7 @@ final class Cursor
     /**
      * @return $this
      */
-    public function show(): self
+    public function show(): static
     {
         $this->output->write("\x1b[?25h\x1b[?0c");
 
@@ -139,7 +140,7 @@ final class Cursor
      *
      * @return $this
      */
-    public function clearLine(): self
+    public function clearLine(): static
     {
         $this->output->write("\x1b[2K");
 
@@ -148,7 +149,7 @@ final class Cursor
 
     /**
      * Clears all the output from the current line after the current position.
-	 * 在当前位置后,清除当前行的所有输出
+	 * 清除当前行在当前位置之后的所有输出
      */
     public function clearLineAfter(): self
     {
@@ -159,11 +160,11 @@ final class Cursor
 
     /**
      * Clears all the output from the cursors' current position to the end of the screen.
-	 * 将所有输出从光标的当前位置清除到屏幕的末尾
+	 * 清除从游标当前位置到屏幕末尾的所有输出
      *
      * @return $this
      */
-    public function clearOutput(): self
+    public function clearOutput(): static
     {
         $this->output->write("\x1b[0J");
 
@@ -176,7 +177,7 @@ final class Cursor
      *
      * @return $this
      */
-    public function clearScreen(): self
+    public function clearScreen(): static
     {
         $this->output->write("\x1b[2J");
 
@@ -185,17 +186,13 @@ final class Cursor
 
     /**
      * Returns the current cursor position as x,y coordinates.
-	 * 将当前游标位置返回为y坐标
+	 * 返回当前光标位置为x，y坐标
      */
     public function getCurrentPosition(): array
     {
         static $isTtySupported;
 
-        if (null === $isTtySupported && \function_exists('proc_open')) {
-            $isTtySupported = (bool) @proc_open('echo 1 >/dev/null', [['file', '/dev/tty', 'r'], ['file', '/dev/tty', 'w'], ['file', '/dev/tty', 'w']], $pipes);
-        }
-
-        if (!$isTtySupported) {
+        if (!$isTtySupported ??= '/' === \DIRECTORY_SEPARATOR && stream_isatty(\STDOUT)) {
             return [1, 1];
         }
 
@@ -206,7 +203,7 @@ final class Cursor
 
         $code = trim(fread($this->input, 1024));
 
-        shell_exec(sprintf('stty %s', $sttyMode));
+        shell_exec(\sprintf('stty %s', $sttyMode));
 
         sscanf($code, "\033[%d;%dR", $row, $col);
 

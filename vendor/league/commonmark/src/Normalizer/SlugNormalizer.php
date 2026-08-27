@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，标准化器，Slug 标准化器
+ * League，CommonMark，标准化者，Slug 标准化者
  */
 
 declare(strict_types=1);

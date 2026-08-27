@@ -35,7 +35,7 @@ class Iban
 
     /**
      * Converts letter to number
-	 * 转换字母到数字
+	 * 将字母转换为数字
      *
      * @return int
      */

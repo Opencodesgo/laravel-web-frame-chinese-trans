@@ -32,7 +32,7 @@ class PendingMail
 
     /**
      * The "to" recipients of the message.
-	 * 收件人
+	 * 消息的"to"收件人
      *
      * @var array
      */
@@ -40,7 +40,7 @@ class PendingMail
 
     /**
      * The "cc" recipients of the message.
-	 * 抄送人
+	 * 邮件的"抄送"收件人
      *
      * @var array
      */
@@ -48,7 +48,7 @@ class PendingMail
 
     /**
      * The "bcc" recipients of the message.
-	 * 密送人
+	 * 消息的"密件抄送"收件人
      *
      * @var array
      */
@@ -131,11 +131,11 @@ class PendingMail
 	 * 发送一个新的可邮件消息实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     * @return void
+     * @return \Illuminate\Mail\SentMessage|null
      */
     public function send(MailableContract $mailable)
     {
-        $this->mailer->send($this->fill($mailable));
+        return $this->mailer->send($this->fill($mailable));
     }
 
     /**
@@ -151,8 +151,8 @@ class PendingMail
     }
 
     /**
-     * Deliver the queued message after the given delay.
-	 * 在给定的延迟之后交付排队消息
+     * Deliver the queued message after (n) seconds.
+	 * 在(n)秒后交付排队消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable

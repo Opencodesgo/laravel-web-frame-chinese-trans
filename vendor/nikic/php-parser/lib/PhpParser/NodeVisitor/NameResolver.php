@@ -27,6 +27,7 @@ class NameResolver extends NodeVisitorAbstract {
 
     /**
      * Constructs a name resolution visitor.
+	 * 构造名称解析访问器。
      *
      * Options:
      *  * preserveOriginalNames (default false): An "originalName" attribute will be added to
@@ -46,6 +47,7 @@ class NameResolver extends NodeVisitorAbstract {
 
     /**
      * Get name resolution context.
+	 * 获取名称解析上下文
      */
     public function getNameContext(): NameContext {
         return $this->nameContext;
@@ -124,6 +126,7 @@ class NameResolver extends NodeVisitorAbstract {
             foreach ($node->consts as $const) {
                 $this->addNamespacedName($const);
             }
+            $this->resolveAttrGroups($node);
         } elseif ($node instanceof Stmt\ClassConst) {
             if (null !== $node->type) {
                 $node->type = $this->resolveType($node->type);
@@ -216,6 +219,7 @@ class NameResolver extends NodeVisitorAbstract {
 
     /**
      * Resolve name, according to name resolver options.
+	 * 根据名称解析器选项解析名称
      *
      * @param Name $name Function or constant name to resolve
      * @param Stmt\Use_::TYPE_* $type One of Stmt\Use_::TYPE_*

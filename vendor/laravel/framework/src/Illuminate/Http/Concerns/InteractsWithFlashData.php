@@ -5,6 +5,8 @@
 
 namespace Illuminate\Http\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
+
 trait InteractsWithFlashData
 {
     /**
@@ -12,11 +14,13 @@ trait InteractsWithFlashData
 	 * 检索旧的输入项
      *
      * @param  string|null  $key
-     * @param  string|array|null  $default
+     * @param  \Illuminate\Database\Eloquent\Model|string|array|null  $default
      * @return string|array|null
      */
     public function old($key = null, $default = null)
     {
+        $default = $default instanceof Model ? $default->getAttribute($key) : $default;
+
         return $this->hasSession() ? $this->session()->getOldInput($key, $default) : $default;
     }
 

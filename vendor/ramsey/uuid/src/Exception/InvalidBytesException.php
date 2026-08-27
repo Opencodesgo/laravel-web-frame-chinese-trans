@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，异常，无效字节异常
+ * Ramsey，Uuid，异常，无效的字节异常
  */
 
 /**
@@ -21,7 +21,7 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate that the bytes being operated on are invalid in some way
- * 抛出,以表明在某些方面操作的字节无效
+ * 抛出以指示正在操作的字节在某种程度上是无效的
  */
 class InvalidBytesException extends PhpRuntimeException implements UuidExceptionInterface
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Readline，Hoa，自动完成单词
+ */
 
 /**
  * Hoa
@@ -45,6 +48,7 @@ class AutocompleterWord implements Autocompleter
 {
     /**
      * List of words.
+	 * 单词列表
      */
     protected $_words = null;
 

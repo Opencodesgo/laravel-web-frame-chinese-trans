@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，处理者，Curl 多处理器
+ * GuzzleHttp，处理器，Curl 多功能处理器
  */
 
 namespace GuzzleHttp\Handler;
@@ -14,7 +14,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Returns an asynchronous response using curl_multi_* functions.
- * 使用curl_multi_ *函数返回异步响应。
+ * 使用curl_multi_*函数返回异步响应
  *
  * When using the CurlMultiHandler, custom curl options can be specified as an
  * associative array of curl option constants mapping to values in the
@@ -63,7 +63,6 @@ class CurlMultiHandler
 
     /**
      * This handler accepts the following options:
-	 * 这个处理程序接受以下选项:
      *
      * - handle_factory: An optional factory  used to create curl handles
      * - select_timeout: Optional timeout (in seconds) to block before timing
@@ -148,7 +147,6 @@ class CurlMultiHandler
 
     /**
      * Ticks the curl event loop.
-	 * 卷曲事件循环
      */
     public function tick(): void
     {
@@ -199,7 +197,7 @@ class CurlMultiHandler
 
     /**
      * Runs until all outstanding connections have completed.
-	 * 运行到所有未完成的连接
+	 * 运行直到所有未完成的连接完成
      */
     public function execute(): void
     {
@@ -228,7 +226,7 @@ class CurlMultiHandler
 
     /**
      * Cancels a handle from sending and removes references to it.
-	 * 取消发送和删除引用的句柄
+	 * 取消发送句柄并删除对它的引用
      *
      * @param int $id Handle ID to cancel and remove.
      *

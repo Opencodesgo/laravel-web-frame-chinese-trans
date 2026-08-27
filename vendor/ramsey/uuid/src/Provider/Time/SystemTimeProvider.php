@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，提供者，时间，系统时间提供程序
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -21,6 +24,7 @@ use function gettimeofday;
 
 /**
  * SystemTimeProvider retrieves the current time using built-in PHP functions
+ * SystemTimeProvider 使用内置的PHP函数检索当前时间
  */
 class SystemTimeProvider implements TimeProviderInterface
 {

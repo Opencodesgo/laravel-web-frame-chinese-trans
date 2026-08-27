@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，字段，可序列化字段特性
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -22,8 +25,9 @@ use function strlen;
 
 /**
  * Provides common serialization functionality to fields
+ * 为字段提供通用的序列化功能
  *
- * @psalm-immutable
+ * @immutable
  */
 trait SerializableFieldsTrait
 {
@@ -34,11 +38,13 @@ trait SerializableFieldsTrait
 
     /**
      * Returns the bytes that comprise the fields
+	 * 返回组成字段的字节
      */
     abstract public function getBytes(): string;
 
     /**
-     * Returns a string representation of object
+     * Returns a string representation of the object
+	 * 返回对象的字符串表示形式
      */
     public function serialize(): string
     {
@@ -55,23 +61,21 @@ trait SerializableFieldsTrait
 
     /**
      * Constructs the object from a serialized string representation
+	 * 从序列化字符串表示构造对象
      *
-     * @param string $serialized The serialized string representation of the object
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress UnusedMethodCall
+     * @param string $data The serialized string representation of the object
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data): void
     {
-        if (strlen($serialized) === 16) {
-            $this->__construct($serialized);
+        if (strlen($data) === 16) {
+            $this->__construct($data);
         } else {
-            $this->__construct(base64_decode($serialized));
+            $this->__construct(base64_decode($data));
         }
     }
 
     /**
-     * @param array{bytes: string} $data
+     * @param array{bytes?: string} $data
      */
     public function __unserialize(array $data): void
     {

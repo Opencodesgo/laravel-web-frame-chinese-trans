@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，中间件，节流阀的请求
+ * Illuminate，路由，中间件，节流阀请求
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -12,7 +12,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\InteractsWithTime;
-use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,7 +29,7 @@ class ThrottleRequests
 
     /**
      * Create a new request throttler.
-	 * 创建新的请求节流器
+	 * 创建一个新的请求节流器
      *
      * @param  \Illuminate\Cache\RateLimiter  $limiter
      * @return void
@@ -89,7 +88,7 @@ class ThrottleRequests
      */
     protected function handleRequestUsingNamedLimiter($request, Closure $next, $limiterName, Closure $limiter)
     {
-        $limiterResponse = call_user_func($limiter, $request);
+        $limiterResponse = $limiter($request);
 
         if ($limiterResponse instanceof Response) {
             return $limiterResponse;
@@ -155,7 +154,7 @@ class ThrottleRequests
      */
     protected function resolveMaxAttempts($request, $maxAttempts)
     {
-        if (Str::contains($maxAttempts, '|')) {
+        if (str_contains($maxAttempts, '|')) {
             $maxAttempts = explode('|', $maxAttempts, 2)[$request->user() ? 1 : 0];
         }
 
@@ -213,7 +212,7 @@ class ThrottleRequests
 
     /**
      * Get the number of seconds until the next retry.
-	 * 得到到下一次重试的秒数
+	 * 获取到下一次重试的秒数
      *
      * @param  string  $key
      * @return int
@@ -244,7 +243,7 @@ class ThrottleRequests
 
     /**
      * Get the limit headers information.
-	 * 得到限制标头信息
+	 * 获取限制标头信息
      *
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts

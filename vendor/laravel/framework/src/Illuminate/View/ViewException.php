@@ -33,7 +33,7 @@ class ViewException extends ErrorException
 	 * 将异常呈现为HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|null
      */
     public function render($request)
     {

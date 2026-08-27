@@ -1,12 +1,15 @@
 <?php
 /**
- * Illuminate，数据库，控制台，播种，make:seeder 播种机制作命令
+ * Illuminate，数据库，控制台，种子，播种机制作命令
  */
 
 namespace Illuminate\Database\Console\Seeds;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'make:seeder')]
 class SeederMakeCommand extends GeneratorCommand
 {
     /**
@@ -18,8 +21,20 @@ class SeederMakeCommand extends GeneratorCommand
     protected $name = 'make:seeder';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:seeder';
+
+    /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -27,7 +42,7 @@ class SeederMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成的类的类
      *
      * @var string
      */
@@ -35,7 +50,7 @@ class SeederMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -78,22 +93,23 @@ class SeederMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
+        $name = str_replace('\\', '/', Str::replaceFirst($this->rootNamespace(), '', $name));
+
         if (is_dir($this->laravel->databasePath().'/seeds')) {
             return $this->laravel->databasePath().'/seeds/'.$name.'.php';
-        } else {
-            return $this->laravel->databasePath().'/seeders/'.$name.'.php';
         }
+
+        return $this->laravel->databasePath().'/seeders/'.$name.'.php';
     }
 
     /**
-     * Parse the class name and format according to the root namespace.
-	 * 根据根命名空间解析类名和格式
+     * Get the root namespace for the class.
+	 * 获取类的根命名空间
      *
-     * @param  string  $name
      * @return string
      */
-    protected function qualifyClass($name)
+    protected function rootNamespace()
     {
-        return $name;
+        return 'Database\Seeders\\';
     }
 }

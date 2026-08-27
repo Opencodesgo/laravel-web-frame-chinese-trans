@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，描述，数组对象
+ * Illuminate，数据库，Eloquent，生效，数组对象
  */
 
 namespace Illuminate\Database\Eloquent\Casts;
@@ -9,6 +9,12 @@ use ArrayObject as BaseArrayObject;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
+/**
+ * @template TKey of array-key
+ * @template TItem
+ *
+ * @extends  \ArrayObject<TKey, TItem>
+ */
 class ArrayObject extends BaseArrayObject implements Arrayable, JsonSerializable
 {
     /**
@@ -39,8 +45,7 @@ class ArrayObject extends BaseArrayObject implements Arrayable, JsonSerializable
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->getArrayCopy();
     }

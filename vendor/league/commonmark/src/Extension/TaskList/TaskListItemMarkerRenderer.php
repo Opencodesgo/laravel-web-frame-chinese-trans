@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，任务列表，任务列表项目标记渲染器
+ * League，CommonMark，扩展，任务列表，任务列表项标记渲染器
  */
 
 declare(strict_types=1);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，分页，分页游标
+ * Illuminate，分页，游标分页器
  */
 
 namespace Illuminate\Pagination;
@@ -26,7 +26,7 @@ class CursorPaginator extends AbstractCursorPaginator implements Arrayable, Arra
 
     /**
      * Create a new paginator instance.
-	 * 创建新的分页器实例
+	 * 创建一个新的分页器实例
      *
      * @param  mixed  $items
      * @param  int  $perPage
@@ -42,7 +42,7 @@ class CursorPaginator extends AbstractCursorPaginator implements Arrayable, Arra
             $this->{$key} = $value;
         }
 
-        $this->perPage = $perPage;
+        $this->perPage = (int) $perPage;
         $this->cursor = $cursor;
         $this->path = $this->path !== '/' ? rtrim($this->path, '/') : $this->path;
 
@@ -133,6 +133,17 @@ class CursorPaginator extends AbstractCursorPaginator implements Arrayable, Arra
     }
 
     /**
+     * Determine if the paginator is on the last page.
+	 * 确定分页器是否在最后一页上
+     *
+     * @return bool
+     */
+    public function onLastPage()
+    {
+        return ! $this->hasMorePages();
+    }
+
+    /**
      * Get the instance as an array.
 	 * 以数组的形式获取实例
      *
@@ -144,7 +155,9 @@ class CursorPaginator extends AbstractCursorPaginator implements Arrayable, Arra
             'data' => $this->items->toArray(),
             'path' => $this->path(),
             'per_page' => $this->perPage(),
+            'next_cursor' => $this->nextCursor()?->encode(),
             'next_page_url' => $this->nextPageUrl(),
+            'prev_cursor' => $this->previousCursor()?->encode(),
             'prev_page_url' => $this->previousPageUrl(),
         ];
     }
@@ -155,15 +168,14 @@ class CursorPaginator extends AbstractCursorPaginator implements Arrayable, Arra
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
     /**
      * Convert the object to its JSON representation.
-	 * 转换对象为其JSON表示形式
+	 * 将对象转换为其JSON表示形式
      *
      * @param  int  $options
      * @return string

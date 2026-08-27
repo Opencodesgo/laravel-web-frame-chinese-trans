@@ -21,7 +21,7 @@ use InvalidArgumentException as PhpInvalidArgumentException;
 
 /**
  * Thrown to indicate that the argument received is not valid
- * 抛出,表明所接收的参数无效
+ * 抛出以指示接收到的参数无效
  */
 class InvalidArgumentException extends PhpInvalidArgumentException implements UuidExceptionInterface
 {

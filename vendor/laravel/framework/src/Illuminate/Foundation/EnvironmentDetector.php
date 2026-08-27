@@ -6,7 +6,6 @@
 namespace Illuminate\Foundation;
 
 use Closure;
-use Illuminate\Support\Str;
 
 class EnvironmentDetector
 {
@@ -41,7 +40,7 @@ class EnvironmentDetector
 
     /**
      * Set the application environment from command-line arguments.
-	 * 通过命令行参数设置应用环境
+	 * 通过命令行参数设置应用程序环境
      *
      * @param  \Closure  $callback
      * @param  array  $args
@@ -52,8 +51,7 @@ class EnvironmentDetector
         // First we will check if an environment argument was passed via console arguments
         // and if it was that automatically overrides as the environment. Otherwise, we
         // will check the environment as a "web" request like a typical HTTP request.
-		// 首先，我们将检查是否通过控制台参数传递了环境参数，如果是的话，它会自动覆盖环境。
-		// 否则，将检查环境作为一个“web”请求，就像一个典型的HTTP请求。
+		// 首先，我们将检查是否通过控制台参数传递了环境参数。
         if (! is_null($value = $this->getEnvironmentArgument($args))) {
             return $value;
         }
@@ -75,7 +73,7 @@ class EnvironmentDetector
                 return $args[$i + 1] ?? null;
             }
 
-            if (Str::startsWith($value, '--env')) {
+            if (str_starts_with($value, '--env')) {
                 return head(array_slice(explode('=', $value), 1));
             }
         }

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，Chrome PHP 格式化
+ * Monolog，格式化，ChromePHP 格式化程序
  */
 
 /*
@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 /**
  * Formats a log message according to the ChromePHP array format
- * 根据 ChromePHP数组格式格式化日志消息
+ * 根据ChromePHP数组格式格式化日志
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -27,7 +27,7 @@ class ChromePHPFormatter implements FormatterInterface
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
-	 * 把Monolog的水平转化为Wildfire的水平
+	 * 将独白日志级别转换为野火级别
      *
      * @var array<int, 'log'|'info'|'warn'|'error'>
      */
@@ -48,7 +48,6 @@ class ChromePHPFormatter implements FormatterInterface
     public function format(array $record)
     {
         // Retrieve the line and file if set and remove them from the formatted extra
-		// 如果设置了行和文件，则检索它们，并将它们从格式化的extra中删除。
         $backtrace = 'unknown';
         if (isset($record['extra']['file'], $record['extra']['line'])) {
             $backtrace = $record['extra']['file'].' : '.$record['extra']['line'];

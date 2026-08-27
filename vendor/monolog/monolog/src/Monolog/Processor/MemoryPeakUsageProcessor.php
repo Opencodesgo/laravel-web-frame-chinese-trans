@@ -2,7 +2,7 @@
 
 /**
  * Monolog，处理器，内存峰值使用处理器
- *
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,7 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Injects memory_get_peak_usage in all records
- * 在所有记录中注入memory_get_peak_use
+ * 在所有记录中注入memory_get_peak_usage
  *
  * @see Monolog\Processor\MemoryProcessor::__construct() for options
  * @author Rob Jensen

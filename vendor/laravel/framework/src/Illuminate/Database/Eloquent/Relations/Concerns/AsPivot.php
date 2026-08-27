@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，作为轴
+ * Illuminate，数据库，Eloquent，关系，问题，为轴
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -53,7 +53,7 @@ trait AsPivot
         // The pivot model is a "dynamic" model since we will set the tables dynamically
         // for the instance. This allows it work for any intermediate tables for the
         // many to many relationship that are defined by this developer's classes.
-		// 数据透视模型是一个"动态"模型，因为我们将动态地设置实例表。
+		// 数据透视模型是一个"动态"模型，因为我们将动态地设置表。
         $instance->setConnection($parent->getConnectionName())
             ->setTable($table)
             ->forceFill($attributes)
@@ -62,7 +62,7 @@ trait AsPivot
         // We store off the parent instance so we will access the timestamp column names
         // for the model, since the pivot model timestamps aren't easily configurable
         // from the developer's point of view. We can use the parents to get these.
-		// 我们存储父实例，以便访问模型的时间戳列名。
+		// 我们存储父实例，以便访问模型时间戳列名。
         $instance->pivotParent = $parent;
 
         $instance->exists = $exists;
@@ -86,7 +86,9 @@ trait AsPivot
 
         $instance->timestamps = $instance->hasTimestampAttributes($attributes);
 
-        $instance->setRawAttributes($attributes, $exists);
+        $instance->setRawAttributes(
+            array_merge($instance->getRawOriginal(), $attributes), $exists
+        );
 
         return $instance;
     }
@@ -245,7 +247,7 @@ trait AsPivot
 
     /**
      * Get the name of the "created at" column.
-	 * 获取"创建位置"列的名称
+	 * 获取"created at"列的名称
      *
      * @return string
      */
@@ -258,7 +260,7 @@ trait AsPivot
 
     /**
      * Get the name of the "updated at" column.
-	 * 获取"更新时间"列的名称
+	 * 获取"updated a"列的名称
      *
      * @return string
      */
@@ -301,7 +303,7 @@ trait AsPivot
             return $this->newQueryForCollectionRestoration($ids);
         }
 
-        if (! Str::contains($ids, ':')) {
+        if (! str_contains($ids, ':')) {
             return parent::newQueryForRestoration($ids);
         }
 
@@ -323,7 +325,7 @@ trait AsPivot
     {
         $ids = array_values($ids);
 
-        if (! Str::contains($ids[0], ':')) {
+        if (! str_contains($ids[0], ':')) {
             return parent::newQueryForRestoration($ids);
         }
 

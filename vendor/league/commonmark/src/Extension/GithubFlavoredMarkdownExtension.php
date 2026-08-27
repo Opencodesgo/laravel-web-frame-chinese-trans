@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Extension，Github风格Markdown扩展
+ * League，CommonMark，扩展，Github 风味Markdown扩展
  */
 
 declare(strict_types=1);

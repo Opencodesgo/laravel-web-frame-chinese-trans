@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，翻译，数组加载器
+ * Illuminate, 翻译, 数组装载机
  */
 
 namespace Illuminate\Translation;

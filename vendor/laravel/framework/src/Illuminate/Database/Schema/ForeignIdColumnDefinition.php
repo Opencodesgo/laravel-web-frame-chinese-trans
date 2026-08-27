@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，ForeignId 列定义
+ * Illuminate，数据库，模式，外键ID列定义
  */
 
 namespace Illuminate\Database\Schema;
@@ -42,7 +42,7 @@ class ForeignIdColumnDefinition extends ColumnDefinition
      */
     public function constrained($table = null, $column = 'id')
     {
-        return $this->references($column)->on($table ?? Str::plural(Str::beforeLast($this->name, '_'.$column)));
+        return $this->references($column)->on($table ?? Str::of($this->name)->beforeLast('_'.$column)->plural());
     }
 
     /**

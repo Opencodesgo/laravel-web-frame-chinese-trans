@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Symfony Mailer 处理程序
- *
+ * Monolog，处理器，Symfony 邮件处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -25,7 +25,7 @@ use Symfony\Component\Mime\Email;
 
 /**
  * SymfonyMailerHandler uses Symfony's Mailer component to send the emails
- * SymfonyMailerHandler使用Symfony的Mailer组件发送电子邮件
+ * SymfonyMailerHandler使用Symfony的Mailer组件来发送邮件。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -73,7 +73,7 @@ class SymfonyMailerHandler extends MailHandler
 
     /**
      * Creates instance of Email to be sent
-	 * 创建发送电子邮件的实例
+	 * 创建要发送的电子邮件实例
      *
      * @param  string        $content formatted email body to be sent
      * @param  array         $records Log records that formed the content

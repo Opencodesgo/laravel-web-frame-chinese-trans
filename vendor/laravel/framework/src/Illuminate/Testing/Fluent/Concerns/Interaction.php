@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，流畅的，问题，交互
+ * Illuminate, 测试, 流利的，问题，交互
  */
 
 namespace Illuminate\Testing\Fluent\Concerns;

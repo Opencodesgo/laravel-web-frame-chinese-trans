@@ -10,18 +10,23 @@ use Closure;
 use Illuminate\Contracts\Filesystem\Factory as FactoryContract;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
-use League\Flysystem\Adapter\Ftp as FtpAdapter;
-use League\Flysystem\Adapter\Local as LocalAdapter;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\AwsS3v3\AwsS3Adapter as S3Adapter;
-use League\Flysystem\Cached\CachedAdapter;
-use League\Flysystem\Cached\Storage\Memory as MemoryStore;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter as S3Adapter;
+use League\Flysystem\AwsS3V3\PortableVisibilityConverter as AwsS3PortableVisibilityConverter;
 use League\Flysystem\Filesystem as Flysystem;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\Sftp\SftpAdapter;
+use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
+use League\Flysystem\Ftp\FtpAdapter;
+use League\Flysystem\Ftp\FtpConnectionOptions;
+use League\Flysystem\Local\LocalFilesystemAdapter as LocalAdapter;
+use League\Flysystem\PathPrefixing\PathPrefixedAdapter;
+use League\Flysystem\PhpseclibV3\SftpAdapter;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
+use League\Flysystem\ReadOnly\ReadOnlyFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 
 /**
  * @mixin \Illuminate\Contracts\Filesystem\Filesystem
+ * @mixin \Illuminate\Filesystem\FilesystemAdapter
  */
 class FilesystemManager implements FactoryContract
 {
@@ -63,7 +68,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a filesystem instance.
-	 * 获取文件系统实例
+	 * 得到文件系统实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -75,7 +80,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a filesystem instance.
-	 * 获取文件系统实例
+	 * 得到文件系统实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -139,7 +144,7 @@ class FilesystemManager implements FactoryContract
      */
     protected function resolve($name, $config = null)
     {
-        $config = $config ?? $this->getConfig($name);
+        $config ??= $this->getConfig($name);
 
         if (empty($config['driver'])) {
             throw new InvalidArgumentException("Disk [{$name}] does not have a configured driver.");
@@ -169,13 +174,7 @@ class FilesystemManager implements FactoryContract
      */
     protected function callCustomCreator(array $config)
     {
-        $driver = $this->customCreators[$config['driver']]($this->app, $config);
-
-        if ($driver instanceof FilesystemInterface) {
-            return $this->adapt($driver);
-        }
-
-        return $driver;
+        return $this->customCreators[$config['driver']]($this->app, $config);
     }
 
     /**
@@ -187,15 +186,20 @@ class FilesystemManager implements FactoryContract
      */
     public function createLocalDriver(array $config)
     {
-        $permissions = $config['permissions'] ?? [];
+        $visibility = PortableVisibilityConverter::fromArray(
+            $config['permissions'] ?? [],
+            $config['directory_visibility'] ?? $config['visibility'] ?? Visibility::PRIVATE
+        );
 
         $links = ($config['links'] ?? null) === 'skip'
             ? LocalAdapter::SKIP_LINKS
             : LocalAdapter::DISALLOW_LINKS;
 
-        return $this->adapt($this->createFlysystem(new LocalAdapter(
-            $config['root'], $config['lock'] ?? LOCK_EX, $links, $permissions
-        ), $config));
+        $adapter = new LocalAdapter(
+            $config['root'], $visibility, $config['lock'] ?? LOCK_EX, $links
+        );
+
+        return new FilesystemAdapter($this->createFlysystem($adapter, $config), $adapter, $config);
     }
 
     /**
@@ -207,9 +211,13 @@ class FilesystemManager implements FactoryContract
      */
     public function createFtpDriver(array $config)
     {
-        return $this->adapt($this->createFlysystem(
-            new FtpAdapter($config), $config
-        ));
+        if (! isset($config['root'])) {
+            $config['root'] = '';
+        }
+
+        $adapter = new FtpAdapter(FtpConnectionOptions::fromArray($config));
+
+        return new FilesystemAdapter($this->createFlysystem($adapter, $config), $adapter, $config);
     }
 
     /**
@@ -221,9 +229,17 @@ class FilesystemManager implements FactoryContract
      */
     public function createSftpDriver(array $config)
     {
-        return $this->adapt($this->createFlysystem(
-            new SftpAdapter($config), $config
-        ));
+        $provider = SftpConnectionProvider::fromArray($config);
+
+        $root = $config['root'] ?? '/';
+
+        $visibility = PortableVisibilityConverter::fromArray(
+            $config['permissions'] ?? []
+        );
+
+        $adapter = new SftpAdapter($provider, $root, $visibility);
+
+        return new FilesystemAdapter($this->createFlysystem($adapter, $config), $adapter, $config);
     }
 
     /**
@@ -237,15 +253,21 @@ class FilesystemManager implements FactoryContract
     {
         $s3Config = $this->formatS3Config($config);
 
-        $root = $s3Config['root'] ?? null;
+        $root = (string) ($s3Config['root'] ?? '');
 
-        $options = $config['options'] ?? [];
+        $visibility = new AwsS3PortableVisibilityConverter(
+            $config['visibility'] ?? Visibility::PUBLIC
+        );
 
-        $streamReads = $config['stream_reads'] ?? false;
+        $streamReads = $s3Config['stream_reads'] ?? false;
 
-        return $this->adapt($this->createFlysystem(
-            new S3Adapter(new S3Client($s3Config), $s3Config['bucket'], $root, $options, $streamReads), $config
-        ));
+        $client = new S3Client($s3Config);
+
+        $adapter = new S3Adapter($client, $s3Config['bucket'], $root, $visibility, null, $config['options'] ?? [], $streamReads);
+
+        return new AwsS3V3Adapter(
+            $this->createFlysystem($adapter, $config), $adapter, $s3Config, $client
+        );
     }
 
     /**
@@ -263,62 +285,55 @@ class FilesystemManager implements FactoryContract
             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
         }
 
-        return $config;
+        return Arr::except($config, ['token']);
+    }
+
+    /**
+     * Create a scoped driver.
+	 * 创建一个作用域驱动程序
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function createScopedDriver(array $config)
+    {
+        if (empty($config['disk'])) {
+            throw new InvalidArgumentException('Scoped disk is missing "disk" configuration option.');
+        } elseif (empty($config['prefix'])) {
+            throw new InvalidArgumentException('Scoped disk is missing "prefix" configuration option.');
+        }
+
+        return $this->build(tap(
+            $this->getConfig($config['disk']),
+            fn (&$parent) => $parent['prefix'] = $config['prefix']
+        ));
     }
 
     /**
      * Create a Flysystem instance with the given adapter.
 	 * 使用给定的适配器创建一个Flysystem实例
      *
-     * @param  \League\Flysystem\AdapterInterface  $adapter
+     * @param  \League\Flysystem\FilesystemAdapter  $adapter
      * @param  array  $config
-     * @return \League\Flysystem\FilesystemInterface
+     * @return \League\Flysystem\FilesystemOperator
      */
-    protected function createFlysystem(AdapterInterface $adapter, array $config)
+    protected function createFlysystem(FlysystemAdapter $adapter, array $config)
     {
-        $cache = Arr::pull($config, 'cache');
-
-        $config = Arr::only($config, ['visibility', 'disable_asserts', 'url', 'temporary_url']);
-
-        if ($cache) {
-            $adapter = new CachedAdapter($adapter, $this->createCacheStore($cache));
+        if ($config['read-only'] ?? false === true) {
+            $adapter = new ReadOnlyFilesystemAdapter($adapter);
         }
 
-        return new Flysystem($adapter, count($config) > 0 ? $config : null);
-    }
-
-    /**
-     * Create a cache store instance.
-	 * 创建缓存存储实例
-     *
-     * @param  mixed  $config
-     * @return \League\Flysystem\Cached\CacheInterface
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function createCacheStore($config)
-    {
-        if ($config === true) {
-            return new MemoryStore;
+        if (! empty($config['prefix'])) {
+            $adapter = new PathPrefixedAdapter($adapter, $config['prefix']);
         }
 
-        return new Cache(
-            $this->app['cache']->store($config['store']),
-            $config['prefix'] ?? 'flysystem',
-            $config['expire'] ?? null
-        );
-    }
-
-    /**
-     * Adapt the filesystem implementation.
-	 * 调整文件系统实现
-     *
-     * @param  \League\Flysystem\FilesystemInterface  $filesystem
-     * @return \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    protected function adapt(FilesystemInterface $filesystem)
-    {
-        return new FilesystemAdapter($filesystem);
+        return new Flysystem($adapter, Arr::only($config, [
+            'directory_visibility',
+            'disable_asserts',
+            'temporary_url',
+            'url',
+            'visibility',
+        ]));
     }
 
     /**
@@ -395,7 +410,7 @@ class FilesystemManager implements FactoryContract
      */
     public function purge($name = null)
     {
-        $name = $name ?? $this->getDefaultDriver();
+        $name ??= $this->getDefaultDriver();
 
         unset($this->disks[$name]);
     }

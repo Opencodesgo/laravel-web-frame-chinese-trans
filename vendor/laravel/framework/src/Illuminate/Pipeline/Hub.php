@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，管道，中心
+ * Illuminate，管道，Hub
  */
 
 namespace Illuminate\Pipeline;
@@ -29,7 +29,7 @@ class Hub implements HubContract
 
     /**
      * Create a new Hub instance.
-	 * 创建新的Hub实例
+	 * 创建一个新的Hub实例
      *
      * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
@@ -83,7 +83,7 @@ class Hub implements HubContract
 
     /**
      * Get the container instance used by the hub.
-	 * 获取中心使用的容器实例
+	 * 获取集线器使用的容器实例
      *
      * @return \Illuminate\Contracts\Container\Container
      */
@@ -94,7 +94,7 @@ class Hub implements HubContract
 
     /**
      * Set the container instance used by the hub.
-	 * 设置中心使用的容器实例
+	 * 设置集线器使用的容器实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return $this

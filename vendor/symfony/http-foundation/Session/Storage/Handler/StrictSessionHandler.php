@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，Component，HttpFoundation，Session，储存，处理器，严密的会话处理程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,19 +13,18 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Adds basic `SessionUpdateTimestampHandlerInterface` behaviors to another `SessionHandlerInterface`.
- * SessionUpdateTimestampHandlerInterface ’行为添加到另一个‘ SessionHandlerInterface ’。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
 class StrictSessionHandler extends AbstractSessionHandler
 {
-    private $handler;
-    private $doDestroy;
+    private \SessionHandlerInterface $handler;
+    private bool $doDestroy;
 
     public function __construct(\SessionHandlerInterface $handler)
     {
         if ($handler instanceof \SessionUpdateTimestampHandlerInterface) {
-            throw new \LogicException(sprintf('"%s" is already an instance of "SessionUpdateTimestampHandlerInterface", you cannot wrap it with "%s".', get_debug_type($handler), self::class));
+            throw new \LogicException(\sprintf('"%s" is already an instance of "SessionUpdateTimestampHandlerInterface", you cannot wrap it with "%s".', get_debug_type($handler), self::class));
         }
 
         $this->handler = $handler;
@@ -36,7 +32,6 @@ class StrictSessionHandler extends AbstractSessionHandler
 
     /**
      * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
-	 * 如果此处理程序使用\SessionHandler包装内部PHP会话保存处理程序，则返回true。
      *
      * @internal
      */
@@ -45,47 +40,29 @@ class StrictSessionHandler extends AbstractSessionHandler
         return $this->handler instanceof \SessionHandler;
     }
 
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function open($savePath, $sessionName)
+    public function open(string $savePath, string $sessionName): bool
     {
         parent::open($savePath, $sessionName);
 
         return $this->handler->open($savePath, $sessionName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doRead(string $sessionId)
+    protected function doRead(#[\SensitiveParameter] string $sessionId): string
     {
         return $this->handler->read($sessionId);
     }
 
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function updateTimestamp($sessionId, $data)
+    public function updateTimestamp(#[\SensitiveParameter] string $sessionId, string $data): bool
     {
         return $this->write($sessionId, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doWrite(string $sessionId, string $data)
+    protected function doWrite(#[\SensitiveParameter] string $sessionId, string $data): bool
     {
         return $this->handler->write($sessionId, $data);
     }
 
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function destroy($sessionId)
+    public function destroy(#[\SensitiveParameter] string $sessionId): bool
     {
         $this->doDestroy = true;
         $destroyed = parent::destroy($sessionId);
@@ -93,30 +70,19 @@ class StrictSessionHandler extends AbstractSessionHandler
         return $this->doDestroy ? $this->doDestroy($sessionId) : $destroyed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doDestroy(string $sessionId)
+    protected function doDestroy(#[\SensitiveParameter] string $sessionId): bool
     {
         $this->doDestroy = false;
 
         return $this->handler->destroy($sessionId);
     }
 
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return $this->handler->close();
     }
 
-    /**
-     * @return int|false
-     */
-    #[\ReturnTypeWillChange]
-    public function gc($maxlifetime)
+    public function gc(int $maxlifetime): int|false
     {
         return $this->handler->gc($maxlifetime);
     }

@@ -18,7 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Helper for filtering out properties in casters.
- * 用于过滤casters属性的助手。
+ * 用于过滤脚轮中的属性的帮助器。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -36,14 +36,19 @@ class Caster
     public const EXCLUDE_EMPTY = 128;
     public const EXCLUDE_NOT_IMPORTANT = 256;
     public const EXCLUDE_STRICT = 512;
+    public const EXCLUDE_UNINITIALIZED = 1024;
 
     public const PREFIX_VIRTUAL = "\0~\0";
     public const PREFIX_DYNAMIC = "\0+\0";
     public const PREFIX_PROTECTED = "\0*\0";
+    // usage: sprintf(Caster::PATTERN_PRIVATE, $class, $property)
+    public const PATTERN_PRIVATE = "\0%s\0%s";
+
+    private static array $classProperties = [];
 
     /**
      * Casts objects to arrays and adds the dynamic property prefix.
-	 * 将对象投射到数组中,并添加动态属性前缀。
+	 * 将对象强制转换为数组并添加动态属性前缀。
      *
      * @param bool $hasDebugInfo Whether the __debugInfo method exists on $obj or not
      */
@@ -52,7 +57,7 @@ class Caster
         if ($hasDebugInfo) {
             try {
                 $debugInfo = $obj->__debugInfo();
-            } catch (\Throwable $e) {
+            } catch (\Throwable) {
                 // ignore failing __debugInfo()
                 $hasDebugInfo = false;
             }
@@ -64,20 +69,17 @@ class Caster
             return $a;
         }
 
+        $classProperties = self::$classProperties[$class] ??= self::getClassProperties(new \ReflectionClass($class));
+        $a = array_replace($classProperties, $a);
+
         if ($a) {
-            static $publicProperties = [];
-            $debugClass = $debugClass ?? get_debug_type($obj);
+            $debugClass ??= get_debug_type($obj);
 
             $i = 0;
             $prefixedKeys = [];
             foreach ($a as $k => $v) {
                 if ("\0" !== ($k[0] ?? '')) {
-                    if (!isset($publicProperties[$class])) {
-                        foreach ((new \ReflectionClass($class))->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
-                            $publicProperties[$class][$prop->name] = true;
-                        }
-                    }
-                    if (!isset($publicProperties[$class][$k])) {
+                    if (!isset($classProperties[$k])) {
                         $prefixedKeys[$i] = self::PREFIX_DYNAMIC.$k;
                     }
                 } elseif ($debugClass !== $class && 1 === strpos($k, $class)) {
@@ -113,7 +115,7 @@ class Caster
 
     /**
      * Filters out the specified properties.
-	 * 过滤出指定的属性。
+	 * 过滤掉指定的属性。
      *
      * By default, a single match in the $filter bit field filters properties out, following an "or" logic.
      * When EXCLUDE_STRICT is set, an "and" logic is applied: all bits must match for a property to be removed.
@@ -135,6 +137,8 @@ class Caster
                 $type |= self::EXCLUDE_EMPTY & $filter;
             } elseif (false === $v || '' === $v || '0' === $v || 0 === $v || 0.0 === $v || [] === $v) {
                 $type |= self::EXCLUDE_EMPTY & $filter;
+            } elseif ($v instanceof UninitializedStub) {
+                $type |= self::EXCLUDE_UNINITIALIZED & $filter;
             }
             if ((self::EXCLUDE_NOT_IMPORTANT & $filter) && !\in_array($k, $listedProperties, true)) {
                 $type |= self::EXCLUDE_NOT_IMPORTANT;
@@ -172,5 +176,29 @@ class Caster
         }
 
         return $a;
+    }
+
+    private static function getClassProperties(\ReflectionClass $class): array
+    {
+        $classProperties = [];
+        $className = $class->name;
+
+        if ($parent = $class->getParentClass()) {
+            $classProperties += self::$classProperties[$parent->name] ??= self::getClassProperties($parent);
+        }
+
+        foreach ($class->getProperties() as $p) {
+            if ($p->isStatic()) {
+                continue;
+            }
+
+            $classProperties[match (true) {
+                $p->isPublic() => $p->name,
+                $p->isProtected() => self::PREFIX_PROTECTED.$p->name,
+                default => "\0".$className."\0".$p->name,
+            }] = new UninitializedStub($p);
+        }
+
+        return $classProperties;
     }
 }

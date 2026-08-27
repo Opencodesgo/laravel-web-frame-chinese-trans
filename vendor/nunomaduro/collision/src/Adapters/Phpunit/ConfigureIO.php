@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Php单元，配置 IO
+ * NunoMaduro，Collision，适配器，Phpunit，配置输入输出
  */
 
 declare(strict_types=1);
@@ -28,16 +28,16 @@ final class ConfigureIO
 {
     /**
      * Configures both given input and output with
-     * options from the enviroment.
-	 * 配置给定的输入和输出来自环境的选项
+     * options from the environment.
+	 * 配置给定的输入和输出来自环境的选项。
      *
      * @throws \ReflectionException
      */
     public static function of(InputInterface $input, Output $output): void
     {
         $application = new Application();
-        $reflector   = new ReflectionObject($application);
-        $method      = $reflector->getMethod('configureIO');
+        $reflector = new ReflectionObject($application);
+        $method = $reflector->getMethod('configureIO');
         $method->setAccessible(true);
         $method->invoke($application, $input, $output);
     }

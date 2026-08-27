@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，超级全局 Env
+ * Psy，超级全局环境
  */
 
 /*
@@ -22,6 +22,7 @@ class SuperglobalsEnv implements EnvInterface
 {
     /**
      * Get an environment variable by name.
+	 * 按名称获取环境变量
      *
      * @return string|null
      */

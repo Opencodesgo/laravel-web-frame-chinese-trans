@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，存储，存储建造者
+ * Dotenv，存储，存储构建器
  */
 
 declare(strict_types=1);
@@ -35,7 +35,7 @@ final class StoreBuilder
 
     /**
      * Should file loading short circuit?
-	 * 文件加载应该短路吗
+	 * 文件加载应该短路吗？
      *
      * @var bool
      */
@@ -81,7 +81,7 @@ final class StoreBuilder
 
     /**
      * Create a new store builder instance with the default name.
-	 * 使用默认名称创建新的存储构建器实例。
+	 * 使用默认名称创建新的存储构建器实例
      *
      * @return \Dotenv\Store\StoreBuilder
      */
@@ -118,7 +118,7 @@ final class StoreBuilder
 
     /**
      * Creates a store builder with short circuit mode enabled.
-	 * 创建带有短路模式的存储器
+	 * 创建启用了短路模式的存储构建器
      *
      * @return \Dotenv\Store\StoreBuilder
      */

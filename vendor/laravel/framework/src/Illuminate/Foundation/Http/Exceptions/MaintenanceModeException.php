@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，异常，维护模式异常
+ * App, 基础, Http, 中间件, 维护模式异常
  */
 
 namespace Illuminate\Foundation\Http\Exceptions;
@@ -41,7 +41,7 @@ class MaintenanceModeException extends ServiceUnavailableHttpException
 
     /**
      * Create a new exception instance.
-	 * 创建新的异常实例
+	 * 创建新异常实例
      *
      * @param  int  $time
      * @param  int|null  $retryAfter

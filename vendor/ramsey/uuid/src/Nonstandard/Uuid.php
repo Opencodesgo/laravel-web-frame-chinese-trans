@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，不标准的，Uuid
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -20,9 +23,11 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Uuid as BaseUuid;
 
 /**
- * Nonstandard\Uuid is a UUID that doesn't conform to RFC 4122
+ * Nonstandard\Uuid is a UUID that doesn't conform to RFC 9562 (formerly RFC 4122)
+ * 非标准Uuid是不符合RFC 9562（原RFC 4122）的Uuid。
  *
- * @psalm-immutable
+ * @immutable
+ * @pure
  */
 final class Uuid extends BaseUuid
 {
@@ -30,7 +35,7 @@ final class Uuid extends BaseUuid
         Fields $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
     ) {
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
     }

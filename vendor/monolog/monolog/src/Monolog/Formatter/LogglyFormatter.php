@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，Loggly 格式化
+ * Monolog，格式化，Loggly 格式化程序
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Monolog\Formatter;
 
 /**
  * Encodes message information into JSON in a format compatible with Loggly.
- * 将消息信息编码为与loglog兼容的JSON格式
+ * 将消息信息编码为与loglog兼容的JSON格式。
  *
  * @author Adam Pancutt <adam@pancutt.com>
  */
@@ -34,7 +34,6 @@ class LogglyFormatter extends JsonFormatter
 
     /**
      * Appends the 'timestamp' parameter for indexing by Loggly.
-	 * 将“时间戳”参数附加为索引索引
      *
      * @see https://www.loggly.com/docs/automated-parsing/#json
      * @see \Monolog\Formatter\JsonFormatter::format()

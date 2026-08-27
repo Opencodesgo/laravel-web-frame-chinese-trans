@@ -43,7 +43,7 @@ class BuilderFactory {
 
     /**
      * Creates a class builder.
-	 * 创建一个类构建器
+	 * 创建一个类构建器。
      *
      * @param string $name Name of the class
      *
@@ -55,7 +55,7 @@ class BuilderFactory {
 
     /**
      * Creates an interface builder.
-	 * 创建接口构建器
+	 * 创建接口构建器。
      *
      * @param string $name Name of the interface
      *
@@ -254,7 +254,7 @@ class BuilderFactory {
 
     /**
      * Normalizes an argument list.
-	 * 规范化参数列表。
+	 * 规范化参数列表
      *
      * Creates Arg nodes for all arguments and converts literal values to expressions.
      *

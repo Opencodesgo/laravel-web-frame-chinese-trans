@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，内联，分隔接口
+ * League，CommonMark，节点，内联，分隔的接口
  */
 
 declare(strict_types=1);

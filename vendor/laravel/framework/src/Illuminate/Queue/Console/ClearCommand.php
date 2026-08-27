@@ -9,9 +9,11 @@ use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Queue\ClearableQueue;
 use ReflectionClass;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'queue:clear')]
 class ClearCommand extends Command
 {
     use ConfirmableTrait;
@@ -23,6 +25,19 @@ class ClearCommand extends Command
      * @var string
      */
     protected $name = 'queue:clear';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'queue:clear';
 
     /**
      * The console command description.
@@ -50,7 +65,7 @@ class ClearCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要为连接获得正确的队列，设置在队列中的应用程序的配置文件。
+		// 我们需要为连接获得正确的队列。
         $queueName = $this->getQueue($connection);
 
         $queue = $this->laravel['queue']->connection($connection);
@@ -58,9 +73,9 @@ class ClearCommand extends Command
         if ($queue instanceof ClearableQueue) {
             $count = $queue->clear($queueName);
 
-            $this->line('<info>Cleared '.$count.' jobs from the ['.$queueName.'] queue</info> ');
+            $this->components->info('Cleared '.$count.' jobs from the ['.$queueName.'] queue');
         } else {
-            $this->line('<error>Clearing queues is not supported on ['.(new ReflectionClass($queue))->getShortName().']</error> ');
+            $this->components->error('Clearing queues is not supported on ['.(new ReflectionClass($queue))->getShortName().']');
         }
 
         return 0;
@@ -68,7 +83,7 @@ class ClearCommand extends Command
 
     /**
      * Get the queue name to clear.
-	 * 得到要清除的队列名称
+	 * 获取要清除的队列名称
      *
      * @param  string  $connection
      * @return string
@@ -82,7 +97,7 @@ class ClearCommand extends Command
 
     /**
      * Get the console command arguments.
-	 * 得到控制台命令参数
+	 * 获取控制台命令参数
      *
      * @return array
      */
@@ -95,7 +110,7 @@ class ClearCommand extends Command
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */

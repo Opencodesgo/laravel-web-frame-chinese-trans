@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，建立者辅助
+ * PhpParser，Builder 助手
  */
 
 namespace PhpParser;
@@ -290,7 +290,7 @@ final class BuilderHelpers {
 
     /**
      * Normalizes a doc comment: Converts plain strings to PhpParser\Comment\Doc.
-	 * 将普通字符串转换为PhpParser\ comment \ doc
+	 * 将普通字符串转换为PhpParser\ comment \ doc。
      *
      * @param Comment\Doc|string $docComment The doc comment to normalize
      *
@@ -344,7 +344,7 @@ final class BuilderHelpers {
 
     /**
      * Adds a modifier and returns new modifier bitmask.
-	 * 添加一个修饰符并返回新的修饰符位掩码
+	 * 添加一个修饰符并返回新的修饰符位掩码。
      * @return int New modifiers
      */
     public static function addClassModifier(int $existingModifiers, int $modifierToSet): int {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，下载器，Curl 下载器
+ */
 
 /*
  * This file is part of Psy Shell.

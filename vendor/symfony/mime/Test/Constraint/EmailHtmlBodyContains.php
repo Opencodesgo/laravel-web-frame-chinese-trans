@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，测试，约束，电子邮件附件计数
+ * Symfony，Component，Mime，测试，限制，邮件正文包含
  */
 
 /*
@@ -20,38 +20,31 @@ use Symfony\Component\Mime\RawMessage;
 
 final class EmailHtmlBodyContains extends Constraint
 {
-    private $expectedText;
+    private string $expectedText;
 
     public function __construct(string $expectedText)
     {
         $this->expectedText = $expectedText;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
-        return sprintf('contains "%s"', $this->expectedText);
+        return \sprintf('contains "%s"', $this->expectedText);
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param RawMessage $message
      */
     protected function matches($message): bool
     {
-        if (RawMessage::class === \get_class($message) || Message::class === \get_class($message)) {
+        if (RawMessage::class === $message::class || Message::class === $message::class) {
             throw new \LogicException('Unable to test a message HTML body on a RawMessage or Message instance.');
         }
 
-        return false !== mb_strpos($message->getHtmlBody(), $this->expectedText);
+        return str_contains($message->getHtmlBody(), $this->expectedText);
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param RawMessage $message
      */
     protected function failureDescription($message): string

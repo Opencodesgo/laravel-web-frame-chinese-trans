@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Transforms the {@see CompletionSuggestions} object into output readable by the shell completion.
- * 将{ @see completionunk }对象转换为通过shell完成可读的输出。
+ * 将{@see completionsuggestion}对象转换为shell补全可读的输出。
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */

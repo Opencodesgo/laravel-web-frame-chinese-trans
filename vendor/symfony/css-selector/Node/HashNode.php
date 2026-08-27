@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，异常，哈希节点
+ * Symfony，Component，CssSelector，节点，哈希节点
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>#<id>" node.
- * 表示一个“<selector>#<id>”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,8 +26,8 @@ namespace Symfony\Component\CssSelector\Node;
  */
 class HashNode extends AbstractNode
 {
-    private $selector;
-    private $id;
+    private NodeInterface $selector;
+    private string $id;
 
     public function __construct(NodeInterface $selector, string $id)
     {
@@ -46,9 +45,6 @@ class HashNode extends AbstractNode
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSpecificity(): Specificity
     {
         return $this->selector->getSpecificity()->plus(new Specificity(1, 0, 0));
@@ -56,6 +52,6 @@ class HashNode extends AbstractNode
 
     public function __toString(): string
     {
-        return sprintf('%s[%s#%s]', $this->getNodeName(), $this->selector, $this->id);
+        return \sprintf('%s[%s#%s]', $this->getNodeName(), $this->selector, $this->id);
     }
 }

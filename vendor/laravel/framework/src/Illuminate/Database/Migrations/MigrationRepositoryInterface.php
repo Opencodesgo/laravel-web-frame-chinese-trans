@@ -85,7 +85,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Delete the migration repository data store.
-	 * 删除迁移存储库数据存储
+	 * 删除迁移存储库数据存
      *
      * @return void
      */

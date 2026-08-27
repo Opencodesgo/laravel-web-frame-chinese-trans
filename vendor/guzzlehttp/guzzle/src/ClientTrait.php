@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，客户特质
+ * GuzzleHttp，客户端特征
  */
 
 namespace GuzzleHttp;
@@ -34,7 +34,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP GET request.
-	 * 创建并发送一个HTTP GET请求
+	 * 创建并发送HTTP GET请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -52,7 +52,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP HEAD request.
-	 * 创建并发送一个HTTP HEAD请求
+	 * 创建并发送HTTP HEAD请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -70,7 +70,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP PUT request.
-	 * 创建并发送一个HTTP PUT请求
+	 * 创建并发送HTTP PUT请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -88,7 +88,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP POST request.
-	 * 创建并发送一个HTTP POST请求。
+	 * 创建并发送HTTP POST请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -106,7 +106,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP PATCH request.
-	 * 创建并发送一个HTTP补丁请求。
+	 * 创建并发送HTTP PATCH请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -124,7 +124,7 @@ trait ClientTrait
 
     /**
      * Create and send an HTTP DELETE request.
-	 * 创建并发送一个HTTP DELETE请求
+	 * 创建并发送一个HTTP DELETE请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -142,7 +142,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP request.
-	 * 创建并发送一个异步HTTP请求。
+	 * 创建并发送异步HTTP请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -157,7 +157,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP GET request.
-	 * 创建并发送一个异步HTTP GET请求。
+	 * 创建并发送异步HTTP GET请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -174,7 +174,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP HEAD request.
-	 * 创建并发送一个异步的HTTP HEAD请求。
+	 * 创建并发送异步HTTP HEAD请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -191,7 +191,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP PUT request.
-	 * 创建并发送一个异步HTTP PUT请求。
+	 * 创建并发送异步HTTP PUT请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -208,7 +208,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP POST request.
-	 * 创建并发送一个异步HTTP POST请求。
+	 * 创建并发送异步HTTP POST请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -225,7 +225,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP PATCH request.
-	 * 创建并发送一个异步HTTP补丁请求。
+	 * 创建并发送异步HTTP PATCH请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -242,7 +242,7 @@ trait ClientTrait
 
     /**
      * Create and send an asynchronous HTTP DELETE request.
-	 * 创建并发送一个异步HTTP DELETE请求。
+	 * 创建并发送异步HTTP DELETE请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can

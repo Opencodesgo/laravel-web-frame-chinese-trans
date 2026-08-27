@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css，属性，属性
+ * TijsVerkoyen，CssToInlineStyles，Css，属性，Property
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Property;
@@ -39,7 +39,7 @@ final class Property
 
     /**
      * Get name
-	 * 得到名称
+	 * 获取名字
      *
      * @return string
      */
@@ -50,7 +50,7 @@ final class Property
 
     /**
      * Get value
-	 * 得到值
+	 * 获取值
      *
      * @return string
      */
@@ -61,7 +61,7 @@ final class Property
 
     /**
      * Get originalSpecificity
-	 * 获得原始特异性
+	 * 得到originalSpecificity
      *
      * @return Specificity|null
      */
@@ -72,7 +72,7 @@ final class Property
 
     /**
      * Is this property important?
-	 * 这个财产很重要吗
+	 * 这个属性重要吗？
      *
      * @return bool
      */
@@ -83,7 +83,7 @@ final class Property
 
     /**
      * Get the textual representation of the property
-	 * 获取属性的文本表示
+	 * 获取属性的文本表示形式
      *
      * @return string
      */

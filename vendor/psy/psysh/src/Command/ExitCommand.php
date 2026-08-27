@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，退出命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Exit the Psy Shell.
+ * 退出 Psy Shell
  *
  * Just what it says on the tin.
  */

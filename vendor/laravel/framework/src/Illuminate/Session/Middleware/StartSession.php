@@ -19,7 +19,7 @@ class StartSession
 {
     /**
      * The session manager.
-	 * 会话管理器
+	 * 调用会话管理菜单
      *
      * @var \Illuminate\Session\SessionManager
      */
@@ -49,7 +49,7 @@ class StartSession
 
     /**
      * Handle an incoming request.
-	 * 处理传拉请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -103,7 +103,7 @@ class StartSession
 
             return $this->handleStatefulRequest($request, $session, $next);
         } finally {
-            optional($lock)->release();
+            $lock?->release();
         }
     }
 
@@ -196,7 +196,7 @@ class StartSession
 
     /**
      * Determine if the configuration odds hit the lottery.
-	 * 确定配置的概率是否命中开奖
+	 * 确定配置的概率是否命中彩票
      *
      * @param  array  $config
      * @return bool
@@ -216,10 +216,11 @@ class StartSession
      */
     protected function storeCurrentUrl(Request $request, $session)
     {
-        if ($request->method() === 'GET' &&
+        if ($request->isMethod('GET') &&
             $request->route() instanceof Route &&
             ! $request->ajax() &&
-            ! $request->prefetch()) {
+            ! $request->prefetch() &&
+            ! $request->isPrecognitive()) {
             $session->setPreviousUrl($request->fullUrl());
         }
     }
@@ -252,7 +253,9 @@ class StartSession
      */
     protected function saveSession($request)
     {
-        $this->manager->driver()->save();
+        if (! $request->isPrecognitive()) {
+            $this->manager->driver()->save();
+        }
     }
 
     /**

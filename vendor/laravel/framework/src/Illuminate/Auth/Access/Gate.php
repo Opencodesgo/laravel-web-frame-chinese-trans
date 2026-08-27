@@ -7,6 +7,7 @@ namespace Illuminate\Auth\Access;
 
 use Closure;
 use Exception;
+use Illuminate\Auth\Access\Events\GateEvaluated;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -47,7 +48,7 @@ class Gate implements GateContract
 
     /**
      * All of the defined policies.
-	 * 所有已定义的策略
+	 * 所有已定义策略
      *
      * @var array
      */
@@ -63,7 +64,7 @@ class Gate implements GateContract
 
     /**
      * All of the registered after callbacks.
-	 * 所有在回调后注册的
+	 * 所有在回调之后注册的
      *
      * @var array
      */
@@ -71,7 +72,7 @@ class Gate implements GateContract
 
     /**
      * All of the defined abilities using class@method notation.
-	 * 所有已定义的能力都使用class@method符号
+	 * 所有使用class@metho符号已定义的能力
      *
      * @var array
      */
@@ -87,7 +88,7 @@ class Gate implements GateContract
 
     /**
      * Create a new gate instance.
-	 * 创建新的大门实例
+	 * 创建新大门实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  callable  $userResolver
@@ -194,10 +195,10 @@ class Gate implements GateContract
 
     /**
      * Define a new ability.
-	 * 定义新的能力
+	 * 定义新能力
      *
      * @param  string  $ability
-     * @param  callable|string  $callback
+     * @param  callable|array|string  $callback
      * @return $this
      *
      * @throws \InvalidArgumentException
@@ -215,7 +216,7 @@ class Gate implements GateContract
 
             $this->abilities[$ability] = $this->buildAbilityCallback($ability, $callback);
         } else {
-            throw new InvalidArgumentException("Callback must be a callable or a 'Class@method' string.");
+            throw new InvalidArgumentException("Callback must be a callable, callback array, or a 'Class@method' string.");
         }
 
         return $this;
@@ -223,7 +224,7 @@ class Gate implements GateContract
 
     /**
      * Define abilities for a resource.
-	 * 定义资源的能力
+	 * 定义资源能力
      *
      * @param  string  $name
      * @param  string  $class
@@ -258,7 +259,7 @@ class Gate implements GateContract
     protected function buildAbilityCallback($ability, $callback)
     {
         return function () use ($ability, $callback) {
-            if (Str::contains($callback, '@')) {
+            if (str_contains($callback, '@')) {
                 [$class, $method] = Str::parseCallback($callback);
             } else {
                 $class = $callback;
@@ -363,9 +364,9 @@ class Gate implements GateContract
      */
     public function check($abilities, $arguments = [])
     {
-        return collect($abilities)->every(function ($ability) use ($arguments) {
-            return $this->inspect($ability, $arguments)->allowed();
-        });
+        return collect($abilities)->every(
+            fn ($ability) => $this->inspect($ability, $arguments)->allowed()
+        );
     }
 
     /**
@@ -378,9 +379,7 @@ class Gate implements GateContract
      */
     public function any($abilities, $arguments = [])
     {
-        return collect($abilities)->contains(function ($ability) use ($arguments) {
-            return $this->check($ability, $arguments);
-        });
+        return collect($abilities)->contains(fn ($ability) => $this->check($ability, $arguments));
     }
 
     /**
@@ -453,8 +452,7 @@ class Gate implements GateContract
         // First we will call the "before" callbacks for the Gate. If any of these give
         // back a non-null response, we will immediately return that result in order
         // to let the developers override all checks for some authorization cases.
-		// 首先，我们将调用Gate的“before”回调。如果其中任何一个返回非空响应，
-		// 我们将立即返回该结果，以便让开发人员覆盖某些授权情况的所有检查。
+		// 首先，我们将调用Gate的"before"回调。
         $result = $this->callBeforeCallbacks(
             $user, $ability, $arguments
         );
@@ -466,7 +464,7 @@ class Gate implements GateContract
         // After calling the authorization callback, we will call the "after" callbacks
         // that are registered with the Gate, which allows a developer to do logging
         // if that is required for this application. Then we'll return the result.
-		// 在调用授权回调之后，我们将调用“After”回调，这些都是在Gate上注册的，它允许开发人员进行日志记录。
+		// 在调用授权回调之后，我们将调用"After"回调
         return tap($this->callAfterCallbacks(
             $user, $ability, $arguments, $result
         ), function ($result) use ($user, $ability, $arguments) {
@@ -504,7 +502,7 @@ class Gate implements GateContract
 
     /**
      * Determine if the given class method allows guests.
-	 * 确定给定的类方法是否允许来宾
+	 * 确定给定的类方法是否允许访客
      *
      * @param  string  $class
      * @param  string  $method
@@ -531,7 +529,7 @@ class Gate implements GateContract
 
     /**
      * Determine if the callback allows guests.
-	 * 确定回调是否允许来宾
+	 * 确定回调是否允许访客
      *
      * @param  callable  $callback
      * @return bool
@@ -547,7 +545,7 @@ class Gate implements GateContract
 
     /**
      * Determine if the given parameter allows guests.
-	 * 确定给定参数是否允许来宾
+	 * 确定给定参数是否允许访客
      *
      * @param  \ReflectionParameter  $parameter
      * @return bool
@@ -615,7 +613,7 @@ class Gate implements GateContract
 
             $afterResult = $after($user, $ability, $result, $arguments);
 
-            $result = $result ?? $afterResult;
+            $result ??= $afterResult;
         }
 
         return $result;
@@ -623,7 +621,7 @@ class Gate implements GateContract
 
     /**
      * Dispatch a gate evaluation event.
-	 * 分派大门评估事件
+	 * 分派门评估事件
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @param  string  $ability
@@ -635,7 +633,7 @@ class Gate implements GateContract
     {
         if ($this->container->bound(Dispatcher::class)) {
             $this->container->make(Dispatcher::class)->dispatch(
-                new Events\GateEvaluated($user, $ability, $result, $arguments)
+                new GateEvaluated($user, $ability, $result, $arguments)
             );
         }
     }
@@ -783,7 +781,7 @@ class Gate implements GateContract
             // This callback will be responsible for calling the policy's before method and
             // running this policy method if necessary. This is used to when objects are
             // mapped to policy objects in the user's configurations or on this class.
-			// 此回调将负责调用策略的before方法，并在必要时运行此策略方法。
+			// 这个回调将负责调用策略的before方法和必要时运行此策略方法。
             $result = $this->callPolicyBefore(
                 $policy, $user, $ability, $arguments
             );
@@ -791,7 +789,7 @@ class Gate implements GateContract
             // When we receive a non-null result from this before method, we will return it
             // as the "final" results. This will allow developers to override the checks
             // in this policy to return the result for all rules defined in the class.
-			// 当我们从这个before方法接收到一个非空的结果时，我们将返回"最终"结果。
+			// 当我们从这个before方法接收到一个非空的结果时，我们将返回它作为"最后"的结果。
             if (! is_null($result)) {
                 return $result;
             }
@@ -838,7 +836,7 @@ class Gate implements GateContract
         // If this first argument is a string, that means they are passing a class name
         // to the policy. We will remove the first argument from this argument array
         // because this policy already knows what type of models it can authorize.
-		// 如果第一个参数是字符串，这意味着它们传递给策略一个类名。
+		// 如果第一个参数是字符串，这意味着它们传递了一个类名至策略。
         if (isset($arguments[0]) && is_string($arguments[0])) {
             array_shift($arguments);
         }
@@ -854,14 +852,14 @@ class Gate implements GateContract
 
     /**
      * Format the policy ability into a method name.
-	 * 格式化策略功能为方法名称
+	 * 将策略功能格式化为方法名称
      *
      * @param  string  $ability
      * @return string
      */
     protected function formatAbilityToMethod($ability)
     {
-        return strpos($ability, '-') !== false ? Str::camel($ability) : $ability;
+        return str_contains($ability, '-') ? Str::camel($ability) : $ability;
     }
 
     /**
@@ -873,9 +871,7 @@ class Gate implements GateContract
      */
     public function forUser($user)
     {
-        $callback = function () use ($user) {
-            return $user;
-        };
+        $callback = fn () => $user;
 
         return new static(
             $this->container, $callback, $this->abilities,
@@ -919,7 +915,7 @@ class Gate implements GateContract
 
     /**
      * Set the container instance used by the gate.
-	 * 设置大门使用的容器实例
+	 * 设置gate使用的容器实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return $this

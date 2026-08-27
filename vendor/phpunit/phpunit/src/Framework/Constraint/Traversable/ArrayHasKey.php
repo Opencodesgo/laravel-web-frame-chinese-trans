@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，数组有键
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -34,6 +39,7 @@ final class ArrayHasKey extends Constraint
 
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示
      *
      * @throws InvalidArgumentException
      */
@@ -45,6 +51,7 @@ final class ArrayHasKey extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @param mixed $other value or object to evaluate
      */
@@ -63,6 +70,7 @@ final class ArrayHasKey extends Constraint
 
     /**
      * Returns the description of the failure.
+	 * 返回失败的描述。
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.

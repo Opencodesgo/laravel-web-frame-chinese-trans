@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，Po 文件转储器
+ * Symfony，Component，Translation，转存器，Po 文件转储
  */
 
 /*
@@ -18,16 +18,13 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PoFileDumper generates a gettext formatted string representation of a message catalogue.
- * PoFileDumper生成一个消息目录的gettext格式的字符串表示。
+ * PoFileDumper生成消息目录的gettext格式的字符串表示形式。
  *
  * @author Stealth35
  */
 class PoFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $output = 'msgid ""'."\n";
         $output .= 'msgstr ""'."\n";
@@ -58,21 +55,21 @@ class PoFileDumper extends FileDumper
             $sourceRules = $this->getStandardRules($source);
             $targetRules = $this->getStandardRules($target);
             if (2 == \count($sourceRules) && [] !== $targetRules) {
-                $output .= sprintf('msgid "%s"'."\n", $this->escape($sourceRules[0]));
-                $output .= sprintf('msgid_plural "%s"'."\n", $this->escape($sourceRules[1]));
+                $output .= \sprintf('msgid "%s"'."\n", $this->escape($sourceRules[0]));
+                $output .= \sprintf('msgid_plural "%s"'."\n", $this->escape($sourceRules[1]));
                 foreach ($targetRules as $i => $targetRule) {
-                    $output .= sprintf('msgstr[%d] "%s"'."\n", $i, $this->escape($targetRule));
+                    $output .= \sprintf('msgstr[%d] "%s"'."\n", $i, $this->escape($targetRule));
                 }
             } else {
-                $output .= sprintf('msgid "%s"'."\n", $this->escape($source));
-                $output .= sprintf('msgstr "%s"'."\n", $this->escape($target));
+                $output .= \sprintf('msgid "%s"'."\n", $this->escape($source));
+                $output .= \sprintf('msgstr "%s"'."\n", $this->escape($target));
             }
         }
 
         return $output;
     }
 
-    private function getStandardRules(string $id)
+    private function getStandardRules(string $id): array
     {
         // Partly copied from TranslatorTrait::trans.
         $parts = [];
@@ -115,10 +112,7 @@ EOF;
         return $standardRules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'po';
     }
@@ -128,12 +122,12 @@ EOF;
         return addcslashes($str, "\0..\37\42\134");
     }
 
-    private function formatComments($comments, string $prefix = ''): ?string
+    private function formatComments(string|array $comments, string $prefix = ''): ?string
     {
         $output = null;
 
         foreach ((array) $comments as $comment) {
-            $output .= sprintf('#%s %s'."\n", $prefix, $comment);
+            $output .= \sprintf('#%s %s'."\n", $prefix, $comment);
         }
 
         return $output;

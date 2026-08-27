@@ -6,20 +6,36 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:cast')]
 class CastMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名 make:cast
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $name = 'make:cast';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:cast';
+
+    /**
      * The console command description.
-	 * 控制台命令描述，创建一个新的自定义Eloquent转换类
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -27,7 +43,7 @@ class CastMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -35,13 +51,15 @@ class CastMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
-        return $this->resolveStubPath('/stubs/cast.stub');
+        return $this->option('inbound')
+                    ? $this->resolveStubPath('/stubs/cast.inbound.stub')
+                    : $this->resolveStubPath('/stubs/cast.stub');
     }
 
     /**
@@ -60,7 +78,7 @@ class CastMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -68,5 +86,19 @@ class CastMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\Casts';
+    }
+
+    /**
+     * Get the console command arguments.
+	 * 获取控制台命令参数
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the cast already exists'],
+            ['inbound', null, InputOption::VALUE_NONE, 'Generate an inbound cast class'],
+        ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，Crypto，Dkim 选择
+ * Symfony，Component，Mime，密码学，Dkim 选项
  */
 
 /*
@@ -16,13 +16,13 @@ namespace Symfony\Component\Mime\Crypto;
 
 /**
  * A helper providing autocompletion for available DkimSigner options.
- * 为可用的DkimSigner选项提供自动完成的助手。
+ * 一个帮助器，为可用的DkimSigner选项提供自动完成功能。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 final class DkimOptions
 {
-    private $options = [];
+    private array $options = [];
 
     public function toArray(): array
     {
@@ -32,7 +32,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function algorithm(string $algo): self
+    public function algorithm(string $algo): static
     {
         $this->options['algorithm'] = $algo;
 
@@ -42,7 +42,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function signatureExpirationDelay(int $show): self
+    public function signatureExpirationDelay(int $show): static
     {
         $this->options['signature_expiration_delay'] = $show;
 
@@ -52,7 +52,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function bodyMaxLength(int $max): self
+    public function bodyMaxLength(int $max): static
     {
         $this->options['body_max_length'] = $max;
 
@@ -62,7 +62,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function bodyShowLength(bool $show): self
+    public function bodyShowLength(bool $show): static
     {
         $this->options['body_show_length'] = $show;
 
@@ -72,7 +72,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function headerCanon(string $canon): self
+    public function headerCanon(string $canon): static
     {
         $this->options['header_canon'] = $canon;
 
@@ -82,7 +82,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function bodyCanon(string $canon): self
+    public function bodyCanon(string $canon): static
     {
         $this->options['body_canon'] = $canon;
 
@@ -92,7 +92,7 @@ final class DkimOptions
     /**
      * @return $this
      */
-    public function headersToIgnore(array $headers): self
+    public function headersToIgnore(array $headers): static
     {
         $this->options['headers_to_ignore'] = $headers;
 

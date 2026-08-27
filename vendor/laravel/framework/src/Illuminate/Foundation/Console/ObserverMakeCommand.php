@@ -7,8 +7,12 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'make:observer')]
 class ObserverMakeCommand extends GeneratorCommand
 {
     /**
@@ -18,6 +22,19 @@ class ObserverMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:observer';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:observer';
 
     /**
      * The console command description.
@@ -113,7 +130,7 @@ class ObserverMakeCommand extends GeneratorCommand
 
     /**
      * Resolve the fully-qualified path to the stub.
-	 * 解析到存根的全限定路径
+	 * 解析到存根的全限定路
      *
      * @param  string  $stub
      * @return string
@@ -127,7 +144,7 @@ class ObserverMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -146,7 +163,33 @@ class ObserverMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the observer applies to.'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the observer already exists'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the observer applies to'],
         ];
+    }
+
+    /**
+     * Interact further with the user if they were prompted for missing arguments.
+	 * 如果提示用户输入缺少的参数，则与用户进一步交互。
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @return void
+     */
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
+    {
+        if ($this->isReservedName($this->getNameInput()) || $this->didReceiveOptions($input)) {
+            return;
+        }
+
+        $model = $this->components->askWithCompletion(
+            'What model should this observer apply to?',
+            $this->possibleModels(),
+            'none'
+        );
+
+        if ($model && $model !== 'none') {
+            $input->setOption('model', $model);
+        }
     }
 }

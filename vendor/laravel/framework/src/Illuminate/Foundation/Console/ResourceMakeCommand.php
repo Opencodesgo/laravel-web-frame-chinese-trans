@@ -1,14 +1,15 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:resource 资源创建命令
+ * Illuminate，基础，控制台，make:resource命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:resource')]
 class ResourceMakeCommand extends GeneratorCommand
 {
     /**
@@ -18,6 +19,19 @@ class ResourceMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:resource';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:resource';
 
     /**
      * The console command description.
@@ -37,7 +51,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -72,7 +86,7 @@ class ResourceMakeCommand extends GeneratorCommand
     protected function collection()
     {
         return $this->option('collection') ||
-               Str::endsWith($this->argument('name'), 'Collection');
+               str_ends_with($this->argument('name'), 'Collection');
     }
 
     /**
@@ -91,7 +105,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -103,13 +117,14 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the resource already exists'],
             ['collection', 'c', InputOption::VALUE_NONE, 'Create a resource collection'],
         ];
     }

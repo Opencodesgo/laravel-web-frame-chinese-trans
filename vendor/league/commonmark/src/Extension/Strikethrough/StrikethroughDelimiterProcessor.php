@@ -48,6 +48,7 @@ final class StrikethroughDelimiterProcessor implements CacheableDelimiterProcess
         }
 
         // $opener and $closer are the same length so we just return one of them
+		// $opener和$closer的长度相同，所以我们只返回其中一个。
         return $opener->getLength();
     }
 

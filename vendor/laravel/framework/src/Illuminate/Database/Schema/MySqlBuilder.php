@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，MySql 构建者
+ * Illuminate，数据库，模式，MySql 构建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -46,7 +46,7 @@ class MySqlBuilder extends Builder
     {
         $table = $this->connection->getTablePrefix().$table;
 
-        return count($this->connection->select(
+        return count($this->connection->selectFromWriteConnection(
             $this->grammar->compileTableExists(), [$this->connection->getDatabaseName(), $table]
         )) > 0;
     }
@@ -62,7 +62,7 @@ class MySqlBuilder extends Builder
     {
         $table = $this->connection->getTablePrefix().$table;
 
-        $results = $this->connection->select(
+        $results = $this->connection->selectFromWriteConnection(
             $this->grammar->compileColumnListing(), [$this->connection->getDatabaseName(), $table]
         );
 

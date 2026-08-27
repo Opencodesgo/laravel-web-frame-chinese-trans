@@ -10,7 +10,6 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory as FactoryContract;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Engines\EngineResolver;
 use InvalidArgumentException;
@@ -20,6 +19,7 @@ class Factory implements FactoryContract
     use Macroable,
         Concerns\ManagesComponents,
         Concerns\ManagesEvents,
+        Concerns\ManagesFragments,
         Concerns\ManagesLayouts,
         Concerns\ManagesLoops,
         Concerns\ManagesStacks,
@@ -35,7 +35,7 @@ class Factory implements FactoryContract
 
     /**
      * The view finder implementation.
-	 * 取景器实现
+	 * 视图查找器实现。
      *
      * @var \Illuminate\View\ViewFinderInterface
      */
@@ -80,7 +80,7 @@ class Factory implements FactoryContract
 
     /**
      * The view composer events.
-	 * 视图编写器事件
+	 * 视图composer事件
      *
      * @var array
      */
@@ -96,7 +96,7 @@ class Factory implements FactoryContract
 
     /**
      * The "once" block IDs that have been rendered.
-	 * 已经渲染的"once"块id
+	 * 已经渲染的“once”块id
      *
      * @var array
      */
@@ -251,9 +251,9 @@ class Factory implements FactoryContract
         // If there is no data in the array, we will render the contents of the empty
         // view. Alternatively, the "empty view" could be a raw string that begins
         // with "raw|" for convenience and to let this know that it is a string.
-		// 如果数组中没有数据，我们将呈现空数组的内容。
+		// 如果数组中没有数据，我们将呈现空视图的内容。
         else {
-            $result = Str::startsWith($empty, 'raw|')
+            $result = str_starts_with($empty, 'raw|')
                         ? substr($empty, 4)
                         : $this->make($empty)->render();
         }
@@ -349,7 +349,7 @@ class Factory implements FactoryContract
         $extensions = array_keys($this->extensions);
 
         return Arr::first($extensions, function ($value) use ($path) {
-            return Str::endsWith($path, '.'.$value);
+            return str_ends_with($path, '.'.$value);
         });
     }
 
@@ -510,7 +510,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush all of the factory state like sections and stacks.
-	 * 刷新所有工厂状态，如节和堆栈
+	 * 刷新所有工厂状态，如节和堆栈。
      *
      * @return void
      */
@@ -522,11 +522,12 @@ class Factory implements FactoryContract
         $this->flushSections();
         $this->flushStacks();
         $this->flushComponents();
+        $this->flushFragments();
     }
 
     /**
      * Flush all of the section contents if done rendering.
-	 * 如果完成呈现，则刷新所有节内容
+	 * 如果完成呈现，则刷新所有节内容。
      *
      * @return void
      */

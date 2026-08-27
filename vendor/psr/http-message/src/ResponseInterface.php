@@ -7,7 +7,7 @@ namespace Psr\Http\Message;
 
 /**
  * Representation of an outgoing, server-side response.
- * 表示一个传出的服务器端响应。
+ * 表示传出的服务器端响应。
  *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
@@ -25,7 +25,7 @@ interface ResponseInterface extends MessageInterface
 {
     /**
      * Gets the response status code.
-	 * 获取响应状态代码。
+	 * 获取响应状态码
      *
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.

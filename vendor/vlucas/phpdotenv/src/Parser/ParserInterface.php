@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，分析程序，解析器接口
+ * Dotenv，解析器，解析器接口 
  */
 
 declare(strict_types=1);

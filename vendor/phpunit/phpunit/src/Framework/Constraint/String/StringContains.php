@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，字符串包含
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -37,6 +42,7 @@ final class StringContains extends Constraint
 
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示形式
      */
     public function toString(): string
     {
@@ -55,6 +61,7 @@ final class StringContains extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @param mixed $other value or object to evaluate
      */
@@ -68,12 +75,14 @@ final class StringContains extends Constraint
             /*
              * We must use the multi byte safe version so we can accurately compare non latin upper characters with
              * their lowercase equivalents.
+			 * 我们必须使用多字节安全版本，以便准确比较非拉丁字母的大小写字符与其对应的小写形式。
              */
             return mb_stripos($other, $this->string, 0, 'UTF-8') !== false;
         }
 
         /*
          * Use the non multi byte safe functions to see if the string is contained in $other.
+		 * 使用非多字节安全函数查看字符串是否包含在$other中。
          *
          * This function is very fast and we don't care about the character position in the string.
          *

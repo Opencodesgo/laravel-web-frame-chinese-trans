@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，重启表接口
+ * Symfony，Component，HttpKernel，Rebootable 接口
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpKernel;
 
 /**
  * Allows the Kernel to be rebooted using a temporary cache directory.
- * 允许使用临时缓存目录重新引导内核
+ * 允许使用临时缓存目录重新引导内核。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -24,12 +24,14 @@ interface RebootableInterface
 {
     /**
      * Reboots a kernel.
-	 * 重新引导一个内核。
+	 * 重新启动内核。
      *
      * The getBuildDir() method of a rebootable kernel should not be called
      * while building the container. Use the %kernel.build_dir% parameter instead.
      *
      * @param string|null $warmupDir pass null to reboot in the regular build directory
+     *
+     * @return void
      */
     public function reboot(?string $warmupDir);
 }

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，溢出处理程序
- *
+ * Monolog，处理器，Overflow 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -20,7 +20,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Handler to only pass log messages when a certain threshold of number of messages is reached.
- * 当到达某个特定的消息阈值时,处理程序只传递日志消息。
+ * 处理程序仅在达到消息数量的特定阈值时传递日志消息。
  *
  * This can be useful in cases of processing a batch of data, but you're for example only interested
  * in case it fails catastrophically instead of a warning for 1 or 2 events. Worse things can happen, right?
@@ -83,7 +83,7 @@ class OverflowHandler extends AbstractHandler implements FormattableHandlerInter
 
     /**
      * Handles a record.
-	 * 处理记录。
+	 * 处理一条记录
      *
      * All records may be passed to this method, and the handler should discard
      * those that it does not want to handle.

@@ -19,6 +19,14 @@ class AuthorizationException extends Exception
     protected $response;
 
     /**
+     * The HTTP response status code.
+	 * HTTP响应状态码
+     *
+     * @var int|null
+     */
+    protected $status;
+
+    /**
      * Create a new authorization exception instance.
 	 * 创建新的授权异常实例
      *
@@ -60,13 +68,60 @@ class AuthorizationException extends Exception
     }
 
     /**
+     * Set the HTTP response status code.
+	 * 设置HTTP响应状态码
+     *
+     * @param  int|null  $status
+     * @return $this
+     */
+    public function withStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Set the HTTP response status code to 404.
+	 * 设置HTTP响应状态码为404
+     *
+     * @return $this
+     */
+    public function asNotFound()
+    {
+        return $this->withStatus(404);
+    }
+
+    /**
+     * Determine if the HTTP status code has been set.
+	 * 确定是否设置了HTTP状态码
+     *
+     * @return bool
+     */
+    public function hasStatus()
+    {
+        return $this->status !== null;
+    }
+
+    /**
+     * Get the HTTP status code.
+	 * 获取HTTP状态码
+     *
+     * @return int|null
+     */
+    public function status()
+    {
+        return $this->status;
+    }
+
+    /**
      * Create a deny response object from this exception.
-	 * 从此异常创建一个拒绝响应对象
+	 * 创建一个拒绝响应对象从此异常
      *
      * @return \Illuminate\Auth\Access\Response
      */
     public function toResponse()
     {
-        return Response::deny($this->message, $this->code);
+        return Response::deny($this->message, $this->code)->withStatus($this->status);
     }
 }

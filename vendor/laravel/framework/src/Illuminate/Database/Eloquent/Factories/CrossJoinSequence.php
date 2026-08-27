@@ -13,7 +13,7 @@ class CrossJoinSequence extends Sequence
      * Create a new cross join sequence instance.
 	 * 创建一个新的交叉连接序列实例
      *
-     * @param  array  $sequences
+     * @param  array  ...$sequences
      * @return void
      */
     public function __construct(...$sequences)

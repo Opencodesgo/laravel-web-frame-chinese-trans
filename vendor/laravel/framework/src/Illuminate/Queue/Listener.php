@@ -13,7 +13,7 @@ class Listener
 {
     /**
      * The command working path.
-	 * 命令工作路径
+	 * 命令工作者路径
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 工作者工作的环境
+	 * 工人者们工作的环境
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class Listener
     protected $sleep = 3;
 
     /**
-     * The amount of times to try a job before logging it failed.
+     * The number of times to try a job before logging it failed.
 	 * 在记录作业失败之前尝试该作业的次数
      *
      * @var int
@@ -53,7 +53,7 @@ class Listener
 
     /**
      * Create a new queue listener.
-	 * 创建一个新的队列监听器
+	 * 创建一个新的队列侦听器
      *
      * @param  string  $commandPath
      * @return void
@@ -65,7 +65,7 @@ class Listener
 
     /**
      * Get the PHP binary.
-	 * 得到PHP二进制文件
+	 * 获取PHP二进制文件
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Listener
 
     /**
      * Get the Artisan binary.
-	 * 得到Artisan二进制文件
+	 * 获取Artisan二进制文件
      *
      * @return string
      */
@@ -100,6 +100,10 @@ class Listener
 
         while (true) {
             $this->runProcess($process, $options->memory);
+
+            if ($options->rest) {
+                sleep($options->rest);
+            }
         }
     }
 
@@ -123,7 +127,7 @@ class Listener
         // If the environment is set, we will append it to the command array so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
-		// 如果设置了环境，我们将把它附加到命令数组中，这样工作者将在指定的环境下运行。
+		// 如果设置了环境，我们将把它附加到命令数组中。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -152,7 +156,7 @@ class Listener
 
     /**
      * Create the command with the listener options.
-	 * 使用监听器选项创建命令
+	 * 使用侦听器选项创建命令
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -173,6 +177,7 @@ class Listener
             "--memory={$options->memory}",
             "--sleep={$options->sleep}",
             "--tries={$options->maxTries}",
+            $options->force ? '--force' : null,
         ], function ($value) {
             return ! is_null($value);
         });
@@ -195,7 +200,7 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
-		// 一旦我们运行了作业，我们将检查内存限制是否已超过脚本。
+		// 一旦我们运行了作业，我们将检查内存限制是否已超过。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }

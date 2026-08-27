@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，描述表，事件，松散描述处理器
+ * League，CommonMark，扩展，描述列表，事件，松散描述处理器
  */
 
 declare(strict_types=1);
@@ -46,12 +46,12 @@ final class LooseDescriptionHandler
             }
 
             // Is this description preceded by a paragraph that should really be a term?
+			// 这个描述前面是不是有一个应该是术语的段落？
             if (! (($paragraph = $description->previous()) instanceof Paragraph)) {
                 continue;
             }
 
             // Convert the paragraph into one or more terms
-			// 将段落转换成一个或多个术语
             $term = new DescriptionTerm();
             $paragraph->replaceWith($term);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，工具，数组转换器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -30,10 +33,8 @@ class ArrayConverter
      * For example this array('foo.bar' => 'value') will be converted to ['foo' => ['bar' => 'value']].
      *
      * @param array $messages Linear messages array
-     *
-     * @return array
      */
-    public static function expandToTree(array $messages)
+    public static function expandToTree(array $messages): array
     {
         $tree = [];
 
@@ -48,7 +49,7 @@ class ArrayConverter
         return $tree;
     }
 
-    private static function &getElementByPath(array &$tree, array $parts)
+    private static function &getElementByPath(array &$tree, array $parts): mixed
     {
         $elem = &$tree;
         $parentOfElem = null;
@@ -85,7 +86,7 @@ class ArrayConverter
         return $elem;
     }
 
-    private static function cancelExpand(array &$tree, string $prefix, array $node)
+    private static function cancelExpand(array &$tree, string $prefix, array $node): void
     {
         $prefix .= '.';
 

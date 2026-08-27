@@ -746,6 +746,7 @@ class Assert
 
     /**
      * Does non strict comparisons on the items, so ['3', 3] will not pass the assertion.
+	 * 对项目进行非严格比较，因此['3'，3]不会传递断言。
      *
      * @param array  $values
      * @param string $message
@@ -924,6 +925,7 @@ class Assert
 
     /**
      * Inclusive range, so Assert::(3, 3, 5) passes.
+	 * 包含范围，所以Assert::（3,3,5）通过。
      *
      * @psalm-pure
      *
@@ -948,6 +950,7 @@ class Assert
 
     /**
      * A more human-readable alias of Assert::inArray().
+	 * Assert::inArray（）的别名
      *
      * @psalm-pure
      *
@@ -1352,6 +1355,7 @@ class Assert
 
     /**
      * Inclusive min.
+	 * 包容性的最小值
      *
      * @psalm-pure
      *
@@ -1374,6 +1378,7 @@ class Assert
 
     /**
      * Inclusive max.
+	 * 包容性的最大值
      *
      * @psalm-pure
      *
@@ -1710,6 +1715,7 @@ class Assert
 
     /**
      * Checks if a value is a valid array key (int or string).
+	 * 检查值是否为有效的数组键（int或string）
      *
      * @psalm-pure
      * @psalm-assert array-key $value
@@ -1731,6 +1737,7 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
+	 * 不检查$array是否可计数，这会在7.2以后的php版本中产生警告。
      *
      * @param Countable|array $array
      * @param int             $number
@@ -1753,6 +1760,7 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
+	 * 不检查$array是否可计数，这会在7.2以后的php版本中产生警告。
      *
      * @param Countable|array $array
      * @param int|float       $min
@@ -1773,6 +1781,7 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
+	 * 不检查$array是否可计数，这会在7.2以后的php版本中产生警告。
      *
      * @param Countable|array $array
      * @param int|float       $max
@@ -1793,6 +1802,7 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
+	 * 不检查$array是否可计数，这会在7.2以后的php版本中产生警告。
      *
      * @param Countable|array $array
      * @param int|float       $min

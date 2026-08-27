@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块开始
+ * League，CommonMark，解析器，代码块，块开始
  */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ use League\CommonMark\Parser\CursorState;
 
 /**
  * Result object for starting parsing of a block; see static methods for constructors
- * 结果对象对一个块的开始解析;见构造函数的静态方法
+ * 用于开始解析块的Result对象；参见构造函数的静态方法。
  */
 final class BlockStart
 {
@@ -110,7 +110,7 @@ final class BlockStart
 
     /**
      * Signal that we'd like to register the given parser(s) so they can parse the current block
-	 * 表示我们想要注册给定的解析器，以便它们可以解析当前块
+	 * 表示我们想要注册给定的解析器，以便它们可以解析当前块。
      */
     public static function of(BlockContinueParserInterface ...$blockParsers): self
     {
@@ -119,7 +119,7 @@ final class BlockStart
 
     /**
      * Signal that the block parsing process should be aborted (no other block starts should be checked)
-	 * 信号,该块解析过程应该被中止(不需要检查其他块开始)
+	 * 应该终止块解析过程的信号（不应该检查其他启动的块）
      *
      * @internal
      */

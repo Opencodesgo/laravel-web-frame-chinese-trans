@@ -16,13 +16,13 @@ namespace Symfony\Component\Console\Question;
 
 /**
  * Represents a yes/no question.
- * 代表一个是的/毫无疑问。
+ * 表示是/否问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ConfirmationQuestion extends Question
 {
-    private $trueAnswerRegex;
+    private string $trueAnswerRegex;
 
     /**
      * @param string $question        The question to ask to the user
@@ -39,7 +39,7 @@ class ConfirmationQuestion extends Question
 
     /**
      * Returns the default answer normalizer.
-	 * 返回默认的答案正常化
+	 * 返回默认答案规范化程序
      */
     private function getDefaultNormalizer(): callable
     {

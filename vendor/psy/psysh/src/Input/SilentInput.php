@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输入，沉默的输入
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Input;
 
 /**
  * A simple class used internally by PsySH to represent silent input.
+ * PsySH 内部用来表示静默输入的简单类。
  *
  * Silent input is generally used for non-user-generated code, such as the
  * rewritten user code run by sudo command. Silent input isn't echoed before
@@ -24,6 +28,7 @@ class SilentInput
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string $inputString
      */

@@ -1,11 +1,10 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，时间生成器接口
+ * Ramsey，Uuid，生成器，时间发生器接口
  */
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,20 +20,19 @@ namespace Ramsey\Uuid\Generator;
 use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
- * A time generator generates strings of binary data based on a node ID,
- * clock sequence, and the current time
+ * A time generator generates strings of binary data based on a node ID, clock sequence, and the current time
+ * 时间生成器根据节点ID、时钟序列和当前时间生成二进制数据字符串
  */
 interface TimeGeneratorInterface
 {
     /**
      * Generate a binary string from a node ID, clock sequence, and current time
+	 * 从节点ID、时钟序列和当前时间生成二进制字符串
      *
-     * @param Hexadecimal|int|string|null $node A 48-bit number representing the
-     *     hardware address; this number may be represented as an integer or a
-     *     hexadecimal string
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
-     *     that could arise when the clock is set backwards in time or if the
-     *     node ID changes
+     * @param Hexadecimal | int | string | null $node A 48-bit number representing the hardware address; this number may
+     *     be represented as an integer or a hexadecimal string
+     * @param int | null $clockSeq A 14-bit number used to help avoid duplicates that could arise when the clock is set
+     *     backwards in time or if the node ID changes
      *
      * @return string A binary string
      */

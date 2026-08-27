@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理器，漂亮页面处理程序
+ * Whoops，处理者，漂亮页面处理程序
  */
 
 /**
@@ -118,7 +118,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * A list of known editor strings.
-	 * 一个已知的编辑器字符串的列表
      *
      * @var array
      */
@@ -363,7 +362,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Adds an entry to the list of tables displayed in the template.
-	 * 在模板中添加显示表的列表
+	 * 向模板中显示的表列表中添加一个条目
      *
      * The expected data is a simple associative array. Any nested arrays
      * will be flattened with `print_r`.
@@ -380,7 +379,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Lazily adds an entry to the list of tables displayed in the table.
-	 * 懒洋洋地添加一个条目到表中显示的表列表。
+	 * lazy将一个条目添加到表中显示的表列表中
      *
      * The supplied callback argument will be called when the error is
      * rendered, it should produce a simple associative array. Any nested
@@ -416,7 +415,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Returns all the extra data tables registered with this handler.
-	 * 返回使用此处理程序注册的所有额外的数据表。
      *
      * Optionally accepts a 'label' parameter, to only return the data table
      * under that label.
@@ -437,7 +435,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Set whether to handle unconditionally.
-	 * 设置是否无条件处理
      *
      * Allows to disable all attempts to dynamically decide whether to handle
      * or return prematurely. Set this to ensure that the handler will perform,
@@ -459,7 +456,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Adds an editor resolver.
-	 * 添加编辑器解析器
      *
      * Either a string, or a closure that resolves a string, that can be used
      * to open a given file in an editor. If the string contains the special
@@ -486,7 +482,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Set the editor to use to open referenced files.
-	 * 设置编辑器用于打开引用文件。
      *
      * Pass either the name of a configured editor, or a closure that directly
      * resolves an editor string.
@@ -517,7 +512,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Get the editor href for a given file and line, if available.
-	 * 如果可用,请为给定的文件和行获取编辑器href。
      *
      * @param string $filePath
      * @param int    $line
@@ -550,7 +544,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Determine if the editor link should act as an Ajax request.
-	 * 确定编辑器链接是否应该作为Ajax请求
      *
      * @param string $filePath
      * @param int    $line
@@ -574,7 +567,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Determines both the editor and if ajax should be used.
-	 * 确定编辑器和ajax是否应该使用
      *
      * @param string $filePath
      * @param int    $line
@@ -646,7 +638,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Adds a path to the list of paths to be searched for resources.
-	 * 在搜索资源的路径列表中添加一条路径
      *
      * @param string $path
      *
@@ -668,7 +659,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Adds a custom css file to be loaded.
-	 * 添加一个定制的css文件来加载
      *
      * @param string|null $name
      *
@@ -682,7 +672,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Adds a custom js file to be loaded.
-	 * 添加一个定制js文件来加载
      *
      * @param string|null $name
      *
@@ -704,7 +693,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Finds a resource, by its relative path, in all available search paths.
-	 * 在所有可用的搜索路径中,通过它的相对路径找到资源。
      *
      * The search is performed starting at the last search path, and all the
      * way back to the first, enabling a cascading-type system of overrides for
@@ -771,7 +759,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Return the application paths.
-	 * 返回应用程序路径
      *
      * @return array
      */
@@ -782,7 +769,6 @@ class PrettyPageHandler extends Handler
 
     /**
      * Set the application paths.
-	 * 设置应用程序路径
      *
      * @return void
      */
@@ -807,7 +793,6 @@ class PrettyPageHandler extends Handler
     /**
      * blacklist a sensitive value within one of the superglobal arrays.
      * Alias for the hideSuperglobalKey method.
-	 * 在超级全局数组中的一个敏感值。
      *
      * @param string $superGlobalName The name of the superglobal array, e.g. '_GET'
      * @param string $key             The key within the superglobal
@@ -823,7 +808,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Hide a sensitive value within one of the superglobal arrays.
-	 * 在超级全局数组中隐藏一个敏感的值
+	 * 在一个超全局数组中隐藏敏感值
      *
      * @param string $superGlobalName The name of the superglobal array, e.g. '_GET'
      * @param string $key             The key within the superglobal
@@ -836,7 +821,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Checks all values within the given superGlobal array.
-	 * 检查给定的超全局数组中的所有值
+	 * 检查给定superGlobal数组中的所有值
      *
      * Blacklisted values will be replaced by a equal length string containing
      * only '*' characters for string values.

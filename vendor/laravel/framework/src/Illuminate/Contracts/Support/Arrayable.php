@@ -5,13 +5,17 @@
 
 namespace Illuminate\Contracts\Support;
 
+/**
+ * @template TKey of array-key
+ * @template TValue
+ */
 interface Arrayable
 {
     /**
      * Get the instance as an array.
-	 * 以数组的形式获取实例
+	 * 得到实例为数组
      *
-     * @return array
+     * @return array<TKey, TValue>
      */
     public function toArray();
 }

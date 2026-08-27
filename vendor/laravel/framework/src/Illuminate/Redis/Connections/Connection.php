@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，连接，连接抽象类
+ * Illuminate，Redis，连接，连接
  */
 
 namespace Illuminate\Redis\Connections;
@@ -28,7 +28,7 @@ abstract class Connection
 
     /**
      * The Redis connection name.
-	 * Redis连接名
+	 * Redis连接名称
      *
      * @var string|null
      */
@@ -79,7 +79,7 @@ abstract class Connection
 
     /**
      * Get the underlying Redis client.
-	 * 得到底层Redis客户端
+	 * 获取底层Redis客户端
      *
      * @return mixed
      */
@@ -131,10 +131,24 @@ abstract class Connection
         $time = round((microtime(true) - $start) * 1000, 2);
 
         if (isset($this->events)) {
-            $this->event(new CommandExecuted($method, $parameters, $time, $this));
+            $this->event(new CommandExecuted(
+                $method, $this->parseParametersForEvent($parameters), $time, $this
+            ));
         }
 
         return $result;
+    }
+
+    /**
+     * Parse the command's parameters for event dispatching.
+	 * 解析命令的参数以进行事件调度
+     *
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function parseParametersForEvent(array $parameters)
+    {
+        return $parameters;
     }
 
     /**
@@ -146,9 +160,7 @@ abstract class Connection
      */
     protected function event($event)
     {
-        if (isset($this->events)) {
-            $this->events->dispatch($event);
-        }
+        $this->events?->dispatch($event);
     }
 
     /**
@@ -160,14 +172,12 @@ abstract class Connection
      */
     public function listen(Closure $callback)
     {
-        if (isset($this->events)) {
-            $this->events->listen(CommandExecuted::class, $callback);
-        }
+        $this->events?->listen(CommandExecuted::class, $callback);
     }
 
     /**
      * Get the connection name.
-	 * 得到连接名称
+	 * 获取连接名称
      *
      * @return string|null
      */

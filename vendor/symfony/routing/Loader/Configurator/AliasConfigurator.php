@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，配置，别名配置器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +19,7 @@ use Symfony\Component\Routing\Alias;
 
 class AliasConfigurator
 {
-    private $alias;
+    private Alias $alias;
 
     public function __construct(Alias $alias)
     {
@@ -25,6 +28,7 @@ class AliasConfigurator
 
     /**
      * Whether this alias is deprecated, that means it should not be called anymore.
+	 * 无论该别名是否已弃用，都意味着不应再调用它。
      *
      * @param string $package The name of the composer package that is triggering the deprecation
      * @param string $version The version of the package that introduced the deprecation
@@ -34,7 +38,7 @@ class AliasConfigurator
      *
      * @throws InvalidArgumentException when the message template is invalid
      */
-    public function deprecate(string $package, string $version, string $message): self
+    public function deprecate(string $package, string $version, string $message): static
     {
         $this->alias->setDeprecated($package, $version, $message);
 

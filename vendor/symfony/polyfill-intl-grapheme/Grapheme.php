@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，Polyfill，Intl，Grapheme，字素
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ namespace Symfony\Polyfill\Intl\Grapheme;
 
 /**
  * Partial intl implementation in pure PHP.
- * 纯PHP的部分intl实现。
  *
  * Implemented:
  * - grapheme_extract  - Extract a sequence of grapheme clusters from a text buffer, which must be encoded in UTF-8

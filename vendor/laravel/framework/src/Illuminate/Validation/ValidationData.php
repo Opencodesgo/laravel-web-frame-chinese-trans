@@ -6,7 +6,6 @@
 namespace Illuminate\Validation;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class ValidationData
 {
@@ -41,7 +40,7 @@ class ValidationData
 
         $data = static::extractDataFromPath($explicitPath, $masterData);
 
-        if (! Str::contains($attribute, '*') || Str::endsWith($attribute, '*')) {
+        if (! str_contains($attribute, '*') || str_ends_with($attribute, '*')) {
             return $data;
         }
 
@@ -61,7 +60,7 @@ class ValidationData
     {
         $keys = [];
 
-        $pattern = str_replace('\*', '[^\.]+', preg_quote($attribute));
+        $pattern = str_replace('\*', '[^\.]+', preg_quote($attribute, '/'));
 
         foreach ($data as $key => $value) {
             if ((bool) preg_match('/^'.$pattern.'/', $key, $matches)) {
@@ -85,7 +84,6 @@ class ValidationData
 	 * 根据给定的点标记路径提取数据
      *
      * Used to extract a sub-section of the data for faster iteration.
-	 * 用于提取数据的一个子部分，以便更快地迭代。
      *
      * @param  string  $attribute
      * @param  array  $masterData

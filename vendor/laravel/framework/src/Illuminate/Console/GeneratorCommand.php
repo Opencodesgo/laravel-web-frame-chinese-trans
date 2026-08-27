@@ -1,16 +1,18 @@
 <?php
 /**
- * Illuminate，控制台，指令产生器
+ * Illuminate，控制台，指令产生器抽象类
  */
 
 namespace Illuminate\Console;
 
 use Illuminate\Console\Concerns\CreatesMatchingTest;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Finder\Finder;
 
-abstract class GeneratorCommand extends Command
+abstract class GeneratorCommand extends Command implements PromptsForMissingInput
 {
     /**
      * The filesystem instance.
@@ -62,9 +64,11 @@ abstract class GeneratorCommand extends Command
         'endif',
         'endswitch',
         'endwhile',
+        'enum',
         'eval',
         'exit',
         'extends',
+        'false',
         'final',
         'finally',
         'fn',
@@ -82,6 +86,7 @@ abstract class GeneratorCommand extends Command
         'interface',
         'isset',
         'list',
+        'match',
         'namespace',
         'new',
         'or',
@@ -89,13 +94,16 @@ abstract class GeneratorCommand extends Command
         'private',
         'protected',
         'public',
+        'readonly',
         'require',
         'require_once',
         'return',
+        'self',
         'static',
         'switch',
         'throw',
         'trait',
+        'true',
         'try',
         'unset',
         'use',
@@ -103,6 +111,14 @@ abstract class GeneratorCommand extends Command
         'while',
         'xor',
         'yield',
+        '__CLASS__',
+        '__DIR__',
+        '__FILE__',
+        '__FUNCTION__',
+        '__LINE__',
+        '__METHOD__',
+        '__NAMESPACE__',
+        '__TRAIT__',
     ];
 
     /**
@@ -133,7 +149,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return bool|null
      *
@@ -144,9 +160,9 @@ abstract class GeneratorCommand extends Command
         // First we need to ensure that the given name is not a reserved word within the PHP
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
-		// 首先，我们需要确保给定的名称不是PHP语言和类名实际上是有效的的保留字。
+		// 首先，我们需要确保给定的名称不是PHP中的保留字并且类名实际上是有效的。
         if ($this->isReservedName($this->getNameInput())) {
-            $this->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
+            $this->components->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
 
             return false;
         }
@@ -162,7 +178,7 @@ abstract class GeneratorCommand extends Command
         if ((! $this->hasOption('force') ||
              ! $this->option('force')) &&
              $this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type.' already exists!');
+            $this->components->error($this->type.' already exists.');
 
             return false;
         }
@@ -170,16 +186,20 @@ abstract class GeneratorCommand extends Command
         // Next, we will generate the path to the location where this class' file should get
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
-		// 接下来，我们将生成该类文件所在位置的路径。
+		// 接下来，我们将生成该类文件所在位置的写路径。
         $this->makeDirectory($path);
 
         $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
-        $this->info($this->type.' created successfully.');
+        $info = $this->type;
 
         if (in_array(CreatesMatchingTest::class, class_uses_recursive($this))) {
-            $this->handleTestCreation($path);
+            if ($this->handleTestCreation($path)) {
+                $info .= ' and test';
+            }
         }
+
+        $this->components->info(sprintf('%s [%s] created successfully.', $info, $path));
     }
 
     /**
@@ -231,8 +251,44 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
+     * Get a list of possible model names.
+	 * 获取可能的模型名称列表
+     *
+     * @return array<int, string>
+     */
+    protected function possibleModels()
+    {
+        $modelPath = is_dir(app_path('Models')) ? app_path('Models') : app_path();
+
+        return collect((new Finder)->files()->depth(0)->in($modelPath))
+            ->map(fn ($file) => $file->getBasename('.php'))
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Get a list of possible event names.
+	 * 获取可能的事件名称列表
+     *
+     * @return array<int, string>
+     */
+    protected function possibleEvents()
+    {
+        $eventPath = app_path('Events');
+
+        if (! is_dir($eventPath)) {
+            return [];
+        }
+
+        return collect((new Finder)->files()->depth(0)->in($eventPath))
+            ->map(fn ($file) => $file->getBasename('.php'))
+            ->values()
+            ->all();
+    }
+
+    /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -363,7 +419,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function sortImports($stub)
     {
-        if (preg_match('/(?P<imports>(?:use [^;]+;$\n?)+)/m', $stub, $match)) {
+        if (preg_match('/(?P<imports>(?:^use [^;{]+;$\n?)+)/m', $stub, $match)) {
             $imports = explode("\n", trim($match['imports']));
 
             sort($imports);
@@ -448,7 +504,20 @@ abstract class GeneratorCommand extends Command
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the class'],
+            ['name', InputArgument::REQUIRED, 'The name of the '.strtolower($this->type)],
+        ];
+    }
+
+    /**
+     * Prompt for missing input arguments using the returned questions.
+	 * 使用返回的问题提示缺少输入参数
+     *
+     * @return array
+     */
+    protected function promptForMissingArgumentsUsing()
+    {
+        return [
+            'name' => 'What should the '.strtolower($this->type).' be named?',
         ];
     }
 }

@@ -31,7 +31,7 @@ interface Mailer
      *
      * @param  string  $text
      * @param  mixed  $callback
-     * @return void
+     * @return \Illuminate\Mail\SentMessage|null
      */
     public function raw($text, $callback);
 
@@ -42,15 +42,7 @@ interface Mailer
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  \Closure|string|null  $callback
-     * @return void
+     * @return \Illuminate\Mail\SentMessage|null
      */
     public function send($view, array $data = [], $callback = null);
-
-    /**
-     * Get the array of failed recipients.
-	 * 获取失败收件人的数组
-     *
-     * @return array
-     */
-    public function failures();
 }

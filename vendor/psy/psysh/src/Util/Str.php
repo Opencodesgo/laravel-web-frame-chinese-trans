@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，工具，字符串
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Util;
 
 /**
  * String utility methods.
+ * 字符串实用程序方法。
  *
  * @author ju1ius
  */
@@ -32,6 +36,7 @@ EOS;
 
     /**
      * Decodes a string encoded by libsd's strvis.
+	 * 解码由libsd的strvis编码的字符串。
      *
      * From `man 3 vis`:
      *
@@ -67,6 +72,7 @@ EOS;
 
     /**
      * Callback for Str::unvis.
+	 * Str::unvis的回调。
      *
      * @param array $match The matches passed by preg_replace_callback
      */

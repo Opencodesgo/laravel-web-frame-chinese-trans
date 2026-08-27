@@ -1,12 +1,16 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:provider 提供者生成命令
+ * Illuminate，基础，控制台，make:provider 提供商生成命令
  */
+
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:provider')]
 class ProviderMakeCommand extends GeneratorCommand
 {
     /**
@@ -16,6 +20,19 @@ class ProviderMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:provider';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:provider';
 
     /**
      * The console command description.
@@ -60,7 +77,7 @@ class ProviderMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -68,5 +85,18 @@ class ProviderMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\Providers';
+    }
+
+    /**
+     * Get the console command arguments.
+	 * 获取控制台命令参
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the provider already exists'],
+        ];
     }
 }

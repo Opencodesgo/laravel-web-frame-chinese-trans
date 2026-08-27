@@ -11,7 +11,7 @@ interface Pipeline
 {
     /**
      * Set the traveler object being sent on the pipeline.
-	 * 设置在管道上发送的旅行者对象
+	 * 设置管道上发送的传送对象
      *
      * @param  mixed  $traveler
      * @return $this

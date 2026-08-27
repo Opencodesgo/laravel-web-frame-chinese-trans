@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，支持，JS
+ * Illuminate, 支持, Js
  */
 
 namespace Illuminate\Support;
 
+use BackedEnum;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -30,7 +31,7 @@ class Js implements Htmlable
 
     /**
      * Create a new class instance.
-	 * 创建一个新的类实例
+	 * 创建瓣的类实例
      *
      * @param  mixed  $data
      * @param  int|null  $flags
@@ -75,6 +76,10 @@ class Js implements Htmlable
     {
         if ($data instanceof self) {
             return $data->toHtml();
+        }
+
+        if ($data instanceof BackedEnum) {
+            $data = $data->value;
         }
 
         $json = $this->jsonEncode($data, $flags, $depth);
@@ -122,7 +127,7 @@ class Js implements Htmlable
      */
     protected function convertJsonToJavaScriptExpression($json, $flags = 0)
     {
-        if ('[]' === $json || '{}' === $json) {
+        if ($json === '[]' || $json === '{}') {
             return $json;
         }
 

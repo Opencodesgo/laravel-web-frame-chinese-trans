@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，异常，集合不匹配异常
+ * Ramsey，集合，异常，集合不匹配异常
  */
 
 /**
@@ -23,6 +23,6 @@ use RuntimeException;
  * Thrown when attempting to operate on collections of differing types.
  * 试图操作不同类型的集合时抛出。
  */
-class CollectionMismatchException extends RuntimeException
+class CollectionMismatchException extends RuntimeException implements CollectionException
 {
 }

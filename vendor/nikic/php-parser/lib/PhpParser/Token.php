@@ -8,6 +8,7 @@ namespace PhpParser;
 
 /**
  * A PHP token. On PHP 8.0 this extends from PhpToken.
+ * PHP令牌。在PHP 8.0中，它从PhpToken扩展而来。
  */
 class Token extends Internal\TokenPolyfill {
     /** Get (exclusive) zero-based end position of the token. */

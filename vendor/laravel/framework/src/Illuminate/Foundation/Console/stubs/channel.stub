@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，频道
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -11,7 +11,7 @@ class {{ class }}
 {
     /**
      * Create a new channel instance.
-	 * 创建新的频道实例
+	 * 创建新的通道实例
      *
      * @return void
      */

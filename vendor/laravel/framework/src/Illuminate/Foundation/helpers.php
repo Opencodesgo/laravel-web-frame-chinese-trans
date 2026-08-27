@@ -20,6 +20,7 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Mix;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Queue\CallQueuedClosure;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,7 +146,7 @@ if (! function_exists('app_path')) {
 if (! function_exists('asset')) {
     /**
      * Generate an asset path for the application.
-	 * 为应用程序生成一个资源路径
+	 * 为应用程序生成一个资产路径
      *
      * @param  string  $path
      * @param  bool|null  $secure
@@ -194,7 +195,7 @@ if (! function_exists('back')) {
 if (! function_exists('base_path')) {
     /**
      * Get the path to the base of the install.
-	 * 获取到安装基础的路径
+	 * 得到安装基础路径
      *
      * @param  string  $path
      * @return string
@@ -240,12 +241,11 @@ if (! function_exists('cache')) {
 	 * 获取/设置指定的cache值
      *
      * If an array is passed, we'll assume you want to put to the cache.
-	 * 如果传递了一个数组，我们将假定您希望将其放入缓存中。
      *
      * @param  dynamic  key|key,default|data,expiration|null
      * @return mixed|\Illuminate\Cache\CacheManager
      *
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     function cache()
     {
@@ -260,7 +260,7 @@ if (! function_exists('cache')) {
         }
 
         if (! is_array($arguments[0])) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 'When setting a value in the cache, you must pass an array of key / value pairs.'
             );
         }
@@ -298,7 +298,7 @@ if (! function_exists('config')) {
 if (! function_exists('config_path')) {
     /**
      * Get the configuration path.
-	 * 得到配置路径
+	 * 获取配置路径
      *
      * @param  string  $path
      * @return string
@@ -312,7 +312,7 @@ if (! function_exists('config_path')) {
 if (! function_exists('cookie')) {
     /**
      * Create a new cookie instance.
-	 * 创建新的cookie实例
+	 * 创建一个新的cookie实例
      *
      * @param  string|null  $name
      * @param  string|null  $value
@@ -374,7 +374,7 @@ if (! function_exists('csrf_token')) {
 if (! function_exists('database_path')) {
     /**
      * Get the database path.
-	 * 得到数据库路径
+	 * 获取数据库路径
      *
      * @param  string  $path
      * @return string
@@ -422,7 +422,6 @@ if (! function_exists('dispatch_sync')) {
 	 * 将命令分派给当前进程中相应的处理程序
      *
      * Queueable jobs will be dispatched to the "sync" queue.
-	 * 可排队作业将被分配到"同步"队列
      *
      * @param  mixed  $job
      * @param  mixed  $handler
@@ -469,7 +468,7 @@ if (! function_exists('encrypt')) {
 if (! function_exists('event')) {
     /**
      * Dispatch an event and call the listeners.
-	 * 分派事件并调用监听器
+	 * 分派事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -479,6 +478,32 @@ if (! function_exists('event')) {
     function event(...$args)
     {
         return app('events')->dispatch(...$args);
+    }
+}
+
+if (! function_exists('fake') && class_exists(\Faker\Factory::class)) {
+    /**
+     * Get a faker instance.
+	 * 获得一个伪造的实例
+     *
+     * @param  string|null  $locale
+     * @return \Faker\Generator
+     */
+    function fake($locale = null)
+    {
+        if (app()->bound('config')) {
+            $locale ??= app('config')->get('app.faker_locale');
+        }
+
+        $locale ??= 'en_US';
+
+        $abstract = \Faker\Generator::class.':'.$locale;
+
+        if (! app()->bound($abstract)) {
+            app()->singleton($abstract, fn () => \Faker\Factory::create($locale));
+        }
+
+        return app()->make($abstract);
     }
 }
 
@@ -500,7 +525,7 @@ if (! function_exists('info')) {
 if (! function_exists('logger')) {
     /**
      * Log a debug message to the logs.
-	 * 记录调试消息到日志中
+	 * 将调试消息记录到日志中
      *
      * @param  string|null  $message
      * @param  array  $context
@@ -526,7 +551,7 @@ if (! function_exists('lang_path')) {
      */
     function lang_path($path = '')
     {
-        return app('path.lang').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return app()->langPath($path);
     }
 }
 
@@ -620,6 +645,36 @@ if (! function_exists('policy')) {
     }
 }
 
+if (! function_exists('precognitive')) {
+    /**
+     * Handle a Precognition controller hook.
+	 * 处理预知控制器钩子
+     *
+     * @param  null|callable  $callable
+     * @return mixed
+     */
+    function precognitive($callable = null)
+    {
+        $callable ??= function () {
+            //
+        };
+
+        $payload = $callable(function ($default, $precognition = null) {
+            $response = request()->isPrecognitive()
+                ? ($precognition ?? $default)
+                : $default;
+
+            abort(Router::toResponse(request(), value($response)));
+        });
+
+        if (request()->isPrecognitive()) {
+            abort(204);
+        }
+
+        return $payload;
+    }
+}
+
 if (! function_exists('public_path')) {
     /**
      * Get the path to the public folder.
@@ -673,6 +728,40 @@ if (! function_exists('report')) {
     }
 }
 
+if (! function_exists('report_if')) {
+    /**
+     * Report an exception if the given condition is true.
+	 * 如果给定条件为真，则报告异常。
+     *
+     * @param  bool  $boolean
+     * @param  \Throwable|string  $exception
+     * @return void
+     */
+    function report_if($boolean, $exception)
+    {
+        if ($boolean) {
+            report($exception);
+        }
+    }
+}
+
+if (! function_exists('report_unless')) {
+    /**
+     * Report an exception unless the given condition is true.
+	 * 除非给定条件为真，否则报告异常。
+     *
+     * @param  bool  $boolean
+     * @param  \Throwable|string  $exception
+     * @return void
+     */
+    function report_unless($boolean, $exception)
+    {
+        if (! $boolean) {
+            report($exception);
+        }
+    }
+}
+
 if (! function_exists('request')) {
     /**
      * Get an instance of the current request or an input item from the request.
@@ -680,7 +769,7 @@ if (! function_exists('request')) {
      *
      * @param  array|string|null  $key
      * @param  mixed  $default
-     * @return \Illuminate\Http\Request|string|array|null
+     * @return mixed|\Illuminate\Http\Request|string|array|null
      */
     function request($key = null, $default = null)
     {
@@ -705,7 +794,7 @@ if (! function_exists('rescue')) {
      *
      * @param  callable  $callback
      * @param  mixed  $rescue
-     * @param  bool  $report
+     * @param  bool|callable  $report
      * @return mixed
      */
     function rescue(callable $callback, $rescue = null, $report = true)
@@ -713,7 +802,7 @@ if (! function_exists('rescue')) {
         try {
             return $callback();
         } catch (Throwable $e) {
-            if ($report) {
+            if (value($report, $e)) {
                 report($e);
             }
 
@@ -792,7 +881,7 @@ if (! function_exists('route')) {
 if (! function_exists('secure_asset')) {
     /**
      * Generate an asset path for the application.
-	 * 为应用程序生成一个资源路径
+	 * 为应用程序生成一个资产路径
      *
      * @param  string  $path
      * @return string
@@ -854,7 +943,24 @@ if (! function_exists('storage_path')) {
      */
     function storage_path($path = '')
     {
-        return app('path.storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return app()->storagePath($path);
+    }
+}
+
+if (! function_exists('to_route')) {
+    /**
+     * Create a new redirect response to a named route.
+	 * 为命名路由创建一个新的重定向响应
+     *
+     * @param  string  $route
+     * @param  mixed  $parameters
+     * @param  int  $status
+     * @param  array  $headers
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function to_route($route, $parameters = [], $status = 302, $headers = [])
+    {
+        return redirect()->route($route, $parameters, $status, $headers);
     }
 }
 
@@ -952,7 +1058,7 @@ if (! function_exists('url')) {
 if (! function_exists('validator')) {
     /**
      * Create a new Validator instance.
-	 * 创建一个新的验证器实例
+	 * 创建一个新的Validator实例
      *
      * @param  array  $data
      * @param  array  $rules

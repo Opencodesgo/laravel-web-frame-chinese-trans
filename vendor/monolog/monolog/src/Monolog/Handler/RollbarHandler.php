@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Rollbar 处理程序
- *
+ * Monolog，处理器，Rollbar 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -21,7 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends errors to Rollbar
- * 将错误发送到Rollbar
+ * 将错误发送到滚动条
  *
  * If the context data contains a `payload` key, that is used as an array
  * of payload options to RollbarLogger's log method.
@@ -57,7 +57,7 @@ class RollbarHandler extends AbstractProcessingHandler
 
     /**
      * Records whether any log records have been added since the last flush of the rollbar notifier
-	 * 记录是否在rollbar通知者的最后一个刷新后添加了日志记录
+	 * 记录自上次刷新滚动条通知器以来是否添加了任何日志记录
      *
      * @var bool
      */

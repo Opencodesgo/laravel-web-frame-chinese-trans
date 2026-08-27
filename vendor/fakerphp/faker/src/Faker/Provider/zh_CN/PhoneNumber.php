@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，zh_CN，电话号码
+ */
 
 namespace Faker\Provider\zh_CN;
 

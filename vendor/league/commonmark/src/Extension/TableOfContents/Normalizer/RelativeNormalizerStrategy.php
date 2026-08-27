@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，标准化者，相对归一化策略
+ * League，CommonMark，扩展，目次，标准化者，相对归一化策略
  */
 
 declare(strict_types=1);
@@ -42,6 +42,7 @@ final class RelativeNormalizerStrategy implements NormalizerStrategyInterface
         $previousLevel = \array_key_last($this->listItemStack);
 
         // Pop the stack if we're too deep
+		// 如果我们陷得太深，就打开堆栈。
         while ($previousLevel !== null && $level < $previousLevel) {
             \array_pop($this->listItemStack);
             $previousLevel = \array_key_last($this->listItemStack);

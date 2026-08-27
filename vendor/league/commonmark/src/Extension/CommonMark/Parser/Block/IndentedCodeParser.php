@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，块，缩进代码解析器
+ * League，CommonMark，扩展，共同标记，Parser，代码块，缩进代码解析器
  */
 
 declare(strict_types=1);
@@ -69,7 +69,6 @@ final class IndentedCodeParser extends AbstractBlockContinueParser
         $lines = $this->strings->toArray();
 
         // Note that indented code block cannot be empty, so $lines will always have at least one non-empty element
-		// 注意，缩进的代码块不能为空，因此$lines将始终至少有一个非空元素
         while (\preg_match('/^[ \t]*$/', \end($lines))) { // @phpstan-ignore-line
             \array_pop($lines);
         }

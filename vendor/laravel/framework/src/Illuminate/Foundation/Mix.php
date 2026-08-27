@@ -13,7 +13,7 @@ class Mix
 {
     /**
      * Get the path to a versioned Mix file.
-	 * 获取版本化Mix文件的路径
+	 * 得到版本化Mix文件的路径
      *
      * @param  string  $path
      * @param  string  $manifestDirectory
@@ -25,11 +25,11 @@ class Mix
     {
         static $manifests = [];
 
-        if (! Str::startsWith($path, '/')) {
+        if (! str_starts_with($path, '/')) {
             $path = "/{$path}";
         }
 
-        if ($manifestDirectory && ! Str::startsWith($manifestDirectory, '/')) {
+        if ($manifestDirectory && ! str_starts_with($manifestDirectory, '/')) {
             $manifestDirectory = "/{$manifestDirectory}";
         }
 
@@ -53,7 +53,7 @@ class Mix
 
         if (! isset($manifests[$manifestPath])) {
             if (! is_file($manifestPath)) {
-                throw new Exception('The Mix manifest does not exist.');
+                throw new Exception("Mix manifest not found at: {$manifestPath}");
             }
 
             $manifests[$manifestPath] = json_decode(file_get_contents($manifestPath), true);

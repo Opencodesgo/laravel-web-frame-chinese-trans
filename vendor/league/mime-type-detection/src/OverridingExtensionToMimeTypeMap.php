@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Mime类型检测，覆盖扩展到Mime类型映射
+ * League，MimeTypeDetection，覆盖扩展到 Mime类型映射
  */
 
 namespace League\MimeTypeDetection;

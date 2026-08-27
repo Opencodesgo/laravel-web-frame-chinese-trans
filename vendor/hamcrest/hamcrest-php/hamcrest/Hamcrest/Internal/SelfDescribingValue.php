@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，内部的，自我描述价值
+ * Hamcrest，内部的，自我描述值
  */
 
 namespace Hamcrest\Internal;
@@ -13,7 +13,7 @@ use Hamcrest\SelfDescribing;
 
 /**
  * A wrapper around any value so that it describes itself.
- * 任何值的包装器，以便它描述自己。
+ * 一个围绕任何值的包装器,以便它描述自己。
  */
 class SelfDescribingValue implements SelfDescribing
 {

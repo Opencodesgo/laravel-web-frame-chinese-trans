@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Loggly 处理程序
- *
+ * Monolog，处理器，Loggly 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -23,7 +23,7 @@ use CurlHandle;
 
 /**
  * Sends errors to Loggly.
- * 给错误发送错误。
+ * 将错误发送给Loggly
  *
  * @author Przemek Sobstel <przemek@sobstel.org>
  * @author Adam Pancutt <adam@pancutt.com>
@@ -37,7 +37,7 @@ class LogglyHandler extends AbstractProcessingHandler
 
     /**
      * Caches the curl handlers for every given endpoint.
-	 * 为每个给定端点缓存旋度处理程序
+	 * 缓存每个给定端点的curl处理程序。
      *
      * @var resource[]|CurlHandle[]
      */
@@ -67,7 +67,7 @@ class LogglyHandler extends AbstractProcessingHandler
 
     /**
      * Loads and returns the shared curl handler for the given endpoint.
-	 * 加载并返回给定端点的共享旋度处理程序
+	 * 加载并返回给定端点的共享curl处理程序
      *
      * @param string $endpoint
      *
@@ -84,7 +84,7 @@ class LogglyHandler extends AbstractProcessingHandler
 
     /**
      * Starts a fresh curl session for the given endpoint and returns its handler.
-	 * 为给定的端点启动一个新的curl会话,并返回它的处理程序
+	 * 为给定端点启动一个新的curl会话，并返回其处理程序。
      *
      * @param string $endpoint
      *

@@ -9,7 +9,7 @@ interface Store
 {
     /**
      * Retrieve an item from the cache by key.
-	 * 按键从缓存中检索项
+	 * 检索项从缓存中通过主键
      *
      * @param  string|array  $key
      * @return mixed
@@ -21,7 +21,6 @@ interface Store
 	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array

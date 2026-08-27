@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，基本匹配程序
+ * Hamcrest，基本匹配器
  */
 
 namespace Hamcrest;
@@ -11,7 +11,6 @@ namespace Hamcrest;
 
 /**
  * BaseClass for all Matcher implementations.
- * 所有匹配器实现的BaseClass。
  *
  * @see Hamcrest\Matcher
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，可本地化
+ * Illuminate，支持，特征，可本地化
  */
 
 namespace Illuminate\Support\Traits;

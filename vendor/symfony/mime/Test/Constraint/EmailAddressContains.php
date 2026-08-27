@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，测试，约束，电子邮件地址
+ * Symfony，Component，Mime，测试，约束，Email 地址约束
  */
 
 /*
@@ -21,8 +21,8 @@ use Symfony\Component\Mime\RawMessage;
 
 final class EmailAddressContains extends Constraint
 {
-    private $headerName;
-    private $expectedValue;
+    private string $headerName;
+    private string $expectedValue;
 
     public function __construct(string $headerName, string $expectedValue)
     {
@@ -30,22 +30,17 @@ final class EmailAddressContains extends Constraint
         $this->expectedValue = $expectedValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
-        return sprintf('contains address "%s" with value "%s"', $this->headerName, $this->expectedValue);
+        return \sprintf('contains address "%s" with value "%s"', $this->headerName, $this->expectedValue);
     }
 
     /**
      * @param RawMessage $message
-     *
-     * {@inheritdoc}
      */
     protected function matches($message): bool
     {
-        if (RawMessage::class === \get_class($message)) {
+        if (RawMessage::class === $message::class) {
             throw new \LogicException('Unable to test a message address on a RawMessage instance.');
         }
 
@@ -67,11 +62,9 @@ final class EmailAddressContains extends Constraint
 
     /**
      * @param RawMessage $message
-     *
-     * {@inheritdoc}
      */
     protected function failureDescription($message): string
     {
-        return sprintf('the Email %s (value is %s)', $this->toString(), $message->getHeaders()->get($this->headerName)->getBodyAsString());
+        return \sprintf('the Email %s (value is %s)', $this->toString(), $message->getHeaders()->get($this->headerName)->getBodyAsString());
     }
 }

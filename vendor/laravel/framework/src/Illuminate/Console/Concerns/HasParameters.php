@@ -21,12 +21,12 @@ trait HasParameters
         // We will loop through all of the arguments and options for the command and
         // set them all on the base command instance. This specifies what can get
         // passed into these commands as "parameters" to control the execution.
-		// 我们将遍历命令和的所有参数和选项并在基本命令实例中设置它们。
+		// 我们将遍历该命令的所有参数和选项
         foreach ($this->getArguments() as $arguments) {
             if ($arguments instanceof InputArgument) {
                 $this->getDefinition()->addArgument($arguments);
             } else {
-                $this->addArgument(...array_values($arguments));
+                $this->addArgument(...$arguments);
             }
         }
 
@@ -34,7 +34,7 @@ trait HasParameters
             if ($options instanceof InputOption) {
                 $this->getDefinition()->addOption($options);
             } else {
-                $this->addOption(...array_values($options));
+                $this->addOption(...$options);
             }
         }
     }

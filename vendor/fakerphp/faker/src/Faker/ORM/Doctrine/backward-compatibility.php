@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，主义，backward
+ * Faker，ORM，主义，底
  */
 
 declare(strict_types=1);

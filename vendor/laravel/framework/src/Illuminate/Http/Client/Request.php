@@ -7,7 +7,6 @@ namespace Illuminate\Http\Client;
 
 use ArrayAccess;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use LogicException;
 
@@ -17,7 +16,7 @@ class Request implements ArrayAccess
 
     /**
      * The underlying PSR request.
-	 * 底层PST请求
+	 * 底层PSR请求
      *
      * @var \Psr\Http\Message\RequestInterface
      */
@@ -33,7 +32,7 @@ class Request implements ArrayAccess
 
     /**
      * Create a new request instance.
-	 * 创建新的请求实例
+	 * 创建一个新的请求实例
      *
      * @param  \Psr\Http\Message\RequestInterface  $request
      * @return void
@@ -45,7 +44,7 @@ class Request implements ArrayAccess
 
     /**
      * Get the request method.
-	 * 得到请求方法
+	 * 获取请求方法
      *
      * @return string
      */
@@ -237,7 +236,7 @@ class Request implements ArrayAccess
     public function isJson()
     {
         return $this->hasHeader('Content-Type') &&
-               Str::contains($this->header('Content-Type')[0], 'json');
+               str_contains($this->header('Content-Type')[0], 'json');
     }
 
     /**
@@ -249,7 +248,7 @@ class Request implements ArrayAccess
     public function isMultipart()
     {
         return $this->hasHeader('Content-Type') &&
-               Str::contains($this->header('Content-Type')[0], 'multipart');
+               str_contains($this->header('Content-Type')[0], 'multipart');
     }
 
     /**
@@ -284,8 +283,7 @@ class Request implements ArrayAccess
      * @param  string  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data()[$offset]);
     }
@@ -297,8 +295,7 @@ class Request implements ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->data()[$offset];
     }
@@ -313,8 +310,7 @@ class Request implements ArrayAccess
      *
      * @throws \LogicException
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new LogicException('Request data may not be mutated using array access.');
     }
@@ -328,8 +324,7 @@ class Request implements ArrayAccess
      *
      * @throws \LogicException
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new LogicException('Request data may not be mutated using array access.');
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，数据库，Eloquent，强制转换入站属性
+ * Illuminate，契约，数据库，Eloquent，转换入站属性
  */
 
 namespace Illuminate\Contracts\Database\Eloquent;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，编辑命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,6 +29,7 @@ class EditCommand extends Command implements ContextAware
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string      $runtimeDir The directory to use for temporary files
      * @param string|null $name       The name of the command; passing null means it must be set in configure()
@@ -173,6 +177,7 @@ class EditCommand extends Command implements ContextAware
 
     /**
      * Set the Context reference.
+	 * 设置上下文引用
      *
      * @param Context $context
      */

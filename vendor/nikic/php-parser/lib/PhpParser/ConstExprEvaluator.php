@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，常量表达式校验器
+ * PhpParser，Const Expr 求值器
  */
 
 namespace PhpParser;
@@ -223,6 +223,9 @@ class ConstExprEvaluator {
             case '<':   return $this->evaluate($l) <   $this->evaluate($r);
             case '<=':  return $this->evaluate($l) <=  $this->evaluate($r);
             case '<=>': return $this->evaluate($l) <=> $this->evaluate($r);
+            case '|>':
+                $lval = $this->evaluate($l);
+                return $this->evaluate($r)($lval);
         }
 
         throw new \Exception('Should not happen');

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，字符串匹配格式说明
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -43,6 +48,7 @@ final class StringMatchesFormatDescription extends RegularExpression
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+	 * 评估参数 $other 的约束条件。如果满足约束条件则返回 true，否则返回 false。
      *
      * @param mixed $other value or object to evaluate
      */

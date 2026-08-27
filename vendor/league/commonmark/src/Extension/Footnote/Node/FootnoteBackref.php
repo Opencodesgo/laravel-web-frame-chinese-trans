@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，脚注，节点，脚注
+ * League，CommonMark，扩展，注脚，节点，脚注Backref
  */
 
 /*
@@ -23,7 +23,7 @@ use League\CommonMark\Reference\ReferenceableInterface;
 
 /**
  * Link from the footnote on the bottom of the document back to the reference
- * 从文件底部的脚注链接回引用
+ * 从文档底部的脚注链接回参考文献
  */
 final class FootnoteBackref extends AbstractInline implements ReferenceableInterface
 {

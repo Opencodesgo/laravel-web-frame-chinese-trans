@@ -56,13 +56,13 @@ trait Queueable
      * The number of seconds before the job should be made available.
 	 * 在作业可用之前的秒数
      *
-     * @var \DateTimeInterface|\DateInterval|int|null
+     * @var \DateTimeInterface|\DateInterval|array|int|null
      */
     public $delay;
 
     /**
      * Indicates whether the job should be dispatched after all database transactions have committed.
-	 * 指明是否应在所有数据库事务提交后分派作业
+	 * 指示是否应在所有数据库事务提交后分派作业
      *
      * @var bool|null
      */
@@ -70,7 +70,7 @@ trait Queueable
 
     /**
      * The middleware the job should be dispatched through.
-	 * 任务应该通过的中间件进行分派
+	 * 作业应该通过的中间件进行分派
      *
      * @var array
      */
@@ -86,7 +86,7 @@ trait Queueable
 
     /**
      * Set the desired connection for the job.
-	 * 为任务设置所需的连接
+	 * 为作业设置所需的连接
      *
      * @param  string|null  $connection
      * @return $this
@@ -100,7 +100,7 @@ trait Queueable
 
     /**
      * Set the desired queue for the job.
-	 * 为任务设置所需的队列
+	 * 为作业设置所需的队列
      *
      * @param  string|null  $queue
      * @return $this
@@ -143,10 +143,10 @@ trait Queueable
     }
 
     /**
-     * Set the desired delay for the job.
-	 * 为任务设置所需的延迟
+     * Set the desired delay in seconds for the job.
+	 * 为作业设置所需的延迟（以秒为单位）
      *
-     * @param  \DateTimeInterface|\DateInterval|int|null  $delay
+     * @param  \DateTimeInterface|\DateInterval|array|int|null  $delay
      * @return $this
      */
     public function delay($delay)
@@ -158,7 +158,7 @@ trait Queueable
 
     /**
      * Indicate that the job should be dispatched after all database transactions have committed.
-	 * 指明应在所有数据库事务提交后分派作业
+	 * 指示应在所有数据库事务提交后分派作业
      *
      * @return $this
      */
@@ -198,7 +198,7 @@ trait Queueable
 
     /**
      * Set the jobs that should run if this job is successful.
-	 * 设置任务成功时应该运行的任务
+	 * 设置作业成功时应该运行的作业
      *
      * @param  array  $chain
      * @return $this
@@ -208,6 +208,34 @@ trait Queueable
         $this->chained = collect($chain)->map(function ($job) {
             return $this->serializeJob($job);
         })->all();
+
+        return $this;
+    }
+
+    /**
+     * Prepend a job to the current chain so that it is run after the currently running job.
+	 * 将作业前置到当前链，以便在当前运行的作业之后运行。
+     *
+     * @param  mixed  $job
+     * @return $this
+     */
+    public function prependToChain($job)
+    {
+        $this->chained = Arr::prepend($this->chained, $this->serializeJob($job));
+
+        return $this;
+    }
+
+    /**
+     * Append a job to the end of the current chain.
+	 * 将作业附加到当前链的末尾
+     *
+     * @param  mixed  $job
+     * @return $this
+     */
+    public function appendToChain($job)
+    {
+        $this->chained = array_merge($this->chained, [$this->serializeJob($job)]);
 
         return $this;
     }

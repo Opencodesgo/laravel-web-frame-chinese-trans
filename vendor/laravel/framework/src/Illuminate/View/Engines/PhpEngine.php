@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，引擎，PHP 引擎
+ * Illuminate，视图，引擎，Php 引擎
  */
 
 namespace Illuminate\View\Engines;
@@ -61,7 +61,7 @@ class PhpEngine implements Engine
         // We'll evaluate the contents of the view inside a try/catch block so we can
         // flush out any stray output that might get out before an error occurs or
         // an exception is thrown. This prevents any partial views from leaking.
-		// 我们将在try/catch块中计算视图的内容，以便我们可以清除任何杂散输出。
+		// 我们将在try/catch块中计算视图的内容。
         try {
             $this->files->getRequire($path, $data);
         } catch (Throwable $e) {

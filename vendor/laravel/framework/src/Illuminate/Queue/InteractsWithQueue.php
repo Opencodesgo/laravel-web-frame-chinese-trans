@@ -6,6 +6,8 @@
 namespace Illuminate\Queue;
 
 use Illuminate\Contracts\Queue\Job as JobContract;
+use InvalidArgumentException;
+use Throwable;
 
 trait InteractsWithQueue
 {
@@ -13,13 +15,13 @@ trait InteractsWithQueue
      * The underlying queue job instance.
 	 * 底层队列作业实例
      *
-     * @var \Illuminate\Contracts\Queue\Job
+     * @var \Illuminate\Contracts\Queue\Job|null
      */
     public $job;
 
     /**
      * Get the number of times the job has been attempted.
-	 * 得到该任务被尝试的次数
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -45,19 +47,27 @@ trait InteractsWithQueue
      * Fail the job from the queue.
 	 * 从队列中失败作业
      *
-     * @param  \Throwable|null  $exception
+     * @param  \Throwable|string|null  $exception
      * @return void
      */
     public function fail($exception = null)
     {
-        if ($this->job) {
-            $this->job->fail($exception);
+        if (is_string($exception)) {
+            $exception = new ManuallyFailedException($exception);
+        }
+
+        if ($exception instanceof Throwable || is_null($exception)) {
+            if ($this->job) {
+                return $this->job->fail($exception);
+            }
+        } else {
+            throw new InvalidArgumentException('The fail method requires a string or an instance of Throwable.');
         }
     }
 
     /**
-     * Release the job back into the queue.
-	 * 将作业释放回队列
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
      * @return void

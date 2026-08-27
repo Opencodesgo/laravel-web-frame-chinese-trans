@@ -1,14 +1,18 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:test 测试生成命令
+ * Illuminate，基础，控制台，make:test 任务生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'make:test')]
 class TestMakeCommand extends GeneratorCommand
 {
     /**
@@ -20,8 +24,21 @@ class TestMakeCommand extends GeneratorCommand
     protected $name = 'make:test';
 
     /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:test';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -37,7 +54,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -66,7 +83,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the destination class path.
-	 * 得到目标类路径
+	 * 获取目标类路径
      *
      * @param  string  $name
      * @return string
@@ -80,7 +97,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -96,7 +113,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the root namespace for the class.
-	 * 得到类的根命名空间
+	 * 获取类的根命名空间
      *
      * @return string
      */
@@ -107,15 +124,45 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['unit', 'u', InputOption::VALUE_NONE, 'Create a unit test.'],
-            ['pest', 'p', InputOption::VALUE_NONE, 'Create a Pest test.'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the test already exists'],
+            ['unit', 'u', InputOption::VALUE_NONE, 'Create a unit test'],
+            ['pest', 'p', InputOption::VALUE_NONE, 'Create a Pest test'],
         ];
+    }
+
+    /**
+     * Interact further with the user if they were prompted for missing arguments.
+	 * 如果提示用户输入缺少的参数，则与用户进一步交互。
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @return void
+     */
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
+    {
+        if ($this->isReservedName($this->getNameInput()) || $this->didReceiveOptions($input)) {
+            return;
+        }
+
+        $type = $this->components->choice('Which type of test would you like', [
+            'feature',
+            'unit',
+            'pest feature',
+            'pest unit',
+        ], default: 0);
+
+        match ($type) {
+            'feature' => null,
+            'unit' => $input->setOption('unit', true),
+            'pest feature' => $input->setOption('pest', true),
+            'pest unit' => tap($input)->setOption('pest', true)->setOption('unit', true),
+        };
     }
 }

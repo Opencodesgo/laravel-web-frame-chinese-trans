@@ -57,7 +57,7 @@ class RequestException extends TransferException implements RequestExceptionInte
 
     /**
      * Factory method to create a new exception with a normalized error message
-	 * 工厂方法以标准化的错误消息创建一个新的异常
+	 * 工厂方法创建带有规范化错误消息的新异常
      *
      * @param RequestInterface             $request        Request sent
      * @param ResponseInterface            $response       Response received
@@ -118,7 +118,7 @@ class RequestException extends TransferException implements RequestExceptionInte
 
     /**
      * Get the request that caused the exception
-	 * 获取导致异常的请求
+	 * 获取引起异常的请求
      */
     public function getRequest(): RequestInterface
     {
@@ -127,7 +127,7 @@ class RequestException extends TransferException implements RequestExceptionInte
 
     /**
      * Get the associated response
-	 * 得到相关的响应
+	 * 获取相关响应
      */
     public function getResponse(): ?ResponseInterface
     {
@@ -136,7 +136,6 @@ class RequestException extends TransferException implements RequestExceptionInte
 
     /**
      * Check if a response was received
-	 * 检查是否收到回复
      */
     public function hasResponse(): bool
     {
@@ -145,7 +144,7 @@ class RequestException extends TransferException implements RequestExceptionInte
 
     /**
      * Get contextual information about the error from the underlying handler.
-	 * 从底层处理程序获取关于错误的上下文信息。
+	 * 从底层处理程序获取有关错误的上下文信息
      *
      * The contents of this array will vary depending on which handler you are
      * using. It may also be just an empty array. Relying on this data will

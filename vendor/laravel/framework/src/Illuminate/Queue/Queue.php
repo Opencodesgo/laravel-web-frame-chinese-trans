@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列抽象类
+ * Illuminate，队列，队列
  */
 
 namespace Illuminate\Queue;
@@ -66,8 +66,8 @@ abstract class Queue
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto a specific queue after (n) seconds.
+	 * 在(n)秒后将新作业推送到特定队列
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
@@ -113,11 +113,11 @@ abstract class Queue
             $job = CallQueuedClosure::create($job);
         }
 
-        $payload = json_encode($this->createPayloadArray($job, $queue, $data), \JSON_UNESCAPED_UNICODE);
+        $payload = json_encode($value = $this->createPayloadArray($job, $queue, $data), \JSON_UNESCAPED_UNICODE);
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidPayloadException(
-                'Unable to JSON encode payload. Error code: '.json_last_error()
+                'Unable to JSON encode payload. Error code: '.json_last_error(), $value
             );
         }
 
@@ -180,7 +180,7 @@ abstract class Queue
 
     /**
      * Get the display name for the given job.
-	 * 得到给定作业的显示名称
+	 * 获取给定作业的显示名称
      *
      * @param  object  $job
      * @return string
@@ -193,7 +193,7 @@ abstract class Queue
 
     /**
      * Get the backoff for an object-based queue handler.
-	 * 得到基于对象的队列处理程序的后退
+	 * 获取基于对象的队列处理程序的后退
      *
      * @param  mixed  $job
      * @return mixed
@@ -217,7 +217,7 @@ abstract class Queue
 
     /**
      * Get the expiration timestamp for an object-based queue handler.
-	 * 得到基于对象的队列处理程序的过期时间戳
+	 * 获取基于对象的队列处理程序的过期时间戳
      *
      * @param  mixed  $job
      * @return mixed
@@ -302,9 +302,7 @@ abstract class Queue
     {
         if (! empty(static::$createPayloadCallbacks)) {
             foreach (static::$createPayloadCallbacks as $callback) {
-                $payload = array_merge($payload, call_user_func(
-                    $callback, $this->getConnectionName(), $queue, $payload
-                ));
+                $payload = array_merge($payload, $callback($this->getConnectionName(), $queue, $payload));
             }
         }
 
@@ -349,7 +347,7 @@ abstract class Queue
      */
     protected function shouldDispatchAfterCommit($job)
     {
-        if (is_object($job) && isset($job->afterCommit)) {
+        if (! $job instanceof Closure && is_object($job) && isset($job->afterCommit)) {
             return $job->afterCommit;
         }
 
@@ -377,7 +375,7 @@ abstract class Queue
 
     /**
      * Get the connection name for the queue.
-	 * 得到队列的连接名称
+	 * 获取队列的连接名称
      *
      * @return string
      */
@@ -402,7 +400,7 @@ abstract class Queue
 
     /**
      * Get the container instance being used by the connection.
-	 * 得到连接正在使用的容器实例
+	 * 获取连接正在使用的容器实例
      *
      * @return \Illuminate\Container\Container
      */

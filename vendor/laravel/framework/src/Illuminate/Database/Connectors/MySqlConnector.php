@@ -25,7 +25,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
         // We need to grab the PDO options that should be used while making the brand
         // new connection instance. The PDO options control various aspects of the
         // connection's behavior, and some might be specified by the developers.
-		// 我们需要获取在创建全新连接实例时应该使用的PDO选项。
+		// 我们需要获取应该使用的PDO选项。
         $connection = $this->createConnection($dsn, $config, $options);
 
         if (! empty($config['database'])) {
@@ -39,7 +39,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
         // Next, we will check to see if a timezone has been specified in this config
         // and if it has we will issue a statement to modify the timezone with the
         // database. Setting this DB timezone is an optional configuration item.
-		// 接下来，我们将检查此配置中是否指定了时区，如果指定了，我们将发出一条语句，使用数据库修改时区。
+		// 接下来，我们将检查是否在该配置中指定了时区。
         $this->configureTimezone($connection, $config);
 
         $this->setModes($connection, $config);
@@ -117,7 +117,6 @@ class MySqlConnector extends Connector implements ConnectorInterface
 	 * 从配置中创建DSN字符串
      *
      * Chooses socket or host/port based on the 'unix_socket' config value.
-	 * 根据'unix_socket'配置值选择套接字或主机/端口
      *
      * @param  array  $config
      * @return string

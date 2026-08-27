@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，注脚，事件，收集脚注听众
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -77,6 +80,7 @@ final class GatherFootnotesListener implements ConfigurationAwareInterface
 
     /**
      * Look for all footnote refs pointing to this footnote and create each footnote backrefs.
+	 * 查找所有指向此脚注的脚注参考，并创建每个脚注的后脚参考。
      *
      * @param Footnote    $node     The target footnote
      * @param Reference[] $backrefs References to create backrefs for

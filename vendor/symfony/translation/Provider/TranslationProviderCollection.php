@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提供者，翻译提供者集合
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +24,7 @@ final class TranslationProviderCollection
     /**
      * @var array<string, ProviderInterface>
      */
-    private $providers;
+    private array $providers;
 
     /**
      * @param array<string, ProviderInterface> $providers
@@ -44,7 +47,7 @@ final class TranslationProviderCollection
     public function get(string $name): ProviderInterface
     {
         if (!$this->has($name)) {
-            throw new InvalidArgumentException(sprintf('Provider "%s" not found. Available: "%s".', $name, (string) $this));
+            throw new InvalidArgumentException(\sprintf('Provider "%s" not found. Available: "%s".', $name, (string) $this));
         }
 
         return $this->providers[$name];

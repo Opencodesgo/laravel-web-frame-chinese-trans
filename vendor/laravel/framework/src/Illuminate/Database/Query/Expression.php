@@ -9,7 +9,7 @@ class Expression
 {
     /**
      * The value of the expression.
-	 * 表达式的值
+	 * 表达式值
      *
      * @var mixed
      */

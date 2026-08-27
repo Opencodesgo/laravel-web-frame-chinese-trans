@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Php Redis 锁
+ * Illuminate，缓存，Php Redis锁
  */
 
 namespace Illuminate\Cache;

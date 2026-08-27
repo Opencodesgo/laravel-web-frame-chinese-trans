@@ -9,7 +9,7 @@ use Throwable;
 
 /**
  * Base interface representing a generic exception in a container.
- * 在容器中表示泛型异常的基接口。
+ * 表示容器中的泛型异常的基接口。
  */
 interface ContainerExceptionInterface extends Throwable
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Memcached 存储
+ * Illuminate，缓存，Memcached存储
  */
 
 namespace Illuminate\Cache;
@@ -32,7 +32,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Indicates whether we are using Memcached version >= 3.0.0.
-	 * 指明我们是否使用Memcached版本>= 3.0.0
+	 * 指示我们是否使用Memcached版本>= 3.0.0
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Create a new Memcached store.
-	 * 创建新的Memcached存储
+	 * 创建一个新的Memcached存储
      *
      * @param  \Memcached  $memcached
      * @param  string  $prefix
@@ -73,10 +73,8 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array
@@ -104,7 +102,6 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -120,7 +117,6 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Store multiple items in the cache for a given number of seconds.
-	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int  $seconds
@@ -270,7 +266,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Get the underlying Memcached connection.
-	 * 得到底层Memcached连接
+	 * 获取底层Memcached连接
      *
      * @return \Memcached
      */
@@ -281,7 +277,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Get the cache key prefix.
-	 * 得到缓存键前缀
+	 * 获取缓存键前缀
      *
      * @return string
      */

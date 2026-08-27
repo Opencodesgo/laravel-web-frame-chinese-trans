@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组容器
+ * Hamcrest，数组，是否数组包含
  */
 
 namespace Hamcrest\Arrays;
@@ -15,7 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains an item satisfying a nested matcher.
- * 如果数组包含满足嵌套匹配器的项，则匹配。
+ * 匹配如果一个数组包含一个项目,满足一个嵌套的matcher。
  */
 class IsArrayContaining extends TypeSafeMatcher
 {
@@ -55,7 +55,7 @@ class IsArrayContaining extends TypeSafeMatcher
 
     /**
      * Evaluates to true if any item in an array satisfies the given matcher.
-	 * 如果数组中的任何项满足给定匹配器，则求值为true。
+	 * 如果数组中的任何项满足给定的matcher,则评估为true。
      *
      * @param mixed $item as a {@link Hamcrest\Matcher} or a value.
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，分析器，内联，内联解析器匹配
+ * League，CommonMark，解析器，内联，内联解析器匹配
  */
 
 declare(strict_types=1);
@@ -49,7 +49,7 @@ final class InlineParserMatch
 
     /**
      * Match the given string (case-insensitive)
-	 * 匹配给定的字符串(不区分大小写)
+	 * 匹配给定的字符串（不区分大小写）
      */
     public static function string(string $str): self
     {
@@ -58,7 +58,6 @@ final class InlineParserMatch
 
     /**
      * Match any of the given strings (case-insensitive)
-	 * 匹配任何给定的字符串(不区分大小写)
      */
     public static function oneOf(string ...$str): self
     {
@@ -67,7 +66,7 @@ final class InlineParserMatch
 
     /**
      * Match a partial regular expression without starting/ending delimiters, anchors, or flags
-	 * 匹配一个部分正则表达式,而不需要开始/结束分隔符、锚或标志
+	 * 匹配不包含开始/结束分隔符、锚或标志的部分正则表达式。
      */
     public static function regex(string $regex): self
     {

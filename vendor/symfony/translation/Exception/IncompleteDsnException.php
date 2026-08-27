@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，异常，不完整Dsn 异常
+ * Symfony，Component，Translation，异常，不完整的Dsn 异常
  */
 
 /*
@@ -19,7 +19,7 @@ class IncompleteDsnException extends InvalidArgumentException
     public function __construct(string $message, ?string $dsn = null, ?\Throwable $previous = null)
     {
         if ($dsn) {
-            $message = sprintf('Invalid "%s" provider DSN: ', $dsn).$message;
+            $message = \sprintf('Invalid "%s" provider DSN: ', $dsn).$message;
         }
 
         parent::__construct($message, 0, $previous);

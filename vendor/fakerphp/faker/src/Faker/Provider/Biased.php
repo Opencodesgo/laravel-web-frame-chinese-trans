@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，有偏见的
+ */
 
 namespace Faker\Provider;
 
@@ -7,6 +10,7 @@ class Biased extends Base
     /**
      * Returns a biased integer between $min and $max (both inclusive).
      * The distribution depends on $function.
+	 * 返回一个介于$min和$max(包括两者)之间的有偏整数。
      *
      * The algorithm creates two doubles, x ∈ [0, 1], y ∈ [0, 1) and checks whether the
      * return value of $function for x is greater than or equal to y. If this is

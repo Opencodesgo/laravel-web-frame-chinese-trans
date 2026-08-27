@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，监听器回避
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -12,7 +12,7 @@ class {{ class }}
 {
     /**
      * Create the event listener.
-	 * 创建事件监听器
+	 * 创建事件侦听器
      *
      * @return void
      */

@@ -25,7 +25,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Units.
- * 单位特征。
+ * 单位特征
  *
  * Add, subtract and set units.
  */

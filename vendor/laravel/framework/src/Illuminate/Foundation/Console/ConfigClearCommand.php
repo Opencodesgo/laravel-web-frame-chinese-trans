@@ -1,13 +1,15 @@
 <?php
 /**
- * Illuminate，基础，控制台，config:clear 配置清除命令
+ * Illuminate，基础，控制台，config:clear 清除配置命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'config:clear')]
 class ConfigClearCommand extends Command
 {
     /**
@@ -17,6 +19,19 @@ class ConfigClearCommand extends Command
      * @var string
      */
     protected $name = 'config:clear';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'config:clear';
 
     /**
      * The console command description.
@@ -58,6 +73,6 @@ class ConfigClearCommand extends Command
     {
         $this->files->delete($this->laravel->getCachedConfigPath());
 
-        $this->info('Configuration cache cleared!');
+        $this->components->info('Configuration cache cleared successfully.');
     }
 }

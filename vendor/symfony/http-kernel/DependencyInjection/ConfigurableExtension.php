@@ -30,18 +30,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 abstract class ConfigurableExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    final public function load(array $configs, ContainerBuilder $container)
+    final public function load(array $configs, ContainerBuilder $container): void
     {
         $this->loadInternal($this->processConfiguration($this->getConfiguration($configs, $container), $configs), $container);
     }
 
     /**
      * Configures the passed container according to the merged configuration.
-	 * 根据合并的配置配置传入的容器
-	 *
+	 * 根据合并的配置配置传入的容器。
+     *
+     * @return void
      */
     abstract protected function loadInternal(array $mergedConfig, ContainerBuilder $container);
 }

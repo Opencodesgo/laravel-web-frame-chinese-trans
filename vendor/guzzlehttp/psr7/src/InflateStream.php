@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，膨胀流
+ * GuzzleHttp，Psr7，充气流
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Uses PHP's zlib.inflate filter to inflate zlib (HTTP deflate, RFC1950) or gzipped (RFC1952) content.
- * 使用PHP的zlib。通过充气过滤器膨胀zlib(HTTP偏转,RFC1950)或gzicut(RFC1952)内容。
+ * 使用PHP的zlib。充气过滤器充气zlib （HTTP deflate, RFC1950）或gzipped （RFC1952）内容。
  *
  * This stream decorator converts the provided stream to a PHP stream resource,
  * then appends the zlib.inflate filter. The stream is then converted back

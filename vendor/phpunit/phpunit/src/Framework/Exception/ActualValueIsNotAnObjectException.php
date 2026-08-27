@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，ActualValueIsNotAnObjectException
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Fiber Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,11 +18,15 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Fiber related classes to array representation.
+ * 将光纤相关的类强制转换为数组表示。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
 final class FiberCaster
 {
+    /**
+     * @return array
+     */
     public static function castFiber(\Fiber $fiber, array $a, Stub $stub, bool $isNested, int $filter = 0)
     {
         $prefix = Caster::PREFIX_VIRTUAL;

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，报告，Xml，资源
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *

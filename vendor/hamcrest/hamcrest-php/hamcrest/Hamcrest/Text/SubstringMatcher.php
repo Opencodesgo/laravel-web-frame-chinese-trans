@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，文本，字符串匹配程序
+ * Hamcrest，文本，子串匹配程序
  */
 
 namespace Hamcrest\Text;

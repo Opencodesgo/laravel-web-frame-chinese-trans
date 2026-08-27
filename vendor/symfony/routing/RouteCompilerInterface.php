@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Routing，路由编译接口
+ * Symfony，Component，Routing，路由编译器接口
  */
 
 /*
@@ -26,10 +26,8 @@ interface RouteCompilerInterface
      * Compiles the current route instance.
 	 * 编译当前路由实例
      *
-     * @return CompiledRoute
-     *
      * @throws \LogicException If the Route cannot be compiled because the
      *                         path or host pattern is invalid
      */
-    public static function compile(Route $route);
+    public static function compile(Route $route): CompiledRoute;
 }

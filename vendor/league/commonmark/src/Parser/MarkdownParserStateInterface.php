@@ -22,7 +22,6 @@ interface MarkdownParserStateInterface
 {
     /**
      * Returns the deepest open block parser
-	 * 返回最深的打开块解析器
      */
     public function getActiveBlockParser(): BlockContinueParserInterface;
 

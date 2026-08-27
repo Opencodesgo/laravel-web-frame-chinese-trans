@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，载入程序，Ini 文件装载机
+ * Symfony，Component，Translation，加载器，Ini 文件加载器
  */
 
 /*
@@ -16,16 +16,12 @@ namespace Symfony\Component\Translation\Loader;
 
 /**
  * IniFileLoader loads translations from an ini file.
- * IniFileLoader 加载来自ini文件的翻译。
  *
  * @author stealth35
  */
 class IniFileLoader extends FileLoader
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function loadResource(string $resource)
+    protected function loadResource(string $resource): array
     {
         return parse_ini_file($resource, true);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，输入，输入意识接口
+ * Symfony，Component，Console，输入，输入感知接口
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Symfony\Component\Console\Input;
 /**
  * InputAwareInterface should be implemented by classes that depends on the
  * Console Input.
- * InputAwareInterface应该由依赖于控制台输入的类实现。
+ * InputAwareInterface 应该由依赖控制台输入的类实现。
  *
  * @author Wouter J <waldio.webdesign@gmail.com>
  */
@@ -26,6 +26,8 @@ interface InputAwareInterface
     /**
      * Sets the Console Input.
 	 * 设置控制台输入
+     *
+     * @return void
      */
     public function setInput(InputInterface $input);
 }

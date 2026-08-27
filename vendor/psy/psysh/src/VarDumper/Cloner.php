@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Var Dumper，克隆
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * A PsySH-specialized VarCloner.
+ * 心理学专业的VarCloner。
  */
 class Cloner extends VarCloner
 {

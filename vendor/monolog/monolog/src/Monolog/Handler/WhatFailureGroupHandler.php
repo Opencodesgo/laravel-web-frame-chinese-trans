@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，什么是失败组处理程序
- *
+ * Monolog，处理器，什么故障组处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -18,7 +18,7 @@ namespace Monolog\Handler;
 /**
  * Forwards records to multiple handlers suppressing failures of each handler
  * and continuing through to give every handler a chance to succeed.
- * 将记录转发到多个处理程序,抑制每个处理程序的失败，并继续给每个处理者一个成功的机会。
+ * 将记录转发给多个处理程序，抑制每个处理程序的失败。
  *
  * @author Craig D'Amelio <craig@damelio.ca>
  *

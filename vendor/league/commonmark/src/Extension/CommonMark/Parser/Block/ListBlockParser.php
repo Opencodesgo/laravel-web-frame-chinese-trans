@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，块，列表块解析器
+ * League，CommonMark，扩展，共同标记，解析器，代码块，列表块解析器
  */
 
 declare(strict_types=1);
@@ -54,7 +54,6 @@ final class ListBlockParser extends AbstractBlockContinueParser
     {
         // List blocks themselves don't have any markers, only list items. So try to stay in the list.
         // If there is a block start other than list item, canContain makes sure that this list is closed.
-		// 列表块本身没有任何标记，只有列表项。所以尽量留在名单上。
         return BlockContinue::at($cursor);
     }
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Ds Pair 存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +21,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  */
 class DsPairStub extends Stub
 {
-    public function __construct($key, $value)
+    public function __construct(mixed $key, mixed $value)
     {
         $this->value = [
             Caster::PREFIX_VIRTUAL.'key' => $key,

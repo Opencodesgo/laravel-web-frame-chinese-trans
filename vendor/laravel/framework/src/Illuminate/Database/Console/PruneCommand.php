@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，model:prune 删除命令
+ * Illuminate，数据库，控制台，删除命令
  */
 
 namespace Illuminate\Database\Console;
@@ -31,7 +31,7 @@ class PruneCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class PruneCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
@@ -49,7 +49,7 @@ class PruneCommand extends Command
         $models = $this->models();
 
         if ($models->isEmpty()) {
-            $this->info('No prunable models found.');
+            $this->components->info('No prunable models found.');
 
             return;
         }
@@ -62,27 +62,49 @@ class PruneCommand extends Command
             return;
         }
 
-        $events->listen(ModelsPruned::class, function ($event) {
-            $this->info("{$event->count} [{$event->model}] records have been pruned.");
+        $pruning = [];
+
+        $events->listen(ModelsPruned::class, function ($event) use (&$pruning) {
+            if (! in_array($event->model, $pruning)) {
+                $pruning[] = $event->model;
+
+                $this->newLine();
+
+                $this->components->info(sprintf('Pruning [%s] records.', $event->model));
+            }
+
+            $this->components->twoColumnDetail($event->model, "{$event->count} records");
         });
 
         $models->each(function ($model) {
-            $instance = new $model;
-
-            $chunkSize = property_exists($instance, 'prunableChunkSize')
-                            ? $instance->prunableChunkSize
-                            : $this->option('chunk');
-
-            $total = $this->isPrunable($model)
-                        ? $instance->pruneAll($chunkSize)
-                        : 0;
-
-            if ($total == 0) {
-                $this->info("No prunable [$model] records found.");
-            }
+            $this->pruneModel($model);
         });
 
         $events->forget(ModelsPruned::class);
+    }
+
+    /**
+     * Prune the given model.
+	 * 修剪给定的模型
+     *
+     * @param  string  $model
+     * @return void
+     */
+    protected function pruneModel(string $model)
+    {
+        $instance = new $model;
+
+        $chunkSize = property_exists($instance, 'prunableChunkSize')
+            ? $instance->prunableChunkSize
+            : $this->option('chunk');
+
+        $total = $this->isPrunable($model)
+            ? $instance->pruneAll($chunkSize)
+            : 0;
+
+        if ($total == 0) {
+            $this->components->info("No prunable [$model] records found.");
+        }
     }
 
     /**
@@ -129,7 +151,7 @@ class PruneCommand extends Command
      * Get the default path where models are located.
 	 * 获取模型所在的默认路径
      *
-     * @return string
+     * @return string|string[]
      */
     protected function getDefaultPath()
     {
@@ -167,9 +189,9 @@ class PruneCommand extends Command
             })->count();
 
         if ($count === 0) {
-            $this->info("No prunable [$model] records found.");
+            $this->components->info("No prunable [$model] records found.");
         } else {
-            $this->info("{$count} [{$model}] records will be pruned.");
+            $this->components->info("{$count} [{$model}] records will be pruned.");
         }
     }
 }

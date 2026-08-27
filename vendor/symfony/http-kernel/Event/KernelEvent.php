@@ -26,9 +26,9 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class KernelEvent extends Event
 {
-    private $kernel;
-    private $request;
-    private $requestType;
+    private HttpKernelInterface $kernel;
+    private Request $request;
+    private ?int $requestType;
 
     /**
      * @param int $requestType The request type the kernel is currently processing; one of
@@ -44,10 +44,8 @@ class KernelEvent extends Event
     /**
      * Returns the kernel in which this event was thrown.
 	 * 返回引发此事件的内核
-     *
-     * @return HttpKernelInterface
      */
-    public function getKernel()
+    public function getKernel(): HttpKernelInterface
     {
         return $this->kernel;
     }
@@ -55,47 +53,30 @@ class KernelEvent extends Event
     /**
      * Returns the request the kernel is currently processing.
 	 * 返回内核当前正在处理的请求
-     *
-     * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
     /**
      * Returns the request type the kernel is currently processing.
-	 * 返回当前处理的请求类型
+	 * 返回内核当前正在处理的请求类型
      *
      * @return int One of HttpKernelInterface::MAIN_REQUEST and
      *             HttpKernelInterface::SUB_REQUEST
      */
-    public function getRequestType()
+    public function getRequestType(): int
     {
         return $this->requestType;
     }
 
     /**
      * Checks if this is the main request.
-	 * 检查是否这是主请求
+	 * 检查这是否是主请求
      */
     public function isMainRequest(): bool
     {
         return HttpKernelInterface::MAIN_REQUEST === $this->requestType;
-    }
-
-    /**
-     * Checks if this is a master request.
-	 * 检查是否这是一个主请求
-     *
-     * @return bool
-     *
-     * @deprecated since symfony/http-kernel 5.3, use isMainRequest() instead
-     */
-    public function isMasterRequest()
-    {
-        trigger_deprecation('symfony/http-kernel', '5.3', '"%s()" is deprecated, use "isMainRequest()" instead.', __METHOD__);
-
-        return $this->isMainRequest();
     }
 }

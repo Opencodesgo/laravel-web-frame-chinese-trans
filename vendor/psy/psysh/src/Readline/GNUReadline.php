@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，逐行读取，GNU Readline
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Readline;
 
 /**
  * A Readline interface implementation for GNU Readline.
+ * GNU Readline 接口实现。
  *
  * This is by far the coolest way to do it, if you can.
  *
@@ -41,6 +45,7 @@ class GNUReadline implements Readline
 
     /**
      * Check whether this readline implementation supports bracketed paste.
+	 * 检查此readline实现是否支持带括号的粘贴。
      *
      * Currently, the GNU readline implementation does, but the libedit wrapper does not.
      */

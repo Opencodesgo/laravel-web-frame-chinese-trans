@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，环境识别接口
+ * Symfony，Component，Translation，语言环境感知接口
  */
 
 /*
@@ -18,9 +18,9 @@ interface LocaleAwareInterface
 {
     /**
      * Sets the current locale.
-	 * 设置当前区域
+	 * 设置当前区域设置。
      *
-     * @param string $locale The locale
+     * @return void
      *
      * @throws \InvalidArgumentException If the locale contains invalid characters
      */
@@ -28,9 +28,7 @@ interface LocaleAwareInterface
 
     /**
      * Returns the current locale.
-	 * 返回当前区域
-     *
-     * @return string
+	 * 返回当前语言环境
      */
-    public function getLocale();
+    public function getLocale(): string;
 }

@@ -16,7 +16,7 @@ namespace Symfony\Component\Console\Attribute;
 
 /**
  * Service tag to autoconfigure commands.
- * 服务标记来自动配置命令。
+ * 服务标记用于自动配置命令。
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class AsCommand

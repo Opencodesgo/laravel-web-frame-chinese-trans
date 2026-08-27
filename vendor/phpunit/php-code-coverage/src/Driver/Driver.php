@@ -24,6 +24,7 @@ use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for phpunit/php-code-coverage
+ * 该类不包括在phpunit/php-code-coverage的向后兼容性承诺中
  */
 abstract class Driver
 {

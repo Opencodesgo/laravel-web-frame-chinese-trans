@@ -16,7 +16,7 @@ class AsStringable implements Castable
 	 * 当从/到这个施法目标施法时使用施法者职业
      *
      * @param  array  $arguments
-     * @return object|string
+     * @return CastsAttributes<\Illuminate\Support\Stringable, string|\Stringable>
      */
     public static function castUsing(array $arguments)
     {

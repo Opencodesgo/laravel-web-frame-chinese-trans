@@ -1,11 +1,11 @@
 <?php
 /**
- * Egulias，EmailValidator，Email 验证器
+ * Egulias，EmailValidator，警告，电子邮件验证器
  */
 
 namespace Egulias\EmailValidator;
 
-use Egulias\EmailValidator\Exception\InvalidEmail;
+use Egulias\EmailValidator\Result\InvalidEmail;
 use Egulias\EmailValidator\Validation\EmailValidation;
 
 class EmailValidator
@@ -18,12 +18,12 @@ class EmailValidator
     /**
      * @var Warning\Warning[]
      */
-    protected $warnings = [];
+    private $warnings = [];
 
     /**
-     * @var InvalidEmail|null
+     * @var ?InvalidEmail
      */
-    protected $error;
+    private $error;
 
     public function __construct()
     {
@@ -35,7 +35,7 @@ class EmailValidator
      * @param EmailValidation $emailValidation
      * @return bool
      */
-    public function isValid($email, EmailValidation $emailValidation)
+    public function isValid(string $email, EmailValidation $emailValidation)
     {
         $isValid = $emailValidation->isValid($email, $this->lexer);
         $this->warnings = $emailValidation->getWarnings();

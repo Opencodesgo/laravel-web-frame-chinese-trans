@@ -77,7 +77,7 @@ LUA;
 
     /**
      * Get the Lua script for releasing reserved jobs.
-	 * 得到用于释放保留作业的Lua脚本
+	 * 获取用于释放保留作业的Lua脚本
      *
      * KEYS[1] - The "delayed" queue we release jobs onto, for example: queues:foo:delayed
      * KEYS[2] - The queue the jobs are currently on, for example: queues:foo:reserved
@@ -114,7 +114,7 @@ LUA;
     {
         return <<<'LUA'
 -- Get all of the jobs with an expired "score"...
-local val = redis.call('zrangebyscore', KEYS[1], '-inf', ARGV[1])
+local val = redis.call('zrangebyscore', KEYS[1], '-inf', ARGV[1], 'limit', 0, ARGV[2])
 
 -- If we have values in the array, we will remove them from the first queue
 -- and add them onto the destination queue in chunks of 100, which moves

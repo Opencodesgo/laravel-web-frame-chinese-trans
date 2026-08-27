@@ -11,13 +11,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Log Channel 	默认日志通道
+    | Default Log Channel	默认日志通道
     |--------------------------------------------------------------------------
     |
     | This option defines the default log channel that gets used when writing
     | messages to the logs. The name specified in this option should match
     | one of the channels defined in the "channels" configuration array.
-	| 该选项定义写入消息到日志时使用的默认日志通道。
     |
     */
 
@@ -25,27 +24,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Deprecations Log Channel 	日志通道
+    | Deprecations Log Channel	日志通道
     |--------------------------------------------------------------------------
     |
     | This option controls the log channel that should be used to log warnings
     | regarding deprecated PHP and library features. This allows you to get
     | your application ready for upcoming major versions of dependencies.
-	| 此选项控制应用于记录有关弃用的PHP和库功能的警告的日志通道。
     |
     */
 
-    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+    'deprecations' => [
+        'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+        'trace' => false,
+    ],
 
     /*
     |--------------------------------------------------------------------------
-    | Log Channels 	日志通道
+    | Log Channels	日志通道
     |--------------------------------------------------------------------------
     |
     | Here you may configure the log channels for your application. Out of
     | the box, Laravel uses the Monolog PHP logging library. This gives
     | you a variety of powerful log handlers / formatters to utilize.
-	| 在这里，您可以为您的应用程序配置日志通道。
     |
     | Available Drivers: "single", "daily", "slack", "syslog",
     |                    "errorlog", "monolog",
@@ -84,10 +84,11 @@ return [
         'papertrail' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => SyslogUdpHandler::class,
+            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
             ],
         ],
 

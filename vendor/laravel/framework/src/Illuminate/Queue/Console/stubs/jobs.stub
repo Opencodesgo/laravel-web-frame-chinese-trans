@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，队列，控制台，存根，作业
+ * Illuminate，队列，控制台，存根，根据需要实际修改
  */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create{{tableClassName}}Table extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-	 * 运行迁移
+	 * 数据库迁移
      *
      * @return void
      */
@@ -38,4 +38,4 @@ class Create{{tableClassName}}Table extends Migration
     {
         Schema::dropIfExists('{{table}}');
     }
-}
+};

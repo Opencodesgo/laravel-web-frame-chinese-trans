@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，标准化者，标准化策略接口
+ * League，CommonMark，扩展，目次，标准化者，Normalizer 策略接口
  */
 
 declare(strict_types=1);

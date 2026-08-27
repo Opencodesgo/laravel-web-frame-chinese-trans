@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，请求
+ * Illuminate, Http, 请求
  */
 
 namespace Illuminate\Http;
@@ -8,12 +8,15 @@ namespace Illuminate\Http;
 use ArrayAccess;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Session\SymfonySessionDecorator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @method array validate(array $rules, ...$params)
@@ -22,7 +25,8 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  */
 class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 {
-    use Concerns\InteractsWithContentTypes,
+    use Concerns\CanBePrecognitive,
+        Concerns\InteractsWithContentTypes,
         Concerns\InteractsWithFlashData,
         Concerns\InteractsWithInput,
         Macroable;
@@ -61,7 +65,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Create a new Illuminate HTTP request from server variables.
-	 * 从服务器变量创建一个新的点亮HTTP请求
+	 * 从服务器变量创建一个新的照亮HTTP请求
      *
      * @return static
      */
@@ -74,7 +78,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Return the Request instance.
-	 * 返回请求实例
+	 * 返回Request实例
      *
      * @return $this
      */
@@ -151,7 +155,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * Get the full URL for the request without the given query string parameters.
 	 * 获取不含给定查询字符串参数的请求的完整URL
      *
-     * @param  array|string  $query
+     * @param  array|string  $keys
      * @return string
      */
     public function fullUrlWithoutQuery($keys)
@@ -228,13 +232,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         $path = $this->decodedPath();
 
-        foreach ($patterns as $pattern) {
-            if (Str::is($pattern, $path)) {
-                return true;
-            }
-        }
-
-        return false;
+        return collect($patterns)->contains(fn ($pattern) => Str::is($pattern, $path));
     }
 
     /**
@@ -260,13 +258,40 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         $url = $this->fullUrl();
 
-        foreach ($patterns as $pattern) {
-            if (Str::is($pattern, $url)) {
-                return true;
-            }
-        }
+        return collect($patterns)->contains(fn ($pattern) => Str::is($pattern, $url));
+    }
 
-        return false;
+    /**
+     * Get the host name.
+	 * 获取主机名
+     *
+     * @return string
+     */
+    public function host()
+    {
+        return $this->getHost();
+    }
+
+    /**
+     * Get the HTTP host being requested.
+	 * 获取被请求的HTTP主机
+     *
+     * @return string
+     */
+    public function httpHost()
+    {
+        return $this->getHttpHost();
+    }
+
+    /**
+     * Get the scheme and HTTP host.
+	 * 获取模式和HTTP主机
+     *
+     * @return string
+     */
+    public function schemeAndHttpHost()
+    {
+        return $this->getSchemeAndHttpHost();
     }
 
     /**
@@ -338,7 +363,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Get the client user agent.
-	 * 获取客户端用户代理
+	 * 获取客户机用户代理
      *
      * @return string|null
      */
@@ -394,12 +419,13 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 	 * 这个方法属于Symfony HttpFoundation，在使用Laravel时通常不需要。
      *
      * Instead, you may use the "input" method.
+	 * 相反，您可以使用"输入"方法。
      *
      * @param  string  $key
      * @param  mixed  $default
      * @return mixed
      */
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return parent::get($key, $default);
     }
@@ -415,7 +441,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     public function json($key = null, $default = null)
     {
         if (! isset($this->json)) {
-            $this->json = new ParameterBag((array) json_decode($this->getContent(), true));
+            $this->json = new InputBag((array) json_decode($this->getContent(), true));
         }
 
         if (is_null($key)) {
@@ -452,9 +478,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     {
         $request = $to ?: new static;
 
-        $files = $from->files->all();
-
-        $files = is_array($files) ? array_filter($files) : $files;
+        $files = array_filter($from->files->all());
 
         $request->initialize(
             $from->query->all(),
@@ -468,9 +492,13 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
         $request->headers->replace($from->headers->all());
 
+        $request->setRequestLocale($from->getLocale());
+
+        $request->setDefaultRequestLocale($from->getDefaultLocale());
+
         $request->setJson($from->json());
 
-        if ($session = $from->getSession()) {
+        if ($from->hasSession() && $session = $from->session()) {
             $request->setLaravelSession($session);
         }
 
@@ -483,7 +511,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * Create an Illuminate request from a Symfony instance.
-	 * 从Symfony实例创建一个点亮请求
+	 * 从Symfony实例创建一个Illuminate请求
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return static
@@ -499,7 +527,9 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
         $newRequest->content = $request->content;
 
-        $newRequest->request = $newRequest->getInputSource();
+        if ($newRequest->isJson()) {
+            $newRequest->request = $newRequest->json();
+        }
 
         return $newRequest;
     }
@@ -509,7 +539,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      *
      * @return static
      */
-    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null)
+    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null): static
     {
         return parent::duplicate($query, $request, $attributes, $cookies, $this->filterFiles($files), $server);
     }
@@ -541,10 +571,28 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function hasSession(bool $skipIfUninitialized = false): bool
+    {
+        return ! is_null($this->session);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSession(): SessionInterface
+    {
+        return $this->hasSession()
+                    ? new SymfonySessionDecorator($this->session())
+                    : throw new SessionNotFoundException;
+    }
+
+    /**
      * Get the session associated with the request.
 	 * 获取与请求关联的会话
      *
-     * @return \Illuminate\Session\Store
+     * @return \Illuminate\Contracts\Session\Session
      *
      * @throws \RuntimeException
      */
@@ -558,17 +606,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     }
 
     /**
-     * Get the session associated with the request.
-	 * 获取与请求关联的会话
-     *
-     * @return \Illuminate\Session\Store|null
-     */
-    public function getSession()
-    {
-        return $this->session;
-    }
-
-    /**
      * Set the session instance on the request.
 	 * 在请求上设置会话实例
      *
@@ -578,6 +615,30 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
     public function setLaravelSession($session)
     {
         $this->session = $session;
+    }
+
+    /**
+     * Set the locale for the request instance.
+	 * 为请求实例设置语言环境
+     *
+     * @param  string  $locale
+     * @return void
+     */
+    public function setRequestLocale(string $locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Set the default locale for the request instance.
+	 * 为请求实例设置默认语言环境
+     *
+     * @param  string  $locale
+     * @return void
+     */
+    public function setDefaultRequestLocale(string $locale)
+    {
+        $this->defaultLocale = $locale;
     }
 
     /**
@@ -705,7 +766,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->all();
     }
@@ -717,8 +778,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  string  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $route = $this->route();
 
@@ -735,8 +795,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  string  $offset
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->__get($offset);
     }
@@ -749,8 +808,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->getInputSource()->set($offset, $value);
     }
@@ -762,8 +820,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  string  $offset
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->getInputSource()->remove($offset);
     }
@@ -789,8 +846,6 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function __get($key)
     {
-        return Arr::get($this->all(), $key, function () use ($key) {
-            return $this->route($key);
-        });
+        return Arr::get($this->all(), $key, fn () => $this->route($key));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Process，可执行的查找器
+ * Symfony，Component，Process，可执行的发现者
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Process;
 
 /**
  * Generic executable finder.
- * 通用可执行查找器。
+ * 通用可执行查找器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -31,11 +31,13 @@ class ExecutableFinder
         'setlocal', 'shift', 'start', 'time', 'title', 'type', 'ver', 'vol',
     ];
 
-    private $suffixes = [];
+    private array $suffixes = [];
 
     /**
      * Replaces default suffixes of executable.
 	 * 替换可执行文件的默认后缀
+     *
+     * @return void
      */
     public function setSuffixes(array $suffixes)
     {
@@ -44,6 +46,9 @@ class ExecutableFinder
 
     /**
      * Adds new possible suffix to check for executable.
+	 * 添加新的可能后缀以检查可执行文件
+     *
+     * @return void
      */
     public function addSuffix(string $suffix)
     {
@@ -57,10 +62,8 @@ class ExecutableFinder
      * @param string      $name      The executable name (without the extension)
      * @param string|null $default   The default to return if no executable is found
      * @param array       $extraDirs Additional dirs to check into
-     *
-     * @return string|null
      */
-    public function find(string $name, ?string $default = null, array $extraDirs = [])
+    public function find(string $name, ?string $default = null, array $extraDirs = []): ?string
     {
         // windows built-in commands that are present in cmd.exe should not be resolved using PATH as they do not exist as exes
         if ('\\' === \DIRECTORY_SEPARATOR && \in_array(strtolower($name), self::CMD_BUILTINS, true)) {
@@ -78,7 +81,7 @@ class ExecutableFinder
             $suffixes = $this->suffixes;
             $suffixes = array_merge($suffixes, $pathExt ? explode(\PATH_SEPARATOR, $pathExt) : ['.exe', '.bat', '.cmd', '.com']);
         }
-        $suffixes = '' !== pathinfo($name, PATHINFO_EXTENSION) ? array_merge([''], $suffixes) : array_merge($suffixes, ['']);
+        $suffixes = '' !== pathinfo($name, \PATHINFO_EXTENSION) ? array_merge([''], $suffixes) : array_merge($suffixes, ['']);
         foreach ($suffixes as $suffix) {
             foreach ($dirs as $dir) {
                 if ('' === $dir) {

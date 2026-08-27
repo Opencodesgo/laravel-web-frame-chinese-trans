@@ -1,11 +1,11 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，路由
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 /*
 |--------------------------------------------------------------------------
-| Load The Cached Routes 	加载缓存的路由
+| Load The Cached Routes	加载缓存的路由
 |--------------------------------------------------------------------------
 |
 | Here we will decode and unserialize the RouteCollection instance that

@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，特性，间隔步骤
+ * Carbon，特性，变间隔法
  */
 
 /**
@@ -44,7 +44,7 @@ trait IntervalStep
 
     /**
      * Set a step to apply instead of a fixed interval to get the new date.
-	 * 设置要应用的步骤而不是固定的间隔来获取新日期。
+	 * 设置要应用的步骤而不是固定的间隔来获取新日期
      *
      * Or pass null to switch to fixed interval.
      *

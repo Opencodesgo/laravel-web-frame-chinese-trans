@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器资源库
+ * Dotenv，资源库，适配器存储库 
  */
 
 declare(strict_types=1);
@@ -15,7 +15,7 @@ final class AdapterRepository implements RepositoryInterface
 {
     /**
      * The reader to use.
-	 * 读者要使用
+	 * 阅读器要使用
      *
      * @var \Dotenv\Repository\Adapter\ReaderInterface
      */
@@ -23,7 +23,7 @@ final class AdapterRepository implements RepositoryInterface
 
     /**
      * The writer to use.
-	 * 作者要使用
+	 * 作者使用
      *
      * @var \Dotenv\Repository\Adapter\WriterInterface
      */
@@ -46,7 +46,7 @@ final class AdapterRepository implements RepositoryInterface
 
     /**
      * Determine if the given environment variable is defined.
-	 * 确定给定的环境变量是否被定义
+	 * 确定是否定义了给定的环境变量
      *
      * @param string $name
      *
@@ -59,7 +59,7 @@ final class AdapterRepository implements RepositoryInterface
 
     /**
      * Get an environment variable.
-	 * 获取环境变量
+	 * 获取一个环境变量
      *
      * @param string $name
      *
@@ -98,7 +98,7 @@ final class AdapterRepository implements RepositoryInterface
 
     /**
      * Clear an environment variable.
-	 * 清除环境变量
+	 * 清除一个环境变量
      *
      * @param string $name
      *

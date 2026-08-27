@@ -21,7 +21,7 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate that attempting to fetch or create a node ID encountered an error
- * 抛出试图提取或创建节点ID时遇到错误
+ * 试图获取或创建节点ID时遇到错误
  */
 class NodeException extends PhpRuntimeException implements UuidExceptionInterface
 {

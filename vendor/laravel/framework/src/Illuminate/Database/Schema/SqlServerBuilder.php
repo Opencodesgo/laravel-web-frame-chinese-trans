@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，Sql Server 构建者
+ * Illuminate，数据库，模式，Sql Server 构建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -57,5 +57,31 @@ class SqlServerBuilder extends Builder
     public function dropAllViews()
     {
         $this->connection->statement($this->grammar->compileDropAllViews());
+    }
+
+    /**
+     * Drop all tables from the database.
+	 * 从数据库中删除所有表
+     *
+     * @return array
+     */
+    public function getAllTables()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllTables()
+        );
+    }
+
+    /**
+     * Get all of the view names for the database.
+	 * 获取数据库的所有视图名称
+     *
+     * @return array
+     */
+    public function getAllViews()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllViews()
+        );
     }
 }

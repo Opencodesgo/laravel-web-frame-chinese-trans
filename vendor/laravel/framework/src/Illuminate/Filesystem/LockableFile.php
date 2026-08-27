@@ -36,7 +36,7 @@ class LockableFile
 
     /**
      * Create a new File instance.
-	 * 创建一个新的文件实例
+	 * 创建新文件实例
      *
      * @param  string  $path
      * @param  string  $mode
@@ -113,7 +113,7 @@ class LockableFile
 	 * 写入文件
      *
      * @param  string  $contents
-     * @return string
+     * @return $this
      */
     public function write($contents)
     {
@@ -126,7 +126,7 @@ class LockableFile
 
     /**
      * Truncate the file.
-	 * 截断文件
+	 * 清空文件
      *
      * @return $this
      */
@@ -181,7 +181,7 @@ class LockableFile
 
     /**
      * Release the lock on the file.
-	 * 释放文件上的锁
+	 * 释放文件锁
      *
      * @return $this
      */

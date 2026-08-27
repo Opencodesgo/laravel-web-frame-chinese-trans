@@ -18,6 +18,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StringInput;
@@ -29,15 +30,23 @@ class Application extends SymfonyApplication implements ApplicationContract
 {
     /**
      * The Laravel application instance.
-	 * 应用实例
+	 * Laravel应用实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
     protected $laravel;
 
     /**
+     * The event dispatcher instance.
+	 * 事件调度实例
+     *
+     * @var \Illuminate\Contracts\Events\Dispatcher
+     */
+    protected $events;
+
+    /**
      * The output from the previous command.
-	 * 上一个命令的输出
+	 * 前一个命令的输出
      *
      * @var \Symfony\Component\Console\Output\BufferedOutput
      */
@@ -45,23 +54,23 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The console application bootstrappers.
-	 * 控制台应用引导程序
+	 * 控制台应用程序引导程序
      *
      * @var array
      */
     protected static $bootstrappers = [];
 
     /**
-     * The Event Dispatcher.
-	 * 事件调度程序
+     * A map of command names to classes.
+	 * 命令名称到类的映射
      *
-     * @var \Illuminate\Contracts\Events\Dispatcher
+     * @var array
      */
-    protected $events;
+    protected $commandMap = [];
 
     /**
      * Create a new Artisan console application.
-	 * 创建新的控制台应用
+	 * 创建一个新的Artisan控制台应用程序
      *
      * @param  \Illuminate\Contracts\Container\Container  $laravel
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
@@ -87,7 +96,7 @@ class Application extends SymfonyApplication implements ApplicationContract
      *
      * @return int
      */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function run(InputInterface $input = null, OutputInterface $output = null): int
     {
         $commandName = $this->getCommandName(
             $input = $input ?: new ArgvInput
@@ -274,11 +283,21 @@ class Application extends SymfonyApplication implements ApplicationContract
      * Add a command, resolving through the application.
 	 * 添加命令，通过应用程序解析。
      *
-     * @param  string  $command
-     * @return \Symfony\Component\Console\Command\Command
+     * @param  \Illuminate\Console\Command|string  $command
+     * @return \Symfony\Component\Console\Command\Command|null
      */
     public function resolve($command)
     {
+        if (is_subclass_of($command, SymfonyCommand::class) && ($commandName = $command::getDefaultName())) {
+            $this->commandMap[$commandName] = $command;
+
+            return null;
+        }
+
+        if ($command instanceof Command) {
+            return $this->add($command);
+        }
+
         return $this->add($this->laravel->make($command));
     }
 
@@ -301,15 +320,27 @@ class Application extends SymfonyApplication implements ApplicationContract
     }
 
     /**
+     * Set the container command loader for lazy resolution.
+	 * 为延迟解析设置容器命令加载器
+     *
+     * @return $this
+     */
+    public function setContainerCommandLoader()
+    {
+        $this->setCommandLoader(new ContainerCommandLoader($this->laravel, $this->commandMap));
+
+        return $this;
+    }
+
+    /**
      * Get the default input definition for the application.
 	 * 获取应用程序的默认输入定义
      *
      * This is used to add the --env option to every available command.
-	 * 这用于向每个可用命令添加 ——env 选项
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
      */
-    protected function getDefaultInputDefinition()
+    protected function getDefaultInputDefinition(): InputDefinition
     {
         return tap(parent::getDefaultInputDefinition(), function ($definition) {
             $definition->addOption($this->getEnvironmentOption());
@@ -331,7 +362,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * Get the Laravel application instance.
-	 * 获取应用程序实例
+	 * 获取Laravel应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

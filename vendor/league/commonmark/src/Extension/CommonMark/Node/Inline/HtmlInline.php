@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，节点，内联，Html 内联
+ * League，CommonMark，扩展，共同标记，节点，行内，Html 内嵌
  */
 
 declare(strict_types=1);

@@ -27,7 +27,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该任务的次数
+	 * 可能尝试该作业的次数
      *
      * @var int
      */
@@ -35,15 +35,23 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * The number of seconds the job can run before timing out.
-	 * 任务在超时之前可以运行的秒数
+	 * 作业在超时之前可以运行的秒数
      *
      * @var int
      */
     public $timeout;
 
     /**
+     * The number of seconds to wait before retrying the job when encountering an uncaught exception.
+	 * 遇到未捕获的异常时，在重新尝试作业之前等待的秒数
+     *
+     * @var int
+     */
+    public $backoff;
+
+    /**
      * Create a new job handler instance.
-	 * 创建新的任务处理程序实例
+	 * 创建一个新的作业处理程序实例
      *
      * @param  mixed  $event
      * @return void
@@ -53,12 +61,13 @@ class BroadcastEvent implements ShouldQueue
         $this->event = $event;
         $this->tries = property_exists($event, 'tries') ? $event->tries : null;
         $this->timeout = property_exists($event, 'timeout') ? $event->timeout : null;
+        $this->backoff = property_exists($event, 'backoff') ? $event->backoff : null;
         $this->afterCommit = property_exists($event, 'afterCommit') ? $event->afterCommit : null;
     }
 
     /**
      * Handle the queued job.
-	 * 处理队列任务
+	 * 处理排队作业
      *
      * @param  \Illuminate\Contracts\Broadcasting\Factory  $manager
      * @return void

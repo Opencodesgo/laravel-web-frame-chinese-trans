@@ -50,7 +50,6 @@ trait Options
 
     /**
      * Last day of week.
-	 * 一周的最后一天
      *
      * @var int|string
      */
@@ -58,7 +57,6 @@ trait Options
 
     /**
      * Days of weekend.
-	 * 周末的日子
      *
      * @var array
      */
@@ -69,7 +67,6 @@ trait Options
 
     /**
      * Format regex patterns.
-	 * 格式化正则表达式模式
      *
      * @var array<string, string>
      */
@@ -119,7 +116,7 @@ trait Options
 
     /**
      * Format modifiers (such as available in createFromFormat) regex patterns.
-	 * 格式修饰符（例如在createFromFormat中可用）正则表达式模式
+	 * 格式修饰符（例如在createFromFormat中可用）正则表达式模式。
      *
      * @var array
      */
@@ -223,7 +220,6 @@ trait Options
 
     /**
      * Format to use on JSON serialization.
-	 * 在JSON序列化中使用的格式
      *
      * @var string|null
      */
@@ -231,7 +227,6 @@ trait Options
 
     /**
      * Instance-specific macros.
-	 * 特定于宏
      *
      * @var array|null
      */
@@ -239,7 +234,6 @@ trait Options
 
     /**
      * Instance-specific generic macros.
-	 * 特定于实例的通用宏
      *
      * @var array|null
      */
@@ -247,7 +241,6 @@ trait Options
 
     /**
      * Function to call instead of format.
-	 * 要调用的函数而不是format
      *
      * @var string|callable|null
      */
@@ -270,7 +263,6 @@ trait Options
     /**
      * Returns true if the strict mode is globally in use, false else.
      * (It can be overridden in specific instances.)
-	 * 如果全局使用严格模式则返回true，否则返回false。
      *
      * @return bool
      */
@@ -360,7 +352,7 @@ trait Options
 
     /**
      * Get the month overflow global behavior (can be overridden in specific instances).
-	 * 获取月溢出全局行为(在特定情况下可以重写)
+	 * 获取月份溢出全局行为（可在特定实例中重写）
      *
      * @return bool
      */
@@ -381,7 +373,6 @@ trait Options
      *  - timezone: \DateTimeZone|string|int|null
      *  - macros: array|null
      *  - genericMacros: array|null
-	 * 设置特定的选项
      *
      * @param array $settings
      *
@@ -456,7 +447,7 @@ trait Options
 
     /**
      * Show truthy properties on var_dump().
-	 * 在var_dump()中显示truthy属性
+	 * 在var_dump（）上显示真实属性
      *
      * @return array
      */

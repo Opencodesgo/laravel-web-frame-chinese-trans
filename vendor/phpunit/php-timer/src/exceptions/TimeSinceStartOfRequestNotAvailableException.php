@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Timer，TimeSinceStartOfRequestNotAvailableException
+ */
+
 /*
  * This file is part of phpunit/php-timer.
  *

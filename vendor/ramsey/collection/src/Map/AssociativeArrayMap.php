@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，映射，关联数组映射
+ * Ramsey，集合，映射，关联的数组映射
  */
 
 /**
@@ -20,8 +20,7 @@ namespace Ramsey\Collection\Map;
 /**
  * `AssociativeArrayMap` represents a standard associative array object.
  *
- * @template T
- * @extends AbstractMap<T>
+ * @extends AbstractMap<string, mixed>
  */
 class AssociativeArrayMap extends AbstractMap
 {

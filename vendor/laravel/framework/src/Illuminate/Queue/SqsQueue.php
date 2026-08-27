@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，Amazon SQS 队列
+ * Illuminate，队列，Sqs 队列
  */
 
 namespace Illuminate\Queue;
@@ -15,7 +15,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 {
     /**
      * The Amazon SQS instance.
-	 * Amazon SQS队列
+	 * Amazon SQS实例
      *
      * @var \Aws\Sqs\SqsClient
      */
@@ -23,7 +23,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * The name of the default queue.
-	 * 默认队列名称
+	 * 默认队列的名称
      *
      * @var string
      */
@@ -47,7 +47,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Create a new Amazon SQS queue instance.
-	 * 创建新的SQL队列实例
+	 * 创建一个新的Amazon SQS队列实例
      *
      * @param  \Aws\Sqs\SqsClient  $sqs
      * @param  string  $default
@@ -90,7 +90,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Push a new job onto the queue.
-	 * 推入新的作业至队列
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed  $data
@@ -112,7 +112,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Push a raw payload onto the queue.
-	 * 推入原始有效负载至队列
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string|null  $queue
@@ -127,8 +127,8 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -151,6 +151,26 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
                 ])->get('MessageId');
             }
         );
+    }
+
+    /**
+     * Push an array of jobs onto the queue.
+	 * 将一组作业推入队列
+     *
+     * @param  array  $jobs
+     * @param  mixed  $data
+     * @param  string|null  $queue
+     * @return void
+     */
+    public function bulk($jobs, $data = '', $queue = null)
+    {
+        foreach ((array) $jobs as $job) {
+            if (isset($job->delay)) {
+                $this->later($job->delay, $job, $data, $queue);
+            } else {
+                $this->push($job, $data, $queue);
+            }
+        }
     }
 
     /**
@@ -193,7 +213,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Get the queue or return the default.
-	 * 得到队列或返回默认值
+	 * 获取队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -217,7 +237,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
      */
     protected function suffixQueue($queue, $suffix = '')
     {
-        if (Str::endsWith($queue, '.fifo')) {
+        if (str_ends_with($queue, '.fifo')) {
             $queue = Str::beforeLast($queue, '.fifo');
 
             return rtrim($this->prefix, '/').'/'.Str::finish($queue, $suffix).'.fifo';
@@ -228,7 +248,7 @@ class SqsQueue extends Queue implements QueueContract, ClearableQueue
 
     /**
      * Get the underlying SQS instance.
-	 * 得到底层SQS实例
+	 * 获取底层SQS实例
      *
      * @return \Aws\Sqs\SqsClient
      */

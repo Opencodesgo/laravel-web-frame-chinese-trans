@@ -21,10 +21,10 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate that the source of random data encountered an error
- * 抛出,表明随机数据的来源遇到错误。
+ * 抛出以指示随机数据源遇到错误
  *
- * This exception is used mostly to indicate that random_bytes() or random_int()
- * threw an exception. However, it may be used for other sources of random data.
+ * This exception is used mostly to indicate that random_bytes() or random_int() threw an exception. However, it may be
+ * used for other sources of random data.
  */
 class RandomSourceException extends PhpRuntimeException implements UuidExceptionInterface
 {

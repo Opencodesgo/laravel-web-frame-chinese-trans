@@ -5,22 +5,31 @@
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
+use BackedEnum;
+use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException as BrickMathException;
+use Brick\Math\RoundingMode;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Database\Eloquent\Casts\AsEncryptedArrayObject;
+use Illuminate\Database\Eloquent\Casts\AsEncryptedCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\InvalidCastException;
 use Illuminate\Database\Eloquent\JsonEncodingException;
+use Illuminate\Database\Eloquent\MissingAttributeException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\LazyLoadingViolationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Exceptions\MathException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
@@ -34,7 +43,7 @@ trait HasAttributes
 {
     /**
      * The model's attributes.
-	 * 模型的属性
+	 * 模型属性
      *
      * @var array
      */
@@ -142,7 +151,7 @@ trait HasAttributes
 
     /**
      * Indicates whether attributes are snake cased on arrays.
-	 * 指明属性是否在数组上使用蛇形大小写
+	 * 指示属性是否在数组上使用蛇形大小写
      *
      * @var bool
      */
@@ -166,7 +175,7 @@ trait HasAttributes
 
     /**
      * The cache of the "Attribute" return type marked mutated, gettable attributes for each class.
-	 * "AAttribute”返回类型的缓存为每个类标记了变异的、可获取的属性
+	 * "Attribute"返回类型的缓存为每个类标记了变异的、可获取的属性。
      *
      * @var array
      */
@@ -181,10 +190,18 @@ trait HasAttributes
     protected static $setAttributeMutatorCache = [];
 
     /**
+     * The cache of the converted cast types.
+	 * 转换后的强制转换类型的缓存
+     *
+     * @var array
+     */
+    protected static $castTypeCache = [];
+
+    /**
      * The encrypter instance that is used to encrypt attributes.
 	 * 用于加密属性的加密器实例
      *
-     * @var \Illuminate\Contracts\Encryption\Encrypter
+     * @var \Illuminate\Contracts\Encryption\Encrypter|null
      */
     public static $encrypter;
 
@@ -211,7 +228,7 @@ trait HasAttributes
         // Next we will handle any casts that have been setup for this model and cast
         // the values to their appropriate type. If the attribute has a mutator we
         // will not perform the cast on those attributes to avoid any confusion.
-		// 接下来，我们将处理为这个模型和cast设置的任何cast。
+		// 接下来，我们将处理为该模型设置的任何类型转换。
         $attributes = $this->addCastAttributesToArray(
             $attributes, $mutatedAttributes
         );
@@ -263,7 +280,7 @@ trait HasAttributes
             // We want to spin through all the mutated attributes for this model and call
             // the mutator for the attribute. We cache off every mutated attributes so
             // we don't have to constantly check on attributes that actually change.
-			// 我们想要遍历这个模型的所有变异属性并调用。
+			// 我们想要遍历这个模型的所有变异属性。
             if (! array_key_exists($key, $attributes)) {
                 continue;
             }
@@ -271,7 +288,7 @@ trait HasAttributes
             // Next, we will call the mutator for this attribute so that we can get these
             // mutated attribute's actual values. After we finish mutating each of the
             // attributes we will return this final array of the mutated attributes.
-			// 接下来，我们将调用该属性的mutator，以便获得这些属性。
+			// 接下来，我们将调用该属性的mutator。
             $attributes[$key] = $this->mutateAttributeForArray(
                 $key, $attributes[$key]
             );
@@ -299,7 +316,7 @@ trait HasAttributes
             // Here we will cast the attribute. Then, if the cast is a date or datetime cast
             // then we will serialize the date for the array. This will convert the dates
             // to strings based on the date format specified for these Eloquent models.
-			// 这里我们将强制转换属性。然后，如果强制转换是日期或日期时间强制转换。
+			// 这里我们将强制转换属性。然后，如果cast是日期或日期时间。
             $attributes[$key] = $this->castAttribute(
                 $key, $attributes[$key]
             );
@@ -307,27 +324,27 @@ trait HasAttributes
             // If the attribute cast was a date or a datetime, we will serialize the date as
             // a string. This allows the developers to customize how dates are serialized
             // into an array without affecting how they are persisted into the storage.
-			// 如果属性强制转换是日期或日期时间，则将日期序列化为字符串。
-            if ($attributes[$key] && in_array($value, ['date', 'datetime', 'immutable_date', 'immutable_datetime'])) {
+			// 如果属性强制转换是日期或日期时间，我们将序列化日期。
+            if (isset($attributes[$key]) && in_array($value, ['date', 'datetime', 'immutable_date', 'immutable_datetime'])) {
                 $attributes[$key] = $this->serializeDate($attributes[$key]);
             }
 
-            if ($attributes[$key] && ($this->isCustomDateTimeCast($value) ||
+            if (isset($attributes[$key]) && ($this->isCustomDateTimeCast($value) ||
                 $this->isImmutableCustomDateTimeCast($value))) {
                 $attributes[$key] = $attributes[$key]->format(explode(':', $value, 2)[1]);
             }
 
-            if ($attributes[$key] && $attributes[$key] instanceof DateTimeInterface &&
+            if ($attributes[$key] instanceof DateTimeInterface &&
                 $this->isClassCastable($key)) {
                 $attributes[$key] = $this->serializeDate($attributes[$key]);
             }
 
-            if ($attributes[$key] && $this->isClassSerializable($key)) {
+            if (isset($attributes[$key]) && $this->isClassSerializable($key)) {
                 $attributes[$key] = $this->serializeClassCastableAttribute($key, $attributes[$key]);
             }
 
             if ($this->isEnumCastable($key) && (! ($attributes[$key] ?? null) instanceof Arrayable)) {
-                $attributes[$key] = isset($attributes[$key]) ? $attributes[$key]->value : null;
+                $attributes[$key] = isset($attributes[$key]) ? $this->getStorableEnumValue($attributes[$key]) : null;
             }
 
             if ($attributes[$key] instanceof Arrayable) {
@@ -377,17 +394,17 @@ trait HasAttributes
         $attributes = [];
 
         foreach ($this->getArrayableRelations() as $key => $value) {
-            // If the values implements the Arrayable interface we can just call this
+            // If the values implement the Arrayable interface we can just call this
             // toArray method on the instances which will convert both models and
             // collections to their proper array form and we'll set the values.
-			// 如果value实现了Arrayable接口，我们可以调用这个。
+			// 如果值实现了Arrayable接口我们可以叫它。
             if ($value instanceof Arrayable) {
                 $relation = $value->toArray();
             }
 
             // If the value is null, we'll still go ahead and set it in this list of
-            // attributes since null is used to represent empty relationships if
-            // if it a has one or belongs to type relationships on the models.
+            // attributes, since null is used to represent empty relationships if
+            // it has a has one or belongs to type relationships on the models.
 			// 如果值为空，我们仍将继续在这个列表中设置它。
             elseif (is_null($value)) {
                 $relation = $value;
@@ -462,7 +479,7 @@ trait HasAttributes
         // If the attribute exists in the attribute array or has a "get" mutator we will
         // get the attribute's value. Otherwise, we will proceed as if the developers
         // are asking for a relationship's value. This covers both types of values.
-		// 如果属性存在于属性数组中，或者有一个"get"mutator，我们将获取属性的值。
+		// 如果属性存在于属性数组中，或者有一个"get"mutator，我们将。
         if (array_key_exists($key, $this->attributes) ||
             array_key_exists($key, $this->casts) ||
             $this->hasGetMutator($key) ||
@@ -474,12 +491,38 @@ trait HasAttributes
         // Here we will determine if the model base class itself contains this given key
         // since we don't want to treat any of those methods as relationships because
         // they are all intended as helper methods and none of these are relations.
-		// 这里我们将确定模型基类本身是否包含这个给定的键，因为我们不想把这些方法当作关系。
+		// 这里我们将确定模型基类本身是否包含这个给定的键。
         if (method_exists(self::class, $key)) {
-            return;
+            return $this->throwMissingAttributeExceptionIfApplicable($key);
         }
 
-        return $this->getRelationValue($key);
+        return $this->isRelation($key) || $this->relationLoaded($key)
+                    ? $this->getRelationValue($key)
+                    : $this->throwMissingAttributeExceptionIfApplicable($key);
+    }
+
+    /**
+     * Either throw a missing attribute exception or return null depending on Eloquent's configuration.
+	 * 根据Eloquent的配置，抛出缺失属性异常或返回null。
+     *
+     * @param  string  $key
+     * @return null
+     *
+     * @throws \Illuminate\Database\Eloquent\MissingAttributeException
+     */
+    protected function throwMissingAttributeExceptionIfApplicable($key)
+    {
+        if ($this->exists &&
+            ! $this->wasRecentlyCreated &&
+            static::preventsAccessingMissingAttributes()) {
+            if (isset(static::$missingAttributeViolationCallback)) {
+                return call_user_func(static::$missingAttributeViolationCallback, $this, $key);
+            }
+
+            throw new MissingAttributeException($this, $key);
+        }
+
+        return null;
     }
 
     /**
@@ -518,7 +561,7 @@ trait HasAttributes
         // If the key already exists in the relationships array, it just means the
         // relationship has already been loaded, so we'll just return it out of
         // here because there is no need to query within the relations twice.
-		// 如果键已经存在于关系数组中，则表示关系已经加载好了。
+		// 如果键已经存在于关系数组中。
         if ($this->relationLoaded($key)) {
             return $this->relations[$key];
         }
@@ -534,7 +577,7 @@ trait HasAttributes
         // If the "attribute" exists as a method on the model, we will just assume
         // it is a relationship and will load and return results from the query
         // and hydrate the relationship's value on the "relationships" array.
-		// 如果"属性"作为模型上的方法存在，我们就假设这是一种关系。
+		// 如果"属性"作为模型上的方法存在。
         return $this->getRelationshipFromMethod($key);
     }
 
@@ -552,7 +595,7 @@ trait HasAttributes
         }
 
         return method_exists($this, $key) ||
-            (static::$relationResolvers[get_class($this)][$key] ?? null);
+               $this->relationResolver(static::class, $key);
     }
 
     /**
@@ -636,7 +679,7 @@ trait HasAttributes
 
         $returnType = (new ReflectionMethod($this, $method))->getReturnType();
 
-        return static::$attributeMutatorCache[get_class($this)][$key] = $returnType &&
+        return static::$attributeMutatorCache[get_class($this)][$key] =
                     $returnType instanceof ReflectionNamedType &&
                     $returnType->getName() === Attribute::class;
     }
@@ -684,7 +727,7 @@ trait HasAttributes
      */
     protected function mutateAttributeMarkedAttribute($key, $value)
     {
-        if (isset($this->attributeCastCache[$key])) {
+        if (array_key_exists($key, $this->attributeCastCache)) {
             return $this->attributeCastCache[$key];
         }
 
@@ -694,10 +737,10 @@ trait HasAttributes
             return $value;
         }, $value, $this->attributes);
 
-        if (! is_object($value) || ! $attribute->withObjectCaching) {
-            unset($this->attributeCastCache[$key]);
-        } else {
+        if ($attribute->withCaching || (is_object($value) && $attribute->withObjectCaching)) {
             $this->attributeCastCache[$key] = $value;
+        } else {
+            unset($this->attributeCastCache[$key]);
         }
 
         return $value;
@@ -762,7 +805,7 @@ trait HasAttributes
         // If the key is one of the encrypted castable types, we'll first decrypt
         // the value and update the cast type so we may leverage the following
         // logic for casting this value to any additionally specified types.
-		// 如果密钥是加密的可浇注类型之一，我们将首先解密此值。
+		// 如果密钥是加密的可浇注类型之一，我们先解密值并更新转换类型。
         if ($this->isEncryptedCastable($key)) {
             $value = $this->fromEncryptedString($value);
 
@@ -847,7 +890,7 @@ trait HasAttributes
 
     /**
      * Cast the given attribute to an enum.
-	 * 将给定属性强制转换为枚举
+	 * 将给定属性强制转换为enum
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -865,7 +908,7 @@ trait HasAttributes
             return $value;
         }
 
-        return $castType::from($value);
+        return $this->getEnumCaseFromValue($castType, $value);
     }
 
     /**
@@ -877,19 +920,23 @@ trait HasAttributes
      */
     protected function getCastType($key)
     {
-        if ($this->isCustomDateTimeCast($this->getCasts()[$key])) {
-            return 'custom_datetime';
+        $castType = $this->getCasts()[$key];
+
+        if (isset(static::$castTypeCache[$castType])) {
+            return static::$castTypeCache[$castType];
         }
 
-        if ($this->isImmutableCustomDateTimeCast($this->getCasts()[$key])) {
-            return 'immutable_custom_datetime';
+        if ($this->isCustomDateTimeCast($castType)) {
+            $convertedCastType = 'custom_datetime';
+        } elseif ($this->isImmutableCustomDateTimeCast($castType)) {
+            $convertedCastType = 'immutable_custom_datetime';
+        } elseif ($this->isDecimalCast($castType)) {
+            $convertedCastType = 'decimal';
+        } else {
+            $convertedCastType = trim(strtolower($castType));
         }
 
-        if ($this->isDecimalCast($this->getCasts()[$key])) {
-            return 'decimal';
-        }
-
-        return trim(strtolower($this->getCasts()[$key]));
+        return static::$castTypeCache[$castType] = $convertedCastType;
     }
 
     /**
@@ -932,8 +979,8 @@ trait HasAttributes
      */
     protected function isCustomDateTimeCast($cast)
     {
-        return strncmp($cast, 'date:', 5) === 0 ||
-               strncmp($cast, 'datetime:', 9) === 0;
+        return str_starts_with($cast, 'date:') ||
+                str_starts_with($cast, 'datetime:');
     }
 
     /**
@@ -945,8 +992,8 @@ trait HasAttributes
      */
     protected function isImmutableCustomDateTimeCast($cast)
     {
-        return strncmp($cast, 'immutable_date:', 15) === 0 ||
-               strncmp($cast, 'immutable_datetime:', 19) === 0;
+        return str_starts_with($cast, 'immutable_date:') ||
+                str_starts_with($cast, 'immutable_datetime:');
     }
 
     /**
@@ -958,7 +1005,7 @@ trait HasAttributes
      */
     protected function isDecimalCast($cast)
     {
-        return strncmp($cast, 'decimal:', 8) === 0;
+        return str_starts_with($cast, 'decimal:');
     }
 
     /**
@@ -985,7 +1032,7 @@ trait HasAttributes
         // instance into a form proper for storage on the database tables using
         // the connection grammar's date format. We will auto set the values.
 		// 如果一个属性被列为"日期"，我们将从DateTime转换它。
-        elseif ($value && $this->isDateAttribute($key)) {
+        elseif (! is_null($value) && $this->isDateAttribute($key)) {
             $value = $this->fromDateTime($value);
         }
 
@@ -1009,7 +1056,7 @@ trait HasAttributes
         // attribute's underlying array. This takes care of properly nesting an
         // attribute in the array's value in the case of deeply nested items.
 		// 如果这个属性包含一个JSON ->，我们将在属性中设置适当的值。
-        if (Str::contains($key, '->')) {
+        if (str_contains($key, '->')) {
             return $this->fillJsonAttribute($key, $value);
         }
 
@@ -1055,7 +1102,7 @@ trait HasAttributes
 
         $returnType = (new ReflectionMethod($this, $method))->getReturnType();
 
-        return static::$setAttributeMutatorCache[$class][$key] = $returnType &&
+        return static::$setAttributeMutatorCache[$class][$key] =
                     $returnType instanceof ReflectionNamedType &&
                     $returnType->getName() === Attribute::class &&
                     is_callable($this->{$method}()->set);
@@ -1093,15 +1140,17 @@ trait HasAttributes
         $this->attributes = array_merge(
             $this->attributes,
             $this->normalizeCastClassResponse(
-                $key, call_user_func($callback, $value, $this->attributes)
+                $key, $callback($value, $this->attributes)
             )
         );
 
-        if (! is_object($value) || ! $attribute->withObjectCaching) {
-            unset($this->attributeCastCache[$key]);
-        } else {
+        if ($attribute->withCaching || (is_object($value) && $attribute->withObjectCaching)) {
             $this->attributeCastCache[$key] = $value;
+        } else {
+            unset($this->attributeCastCache[$key]);
         }
+
+        return $this;
     }
 
     /**
@@ -1137,6 +1186,10 @@ trait HasAttributes
             ? $this->castAttributeAsEncryptedString($key, $value)
             : $value;
 
+        if ($this->isClassCastable($key)) {
+            unset($this->classCastCache[$key]);
+        }
+
         return $this;
     }
 
@@ -1152,22 +1205,12 @@ trait HasAttributes
     {
         $caster = $this->resolveCasterClass($key);
 
-        if (is_null($value)) {
-            $this->attributes = array_merge($this->attributes, array_map(
-                function () {
-                },
-                $this->normalizeCastClassResponse($key, $caster->set(
-                    $this, $key, $this->{$key}, $this->attributes
-                ))
-            ));
-        } else {
-            $this->attributes = array_merge(
-                $this->attributes,
-                $this->normalizeCastClassResponse($key, $caster->set(
-                    $this, $key, $value, $this->attributes
-                ))
-            );
-        }
+        $this->attributes = array_replace(
+            $this->attributes,
+            $this->normalizeCastClassResponse($key, $caster->set(
+                $this, $key, $value, $this->attributes
+            ))
+        );
 
         if ($caster instanceof CastsInboundAttributes || ! is_object($value)) {
             unset($this->classCastCache[$key]);
@@ -1181,7 +1224,7 @@ trait HasAttributes
 	 * 设置枚举可浇注属性的值
      *
      * @param  string  $key
-     * @param  \BackedEnum  $value
+     * @param  \UnitEnum|string|int  $value
      * @return void
      */
     protected function setEnumCastableAttribute($key, $value)
@@ -1190,11 +1233,42 @@ trait HasAttributes
 
         if (! isset($value)) {
             $this->attributes[$key] = null;
-        } elseif ($value instanceof $enumClass) {
-            $this->attributes[$key] = $value->value;
+        } elseif (is_object($value)) {
+            $this->attributes[$key] = $this->getStorableEnumValue($value);
         } else {
-            $this->attributes[$key] = $enumClass::from($value)->value;
+            $this->attributes[$key] = $this->getStorableEnumValue(
+                $this->getEnumCaseFromValue($enumClass, $value)
+            );
         }
+    }
+
+    /**
+     * Get an enum case instance from a given class and value.
+	 * 从给定的类和值获取枚举实例
+     *
+     * @param  string  $enumClass
+     * @param  string|int  $value
+     * @return \UnitEnum|\BackedEnum
+     */
+    protected function getEnumCaseFromValue($enumClass, $value)
+    {
+        return is_subclass_of($enumClass, BackedEnum::class)
+                ? $enumClass::from($value)
+                : constant($enumClass.'::'.$value);
+    }
+
+    /**
+     * Get the storable value from the given enum.
+	 * 从给定的枚举中获取可存储的值
+     *
+     * @param  \UnitEnum|\BackedEnum  $value
+     * @return string|int
+     */
+    protected function getStorableEnumValue($value)
+    {
+        return $value instanceof BackedEnum
+                ? $value->value
+                : $value->name;
     }
 
     /**
@@ -1276,7 +1350,7 @@ trait HasAttributes
      */
     public function fromJson($value, $asObject = false)
     {
-        return json_decode($value, ! $asObject);
+        return json_decode($value ?? '', ! $asObject);
     }
 
     /**
@@ -1308,7 +1382,7 @@ trait HasAttributes
      * Set the encrypter instance that will be used to encrypt attributes.
 	 * 设置将用于加密属性的加密器实例
      *
-     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
+     * @param  \Illuminate\Contracts\Encryption\Encrypter|null  $encrypter
      * @return void
      */
     public static function encryptUsing($encrypter)
@@ -1325,34 +1399,34 @@ trait HasAttributes
      */
     public function fromFloat($value)
     {
-        switch ((string) $value) {
-            case 'Infinity':
-                return INF;
-            case '-Infinity':
-                return -INF;
-            case 'NaN':
-                return NAN;
-            default:
-                return (float) $value;
-        }
+        return match ((string) $value) {
+            'Infinity' => INF,
+            '-Infinity' => -INF,
+            'NaN' => NAN,
+            default => (float) $value,
+        };
     }
 
     /**
      * Return a decimal as string.
 	 * 返回一个小数作为字符串
      *
-     * @param  float  $value
+     * @param  float|string  $value
      * @param  int  $decimals
      * @return string
      */
     protected function asDecimal($value, $decimals)
     {
-        return number_format($value, $decimals, '.', '');
+        try {
+            return (string) BigDecimal::of($value)->toScale($decimals, RoundingMode::HALF_UP);
+        } catch (BrickMathException $e) {
+            throw new MathException('Unable to cast value to a decimal.', previous: $e);
+        }
     }
 
     /**
      * Return a timestamp as DateTime object with time set to 00:00:00.
-	 * 返回一个时间戳作为DateTime对象，时间设置为00:00:00
+	 * 返回一个时间戳作为DateTime对象，时间设置为00:00:00。
      *
      * @param  mixed  $value
      * @return \Illuminate\Support\Carbon
@@ -1392,7 +1466,6 @@ trait HasAttributes
         // If this value is an integer, we will assume it is a UNIX timestamp's value
         // and format a Carbon object from this timestamp. This allows flexibility
         // when defining your date fields as they might be UNIX timestamps here.
-		// 如果这个值是一个整数，我们将假定它是UNIX时间戳的值。
         if (is_numeric($value)) {
             return Date::createFromTimestamp($value);
         }
@@ -1400,7 +1473,6 @@ trait HasAttributes
         // If the value is in simply year, month, day format, we will instantiate the
         // Carbon instances from that format. Again, this provides for simple date
         // fields on the database, while still supporting Carbonized conversion.
-		// 如果值是简单的年、月、日格式，我们将实例化来自该格式的Carbon实例。
         if ($this->isStandardDateFormat($value)) {
             return Date::instance(Carbon::createFromFormat('Y-m-d', $value)->startOfDay());
         }
@@ -1410,7 +1482,6 @@ trait HasAttributes
         // Finally, we will just assume this date is in the format used by default on
         // the database connection and use that format to create the Carbon object
         // that is returned back out to the developers after we convert it here.
-		// 最后，我们假设这个日期是默认使用的格式。
         try {
             $date = Date::createFromFormat($format, $value);
         } catch (InvalidArgumentException $e) {
@@ -1460,14 +1531,14 @@ trait HasAttributes
 
     /**
      * Prepare a date for array / JSON serialization.
-	 * 为数组/JSON序列化准备一个日期
+	 * 为数组/ JSON序列化准备一个日期
      *
      * @param  \DateTimeInterface  $date
      * @return string
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date instanceof \DateTimeImmutable ?
+        return $date instanceof DateTimeImmutable ?
             CarbonImmutable::instance($date)->toJSON() :
             Carbon::instance($date)->toJSON();
     }
@@ -1551,7 +1622,7 @@ trait HasAttributes
 
     /**
      * Determine whether a value is Date / DateTime castable for inbound manipulation.
-	 * 确定某个值是否可用于入站操作的Date / DateTime浇注
+	 * 确定某个值是否可用于入站操作的Date / DateTime浇注。
      *
      * @param  string  $key
      * @return bool
@@ -1608,11 +1679,13 @@ trait HasAttributes
      */
     protected function isClassCastable($key)
     {
-        if (! array_key_exists($key, $this->getCasts())) {
+        $casts = $this->getCasts();
+
+        if (! array_key_exists($key, $casts)) {
             return false;
         }
 
-        $castType = $this->parseCasterClass($this->getCasts()[$key]);
+        $castType = $this->parseCasterClass($casts[$key]);
 
         if (in_array($castType, static::$primitiveCastTypes)) {
             return false;
@@ -1634,11 +1707,13 @@ trait HasAttributes
      */
     protected function isEnumCastable($key)
     {
-        if (! array_key_exists($key, $this->getCasts())) {
+        $casts = $this->getCasts();
+
+        if (! array_key_exists($key, $casts)) {
             return false;
         }
 
-        $castType = $this->getCasts()[$key];
+        $castType = $casts[$key];
 
         if (in_array($castType, static::$primitiveCastTypes)) {
             return false;
@@ -1660,9 +1735,13 @@ trait HasAttributes
      */
     protected function isClassDeviable($key)
     {
-        return $this->isClassCastable($key) &&
-            method_exists($castType = $this->parseCasterClass($this->getCasts()[$key]), 'increment') &&
-            method_exists($castType, 'decrement');
+        if (! $this->isClassCastable($key)) {
+            return false;
+        }
+
+        $castType = $this->resolveCasterClass($key);
+
+        return method_exists($castType::class, 'increment') && method_exists($castType::class, 'decrement');
     }
 
     /**
@@ -1694,7 +1773,7 @@ trait HasAttributes
 
         $arguments = [];
 
-        if (is_string($castType) && strpos($castType, ':') !== false) {
+        if (is_string($castType) && str_contains($castType, ':')) {
             $segments = explode(':', $castType, 2);
 
             $castType = $segments[0];
@@ -1721,7 +1800,7 @@ trait HasAttributes
      */
     protected function parseCasterClass($class)
     {
-        return strpos($class, ':') === false
+        return ! str_contains($class, ':')
             ? $class
             : explode(':', $class, 2)[0];
     }
@@ -1780,7 +1859,7 @@ trait HasAttributes
             $this->attributes = array_merge(
                 $this->attributes,
                 $this->normalizeCastClassResponse(
-                    $key, call_user_func($callback, $value, $this->attributes)
+                    $key, $callback($value, $this->attributes)
                 )
             );
         }
@@ -1997,8 +2076,21 @@ trait HasAttributes
     }
 
     /**
-     * Determine if the model or any of the given attribute(s) have been modified.
-	 * 确定模型或任何给定属性是否已被修改
+     * Discard attribute changes and reset the attributes to their original state.
+	 * 丢弃属性更改并将属性重置为其原始状态
+     *
+     * @return $this
+     */
+    public function discardChanges()
+    {
+        [$this->attributes, $this->changes] = [$this->original, []];
+
+        return $this;
+    }
+
+    /**
+     * Determine if the model or any of the given attribute(s) were changed when the model was last saved.
+	 * 确定模型或任何给定的属性在最后保存模型时是否被更改
      *
      * @param  array|string|null  $attributes
      * @return bool
@@ -2011,8 +2103,8 @@ trait HasAttributes
     }
 
     /**
-     * Determine if any of the given attributes were changed.
-	 * 确定是否更改了任何给定属性
+     * Determine if any of the given attributes were changed when the model was last saved.
+	 * 确定上次保存模型时是否更改了给定的任何属性
      *
      * @param  array  $changes
      * @param  array|string|null  $attributes
@@ -2023,7 +2115,7 @@ trait HasAttributes
         // If no specific attributes were provided, we will just see if the dirty array
         // already contains any attributes. If it does we will just return that this
         // count is greater than zero. Else, we need to check specific attributes.
-		// 如果没有提供特定的属性，我们将只查看脏数组是否已包含任何属性。
+		// 如果没有提供特定的属性，我们将只查看脏数组是否。
         if (empty($attributes)) {
             return count($changes) > 0;
         }
@@ -2031,7 +2123,6 @@ trait HasAttributes
         // Here we will spin through every attribute and see if this is in the array of
         // dirty attributes. If it is, we will return true and if we make it through
         // all of the attributes for the entire array we will return false at end.
-		// 这里我们将遍历每个属性，看看脏属性是否在数组中。
         foreach (Arr::wrap($attributes) as $attribute) {
             if (array_key_exists($attribute, $changes)) {
                 return true;
@@ -2061,8 +2152,8 @@ trait HasAttributes
     }
 
     /**
-     * Get the attributes that were changed.
-	 * 获取已更改的属性
+     * Get the attributes that were changed when the model was last saved.
+	 * 获取上次保存模型时所更改的属性
      *
      * @return array
      */
@@ -2098,7 +2189,7 @@ trait HasAttributes
             return $this->fromJson($attribute) ===
                 $this->fromJson($original);
         } elseif ($this->hasCast($key, ['real', 'float', 'double'])) {
-            if (($attribute === null && $original !== null) || ($attribute !== null && $original === null)) {
+            if ($original === null) {
                 return false;
             }
 
@@ -2108,6 +2199,8 @@ trait HasAttributes
                 $this->castAttribute($key, $original);
         } elseif ($this->isClassCastable($key) && in_array($this->getCasts()[$key], [AsArrayObject::class, AsCollection::class])) {
             return $this->fromJson($attribute) === $this->fromJson($original);
+        } elseif ($this->isClassCastable($key) && $original !== null && in_array($this->getCasts()[$key], [AsEncryptedArrayObject::class, AsEncryptedCollection::class])) {
+            return $this->fromEncryptedString($attribute) === $this->fromEncryptedString($original);
         }
 
         return is_numeric($attribute) && is_numeric($original)
@@ -2127,7 +2220,7 @@ trait HasAttributes
         // If the attribute has a get mutator, we will call that then return what
         // it returns as the value, which is useful for transforming values on
         // retrieval from the model to a form that is more useful for usage.
-		// 如果属性有get mutator，我们将调用它，然后返回它作为值返回。
+		// 如果属性有get mutator，我们将调用它，然后返回什么。
         if ($this->hasGetMutator($key)) {
             return $this->mutateAttribute($key, $value);
         } elseif ($this->hasAttributeGetMutator($key)) {
@@ -2137,7 +2230,7 @@ trait HasAttributes
         // If the attribute exists within the cast array, we will convert it to
         // an appropriate native PHP type dependent upon the associated value
         // given with the key in the pair. Dayle made this comment line up.
-		// 如果属性存在于强制转换数组中，则将其转换为依赖于相关值的适当的本机PHP类型。
+		// 如果属性存在于强制转换数组中，则将其转换为。
         if ($this->hasCast($key)) {
             return $this->castAttribute($key, $value);
         }
@@ -2145,7 +2238,7 @@ trait HasAttributes
         // If the attribute is listed as a date, we will convert it to a DateTime
         // instance on retrieval, which makes it quite convenient to work with
         // date fields without having to create a mutator for each property.
-		// 如果属性被列为日期，我们将把它转换为DateTime检索实例。
+		// 如果属性被列为日期，我们将把它转换为DateTime。
         if ($value !== null
             && \in_array($key, $this->getDates(), false)) {
             return $this->asDateTime($value);
@@ -2168,6 +2261,17 @@ trait HasAttributes
         );
 
         return $this;
+    }
+
+    /**
+     * Get the accessors that are being appended to model arrays.
+	 * 获取附加到模型数组的访问器
+     *
+     * @return array
+     */
+    public function getAppends()
+    {
+        return $this->appends;
     }
 
     /**
@@ -2204,26 +2308,28 @@ trait HasAttributes
      */
     public function getMutatedAttributes()
     {
-        $class = static::class;
-
-        if (! isset(static::$mutatorCache[$class])) {
-            static::cacheMutatedAttributes($class);
+        if (! isset(static::$mutatorCache[static::class])) {
+            static::cacheMutatedAttributes($this);
         }
 
-        return static::$mutatorCache[$class];
+        return static::$mutatorCache[static::class];
     }
 
     /**
      * Extract and cache all the mutated attributes of a class.
 	 * 提取并缓存类的所有变异属性
      *
-     * @param  string  $class
+     * @param  object|string  $classOrInstance
      * @return void
      */
-    public static function cacheMutatedAttributes($class)
+    public static function cacheMutatedAttributes($classOrInstance)
     {
+        $reflection = new ReflectionClass($classOrInstance);
+
+        $class = $reflection->getName();
+
         static::$getAttributeMutatorCache[$class] =
-            collect($attributeMutatorMethods = static::getAttributeMarkedMutatorMethods($class))
+            collect($attributeMutatorMethods = static::getAttributeMarkedMutatorMethods($classOrInstance))
                     ->mapWithKeys(function ($match) {
                         return [lcfirst(static::$snakeAttributes ? Str::snake($match) : $match) => true];
                     })->all();
@@ -2263,8 +2369,7 @@ trait HasAttributes
         return collect((new ReflectionClass($instance))->getMethods())->filter(function ($method) use ($instance) {
             $returnType = $method->getReturnType();
 
-            if ($returnType &&
-                $returnType instanceof ReflectionNamedType &&
+            if ($returnType instanceof ReflectionNamedType &&
                 $returnType->getName() === Attribute::class) {
                 $method->setAccessible(true);
 

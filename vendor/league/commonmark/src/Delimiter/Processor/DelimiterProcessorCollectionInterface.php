@@ -38,7 +38,6 @@ interface DelimiterProcessorCollectionInterface extends \Countable
 
     /**
      * Returns the delim processor which handles the given character if one exists
-	 * 返回处理给定字符（如果存在）的delim处理器
      */
     public function getDelimiterProcessor(string $char): ?DelimiterProcessorInterface;
 

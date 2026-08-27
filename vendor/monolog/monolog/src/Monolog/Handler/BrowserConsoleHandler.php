@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，浏览器控制台处理程序
+ * Monolog，处理器，浏览器控制台理器
  */
 
 /*
@@ -50,7 +50,6 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
      * {@inheritDoc}
      *
      * Formatted output may contain some formatting markers to be transferred to `console.log` using the %c format.
-	 * 格式化的输出可能包含一些格式化标记，使用%c格式传输到‘ console.log ’。
      *
      * Example of formatted string:
      *
@@ -121,7 +120,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper for register_shutdown_function to allow overriding
-	 * register_shutdown_function的包装器允许覆盖
+	 * register_shutdown_function的包装器允许重写
      */
     protected function registerShutdownFunction(): void
     {
@@ -132,7 +131,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper for echo to allow overriding
-	 * echo允许覆盖
+	 * echo的包装器允许重写
      */
     protected static function writeOutput(string $str): void
     {

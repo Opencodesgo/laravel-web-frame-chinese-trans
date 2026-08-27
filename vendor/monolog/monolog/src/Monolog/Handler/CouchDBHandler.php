@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，CouchDB 处理程序
+ * Monolog，处理器，CouchDB 处理器
  */
 
 /*
@@ -21,7 +21,6 @@ use Monolog\Logger;
 
 /**
  * CouchDB handler
- * CouchDB 处理程序
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */

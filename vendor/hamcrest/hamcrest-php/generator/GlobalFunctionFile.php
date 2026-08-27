@@ -1,6 +1,6 @@
 <?php
 /**
- * Global Function File
+ * Hamcrest，全局方法文件
  */
 
 /*

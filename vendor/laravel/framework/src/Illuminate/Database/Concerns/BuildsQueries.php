@@ -8,6 +8,7 @@ namespace Illuminate\Database\Concerns;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\MultipleRecordsFoundException;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Pagination\Cursor;
 use Illuminate\Pagination\CursorPaginator;
@@ -15,6 +16,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use InvalidArgumentException;
 use RuntimeException;
@@ -41,8 +43,7 @@ trait BuildsQueries
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
-			// 我们将执行给定页面的查询并获得结果。如果没有结果，我们就可以直接退出并返回这里。
-			// 当有结果时，我们将调用回调函数，并传入当前这些结果的分块。
+			// 我们将执行给定页面的查询并获得结果。
             $results = $this->forPage($page, $count)->get();
 
             $countResults = $results->count();
@@ -54,7 +55,7 @@ trait BuildsQueries
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
-			// 对于每个数据块结果集，我们将它们传递给回调函数，然后让开发者负责回调中的一切。
+			// 对于每个数据块结果集，我们将把它们传递给回调函数并让开发人员负责回调所有内容。
             if ($callback($results, $page) === false) {
                 return false;
             }
@@ -121,9 +122,9 @@ trait BuildsQueries
      */
     public function chunkById($count, callable $callback, $column = null, $alias = null)
     {
-        $column = $column ?? $this->defaultKeyName();
+        $column ??= $this->defaultKeyName();
 
-        $alias = $alias ?? $column;
+        $alias ??= $column;
 
         $lastId = null;
 
@@ -147,12 +148,12 @@ trait BuildsQueries
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
-			// 对于每个数据块结果集，我们将它们传递给回调函数，然后让开发者负责回调中的一切。
+			// 对于每个数据块结果集，我们将把它们传递给回调。
             if ($callback($results, $page) === false) {
                 return false;
             }
 
-            $lastId = $results->last()->{$alias};
+            $lastId = data_get($results->last(), $alias);
 
             if ($lastId === null) {
                 throw new RuntimeException("The chunkById operation was aborted because the [{$alias}] column is not present in the query result.");
@@ -271,9 +272,9 @@ trait BuildsQueries
             throw new InvalidArgumentException('The chunk size should be at least 1');
         }
 
-        $column = $column ?? $this->defaultKeyName();
+        $column ??= $this->defaultKeyName();
 
-        $alias = $alias ?? $column;
+        $alias ??= $column;
 
         return LazyCollection::make(function () use ($chunkSize, $column, $alias, $descending) {
             $lastId = null;
@@ -326,12 +327,14 @@ trait BuildsQueries
     {
         $result = $this->take(2)->get($columns);
 
-        if ($result->isEmpty()) {
+        $count = $result->count();
+
+        if ($count === 0) {
             throw new RecordsNotFoundException;
         }
 
-        if ($result->count() > 1) {
-            throw new MultipleRecordsFoundException;
+        if ($count > 1) {
+            throw new MultipleRecordsFoundException($count);
         }
 
         return $result->first();
@@ -342,7 +345,7 @@ trait BuildsQueries
 	 * 使用游标分页器对给定查询进行分页
      *
      * @param  int  $perPage
-     * @param  array  $columns
+     * @param  array|string  $columns
      * @param  string  $cursorName
      * @param  \Illuminate\Pagination\Cursor|string|null  $cursor
      * @return \Illuminate\Contracts\Pagination\CursorPaginator
@@ -362,8 +365,10 @@ trait BuildsQueries
                 $unionBuilders = isset($builder->unions) ? collect($builder->unions)->pluck('query') : collect();
 
                 if (! is_null($previousColumn)) {
+                    $originalColumn = $this->getOriginalColumnNameForCursorPagination($this, $previousColumn);
+
                     $builder->where(
-                        $this->getOriginalColumnNameForCursorPagination($this, $previousColumn),
+                        Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn,
                         '=',
                         $cursor->parameter($previousColumn)
                     );
@@ -382,8 +387,10 @@ trait BuildsQueries
                 $builder->where(function (self $builder) use ($addCursorConditions, $cursor, $orders, $i, $unionBuilders) {
                     ['column' => $column, 'direction' => $direction] = $orders[$i];
 
+                    $originalColumn = $this->getOriginalColumnNameForCursorPagination($this, $column);
+
                     $builder->where(
-                        $this->getOriginalColumnNameForCursorPagination($this, $column),
+                        Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn,
                         $direction === 'asc' ? '>' : '<',
                         $cursor->parameter($column)
                     );
@@ -440,12 +447,12 @@ trait BuildsQueries
 
         if (! is_null($columns)) {
             foreach ($columns as $column) {
-                if (($position = stripos($column, ' as ')) !== false) {
-                    $as = substr($column, $position, 4);
+                if (($position = strripos($column, ' as ')) !== false) {
+                    $original = substr($column, 0, $position);
 
-                    [$original, $alias] = explode($as, $column);
+                    $alias = substr($column, $position + 4);
 
-                    if ($parameter === $alias) {
+                    if ($parameter === $alias || $builder->getGrammar()->wrap($parameter) === $alias) {
                         return $original;
                     }
                 }
@@ -512,10 +519,12 @@ trait BuildsQueries
 	 * 将查询传递给给定的回调
      *
      * @param  callable  $callback
-     * @return $this|mixed
+     * @return $this
      */
     public function tap($callback)
     {
-        return $this->when(true, $callback);
+        $callback($this);
+
+        return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，描述，作为数组对象
+ * Illuminate，数据库，Eloquent，生效，作为数组对象
  */
 
 namespace Illuminate\Database\Eloquent\Casts;
@@ -15,7 +15,7 @@ class AsArrayObject implements Castable
 	 * 当从/到这个施法目标施法时使用施法者职业
      *
      * @param  array  $arguments
-     * @return object|string
+     * @return CastsAttributes<ArrayObject<array-key, mixed>, iterable>
      */
     public static function castUsing(array $arguments)
     {
@@ -23,7 +23,13 @@ class AsArrayObject implements Castable
         {
             public function get($model, $key, $value, $attributes)
             {
-                return isset($attributes[$key]) ? new ArrayObject(json_decode($attributes[$key], true)) : null;
+                if (! isset($attributes[$key])) {
+                    return;
+                }
+
+                $data = json_decode($attributes[$key], true);
+
+                return is_array($data) ? new ArrayObject($data) : null;
             }
 
             public function set($model, $key, $value, $attributes)

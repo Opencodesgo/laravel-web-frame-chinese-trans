@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存回暖，回暖接口
+ * Symfony，Component，HttpKernel，缓存Warmer，Warmable 接口
  */
 
 /*
@@ -26,7 +26,10 @@ interface WarmableInterface
      * Warms up the cache.
 	 * 预热缓存
      *
+     * @param string      $cacheDir Where warm-up artifacts should be stored
+     * @param string|null $buildDir Where read-only artifacts should go; null when called after compile-time
+     *
      * @return string[] A list of classes or files to preload on PHP 7.4+
      */
-    public function warmUp(string $cacheDir);
+    public function warmUp(string $cacheDir /* , string $buildDir = null */);
 }

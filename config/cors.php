@@ -7,13 +7,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration 	CORS 配置
+    | Cross-Origin Resource Sharing (CORS) Configuration	CORS配置
     |--------------------------------------------------------------------------
     |
     | Here you may configure your settings for cross-origin resource sharing
     | or "CORS". This determines what cross-origin operations may execute
     | in web browsers. You are free to adjust these settings as needed.
-	| 在这里，您可以配置跨域资源共享的设置或"CORS"。
+	| 在这里，您可以为跨域资源共享或或"CORS"配置您的设置。
+	| 这决定了跨源操作可以在web浏览器中执行什么。您可以自由地根据需要调整这些设置。
     |
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |

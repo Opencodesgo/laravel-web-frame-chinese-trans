@@ -20,7 +20,7 @@ interface ResponseFactory
 
     /**
      * Create a new "no content" response.
-	 * 创建一个新的"无内容"响应
+	 * 创建新的"无内容"响应
      *
      * @param  int  $status
      * @param  array  $headers
@@ -30,7 +30,7 @@ interface ResponseFactory
 
     /**
      * Create a new response for a given view.
-	 * 为给定视图创建一个新的响应
+	 * 为给定视图创建新的响应
      *
      * @param  string|array  $view
      * @param  array  $data
@@ -69,7 +69,7 @@ interface ResponseFactory
      * Create a new streamed response instance.
 	 * 创建一个新的流响应实例
      *
-     * @param  \Closure  $callback
+     * @param  callable  $callback
      * @param  int  $status
      * @param  array  $headers
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
@@ -80,7 +80,7 @@ interface ResponseFactory
      * Create a new streamed response instance as a file download.
 	 * 创建一个新的流响应实例作为文件下载
      *
-     * @param  \Closure  $callback
+     * @param  callable  $callback
      * @param  string|null  $name
      * @param  array  $headers
      * @param  string|null  $disposition

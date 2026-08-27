@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，VarDumper，命令，描述符号，转储描述符接口
+ * Symfony，Component，VarDumper，指令，描述符，Dump 描述符接口
  */
 
 /*

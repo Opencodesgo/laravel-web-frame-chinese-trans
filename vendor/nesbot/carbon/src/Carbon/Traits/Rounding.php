@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，特性，舍入
+ * Carbon，特性，凑整
  */
 
 /**
@@ -19,7 +19,7 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Rounding.
- * 舍入特征。
+ * 凑整特征
  *
  * Round, ceil, floor units.
  *
@@ -241,7 +241,7 @@ trait Rounding
 
     /**
      * Ceil the current instance week.
-	 * 指定当前实例周。
+	 * 指定当前实例周
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *

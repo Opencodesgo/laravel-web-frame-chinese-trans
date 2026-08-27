@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Create a new Validator instance.
-	 * 创建新的验证器实例
+	 * 创建新的验证程序实例
      *
      * @param  array  $data
      * @param  array  $rules

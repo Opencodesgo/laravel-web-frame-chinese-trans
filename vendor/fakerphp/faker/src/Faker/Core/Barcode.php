@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，条码
+ * Faker，Core，条码
  */
 
 declare(strict_types=1);

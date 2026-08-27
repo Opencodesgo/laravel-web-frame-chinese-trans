@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，快捷方式，元素的解析器
+ * Symfony，Component，CssSelector，解析器，快捷方式，元素的解析器
  */
 
 /*
@@ -31,9 +31,6 @@ use Symfony\Component\CssSelector\Parser\ParserInterface;
  */
 class ElementParser implements ParserInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function parse(string $source): array
     {
         // Matches an optional namespace, required element or `*`

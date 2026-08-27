@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，目录生成器
+ * League，CommonMark，扩展，目次，目录生成器
  */
 
 declare(strict_types=1);
@@ -87,13 +87,11 @@ final class TableOfContentsGenerator implements TableOfContentsGeneratorInterfac
             }
 
             // Skip any headings outside the configured min/max levels
-			// 跳过配置的最小/最大级别之外的任何标题
             if ($heading->getLevel() < $this->minHeadingLevel || $heading->getLevel() > $this->maxHeadingLevel) {
                 continue;
             }
 
             // Keep track of the first heading we see - we might need this later
-			// 跟踪我们看到的第一个标题-我们以后可能需要它
             $firstHeading ??= $heading;
 
             // Keep track of the start and end lines
@@ -113,7 +111,6 @@ final class TableOfContentsGenerator implements TableOfContentsGeneratorInterfac
         }
 
         // Don't add the TOC if no headings were present
-		// 如果没有标题，不要添加TOC
         if (! $toc->hasChildren() || $firstHeading === null) {
             return null;
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，碎片，片段处理程序
+ * Symfony，Component，HttpKernel，片段，片段处理程序
  */
 
 /*
@@ -26,6 +26,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *
  * This class handles the rendering of resource fragments that are included into
  * a main resource. The handling of the rendering is managed by specialized renderers.
+ * 该类负责处理被包含在主资源中的资源片段的渲染。渲染的处理由专门的渲染器来管理。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -33,9 +34,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class FragmentHandler
 {
-    private $debug;
-    private $renderers = [];
-    private $requestStack;
+    private bool $debug;
+    private array $renderers = [];
+    private RequestStack $requestStack;
 
     /**
      * @param FragmentRendererInterface[] $renderers An array of FragmentRendererInterface instances
@@ -52,7 +53,9 @@ class FragmentHandler
 
     /**
      * Adds a renderer.
-	 * 添加一个渲染器
+	 * 添加渲染器
+     *
+     * @return void
      */
     public function addRenderer(FragmentRendererInterface $renderer)
     {
@@ -61,27 +64,23 @@ class FragmentHandler
 
     /**
      * Renders a URI and returns the Response content.
-	 * 呈现URI并返回响应内容。
+	 * 呈现一个URI并返回响应内容。
      *
      * Available options:
      *
      *  * ignore_errors: true to return an empty string in case of an error
      *
-     * @param string|ControllerReference $uri A URI as a string or a ControllerReference instance
-     *
-     * @return string|null
-     *
      * @throws \InvalidArgumentException when the renderer does not exist
      * @throws \LogicException           when no main request is being handled
      */
-    public function render($uri, string $renderer = 'inline', array $options = [])
+    public function render(string|ControllerReference $uri, string $renderer = 'inline', array $options = []): ?string
     {
         if (!isset($options['ignore_errors'])) {
             $options['ignore_errors'] = !$this->debug;
         }
 
         if (!isset($this->renderers[$renderer])) {
-            throw new \InvalidArgumentException(sprintf('The "%s" renderer does not exist.', $renderer));
+            throw new \InvalidArgumentException(\sprintf('The "%s" renderer does not exist.', $renderer));
         }
 
         if (!$request = $this->requestStack->getCurrentRequest()) {
@@ -97,16 +96,17 @@ class FragmentHandler
      *
      * When the Response is a StreamedResponse, the content is streamed immediately
      * instead of being returned.
+	 * 当响应为流式响应时，内容会立即被流式传输，而不是返回。
      *
      * @return string|null The Response content or null when the Response is streamed
      *
      * @throws \RuntimeException when the Response is not successful
      */
-    protected function deliver(Response $response)
+    protected function deliver(Response $response): ?string
     {
         if (!$response->isSuccessful()) {
             $responseStatusCode = $response->getStatusCode();
-            throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %d).', $this->requestStack->getCurrentRequest()->getUri(), $responseStatusCode), 0, new HttpException($responseStatusCode));
+            throw new \RuntimeException(\sprintf('Error when rendering "%s" (Status code is %d).', $this->requestStack->getCurrentRequest()->getUri(), $responseStatusCode), 0, new HttpException($responseStatusCode));
         }
 
         if (!$response instanceof StreamedResponse) {

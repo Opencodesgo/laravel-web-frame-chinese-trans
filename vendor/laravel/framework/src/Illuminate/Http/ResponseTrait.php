@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，响应特性
+ * Illuminate, Http, 响应特征
  */
 
 namespace Illuminate\Http;
@@ -13,7 +13,7 @@ trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 响应的原始内容
+	 * 回复的原始内容
      *
      * @var mixed
      */
@@ -75,7 +75,7 @@ trait ResponseTrait
 
     /**
      * Set a header on the Response.
-	 * 设置响应头
+	 * 在响应上设置标题
      *
      * @param  string  $key
      * @param  array|string  $values

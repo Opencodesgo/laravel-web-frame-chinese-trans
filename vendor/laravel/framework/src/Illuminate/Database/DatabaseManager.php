@@ -7,9 +7,11 @@ namespace Illuminate\Database;
 
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Database\Events\ConnectionEstablished;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ConfigurationUrlParser;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use PDO;
 use RuntimeException;
@@ -19,6 +21,10 @@ use RuntimeException;
  */
 class DatabaseManager implements ConnectionResolverInterface
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * The application instance.
 	 * 应用实例
@@ -39,7 +45,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * The active connection instances.
 	 * 活动连接实例
      *
-     * @var array
+     * @var array<string, \Illuminate\Database\Connection>
      */
     protected $connections = [];
 
@@ -47,7 +53,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * The custom connection resolvers.
 	 * 自定义连接解析器
      *
-     * @var array
+     * @var array<string, callable>
      */
     protected $extensions = [];
 
@@ -63,7 +69,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * The custom Doctrine column types.
 	 * 自定义Doctrine列类型
      *
-     * @var array
+     * @var array<string, array>
      */
     protected $doctrineTypes = [];
 
@@ -101,11 +107,17 @@ class DatabaseManager implements ConnectionResolverInterface
         // If we haven't created this connection, we'll create it based on the config
         // provided in the application. Once we've created the connections we will
         // set the "fetch mode" for PDO which determines the query return types.
-		// 如果我们还没有创建这个连接，我们将根据配置在应用中创建它。
+		// 如果我们没有建立这种联系，
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->configure(
                 $this->makeConnection($database), $type
             );
+
+            if ($this->app->bound('events')) {
+                $this->app['events']->dispatch(
+                    new ConnectionEstablished($this->connections[$name])
+                );
+            }
         }
 
         return $this->connections[$name];
@@ -140,7 +152,7 @@ class DatabaseManager implements ConnectionResolverInterface
         // First we will check by the connection name to see if an extension has been
         // registered specifically for that connection. If it has we will call the
         // Closure and pass it the config allowing it to resolve the connection.
-		// 首先，我们将检查连接名称，看看是否有扩展专门为该连接注册的。
+		// 首先，我们将检查连接名称，看看是否有扩展。
         if (isset($this->extensions[$name])) {
             return call_user_func($this->extensions[$name], $config, $name);
         }
@@ -172,7 +184,7 @@ class DatabaseManager implements ConnectionResolverInterface
         // To get the database connection configuration, we will just pull each of the
         // connection configurations and get the configurations for the given name.
         // If the configuration doesn't exist, we'll throw an exception and bail.
-		// 要获得数据库连接配置，我们只需拉出每个连接配置。
+		// 要获得数据库连接配置，我们只需拉出每个。
         $connections = $this->app['config']['database.connections'];
 
         if (is_null($config = Arr::get($connections, $name))) {
@@ -210,7 +222,6 @@ class DatabaseManager implements ConnectionResolverInterface
         // Here we'll set a reconnector callback. This reconnector can be any callable
         // so we will set a Closure to reconnect from this manager with the name of
         // the connection, which will allow us to reconnect from the connections.
-		// 这里我们将设置一个reconnector回调。这个重新连接器可以是任何可调用的。
         $connection->setReconnector($this->reconnector);
 
         $this->registerConfiguredDoctrineTypes($connection);
@@ -394,9 +405,9 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get all of the support drivers.
-	 * 得到所有的支持驱动
+	 * 找所有的支持司机
      *
-     * @return array
+     * @return string[]
      */
     public function supportedDrivers()
     {
@@ -407,7 +418,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * Get all of the drivers that are actually available.
 	 * 获取所有可用的驱动程序
      *
-     * @return array
+     * @return string[]
      */
     public function availableDrivers()
     {
@@ -431,10 +442,22 @@ class DatabaseManager implements ConnectionResolverInterface
     }
 
     /**
+     * Remove an extension connection resolver.
+	 * 删除扩展连接解析器
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function forgetExtension($name)
+    {
+        unset($this->extensions[$name]);
+    }
+
+    /**
      * Return all of the created connections.
 	 * 返回所有创建的连接
      *
-     * @return array
+     * @return array<string, \Illuminate\Database\Connection>
      */
     public function getConnections()
     {
@@ -477,6 +500,10 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         return $this->connection()->$method(...$parameters);
     }
 }

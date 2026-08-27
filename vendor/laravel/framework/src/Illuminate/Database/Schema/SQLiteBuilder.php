@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，SQLite 构建者
+ * Illuminate，数据库，模式，SQLite 构建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -71,6 +71,32 @@ class SQLiteBuilder extends Builder
         $this->connection->select($this->grammar->compileDisableWriteableSchema());
 
         $this->connection->select($this->grammar->compileRebuild());
+    }
+
+    /**
+     * Get all of the table names for the database.
+	 * 获取数据库的所有表名
+     *
+     * @return array
+     */
+    public function getAllTables()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllTables()
+        );
+    }
+
+    /**
+     * Get all of the view names for the database.
+	 * 获取数据库的所有视图名称
+     *
+     * @return array
+     */
+    public function getAllViews()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllViews()
+        );
     }
 
     /**

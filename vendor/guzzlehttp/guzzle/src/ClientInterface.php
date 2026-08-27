@@ -19,13 +19,13 @@ interface ClientInterface
 {
     /**
      * The Guzzle major version.
-	 * 这是主要的版本
+	 * Guzzle的主要版本
      */
     public const MAJOR_VERSION = 7;
 
     /**
      * Send an HTTP request.
-	 * 发送一个HTTP请求
+	 * 发送HTTP请求
      *
      * @param RequestInterface $request Request to send
      * @param array            $options Request options to apply to the given
@@ -63,7 +63,7 @@ interface ClientInterface
 
     /**
      * Create and send an asynchronous HTTP request.
-	 * 创建并发送一个异步HTTP请求
+	 * 创建并发送异步HTTP请求
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can

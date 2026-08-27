@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，调度核心类
+ * Illuminate，控制台，线程调度，调度
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -17,7 +17,6 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Support\ProcessUtils;
-use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
 
@@ -26,11 +25,17 @@ class Schedule
     use Macroable;
 
     const SUNDAY = 0;
+
     const MONDAY = 1;
+
     const TUESDAY = 2;
+
     const WEDNESDAY = 3;
+
     const THURSDAY = 4;
+
     const FRIDAY = 5;
+
     const SATURDAY = 6;
 
     /**
@@ -290,11 +295,11 @@ class Schedule
             return ProcessUtils::escapeArgument($value);
         });
 
-        if (Str::startsWith($key, '--')) {
+        if (str_starts_with($key, '--')) {
             $value = $value->map(function ($value) use ($key) {
                 return "{$key}={$value}";
             });
-        } elseif (Str::startsWith($key, '-')) {
+        } elseif (str_starts_with($key, '-')) {
             $value = $value->map(function ($value) use ($key) {
                 return "{$key} {$value}";
             });
@@ -375,7 +380,7 @@ class Schedule
             } catch (BindingResolutionException $e) {
                 throw new RuntimeException(
                     'Unable to resolve the dispatcher from the service container. Please bind it or install the illuminate/bus package.',
-                    $e->getCode(), $e
+                    is_int($e->getCode()) ? $e->getCode() : 0, $e
                 );
             }
         }

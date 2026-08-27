@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，极限流
+ * GuzzleHttp，Psr7，极限流线
  */
 
 declare(strict_types=1);
@@ -135,7 +135,7 @@ final class LimitStream implements StreamInterface
     /**
      * Set the limit of bytes that the decorator allows to be read from the
      * stream.
-	 * 设置装饰器允许从控件读取的字节数限制
+	 * 设置装饰器允许从流读取的字节数限制
      *
      * @param int $limit Number of bytes to allow to be read from the stream.
      *                   Use -1 for no limit.

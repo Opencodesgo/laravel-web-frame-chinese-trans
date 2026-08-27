@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，可处理的处理器特性
- *
+ * Monolog，处理器，可处理的处理器特性
+ */
 
 /*
  * This file is part of the Monolog package.

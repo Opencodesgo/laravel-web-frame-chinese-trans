@@ -19,7 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 /**
  * Extracts translation messages from a directory or files to the catalogue.
  * New found messages are injected to the catalogue using the prefix.
- * 从目录或文件中提取翻译消息。
+ * 从目录或文件中提取翻译消息并导入到词典中。新发现的消息将通过前缀注入到词典中。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -27,15 +27,19 @@ interface ExtractorInterface
 {
     /**
      * Extracts translation messages from files, a file or a directory to the catalogue.
-	 * 从文件、文件或目录中提取翻译消息。
+	 * 将翻译消息从文件、文件或目录提取到目录。
      *
      * @param string|iterable<string> $resource Files, a file or a directory
+     *
+     * @return void
      */
-    public function extract($resource, MessageCatalogue $catalogue);
+    public function extract(string|iterable $resource, MessageCatalogue $catalogue);
 
     /**
      * Sets the prefix that should be used for new found messages.
-	 * 设置应该用于新发现消息的前缀
+	 * 设置应用于新发现消息的前缀
+     *
+     * @return void
      */
     public function setPrefix(string $prefix);
 }

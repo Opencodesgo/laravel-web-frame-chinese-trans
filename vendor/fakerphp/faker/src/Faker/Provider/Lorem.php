@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，Lorem
+ */
 
 namespace Faker\Provider;
 
@@ -56,6 +59,7 @@ class Lorem extends Base
 
     /**
      * Generate an array of random words
+	 * 生成一个随机单词数组
      *
      * @example array('Lorem', 'ipsum', 'dolor')
      *
@@ -77,6 +81,7 @@ class Lorem extends Base
 
     /**
      * Generate a random sentence
+	 * 生成一个随机句子
      *
      * @example 'Lorem ipsum dolor sit amet.'
      *
@@ -104,6 +109,7 @@ class Lorem extends Base
 
     /**
      * Generate an array of sentences
+	 * 生成一组句子
      *
      * @example array('Lorem ipsum dolor sit amet.', 'Consectetur adipisicing eli.')
      *

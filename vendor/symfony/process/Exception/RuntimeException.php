@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Process，异常，异常接口
+ * Symfony，Component，Process，异常，运行时异常
  */
 
 /*

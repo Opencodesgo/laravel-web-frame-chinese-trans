@@ -66,13 +66,13 @@ class DatabaseTransactionRecord
     public function executeCallbacks()
     {
         foreach ($this->callbacks as $callback) {
-            call_user_func($callback);
+            $callback();
         }
     }
 
     /**
      * Get all of the callbacks.
-	 * 获得所有回调
+	 * 得到所有回调
      *
      * @return array
      */

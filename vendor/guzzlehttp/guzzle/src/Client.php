@@ -28,7 +28,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Clients accept an array of constructor parameters.
-	 * 客户端接受一个构造函数参数数组。
+	 * 客户端接受构造函数参数数组。
      *
      * Here's an example of creating a client using a base_uri and an array of
      * default request options to apply to each request:
@@ -98,7 +98,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Asynchronously send an HTTP request.
-	 * 异步发送HTTP请求
+	 * 异步发送HTTP请求。
      *
      * @param array $options Request options to apply to the given
      *                       request and to the transfer. See \GuzzleHttp\RequestOptions.
@@ -116,7 +116,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Send an HTTP request.
-	 * 发送一个HTTP请求
+	 * 发送HTTP请求。
      *
      * @param array $options Request options to apply to the given
      *                       request and to the transfer. See \GuzzleHttp\RequestOptions.
@@ -132,6 +132,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * The HttpClient PSR (PSR-18) specify this method.
+	 * HttpClient PSR （PSR-18）指定了这个方法。
      *
      * {@inheritDoc}
      */
@@ -146,7 +147,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Create and send an asynchronous HTTP request.
-	 * 创建并发送一个异步HTTP请求
+	 * 创建并发送异步HTTP请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -178,7 +179,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Create and send an HTTP request.
-	 * 创建并发送HTTP请求
+	 * 创建并发送HTTP请求。
      *
      * Use an absolute path to override the base path of the client, or a
      * relative path to append to the base path of the client. The URL can
@@ -199,7 +200,6 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Get a client configuration option.
-	 * 获取客户端配置选项
      *
      * These options include default request options of the client, a "handler"
      * (if utilized by the concrete client), and a "base_uri" if utilized by
@@ -234,7 +234,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Configures the default options for a client.
-	 * 为客户配置默认选项
+	 * 为客户端配置默认选项。
      */
     private function configureDefaults(array $config): void
     {
@@ -287,7 +287,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Merges default options into the array.
-	 * 将默认选项合并到数组中
+	 * 将默认选项合并到数组中。
      *
      * @param array $options Options to modify by reference
      */
@@ -484,7 +484,7 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
 
     /**
      * Return an InvalidArgumentException with pre-set message.
-	 * 用预先设置的消息返回无效达gumentexception
+	 * 返回带有预设消息的InvalidArgumentException
      */
     private function invalidBody(): InvalidArgumentException
     {

@@ -158,7 +158,7 @@ abstract class HasOneOrMany extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 有了字典之后，我们可以简单地通过父模型旋转，用关键字字典把他们和他们的孩子联系起来。
+		// 有了字典之后，我们可以简单地通过父模型旋转到。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $this->getDictionaryKey($model->getAttribute($this->localKey))])) {
                 $model->setRelation(
@@ -289,6 +289,20 @@ abstract class HasOneOrMany extends Relation
     }
 
     /**
+     * Attach a model instance without raising any events to the parent model.
+	 * 在不向父模型引发任何事件的情况下附加模型实例
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return \Illuminate\Database\Eloquent\Model|false
+     */
+    public function saveQuietly(Model $model)
+    {
+        return Model::withoutEvents(function () use ($model) {
+            return $this->save($model);
+        });
+    }
+
+    /**
      * Attach a collection of models to the parent instance.
 	 * 将模型集合附加到父实例
      *
@@ -305,6 +319,20 @@ abstract class HasOneOrMany extends Relation
     }
 
     /**
+     * Attach a collection of models to the parent instance without raising any events to the parent model.
+	 * 将模型集合附加到父实例，而不向父模型引发任何事件。
+     *
+     * @param  iterable  $models
+     * @return iterable
+     */
+    public function saveManyQuietly($models)
+    {
+        return Model::withoutEvents(function () use ($models) {
+            return $this->saveMany($models);
+        });
+    }
+
+    /**
      * Create a new instance of the related model.
 	 * 创建相关模型的新实例
      *
@@ -318,6 +346,18 @@ abstract class HasOneOrMany extends Relation
 
             $instance->save();
         });
+    }
+
+    /**
+     * Create a new instance of the related model without raising any events to the parent model.
+	 * 创建相关模型的新实例，而不向父模型引发任何事件。
+     *
+     * @param  array  $attributes
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function createQuietly(array $attributes = [])
+    {
+        return Model::withoutEvents(fn () => $this->create($attributes));
     }
 
     /**
@@ -350,6 +390,18 @@ abstract class HasOneOrMany extends Relation
         }
 
         return $instances;
+    }
+
+    /**
+     * Create a Collection of new instances of the related model without raising any events to the parent model.
+	 * 创建相关模型的新实例集合，而不向父模型引发任何事件。
+     *
+     * @param  iterable  $records
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function createManyQuietly(iterable $records)
+    {
+        return Model::withoutEvents(fn () => $this->createMany($records));
     }
 
     /**

@@ -15,7 +15,7 @@ class BusServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register the service provider.
-	 * 注册服务提供者
+	 * 注册服务提供程序
      *
      * @return void
      */
@@ -70,6 +70,7 @@ class BusServiceProvider extends ServiceProvider implements DeferrableProvider
             DispatcherContract::class,
             QueueingDispatcherContract::class,
             BatchRepository::class,
+            DatabaseBatchRepository::class,
         ];
     }
 }

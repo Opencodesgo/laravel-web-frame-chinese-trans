@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，工具，模板助手
+ * Whoops，工具，模板辅助
  */
 
 /**
@@ -18,12 +18,13 @@ use Whoops\Exception\Frame;
 
 /**
  * Exposes useful tools for working with/in templates
- * 在模板中使用有用的工具
+ * 公开使用/in模板的有用工具
  */
 class TemplateHelper
 {
     /**
      * An array of variables to be passed to all templates
+	 * 传递给所有模板的变量数组
      * @var array
      */
     private $variables = [];
@@ -56,7 +57,7 @@ class TemplateHelper
 
     /**
      * Escapes a string for output in an HTML document
-	 * 在HTML文档中从字符串中逃脱
+	 * 转义要在HTML文档中输出的字符串
      *
      * @param  string $raw
      * @return string
@@ -101,7 +102,7 @@ class TemplateHelper
 
     /**
      * Makes sure that the given string breaks on the delimiter.
-	 * 确保给定的字符串在分隔符上中断
+	 * 确保给定的字符串在分隔符上断开
      *
      * @param  string $delimiter
      * @param  string $s
@@ -225,7 +226,7 @@ class TemplateHelper
 
     /**
      * Convert a string to a slug version of itself
-	 * 将字符串转换为蛞蝓版本本身
+	 * 将字符串转换为其自身的鼻涕虫版本
      *
      * @param  string $original
      * @return string
@@ -241,7 +242,6 @@ class TemplateHelper
      * Given a template path, render it within its own scope. This
      * method also accepts an array of additional variables to be
      * passed to the template.
-	 * 给定一个模板路径,将其呈现在它自己的范围内。
      *
      * @param string $template
      */
@@ -273,7 +273,7 @@ class TemplateHelper
 
     /**
      * Sets a single template variable, by its name:
-	 * 设置一个模板变量,以其名称:
+	 * 按其名称设置单个模板变量：
      *
      * @param string $variableName
      * @param mixed  $variableValue
@@ -299,7 +299,7 @@ class TemplateHelper
 
     /**
      * Unsets a single template variable, by its name
-	 * 通过其名称打开一个模板变量
+	 * 按名称取消设置单个模板变量
      *
      * @param string $variableName
      */
@@ -310,7 +310,7 @@ class TemplateHelper
 
     /**
      * Returns all variables for this helper
-	 * 为这个助手返回所有变量
+	 * 返回此帮助器的所有变量
      *
      * @return array
      */
@@ -321,7 +321,7 @@ class TemplateHelper
 
     /**
      * Set the cloner used for dumping variables.
-	 * 设置倾倒变量的锁骨
+	 * 设置用于转储变量的克隆器
      *
      * @param AbstractCloner $cloner
      */

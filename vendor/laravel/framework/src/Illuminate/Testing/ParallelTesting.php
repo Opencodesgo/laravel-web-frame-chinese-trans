@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，并行测试
+ * Illuminate, 测试, 并行测试
  */
 
 namespace Illuminate\Testing;
@@ -44,7 +44,7 @@ class ParallelTesting
 
     /**
      * All of the registered "setUp" test case callbacks.
-	 * 所有注册的"setUp"测试用例回调
+	 * 所有注册的"setUp"测试用例回
      *
      * @var array
      */
@@ -76,7 +76,7 @@ class ParallelTesting
 
     /**
      * Create a new parallel testing instance.
-	 * 创建新的行测试实例
+	 * 创建一个新的并行测试实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -90,7 +90,7 @@ class ParallelTesting
      * Set a callback that should be used when resolving options.
 	 * 设置一个在解析选项时应该使用的回调
      *
-     * @param  \Closure|null  $callback
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public function resolveOptionsUsing($resolver)
@@ -102,7 +102,7 @@ class ParallelTesting
      * Set a callback that should be used when resolving the unique process token.
 	 * 设置一个在解析唯一进程令牌时应该使用的回调
      *
-     * @param  \Closure|null  $callback
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public function resolveTokenUsing($resolver)
@@ -189,7 +189,7 @@ class ParallelTesting
 
     /**
      * Call all of the "setUp" test case callbacks.
-	 * 调用所有的"setUp"测试用例回调
+	 * 调用所有的“setUp”测试用例回调
      *
      * @param  \Illuminate\Foundation\Testing\TestCase  $testCase
      * @return void
@@ -208,7 +208,7 @@ class ParallelTesting
 
     /**
      * Call all of the "setUp" test database callbacks.
-	 * 调用所有的"setUp"测试数据库回调
+	 * 调用所有的“setUp”测试数据库回调
      *
      * @param  string  $database
      * @return void
@@ -227,7 +227,7 @@ class ParallelTesting
 
     /**
      * Call all of the "tearDown" process callbacks.
-	 * 调用所有的"tearDown"流程回调
+	 * 调用所有的“tearDown”流程回调
      *
      * @return void
      */
@@ -244,7 +244,7 @@ class ParallelTesting
 
     /**
      * Call all of the "tearDown" test case callbacks.
-	 * 调用所有的"tearDown"测试用例回调
+	 * 调用所有的“tearDown”测试用例回调
      *
      * @param  \Illuminate\Foundation\Testing\TestCase  $testCase
      * @return void
@@ -276,7 +276,7 @@ class ParallelTesting
             return $_SERVER[$option] ?? false;
         };
 
-        return call_user_func($optionsResolver, $option);
+        return $optionsResolver($option);
     }
 
     /**
@@ -287,7 +287,7 @@ class ParallelTesting
      */
     public function token()
     {
-        return $token = $this->tokenResolver
+        return $this->tokenResolver
             ? call_user_func($this->tokenResolver)
             : ($_SERVER['TEST_TOKEN'] ?? false);
     }
@@ -308,7 +308,7 @@ class ParallelTesting
 
     /**
      * Indicates if the current tests are been run in parallel.
-	 * 指明当前测试是否并行运行
+	 * 指示当前测试是否并行运行
      *
      * @return bool
      */

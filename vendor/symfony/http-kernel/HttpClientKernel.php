@@ -5,7 +5,6 @@
 
 /*
  * This file is part of the Symfony package.
- * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -30,18 +29,18 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * An implementation of a Symfony HTTP kernel using a "real" HTTP client.
- * 使用"真正的"HTTP客户端的Symfony HTTP内核的实现
+ * 使用"真正的"HTTP客户端的Symfony HTTP内核的实现。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 final class HttpClientKernel implements HttpKernelInterface
 {
-    private $client;
+    private HttpClientInterface $client;
 
     public function __construct(?HttpClientInterface $client = null)
     {
         if (null === $client && !class_exists(HttpClient::class)) {
-            throw new \LogicException(sprintf('You cannot use "%s" as the HttpClient component is not installed. Try running "composer require symfony/http-client".', __CLASS__));
+            throw new \LogicException(\sprintf('You cannot use "%s" as the HttpClient component is not installed. Try running "composer require symfony/http-client".', __CLASS__));
         }
 
         $this->client = $client ?? HttpClient::create();

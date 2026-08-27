@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，约束，在数据库中
+ * Illuminate, 支持, 在数据库中
  */
 
 namespace Illuminate\Testing\Constraints;
@@ -73,7 +73,7 @@ class HasInDatabase extends Constraint
     {
         return sprintf(
             "a row in the table [%s] matches the attributes %s.\n\n%s",
-            $table, $this->toString(JSON_PRETTY_PRINT), $this->getAdditionalInfo($table)
+            $table, $this->toString(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), $this->getAdditionalInfo($table)
         );
     }
 
@@ -91,20 +91,20 @@ class HasInDatabase extends Constraint
         $similarResults = $query->where(
             array_key_first($this->data),
             $this->data[array_key_first($this->data)]
-        )->limit($this->show)->get();
+        )->select(array_keys($this->data))->limit($this->show)->get();
 
         if ($similarResults->isNotEmpty()) {
-            $description = 'Found similar results: '.json_encode($similarResults, JSON_PRETTY_PRINT);
+            $description = 'Found similar results: '.json_encode($similarResults, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         } else {
             $query = $this->database->table($table);
 
-            $results = $query->limit($this->show)->get();
+            $results = $query->select(array_keys($this->data))->limit($this->show)->get();
 
             if ($results->isEmpty()) {
-                return 'The table is empty.';
+                return 'The table is empty';
             }
 
-            $description = 'Found: '.json_encode($results, JSON_PRETTY_PRINT);
+            $description = 'Found: '.json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         }
 
         if ($query->count() > $this->show) {

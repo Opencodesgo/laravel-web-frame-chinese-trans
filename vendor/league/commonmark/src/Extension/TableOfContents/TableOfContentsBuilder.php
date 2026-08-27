@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，目录，目录构建者
+ * League，CommonMark，扩展，目次，目录生成器
  */
 
 declare(strict_types=1);
@@ -94,7 +94,7 @@ final class TableOfContentsBuilder implements ConfigurationAwareInterface
     {
         foreach ($document->iterator(NodeIterator::FLAG_BLOCKS_ONLY) as $node) {
             // Add the block once we find a placeholder
-			// 一旦我们找到一个占位符，就添加块
+			// 一旦我们找到一个占位符，就添加块。
             if (! $node instanceof TableOfContentsPlaceholder) {
                 continue;
             }

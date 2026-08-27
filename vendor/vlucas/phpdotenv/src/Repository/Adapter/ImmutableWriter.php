@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，不可变的作家
+ * Dotenv，资源库，适配器，不可变的作者
  */
 
 declare(strict_types=1);
@@ -29,7 +29,7 @@ final class ImmutableWriter implements WriterInterface
      * The record of loaded variables.
 	 * 载入变量的记录
      *
-     * @var array<string,string>
+     * @var array<string, string>
      */
     private $loaded;
 
@@ -88,11 +88,13 @@ final class ImmutableWriter implements WriterInterface
     public function delete(string $name)
     {
         // Don't clear existing environment variables
+		// 不要清除现有的环境变量
         if ($this->isExternallyDefined($name)) {
             return false;
         }
 
         // Clear the value on the inner writer
+		// 清除内部写入器上的值
         if (!$this->writer->delete($name)) {
             return false;
         }
@@ -108,6 +110,7 @@ final class ImmutableWriter implements WriterInterface
 	 * 确定给定的变量是否是外部定义的。
      *
      * That is, is it an "existing" variable.
+	 * 也就是说，它是否是一个“存在的”变量。
      *
      * @param non-empty-string $name
      *

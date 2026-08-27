@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，节点，File
+ * SebastianBergmann，CodeCoverage，节点，文件
  */
 
 /*

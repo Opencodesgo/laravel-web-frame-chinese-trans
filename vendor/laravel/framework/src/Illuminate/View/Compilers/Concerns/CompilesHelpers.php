@@ -1,9 +1,11 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，编译帮助
+ * Illuminate，视图，编译器，问题，编译辅助
  */
 
 namespace Illuminate\View\Compilers\Concerns;
+
+use Illuminate\Foundation\Vite;
 
 trait CompilesHelpers
 {
@@ -52,5 +54,34 @@ trait CompilesHelpers
     protected function compileMethod($method)
     {
         return "<?php echo method_field{$method}; ?>";
+    }
+
+    /**
+     * Compile the "vite" statements into valid PHP.
+	 * 将“vite”语句编译成有效的PHP
+     *
+     * @param  string|null  $arguments
+     * @return string
+     */
+    protected function compileVite($arguments)
+    {
+        $arguments ??= '()';
+
+        $class = Vite::class;
+
+        return "<?php echo app('$class'){$arguments}; ?>";
+    }
+
+    /**
+     * Compile the "viteReactRefresh" statements into valid PHP.
+	 * 将"viteReactRefresh"语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileViteReactRefresh()
+    {
+        $class = Vite::class;
+
+        return "<?php echo app('$class')->reactRefresh(); ?>";
     }
 }

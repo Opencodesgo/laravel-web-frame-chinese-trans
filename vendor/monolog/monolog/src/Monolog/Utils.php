@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，常用工具
+ * Monolog，工具包
  */
 
 /*
@@ -45,7 +45,7 @@ final class Utils
 
     /**
      * Makes sure if a relative path is passed in it is turned into an absolute path
-	 * 确保传入的相对路径被转换为绝对路径
+	 * 确保传入的相对路径被转换为绝对路
      *
      * @param string $streamUrl stream URL or path without protocol
      */
@@ -107,7 +107,7 @@ final class Utils
 
     /**
      * Handle a json_encode failure.
-	 * 处理json_encode失败。
+	 * 处理json_encode失败
      *
      * If the failure is due to invalid string encoding, try to clean the
      * input and encode again. If the second encoding attempt fails, the
@@ -168,7 +168,7 @@ final class Utils
 
     /**
      * Throws an exception according to a given code with a customized message
-	 * 根据给定的代码抛出一个自定义的消息
+	 * 根据带有自定义消息的给定代码抛出
      *
      * @param  int               $code return code of json_last_error function
      * @param  mixed             $data data that was meant to be encoded
@@ -200,7 +200,7 @@ final class Utils
 
     /**
      * Detect invalid UTF-8 string characters and convert to valid UTF-8.
-	 * 检测无效的UTF-8字符串字符并转换为有效的UTF-8。
+	 * 检测无效的UTF-8字符串字符并转换为有效的UTF-8
      *
      * Valid UTF-8 input will be left unmodified, but strings containing
      * invalid UTF-8 codepoints will be reencoded as UTF-8 with an assumed
@@ -238,7 +238,7 @@ final class Utils
 
     /**
      * Converts a string with a valid 'memory_limit' format, to bytes.
-	 * 将具有有效‘memory_limit’格式的字符串转换为字节
+	 * 将具有有效'memory_limit'格式的字符串转换为字节
      *
      * @param string|false $val
      * @return int|false Returns an integer representing bytes. Returns FALSE in case of error.

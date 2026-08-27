@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，全局状态，复位器
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -22,11 +27,13 @@ use ReflectionProperty;
 
 /**
  * Restorer of snapshots of global state.
+ * 全局状态快照的恢复。
  */
 class Restorer
 {
     /**
      * Deletes function definitions that are not defined in a snapshot.
+	 * 删除未在快照中定义的函数定义
      *
      * @throws RuntimeException when the uopz_delete() function is not available
      *
@@ -47,6 +54,7 @@ class Restorer
 
     /**
      * Restores all global and super-global variables from a snapshot.
+	 * 从快照恢复所有全局和超全局变量
      */
     public function restoreGlobalVariables(Snapshot $snapshot): void
     {
@@ -84,7 +92,11 @@ class Restorer
         foreach ($snapshot->staticAttributes() as $className => $staticAttributes) {
             foreach ($staticAttributes as $name => $value) {
                 $reflector = new ReflectionProperty($className, $name);
-                $reflector->setAccessible(true);
+
+                if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                    $reflector->setAccessible(true);
+                }
+
                 $reflector->setValue(null, $value);
             }
         }
@@ -108,7 +120,10 @@ class Restorer
                     continue;
                 }
 
-                $attribute->setAccessible(true);
+                if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                    $attribute->setAccessible(true);
+                }
+
                 $attribute->setValue(null, $defaults[$name]);
             }
         }

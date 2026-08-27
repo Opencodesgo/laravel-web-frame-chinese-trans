@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，分隔符，处理器，可缓存分隔器处理器接口
+ * League，CommonMark，分隔符，处理器，可缓存分隔符处理器接口
  */
 
 declare(strict_types=1);
@@ -20,7 +20,7 @@ use League\CommonMark\Delimiter\DelimiterInterface;
 
 /**
  * Special marker interface for delimiter processors that return dynamic values from getDelimiterUse()
- * 用于从getDelimiterUse（）返回动态值的分隔符处理器的特殊标记接口。
+ * 用于从getDelimiterUse（）返回动态值的分隔符处理器的特殊标记接口
  *
  * In order to guarantee linear performance of delimiter processing, the delimiter stack must be able to
  * cache the lower bound when searching for a matching opener. This gets complicated for delimiter processors

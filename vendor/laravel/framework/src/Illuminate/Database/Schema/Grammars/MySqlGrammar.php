@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，MySql 语法
+ * Illuminate，数据库，语法，MySql 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -104,7 +104,7 @@ class MySqlGrammar extends Grammar
         // Once we have the primary SQL, we can add the encoding option to the SQL for
         // the table.  Then, we can check if a storage engine has been supplied for
         // the table. If so, we will add the engine declaration to the SQL query.
-		// 一旦我们有了主SQL，我们可以将编码选项添加到SQL
+		// 有了主SQL之后，我们可以向for的SQL添加编码选项。
         $sql = $this->compileCreateEncoding(
             $sql, $connection, $blueprint
         );
@@ -112,7 +112,6 @@ class MySqlGrammar extends Grammar
         // Finally, we will append the engine configuration onto this SQL statement as
         // the final thing we do before returning this finished SQL. Once this gets
         // added the query will be ready to execute against the real connections.
-		// 最后，我们将把引擎配置附加到这个SQL语句中。
         return array_values(array_filter(array_merge([$this->compileCreateEngine(
             $sql, $connection, $blueprint
         )], $this->compileAutoIncrementStartingValues($blueprint))));
@@ -160,7 +159,6 @@ class MySqlGrammar extends Grammar
         // Next we will add the collation to the create table statement if one has been
         // added to either this create table blueprint or the configuration for this
         // connection that the query is targeting. We'll add it to this SQL query.
-		// 接下来，我们将把排序规则添加到create table语句中（如果有的话）。
         if (isset($blueprint->collation)) {
             $sql .= " collate '{$blueprint->collation}'";
         } elseif (! is_null($collation = $connection->getConfig('collation'))) {
@@ -223,6 +221,26 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a rename column command.
+	 * 编译重命名列命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations()
+            ? sprintf('alter table %s rename column %s to %s',
+                $this->wrapTable($blueprint),
+                $this->wrap($command->from),
+                $this->wrap($command->to)
+            )
+            : parent::compileRenameColumn($blueprint, $command, $connection);
+    }
+
+    /**
      * Compile a primary key command.
 	 * 编译主键命令
      *
@@ -232,9 +250,11 @@ class MySqlGrammar extends Grammar
      */
     public function compilePrimary(Blueprint $blueprint, Fluent $command)
     {
-        $command->name(null);
-
-        return $this->compileKey($blueprint, $command, 'primary key');
+        return sprintf('alter table %s add primary key %s(%s)',
+            $this->wrapTable($blueprint),
+            $command->algorithm ? 'using '.$command->algorithm : '',
+            $this->columnize($command->columns)
+        );
     }
 
     /**
@@ -532,6 +552,22 @@ class MySqlGrammar extends Grammar
     public function compileDisableForeignKeyConstraints()
     {
         return 'SET FOREIGN_KEY_CHECKS=0;';
+    }
+
+    /**
+     * Compile a table comment command.
+	 * 编译一个表注释命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileTableComment(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('alter table %s comment = %s',
+            $this->wrapTable($blueprint),
+            "'".str_replace("'", "''", $command->comment)."'"
+        );
     }
 
     /**
@@ -1042,8 +1078,16 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyVirtualAs(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->virtualAs)) {
-            return " as ({$column->virtualAs})";
+        if (! is_null($virtualAs = $column->virtualAsJson)) {
+            if ($this->isJsonSelector($virtualAs)) {
+                $virtualAs = $this->wrapJsonSelector($virtualAs);
+            }
+
+            return " as ({$virtualAs})";
+        }
+
+        if (! is_null($virtualAs = $column->virtualAs)) {
+            return " as ({$virtualAs})";
         }
     }
 
@@ -1057,8 +1101,16 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyStoredAs(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->storedAs)) {
-            return " as ({$column->storedAs}) stored";
+        if (! is_null($storedAs = $column->storedAsJson)) {
+            if ($this->isJsonSelector($storedAs)) {
+                $storedAs = $this->wrapJsonSelector($storedAs);
+            }
+
+            return " as ({$storedAs}) stored";
+        }
+
+        if (! is_null($storedAs = $column->storedAs)) {
+            return " as ({$storedAs}) stored";
         }
     }
 
@@ -1117,7 +1169,10 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyNullable(Blueprint $blueprint, Fluent $column)
     {
-        if (is_null($column->virtualAs) && is_null($column->storedAs)) {
+        if (is_null($column->virtualAs) &&
+            is_null($column->virtualAsJson) &&
+            is_null($column->storedAs) &&
+            is_null($column->storedAsJson)) {
             return $column->nullable ? ' null' : ' not null';
         }
 
@@ -1173,7 +1228,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a "first" column modifier.
-	 * 获取“第一”列修饰符的SQL
+	 * 获取"第一"列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -1188,7 +1243,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for an "after" column modifier.
-	 * 获取“after”列修饰符的SQL
+	 * 获取"after"列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -1226,7 +1281,7 @@ class MySqlGrammar extends Grammar
      */
     protected function modifySrid(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->srid) && is_int($column->srid) && $column->srid > 0) {
+        if (is_int($column->srid) && $column->srid > 0) {
             return ' srid '.$column->srid;
         }
     }
@@ -1245,5 +1300,19 @@ class MySqlGrammar extends Grammar
         }
 
         return $value;
+    }
+
+    /**
+     * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
+
+        return 'json_unquote(json_extract('.$field.$path.'))';
     }
 }

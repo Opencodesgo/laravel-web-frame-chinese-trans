@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，异常，框架结构
+ * Whoops，异常，框架集合
  */
 
 /**
@@ -51,7 +51,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Map the collection of frames
-	 * 映射帧的集合
+	 * 映射框架集合
      *
      * @param  callable        $callable
      * @return FrameCollection

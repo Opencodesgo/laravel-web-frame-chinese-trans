@@ -9,7 +9,7 @@ trait Authenticatable
 {
     /**
      * The column name of the "remember me" token.
-	 * "记住我"令牌的列名
+	 * "记得我"令牌名
      *
      * @var string
      */

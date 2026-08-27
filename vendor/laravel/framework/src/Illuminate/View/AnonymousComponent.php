@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，匿名组件
+ * Illuminate，视图，匿名的组件
  */
 
 namespace Illuminate\View;
@@ -17,7 +17,7 @@ class AnonymousComponent extends Component
 
     /**
      * The component data.
-	 * 组件数据
+	 * 组件日期
      *
      * @var array
      */
@@ -59,7 +59,7 @@ class AnonymousComponent extends Component
         $this->attributes = $this->attributes ?: $this->newAttributeBag();
 
         return array_merge(
-            optional($this->data['attributes'] ?? null)->getAttributes() ?: [],
+            ($this->data['attributes'] ?? null)?->getAttributes() ?: [],
             $this->attributes->getAttributes(),
             $this->data,
             ['attributes' => $this->attributes]

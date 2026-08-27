@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，伪定位转换器
+ * Symfony，Component，Translation，伪本地化翻译
  */
 
 /*
@@ -18,22 +18,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This translator should only be used in a development environment.
- * 该翻译只能在开发环境中使用。
+ * 此转换器应仅在开发环境中使用。
  */
 final class PseudoLocalizationTranslator implements TranslatorInterface
 {
     private const EXPANSION_CHARACTER = '~';
 
-    private $translator;
-    private $accents;
-    private $expansionFactor;
-    private $brackets;
-    private $parseHTML;
+    private TranslatorInterface $translator;
+    private bool $accents;
+    private float $expansionFactor;
+    private bool $brackets;
+    private bool $parseHTML;
 
     /**
      * @var string[]
      */
-    private $localizableHTMLAttributes;
+    private array $localizableHTMLAttributes;
 
     /**
      * Available options:
@@ -87,9 +87,6 @@ final class PseudoLocalizationTranslator implements TranslatorInterface
         $this->localizableHTMLAttributes = $options['localizable_html_attributes'] ?? [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         $trans = '';

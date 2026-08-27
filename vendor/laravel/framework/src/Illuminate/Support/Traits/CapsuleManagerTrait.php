@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，压缩管理特征
+ * Illuminate，支持，特征，佯装，Capsule Manager 特征
  */
 
 namespace Illuminate\Support\Traits;
@@ -55,7 +55,7 @@ trait CapsuleManagerTrait
 
     /**
      * Get the IoC container instance.
-	 * 得到IoC容器实例
+	 * 获取IoC容器实例
      *
      * @return \Illuminate\Contracts\Container\Container
      */

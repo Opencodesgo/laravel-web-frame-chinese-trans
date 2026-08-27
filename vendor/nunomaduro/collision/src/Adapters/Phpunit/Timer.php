@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Php单元，定时器
+ * NunoMaduro，Collision，适配器，Phpunit，定时器
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ final class Timer
 
     /**
      * Returns the elapsed time in microseconds.
-	 * 在微秒中返回运行时间
+	 * 返回以微秒为单位的运行时间
      */
     public function result(): float
     {

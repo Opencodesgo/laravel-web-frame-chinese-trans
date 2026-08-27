@@ -39,7 +39,7 @@ interface BatchRepository
 
     /**
      * Increment the total number of jobs within the batch.
-	 * 增加批处理中的任务总数
+	 * 增加批处理中的作业总数
      *
      * @param  string  $batchId
      * @param  int  $amount
@@ -49,7 +49,7 @@ interface BatchRepository
 
     /**
      * Decrement the total number of pending jobs for the batch.
-	 * 减少批处理的待处理任务总数
+	 * 减少批处理的待处理作业总数
      *
      * @param  string  $batchId
      * @param  string  $jobId
@@ -59,7 +59,7 @@ interface BatchRepository
 
     /**
      * Increment the total number of failed jobs for the batch.
-	 * 增加批处理失败任务的总数
+	 * 增加批处理失败作业的总数
      *
      * @param  string  $batchId
      * @param  string  $jobId
@@ -69,7 +69,7 @@ interface BatchRepository
 
     /**
      * Mark the batch that has the given ID as finished.
-	 * 标记具有给定ID的批为已完成
+	 * 将具有给定ID的批标记为已完成
      *
      * @param  string  $batchId
      * @return void

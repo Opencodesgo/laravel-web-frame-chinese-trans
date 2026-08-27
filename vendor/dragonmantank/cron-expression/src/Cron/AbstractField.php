@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，抽象字段
+ * Cron，抽象域
  */
 
 declare(strict_types=1);
@@ -11,13 +11,13 @@ use DateTimeInterface;
 
 /**
  * Abstract CRON expression field.
- * 抽象的CRON表达式字段。
+ * 抽象的CRON表达域
  */
 abstract class AbstractField implements FieldInterface
 {
     /**
      * Full range of values that are allowed for this field type.
-	 * 适用于此字段类型的全部值
+	 * 此字段类型允许的全部值范围
      *
      * @var array
      */
@@ -25,7 +25,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Literal values we need to convert to integers.
-	 * 我们需要转换到整数的文字值
+	 * 我们需要将文字值转换为整数
      *
      * @var array
      */
@@ -33,7 +33,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Start value of the full range.
-	 * 开始值的全部范围
+	 * 全范围的起始值
      *
      * @var int
      */
@@ -41,7 +41,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * End value of the full range.
-	 * 全部范围的结束值
+	 * 全范围的终值
      *
      * @var int
      */
@@ -57,7 +57,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check to see if a field is satisfied by a value.
-	 * 检查一个字段是否满足值
+	 * 检查某个字段是否满足某个值
      *
      * @internal
      * @param int $dateValue Date value to check
@@ -80,7 +80,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check if a value is a range.
-	 * 检查值是否为范围
+	 * 检查值是否为一个范围
      *
      * @internal
      * @param string $value Value to test
@@ -94,7 +94,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check if a value is an increments of ranges.
-	 * 检查值是否为区间的增量
+	 * 检查值是否为范围的增量
      *
      * @internal
      * @param string $value Value to test
@@ -108,7 +108,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Test if a value is within a range.
-	 * 测试如果一个值在一个范围内
+	 * 测试某个值是否在某个范围内
      *
      * @internal
      * @param int $dateValue Set date value
@@ -132,7 +132,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Test if a value is within an increments of ranges (offset[-to]/step size).
-	 * 测试如果值在不同区间的增量中(偏移量/步长)
+	 * 测试一个值是否在范围的增量内(offset[-to]/步长)
      *
      * @internal
      * @param int $dateValue Set date value
@@ -194,7 +194,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Returns a range of values for the given cron expression.
-	 * 返回给定的cron表达式的值范围
+	 * 返回给定cron表达式的值范围
      *
      * @param string $expression The expression to evaluate
      * @param int $max Maximum offset for range
@@ -269,7 +269,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Checks to see if a value is valid for the field.
-	 * 检查一个值是否对字段有效
+	 * 检查一个值是否对该字段有效
      *
      * @param string $value
      *
@@ -350,7 +350,7 @@ abstract class AbstractField implements FieldInterface
         $date = $date->setTime((int)$date->format('H'), ($invert ? 59 : 0));
 
         // setTime caused the offset to change, moving time in the wrong direction
-		// setTime导致偏移变化,移动时间在错误的方向上
+		// setTime导致偏移量改变，将时间移动到错误的方向。
         $actualTimestamp = $date->format('U');
         if ((! $invert) && ($actualTimestamp <= $originalTimestamp)) {
             $date = $this->timezoneSafeModify($date, "+1 hour");

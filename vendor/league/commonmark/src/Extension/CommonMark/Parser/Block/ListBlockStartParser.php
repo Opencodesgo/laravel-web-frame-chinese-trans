@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，块，列表块开始解析器
+ * League，CommonMark，扩展，共同标记，解析器，代码块，列表块开始解析器
  */
 
 declare(strict_types=1);
@@ -104,7 +104,6 @@ final class ListBlockStartParser implements BlockStartParserInterface, Configura
         }
 
         // If it interrupts paragraph, make sure first line isn't blank
-		// 如果它打断了段落，确保第一行不是空的。
         if ($inParagraph && ! RegexHelper::matchAt(RegexHelper::REGEX_NON_SPACE, $rest, $markerLength)) {
             return null;
         }

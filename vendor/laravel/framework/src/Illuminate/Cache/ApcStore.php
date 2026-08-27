@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Apc 存储
+ * Illuminate，缓存，Apc存储
  */
 
 namespace Illuminate\Cache;
@@ -11,7 +11,7 @@ class ApcStore extends TaggableStore
 
     /**
      * The APC wrapper instance.
-	 * APC封装器实例
+	 * APC包装器实例
      *
      * @var \Illuminate\Cache\ApcWrapper
      */
@@ -27,7 +27,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Create a new APC store.
-	 * 创建新的APC存储
+	 * 创建一个新的APC商店
      *
      * @param  \Illuminate\Cache\ApcWrapper  $apc
      * @param  string  $prefix
@@ -84,7 +84,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Decrement the value of an item in the cache.
-	 * 减少缓存中项的值
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -133,7 +133,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Get the cache key prefix.
-	 * 获取缓存键前缀
+	 * 得到缓存键前缀
      *
      * @return string
      */

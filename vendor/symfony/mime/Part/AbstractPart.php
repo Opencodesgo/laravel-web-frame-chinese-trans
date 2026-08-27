@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，部分，抽象部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +21,7 @@ use Symfony\Component\Mime\Header\Headers;
  */
 abstract class AbstractPart
 {
-    private $headers;
+    private Headers $headers;
 
     public function __construct()
     {

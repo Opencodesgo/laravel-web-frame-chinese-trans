@@ -9,7 +9,7 @@ interface ClearableQueue
 {
     /**
      * Delete all of the jobs from the queue.
-	 * 从队列中删除所有任务
+	 * 删除所有任务从队列中
      *
      * @param  string  $queue
      * @return int

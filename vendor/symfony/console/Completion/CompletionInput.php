@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * An input specialized for shell completion.
- * 专门用于shell完成的输入
+ * 专门用于shell完成的输入。
  *
  * This input allows unfinished option names or values and exposes what kind of
  * completion is expected.
@@ -35,11 +35,11 @@ final class CompletionInput extends ArgvInput
     public const TYPE_OPTION_NAME = 'option_name';
     public const TYPE_NONE = 'none';
 
-    private $tokens;
-    private $currentIndex;
-    private $completionType;
-    private $completionName = null;
-    private $completionValue = '';
+    private array $tokens;
+    private int $currentIndex;
+    private string $completionType;
+    private ?string $completionName = null;
+    private string $completionValue = '';
 
     /**
      * Converts a terminal string into tokens.
@@ -56,7 +56,7 @@ final class CompletionInput extends ArgvInput
 
     /**
      * Create an input based on an COMP_WORDS token list.
-	 * 根据COMP_WORDS token列表创建一个输入
+	 * 基于COMP_WORDS令牌列表创建输入
      *
      * @param string[] $tokens       the set of split tokens (e.g. COMP_WORDS or argv)
      * @param int      $currentIndex the index of the cursor (e.g. COMP_CWORD)
@@ -70,9 +70,6 @@ final class CompletionInput extends ArgvInput
         return $input;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function bind(InputDefinition $definition): void
     {
         parent::bind($definition);
@@ -90,7 +87,7 @@ final class CompletionInput extends ArgvInput
                 return;
             }
 
-            if (null !== $option && $option->acceptValue()) {
+            if ($option?->acceptValue()) {
                 $this->completionType = self::TYPE_OPTION_VALUE;
                 $this->completionName = $option->getName();
                 $this->completionValue = $optionValue ?: (!str_starts_with($optionToken, '--') ? substr($optionToken, 2) : '');
@@ -103,7 +100,7 @@ final class CompletionInput extends ArgvInput
         if ('-' === $previousToken[0] && '' !== trim($previousToken, '-')) {
             // check if previous option accepted a value
             $previousOption = $this->getOptionFromToken($previousToken);
-            if (null !== $previousOption && $previousOption->acceptValue()) {
+            if ($previousOption?->acceptValue()) {
                 $this->completionType = self::TYPE_OPTION_VALUE;
                 $this->completionName = $previousOption->getName();
                 $this->completionValue = $relevantToken;
@@ -144,14 +141,16 @@ final class CompletionInput extends ArgvInput
 
     /**
      * Returns the type of completion required.
-	 * 返回所需的完成类型。
+	 * 返回所需的补全类型。
      *
      * TYPE_ARGUMENT_VALUE when completing the value of an input argument
      * TYPE_OPTION_VALUE   when completing the value of an input option
      * TYPE_OPTION_NAME    when completing the name of an input option
      * TYPE_NONE           when nothing should be completed
      *
-     * @return string One of self::TYPE_* constants. TYPE_OPTION_NAME and TYPE_NONE are already implemented by the Console component
+     * TYPE_OPTION_NAME and TYPE_NONE are already implemented by the Console component.
+     *
+     * @return self::TYPE_*
      */
     public function getCompletionType(): string
     {
@@ -192,7 +191,7 @@ final class CompletionInput extends ArgvInput
     {
         try {
             return parent::parseToken($token, $parseOptions);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             // suppress errors, completed input is almost never valid
         }
 
@@ -217,7 +216,7 @@ final class CompletionInput extends ArgvInput
 
     /**
      * The token of the cursor, or the last token if the cursor is at the end of the input.
-	 * 如果光标在输入的末尾,则是游标的令牌,或者是最后一个令牌
+	 * 游标的标记，如果游标位于输入的末尾，则为最后一个标记。
      */
     private function getRelevantToken(): string
     {
@@ -226,7 +225,7 @@ final class CompletionInput extends ArgvInput
 
     /**
      * Whether the cursor is "free" (i.e. at the end of the input preceded by a space).
-	 * 游标是否“自由”(即在空格之前的输入)
+	 * 游标是否“空闲”（即在输入的末尾以空格开头）
      */
     private function isCursorFree(): bool
     {

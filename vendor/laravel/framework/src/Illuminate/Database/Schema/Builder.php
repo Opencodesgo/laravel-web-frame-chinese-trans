@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，生成器
+ * Illuminate，数据库，模式，构建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -41,7 +41,7 @@ class Builder
      * The default string length for migrations.
 	 * 迁移的默认字符串长度
      *
-     * @var int
+     * @var int|null
      */
     public static $defaultStringLength = 255;
 
@@ -52,6 +52,14 @@ class Builder
      * @var string
      */
     public static $defaultMorphKeyType = 'int';
+
+    /**
+     * Indicates whether Doctrine DBAL usage will be prevented if possible when dropping and renaming columns.
+	 * 指示在删除列和重命名列时，是否在可能的情况下阻止Doctrine DBAL的使用。
+     *
+     * @var bool
+     */
+    public static $alwaysUsesNativeSchemaOperationsIfPossible = false;
 
     /**
      * Create a new database Schema manager.
@@ -89,8 +97,8 @@ class Builder
      */
     public static function defaultMorphKeyType(string $type)
     {
-        if (! in_array($type, ['int', 'uuid'])) {
-            throw new InvalidArgumentException("Morph key type must be 'int' or 'uuid'.");
+        if (! in_array($type, ['int', 'uuid', 'ulid'])) {
+            throw new InvalidArgumentException("Morph key type must be 'int', 'uuid', or 'ulid'.");
         }
 
         static::$defaultMorphKeyType = $type;
@@ -105,6 +113,29 @@ class Builder
     public static function morphUsingUuids()
     {
         return static::defaultMorphKeyType('uuid');
+    }
+
+    /**
+     * Set the default morph key type for migrations to ULIDs.
+	 * 为迁移到uid设置默认的变形键类型
+     *
+     * @return void
+     */
+    public static function morphUsingUlids()
+    {
+        return static::defaultMorphKeyType('ulid');
+    }
+
+    /**
+     * Attempt to use native schema operations for dropping and renaming columns, even if Doctrine DBAL is installed.
+	 * 尝试使用本地模式操作来删除和重命名列，即使安装了Doctrine DBAL。
+     *
+     * @param  bool  $value
+     * @return void
+     */
+    public static function useNativeSchemaOperationsIfPossible(bool $value = true)
+    {
+        static::$alwaysUsesNativeSchemaOperationsIfPossible = $value;
     }
 
     /**
@@ -123,7 +154,7 @@ class Builder
 
     /**
      * Drop a database from the schema if the database exists.
-	 * 如果数据库存在，则从模式中删除该数据库
+	 * 如果数据库存在，则从模式中删除该数据库。
      *
      * @param  string  $name
      * @return bool
@@ -185,6 +216,38 @@ class Builder
         }
 
         return true;
+    }
+
+    /**
+     * Execute a table builder callback if the given table has a given column.
+	 * 如果给定表具有给定列，则执行表构建器回调。
+     *
+     * @param  string  $table
+     * @param  string  $column
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function whenTableHasColumn(string $table, string $column, Closure $callback)
+    {
+        if ($this->hasColumn($table, $column)) {
+            $this->table($table, fn (Blueprint $table) => $callback($table));
+        }
+    }
+
+    /**
+     * Execute a table builder callback if the given table doesn't have a given column.
+	 * 如果给定的表没有给定的列，则执行表构建器回调。
+     *
+     * @param  string  $table
+     * @param  string  $column
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function whenTableDoesntHaveColumn(string $table, string $column, Closure $callback)
+    {
+        if (! $this->hasColumn($table, $column)) {
+            $this->table($table, fn (Blueprint $table) => $callback($table));
+        }
     }
 
     /**
@@ -332,7 +395,7 @@ class Builder
 
     /**
      * Get all of the table names for the database.
-	 * 获取数据库的所有表名
+	 * 获取数据库的所有表
      *
      * @return void
      *
@@ -385,6 +448,24 @@ class Builder
     }
 
     /**
+     * Disable foreign key constraints during the execution of a callback.
+	 * 在回调执行期间禁用外键约束
+     *
+     * @param  \Closure  $callback
+     * @return mixed
+     */
+    public function withoutForeignKeyConstraints(Closure $callback)
+    {
+        $this->disableForeignKeyConstraints();
+
+        $result = $callback();
+
+        $this->enableForeignKeyConstraints();
+
+        return $result;
+    }
+
+    /**
      * Execute the blueprint to build / modify the table.
 	 * 执行蓝图来构建/修改表
      *
@@ -415,20 +496,6 @@ class Builder
         }
 
         return Container::getInstance()->make(Blueprint::class, compact('table', 'callback', 'prefix'));
-    }
-
-    /**
-     * Register a custom Doctrine mapping type.
-	 * 注册一个自定义Doctrine映射类型
-     *
-     * @param  string  $class
-     * @param  string  $name
-     * @param  string  $type
-     * @return void
-     */
-    public function registerCustomDoctrineType($class, $name, $type)
-    {
-        $this->connection->registerDoctrineType($class, $name, $type);
     }
 
     /**

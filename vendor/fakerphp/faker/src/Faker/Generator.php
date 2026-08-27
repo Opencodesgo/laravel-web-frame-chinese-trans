@@ -615,7 +615,7 @@ class Generator
     /**
      * With the unique generator you are guaranteed to never get the same two
      * values.
-	 * 使用独特的生成器，您将确保永远不会得到相同的两个值。
+	 * 有了独特的生成器，你保证永远不会得到相同的两个值。
      *
      * <code>
      * // will never return twice the same value
@@ -641,7 +641,7 @@ class Generator
 
     /**
      * Get a value only some percentage of the time.
-	 * 只得到一定百分比的值
+	 * 只在一定比例的时间内获得一个值。
      *
      * @param float $weight A probability between 0 and 1, 0 means that we always get the default value.
      *
@@ -660,6 +660,7 @@ class Generator
     /**
      * To make sure the value meet some criteria, pass a callable that verifies the
      * output. If the validator fails, the generator will try again.
+	 * 要确保值符合某些标准，传递一个可调用对象来验证输出。
      *
      * The value validity is determined by a function passed as first argument.
      *
@@ -750,7 +751,7 @@ class Generator
 
     /**
      * Replaces tokens ('{{ tokenName }}') with the result from the token method call
-	 * 用令牌方法调用替换令牌({ tokenName } })
+	 * 将token （'{{tokenName}}'）替换为token方法调用的结果
      *
      * @param string $string String that needs to bet parsed
      *
@@ -767,7 +768,7 @@ class Generator
 
     /**
      * Get a random MIME type
-	 * 随机MIME类型
+	 * 获取一个随机的MIME类型
      *
      * @example 'video/avi'
      */
@@ -778,7 +779,7 @@ class Generator
 
     /**
      * Get a random file extension (without a dot)
-	 * 得到一个随机的文件扩展(没有一个点)
+	 * 获取随机文件扩展名(不带点)
      *
      * @example avi
      */
@@ -789,7 +790,7 @@ class Generator
 
     /**
      * Get a full path to a new real file on the system.
-	 * 在系统上得到一个新的真实文件的完整路径
+	 * 获取系统上新文件的完整路径
      */
     public function filePath()
     {
@@ -798,7 +799,6 @@ class Generator
 
     /**
      * Get an actual blood type
-	 * 实际血型
      *
      * @example 'AB'
      */
@@ -809,6 +809,7 @@ class Generator
 
     /**
      * Get a random resis value
+	 * 得到一个随机的阻抗值
      *
      * @example '+'
      */
@@ -839,7 +840,6 @@ class Generator
 
     /**
      * Get a random EAN8 barcode.
-	 * 得到一个随机的EAN8条码
      *
      * @example '73513537'
      */
@@ -874,6 +874,7 @@ class Generator
 
     /**
      * Returns a random number between $int1 and $int2 (any order)
+	 * 返回$int1和$int2之间的随机数（任意顺序）
      *
      * @example 79907610
      */
@@ -908,7 +909,6 @@ class Generator
 
     /**
      * Return a random float number
-	 * 返回一个随机浮点数
      *
      * @example 48.8932
      */
@@ -923,7 +923,6 @@ class Generator
 
     /**
      * Returns a random integer with 0 to $nbDigits digits.
-	 * 返回一个随机整数,0到$ nb位数
      *
      * The maximum value returned is mt_getrandmax()
      *

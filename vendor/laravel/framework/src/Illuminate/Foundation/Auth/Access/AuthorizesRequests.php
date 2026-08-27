@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，进入，授权请求特征
+ * Illuminate, 基础，认证, 访问, 授权请求
  */
 
 namespace Illuminate\Foundation\Auth\Access;
@@ -55,7 +55,7 @@ trait AuthorizesRequests
      */
     protected function parseAbilityAndArguments($ability, $arguments)
     {
-        if (is_string($ability) && strpos($ability, '\\') === false) {
+        if (is_string($ability) && ! str_contains($ability, '\\')) {
             return [$ability, $arguments];
         }
 

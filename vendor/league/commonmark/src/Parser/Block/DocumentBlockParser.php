@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块，文档块解析器
+ * League，CommonMark，解析器，代码块，文档块解析器
  */
 
 declare(strict_types=1);
@@ -24,7 +24,7 @@ use League\CommonMark\Reference\ReferenceMapInterface;
 
 /**
  * Parser implementation which ensures everything is added to the root-level Document
- * 解析器实现,确保所有的东西都添加到根级文档中。
+ * 解析器实现，确保所有内容都添加到根级文档。
  */
 final class DocumentBlockParser extends AbstractBlockContinueParser
 {
@@ -72,7 +72,6 @@ final class DocumentBlockParser extends AbstractBlockContinueParser
             // Unfortunately, we can't simply check for empty paragraphs here because inlines haven't been processed yet,
             // meaning all paragraphs will appear blank here, and we don't have a way to check the status of the reference parser
             // which is attached to the (already-closed) paragraph parser.
-			// 对于v3来说,如果我们能找到一种替代方法来确定这些段落,那就太好了。
             if ($event->isEntering() && $node instanceof Paragraph && $node->onlyContainsLinkReferenceDefinitions) {
                 $emptyNodes[] = $node;
             }

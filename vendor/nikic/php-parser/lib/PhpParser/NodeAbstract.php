@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点抽象
+ * PhpParser，结点抽象
  */
 
 namespace PhpParser;
@@ -123,7 +123,7 @@ abstract class NodeAbstract implements Node, \JsonSerializable {
 
     /**
      * Gets the doc comment of the node.
-	 * 获取节点的文档注释
+	 * 获取节点的文档注释。
      *
      * @return null|Comment\Doc Doc comment object or null
      */

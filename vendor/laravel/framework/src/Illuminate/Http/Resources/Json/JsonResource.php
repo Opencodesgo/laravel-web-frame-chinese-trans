@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，资源，Json，Json 资源
+ * Illuminate，Http，资源，Json，Json资源
  */
 
 namespace Illuminate\Http\Resources\Json;
@@ -40,6 +40,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 	 * 应该添加到资源响应中的其他元数据
      *
      * Added during response construction by the developer.
+	 * 在响应构建期间由开发人员添加
      *
      * @var array
      */
@@ -55,7 +56,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Create a new resource instance.
-	 * 创建一个新的资源实例
+	 * 创建新的资源实例
      *
      * @param  mixed  $resource
      * @return void
@@ -146,7 +147,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
     {
         $json = json_encode($this->jsonSerialize(), $options);
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw JsonEncodingException::forResource($this, json_last_error_msg());
         }
 
@@ -258,8 +259,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->resolve(Container::getInstance()->make('request'));
     }

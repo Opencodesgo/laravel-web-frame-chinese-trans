@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session，属性，属性包接口
+ * Symfony，Component，HttpFoundation，会话，属性，属性包接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * Attributes store.
- * 存储属性。
+ * 存储属性
  *
  * @author Drak <drak@zikula.org>
  */
@@ -27,28 +27,22 @@ interface AttributeBagInterface extends SessionBagInterface
     /**
      * Checks if an attribute is defined.
 	 * 检查是否定义了属性
-     *
-     * @return bool
      */
-    public function has(string $name);
+    public function has(string $name): bool;
 
     /**
      * Returns an attribute.
 	 * 返回一个属性
-     *
-     * @param mixed $default The default value if not found
-     *
-     * @return mixed
      */
-    public function get(string $name, $default = null);
+    public function get(string $name, mixed $default = null): mixed;
 
     /**
      * Sets an attribute.
 	 * 设置属性
      *
-     * @param mixed $value
+     * @return void
      */
-    public function set(string $name, $value);
+    public function set(string $name, mixed $value);
 
     /**
      * Returns attributes.
@@ -56,8 +50,11 @@ interface AttributeBagInterface extends SessionBagInterface
      *
      * @return array<string, mixed>
      */
-    public function all();
+    public function all(): array;
 
+    /**
+     * @return void
+     */
     public function replace(array $attributes);
 
     /**
@@ -66,5 +63,5 @@ interface AttributeBagInterface extends SessionBagInterface
      *
      * @return mixed The removed value or null when it does not exist
      */
-    public function remove(string $name);
+    public function remove(string $name): mixed;
 }

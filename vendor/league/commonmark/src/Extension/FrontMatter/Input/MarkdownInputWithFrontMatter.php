@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，输入，用前面的内容标记输入
+ * League，CommonMark，扩展，前言，输入，用前面的内容标记输入
  */
 
 /*

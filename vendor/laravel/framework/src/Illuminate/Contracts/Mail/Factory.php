@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Get a mailer instance by name.
-	 * 按名称获取邮件实例
+	 * 得到邮件实例通过名称
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Mail\Mailer

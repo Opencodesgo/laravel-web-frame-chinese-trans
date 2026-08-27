@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，反射闭包
+ * Illuminate，支持，特征，反射闭包
  */
 
 namespace Illuminate\Support\Traits;

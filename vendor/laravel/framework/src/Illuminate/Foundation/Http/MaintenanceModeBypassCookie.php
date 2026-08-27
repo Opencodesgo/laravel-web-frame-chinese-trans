@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，维护模式旁路Cookie
+ * Illuminate, 基础, Http, 维护模式旁路Cookie
  */
 
 namespace Illuminate\Foundation\Http;
@@ -24,7 +24,7 @@ class MaintenanceModeBypassCookie
         return new Cookie('laravel_maintenance', base64_encode(json_encode([
             'expires_at' => $expiresAt->getTimestamp(),
             'mac' => hash_hmac('sha256', $expiresAt->getTimestamp(), $key),
-        ])), $expiresAt);
+        ])), $expiresAt, config('session.path'), config('session.domain'));
     }
 
     /**

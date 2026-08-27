@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，分析程序，处理程序，处理者接口
+ * Symfony，Component，CssSelector，解析器，处理器，处理器接口
  */
 
 /*

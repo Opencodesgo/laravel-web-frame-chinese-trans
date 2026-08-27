@@ -30,7 +30,7 @@ final class CommonMarkConverter extends MarkdownConverter
 {
     /**
      * Create a new Markdown converter pre-configured for CommonMark
-	 * 为CommonMark创建一个新的Markdown转换器
+	 * 创建一个为CommonMark预先配置的新Markdown转换器
      *
      * @param array<string, mixed> $config
      */

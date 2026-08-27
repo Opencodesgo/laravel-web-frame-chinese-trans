@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，谨慎的作家
+ * Dotenv，资源库，适配器，Guarded 作者
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ final class GuardedWriter implements WriterInterface
 {
     /**
      * The inner writer to use.
-	 * 作者的使用
+	 * 要使用的内写器
      *
      * @var \Dotenv\Repository\Adapter\WriterInterface
      */
@@ -27,7 +27,7 @@ final class GuardedWriter implements WriterInterface
 
     /**
      * Create a new guarded writer instance.
-	 * 创建一个新的守卫者实例
+	 * 创建一个新的受保护写入器实例
      *
      * @param \Dotenv\Repository\Adapter\WriterInterface $writer
      * @param string[]                                   $allowList
@@ -42,7 +42,7 @@ final class GuardedWriter implements WriterInterface
 
     /**
      * Write to an environment variable, if possible.
-	 * 如果可能的话,写入环境变量
+	 * 如果可能的话，写入环境变量。
      *
      * @param non-empty-string $name
      * @param string           $value
@@ -52,17 +52,19 @@ final class GuardedWriter implements WriterInterface
     public function write(string $name, string $value)
     {
         // Don't set non-allowed variables
+		// 不要设置不允许的变量
         if (!$this->isAllowed($name)) {
             return false;
         }
 
         // Set the value on the inner writer
+		// 在内部写入器上设置该值
         return $this->writer->write($name, $value);
     }
 
     /**
      * Delete an environment variable, if possible.
-	 * 如果可能的话,删除一个环境变量
+	 * 如果可能，请删除环境变量。
      *
      * @param non-empty-string $name
      *
@@ -81,7 +83,7 @@ final class GuardedWriter implements WriterInterface
 
     /**
      * Determine if the given variable is allowed.
-	 * 确定给定变量是否被允许
+	 * 确定是否允许给定变量
      *
      * @param non-empty-string $name
      *

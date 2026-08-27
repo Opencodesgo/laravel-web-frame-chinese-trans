@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Php单元，状态
+ * NunoMaduro，Collision，适配器，Phpunit，状态
  */
 
 declare(strict_types=1);
@@ -17,7 +17,7 @@ final class State
 {
     /**
      * The complete test suite number of tests.
-	 * 完整的测试套件数量的测试
+	 * 测试的完整测试套件数量
      *
      * @var int|null
      */
@@ -87,7 +87,7 @@ final class State
      */
     public function add(TestResult $test): void
     {
-        $this->testCaseTests[]        = $test;
+        $this->testCaseTests[] = $test;
         $this->toBePrintedCaseTests[] = $test;
 
         $this->suiteTests[] = $test;
@@ -164,6 +164,7 @@ final class State
 
     /**
      * Moves the a new test case.
+	 * 移动一个新的测试用例
      */
     public function moveTo(TestCase $testCase): void
     {
@@ -176,6 +177,7 @@ final class State
 
     /**
      * Foreach test in the test case.
+	 * 对于测试用例中的每个测试
      */
     public function eachTestCaseTests(callable $callback): void
     {
@@ -195,6 +197,7 @@ final class State
 
     /**
      * Checks if the given test already contains a result.
+	 * 检查给定的测试是否已经包含结果
      */
     public function existsInTestCase(TestCase $test): bool
     {

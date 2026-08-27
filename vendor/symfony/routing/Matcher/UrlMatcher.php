@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，Component，Routing，匹配程序，Url匹配器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -26,7 +23,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * UrlMatcher matches URL based on a set of routes.
- * UrlMatcher基于一组路由匹配URL。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -41,17 +37,15 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Collects HTTP methods that would be allowed for the request.
-	 * 收集请求允许使用的HTTP方法。
      */
     protected $allow = [];
 
     /**
      * Collects URI schemes that would be allowed for the request.
-	 * 收集请求所允许的URI模式
      *
      * @internal
      */
-    protected $allowSchemes = [];
+    protected array $allowSchemes = [];
 
     protected $routes;
     protected $request;
@@ -69,25 +63,19 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function setContext(RequestContext $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getContext()
+    public function getContext(): RequestContext
     {
         return $this->context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function match(string $pathinfo)
+    public function match(string $pathinfo): array
     {
         $this->allow = $this->allowSchemes = [];
 
@@ -99,13 +87,10 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
             throw new NoConfigurationException();
         }
 
-        throw 0 < \count($this->allow) ? new MethodNotAllowedException(array_unique($this->allow)) : new ResourceNotFoundException(sprintf('No routes found for "%s".', $pathinfo));
+        throw 0 < \count($this->allow) ? new MethodNotAllowedException(array_unique($this->allow)) : new ResourceNotFoundException(\sprintf('No routes found for "%s".', $pathinfo));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function matchRequest(Request $request)
+    public function matchRequest(Request $request): array
     {
         $this->request = $request;
 
@@ -116,6 +101,9 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
         return $ret;
     }
 
+    /**
+     * @return void
+     */
     public function addExpressionLanguageProvider(ExpressionFunctionProviderInterface $provider)
     {
         $this->expressionLanguageProviders[] = $provider;
@@ -123,17 +111,14 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Tries to match a URL with a set of routes.
-	 * 尝试用一组路由匹配URL
      *
      * @param string $pathinfo The path info to be parsed
-     *
-     * @return array
      *
      * @throws NoConfigurationException  If no routing configuration could be found
      * @throws ResourceNotFoundException If the resource could not be found
      * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
      */
-    protected function matchCollection(string $pathinfo, RouteCollection $routes)
+    protected function matchCollection(string $pathinfo, RouteCollection $routes): array
     {
         // HEAD and GET are equivalent as per RFC
         if ('HEAD' === $method = $this->context->getMethod()) {
@@ -161,7 +146,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                 continue;
             }
 
-            $hasTrailingVar = $trimmedPathinfo !== $pathinfo && preg_match('#\{\w+\}/?$#', $route->getPath());
+            $hasTrailingVar = $trimmedPathinfo !== $pathinfo && preg_match('#\{[\w\x80-\xFF]+\}/?$#', $route->getPath());
 
             if ($hasTrailingVar && ($hasTrailingSlash || (null === $m = $matches[\count($compiledRoute->getPathVariables())] ?? null) || '/' !== ($m[-1] ?? '/')) && preg_match($regex, $trimmedPathinfo, $m)) {
                 if ($hasTrailingSlash) {
@@ -176,7 +161,9 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                 continue;
             }
 
-            $status = $this->handleRouteRequirements($pathinfo, $name, $route);
+            $attributes = $this->getAttributes($route, $name, array_replace($matches, $hostMatches));
+
+            $status = $this->handleRouteRequirements($pathinfo, $name, $route, $attributes);
 
             if (self::REQUIREMENT_MISMATCH === $status[0]) {
                 continue;
@@ -199,7 +186,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                 continue;
             }
 
-            return $this->getAttributes($route, $name, array_replace($matches, $hostMatches, $status[1] ?? []));
+            return array_replace($attributes, $status[1] ?? []);
         }
 
         return [];
@@ -207,15 +194,12 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Returns an array of values to use as request attributes.
-	 * 返回要用作请求属性的值数组。
      *
      * As this method requires the Route object, it is not available
      * in matchers that do not have access to the matched Route instance
      * (like the PHP and Apache matcher dumpers).
-     *
-     * @return array
      */
-    protected function getAttributes(Route $route, string $name, array $attributes)
+    protected function getAttributes(Route $route, string $name, array $attributes): array
     {
         $defaults = $route->getDefaults();
         if (isset($defaults['_canonical_route'])) {
@@ -229,14 +213,28 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Handles specific route requirements.
-	 * 处理特定的路由需求
      *
      * @return array The first element represents the status, the second contains additional information
      */
-    protected function handleRouteRequirements(string $pathinfo, string $name, Route $route)
+    protected function handleRouteRequirements(string $pathinfo, string $name, Route $route/* , array $routeParameters */): array
     {
+        if (\func_num_args() < 4) {
+            trigger_deprecation('symfony/routing', '6.1', 'The "%s()" method will have a new "array $routeParameters" argument in version 7.0, not defining it is deprecated.', __METHOD__);
+            $routeParameters = [];
+        } else {
+            $routeParameters = func_get_arg(3);
+
+            if (!\is_array($routeParameters)) {
+                throw new \TypeError(\sprintf('"%s": Argument $routeParameters is expected to be an array, got "%s".', __METHOD__, get_debug_type($routeParameters)));
+            }
+        }
+
         // expression condition
-        if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), ['context' => $this->context, 'request' => $this->request ?: $this->createRequest($pathinfo)])) {
+        if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), [
+            'context' => $this->context,
+            'request' => $this->request ?: $this->createRequest($pathinfo),
+            'params' => $routeParameters,
+        ])) {
             return [self::REQUIREMENT_MISMATCH, null];
         }
 
@@ -245,11 +243,8 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Get merged default parameters.
-	 * 获取合并的默认参数
-     *
-     * @return array
      */
-    protected function mergeDefaults(array $params, array $defaults)
+    protected function mergeDefaults(array $params, array $defaults): array
     {
         foreach ($params as $key => $value) {
             if (!\is_int($key) && null !== $value) {
@@ -260,11 +255,14 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
         return $defaults;
     }
 
+    /**
+     * @return ExpressionLanguage
+     */
     protected function getExpressionLanguage()
     {
-        if (null === $this->expressionLanguage) {
+        if (!isset($this->expressionLanguage)) {
             if (!class_exists(ExpressionLanguage::class)) {
-                throw new \LogicException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed.');
+                throw new \LogicException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed. Try running "composer require symfony/expression-language".');
             }
             $this->expressionLanguage = new ExpressionLanguage(null, $this->expressionLanguageProviders);
         }

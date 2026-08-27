@@ -28,15 +28,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RequestEvent extends KernelEvent
 {
-    private $response;
+    private ?Response $response = null;
 
     /**
      * Returns the response object.
-	 * 返回响应对象
-     *
-     * @return Response|null
+	 * 返回响应对象。
      */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
@@ -44,6 +42,8 @@ class RequestEvent extends KernelEvent
     /**
      * Sets a response and stops event propagation.
 	 * 设置响应并停止事件传播
+     *
+     * @return void
      */
     public function setResponse(Response $response)
     {
@@ -54,11 +54,9 @@ class RequestEvent extends KernelEvent
 
     /**
      * Returns whether a response was set.
-	 * 返回是否设置了响应
-     *
-     * @return bool
+	 * 返回是否设置了响应。
      */
-    public function hasResponse()
+    public function hasResponse(): bool
     {
         return null !== $this->response;
     }

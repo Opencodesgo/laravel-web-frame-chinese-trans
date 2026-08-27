@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，测试，约束，电子邮件附件计数
+ * Symfony，Component，Mime，测试，限制，邮件正文包含
  */
 
 /*
@@ -20,8 +20,8 @@ use Symfony\Component\Mime\RawMessage;
 
 final class EmailAttachmentCount extends Constraint
 {
-    private $expectedValue;
-    private $transport;
+    private int $expectedValue;
+    private ?string $transport;
 
     public function __construct(int $expectedValue, ?string $transport = null)
     {
@@ -29,22 +29,17 @@ final class EmailAttachmentCount extends Constraint
         $this->transport = $transport;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
-        return sprintf('has sent "%d" attachment(s)', $this->expectedValue);
+        return \sprintf('has sent "%d" attachment(s)', $this->expectedValue);
     }
 
     /**
      * @param RawMessage $message
-     *
-     * {@inheritdoc}
      */
     protected function matches($message): bool
     {
-        if (RawMessage::class === \get_class($message) || Message::class === \get_class($message)) {
+        if (RawMessage::class === $message::class || Message::class === $message::class) {
             throw new \LogicException('Unable to test a message attachment on a RawMessage or Message instance.');
         }
 
@@ -53,8 +48,6 @@ final class EmailAttachmentCount extends Constraint
 
     /**
      * @param RawMessage $message
-     *
-     * {@inheritdoc}
      */
     protected function failureDescription($message): string
     {

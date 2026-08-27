@@ -9,7 +9,7 @@ interface Broadcaster
 {
     /**
      * Authenticate the incoming request for a given channel.
-	 * 验证给定通道的传入请求
+	 * 验证给定信道的传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
@@ -28,12 +28,14 @@ interface Broadcaster
 
     /**
      * Broadcast the given event.
-	 * 广播给定的事件
+	 * 广播给定事件
      *
      * @param  array  $channels
      * @param  string  $event
      * @param  array  $payload
      * @return void
+     *
+     * @throws \Illuminate\Broadcasting\BroadcastException
      */
     public function broadcast(array $channels, $event, array $payload = []);
 }

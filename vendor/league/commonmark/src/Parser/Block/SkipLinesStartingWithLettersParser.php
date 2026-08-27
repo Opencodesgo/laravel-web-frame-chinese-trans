@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块，从字母解析器开始跳过行
+ * League，CommonMark，解析器，代码块，跳过以字母开头的行分析器
  */
 
 declare(strict_types=1);
@@ -24,7 +24,6 @@ use League\CommonMark\Util\RegexHelper;
  * @internal
  *
  * This "parser" is actually a performance optimization.
- * 这个“解析器”实际上是一个性能优化。
  *
  * Most lines in a typical Markdown document probably won't match a block start. This is especially true for lines starting
  * with letters - nothing in the core CommonMark spec or our supported extensions will match those lines as blocks. Therefore,

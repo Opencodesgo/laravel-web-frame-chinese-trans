@@ -64,7 +64,7 @@ class PaginatedResourceResponse extends ResourceResponse
 
     /**
      * Get the pagination links for the response.
-	 * 得到响应的分页链接
+	 * 获取响应的分页链接
      *
      * @param  array  $paginated
      * @return array

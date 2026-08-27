@@ -11,7 +11,7 @@ class RouteGroup
 {
     /**
      * Merge route groups into a new array.
-	 * 合并路由组合到一个新的数组中
+	 * 将路由组合并到一个新的数组中
      *
      * @param  array  $new
      * @param  array  $old
@@ -50,7 +50,7 @@ class RouteGroup
     protected static function formatNamespace($new, $old)
     {
         if (isset($new['namespace'])) {
-            return isset($old['namespace']) && strpos($new['namespace'], '\\') !== 0
+            return isset($old['namespace']) && ! str_starts_with($new['namespace'], '\\')
                     ? trim($old['namespace'], '\\').'\\'.trim($new['namespace'], '\\')
                     : trim($new['namespace'], '\\');
         }

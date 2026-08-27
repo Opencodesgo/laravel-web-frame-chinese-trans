@@ -9,6 +9,10 @@ use Closure;
 use Illuminate\Contracts\Auth\Factory as FactoryContract;
 use InvalidArgumentException;
 
+/**
+ * @mixin \Illuminate\Contracts\Auth\Guard
+ * @mixin \Illuminate\Contracts\Auth\StatefulGuard
+ */
 class AuthManager implements FactoryContract
 {
     use CreatesUserProviders;
@@ -23,7 +27,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The registered custom driver creators.
-	 * 注册的自定义驱动程序创建者
+	 * 已注册自定义驱动程序创建者
      *
      * @var array
      */
@@ -42,7 +46,7 @@ class AuthManager implements FactoryContract
 	 * 各种服务共享的用户解析器
      *
      * Determines the default user for Gate, Request, and the Authenticatable contract.
-	 * 确定Gate、Request和Authenticatable契约的默认用户。
+	 * 确定Gate、Request和Authenticatable契约的默认用户
      *
      * @var \Closure
      */
@@ -50,7 +54,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Create a new Auth manager instance.
-	 * 创建新的管理器实例
+	 * 创建一个新的Auth管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -59,9 +63,7 @@ class AuthManager implements FactoryContract
     {
         $this->app = $app;
 
-        $this->userResolver = function ($guard = null) {
-            return $this->guard($guard)->user();
-        };
+        $this->userResolver = fn ($guard = null) => $this->guard($guard)->user();
     }
 
     /**
@@ -144,7 +146,7 @@ class AuthManager implements FactoryContract
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
-		// 当我们使用身份验证服务的"记住我"功能时，我们将需要设置保护的加密实例。
+		// 当使用身份验证服务的记忆功能时，我们需要设置守卫的加密实例。
         if (method_exists($guard, 'setCookieJar')) {
             $guard->setCookieJar($this->app['cookie']);
         }
@@ -177,8 +179,6 @@ class AuthManager implements FactoryContract
         // The token guard implements a basic API token based guard implementation
         // that takes an API token field from the request and matches it to the
         // user in the database or another persistence layer where users are.
-		// 令牌保护实现一个基本的基于API令牌的保护实现，它从请求中获取API令牌字段，
-		// 并与数据库中的用户或用户所在的另一个持久层。
         $guard = new TokenGuard(
             $this->createUserProvider($config['provider'] ?? null),
             $this->app['request'],
@@ -228,9 +228,7 @@ class AuthManager implements FactoryContract
 
         $this->setDefaultDriver($name);
 
-        $this->userResolver = function ($name = null) {
-            return $this->guard($name)->user();
-        };
+        $this->userResolver = fn ($name = null) => $this->guard($name)->user();
     }
 
     /**
@@ -291,7 +289,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器闭包
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback

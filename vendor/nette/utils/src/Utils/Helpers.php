@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，辅助
+ * Nette，Utils，辅助
  */
 
 /**
@@ -13,17 +13,22 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use function array_unique, ini_get, levenshtein, max, min, ob_end_clean, ob_get_clean, ob_start, preg_replace, strlen;
+use const PHP_OS_FAMILY;
 
 
 class Helpers
 {
+	public const IsWindows = PHP_OS_FAMILY === 'Windows';
+
+
 	/**
 	 * Executes a callback and returns the captured output as a string.
-	 * 执行回调并将捕获的输出作为字符串返回
+	 * 执行回调并将捕获的输出作为字符串返回。
 	 */
 	public static function capture(callable $func): string
 	{
-		ob_start(function () {});
+		ob_start(fn() => '');
 		try {
 			$func();
 			return ob_get_clean();
@@ -49,10 +54,9 @@ class Helpers
 
 	/**
 	 * Converts false to null, does not change other values.
-	 * @param  mixed  $value
-	 * @return mixed
+	 * 将false转换为null，不改变其他值。
 	 */
-	public static function falseToNull($value)
+	public static function falseToNull(mixed $value): mixed
 	{
 		return $value === false ? null : $value;
 	}
@@ -60,12 +64,9 @@ class Helpers
 
 	/**
 	 * Returns value clamped to the inclusive range of min and max.
-	 * @param  int|float  $value
-	 * @param  int|float  $min
-	 * @param  int|float  $max
-	 * @return int|float
+	 * 返回限制在最小和最大范围内的值
 	 */
-	public static function clamp($value, $min, $max)
+	public static function clamp(int|float $value, int|float $min, int|float $max): int|float
 	{
 		if ($min > $max) {
 			throw new Nette\InvalidArgumentException("Minimum ($min) is not less than maximum ($max).");
@@ -91,5 +92,25 @@ class Helpers
 		}
 
 		return $best;
+	}
+
+
+	/**
+	 * Compares two values in the same way that PHP does. Recognizes operators: >, >=, <, <=, =, ==, ===, !=, !==, <>
+	 * 以与PHP相同的方式比较两个值。识别操作符：>,>=,<,<=,=,==,===,！=、!= =、< >
+	 */
+	public static function compare(mixed $left, string $operator, mixed $right): bool
+	{
+		return match ($operator) {
+			'>' => $left > $right,
+			'>=' => $left >= $right,
+			'<' => $left < $right,
+			'<=' => $left <= $right,
+			'=', '==' => $left == $right,
+			'===' => $left === $right,
+			'!=', '<>' => $left != $right,
+			'!==' => $left !== $right,
+			default => throw new Nette\InvalidArgumentException("Unknown operator '$operator'"),
+		};
 	}
 }

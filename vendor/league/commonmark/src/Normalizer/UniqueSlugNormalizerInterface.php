@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，标准化器，Unique Slug 标准化器接口
+ * League，CommonMark，标准化者，独特 Slug规格化接口
  */
 
 declare(strict_types=1);
@@ -24,7 +24,7 @@ interface UniqueSlugNormalizerInterface extends TextNormalizerInterface
 
     /**
      * Called by the Environment whenever the configured scope changes
-	 * 当配置的范围更改时调用环境
+	 * 当配置的范围发生变化时，由环境调用。
      *
      * Currently, this will only be called PER_DOCUMENT.
      */

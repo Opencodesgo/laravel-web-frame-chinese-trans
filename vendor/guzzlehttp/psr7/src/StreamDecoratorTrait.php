@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，流装饰特性
+ * GuzzleHttp，Psr7，流装饰者特征
  */
 
 declare(strict_types=1);
@@ -67,7 +67,7 @@ trait StreamDecoratorTrait
 
     /**
      * Allow decorators to implement custom methods
-	 * 允许decor器实现自定义方法
+	 * 允许装饰器实现自定义方法
      *
      * @return mixed
      */
@@ -151,7 +151,7 @@ trait StreamDecoratorTrait
 
     /**
      * Implement in subclasses to dynamically create streams when requested.
-	 * 在请求时在子类中实现动态创建流
+	 * 在子类中实现以在被请求时动态创建流
      *
      * @throws \BadMethodCallException
      */

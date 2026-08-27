@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，使用项目
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -18,6 +22,7 @@ class UseItem extends NodeAbstract {
 
     /**
      * Constructs an alias (use) item node.
+	 * 构造别名（使用）项节点
      *
      * @param Node\Name $name Namespace/Class to alias
      * @param null|string|Identifier $alias Alias
@@ -37,6 +42,7 @@ class UseItem extends NodeAbstract {
 
     /**
      * Get alias. If not explicitly given this is the last component of the used name.
+	 * 别名。如果没有显式给出，这是使用名称的最后一个组件。
      */
     public function getAlias(): Identifier {
         if (null !== $this->alias) {

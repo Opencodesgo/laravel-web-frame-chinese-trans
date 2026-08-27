@@ -21,7 +21,7 @@ use League\Config\Exception\ValidationException;
 
 /**
  * Interface for reading configuration values
- * 阅读配置值接口
+ * 读取配置值接口
  */
 interface ConfigurationInterface
 {

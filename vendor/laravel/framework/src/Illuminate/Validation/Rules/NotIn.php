@@ -9,7 +9,9 @@ class NotIn
 {
     /**
      * The name of the rule.
-	 * 规则的名称
+	 * 规则名称
+     *
+     * @var string
      */
     protected $rule = 'not_in';
 
@@ -23,7 +25,7 @@ class NotIn
 
     /**
      * Create a new "not in" rule instance.
-	 * 创建一个新的"不在"规则实例
+	 * 创建一个新的“不在”规则实例
      *
      * @param  array  $values
      * @return void

@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css 到内联样式
+ * TijsVerkoyen，CssToInlineStyles，Css，Css 到行内样式
  */
 
 namespace TijsVerkoyen\CssToInlineStyles;
@@ -26,7 +26,7 @@ class CssToInlineStyles
 
     /**
      * Will inline the $css into the given $html
-	 * 将$ css内联到给定$ html中
+	 * 将内联$css到给定的$html
      *
      * Remark: if the html contains <style>-tags those will be used, the rules
      * in $css will be appended.
@@ -57,7 +57,7 @@ class CssToInlineStyles
 
     /**
      * Inline the given properties on a given DOMElement
-	 * 在给定的DOMElement上内联的给定属性
+	 * 将给定属性内联到给定DOMElement上
      *
      * @param \DOMElement             $element
      * @param Property[] $properties
@@ -94,7 +94,7 @@ class CssToInlineStyles
 
     /**
      * Get the current inline styles for a given DOMElement
-	 * 为给定的DOMElement获取当前的内联样式
+	 * 获取给定DOMElement的当前内联样式
      *
      * @param \DOMElement $element
      *
@@ -216,7 +216,7 @@ class CssToInlineStyles
 
     /**
      * Merge the CSS rules to determine the applied properties.
-	 * 合并CSS规则以确定应用属性
+	 * 合并CSS规则以确定应用的属性
      *
      * @param Property[] $properties
      * @param array<string, Property> $cssProperties existing applied properties indexed by name

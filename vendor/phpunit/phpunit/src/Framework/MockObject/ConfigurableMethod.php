@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，模拟对象，可配置的方法
+ */
+
 /*
  * This file is part of PHPUnit.
  *

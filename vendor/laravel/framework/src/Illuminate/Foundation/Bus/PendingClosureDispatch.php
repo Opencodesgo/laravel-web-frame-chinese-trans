@@ -11,7 +11,7 @@ class PendingClosureDispatch extends PendingDispatch
 {
     /**
      * Add a callback to be executed if the job fails.
-	 * 添加一个回调，如果任务失败。
+	 * 添加一个回调，在作业失败时执行。
      *
      * @param  \Closure  $callback
      * @return $this

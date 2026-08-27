@@ -8,7 +8,6 @@ namespace Illuminate\Foundation\Testing\Concerns;
 use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Cookie\CookieValuePrefix;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Testing\LoggedExceptionCollection;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
@@ -18,7 +17,7 @@ trait MakesHttpRequests
 {
     /**
      * Additional headers for the request.
-	 * 请求的附加标头
+	 * 请求的附加
      *
      * @var array
      */
@@ -66,13 +65,21 @@ trait MakesHttpRequests
 
     /**
      * Indicated whether JSON requests should be performed "with credentials" (cookies).
-	 * 指示JSON请求是否应该"使用凭据"（cookie）执行
+	 * 指示JSON请求是否应该"使用凭据"(cookie)执行
      *
      * @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
      *
      * @var bool
      */
     protected $withCredentials = false;
+
+    /**
+     * The latest test response (if any).
+	 * 最新的测试响应（如果有的话）
+     *
+     * @var \Illuminate\Testing\TestResponse|null
+     */
+    public static $latestResponse;
 
     /**
      * Define additional headers to be sent with the request.
@@ -114,6 +121,32 @@ trait MakesHttpRequests
     public function withToken(string $token, string $type = 'Bearer')
     {
         return $this->withHeader('Authorization', $type.' '.$token);
+    }
+
+    /**
+     * Add a basic authentication header to the request with the given credentials.
+	 * 向具有给定凭据的请求添加基本身份验证标头
+     *
+     * @param  string  $username
+     * @param  string  $password
+     * @return $this
+     */
+    public function withBasicAuth(string $username, string $password)
+    {
+        return $this->withToken(base64_encode("$username:$password"), 'Basic');
+    }
+
+    /**
+     * Remove the authorization token from the request.
+	 * 从请求中删除授权令牌
+     *
+     * @return $this
+     */
+    public function withoutToken()
+    {
+        unset($this->defaultHeaders['Authorization']);
+
+        return $this;
     }
 
     /**
@@ -469,6 +502,7 @@ trait MakesHttpRequests
     public function options($uri, array $data = [], array $headers = [])
     {
         $server = $this->transformHeadersToServerVars($headers);
+
         $cookies = $this->prepareCookiesForRequest();
 
         return $this->call('OPTIONS', $uri, $data, $cookies, [], $server);
@@ -486,6 +520,23 @@ trait MakesHttpRequests
     public function optionsJson($uri, array $data = [], array $headers = [])
     {
         return $this->json('OPTIONS', $uri, $data, $headers);
+    }
+
+    /**
+     * Visit the given URI with a HEAD request.
+	 * 使用HEAD请求访问给定的URI
+     *
+     * @param  string  $uri
+     * @param  array  $headers
+     * @return \Illuminate\Testing\TestResponse
+     */
+    public function head($uri, array $headers = [])
+    {
+        $server = $this->transformHeadersToServerVars($headers);
+
+        $cookies = $this->prepareCookiesForRequest();
+
+        return $this->call('HEAD', $uri, [], $cookies, [], $server);
     }
 
     /**
@@ -555,7 +606,7 @@ trait MakesHttpRequests
             $response = $this->followRedirects($response);
         }
 
-        return $this->createTestResponse($response);
+        return static::$latestResponse = $this->createTestResponse($response);
     }
 
     /**
@@ -567,7 +618,7 @@ trait MakesHttpRequests
      */
     protected function prepareUrlForRequest($uri)
     {
-        if (Str::startsWith($uri, '/')) {
+        if (str_starts_with($uri, '/')) {
             $uri = substr($uri, 1);
         }
 
@@ -599,7 +650,7 @@ trait MakesHttpRequests
      */
     protected function formatServerHeaderKey($name)
     {
-        if (! Str::startsWith($name, 'HTTP_') && $name !== 'CONTENT_TYPE' && $name !== 'REMOTE_ADDR') {
+        if (! str_starts_with($name, 'HTTP_') && $name !== 'CONTENT_TYPE' && $name !== 'REMOTE_ADDR') {
             return 'HTTP_'.$name;
         }
 

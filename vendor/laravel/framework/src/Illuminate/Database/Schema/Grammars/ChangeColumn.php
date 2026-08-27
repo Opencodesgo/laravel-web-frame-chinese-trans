@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，更改列
+ * Illuminate，数据库，语法，修改列
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -88,7 +88,6 @@ class ChangeColumn
             // Here we will spin through each fluent column definition and map it to the proper
             // Doctrine column definitions - which is necessary because Laravel and Doctrine
             // use some different terminology for various column attributes on the tables.
-			// 这里，我们将遍历每个流畅的列定义，并将其映射到适当的列定义。
             foreach ($fluent->getAttributes() as $key => $value) {
                 if (! is_null($option = static::mapFluentOptionToDoctrine($key))) {
                     if (method_exists($column, $method = 'set'.ucfirst($option))) {
@@ -130,8 +129,12 @@ class ChangeColumn
     {
         $options = ['type' => static::getDoctrineColumnType($fluent['type'])];
 
-        if (in_array($fluent['type'], ['text', 'mediumText', 'longText'])) {
+        if (in_array($fluent['type'], ['tinyText', 'text', 'mediumText', 'longText'])) {
             $options['length'] = static::calculateDoctrineTextLength($fluent['type']);
+        }
+
+        if ($fluent['type'] === 'char') {
+            $options['fixed'] = true;
         }
 
         if (static::doesntNeedCharacterOptions($fluent['type'])) {
@@ -155,26 +158,16 @@ class ChangeColumn
     {
         $type = strtolower($type);
 
-        switch ($type) {
-            case 'biginteger':
-                $type = 'bigint';
-                break;
-            case 'smallinteger':
-                $type = 'smallint';
-                break;
-            case 'mediumtext':
-            case 'longtext':
-                $type = 'text';
-                break;
-            case 'binary':
-                $type = 'blob';
-                break;
-            case 'uuid':
-                $type = 'guid';
-                break;
-        }
-
-        return Type::getType($type);
+        return Type::getType(match ($type) {
+            'biginteger' => 'bigint',
+            'smallinteger' => 'smallint',
+            'tinytext', 'mediumtext', 'longtext' => 'text',
+            'binary' => 'blob',
+            'uuid' => 'guid',
+            'char' => 'string',
+            'double' => 'float',
+            default => $type,
+        });
     }
 
     /**
@@ -186,14 +179,12 @@ class ChangeColumn
      */
     protected static function calculateDoctrineTextLength($type)
     {
-        switch ($type) {
-            case 'mediumText':
-                return 65535 + 1;
-            case 'longText':
-                return 16777215 + 1;
-            default:
-                return 255 + 1;
-        }
+        return match ($type) {
+            'tinyText' => 1,
+            'mediumText' => 65535 + 1,
+            'longText' => 16777215 + 1,
+            default => 255 + 1,
+        };
     }
 
     /**
@@ -219,6 +210,7 @@ class ChangeColumn
             'mediumInteger',
             'smallInteger',
             'time',
+            'timestamp',
             'tinyInteger',
         ]);
     }
@@ -232,19 +224,13 @@ class ChangeColumn
      */
     protected static function mapFluentOptionToDoctrine($attribute)
     {
-        switch ($attribute) {
-            case 'type':
-            case 'name':
-                return;
-            case 'nullable':
-                return 'notnull';
-            case 'total':
-                return 'precision';
-            case 'places':
-                return 'scale';
-            default:
-                return $attribute;
-        }
+        return match ($attribute) {
+            'type', 'name' => null,
+            'nullable' => 'notnull',
+            'total' => 'precision',
+            'places' => 'scale',
+            default => $attribute,
+        };
     }
 
     /**

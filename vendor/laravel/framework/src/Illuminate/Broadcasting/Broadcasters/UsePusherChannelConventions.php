@@ -11,7 +11,7 @@ trait UsePusherChannelConventions
 {
     /**
      * Return true if the channel is protected by authentication.
-	 * 如果通道受身份验证保护，则返回true。
+	 * 如果频道受身份验证保护，则返回true。
      *
      * @param  string  $channel
      * @return bool

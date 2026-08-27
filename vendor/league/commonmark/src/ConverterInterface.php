@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
- * 这个文件是league/commonmark包的一部分
  *
  * (c) Colin O'Dell <colinodell@gmail.com>
  *
@@ -23,7 +22,7 @@ use League\Config\Exception\ConfigurationExceptionInterface;
 
 /**
  * Interface for a service which converts content from one format (like Markdown) to another (like HTML).
- * 用于将内容从一种格式（如Markdown）转换为另一种格式（如HTML）的服务的接口。
+ * 用于将内容从一种格式(如Markdown)转换为另一种格式(如HTML)的服务的接口。
  */
 interface ConverterInterface
 {

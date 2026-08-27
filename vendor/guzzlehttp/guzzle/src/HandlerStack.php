@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，处理栈
+ * GuzzleHttp，栈处理机
  */
 
 namespace GuzzleHttp;
@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Creates a composed Guzzle handler function by stacking middlewares on top of
  * an HTTP handler function.
- * 通过将中间体堆叠在上面来创建一个组合的Guzzle处理函数。
+ * 通过在 HTTP 处理器函数上叠加中间件，创建一个组合的 Guzzle 处理器函数。
  *
  * @final
  */
@@ -35,7 +35,7 @@ class HandlerStack
 
     /**
      * Creates a default handler stack that can be used by clients.
-	 * 创建一个默认的处理程序栈,可以由客户使用。
+	 * 创建可由客户端使用的默认处理程序堆栈
      *
      * The returned handler will wrap the provided handler or use the most
      * appropriate default handler for your system. The returned HandlerStack has
@@ -70,7 +70,7 @@ class HandlerStack
 
     /**
      * Invokes the handler stack as a composed handler
-	 * 调用处理程序堆栈作为一个组合的处理程序
+	 * 作为组合处理程序调用处理程序堆栈
      *
      * @return ResponseInterface|PromiseInterface
      */
@@ -83,7 +83,7 @@ class HandlerStack
 
     /**
      * Dumps a string representation of the stack.
-	 * 转储堆栈的字符串表示
+	 * 转储堆栈的字符串表示形式
      *
      * @return string
      */
@@ -114,7 +114,7 @@ class HandlerStack
 
     /**
      * Set the HTTP handler that actually returns a promise.
-	 * 设置实际上返回一个承诺的HTTP处理程序
+	 * 设置实际返回承诺的HTTP处理程序
      *
      * @param callable(RequestInterface, array): PromiseInterface $handler Accepts a request and array of options and
      *                                                                     returns a Promise.
@@ -127,7 +127,6 @@ class HandlerStack
 
     /**
      * Returns true if the builder has a handler.
-	 * 如果构建器有处理程序,返回true
      */
     public function hasHandler(): bool
     {
@@ -136,7 +135,7 @@ class HandlerStack
 
     /**
      * Unshift a middleware to the bottom of the stack.
-	 * 将中间件转移到堆栈底部
+	 * 将中间件移到栈的底部
      *
      * @param callable(callable): callable $middleware Middleware function
      * @param string                       $name       Name to register for this middleware.
@@ -162,7 +161,7 @@ class HandlerStack
 
     /**
      * Add a middleware before another middleware by name.
-	 * 在另一个中间件名称之前添加一个中间件
+	 * 按名称在另一个中间件之前添加一个中间件
      *
      * @param string                       $findName   Middleware to find
      * @param callable(callable): callable $middleware Middleware function
@@ -175,7 +174,7 @@ class HandlerStack
 
     /**
      * Add a middleware after another middleware by name.
-	 * 通过名称添加一个中间件之后的另一个中间件
+	 * 按名称在另一个中间件之后添加一个中间件
      *
      * @param string                       $findName   Middleware to find
      * @param callable(callable): callable $middleware Middleware function
@@ -188,7 +187,7 @@ class HandlerStack
 
     /**
      * Remove a middleware by instance or name from the stack.
-	 * 从堆栈中从实例或名称中删除中间件
+	 * 按实例或名称从堆栈中删除中间件
      *
      * @param callable|string $remove Middleware to remove by instance or name.
      */
@@ -210,7 +209,7 @@ class HandlerStack
 
     /**
      * Compose the middleware and handler into a single callable function.
-	 * 将中间件和处理程序组合成一个可调用的函数
+	 * 将中间件和处理程序组合成单个可调用函数
      *
      * @return callable(RequestInterface, array): PromiseInterface
      */
@@ -245,6 +244,7 @@ class HandlerStack
 
     /**
      * Splices a function into the middleware list at a specific position.
+	 * 在特定位置将函数拼接到中间件列表中。
      */
     private function splice(string $findName, string $withName, callable $middleware, bool $before): void
     {
@@ -269,7 +269,7 @@ class HandlerStack
 
     /**
      * Provides a debug string for a given callable.
-	 * 提供一个给定可调用的调试字符串
+	 * 为给定可调用对象提供调试字符串。
      *
      * @param callable|string $fn Function to write as a string.
      */

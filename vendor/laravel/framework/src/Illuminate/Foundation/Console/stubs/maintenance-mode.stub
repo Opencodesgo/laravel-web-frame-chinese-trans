@@ -1,9 +1,10 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，维护模式
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 // Check if the application is in maintenance mode...
+// 检查应用程序是否处于维护模式...
 if (! file_exists($down = __DIR__.'/down')) {
     return;
 }

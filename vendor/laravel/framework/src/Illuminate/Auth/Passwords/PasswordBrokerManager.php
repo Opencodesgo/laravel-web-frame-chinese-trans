@@ -6,7 +6,6 @@
 namespace Illuminate\Auth\Passwords;
 
 use Illuminate\Contracts\Auth\PasswordBrokerFactory as FactoryContract;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
@@ -24,7 +23,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * The array of created "drivers".
-	 * 已创建的"驱动程序"数组
+	 * 已创建的驱动
      *
      * @var array
      */
@@ -76,7 +75,7 @@ class PasswordBrokerManager implements FactoryContract
         // The password broker uses a token repository to validate tokens and send user
         // password e-mails, as well as validating that password reset process as an
         // aggregate service of sorts providing a convenient interface for resets.
-		// 密码代理使用令牌存储库来验证令牌并发送用户密码的电子邮件。
+		// 密码代理使用令牌存储库来验证令牌并发送邮件给用户。
         return new PasswordBroker(
             $this->createTokenRepository($config),
             $this->app['auth']->createUserProvider($config['provider'] ?? null)
@@ -94,7 +93,7 @@ class PasswordBrokerManager implements FactoryContract
     {
         $key = $this->app['config']['app.key'];
 
-        if (Str::startsWith($key, 'base64:')) {
+        if (str_starts_with($key, 'base64:')) {
             $key = base64_decode(substr($key, 7));
         }
 
@@ -147,7 +146,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动程序实例
+	 * 动态调用默认驱动实例
      *
      * @param  string  $method
      * @param  array  $parameters

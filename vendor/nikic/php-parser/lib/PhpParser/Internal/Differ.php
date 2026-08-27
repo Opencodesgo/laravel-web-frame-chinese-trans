@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，内部，相差
+ * PhpParser，构建者，内部，Differ
  */
 
 namespace PhpParser\Internal;
 
 /**
  * Implements the Myers diff algorithm.
+ * 实现Myers diff算法。
  *
  * Myers, Eugene W. "An O (ND) difference algorithm and its variations."
  * Algorithmica 1.1 (1986): 251-266.
@@ -47,6 +48,7 @@ class Differ {
 
     /**
      * Calculate diff, including "replace" operations.
+	 * 计算diff，包括“替换”操作。
      *
      * If a sequence of remove operations is followed by the same number of add operations, these
      * will be coalesced into replace operations.
@@ -141,6 +143,7 @@ class Differ {
 
     /**
      * Coalesce equal-length sequences of remove+add into a replace operation.
+	 * 将相等长度的remove+add序列合并到替换操作中。
      *
      * @param DiffElem[] $diff
      * @return DiffElem[]

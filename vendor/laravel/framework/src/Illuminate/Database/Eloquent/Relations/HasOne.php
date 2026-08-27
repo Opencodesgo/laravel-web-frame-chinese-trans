@@ -69,7 +69,6 @@ class HasOne extends HasOneOrMany implements SupportsPartialRelations
 	 * 为内部关系存在性查询添加约束
      *
      * Essentially, these queries compare on column names like "whereColumn".
-	 * 本质上，这些查询比较的是像"whereColumn"这样的列名。
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -114,7 +113,7 @@ class HasOne extends HasOneOrMany implements SupportsPartialRelations
      * Add join query constraints for one of many relationships.
 	 * 为多个关系中的一个添加连接查询约束
      *
-     * @param  \Illuminate\Database\Eloquent\JoinClause  $join
+     * @param  \Illuminate\Database\Query\JoinClause  $join
      * @return void
      */
     public function addOneOfManyJoinSubQueryConstraints(JoinClause $join)

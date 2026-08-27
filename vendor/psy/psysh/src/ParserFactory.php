@@ -25,6 +25,7 @@ class ParserFactory
 {
     /**
      * New parser instance.
+	 * 新的解析器实例
      */
     public function createParser(): Parser
     {

@@ -28,7 +28,7 @@ final class Writer implements WriterContract
 {
     /**
      * The number of frames if no verbosity is specified.
-	 * 如果没有详细说明,则帧数
+	 * 如果没有指定详细信息，则为帧数。
      */
     public const VERBOSITY_NORMAL_FRAMES = 1;
 
@@ -107,9 +107,9 @@ final class Writer implements WriterContract
         HighlighterContract $highlighter = null
     ) {
         $this->solutionsRepository = $solutionsRepository ?: new NullSolutionsRepository();
-        $this->output              = $output ?: new ConsoleOutput();
-        $this->argumentFormatter   = $argumentFormatter ?: new ArgumentFormatter();
-        $this->highlighter         = $highlighter ?: new Highlighter();
+        $this->output = $output ?: new ConsoleOutput();
+        $this->argumentFormatter = $argumentFormatter ?: new ArgumentFormatter();
+        $this->highlighter = $highlighter ?: new Highlighter();
     }
 
     /**
@@ -127,16 +127,16 @@ final class Writer implements WriterContract
 
         if ($this->showEditor
             && $editorFrame !== null
-            && !$exception instanceof RenderlessEditor
+            && ! $exception instanceof RenderlessEditor
         ) {
             $this->renderEditor($editorFrame);
         }
 
         $this->renderSolution($inspector);
 
-        if ($this->showTrace && !empty($frames) && !$exception instanceof RenderlessTrace) {
+        if ($this->showTrace && ! empty($frames) && ! $exception instanceof RenderlessTrace) {
             $this->renderTrace($frames);
-        } elseif (!$exception instanceof RenderlessEditor) {
+        } elseif (! $exception instanceof RenderlessEditor) {
             $this->output->writeln('');
         }
     }
@@ -236,8 +236,8 @@ final class Writer implements WriterContract
     protected function renderTitleAndDescription(Inspector $inspector): WriterContract
     {
         $exception = $inspector->getException();
-        $message   = rtrim($exception->getMessage());
-        $class     = $inspector->getExceptionName();
+        $message = rtrim($exception->getMessage());
+        $class = $inspector->getExceptionName();
 
         if ($this->showTitle) {
             $this->render("<bg=red;options=bold> $class </>");
@@ -259,19 +259,19 @@ final class Writer implements WriterContract
         $solutions = $this->solutionsRepository->getFromThrowable($throwable);
 
         foreach ($solutions as $solution) {
-            /** @var \Facade\IgnitionContracts\Solution $solution */
-            $title       = $solution->getSolutionTitle();
+            /** @var \Spatie\Ignition\Contracts\Solution $solution */
+            $title = $solution->getSolutionTitle();
             $description = $solution->getSolutionDescription();
-            $links       = $solution->getDocumentationLinks();
+            $links = $solution->getDocumentationLinks();
 
             $description = trim((string) preg_replace("/\n/", "\n    ", $description));
 
             $this->render(sprintf(
-                '<fg=blue;options=bold>• </><fg=default;options=bold>%s</>: %s %s',
+                '<fg=cyan;options=bold>i</>   <fg=default;options=bold>%s</>: %s %s',
                 rtrim($title, '.'),
                 $description,
                 implode(', ', array_map(function (string $link) {
-                    return sprintf("\n    <fg=blue>%s</>", $link);
+                    return sprintf("\n      <fg=gray>%s</>", $link);
                 }, $links))
             ));
         }
@@ -290,7 +290,7 @@ final class Writer implements WriterContract
 
             // getLine() might return null so cast to int to get 0 instead
             $line = (int) $frame->getLine();
-            $this->render('at <fg=green>' . $file . '</>' . ':<fg=green>' . $line . '</>');
+            $this->render('at <fg=green>'.$file.'</>'.':<fg=green>'.$line.'</>');
 
             $content = $this->highlighter->highlight((string) $frame->getFileContents(), (int) $frame->getLine());
 
@@ -307,10 +307,11 @@ final class Writer implements WriterContract
     protected function renderTrace(array $frames): WriterContract
     {
         $vendorFrames = 0;
-        $userFrames   = 0;
+        $userFrames = 0;
         foreach ($frames as $i => $frame) {
             if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE && strpos($frame->getFile(), '/vendor/') !== false) {
                 $vendorFrames++;
+
                 continue;
             }
 
@@ -320,12 +321,12 @@ final class Writer implements WriterContract
 
             $userFrames++;
 
-            $file     = $this->getFileRelativePath($frame->getFile());
-            $line     = $frame->getLine();
-            $class    = empty($frame->getClass()) ? '' : $frame->getClass() . '::';
+            $file = $this->getFileRelativePath($frame->getFile());
+            $line = $frame->getLine();
+            $class = empty($frame->getClass()) ? '' : $frame->getClass().'::';
             $function = $frame->getFunction();
-            $args     = $this->argumentFormatter->format($frame->getArgs());
-            $pos      = str_pad((string) ((int) $i + 1), 4, ' ');
+            $args = $this->argumentFormatter->format($frame->getArgs());
+            $pos = str_pad((string) ((int) $i + 1), 4, ' ');
 
             if ($vendorFrames > 0) {
                 $this->output->write(
@@ -335,7 +336,7 @@ final class Writer implements WriterContract
             }
 
             $this->render("<fg=yellow>$pos</><fg=default;options=bold>$file</>:<fg=default;options=bold>$line</>");
-            $this->render("<fg=white>    $class$function($args)</>", false);
+            $this->render("<fg=gray>    $class$function($args)</>", false);
         }
 
         return $this;
@@ -366,7 +367,7 @@ final class Writer implements WriterContract
     {
         $cwd = (string) getcwd();
 
-        if (!empty($cwd)) {
+        if (! empty($cwd)) {
             return str_replace("$cwd/", '', $filePath);
         }
 

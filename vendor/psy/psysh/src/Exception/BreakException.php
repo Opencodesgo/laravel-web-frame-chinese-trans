@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，打断异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A break exception, used for halting the Psy Shell.
+ * 一个break异常，用于停止Psy Shell。
  */
 class BreakException extends \Exception implements Exception
 {
@@ -29,6 +33,7 @@ class BreakException extends \Exception implements Exception
 
     /**
      * Return a raw (unformatted) version of the error message.
+	 * 返回错误消息的原始（未格式化）版本
      */
     public function getRawMessage(): string
     {
@@ -37,6 +42,7 @@ class BreakException extends \Exception implements Exception
 
     /**
      * Throws BreakException.
+	 * 抛出BreakException。
      *
      * Since `throw` can not be inserted into arbitrary expressions, it wraps with function call.
      *

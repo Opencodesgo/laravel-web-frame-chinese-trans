@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，描述符号，Json 描述符
+ * Symfony，Component，Console，描述符，Json 描述符
  */
 
 /*
@@ -30,18 +30,12 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class JsonDescriptor extends Descriptor
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeInputArgument(InputArgument $argument, array $options = [])
+    protected function describeInputArgument(InputArgument $argument, array $options = []): void
     {
         $this->writeData($this->getInputArgumentData($argument), $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeInputOption(InputOption $option, array $options = [])
+    protected function describeInputOption(InputOption $option, array $options = []): void
     {
         $this->writeData($this->getInputOptionData($option), $options);
         if ($option->isNegatable()) {
@@ -49,26 +43,17 @@ class JsonDescriptor extends Descriptor
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeInputDefinition(InputDefinition $definition, array $options = [])
+    protected function describeInputDefinition(InputDefinition $definition, array $options = []): void
     {
         $this->writeData($this->getInputDefinitionData($definition), $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeCommand(Command $command, array $options = [])
+    protected function describeCommand(Command $command, array $options = []): void
     {
         $this->writeData($this->getCommandData($command, $options['short'] ?? false), $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeApplication(Application $application, array $options = [])
+    protected function describeApplication(Application $application, array $options = []): void
     {
         $describedNamespace = $options['namespace'] ?? null;
         $description = new ApplicationDescription($application, $describedNamespace, true);
@@ -101,7 +86,7 @@ class JsonDescriptor extends Descriptor
      * Writes data as json.
 	 * 将数据写入json
      */
-    private function writeData(array $data, array $options)
+    private function writeData(array $data, array $options): void
     {
         $flags = $options['json_encoding'] ?? 0;
 
@@ -128,7 +113,7 @@ class JsonDescriptor extends Descriptor
             'is_value_required' => false,
             'is_multiple' => false,
             'description' => 'Negate the "--'.$option->getName().'" option',
-            'default' => false,
+            'default' => null === $option->getDefault() ? null : !$option->getDefault(),
         ] : [
             'name' => '--'.$option->getName(),
             'shortcut' => $option->getShortcut() ? '-'.str_replace('|', '|-', $option->getShortcut()) : '',

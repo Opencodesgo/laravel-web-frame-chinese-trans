@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，报告，Xml，Unit
+ * SebastianBergmann，CodeCoverage，报告，Xml，单位
  */
 
 /*

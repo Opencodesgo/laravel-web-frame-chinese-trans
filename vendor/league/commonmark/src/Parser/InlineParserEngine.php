@@ -65,7 +65,6 @@ final class InlineParserEngine implements InlineParserEngineInterface
         $inlineParserContext = new InlineParserContext($cursor, $block, $this->referenceMap, $this->environment->getConfiguration()->get('max_delimiters_per_line'));
 
         // Have all parsers look at the line to determine what they might want to parse and what positions they exist at
-		// 所有的解析器都可以查看线来确定他们可能想要解析哪些位置,以及它们存在的位置
         foreach ($this->matchParsers($contents) as $matchPosition => $parsers) {
             $currentPosition = $cursor->getPosition();
             // We've already gone past this point

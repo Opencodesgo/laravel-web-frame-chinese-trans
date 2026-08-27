@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理器，纯文本处理程序
+ * Whoops，处理者，纯文本处理程序
  */
 
 /**
@@ -20,7 +20,6 @@ use Whoops\Exception\Frame;
 * Handler outputing plaintext error messages. Can be used
 * directly, or will be instantiated automagically by Whoops\Run
 * if passed to Run::pushHandler
-* 处理程序输出明文错误消息。
 */
 class PlainTextHandler extends Handler
 {
@@ -144,7 +143,6 @@ class PlainTextHandler extends Handler
     /**
      * Add error trace function arguments to output.
      * Set to True for all frame args, or integer for the n first frame args.
-	 * 将错误跟踪函数参数添加到输出。
      * @param  bool|integer|null $addTraceFunctionArgsToOutput
      * @return static|bool|integer
      */
@@ -166,19 +164,17 @@ class PlainTextHandler extends Handler
      * Set the size limit in bytes of frame arguments var_dump output.
      * If the limit is reached, the var_dump output is discarded.
      * Prevent memory limit errors.
-	 * 设置帧参数var_dump输出的字节大小限制。
-     * @var integer
+     * @param int $traceFunctionArgsOutputLimit
      * @return static
      */
     public function setTraceFunctionArgsOutputLimit($traceFunctionArgsOutputLimit)
     {
-        $this->traceFunctionArgsOutputLimit = (integer) $traceFunctionArgsOutputLimit;
+        $this->traceFunctionArgsOutputLimit = (int) $traceFunctionArgsOutputLimit;
         return $this;
     }
 
     /**
      * Create plain text response and return it as a string
-	 * 创建纯文本响应并将其作为字符串返回
      * @return string
      */
     public function generateResponse()
@@ -202,7 +198,6 @@ class PlainTextHandler extends Handler
      * Get the size limit in bytes of frame arguments var_dump output.
      * If the limit is reached, the var_dump output is discarded.
      * Prevent memory limit errors.
-	 * 使用帧参数var_dump输出的字节大小限制。
      * @return integer
      */
     public function getTraceFunctionArgsOutputLimit()
@@ -284,7 +279,6 @@ class PlainTextHandler extends Handler
 
     /**
      * Get the exception trace as plain text.
-	 * 将异常跟踪作为纯文本
      * @return string
      */
     private function getTraceOutput()

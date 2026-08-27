@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，属性枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Property Enumerator class.
+ * 属性枚举器类。
  */
 class PropertyEnumerator extends Enumerator
 {
@@ -55,6 +59,7 @@ class PropertyEnumerator extends Enumerator
 
     /**
      * Get defined properties for the given class or object Reflector.
+	 * 获取给定类或对象反射器的已定义属性
      *
      * @param bool             $showAll   Include private and protected properties
      * @param \ReflectionClass $reflector
@@ -84,6 +89,7 @@ class PropertyEnumerator extends Enumerator
 
     /**
      * Prepare formatted property array.
+	 * 准备格式化的属性数组
      *
      * @param array $properties
      *
@@ -110,6 +116,7 @@ class PropertyEnumerator extends Enumerator
 
     /**
      * Get a label for the particular kind of "class" represented.
+	 * 获取所表示的特定类型的“类”的标签
      *
      * @param \ReflectionClass $reflector
      */
@@ -124,6 +131,7 @@ class PropertyEnumerator extends Enumerator
 
     /**
      * Get output style for the given property's visibility.
+	 * 获取给定属性可见性的输出样式
      *
      * @param \ReflectionProperty $property
      */
@@ -140,6 +148,7 @@ class PropertyEnumerator extends Enumerator
 
     /**
      * Present the $target's current value for a reflection property.
+	 * 显示反射属性的$target当前值
      *
      * @param \ReflectionProperty $property
      * @param mixed               $target
@@ -168,7 +177,9 @@ class PropertyEnumerator extends Enumerator
             return '';
         }
 
-        $property->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
         $value = $property->getValue($target);
 
         return $this->presentRef($value);

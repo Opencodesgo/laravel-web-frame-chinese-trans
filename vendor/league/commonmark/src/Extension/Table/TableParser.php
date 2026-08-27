@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，表，表解析器
+ * League，CommonMark，扩展，表格，表格解析器
  */
 
 declare(strict_types=1);
@@ -131,6 +131,7 @@ final class TableParser extends AbstractBlockContinueParser implements BlockCont
             $row   = new TableRow();
 
             // Body can not have more columns than head
+			// 主体不能有比头部更多的柱子
             for ($i = 0; $i < $headerColumns; $i++) {
                 // It can have less columns though, in which case we'll autocomplete the empty ones (up to some limit)
                 if (! isset($cells[$i]) && $this->remainingAutocompletedCells-- <= 0) {

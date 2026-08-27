@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，碎片，片段Uri生成器接口
+ * Symfony，Component，HttpKernel，片段，片段Uri生成器接口
  */
 
 /*
@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
- * Interface implemented by rendering strategies able to generate an URL for a fragment.
- * 通过渲染策略实现的接口,能够生成一个片段的URL。
+ * Interface implemented by rendering strategies able to generate a URL for a fragment.
+ * 通过渲染策略实现的接口，能够为片段生成URL。
  *
  * @author Kévin Dunglas <kevin@dunglas.fr>
  */
@@ -27,7 +27,7 @@ interface FragmentUriGeneratorInterface
 {
     /**
      * Generates a fragment URI for a given controller.
-	 * 生成给定控制器的片段URI
+	 * 为给定控制器生成片段URI
      *
      * @param bool $absolute Whether to generate an absolute URL or not
      * @param bool $strict   Whether to allow non-scalar attributes or not

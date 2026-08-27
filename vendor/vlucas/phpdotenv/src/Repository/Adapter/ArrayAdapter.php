@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，适配器，数组适配器
+ * Dotenv，资源库，适配器，数组适配器
  */
 
 declare(strict_types=1);
@@ -14,9 +14,9 @@ final class ArrayAdapter implements AdapterInterface
 {
     /**
      * The variables and their values.
-	 * 变量及其值
+	 * 变量和它们的值
      *
-     * @var array<string,string>
+     * @var array<string, string>
      */
     private $variables;
 
@@ -33,7 +33,7 @@ final class ArrayAdapter implements AdapterInterface
 
     /**
      * Create a new instance of the adapter, if it is available.
-	 * 如果可用,创建适配器的一个新实例
+	 * 创建适配器的新实例（如果可用）
      *
      * @return \PhpOption\Option<\Dotenv\Repository\Adapter\AdapterInterface>
      */
@@ -45,7 +45,6 @@ final class ArrayAdapter implements AdapterInterface
 
     /**
      * Read an environment variable, if it exists.
-	 * 读取环境变量,如果存在的话
      *
      * @param non-empty-string $name
      *
@@ -58,7 +57,6 @@ final class ArrayAdapter implements AdapterInterface
 
     /**
      * Write to an environment variable, if possible.
-	 * 如果可能的话,写入环境变量
      *
      * @param non-empty-string $name
      * @param string           $value
@@ -74,7 +72,6 @@ final class ArrayAdapter implements AdapterInterface
 
     /**
      * Delete an environment variable, if possible.
-	 * 如果可能的话,删除一个环境变量
      *
      * @param non-empty-string $name
      *

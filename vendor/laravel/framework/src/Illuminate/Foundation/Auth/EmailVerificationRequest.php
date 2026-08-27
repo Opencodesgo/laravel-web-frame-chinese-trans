@@ -12,7 +12,7 @@ class EmailVerificationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-	 * 确定用户是否被授权发出此请求
+	 * 确定是否发出此请求的用户被授权
      *
      * @return bool
      */

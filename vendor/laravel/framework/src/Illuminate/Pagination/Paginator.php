@@ -172,15 +172,14 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
     /**
      * Convert the object to its JSON representation.
-	 * 转换对象为其JSON表示形式
+	 * 将对象转换为其JSON表示形式
      *
      * @param  int  $options
      * @return string

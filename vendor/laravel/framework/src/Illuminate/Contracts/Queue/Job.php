@@ -9,7 +9,7 @@ interface Job
 {
     /**
      * Get the UUID of the job.
-	 * 获取作业的UUID
+	 * 得到作业的UUID
      *
      * @return string|null
      */
@@ -17,7 +17,7 @@ interface Job
 
     /**
      * Get the job identifier.
-	 * 获取任务标识符
+	 * 得到任务标识符
      *
      * @return string
      */
@@ -33,17 +33,15 @@ interface Job
 
     /**
      * Fire the job.
-	 * 启动这个任务
+	 * 启动作业
      *
      * @return void
      */
     public function fire();
 
     /**
-     * Release the job back into the queue.
-	 * 将作业释放回队列
-     *
-     * Accepts a delay specified in seconds.
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -60,7 +58,7 @@ interface Job
 
     /**
      * Delete the job from the queue.
-	 * 从队列中删除任务
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -100,7 +98,7 @@ interface Job
 
     /**
      * Mark the job as "failed".
-	 * 把这项工作标记为"失败"
+	 * 标记此项作业为"失败"
      *
      * @return void
      */
@@ -157,7 +155,7 @@ interface Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队作业类的解析名称
+	 * 获取排队作业类的解析名
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
      *

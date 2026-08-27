@@ -66,4 +66,18 @@ class Relationship
             $relationship->attach($this->factory->create([], $parent));
         }
     }
+
+    /**
+     * Specify the model instances to always use when creating relationships.
+	 * 指定在创建关系时始终使用的模型实例
+     *
+     * @param  \Illuminate\Support\Collection  $recycle
+     * @return $this
+     */
+    public function recycle($recycle)
+    {
+        $this->factory = $this->factory->recycle($recycle);
+
+        return $this;
+    }
 }

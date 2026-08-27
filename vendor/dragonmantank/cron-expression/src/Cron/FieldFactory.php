@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，字段工厂
+ * Cron，无效参数异常
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ use InvalidArgumentException;
 
 /**
  * CRON field factory implementing a flyweight factory.
- * CRON现场工厂实施flyweight工厂
+ * CRON现场工厂实现了一个轻量级工厂
  *
  * @see http://en.wikipedia.org/wiki/Cron
  */
@@ -24,7 +24,7 @@ class FieldFactory implements FieldFactoryInterface
 
     /**
      * Get an instance of a field object for a cron expression position.
-	 * 为cron表达式位置获取字段对象的实例
+	 * 获取cron表达式位置的字段对象实例。
      *
      * @param int $position CRON expression position value to retrieve
      *

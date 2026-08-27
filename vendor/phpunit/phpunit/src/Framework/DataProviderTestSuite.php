@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，Framework，数据提供程序测试套件
+ * PHPUnit，框架，数据提供程序测试套件
  */
 
 /*
@@ -69,6 +69,7 @@ final class DataProviderTestSuite extends TestSuite
 
     /**
      * Returns the size of the each test created using the data provider(s).
+	 * 返回使用数据提供程序创建的每个测试的大小
      *
      * @throws InvalidArgumentException
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，枢轴
+ * Illuminate，数据库，Eloquent，关系，支点
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -14,7 +14,7 @@ class Pivot extends Model
 
     /**
      * Indicates if the IDs are auto-incrementing.
-	 * 指明id是否自动递增
+	 * 指示id是否自动递增
      *
      * @var bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，通用标志核心扩展
+ * League，CommonMark，扩展，共同标记，通用商标核心扩展
  */
 
 declare(strict_types=1);

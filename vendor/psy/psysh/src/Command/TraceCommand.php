@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，跟踪命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Show the current stack trace.
+ * 显示当前堆栈跟踪。
  */
 class TraceCommand extends Command
 {
@@ -82,6 +86,7 @@ HELP
 
     /**
      * Get a backtrace for an exception or error.
+	 * 获取异常或错误的回溯信息。
      *
      * Optionally limit the number of rows to include with $count, and exclude
      * Psy from the trace.

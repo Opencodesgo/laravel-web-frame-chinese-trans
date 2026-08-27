@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，资源，Json，资源收集
+ * Illuminate，Http，资源，Json，资源集合
  */
 
 namespace Illuminate\Http\Resources\Json;
@@ -96,8 +96,7 @@ class ResourceCollection extends JsonResource implements Countable, IteratorAggr
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return $this->collection->count();
     }

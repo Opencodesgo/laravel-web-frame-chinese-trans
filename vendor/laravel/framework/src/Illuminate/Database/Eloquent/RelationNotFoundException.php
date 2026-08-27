@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关联未发现异常
+ * Illuminate，数据库，Eloquent，关系未发现异常
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -19,7 +19,7 @@ class RelationNotFoundException extends RuntimeException
 
     /**
      * The name of the relation.
-	 * 关系的名称
+	 * 关系名称
      *
      * @var string
      */

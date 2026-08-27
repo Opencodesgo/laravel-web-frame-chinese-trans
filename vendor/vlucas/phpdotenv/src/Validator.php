@@ -24,7 +24,7 @@ class Validator
 
     /**
      * The variables to validate.
-	 * 验证的变量
+	 * 要验证的变量
      *
      * @var string[]
      */
@@ -36,8 +36,6 @@ class Validator
      *
      * @param \Dotenv\Repository\RepositoryInterface $repository
      * @param string[]                               $variables
-     *
-     * @throws \Dotenv\Exception\ValidationException
      *
      * @return void
      */
@@ -103,7 +101,7 @@ class Validator
 
     /**
      * Assert that each specified variable is a boolean.
-	 * 断言每个指定变量是一个布尔值
+	 * 断言每个指定的变量都是布尔值
      *
      * @throws \Dotenv\Exception\ValidationException
      *
@@ -145,7 +143,7 @@ class Validator
 
     /**
      * Assert that each variable matches the given regular expression.
-	 * 断言每个变量匹配给定的正则表达式
+	 * 断言每个变量都匹配给定的正则表达式
      *
      * @param string $regex
      *
@@ -165,7 +163,7 @@ class Validator
 
     /**
      * Assert that the callback returns true for each variable.
-	 * 断言回调对每个变量都是正确的
+	 * 断言回调函数对每个变量返回true
      *
      * @param callable(?string):bool $callback
      * @param string                 $message
@@ -196,7 +194,7 @@ class Validator
 
     /**
      * Assert that the callback returns true for each variable.
-	 * 断言回调对每个变量都是正确的
+	 * 断言回调函数对每个变量返回true
      *
      * Skip checking null variable values.
      *

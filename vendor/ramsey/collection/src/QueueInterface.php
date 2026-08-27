@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，队列接口
+ * Ramsey，集合，队列接口
  */
 
 /**
@@ -23,7 +23,7 @@ use RuntimeException;
 /**
  * A queue is a collection in which the entities in the collection are kept in
  * order.
- * 队列是集合中的实体保存在其中的集合排序。
+ * 队列是一个集合，集合中的实体保存在其中。
  *
  * The principal operations on the queue are the addition of entities to the end
  * (tail), also known as *enqueue*, and removal of entities from the front
@@ -133,12 +133,11 @@ interface QueueInterface extends ArrayInterface
      *     Implementations should use a more-specific exception that extends
      *     `\RuntimeException`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function add($element): bool;
+    public function add(mixed $element): bool;
 
     /**
      * Retrieves, but does not remove, the head of this queue.
-	 * 检索,但不删除,队列的头。
+	 * 检索但不删除此队列的头部。
      *
      * This method differs from `peek()` only in that it throws an exception if
      * this queue is empty.
@@ -149,7 +148,7 @@ interface QueueInterface extends ArrayInterface
      *
      * @throws NoSuchElementException if this queue is empty.
      */
-    public function element();
+    public function element(): mixed;
 
     /**
      * Inserts the specified element into this queue if it is possible to do so
@@ -165,8 +164,7 @@ interface QueueInterface extends ArrayInterface
      *
      * @return bool `true` if the element was added to this queue, else `false`.
      */
-    // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-    public function offer($element): bool;
+    public function offer(mixed $element): bool;
 
     /**
      * Retrieves, but does not remove, the head of this queue, or returns `null`
@@ -174,9 +172,9 @@ interface QueueInterface extends ArrayInterface
      *
      * @see self::element()
      *
-     * @return T|null the head of this queue, or `null` if this queue is empty.
+     * @return T | null the head of this queue, or `null` if this queue is empty.
      */
-    public function peek();
+    public function peek(): mixed;
 
     /**
      * Retrieves and removes the head of this queue, or returns `null`
@@ -184,13 +182,13 @@ interface QueueInterface extends ArrayInterface
      *
      * @see self::remove()
      *
-     * @return T|null the head of this queue, or `null` if this queue is empty.
+     * @return T | null the head of this queue, or `null` if this queue is empty.
      */
-    public function poll();
+    public function poll(): mixed;
 
     /**
      * Retrieves and removes the head of this queue.
-	 * 检索并删除队列的头。
+	 * 检索并删除此队列的头部。
      *
      * This method differs from `poll()` only in that it throws an exception if
      * this queue is empty.
@@ -201,11 +199,11 @@ interface QueueInterface extends ArrayInterface
      *
      * @throws NoSuchElementException if this queue is empty.
      */
-    public function remove();
+    public function remove(): mixed;
 
     /**
      * Returns the type associated with this queue.
-	 * 返回与此队列相关的类型。
+	 * 返回与此队列关联的类型
      */
     public function getType(): string;
 }

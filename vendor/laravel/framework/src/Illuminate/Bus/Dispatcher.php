@@ -93,7 +93,6 @@ class Dispatcher implements QueueingDispatcher
 	 * 将命令分派给当前进程中相应的处理程序
      *
      * Queueable jobs will be dispatched to the "sync" queue.
-	 * 可排队作业将被分配到"同步"队列
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -159,7 +158,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Create a new batch of queueable jobs.
-	 * 创建新的批处理可排队任务
+	 * 创建一批新的可排队作业
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $jobs
      * @return \Illuminate\Bus\PendingBatch
@@ -285,7 +284,7 @@ class Dispatcher implements QueueingDispatcher
     public function dispatchAfterResponse($command, $handler = null)
     {
         $this->container->terminating(function () use ($command, $handler) {
-            $this->dispatchNow($command, $handler);
+            $this->dispatchSync($command, $handler);
         });
     }
 

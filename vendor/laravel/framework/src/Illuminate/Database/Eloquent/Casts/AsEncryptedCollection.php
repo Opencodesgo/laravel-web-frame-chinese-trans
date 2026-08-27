@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，描述，作为加密集合
+ * Illuminate，数据库，Eloquent，生效，作为加密集合
  */
 
 namespace Illuminate\Database\Eloquent\Casts;
@@ -17,7 +17,7 @@ class AsEncryptedCollection implements Castable
 	 * 当从/到这个施法目标施法时使用施法者职业
      *
      * @param  array  $arguments
-     * @return object|string
+     * @return CastsAttributes<\Illuminate\Support\Collection<array-key, mixed>, iterable>
      */
     public static function castUsing(array $arguments)
     {

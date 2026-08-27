@@ -23,7 +23,7 @@ interface NodeTraverserInterface {
 
     /**
      * Traverses an array of nodes using the registered visitors.
-	 * 使用已注册的访问者遍历节点数组
+	 * 使用已注册的访问者遍历节点数组。
      *
      * @param Node[] $nodes Array of nodes
      *

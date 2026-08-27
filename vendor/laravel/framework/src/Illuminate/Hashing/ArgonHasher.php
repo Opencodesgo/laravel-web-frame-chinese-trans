@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，Argo 哈希
+ * Illuminate，哈希，Argon 哈希
  */
 
 namespace Illuminate\Hashing;
@@ -44,7 +44,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Create a new hasher instance.
-	 * 创建新的哈希实例
+	 * 创建新的散列实例
      *
      * @param  array  $options
      * @return void
@@ -59,7 +59,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Hash the given value.
-	 * 哈希给定值
+	 * 散列给定值
      *
      * @param  string  $value
      * @param  array  $options

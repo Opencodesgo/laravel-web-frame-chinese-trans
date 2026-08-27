@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由收集
+ * Illuminate，路由，路由集合
  */
 
 namespace Illuminate\Routing;
@@ -89,7 +89,7 @@ class RouteCollection extends AbstractRouteCollection
         // If the route has a name, we will add it to the name look-up table so that we
         // will quickly be able to find any route associate with a name and not have
         // to iterate through every route every time we need to perform a look-up.
-		// 如果路由有名称，我们将把它添加到名称查找表中，因此我们将能够快速找到任何与名称相关的路由。
+		// 如果路由有名称，我们将把它添加到名称查找表中。
         if ($name = $route->getName()) {
             $this->nameList[$name] = $route;
         }
@@ -97,7 +97,7 @@ class RouteCollection extends AbstractRouteCollection
         // When the route is routing to a controller we will also store the action that
         // is used by the route. This will let us reverse route to controllers while
         // processing a request and easily generate URLs to the given controllers.
-		// 当路由路由到某个控制器时，我们还将存储所使用的路线操作。
+		// 当路由路由到控制器时，我们也会存储被路线所使用的动作。
         $action = $route->getAction();
 
         if (isset($action['controller'])) {
@@ -175,7 +175,7 @@ class RouteCollection extends AbstractRouteCollection
         // First, we will see if we can find a matching route for this current request
         // method. If we can, great, we can just return it so that it can be called
         // by the consumer. Otherwise we will check for routes with another verb.
-		// 首先，我们将查看是否可以为当前请求找到匹配的路由方法。
+		// 首先，我们将查看是否可以为当前请求方法找到匹配的路由。
         $route = $this->matchAgainstRoutes($routes, $request);
 
         return $this->handleMatchedRoute($request, $route);
@@ -242,7 +242,7 @@ class RouteCollection extends AbstractRouteCollection
 
     /**
      * Get all of the routes keyed by their HTTP verb / method.
-	 * 获取所有由HTTP动词/方法指定的路由。
+	 * 获取所有由HTTP动词/方法指定的路由
      *
      * @return array
      */

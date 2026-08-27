@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，SlackWebhook 处理程序
- *
+ * Monolog，处理器，Slack Webhook 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -22,7 +22,7 @@ use Monolog\Handler\Slack\SlackRecord;
 
 /**
  * Sends notifications through Slack Webhooks
- * 通过松弛的网络链接发送通知
+ * 通过Slack Webhooks发送通知
  *
  * @author Haralan Dobrev <hkdobrev@gmail.com>
  * @see    https://api.slack.com/incoming-webhooks

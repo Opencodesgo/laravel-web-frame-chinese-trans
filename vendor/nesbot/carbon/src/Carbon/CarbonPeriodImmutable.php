@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Carbon 周期不变的
+ * Carbon，Carbon 不可变周期 
  */
 
 /**
@@ -35,7 +35,7 @@ class CarbonPeriodImmutable extends CarbonPeriod
     /**
      * Prepare the instance to be set (self if mutable to be mutated,
      * copy if immutable to generate a new instance).
-	 * 准备要设置的实例（self，如果是可变的，则是可变的，复制不可变的以生成一个新实例）
+	 * 准备要设置的实例（self，如果是可变的，则是可变的）
      *
      * @return static
      */

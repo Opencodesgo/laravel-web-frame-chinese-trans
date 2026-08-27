@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，Random
+ * Nette，Utils，随机
  */
 
 /**
@@ -13,10 +13,14 @@ declare(strict_types=1);
 namespace Nette\Utils;
 
 use Nette;
+use Random\Randomizer;
+use function strlen;
+use const PHP_VERSION_ID;
 
 
 /**
  * Secure random string generator.
+ * 安全的随机字符串生成器。
  */
 final class Random
 {
@@ -25,18 +29,24 @@ final class Random
 	/**
 	 * Generates a random string of given length from characters specified in second argument.
 	 * Supports intervals, such as `0-9` or `A-Z`.
+	 * 从第二个参数中指定的字符生成给定长度的随机字符串。
 	 */
 	public static function generate(int $length = 10, string $charlist = '0-9a-z'): string
 	{
-		$charlist = count_chars(preg_replace_callback('#.-.#', function (array $m): string {
-			return implode('', range($m[0][0], $m[0][2]));
-		}, $charlist), 3);
+		$charlist = preg_replace_callback(
+			'#.-.#',
+			fn(array $m): string => implode('', range($m[0][0], $m[0][2])),
+			$charlist,
+		);
+		$charlist = count_chars($charlist, mode: 3);
 		$chLen = strlen($charlist);
 
 		if ($length < 1) {
 			throw new Nette\InvalidArgumentException('Length must be greater than zero.');
 		} elseif ($chLen < 2) {
 			throw new Nette\InvalidArgumentException('Character list must contain at least two chars.');
+		} elseif (PHP_VERSION_ID >= 80300) {
+			return (new Randomizer)->getBytesFromString($charlist, $length);
 		}
 
 		$res = '';

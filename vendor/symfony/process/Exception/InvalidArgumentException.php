@@ -16,7 +16,7 @@ namespace Symfony\Component\Process\Exception;
 
 /**
  * InvalidArgumentException for the Process Component.
- * 进程组件的InvalidArgumentException。
+ * 进程组件的InvalidArgumentException
  *
  * @author Romain Neutron <imprec@gmail.com>
  */

@@ -50,7 +50,7 @@ class Isbn
 
     /**
      * Checks whether the provided number is a valid ISBN-10 number
-	 * 检查所提供的号码是否有效
+	 * 检查提供的号码是否为有效的ISBN-10号
      *
      * @param string $isbn ISBN to check
      */

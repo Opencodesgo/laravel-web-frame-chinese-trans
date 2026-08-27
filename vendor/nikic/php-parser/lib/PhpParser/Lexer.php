@@ -105,6 +105,7 @@ class Lexer {
         }
 
         // Check for unterminated comment
+		// 检查未终止的注释
         $lastToken = $tokens[$numTokens - 1];
         if ($this->isUnterminatedComment($lastToken)) {
             $errorHandler->handleError(new Error('Unterminated comment', [
@@ -116,6 +117,7 @@ class Lexer {
         }
 
         // Add sentinel token.
+		// 添加哨兵令牌
         $tokens[] = new Token(0, "\0", $lastToken->getEndLine(), $lastToken->getEndPos());
     }
 }

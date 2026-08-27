@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * PharIo，版本，AbstractVersionConstraint
+ * PharIo，版本，抽象版本约束
  */
 
 /*

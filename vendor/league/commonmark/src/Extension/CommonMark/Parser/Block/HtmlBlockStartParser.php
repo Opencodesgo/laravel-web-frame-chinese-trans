@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，解析器，块，Html 块开始解析器
+ * League，CommonMark，扩展，共同标记，Parser，代码块，Html 块开始解析器
  */
 
 declare(strict_types=1);

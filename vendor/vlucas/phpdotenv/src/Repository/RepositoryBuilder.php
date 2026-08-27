@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Repository，存储库生成器
+ * Dotenv，资源库，存储库构建器 
  */
 
 declare(strict_types=1);
@@ -24,7 +24,7 @@ final class RepositoryBuilder
 {
     /**
      * The set of default adapters.
-	 * 默认适配器的集合
+	 * 默认适配器集
      */
     private const DEFAULT_ADAPTERS = [
         ServerConstAdapter::class,
@@ -33,7 +33,7 @@ final class RepositoryBuilder
 
     /**
      * The set of readers to use.
-	 * 将使用的读者集
+	 * 要使用的读卡器集
      *
      * @var \Dotenv\Repository\Adapter\ReaderInterface[]
      */
@@ -41,7 +41,7 @@ final class RepositoryBuilder
 
     /**
      * The set of writers to use.
-	 * 这是一套作家的用途
+	 * 要使用的书写器的集合
      *
      * @var \Dotenv\Repository\Adapter\WriterInterface[]
      */
@@ -49,6 +49,7 @@ final class RepositoryBuilder
 
     /**
      * Are we immutable?
+	 * 我们是不可变的吗？
      *
      * @var bool
      */
@@ -64,7 +65,7 @@ final class RepositoryBuilder
 
     /**
      * Create a new repository builder instance.
-	 * 创建一个新的存储库生成器实例
+	 * 创建一个新的存储库构建器实例
      *
      * @param \Dotenv\Repository\Adapter\ReaderInterface[] $readers
      * @param \Dotenv\Repository\Adapter\WriterInterface[] $writers
@@ -83,7 +84,7 @@ final class RepositoryBuilder
 
     /**
      * Create a new repository builder instance with no adapters added.
-	 * 创建一个新的存储库生成器实例,没有添加适配器
+	 * 创建没有添加适配器的新存储库构建器实例
      *
      * @return \Dotenv\Repository\RepositoryBuilder
      */
@@ -94,7 +95,7 @@ final class RepositoryBuilder
 
     /**
      * Create a new repository builder instance with the default adapters added.
-	 * 使用默认适配器添加新的存储库生成器实例
+	 * 创建一个添加了默认适配器的新存储库构建器实例
      *
      * @return \Dotenv\Repository\RepositoryBuilder
      */
@@ -107,7 +108,7 @@ final class RepositoryBuilder
 
     /**
      * Return the array of default adapters.
-	 * 返回默认适配器的数组
+	 * 返回默认适配器数组
      *
      * @return \Generator<\Dotenv\Repository\Adapter\AdapterInterface>
      */
@@ -123,7 +124,7 @@ final class RepositoryBuilder
 
     /**
      * Determine if the given name if of an adapterclass.
-	 * 确定给定名称是否在适配器类中
+	 * 确定给定的名称是否属于适配器类
      *
      * @param string $name
      *
@@ -140,7 +141,7 @@ final class RepositoryBuilder
 
     /**
      * Creates a repository builder with the given reader added.
-	 * 创建带有给定阅读器的存储库生成器。
+	 * 创建添加了给定读取器的存储库构建器。
      *
      * Accepts either a reader instance, or a class-string for an adapter. If
      * the adapter is not supported, then we silently skip adding it.
@@ -174,7 +175,7 @@ final class RepositoryBuilder
 
     /**
      * Creates a repository builder with the given writer added.
-	 * 创建带有给定作者的存储库生成器。
+	 * 创建添加了给定编写器的存储库构建器。
      *
      * Accepts either a writer instance, or a class-string for an adapter. If
      * the adapter is not supported, then we silently skip adding it.
@@ -208,7 +209,7 @@ final class RepositoryBuilder
 
     /**
      * Creates a repository builder with the given adapter added.
-	 * 创建带有给定适配器的存储库生成器。
+	 * 创建添加了给定适配器的存储库构建器。
      *
      * Accepts either an adapter instance, or a class-string for an adapter. If
      * the adapter is not supported, then we silently skip adding it. We will
@@ -244,7 +245,7 @@ final class RepositoryBuilder
 
     /**
      * Creates a repository builder with mutability enabled.
-	 * 创建具有可变性的存储库生成器。
+	 * 创建启用了可变性的存储库构建器
      *
      * @return \Dotenv\Repository\RepositoryBuilder
      */
@@ -255,7 +256,7 @@ final class RepositoryBuilder
 
     /**
      * Creates a repository builder with the given allow list.
-	 * 创建一个带有给定列表的存储库生成器。
+	 * 使用给定的允许列表创建存储库构建器
      *
      * @param string[]|null $allowList
      *

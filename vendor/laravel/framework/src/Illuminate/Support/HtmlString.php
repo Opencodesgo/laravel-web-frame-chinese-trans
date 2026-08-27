@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，HTML 字符串
+ * Illuminate, 支持, Html 字符串
  */
 
 namespace Illuminate\Support;
@@ -11,7 +11,7 @@ class HtmlString implements Htmlable
 {
     /**
      * The HTML string.
-	 * HTML字符串
+	 * Html字符串
      *
      * @var string
      */
@@ -64,7 +64,7 @@ class HtmlString implements Htmlable
 
     /**
      * Get the HTML string.
-	 * 获取HTML字符串
+	 * 得到Html字符串
      *
      * @return string
      */

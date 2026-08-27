@@ -9,7 +9,7 @@ interface Hasher
 {
     /**
      * Get information about the given hashed value.
-	 * 获取有关给定散列值的信息
+	 * 得到有关散列值信息
      *
      * @param  string  $hashedValue
      * @return array
@@ -18,7 +18,7 @@ interface Hasher
 
     /**
      * Hash the given value.
-	 * 哈希给定值
+	 * 对给定值进行散列
      *
      * @param  string  $value
      * @param  array  $options

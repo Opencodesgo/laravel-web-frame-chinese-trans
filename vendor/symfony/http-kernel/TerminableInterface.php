@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，终端接口
+ * Symfony，Component，HttpKernel，有期限的接口
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Terminable extends the Kernel request/response cycle with dispatching a post
  * response event after sending the response and before shutting down the kernel.
- * Terminable通过调度扩展内核请求/响应周期。
+ * Terminable通过发送在发送响应之后和关闭内核之前post响应事件扩展内核请求/响应周期。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Pierre Minnieur <pierre.minnieur@sensiolabs.de>
@@ -29,9 +29,12 @@ interface TerminableInterface
 {
     /**
      * Terminates a request/response cycle.
-	 * 终止请求/响应周期
+	 * 终止请求/响应周期。
      *
      * Should be called after sending the response and before shutting down the kernel.
+	 * 应该在发送响应之后和关闭内核之前调用。
+     *
+     * @return void
      */
     public function terminate(Request $request, Response $response);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，请求
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -24,7 +24,7 @@ class {{ class }} extends FormRequest
      * Get the validation rules that apply to the request.
 	 * 获取应用于请求的验证规则
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {

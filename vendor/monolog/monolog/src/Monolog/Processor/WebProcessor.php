@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理器，Web 处理程序
- *
+ * Monolog，处理器，Web 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,7 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Injects url/method and remote IP of the current web request in all records
- * 在所有记录中输入当前web请求的url /方法和远程IP
+ * 在所有记录中注入当前web请求的url/方法和远程IP
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */

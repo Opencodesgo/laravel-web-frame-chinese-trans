@@ -21,7 +21,7 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate that the PHP DateTime extension encountered an exception/error
- * 抛出,以表明PHP DateTime扩展遇到异常/错误
+ * 抛出以指示PHP DateTime扩展遇到异常/错误
  */
 class DateTimeException extends PhpRuntimeException implements UuidExceptionInterface
 {

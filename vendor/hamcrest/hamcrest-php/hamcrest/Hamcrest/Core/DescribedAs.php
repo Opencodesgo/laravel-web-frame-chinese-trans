@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，被描述为
+ * Hamcrest，核心，Described As
  */
 
 namespace Hamcrest\Core;
@@ -14,7 +14,7 @@ use Hamcrest\Matcher;
 
 /**
  * Provides a custom description to another matcher.
- * 为另一个匹配器提供自定义描述。
+ * 为另一个matcher提供一个自定义描述。
  */
 class DescribedAs extends BaseMatcher
 {
@@ -58,7 +58,7 @@ class DescribedAs extends BaseMatcher
 
     /**
      * Wraps an existing matcher and overrides the description when it fails.
-	 * 包装现有匹配器，并在其失败时覆盖描述。
+	 * 包装现有的matcher,并在失败时重写描述。
      *
      * @factory ...
      */

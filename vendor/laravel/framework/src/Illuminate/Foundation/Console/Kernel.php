@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，内核
+ * Illuminate，基础，控制台，内核核心类
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Carbon\CarbonInterval;
 use Closure;
+use DateTimeInterface;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
@@ -14,7 +16,9 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Env;
+use Illuminate\Support\InteractsWithTime;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
@@ -22,9 +26,11 @@ use Throwable;
 
 class Kernel implements KernelContract
 {
+    use InteractsWithTime;
+
     /**
      * The application implementation.
-	 * 应用模式
+	 * 应用实现
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -48,7 +54,7 @@ class Kernel implements KernelContract
 
     /**
      * The Artisan commands provided by the application.
-	 * 应用程序提供的Artisan命令
+	 * Artisan应用程序提供的命令
      *
      * @var array
      */
@@ -61,6 +67,22 @@ class Kernel implements KernelContract
      * @var bool
      */
     protected $commandsLoaded = false;
+
+    /**
+     * All of the registered command duration handlers.
+	 * 所有已注册的命令持续时间处理程序
+     *
+     * @var array
+     */
+    protected $commandLifecycleDurationHandlers = [];
+
+    /**
+     * When the currently handled command started.
+	 * 当前处理的命令启动的时间
+     *
+     * @var \Illuminate\Support\Carbon|null
+     */
+    protected $commandStartedAt;
 
     /**
      * The bootstrap classes for the application.
@@ -128,7 +150,7 @@ class Kernel implements KernelContract
 
     /**
      * Run the console application.
-	 * 运行控制台应用
+	 * 运行控制台应用程序
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface|null  $output
@@ -136,7 +158,13 @@ class Kernel implements KernelContract
      */
     public function handle($input, $output = null)
     {
+        $this->commandStartedAt = Carbon::now();
+
         try {
+            if (in_array($input->getFirstArgument(), ['env:encrypt', 'env:decrypt'], true)) {
+                $this->bootstrapWithoutBootingProviders();
+            }
+
             $this->bootstrap();
 
             return $this->getArtisan()->run($input, $output);
@@ -151,7 +179,7 @@ class Kernel implements KernelContract
 
     /**
      * Terminate the application.
-	 * 终止应用
+	 * 终止应用程序
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  int  $status
@@ -160,6 +188,51 @@ class Kernel implements KernelContract
     public function terminate($input, $status)
     {
         $this->app->terminate();
+
+        foreach ($this->commandLifecycleDurationHandlers as ['threshold' => $threshold, 'handler' => $handler]) {
+            $end ??= Carbon::now();
+
+            if ($this->commandStartedAt->diffInMilliseconds($end) > $threshold) {
+                $handler($this->commandStartedAt, $input, $status);
+            }
+        }
+
+        $this->commandStartedAt = null;
+    }
+
+    /**
+     * Register a callback to be invoked when the command lifecycle duration exceeds a given amount of time.
+	 * 注册一个回调，以便在命令生命周期持续时间超过给定时间时调用。
+     *
+     * @param  \DateTimeInterface|\Carbon\CarbonInterval|float|int  $threshold
+     * @param  callable  $handler
+     * @return void
+     */
+    public function whenCommandLifecycleIsLongerThan($threshold, $handler)
+    {
+        $threshold = $threshold instanceof DateTimeInterface
+            ? $this->secondsUntil($threshold) * 1000
+            : $threshold;
+
+        $threshold = $threshold instanceof CarbonInterval
+            ? $threshold->totalMilliseconds
+            : $threshold;
+
+        $this->commandLifecycleDurationHandlers[] = [
+            'threshold' => $threshold,
+            'handler' => $handler,
+        ];
+    }
+
+    /**
+     * When the command being handled started.
+	 * 正在处理的命令何时启动
+     *
+     * @return \Illuminate\Support\Carbon|null
+     */
+    public function commandStartedAt()
+    {
+        return $this->commandStartedAt;
     }
 
     /**
@@ -279,6 +352,10 @@ class Kernel implements KernelContract
      */
     public function call($command, array $parameters = [], $outputBuffer = null)
     {
+        if (in_array($command, ['env:encrypt', 'env:decrypt'], true)) {
+            $this->bootstrapWithoutBootingProviders();
+        }
+
         $this->bootstrap();
 
         return $this->getArtisan()->call($command, $parameters, $outputBuffer);
@@ -345,6 +422,21 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Bootstrap the application without booting service providers.
+	 * 在不引导服务提供者的情况下引导应用程序
+     *
+     * @return void
+     */
+    public function bootstrapWithoutBootingProviders()
+    {
+        $this->app->bootstrapWith(
+            collect($this->bootstrappers())->reject(function ($bootstrapper) {
+                return $bootstrapper === \Illuminate\Foundation\Bootstrap\BootProviders::class;
+            })->all()
+        );
+    }
+
+    /**
      * Get the Artisan application instance.
 	 * 获取Artisan应用程序实例
      *
@@ -353,8 +445,9 @@ class Kernel implements KernelContract
     protected function getArtisan()
     {
         if (is_null($this->artisan)) {
-            return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
-                                ->resolveCommands($this->commands);
+            $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
+                                    ->resolveCommands($this->commands)
+                                    ->setContainerCommandLoader();
         }
 
         return $this->artisan;
@@ -397,7 +490,7 @@ class Kernel implements KernelContract
 
     /**
      * Render the given exception.
-	 * 呈现给定异常
+	 * 呈现给定的异常
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Throwable  $e

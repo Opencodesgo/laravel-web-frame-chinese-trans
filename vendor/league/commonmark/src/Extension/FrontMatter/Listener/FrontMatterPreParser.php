@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，监听器，前端渲染侦听器
+ * League，CommonMark，扩展，前言，监听器，前文预解析器
  */
 
 /*

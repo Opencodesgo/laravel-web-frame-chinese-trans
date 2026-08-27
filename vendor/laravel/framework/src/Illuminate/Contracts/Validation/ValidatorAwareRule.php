@@ -9,7 +9,7 @@ interface ValidatorAwareRule
 {
     /**
      * Set the current validator.
-	 * 设置当前验证器
+	 * 设置当前验证程序
      *
      * @param  \Illuminate\Validation\Validator  $validator
      * @return $this

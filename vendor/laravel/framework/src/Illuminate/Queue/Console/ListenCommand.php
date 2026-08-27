@@ -8,7 +8,9 @@ namespace Illuminate\Queue\Console;
 use Illuminate\Console\Command;
 use Illuminate\Queue\Listener;
 use Illuminate\Queue\ListenerOptions;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'queue:listen')]
 class ListenCommand extends Command
 {
     /**
@@ -26,12 +28,26 @@ class ListenCommand extends Command
                             {--memory=128 : The memory limit in megabytes}
                             {--queue= : The queue to listen on}
                             {--sleep=3 : Number of seconds to sleep when no job is available}
+                            {--rest=0 : Number of seconds to rest between jobs}
                             {--timeout=60 : The number of seconds a child process can run}
                             {--tries=1 : Number of times to attempt a job before logging it failed}';
 
     /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'queue:listen';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -39,7 +55,7 @@ class ListenCommand extends Command
 
     /**
      * The queue listener instance.
-	 * 队列监听器实例
+	 * 队列侦听器实例
      *
      * @var \Illuminate\Queue\Listener
      */
@@ -70,10 +86,12 @@ class ListenCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要为在队列中设置的连接获得正确的队列应用程序的配置文件
+		// 我们需要为连接获得正确的队列。
         $queue = $this->getQueue(
             $connection = $this->input->getArgument('connection')
         );
+
+        $this->components->info(sprintf('Processing jobs from the [%s] %s.', $queue, str('queue')->plural(explode(',', $queue))));
 
         $this->listener->listen(
             $connection, $queue, $this->gatherOptions()
@@ -82,7 +100,7 @@ class ListenCommand extends Command
 
     /**
      * Get the name of the queue connection to listen on.
-	 * 获取要监听的队列连接的名称
+	 * 获取要侦听的队列连接的名称
      *
      * @param  string  $connection
      * @return string
@@ -98,7 +116,7 @@ class ListenCommand extends Command
 
     /**
      * Get the listener options for the command.
-	 * 得到该命令的侦听器选项
+	 * 获取该命令的侦听器选项
      *
      * @return \Illuminate\Queue\ListenerOptions
      */
@@ -109,20 +127,21 @@ class ListenCommand extends Command
                 : $this->option('delay');
 
         return new ListenerOptions(
-            $this->option('name'),
-            $this->option('env'),
-            $backoff,
-            $this->option('memory'),
-            $this->option('timeout'),
-            $this->option('sleep'),
-            $this->option('tries'),
-            $this->option('force')
+            name: $this->option('name'),
+            environment: $this->option('env'),
+            backoff: $backoff,
+            memory: $this->option('memory'),
+            timeout: $this->option('timeout'),
+            sleep: $this->option('sleep'),
+            rest: $this->option('rest'),
+            maxTries: $this->option('tries'),
+            force: $this->option('force')
         );
     }
 
     /**
      * Set the options on the queue listener.
-	 * 设置队列监听器上的选项
+	 * 设置队列侦听器上的选项
      *
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void

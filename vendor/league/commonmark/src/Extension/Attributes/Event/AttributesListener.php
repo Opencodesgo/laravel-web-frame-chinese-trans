@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Extension，属性，事件，属性侦听器
+ * League，CommonMark，扩展，属性，事件，属性侦听器
  */
 
 /*
@@ -32,6 +32,19 @@ final class AttributesListener
     private const DIRECTION_PREFIX = 'prefix';
     private const DIRECTION_SUFFIX = 'suffix';
 
+    /** @var list<string> */
+    private array $allowList;
+    private bool $allowUnsafeLinks;
+
+    /**
+     * @param list<string> $allowList
+     */
+    public function __construct(array $allowList = [], bool $allowUnsafeLinks = true)
+    {
+        $this->allowList        = $allowList;
+        $this->allowUnsafeLinks = $allowUnsafeLinks;
+    }
+
     public function processDocument(DocumentParsedEvent $event): void
     {
         foreach ($event->getDocument()->iterator() as $node) {
@@ -53,7 +66,7 @@ final class AttributesListener
                     $attributes = AttributesHelper::mergeAttributes($node->getAttributes(), $target);
                 }
 
-                $target->data->set('attributes', $attributes);
+                $target->data->set('attributes', AttributesHelper::filterAttributes($attributes, $this->allowList, $this->allowUnsafeLinks));
             }
 
             $node->detach();
@@ -107,7 +120,6 @@ final class AttributesListener
 
     /**
      * Get any previous block (sibling or parent) this might apply to
-	 * 获取任何可能应用于之前的块(兄弟姐妹或父块)
      */
     private static function getPrevious(?Node $node = null): ?Node
     {
@@ -126,7 +138,6 @@ final class AttributesListener
 
     /**
      * Get any previous block (sibling or parent) this might apply to
-	 * 获取可能适用于的任何先前块（兄弟或父块）
      */
     private static function getNext(?Node $node = null): ?Node
     {

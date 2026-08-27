@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，Eloquent 用户提供者
+ * Illuminate，认证，Eloquent用户提供者
  */
 
 namespace Illuminate\Auth;
@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Str;
 
 class EloquentUserProvider implements UserProvider
 {
@@ -24,15 +23,23 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * The Eloquent user model.
-	 * Eloquent 用户模型
+	 * Eloquent用户模型
      *
      * @var string
      */
     protected $model;
 
     /**
+     * The callback that may modify the user retrieval queries.
+	 * 可能修改用户检索查询的回调
+     *
+     * @var (\Closure(\Illuminate\Database\Eloquent\Builder):mixed)|null
+     */
+    protected $queryCallback;
+
+    /**
      * Create a new database user provider.
-	 * 创建新的数据库用户提供者
+	 * 创建新的数据库用户提供程序
      *
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
      * @param  string  $model
@@ -46,7 +53,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier.
-	 * 根据用户的唯一标识符检索用户
+	 * 检索用户根据用户的唯一标识符
      *
      * @param  mixed  $identifier
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -62,7 +69,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
-	 * 根据用户的唯一标识符和"记住我"令牌检索用户
+	 * 检索用户根据用户的唯一标识符和"记住我"令牌
      *
      * @param  mixed  $identifier
      * @param  string  $token
@@ -89,7 +96,7 @@ class EloquentUserProvider implements UserProvider
      * Update the "remember me" token for the given user in storage.
 	 * 更新存储中给定用户的"记住我"令牌
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable|\Illuminate\Database\Eloquent\Model  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $token
      * @return void
      */
@@ -108,30 +115,29 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by the given credentials.
-	 * 根据给定的凭据检索用户
+	 * 检索用户根据给定的凭据
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByCredentials(array $credentials)
     {
-        if (empty($credentials) ||
-           (count($credentials) === 1 &&
-            Str::contains($this->firstCredentialKey($credentials), 'password'))) {
+        $credentials = array_filter(
+            $credentials,
+            fn ($key) => ! str_contains($key, 'password'),
+            ARRAY_FILTER_USE_KEY
+        );
+
+        if (empty($credentials)) {
             return;
         }
 
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // Eloquent User "model" that will be utilized by the Guard instances.
-		// 首先，我们将每个凭据元素作为where子句添加到查询中。
         $query = $this->newModelQuery();
 
         foreach ($credentials as $key => $value) {
-            if (Str::contains($key, 'password')) {
-                continue;
-            }
-
             if (is_array($value) || $value instanceof Arrayable) {
                 $query->whereIn($key, $value);
             } elseif ($value instanceof Closure) {
@@ -145,20 +151,6 @@ class EloquentUserProvider implements UserProvider
     }
 
     /**
-     * Get the first key from the credential array.
-	 * 从凭据数组中获取第一个密钥
-     *
-     * @param  array  $credentials
-     * @return string|null
-     */
-    protected function firstCredentialKey(array $credentials)
-    {
-        foreach ($credentials as $key => $value) {
-            return $key;
-        }
-    }
-
-    /**
      * Validate a user against the given credentials.
 	 * 根据给定的凭据验证用户
      *
@@ -168,7 +160,9 @@ class EloquentUserProvider implements UserProvider
      */
     public function validateCredentials(UserContract $user, array $credentials)
     {
-        $plain = $credentials['password'];
+        if (is_null($plain = $credentials['password'])) {
+            return false;
+        }
 
         return $this->hasher->check($plain, $user->getAuthPassword());
     }
@@ -182,14 +176,18 @@ class EloquentUserProvider implements UserProvider
      */
     protected function newModelQuery($model = null)
     {
-        return is_null($model)
+        $query = is_null($model)
                 ? $this->createModel()->newQuery()
                 : $model->newQuery();
+
+        with($query, $this->queryCallback);
+
+        return $query;
     }
 
     /**
      * Create a new instance of the model.
-	 * 创建模型的新实例
+	 * 创建新的模型实例
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -202,7 +200,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Gets the hasher implementation.
-	 * 获取哈希实现
+	 * 获取哈希的实现
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */
@@ -246,6 +244,31 @@ class EloquentUserProvider implements UserProvider
     public function setModel($model)
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * Get the callback that modifies the query before retrieving users.
+	 * 获取在检索用户之前修改查询的回调
+     *
+     * @return \Closure|null
+     */
+    public function getQueryCallback()
+    {
+        return $this->queryCallback;
+    }
+
+    /**
+     * Sets the callback to modify the query before retrieving users.
+	 * 设置回调，以便在检索用户之前修改查询
+     *
+     * @param  (\Closure(\Illuminate\Database\Eloquent\Builder):mixed)|null  $queryCallback
+     * @return $this
+     */
+    public function withQuery($queryCallback = null)
+    {
+        $this->queryCallback = $queryCallback;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件，查看事件
+ * Symfony，Component，HttpKernel，事件，视图事件
  */
 
 /*
@@ -29,39 +29,23 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 final class ViewEvent extends RequestEvent
 {
-    /**
-     * The return value of the controller.
-	 * 控制器的返回值
-     *
-     * @var mixed
-     */
-    private $controllerResult;
+    public readonly ?ControllerArgumentsEvent $controllerArgumentsEvent;
+    private mixed $controllerResult;
 
-    public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, $controllerResult)
+    public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, mixed $controllerResult, ?ControllerArgumentsEvent $controllerArgumentsEvent = null)
     {
         parent::__construct($kernel, $request, $requestType);
 
         $this->controllerResult = $controllerResult;
+        $this->controllerArgumentsEvent = $controllerArgumentsEvent;
     }
 
-    /**
-     * Returns the return value of the controller.
-	 * 返回控制器的返回值
-     *
-     * @return mixed
-     */
-    public function getControllerResult()
+    public function getControllerResult(): mixed
     {
         return $this->controllerResult;
     }
 
-    /**
-     * Assigns the return value of the controller.
-	 * 分配控制器的返回值
-     *
-     * @param mixed $controllerResult The controller return value
-     */
-    public function setControllerResult($controllerResult): void
+    public function setControllerResult(mixed $controllerResult): void
     {
         $this->controllerResult = $controllerResult;
     }

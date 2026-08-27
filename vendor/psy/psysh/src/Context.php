@@ -16,7 +16,7 @@ namespace Psy;
 
 /**
  * The Shell execution context.
- * Shell执行上下文。
+ * Shell执行上下文
  *
  * This class encapsulates the current variables, most recent return value and
  * exception, and the current namespace.
@@ -129,7 +129,7 @@ class Context
 
     /**
      * Set all scope variables.
-	 * 设置所有作用域变量
+	 * 设置所有作用域变量。
      *
      * This method does *not* set any of the magic variables: $_, $_e, $__out,
      * $__class, $__file, etc.

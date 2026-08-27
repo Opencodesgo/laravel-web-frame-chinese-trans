@@ -11,7 +11,7 @@ trait CreatesUserProviders
 {
     /**
      * The registered custom provider creators.
-	 * 注册的自定义提供程序创建者
+	 * 已注册自定义提供程序创建者
      *
      * @var array
      */
@@ -38,16 +38,13 @@ trait CreatesUserProviders
             );
         }
 
-        switch ($driver) {
-            case 'database':
-                return $this->createDatabaseProvider($config);
-            case 'eloquent':
-                return $this->createEloquentProvider($config);
-            default:
-                throw new InvalidArgumentException(
-                    "Authentication user provider [{$driver}] is not defined."
-                );
-        }
+        return match ($driver) {
+            'database' => $this->createDatabaseProvider($config),
+            'eloquent' => $this->createEloquentProvider($config),
+            default => throw new InvalidArgumentException(
+                "Authentication user provider [{$driver}] is not defined."
+            ),
+        };
     }
 
     /**
@@ -92,7 +89,7 @@ trait CreatesUserProviders
 
     /**
      * Get the default user provider name.
-	 * 获取默认用户提供者名称
+	 * 获取默认用户提供程序名称
      *
      * @return string
      */

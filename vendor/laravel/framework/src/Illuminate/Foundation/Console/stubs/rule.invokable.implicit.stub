@@ -1,0 +1,33 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，根据需要实际修改
+ */
+
+namespace {{ namespace }};
+
+use Illuminate\Contracts\Validation\InvokableRule;
+
+class {{ class }} implements InvokableRule
+{
+    /**
+     * Indicates whether the rule should be implicit.
+	 * 指示规则是否应该是隐式的
+     *
+     * @var bool
+     */
+    public $implicit = true;
+
+    /**
+     * Run the validation rule.
+	 * 运行验证规则
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @return void
+     */
+    public function __invoke($attribute, $value, $fail)
+    {
+        //
+    }
+}

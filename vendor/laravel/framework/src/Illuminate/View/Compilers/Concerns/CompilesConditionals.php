@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，编译条件式
+ * Illuminate，视图，编译器，问题，编译条件
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -11,7 +11,7 @@ trait CompilesConditionals
 {
     /**
      * Identifier for the first case in the switch statement.
-	 * switch语句中第一个case的标识符
+	 * witch语句中第一个case的标识符
      *
      * @var bool
      */
@@ -333,5 +333,90 @@ trait CompilesConditionals
     public function compileEndOnce()
     {
         return '<?php endif; ?>';
+    }
+
+    /**
+     * Compile a selected block into valid PHP.
+	 * 将选定的块编译为有效的PHP
+     *
+     * @param  string  $condition
+     * @return string
+     */
+    protected function compileSelected($condition)
+    {
+        return "<?php if{$condition}: echo 'selected'; endif; ?>";
+    }
+
+    /**
+     * Compile a checked block into valid PHP.
+	 * 将选中的块编译成有效的PHP
+     *
+     * @param  string  $condition
+     * @return string
+     */
+    protected function compileChecked($condition)
+    {
+        return "<?php if{$condition}: echo 'checked'; endif; ?>";
+    }
+
+    /**
+     * Compile a disabled block into valid PHP.
+	 * 将一个禁用的块编译成有效的PHP
+     *
+     * @param  string  $condition
+     * @return string
+     */
+    protected function compileDisabled($condition)
+    {
+        return "<?php if{$condition}: echo 'disabled'; endif; ?>";
+    }
+
+    /**
+     * Compile a required block into valid PHP.
+	 * 将所需的块编译为有效的PHP
+     *
+     * @param  string  $condition
+     * @return string
+     */
+    protected function compileRequired($condition)
+    {
+        return "<?php if{$condition}: echo 'required'; endif; ?>";
+    }
+
+    /**
+     * Compile a readonly block into valid PHP.
+	 * 将一个只读块编译成有效的PHP
+     *
+     * @param  string  $condition
+     * @return string
+     */
+    protected function compileReadonly($condition)
+    {
+        return "<?php if{$condition}: echo 'readonly'; endif; ?>";
+    }
+
+    /**
+     * Compile the push statements into valid PHP.
+	 * 将push语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compilePushIf($expression)
+    {
+        $parts = explode(',', $this->stripParentheses($expression), 2);
+
+        return "<?php if({$parts[0]}): \$__env->startPush({$parts[1]}); ?>";
+    }
+
+    /**
+     * Compile the end-push statements into valid PHP.
+	 * 将end-push语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndPushIf()
+    {
+        return '<?php $__env->stopPush(); endif; ?>';
     }
 }

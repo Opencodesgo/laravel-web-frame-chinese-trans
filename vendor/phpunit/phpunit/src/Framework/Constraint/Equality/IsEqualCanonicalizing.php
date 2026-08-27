@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，是否相等并规范化
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -35,6 +40,7 @@ final class IsEqualCanonicalizing extends Constraint
 
     /**
      * Evaluates the constraint for parameter $other.
+	 * 计算参数$other的约束。
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -85,6 +91,7 @@ final class IsEqualCanonicalizing extends Constraint
 
     /**
      * Returns a string representation of the constraint.
+	 * 返回约束的字符串表示形式
      *
      * @throws InvalidArgumentException
      */

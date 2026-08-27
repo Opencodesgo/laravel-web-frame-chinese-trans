@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，Extension，扩展接口
+ * League，CommonMark，扩展，扩展接口
  */
 
 declare(strict_types=1);

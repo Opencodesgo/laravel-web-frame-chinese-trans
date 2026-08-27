@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，属性，作为控制器
+ * Symfony，Component，HttpKernel，属性，AsController
  */
 
 /*
@@ -15,10 +15,14 @@
 namespace Symfony\Component\HttpKernel\Attribute;
 
 /**
- * Service tag to autoconfigure controllers.
- * Service标签来自动配置控制器
+ * Autoconfigures controllers as services by applying
+ * the `controller.service_arguments` tag to them.
+ * 通过应用将控制器自动配置为服务
+ *
+ * This enables injecting services as method arguments in addition
+ * to other conventional dependency injection strategies.
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_FUNCTION)]
 class AsController
 {
     public function __construct()

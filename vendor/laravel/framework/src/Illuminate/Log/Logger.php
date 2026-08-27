@@ -41,7 +41,7 @@ class Logger implements LoggerInterface
 
     /**
      * Create a new log writer instance.
-	 * 创建一个新的日志写入器实例
+	 * 创建新的日志写入器实例
      *
      * @param  \Psr\Log\LoggerInterface  $logger
      * @param  \Illuminate\Contracts\Events\Dispatcher|null  $dispatcher
@@ -57,11 +57,11 @@ class Logger implements LoggerInterface
      * Log an emergency message to the logs.
 	 * 将紧急消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -70,11 +70,11 @@ class Logger implements LoggerInterface
      * Log an alert message to the logs.
 	 * 将警报消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -83,11 +83,11 @@ class Logger implements LoggerInterface
      * Log a critical message to the logs.
 	 * 将关键消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -96,11 +96,11 @@ class Logger implements LoggerInterface
      * Log an error message to the logs.
 	 * 将错误消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -109,11 +109,11 @@ class Logger implements LoggerInterface
      * Log a warning message to the logs.
 	 * 将警告消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -122,11 +122,11 @@ class Logger implements LoggerInterface
      * Log a notice to the logs.
 	 * 将通知记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -135,11 +135,11 @@ class Logger implements LoggerInterface
      * Log an informational message to the logs.
 	 * 将信息消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -148,11 +148,11 @@ class Logger implements LoggerInterface
      * Log a debug message to the logs.
 	 * 将调试消息记录到日志中
      *
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         $this->writeLog(__FUNCTION__, $message, $context);
     }
@@ -162,11 +162,11 @@ class Logger implements LoggerInterface
 	 * 将消息记录到日志中
      *
      * @param  string  $level
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         $this->writeLog($level, $message, $context);
     }
@@ -176,11 +176,11 @@ class Logger implements LoggerInterface
 	 * 动态地将日志调用传递给写入器
      *
      * @param  string  $level
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    public function write($level, $message, array $context = [])
+    public function write($level, $message, array $context = []): void
     {
         $this->writeLog($level, $message, $context);
     }
@@ -190,11 +190,11 @@ class Logger implements LoggerInterface
 	 * 向日志中写入消息
      *
      * @param  string  $level
-     * @param  string  $message
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
      * @param  array  $context
      * @return void
      */
-    protected function writeLog($level, $message, $context)
+    protected function writeLog($level, $message, $context): void
     {
         $this->logger->{$level}(
             $message = $this->formatMessage($message),
@@ -263,7 +263,7 @@ class Logger implements LoggerInterface
         // If the event dispatcher is set, we will pass along the parameters to the
         // log listeners. These are useful for building profilers or other tools
         // that aggregate all of the log messages for a given "request" cycle.
-		// 如果设置了事件分派器，我们将把参数传递给日志监听器。
+		// 如果设置了事件分派器，我们将把参数传递给日志侦听器。
         if (isset($this->dispatcher)) {
             $this->dispatcher->dispatch(new MessageLogged($level, $message, $context));
         }
@@ -273,8 +273,8 @@ class Logger implements LoggerInterface
      * Format the parameters for the logger.
 	 * 格式化日志记录器的参数
      *
-     * @param  mixed  $message
-     * @return mixed
+     * @param  \Illuminate\Contracts\Support\Arrayable|\Illuminate\Contracts\Support\Jsonable|\Illuminate\Support\Stringable|array|string  $message
+     * @return string
      */
     protected function formatMessage($message)
     {
@@ -286,7 +286,7 @@ class Logger implements LoggerInterface
             return var_export($message->toArray(), true);
         }
 
-        return $message;
+        return (string) $message;
     }
 
     /**

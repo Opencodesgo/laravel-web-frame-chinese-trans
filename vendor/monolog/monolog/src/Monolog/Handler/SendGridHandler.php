@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Send Grid 处理程序
- *
+ * Monolog，处理器，SendGrid 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 /**
  * SendGridrHandler uses the SendGrid API v2 function to send Log emails, more information in https://sendgrid.com/docs/API_Reference/Web_API/mail.html
- * SendGridrHandler使用SendGrid API v2函数发送日志邮件,更多信息。
+ * sendgridhandler使用SendGrid API v2函数发送日志邮件。
  *
  * @author Ricardo Fontanelli <ricardo.fontanelli@hotmail.com>
  */
@@ -39,7 +39,7 @@ class SendGridHandler extends MailHandler
 
     /**
      * The email addresses to which the message will be sent
-	 * 将发送消息的电子邮件地址
+	 * 邮件将被发送到的电子邮件地址
      * @var string
      */
     protected $from;
@@ -53,7 +53,6 @@ class SendGridHandler extends MailHandler
 
     /**
      * The subject of the email
-	 * 邮件的主题
      * @var string
      */
     protected $subject;

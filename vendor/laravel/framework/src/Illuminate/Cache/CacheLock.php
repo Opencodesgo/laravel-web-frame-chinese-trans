@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Cache 锁
+ * Illuminate，缓存，Cache锁
  */
 
 namespace Illuminate\Cache;
@@ -17,7 +17,7 @@ class CacheLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建新的锁实例
+	 * 创建新的锁定实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @param  string  $name
@@ -52,7 +52,7 @@ class CacheLock extends Lock
 
         return ($this->seconds > 0)
                 ? $this->store->put($this->name, $this->owner, $this->seconds)
-                : $this->store->forever($this->name, $this->owner, $this->seconds);
+                : $this->store->forever($this->name, $this->owner);
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，显示命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Show the code for an object, class, constant, method or property.
+ * 显示对象、类、常量、方法或属性的代码。
  */
 class ShowCommand extends ReflectingCommand
 {

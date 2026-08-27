@@ -16,7 +16,7 @@ namespace Symfony\Component\Finder;
 
 /**
  * Gitignore matches against text.
- * Gitignore匹配文本。
+ * Gitignore匹配文本
  *
  * @author Michael Voříšek <vorismi3@fel.cvut.cz>
  * @author Ahmed Abdou <mail@ahmd.io>
@@ -25,7 +25,7 @@ class Gitignore
 {
     /**
      * Returns a regexp which is the equivalent of the gitignore pattern.
-	 * 返回一个相当于gitignore模式的regexp
+	 * 返回一个相当于gitignore模式的regexp。
      *
      * Format specification: https://git-scm.com/docs/gitignore#_pattern_format
      */
@@ -48,7 +48,7 @@ class Gitignore
         foreach ($gitignoreLines as $line) {
             $line = preg_replace('~(?<!\\\\)[ \t]+$~', '', $line);
 
-            if ('!' === substr($line, 0, 1)) {
+            if (str_starts_with($line, '!')) {
                 $line = substr($line, 1);
                 $isNegative = true;
             } else {
@@ -84,9 +84,7 @@ class Gitignore
         }
 
         $regex = preg_quote(str_replace('\\', '', $gitignoreLine), '~');
-        $regex = preg_replace_callback('~\\\\\[((?:\\\\!)?)([^\[\]]*)\\\\\]~', function (array $matches): string {
-            return '['.('' !== $matches[1] ? '^' : '').str_replace('\\-', '-', $matches[2]).']';
-        }, $regex);
+        $regex = preg_replace_callback('~\\\\\[((?:\\\\!)?)([^\[\]]*)\\\\\]~', fn (array $matches): string => '['.('' !== $matches[1] ? '^' : '').str_replace('\\-', '-', $matches[2]).']', $regex);
         $regex = preg_replace('~(?:(?:\\\\\*){2,}(/?))+~', '(?:(?:(?!//).(?<!//))+$1)?', $regex);
         $regex = preg_replace('~\\\\\*~', '[^/]*', $regex);
         $regex = preg_replace('~\\\\\?~', '[^/]', $regex);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，翻译接口
+ * Symfony，Component，Translation，翻译程序接口
  */
 
 /*
@@ -16,14 +16,12 @@ namespace Symfony\Contracts\Translation;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @method string getLocale() Returns the default locale
  */
 interface TranslatorInterface
 {
     /**
      * Translates the given message.
-	 * 翻译给定的信息。
+	 * 翻译给定的消息。
      *
      * When a number is provided as a parameter named "%count%", the message is parsed for plural
      * forms and a translation is chosen according to this number using the following rules:
@@ -63,9 +61,13 @@ interface TranslatorInterface
      * @param string|null $domain     The domain for the message or null to use the default
      * @param string|null $locale     The locale or null to use the default
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If the locale contains invalid characters
      */
-    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null);
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string;
+
+    /**
+     * Returns the default locale.
+	 * 返回默认区域设置
+     */
+    public function getLocale(): string;
 }

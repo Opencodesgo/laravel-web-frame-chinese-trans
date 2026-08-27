@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，类中的枚举符
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Class Enumerator class.
+ * 类枚举器类。
  */
 class ClassEnumerator extends Enumerator
 {
@@ -54,6 +58,7 @@ class ClassEnumerator extends Enumerator
 
     /**
      * Filter a list of classes, interfaces or traits.
+	 * 筛选类、接口或特性的列表。
      *
      * If $internal or $user is defined, results will be limited to internal or
      * user-defined classes as appropriate.
@@ -105,6 +110,7 @@ class ClassEnumerator extends Enumerator
 
     /**
      * Prepare formatted class array.
+	 * 准备格式化的类数组
      *
      * @param array $classes
      *

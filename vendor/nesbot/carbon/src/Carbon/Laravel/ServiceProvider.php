@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Laravel，服务提供者
+ * Carbon，Laravel，服务提供者 
  */
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，自动连接，自动链接扩展
+ * League，CommonMark，扩展，自动连接，Autolink 扩展
  */
 
 declare(strict_types=1);

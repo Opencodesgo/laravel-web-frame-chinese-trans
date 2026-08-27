@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，常量匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * A constant name tab completion Matcher.
+ * 一个常量名称选项卡完成匹配器。
  *
  * This matcher provides completion for all defined constants.
  *

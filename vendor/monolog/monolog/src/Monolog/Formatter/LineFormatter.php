@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，Line 格式化
+ * Monolog，格式化，行格式化处理	(输出为单行字符串)
  */
 
 /*

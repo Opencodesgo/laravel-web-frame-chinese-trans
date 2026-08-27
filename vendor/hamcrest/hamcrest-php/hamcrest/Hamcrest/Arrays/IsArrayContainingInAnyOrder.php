@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组容器任何顺序
+ * Hamcrest，数组，是包含任意顺序的数组
  */
 
 namespace Hamcrest\Arrays;
@@ -14,7 +14,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains a set of items satisfying nested matchers.
- * 如果数组包含一组满足嵌套匹配器的项，则匹配。
+ * 匹配如果一个数组包含一组令人满意的嵌套解码器。
  */
 class IsArrayContainingInAnyOrder extends TypeSafeDiagnosingMatcher
 {
@@ -52,7 +52,7 @@ class IsArrayContainingInAnyOrder extends TypeSafeDiagnosingMatcher
 
     /**
      * An array with elements that match the given matchers.
-	 * 包含与给定匹配器匹配的元素的数组
+	 * 一种与给定的配准者相匹配的元素的数组
      *
      * @factory containsInAnyOrder ...
      */

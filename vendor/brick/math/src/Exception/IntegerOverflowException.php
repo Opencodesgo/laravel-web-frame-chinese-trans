@@ -11,15 +11,11 @@ use Brick\Math\BigInteger;
 
 /**
  * Exception thrown when an integer overflow occurs.
- * 发生整数溢出时引发的异常。
+ * 发生整数溢出时引发的异常
  */
 class IntegerOverflowException extends MathException
 {
     /**
-     * @param BigInteger $value
-     *
-     * @return IntegerOverflowException
-     *
      * @psalm-pure
      */
     public static function toIntOverflow(BigInteger $value) : IntegerOverflowException

@@ -46,8 +46,16 @@ class WithoutOverlapping
     public $prefix = 'laravel-queue-overlap:';
 
     /**
+     * Share the key across different jobs.
+	 * 在不同的工作中共享密钥
+     *
+     * @var bool
+     */
+    public $shareKey = false;
+
+    /**
      * Create a new middleware instance.
-	 * 创建一个新的中间件实例
+	 * 创建中间件实例
      *
      * @param  string  $key
      * @param  \DateTimeInterface|int|null  $releaseAfter
@@ -63,7 +71,7 @@ class WithoutOverlapping
 
     /**
      * Process the job.
-	 * 处理作业
+	 * 流程作业
      *
      * @param  mixed  $job
      * @param  callable  $next
@@ -117,7 +125,7 @@ class WithoutOverlapping
      * Set the maximum number of seconds that can elapse before the lock is released.
 	 * 设置在释放锁之前可以经过的最大秒数
      *
-     * @param  \DateTimeInterface|int  $expiresAfter
+     * @param  \DateTimeInterface|\DateInterval|int  $expiresAfter
      * @return $this
      */
     public function expireAfter($expiresAfter)
@@ -142,14 +150,29 @@ class WithoutOverlapping
     }
 
     /**
+     * Indicate that the lock key should be shared across job classes.
+	 * 指示锁键应该在作业类之间共享
+     *
+     * @return $this
+     */
+    public function shared()
+    {
+        $this->shareKey = true;
+
+        return $this;
+    }
+
+    /**
      * Get the lock key for the given job.
-	 * 得到给定工作的锁密钥
+	 * 获取给定工作的锁密钥
      *
      * @param  mixed  $job
      * @return string
      */
     public function getLockKey($job)
     {
-        return $this->prefix.get_class($job).':'.$this->key;
+        return $this->shareKey
+            ? $this->prefix.$this->key
+            : $this->prefix.get_class($job).':'.$this->key;
     }
 }

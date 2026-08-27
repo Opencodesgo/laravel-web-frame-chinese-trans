@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，下载器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ interface Downloader
 {
     /**
      * Set the directory where the download will be written to.
+	 * 设置将下载写入的目录
      *
      * @param string $tempDir
      */
@@ -31,11 +35,13 @@ interface Downloader
 
     /**
      * Get the temporary file name the download was written to.
+	 * 获取写入下载的临时文件名
      */
     public function getFilename(): string;
 
     /**
      * Delete the downloaded file if it exists.
+	 * 如果下载的文件存在，请删除。
      *
      * @return void
      */

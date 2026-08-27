@@ -1,0 +1,50 @@
+<?php
+/**
+ * Illuminate，基础，路由，预知控制器调度程序
+ */
+
+namespace Illuminate\Foundation\Routing;
+
+use Illuminate\Routing\ControllerDispatcher;
+use Illuminate\Routing\Route;
+use RuntimeException;
+
+class PrecognitionControllerDispatcher extends ControllerDispatcher
+{
+    /**
+     * Dispatch a request to a given controller and method.
+	 * 将请求分派给给定的控制器和方法
+     *
+     * @param  \Illuminate\Routing\Route  $route
+     * @param  mixed  $controller
+     * @param  string  $method
+     * @return void
+     */
+    public function dispatch(Route $route, $controller, $method)
+    {
+        $this->ensureMethodExists($controller, $method);
+
+        $this->resolveParameters($route, $controller, $method);
+
+        abort(204);
+    }
+
+    /**
+     * Ensure that the given method exists on the controller.
+	 * 确保给定的方法在控制器上存在
+     *
+     * @param  object  $controller
+     * @param  string  $method
+     * @return $this
+     */
+    protected function ensureMethodExists($controller, $method)
+    {
+        if (method_exists($controller, $method)) {
+            return $this;
+        }
+
+        $class = $controller::class;
+
+        throw new RuntimeException("Attempting to predict the outcome of the [{$class}::{$method}()] method but the method is not defined.");
+    }
+}

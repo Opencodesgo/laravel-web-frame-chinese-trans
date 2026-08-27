@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，Html 可伸缩的
+ * Nette，Html Stringable
  */
 
 /**
@@ -17,6 +17,7 @@ interface HtmlStringable
 {
 	/**
 	 * Returns string in HTML format
+	 * 返回HTML格式的字符串
 	 */
 	function __toString(): string;
 }

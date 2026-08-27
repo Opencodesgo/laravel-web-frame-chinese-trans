@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，Mo 文件转储器
+ * Symfony，Component，Translation，转存器，Mo 文件转储
  */
 
 /*
@@ -19,16 +19,13 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * MoFileDumper generates a gettext formatted string representation of a message catalogue.
- * MoFileDumper生成消息目录的一个gettext格式的字符串表示。
+ * MoFileDumper生成消息目录的gettext格式字符串表示形式。
  *
  * @author Stealth35
  */
 class MoFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $sources = $targets = $sourceOffsets = $targetOffsets = '';
         $offsets = [];
@@ -61,7 +58,7 @@ class MoFileDumper extends FileDumper
                           .$this->writeLong($offset[2] + $sourcesStart + $sourcesSize);
         }
 
-        $output = implode('', array_map([$this, 'writeLong'], $header))
+        $output = implode('', array_map($this->writeLong(...), $header))
                .$sourceOffsets
                .$targetOffsets
                .$sources
@@ -71,15 +68,12 @@ class MoFileDumper extends FileDumper
         return $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'mo';
     }
 
-    private function writeLong($str): string
+    private function writeLong(mixed $str): string
     {
         return pack('V*', $str);
     }

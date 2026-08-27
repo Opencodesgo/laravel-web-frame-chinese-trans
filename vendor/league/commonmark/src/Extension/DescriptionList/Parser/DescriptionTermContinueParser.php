@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，描述表，解析器，描述继续解析器
+ * League，CommonMark，扩展，描述列表，解析器，术语继续解析器
  */
 
 declare(strict_types=1);

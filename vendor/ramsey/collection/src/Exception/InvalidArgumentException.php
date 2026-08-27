@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，异常，无效参数异常
+ * Ramsey，集合，异常，无效的属性或方法
  */
 
 /**
@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection\Exception;
 
+use InvalidArgumentException as PhpInvalidArgumentException;
+
 /**
  * Thrown to indicate an argument is not of the expected type.
  * 抛出以指示参数不属于预期类型。
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidArgumentException extends PhpInvalidArgumentException implements CollectionException
 {
 }

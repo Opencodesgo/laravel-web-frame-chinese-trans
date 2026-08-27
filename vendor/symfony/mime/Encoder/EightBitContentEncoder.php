@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，编码器，8位内容编码器
+ * Symfony，Component，Mime，译码器，8位内容编码器
  */
 
 /*

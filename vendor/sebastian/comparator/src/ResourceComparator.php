@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，资源比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -13,11 +18,13 @@ use function is_resource;
 
 /**
  * Compares resources for equality.
+ * 比较资源是否平等。
  */
 class ResourceComparator extends Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器是否可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare

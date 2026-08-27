@@ -24,7 +24,7 @@ function describe_type($input): string
 
 /**
  * Parses an array of header lines into an associative array of headers.
- * 将标题行数组解析成一个关联数组的头
+ * 将标题行的数组解析为标题的关联数组。
  *
  * @param iterable $lines Header lines array of strings in the following
  *                        format: "Name: Value"
@@ -38,7 +38,7 @@ function headers_from_lines(iterable $lines): array
 
 /**
  * Returns a debug stream based on the provided variable.
- * 根据所提供的变量返回一个调试流
+ * 根据所提供的变量返回调试流
  *
  * @param mixed $value Optional value
  *
@@ -53,11 +53,11 @@ function debug_resource($value = null)
 
 /**
  * Chooses and creates a default handler to use based on the environment.
- * 选择并创建基于环境的默认处理程序
+ * 根据环境选择并创建要使用的默认处理程序
  *
  * The returned handler is not wrapped by any default middlewares.
  *
- * @return callable(\Psr\Http\Message\RequestInterface, array): \GuzzleHttp\Promise\PromiseInterface Returns the best handler for the given system.
+ * @return callable(\Psr\Http\Message\RequestInterface, array): Promise\PromiseInterface Returns the best handler for the given system.
  *
  * @throws \RuntimeException if no viable Handler is available.
  *
@@ -70,6 +70,7 @@ function choose_handler(): callable
 
 /**
  * Get the default User-Agent string to use with Guzzle.
+ * 获取用于Guzzle的默认User-Agent字符串
  *
  * @deprecated default_user_agent will be removed in guzzlehttp/guzzle:8.0. Use Utils::defaultUserAgent instead.
  */
@@ -80,7 +81,7 @@ function default_user_agent(): string
 
 /**
  * Returns the default cacert bundle for the current system.
- * 返回当前系统的默认cacert包。
+ * 返回当前系统的默认cacert包
  *
  * First, the openssl.cafile and curl.cainfo php.ini settings are checked.
  * If those settings are not configured, then the common locations for
@@ -102,6 +103,7 @@ function default_ca_bundle(): string
 /**
  * Creates an associative array of lowercase header names to the actual
  * header casing.
+ * 创建一个关联数组，将小写标题名称映射到实际的标题大小写形式。
  *
  * @deprecated normalize_header_keys will be removed in guzzlehttp/guzzle:8.0. Use Utils::normalizeHeaderKeys instead.
  */
@@ -112,7 +114,7 @@ function normalize_header_keys(array $headers): array
 
 /**
  * Returns true if the provided host matches any of the no proxy areas.
- * 如果提供的主机与任何没有代理区域匹配,返回true。
+ * 如果提供的主机与任何无代理区域匹配，则返回true。
  *
  * This method will strip a port from the host if it is present. Each pattern
  * can be matched with an exact match (e.g., "foo.com" == "foo.com") or a
@@ -139,7 +141,7 @@ function is_host_in_noproxy(string $host, array $noProxyArray): bool
 
 /**
  * Wrapper for json_decode that throws when an error occurs.
- * 当发生错误时抛出json_decode的包装器
+ * 当发生错误时抛出的json_decode的包装器
  *
  * @param string $json    JSON data to parse
  * @param bool   $assoc   When true, returned objects will be converted
@@ -161,7 +163,7 @@ function json_decode(string $json, bool $assoc = false, int $depth = 512, int $o
 
 /**
  * Wrapper for JSON encoding that throws when an error occurs.
- * 当发生错误时抛出的JSON编码包装器
+ * JSON编码的包装器，在发生错误时抛出。
  *
  * @param mixed $value   The value being encoded
  * @param int   $options JSON encode option bitmask

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，代码格式化器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -75,6 +78,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Format the code represented by $reflector for shell output.
+	 * 为shell输出格式化$reflector表示的代码
      *
      * @param \Reflector $reflector
      *
@@ -93,6 +97,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Format code for shell output.
+	 * 为shell输出格式化代码。
      *
      * Optionally, restrict by $startLine and $endLine line numbers, or pass $markLine to add a line marker.
      *
@@ -115,6 +120,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Get the start line for a given Reflector.
+	 * 获取给定Reflector的起始线。
      *
      * Tries to incorporate doc comments if possible.
      *
@@ -135,6 +141,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Split code into highlight spans.
+	 * 将代码拆分为高亮显示范围。
      *
      * Tokenize via \token_get_all, then map these tokens to internal highlight types, combining
      * adjacent spans of the same highlight type.
@@ -170,6 +177,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Given a token and the current highlight span type, compute the next type.
+	 * 给定一个标记和当前突出显示跨度类型，计算下一个类型。
      *
      * @param array|string $token       \token_get_all token
      * @param string|null  $currentType
@@ -197,6 +205,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Group highlight spans into an array of lines.
+	 * 组突出显示跨越成一组线。
      *
      * Optionally, restrict by start and end line numbers.
      *
@@ -239,6 +248,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Format lines of highlight spans for shell output.
+	 * 为shell输出设置突出显示范围的格式行
      *
      * @param \Generator $spanLines lines, each an array of [$spanType, $spanText] pairs
      *
@@ -263,6 +273,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Prepend line numbers to formatted lines.
+	 * 将行号前置到格式化的行。
      *
      * Lines must be in an associative array with the correct keys in order to be numbered properly.
      *
@@ -305,6 +316,7 @@ class CodeFormatter implements ReflectorFormatter
 
     /**
      * Check whether a Reflector instance is reflectable by this formatter.
+	 * 检查反射器实例是否可被此格式化程序反射。
      *
      * @phpstan-assert-if-true \ReflectionClass|\ReflectionFunctionAbstract $reflector
      *

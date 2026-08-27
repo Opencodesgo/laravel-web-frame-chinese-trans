@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，共用标志，节点，块，列表项目
+ * League，CommonMark，扩展，共同标记，节点，块，列表项
  */
 
 declare(strict_types=1);

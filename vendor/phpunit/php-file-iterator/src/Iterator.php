@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，文件迭代器，Iterator
+ * SebastianBergmann，FileIterator，迭代程序
  */
 
 /*
@@ -78,6 +78,7 @@ class Iterator extends FilterIterator
     private function acceptPath(string $path): bool
     {
         // Filter files in hidden directories by checking path that is relative to the base path.
+		// 通过检查相对于基本路径的路径来筛选隐藏目录中的文件
         if (preg_match('=/\.[^/]*/=', str_replace($this->basePath, '', $path))) {
             return false;
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，依赖注入，翻译提取器传递
+ * Symfony，Component，Translation，依赖注入，翻译提取器通行证
  */
 
 /*
@@ -21,34 +21,24 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Adds tagged translation.extractor services to translation extractor.
- * 添加标记翻译。提取器服务到翻译萃取器。
+ * 添加标记翻译。提取器服务翻译提取器。
  */
 class TranslationExtractorPass implements CompilerPassInterface
 {
-    private $extractorServiceId;
-    private $extractorTag;
-
-    public function __construct(string $extractorServiceId = 'translation.extractor', string $extractorTag = 'translation.extractor')
-    {
-        if (0 < \func_num_args()) {
-            trigger_deprecation('symfony/translation', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
-        }
-
-        $this->extractorServiceId = $extractorServiceId;
-        $this->extractorTag = $extractorTag;
-    }
-
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->extractorServiceId)) {
+        if (!$container->hasDefinition('translation.extractor')) {
             return;
         }
 
-        $definition = $container->getDefinition($this->extractorServiceId);
+        $definition = $container->getDefinition('translation.extractor');
 
-        foreach ($container->findTaggedServiceIds($this->extractorTag, true) as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('translation.extractor', true) as $id => $attributes) {
             if (!isset($attributes[0]['alias'])) {
-                throw new RuntimeException(sprintf('The alias for the tag "translation.extractor" of service "%s" must be set.', $id));
+                throw new RuntimeException(\sprintf('The alias for the tag "translation.extractor" of service "%s" must be set.', $id));
             }
 
             $definition->addMethodCall('addExtractor', [$attributes[0]['alias'], new Reference($id)]);

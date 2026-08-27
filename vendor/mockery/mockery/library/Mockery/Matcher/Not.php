@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，非
+ * Mockery，匹配器，不是
  */
 
 /**
@@ -17,7 +17,7 @@ class Not extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
-	 * 返回这个Matcher的字符串表示
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */
@@ -29,7 +29,6 @@ class Not extends MatcherAbstract
     /**
      * Check if the actual value does not match the expected (in this
      * case it's specifically NOT expected).
-	 * 检查实际值是否与期望值不匹配(如果它是特别不期望的)
      *
      * @template TMixed
      *

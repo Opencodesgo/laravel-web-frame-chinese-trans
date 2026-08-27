@@ -1,21 +1,27 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，批处理存储库
+ * Illuminate，支持，测试，佯装，Batch 佯装
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
 use Carbon\CarbonImmutable;
 use Closure;
-use Illuminate\Bus\Batch;
 use Illuminate\Bus\BatchRepository;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Bus\UpdatedBatchJobCounts;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Str;
 
 class BatchRepositoryFake implements BatchRepository
 {
+    /**
+     * The batches stored in the repository.
+	 * 存储在存储库中的批
+     *
+     * @var \Illuminate\Bus\Batch[]
+     */
+    protected $batches = [];
+
     /**
      * Retrieve a list of batches.
 	 * 检索批列表
@@ -26,7 +32,7 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function get($limit, $before)
     {
-        return [];
+        return $this->batches;
     }
 
     /**
@@ -38,7 +44,7 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function find(string $batchId)
     {
-        //
+        return $this->batches[$batchId] ?? null;
     }
 
     /**
@@ -50,10 +56,10 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function store(PendingBatch $batch)
     {
-        return new Batch(
-            new QueueFake(Facade::getFacadeApplication()),
-            $this,
-            (string) Str::orderedUuid(),
+        $id = (string) Str::orderedUuid();
+
+        $this->batches[$id] = new BatchFake(
+            $id,
             $batch->name,
             count($batch->jobs),
             count($batch->jobs),
@@ -64,6 +70,8 @@ class BatchRepositoryFake implements BatchRepository
             null,
             null
         );
+
+        return $this->batches[$id];
     }
 
     /**
@@ -114,7 +122,9 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function markAsFinished(string $batchId)
     {
-        //
+        if (isset($this->batches[$batchId])) {
+            $this->batches[$batchId]->finishedAt = now();
+        }
     }
 
     /**
@@ -126,7 +136,9 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function cancel(string $batchId)
     {
-        //
+        if (isset($this->batches[$batchId])) {
+            $this->batches[$batchId]->cancel();
+        }
     }
 
     /**
@@ -138,7 +150,7 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function delete(string $batchId)
     {
-        //
+        unset($this->batches[$batchId]);
     }
 
     /**

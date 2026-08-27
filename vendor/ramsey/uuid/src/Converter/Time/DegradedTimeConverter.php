@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，转换器，时间，退化时间变换器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -15,10 +18,10 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Converter\Time;
 
 /**
- * @deprecated DegradedTimeConverter is no longer necessary for converting
- *     time on 32-bit systems. Transition to {@see GenericTimeConverter}.
+ * @deprecated DegradedTimeConverter is no longer necessary for converting time on 32-bit systems. Please transition to
+ *     {@see GenericTimeConverter}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class DegradedTimeConverter extends BigNumberTimeConverter
 {

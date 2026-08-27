@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，测试组件
+ * Illuminate, 测试, 测试组件
  */
 
 namespace Illuminate\Testing;
@@ -28,7 +28,7 @@ class TestComponent
 
     /**
      * Create a new test component instance.
-	 * 创建新的测试组件实例
+	 * 创建一个新的测试组件实例
      *
      * @param  \Illuminate\View\Component  $component
      * @param  \Illuminate\View\View  $view

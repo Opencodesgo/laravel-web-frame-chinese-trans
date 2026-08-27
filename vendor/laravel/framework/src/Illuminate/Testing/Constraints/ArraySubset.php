@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，约束，数组子集
+ * Illuminate, 支持, 约束，数组子集
  */
 
 namespace Illuminate\Testing\Constraints;
@@ -14,6 +14,7 @@ use Traversable;
 if (class_exists(Version::class) && (int) Version::series()[0] >= 9) {
     /**
      * @internal This class is not meant to be used or overwritten outside the framework itself.
+	 * 这个类不打算在框架本身之外使用或覆盖。
      */
     final class ArraySubset extends Constraint
     {
@@ -47,7 +48,6 @@ if (class_exists(Version::class) && (int) Version::series()[0] >= 9) {
          *
          * If $returnResult is set to false (the default), an exception is thrown
          * in case of a failure. null is returned otherwise.
-		 * 如果$returnResult设置为false(默认值)，万一发生故障则抛出异常。
          *
          * If $returnResult is true, the result of the evaluation is returned as
          * a boolean value instead: true in case of success, false in case of a
@@ -65,7 +65,6 @@ if (class_exists(Version::class) && (int) Version::series()[0] >= 9) {
         {
             // type cast $other & $this->subset as an array to allow
             // support in standard array functions.
-			// 将$other & $this->子集强制转换为数组以允许支持标准数组函数
             $other = $this->toArray($other);
             $this->subset = $this->toArray($this->subset);
 
@@ -156,6 +155,7 @@ if (class_exists(Version::class) && (int) Version::series()[0] >= 9) {
 } else {
     /**
      * @internal This class is not meant to be used or overwritten outside the framework itself.
+	 * 这个类不打算在框架本身之外使用或覆盖。
      */
     final class ArraySubset extends Constraint
     {

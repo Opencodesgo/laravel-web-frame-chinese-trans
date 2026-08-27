@@ -39,7 +39,7 @@ class Configuration
      * i.e. when method expectations are made, set using a zeroOrMoreTimes()
      * constraint, and then never called. Essentially such expectations are
      * not required and are just taking up test space.
-	 * 布尔断言我们是否忽略了不必要的方法的模拟,
+	 * 布尔断言我们是否忽略了不必要的模拟方法，也就是说，当制定方法期望时，使用zeroOrMoreTimes()设置约束。
      *
      * @var bool
      */
@@ -48,6 +48,7 @@ class Configuration
     /**
      * Boolean assertion of whether we can mock methods which do not actually
      * exist for the given class or object (ignored for unreal mocks)
+	 * 布尔断言我们是否可以模拟不实际的方法。
      *
      * @var bool
      */
@@ -55,6 +56,7 @@ class Configuration
 
     /**
      * Constants map
+	 * 常量映射
      *
      * e.g. ['class' => ['MY_CONST' => 123, 'OTHER_CONST' => 'foo']]
      *
@@ -64,6 +66,7 @@ class Configuration
 
     /**
      * Default argument matchers
+	 * 默认参数匹配器
      *
      * e.g. ['class' => 'matcher']
      *
@@ -73,7 +76,7 @@ class Configuration
 
     /**
      * Parameter map for use with PHP internal classes.
-	 * 使用PHP内部类的参数映射
+	 * 用于PHP内部类的参数映射
      *
      *  e.g. ['class' => ['method' => ['param1', 'param2']]]
      *
@@ -99,6 +102,7 @@ class Configuration
     /**
      * Boolean assertion is reflection caching enabled or not. It should be
      * always enabled, except when using PHPUnit's --static-backup option.
+	 * 布尔断言是否启用了反射缓存。
      *
      * @see https://github.com/mockery/mockery/issues/268
      */
@@ -111,7 +115,7 @@ class Configuration
 
     /**
      * Set boolean to allow/prevent unnecessary mocking of methods
-	 * 设置布尔允许/防止不必要的方法模拟
+	 * 设置boolean以允许/防止不必要的模拟方法
      *
      * @param bool $flag
      *
@@ -131,7 +135,7 @@ class Configuration
 
     /**
      * Set boolean to allow/prevent mocking of non-existent methods
-	 * 设置布尔允许/防止对不存在的方法进行模拟
+	 * 设置boolean以允许/防止模拟不存在的方法
      *
      * @param bool $flag
      *
@@ -144,6 +148,7 @@ class Configuration
 
     /**
      * Disable reflection caching
+	 * 禁用反射缓存
      *
      * It should be always enabled, except when using
      * PHPUnit's --static-backup option.
@@ -159,6 +164,7 @@ class Configuration
 
     /**
      * Enable reflection caching
+	 * 启用反射缓存
      *
      * It should be always enabled, except when using
      * PHPUnit's --static-backup option.
@@ -174,6 +180,7 @@ class Configuration
 
     /**
      * Get the map of constants to be used in the mock generator
+	 * 获取要在模拟生成器中使用的常量映射
      *
      * @return array<class-string,array<string,array<scalar>|scalar>>
      */
@@ -184,7 +191,7 @@ class Configuration
 
     /**
      * Get the default matcher for a given class
-	 * 为给定的类获得默认的matcher
+	 * 获取给定类的默认匹配器
      *
      * @param class-string $class
      *
@@ -250,7 +257,7 @@ class Configuration
 
     /**
      * Get the object formatter for a class
-	 * 为类获取对象格式化程序
+	 * 获取类的对象格式化程序
      *
      * @param class-string $class
      * @param Closure      $defaultFormatter
@@ -289,7 +296,7 @@ class Configuration
 
     /**
      * Return flag indicating whether mocking non-existent methods allowed
-	 * 返回标志,表明是否允许模拟不存在的方法
+	 * 返回标志，指示是否允许模拟不存在的方法
      *
      * @return bool
      *
@@ -307,7 +314,7 @@ class Configuration
 
     /**
      * Return flag indicating whether mocking non-existent methods allowed
-	 * 返回标志,表明是否允许模拟不存在的方法
+	 * 返回标志，指示是否允许模拟不存在的方法
      *
      * @return bool
      */
@@ -318,7 +325,7 @@ class Configuration
 
     /**
      * Is reflection cache enabled?
-	 * 启用了反射缓存吗?
+	 * 是否启用了反射缓存
      *
      * @return bool
      */
@@ -340,7 +347,7 @@ class Configuration
 
     /**
      * Set a map of constants to be used in the mock generator
-	 * 在模拟生成器中设置一个常量的映射
+	 * 设置要在模拟生成器中使用的常量映射
      *
      * e.g. ['MyClass' => ['MY_CONST' => 123, 'ARRAY_CONST' => ['foo', 'bar']]]
      *
@@ -383,7 +390,7 @@ class Configuration
 
     /**
      * Set a parameter map (array of param signature strings) for the method of an internal PHP class.
-	 * 为内部PHP类的方法设置参数映射(param签名字符串数组)
+	 * 为内部PHP类的方法设置一个参数映射（参数签名字符串数组）
      *
      * @param class-string $class
      * @param string       $method

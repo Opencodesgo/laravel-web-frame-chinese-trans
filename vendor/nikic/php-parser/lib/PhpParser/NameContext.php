@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，名字上下文
+ * PhpParser，名称上下文
  */
 
 namespace PhpParser;
@@ -35,7 +35,7 @@ class NameContext {
 
     /**
      * Start a new namespace.
-	 * 启动一个新的命名空间
+	 * 启动一个新的命名空间。
      *
      * This also resets the alias table.
      *
@@ -289,6 +289,7 @@ class NameContext {
         }
 
         // Constants have case-insensitive namespace and case-sensitive short-name
+		// 常量具有不区分大小写的命名空间和区分大小写的短名称
         $ns = substr($name, 0, $nsSep);
         $shortName = substr($name, $nsSep + 1);
         return strtolower($ns) . '\\' . $shortName;

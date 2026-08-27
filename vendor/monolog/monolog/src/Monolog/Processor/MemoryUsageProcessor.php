@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Processor，内存状态处理程序
- *
+ * Monolog，处理器，内存利用处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,7 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Injects memory_get_usage in all records
- * 在所有记录中注入memory_get_use
+ * 在所有记录中注入memory_get_usage
  *
  * @see Monolog\Processor\MemoryProcessor::__construct() for options
  * @author Rob Jensen

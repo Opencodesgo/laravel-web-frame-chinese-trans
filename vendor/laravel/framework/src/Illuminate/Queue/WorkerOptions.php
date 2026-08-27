@@ -19,7 +19,7 @@ class WorkerOptions
      * The number of seconds to wait before retrying a job that encountered an uncaught exception.
 	 * 在重试遇到未捕获异常的作业之前等待的秒数
      *
-     * @var int
+     * @var int|int[]
      */
     public $backoff;
 
@@ -56,7 +56,7 @@ class WorkerOptions
     public $rest;
 
     /**
-     * The maximum amount of times a job may be attempted.
+     * The maximum number of times a job may be attempted.
 	 * 可以尝试作业的最大次数
      *
      * @var int
@@ -100,7 +100,7 @@ class WorkerOptions
 	 * 创建一个新的工作者选项实例
      *
      * @param  string  $name
-     * @param  int  $backoff
+     * @param  int|int[]  $backoff
      * @param  int  $memory
      * @param  int  $timeout
      * @param  int  $sleep

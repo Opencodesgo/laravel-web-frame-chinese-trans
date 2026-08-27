@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，异常接口
+ * Mockery，期待接口
  */
 
 /**

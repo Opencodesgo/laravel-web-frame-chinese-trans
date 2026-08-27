@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，许诺，拒绝承诺
+ * GuzzleHttp，Promise，拒绝承诺
  */
 
 declare(strict_types=1);
@@ -9,7 +9,7 @@ namespace GuzzleHttp\Promise;
 
 /**
  * A promise that has been rejected.
- * 一个被拒绝的承诺。
+ * 一个被拒绝的承诺
  *
  * Thenning off of this promise will invoke the onRejected callback
  * immediately and ignore other callbacks.

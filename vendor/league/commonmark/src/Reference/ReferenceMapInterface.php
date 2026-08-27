@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，引用映射接口
+ * League，CommonMark，参考，参考映射接口
  */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ namespace League\CommonMark\Reference;
 
 /**
  * A collection of references
- * 一组参考资料
+ * 引用的集合
  *
  * @phpstan-extends \IteratorAggregate<ReferenceInterface>
  */

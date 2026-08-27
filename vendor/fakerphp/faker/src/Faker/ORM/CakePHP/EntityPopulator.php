@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，CakePHP，实体普及器
+ * Faker，ORM，Cake PHP，实体填充器
  */
 
 namespace Faker\ORM\CakePHP;
@@ -123,6 +123,7 @@ class EntityPopulator
         }
 
         // TODO check if TreeBehavior attached to modify lft/rgt cols
+		// 检查是否附加了TreeBehavior来修改左/右颜色
 
         return $modifiers;
     }

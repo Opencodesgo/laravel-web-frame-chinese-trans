@@ -28,7 +28,7 @@ class BelongsToRelationship
 
     /**
      * The cached, resolved parent instance ID.
-	 * 缓存的、已解析的父实例ID
+	 * 缓存的、已解析的父实例ID。
      *
      * @var mixed
      */
@@ -78,12 +78,30 @@ class BelongsToRelationship
     {
         return function () use ($key) {
             if (! $this->resolved) {
-                $instance = $this->factory instanceof Factory ? $this->factory->create() : $this->factory;
+                $instance = $this->factory instanceof Factory
+                    ? ($this->factory->getRandomRecycledModel($this->factory->modelName()) ?? $this->factory->create())
+                    : $this->factory;
 
                 return $this->resolved = $key ? $instance->{$key} : $instance->getKey();
             }
 
             return $this->resolved;
         };
+    }
+
+    /**
+     * Specify the model instances to always use when creating relationships.
+	 * 指定在创建关系时始终使用的模型实例
+     *
+     * @param  \Illuminate\Support\Collection  $recycle
+     * @return $this
+     */
+    public function recycle($recycle)
+    {
+        if ($this->factory instanceof Factory) {
+            $this->factory = $this->factory->recycle($recycle);
+        }
+
+        return $this;
     }
 }

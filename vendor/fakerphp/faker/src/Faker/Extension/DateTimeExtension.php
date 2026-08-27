@@ -32,6 +32,7 @@ interface DateTimeExtension
 
     /**
      * Get a DateTime object for a date between January 1, 0001, and now.
+	 * 获取从0001年1月1日到现在的日期的DateTime对象。
      *
      * @param \DateTime|int|string $until    maximum timestamp, defaults to "now"
      * @param string|null          $timezone zone timezone for generated date, fallback to `DateTime::$defaultTimezone` and `date_default_timezone_get()`.
@@ -85,7 +86,6 @@ interface DateTimeExtension
 
     /**
      * Get a date time object somewhere inside the current month.
-	 * 在一个月内找一个日期时间对象
      *
      * @param \DateTime|int|string $until    maximum timestamp, defaults to "now"
      * @param string|null          $timezone timezone for generated date, fallback to `DateTime::$defaultTimezone` and `date_default_timezone_get()`.

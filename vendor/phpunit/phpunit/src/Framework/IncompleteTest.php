@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，未完成的测试
+ */
+
 /*
  * This file is part of PHPUnit.
  *

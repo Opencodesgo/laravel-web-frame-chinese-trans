@@ -33,12 +33,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 final class ExceptionEvent extends RequestEvent
 {
-    private $throwable;
-
-    /**
-     * @var bool
-     */
-    private $allowCustomResponseCode = false;
+    private \Throwable $throwable;
+    private bool $allowCustomResponseCode = false;
 
     public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, \Throwable $e)
     {
@@ -54,7 +50,7 @@ final class ExceptionEvent extends RequestEvent
 
     /**
      * Replaces the thrown exception.
-	 * 替换引发的异常
+	 * 替换引发的异常。
      *
      * This exception will be thrown if no response is set in the event.
      */

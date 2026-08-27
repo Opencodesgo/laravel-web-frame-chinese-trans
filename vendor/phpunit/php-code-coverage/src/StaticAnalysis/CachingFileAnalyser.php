@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，缓存文件分析器
+ * SebastianBergmann，CodeCoverage，静态分析，缓存文件分析器
  */
 
 /*

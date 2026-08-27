@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，缓冲流
+ * GuzzleHttp，Psr7，缓冲区流
  */
 
 declare(strict_types=1);
@@ -12,7 +12,6 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Provides a buffer stream that can be written to to fill a buffer, and read
  * from to remove bytes from the buffer.
- * 提供一个可以写入缓冲区的缓冲区，从缓冲区中删除字节。
  *
  * This stream returns a "hwm" metadata value that tells upstream consumers
  * what the configured high water mark of the stream is, or the maximum
@@ -105,7 +104,7 @@ final class BufferStream implements StreamInterface
 
     /**
      * Reads data from the buffer.
-	 * 从缓冲区读取数据
+	 * 从缓冲区中读取数据
      */
     public function read($length): string
     {

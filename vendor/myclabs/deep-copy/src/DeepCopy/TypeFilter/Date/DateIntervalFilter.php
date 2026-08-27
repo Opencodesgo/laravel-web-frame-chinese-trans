@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，类型过滤器，日期，日期区间过滤器
+ * DeepCopy，类型过滤器，日期，日期间隔过滤器
  */
 
 namespace DeepCopy\TypeFilter\Date;
@@ -12,6 +12,7 @@ use DeepCopy\TypeFilter\TypeFilter;
  * @final
  *
  * @deprecated Will be removed in 2.0. This filter will no longer be necessary in PHP 7.1+.
+ * 将在2.0中删除。在PHP 7.1+中不再需要这个过滤器。
  */
 class DateIntervalFilter implements TypeFilter
 {

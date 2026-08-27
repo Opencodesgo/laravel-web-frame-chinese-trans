@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，块，块继续解析器使用内联接口
+ * League，CommonMark，解析器，代码块，带有内联接口的块继续解析器
  */
 
 declare(strict_types=1);
@@ -22,7 +22,7 @@ interface BlockContinueParserWithInlinesInterface extends BlockContinueParserInt
 {
     /**
      * Parse any inlines inside of the current block
-	 * 解析当前块中的任何内线
+	 * 解析当前块中的所有内联
      */
     public function parseInlines(InlineParserEngineInterface $inlineParser): void;
 }

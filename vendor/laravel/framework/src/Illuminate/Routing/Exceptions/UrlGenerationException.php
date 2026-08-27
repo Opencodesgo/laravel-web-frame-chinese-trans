@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，异常，Url 生成异常
+ * Illuminate，路由，异常，Url生成异常
  */
 
 namespace Illuminate\Routing\Exceptions;

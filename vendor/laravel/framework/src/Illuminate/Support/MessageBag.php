@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，消息包
+ * Illuminate, 支持, 信使包
  */
 
 namespace Illuminate\Support;
@@ -152,7 +152,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      * Determine if messages exist for any of the given keys.
 	 * 确定是否存在任何给定键的消息
      *
-     * @param  array|string  $keys
+     * @param  array|string|null  $keys
      * @return bool
      */
     public function hasAny($keys = [])
@@ -202,14 +202,14 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
         // If the message exists in the message bag, we will transform it and return
         // the message. Otherwise, we will check if the key is implicit & collect
         // all the messages that match the given key and output it as an array.
-		// 如果邮件存在于邮件包中，我们将改造它，然后返回消息。
+		// 如果消息包中存在该消息，我们将对其进行转换并返回消息。
         if (array_key_exists($key, $this->messages)) {
             return $this->transform(
                 $this->messages[$key], $this->checkFormat($format), $key
             );
         }
 
-        if (Str::contains($key, '*')) {
+        if (str_contains($key, '*')) {
             return $this->getMessagesForWildcardKey($key, $format);
         }
 
@@ -280,6 +280,10 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      */
     protected function transform($messages, $format, $messageKey)
     {
+        if ($format == ':message') {
+            return (array) $messages;
+        }
+
         return collect((array) $messages)
             ->map(function ($message) use ($format, $messageKey) {
                 // We will simply spin through the given messages and transform each one
@@ -399,8 +403,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->messages, COUNT_RECURSIVE) - count($this->messages);
     }
@@ -422,8 +425,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

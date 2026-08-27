@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，属性，解析器，属性内联解析器
+ * League，CommonMark，扩展，属性，解析器，内联解析器
  */
 
 /*

@@ -3,6 +3,8 @@
  * Doctrine，Instantiator，实例化器接口
  */
 
+declare(strict_types=1);
+
 namespace Doctrine\Instantiator;
 
 use Doctrine\Instantiator\Exception\ExceptionInterface;
@@ -14,15 +16,13 @@ use Doctrine\Instantiator\Exception\ExceptionInterface;
 interface InstantiatorInterface
 {
     /**
-     * @param string $className
      * @phpstan-param class-string<T> $className
      *
-     * @return object
      * @phpstan-return T
      *
      * @throws ExceptionInterface
      *
      * @template T of object
      */
-    public function instantiate($className);
+    public function instantiate(string $className): object;
 }

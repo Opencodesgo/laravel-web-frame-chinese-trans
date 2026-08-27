@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，标准化器，文本规范化接口
+ * League，CommonMark，标准化者，文本规范化接口
  */
 
 declare(strict_types=1);
@@ -32,6 +32,7 @@ interface TextNormalizerInterface
      *   - `node` - The node we're normalizing text for
      *
      * Implementations do not have to use or respect any information within that $context
+	 * 实现不必使用或尊重该$上下文中的任何信息
      */
     public function normalize(string $text, array $context = []): string;
 }

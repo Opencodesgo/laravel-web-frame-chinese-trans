@@ -55,7 +55,7 @@ use function trait_exists;
 
 /**
  * Container for mock objects
- * 模拟对象的容器
+ * 模拟对象容器
  *
  * @template TMockObject of object
  */
@@ -65,7 +65,7 @@ class Container
 
     /**
      * Order number of allocation
-	 * 分配顺序
+	 * 配货订单号
      *
      * @var int
      */
@@ -73,7 +73,7 @@ class Container
 
     /**
      * Current ordered number
-	 * 当前顺序
+	 * 当前有序数
      *
      * @var int
      */
@@ -86,7 +86,6 @@ class Container
 
     /**
      * Ordered groups
-	 * 有序群
      *
      * @var array<string,int>
      */
@@ -99,7 +98,7 @@ class Container
 
     /**
      * Store of mock objects
-	 * 模拟对象存储
+	 * 模拟对象的存储
      *
      * @var array<class-string<LegacyMockInterface&MockInterface&TMockObject>|array-key,LegacyMockInterface&MockInterface&TMockObject>
      */
@@ -125,7 +124,7 @@ class Container
     /**
      * Return a specific remembered mock according to the array index it
      * was stored to in this container instance
-	 * 根据数组索引返回一个特定的记忆mock是否存储在此容器实例中
+	 * 返回一个特定的记忆模拟,根据该容器实例中存储的数组索引。
      *
      * @template TMock of object
      *
@@ -216,7 +215,7 @@ class Container
 
     /**
      * Generates a new mock object for this container
-	 * 为这个容器生成一个新的模拟对象。
+	 * 为这个容器生成一个新的模拟对象
      *
      * I apologies in advance for this. A God Method just fits the API which
      * doesn't require differentiating between classes, interfaces, abstracts,
@@ -447,7 +446,7 @@ class Container
 
     /**
      * Reset the container to its original state
-	 * 将容器重置为原来的状态
+	 * 将容器重置为其原始状态
      *
      * @return void
      */
@@ -462,7 +461,7 @@ class Container
 
     /**
      * Get current ordered number
-	 * 得到当前有序数
+	 * 获取当前订购编号
      *
      * @return int
      */
@@ -473,7 +472,7 @@ class Container
 
     /**
      * Gets the count of expectations on the mocks
-	 * 在嘲笑中得到期望的计数
+	 * 获取模拟上的期望计数
      *
      * @return int
      */
@@ -513,7 +512,7 @@ class Container
 
     /**
      * Set ordering for a group
-	 * 为一个组设置排序
+	 * 为组设置排序
      *
      * @param string $group
      * @param int    $order
@@ -527,7 +526,7 @@ class Container
 
     /**
      * Tear down tasks for this container
-	 * 为这个容器拆卸任务
+	 * 拆下此容器的任务
      *
      * @throws PHPException
      */
@@ -544,7 +543,7 @@ class Container
 
     /**
      * Retrieves all exceptions thrown by mocks
-	 * 检索由模拟抛出的所有异常
+	 * 检索模拟抛出的所有异常
      *
      * @return array<Throwable>
      */
@@ -564,7 +563,7 @@ class Container
 
     /**
      * Validate the current mock's ordering
-	 * 验证当前模拟的排序
+	 * 验证当前mock的顺序
      *
      * @param string $method
      * @param int    $order
@@ -607,7 +606,7 @@ class Container
 
     /**
      * Store a mock and set its container reference
-	 * 存储一个模拟并设置其容器引用
+	 * 存储模拟并设置其容器引用
      *
      * @template TRememberMock of object
      *
@@ -634,7 +633,7 @@ class Container
      * Retrieve the last remembered mock object,
      * which is the same as saying retrieve the current mock being programmed where you have yet to call mock()
      * to change it thus why the method name is "self" since it will be used during the programming of the same mock.
-	 * 检索最后一个被记住的模拟对象,这和说检索当前模拟的程序在您还没有调用mock()中是一样的。
+	 * 检索最后记住的模拟对象。
      *
      * @return LegacyMockInterface|MockInterface
      */

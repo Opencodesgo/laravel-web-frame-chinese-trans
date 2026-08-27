@@ -29,7 +29,7 @@ class RedisManager implements Factory
 
     /**
      * The name of the default driver.
-	 * 默认驱动名称
+	 * 默认驱动程序的名称
      *
      * @var string
      */
@@ -53,7 +53,7 @@ class RedisManager implements Factory
 
     /**
      * The Redis connections.
-	 * Redis连接
+	 * Redis的连接
      *
      * @var mixed
      */
@@ -69,7 +69,7 @@ class RedisManager implements Factory
 
     /**
      * Create a new Redis manager instance.
-	 * 创建新的Redis管理器实例
+	 * 创建一个新的Redis管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $driver
@@ -173,7 +173,7 @@ class RedisManager implements Factory
      * Get the connector instance for the current driver.
 	 * 获取当前驱动程序的连接器实例
      *
-     * @return \Illuminate\Contracts\Redis\Connector
+     * @return \Illuminate\Contracts\Redis\Connector|null
      */
     protected function connector()
     {
@@ -183,12 +183,11 @@ class RedisManager implements Factory
             return $customCreator();
         }
 
-        switch ($this->driver) {
-            case 'predis':
-                return new PredisConnector;
-            case 'phpredis':
-                return new PhpRedisConnector;
-        }
+        return match ($this->driver) {
+            'predis' => new PredisConnector,
+            'phpredis' => new PhpRedisConnector,
+            default => null,
+        };
     }
 
     /**
@@ -274,7 +273,7 @@ class RedisManager implements Factory
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器闭包 
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback

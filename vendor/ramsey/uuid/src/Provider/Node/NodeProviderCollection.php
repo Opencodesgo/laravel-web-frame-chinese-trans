@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，提供者，节点，节点提供程序收集
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -20,6 +23,12 @@ use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
+ * NodeProviderInterface 对象的集合
+ *
+ * @deprecated this class has been deprecated and will be removed in 5.0.0. The use-case for this class comes from a
+ *     pre-`phpstan/phpstan` and pre-`vimeo/psalm` ecosystem, in which type safety had to be mostly enforced at runtime:
+ *     that is no longer necessary, now that you can safely verify your code to be correct and use more generic types
+ *     like `iterable<T>` instead.
  *
  * @extends AbstractCollection<NodeProviderInterface>
  */
@@ -32,12 +41,9 @@ class NodeProviderCollection extends AbstractCollection
 
     /**
      * Re-constructs the object from its serialized form
+	 * 从对象的序列化形式重新构造对象
      *
-     * @param string $serialized The serialized PHP string to unserialize into
-     *     a UuidInterface instance
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress RedundantConditionGivenDocblockType
+     * @param string $serialized The serialized PHP string to unserialize into a UuidInterface instance
      */
     public function unserialize($serialized): void
     {
@@ -51,11 +57,7 @@ class NodeProviderCollection extends AbstractCollection
             ],
         ]);
 
-        $this->data = array_filter(
-            $data,
-            function ($unserialized): bool {
-                return $unserialized instanceof NodeProviderInterface;
-            }
-        );
+        /** @phpstan-ignore-next-line */
+        $this->data = array_filter($data, fn ($unserialized): bool => $unserialized instanceof NodeProviderInterface);
     }
 }

@@ -14,7 +14,7 @@ final class Rfc7230
 {
     /**
      * Header related regular expressions (based on amphp/http package)
-	 * 标题相关正则表达式(基于amphp / http包)
+	 * 标头相关正则表达式（基于amphp/http包）
      *
      * Note: header delimiter (\r\n) is modified to \r?\n to accept line feed only delimiters for BC reasons.
      *

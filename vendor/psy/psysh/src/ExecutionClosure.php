@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，执行闭包
+ * Psy，执行关闭
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Psy;
 
 /**
  * The Psy Shell's execution scope.
- * Psy Shell的执行范围。
+ * Psy Shell 的执行范围
  */
 class ExecutionClosure
 {

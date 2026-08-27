@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，约束，数据库中的计数
+ * Illuminate, 支持, 数据库中的计数
  */
 
 namespace Illuminate\Testing\Constraints;
@@ -37,7 +37,7 @@ class CountInDatabase extends Constraint
 
     /**
      * Create a new constraint instance.
-	 * 创建新的约束实例
+	 * 创建一个新的约束实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  int  $expectedCount

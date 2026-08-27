@@ -74,7 +74,7 @@ trait ManagesComponents
 
     /**
      * Get the first view that actually exists from the given list, and start a component.
-	 * 从给定列表中获取实际存在的第一个视图，并启动一个组件
+	 * 从给定列表中获取实际存在的第一个视图，并启动一个组件。
      *
      * @param  array  $names
      * @param  array  $data
@@ -91,7 +91,7 @@ trait ManagesComponents
 
     /**
      * Render the current component.
-	 * 呈现当前组件
+	 * 渲染当前组件
      *
      * @return string
      */

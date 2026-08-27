@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，对象方法匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use InvalidArgumentException;
 
 /**
  * An object method tab completion Matcher.
+ * 一个对象方法选项卡完成匹配器。
  *
  * This matcher provides completion for methods of objects in the current
  * Context.

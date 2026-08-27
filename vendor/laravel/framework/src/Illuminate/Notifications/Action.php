@@ -17,7 +17,7 @@ class Action
 
     /**
      * The action URL.
-	 * 动作URL
+	 * 运行URI
      *
      * @var string
      */

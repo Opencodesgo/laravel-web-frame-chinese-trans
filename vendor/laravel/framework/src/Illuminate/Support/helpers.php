@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，帮助
+ * Illuminate, 支持, 帮助方法
  */
 
 use Illuminate\Contracts\Support\DeferringDisplayableValue;
@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Env;
 use Illuminate\Support\HigherOrderTapProxy;
 use Illuminate\Support\Optional;
+use Illuminate\Support\Str;
 
 if (! function_exists('append_config')) {
     /**
@@ -109,7 +110,7 @@ if (! function_exists('e')) {
      * Encode HTML special characters in a string.
 	 * 在字符串中编码HTML特殊字符
      *
-     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|string|null  $value
+     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|\BackedEnum|string|null  $value
      * @param  bool  $doubleEncode
      * @return string
      */
@@ -121,6 +122,10 @@ if (! function_exists('e')) {
 
         if ($value instanceof Htmlable) {
             return $value->toHtml();
+        }
+
+        if ($value instanceof BackedEnum) {
+            $value = $value->value;
         }
 
         return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8', $doubleEncode);
@@ -153,6 +158,20 @@ if (! function_exists('filled')) {
     function filled($value)
     {
         return ! blank($value);
+    }
+}
+
+if (! function_exists('laravel_cloud')) {
+    /**
+     * Determine if the application is running on Laravel Cloud.
+	 * 确定应用程序是否在Laravel Cloud上运行
+     *
+     * @return bool
+     */
+    function laravel_cloud()
+    {
+        return ($_ENV['LARAVEL_CLOUD'] ?? false) === '1' ||
+               ($_SERVER['LARAVEL_CLOUD'] ?? false) === '1';
     }
 }
 
@@ -216,7 +235,7 @@ if (! function_exists('preg_replace_array')) {
     function preg_replace_array($pattern, array $replacements, $subject)
     {
         return preg_replace_callback($pattern, function () use (&$replacements) {
-            foreach ($replacements as $key => $value) {
+            foreach ($replacements as $value) {
                 return array_shift($replacements);
             }
         }, $subject);
@@ -228,7 +247,7 @@ if (! function_exists('retry')) {
      * Retry an operation a given number of times.
 	 * 重试给定次数的操作
      *
-     * @param  int  $times
+     * @param  int|array  $times
      * @param  callable  $callback
      * @param  int|\Closure  $sleepMilliseconds
      * @param  callable|null  $when
@@ -239,6 +258,14 @@ if (! function_exists('retry')) {
     function retry($times, callable $callback, $sleepMilliseconds = 0, $when = null)
     {
         $attempts = 0;
+
+        $backoff = [];
+
+        if (is_array($times)) {
+            $backoff = $times;
+
+            $times = count($times) + 1;
+        }
 
         beginning:
         $attempts++;
@@ -251,12 +278,43 @@ if (! function_exists('retry')) {
                 throw $e;
             }
 
+            $sleepMilliseconds = $backoff[$attempts - 1] ?? $sleepMilliseconds;
+
             if ($sleepMilliseconds) {
-                usleep(value($sleepMilliseconds, $attempts) * 1000);
+                usleep(value($sleepMilliseconds, $attempts, $e) * 1000);
             }
 
             goto beginning;
         }
+    }
+}
+
+if (! function_exists('str')) {
+    /**
+     * Get a new stringable object from the given string.
+	 * 从给定字符串中获取一个新的stringable对象
+     *
+     * @param  string|null  $string
+     * @return \Illuminate\Support\Stringable|mixed
+     */
+    function str($string = null)
+    {
+        if (func_num_args() === 0) {
+            return new class
+            {
+                public function __call($method, $parameters)
+                {
+                    return Str::$method(...$parameters);
+                }
+
+                public function __toString()
+                {
+                    return '';
+                }
+            };
+        }
+
+        return Str::of($string);
     }
 }
 
@@ -387,11 +445,14 @@ if (! function_exists('windows_os')) {
 if (! function_exists('with')) {
     /**
      * Return the given value, optionally passed through the given callback.
-	 * 返回给定的值，可选地通过给定的回调传递
+	 * 返回给定的值，可选地通过给定的回调传递。
      *
-     * @param  mixed  $value
-     * @param  callable|null  $callback
-     * @return mixed
+     * @template TValue
+     * @template TReturn
+     *
+     * @param  TValue  $value
+     * @param  (callable(TValue): (TReturn))|null  $callback
+     * @return ($callback is null ? TValue : TReturn)
      */
     function with($value, callable $callback = null)
     {

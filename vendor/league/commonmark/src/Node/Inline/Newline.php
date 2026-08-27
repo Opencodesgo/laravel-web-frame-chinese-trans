@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，内联，内联
+ * League，CommonMark，节点，内联，新行
  */
 
 declare(strict_types=1);
@@ -22,6 +22,7 @@ namespace League\CommonMark\Node\Inline;
 final class Newline extends AbstractInline
 {
     // Any changes to these constants should be reflected in .phpstorm.meta.php
+	// 对这些常量的任何更改都应该反映在.phpstorm.meta.php中
     public const HARDBREAK = 0;
     public const SOFTBREAK = 1;
 

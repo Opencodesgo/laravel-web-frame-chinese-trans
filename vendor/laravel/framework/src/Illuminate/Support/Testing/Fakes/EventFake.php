@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，假事件
+ * Illuminate，支持，测试，佯装，事件 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -31,7 +31,15 @@ class EventFake implements Dispatcher
      *
      * @var array
      */
-    protected $eventsToFake;
+    protected $eventsToFake = [];
+
+    /**
+     * The event types that should be dispatched instead of intercepted.
+	 * 应该分派而不是拦截的事件类型
+     *
+     * @var array
+     */
+    protected $eventsToDispatch = [];
 
     /**
      * All of the events that have been intercepted keyed by type.
@@ -57,11 +65,28 @@ class EventFake implements Dispatcher
     }
 
     /**
+     * Specify the events that should be dispatched instead of faked.
+	 * 指定应该分派而不是伪造的事件
+     *
+     * @param  array|string  $eventsToDispatch
+     * @return $this
+     */
+    public function except($eventsToDispatch)
+    {
+        $this->eventsToDispatch = array_merge(
+            $this->eventsToDispatch,
+            Arr::wrap($eventsToDispatch)
+        );
+
+        return $this;
+    }
+
+    /**
      * Assert if an event has a listener attached to it.
 	 * 如果事件附加了侦听器，则断言。
      *
      * @param  string  $expectedEvent
-     * @param  string  $expectedListener
+     * @param  string|array  $expectedListener
      * @return void
      */
     public function assertListening($expectedEvent, $expectedListener)
@@ -70,13 +95,26 @@ class EventFake implements Dispatcher
             $actualListener = (new ReflectionFunction($listenerClosure))
                         ->getStaticVariables()['listener'];
 
-            if (is_string($actualListener) && Str::endsWith($actualListener, '@handle')) {
-                $actualListener = Str::parseCallback($actualListener)[0];
+            $normalizedListener = $expectedListener;
+
+            if (is_string($actualListener) && Str::contains($actualListener, '@')) {
+                $actualListener = Str::parseCallback($actualListener);
+
+                if (is_string($expectedListener)) {
+                    if (Str::contains($expectedListener, '@')) {
+                        $normalizedListener = Str::parseCallback($expectedListener);
+                    } else {
+                        $normalizedListener = [
+                            $expectedListener,
+                            method_exists($expectedListener, 'handle') ? 'handle' : '__invoke',
+                        ];
+                    }
+                }
             }
 
-            if ($actualListener === $expectedListener ||
+            if ($actualListener === $normalizedListener ||
                 ($actualListener instanceof Closure &&
-                $expectedListener === Closure::class)) {
+                $normalizedListener === Closure::class)) {
                 PHPUnit::assertTrue(true);
 
                 return;
@@ -119,7 +157,7 @@ class EventFake implements Dispatcher
 
     /**
      * Assert if an event was dispatched a number of times.
-	 * 断言事件是否被多次调度
+	 * 如果事件被多次调度，则断言。
      *
      * @param  string  $event
      * @param  int  $times
@@ -173,7 +211,7 @@ class EventFake implements Dispatcher
 
     /**
      * Get all of the events matching a truth-test callback.
-	 * 获取与true-test回调匹配的所有事件
+	 * 获取与true -test回调匹配的所有事件
      *
      * @param  string  $event
      * @param  callable|null  $callback
@@ -185,13 +223,11 @@ class EventFake implements Dispatcher
             return collect();
         }
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: fn () => true;
 
-        return collect($this->events[$event])->filter(function ($arguments) use ($callback) {
-            return $callback(...$arguments);
-        });
+        return collect($this->events[$event])->filter(
+            fn ($arguments) => $callback(...$arguments)
+        );
     }
 
     /**
@@ -208,7 +244,7 @@ class EventFake implements Dispatcher
 
     /**
      * Register an event listener with the dispatcher.
-	 * 向调度程序注册事件监听器
+	 * 向调度程序注册事件侦听器
      *
      * @param  \Closure|string|array  $events
      * @param  mixed  $listener
@@ -221,7 +257,7 @@ class EventFake implements Dispatcher
 
     /**
      * Determine if a given event has listeners.
-	 * 确定给定事件是否有监听器
+	 * 确定给定事件是否有侦听器
      *
      * @param  string  $eventName
      * @return bool
@@ -270,7 +306,7 @@ class EventFake implements Dispatcher
 
     /**
      * Fire an event and call the listeners.
-	 * 触发一个事件并调用监听器
+	 * 触发一个事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -298,6 +334,10 @@ class EventFake implements Dispatcher
      */
     protected function shouldFakeEvent($eventName, $payload)
     {
+        if ($this->shouldDispatchEvent($eventName, $payload)) {
+            return false;
+        }
+
         if (empty($this->eventsToFake)) {
             return true;
         }
@@ -307,6 +347,29 @@ class EventFake implements Dispatcher
                 return $event instanceof Closure
                             ? $event($eventName, $payload)
                             : $event === $eventName;
+            })
+            ->isNotEmpty();
+    }
+
+    /**
+     * Determine whether an event should be dispatched or not.
+	 * 确定是否应分派事件
+     *
+     * @param  string  $eventName
+     * @param  mixed  $payload
+     * @return bool
+     */
+    protected function shouldDispatchEvent($eventName, $payload)
+    {
+        if (empty($this->eventsToDispatch)) {
+            return false;
+        }
+
+        return collect($this->eventsToDispatch)
+            ->filter(function ($event) use ($eventName, $payload) {
+                return $event instanceof Closure
+                    ? $event($eventName, $payload)
+                    : $event === $eventName;
             })
             ->isNotEmpty();
     }
@@ -325,7 +388,7 @@ class EventFake implements Dispatcher
 
     /**
      * Forget all of the queued listeners.
-	 * 忘记所有排队的监听器
+	 * 忘记所有排队的侦听器
      *
      * @return void
      */
@@ -336,7 +399,7 @@ class EventFake implements Dispatcher
 
     /**
      * Dispatch an event and call the listeners.
-	 * 分派事件并调用监听器
+	 * 分派事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload

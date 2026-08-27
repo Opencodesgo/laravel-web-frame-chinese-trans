@@ -3,6 +3,8 @@
  * Carbon，Doctrine，Carbon 类型转换器
  */
 
+declare(strict_types=1);
+
 namespace Carbon\Doctrine;
 
 use Carbon\Carbon;
@@ -11,9 +13,10 @@ use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\DB2Platform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Exception;
 
 /**
@@ -24,7 +27,7 @@ trait CarbonTypeConverter
     /**
      * This property differentiates types installed by carbonphp/carbon-doctrine-types
      * from the ones embedded previously in nesbot/carbon source directly.
-	 * 这个属性区分了从以前在nesbot/carbon中嵌入的carbonphp/carbon-doctrine-types安装的类型。
+	 * 这个属性区分了carbonphp/carbon-doctrine-types安装的类型。
      *
      * @readonly
      */
@@ -62,10 +65,25 @@ trait CarbonTypeConverter
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @return T|null
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    {
+        if ($value === null) {
+            return $value;
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            return $value->format('Y-m-d H:i:s.u');
+        }
+
+        throw InvalidType::new(
+            $value,
+            static::class,
+            ['null', 'DateTime', 'Carbon']
+        );
+    }
+
+    private function doConvertToPHPValue(mixed $value)
     {
         $class = $this->getCarbonClassName();
 
@@ -87,43 +105,15 @@ trait CarbonTypeConverter
         }
 
         if (!$date) {
-            throw ConversionException::conversionFailedFormat(
+            throw ValueNotConvertible::new(
                 $value,
-                $this->getTypeName(),
+                static::class,
                 'Y-m-d H:i:s.u or any format supported by '.$class.'::parse()',
                 $error
             );
         }
 
         return $date;
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
-    {
-        if ($value === null) {
-            return $value;
-        }
-
-        if ($value instanceof DateTimeInterface) {
-            return $value->format('Y-m-d H:i:s.u');
-        }
-
-        throw ConversionException::conversionFailedInvalidType(
-            $value,
-            $this->getTypeName(),
-            ['null', 'DateTime', 'Carbon']
-        );
-    }
-
-    private function getTypeName(): string
-    {
-        $chunks = explode('\\', static::class);
-        $type = preg_replace('/Type$/', '', end($chunks));
-
-        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $type));
     }
 
     private function getMaximumPrecision(AbstractPlatform $platform): int
@@ -136,7 +126,7 @@ trait CarbonTypeConverter
             return 9;
         }
 
-        if ($platform instanceof SQLServerPlatform || $platform instanceof SqlitePlatform) {
+        if ($platform instanceof SQLServerPlatform || $platform instanceof SQLitePlatform) {
             return 3;
         }
 

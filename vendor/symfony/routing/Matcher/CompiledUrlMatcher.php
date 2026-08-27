@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Routing，匹配程序，编译Url匹配器
+ * Symfony，Component，Routing，匹配器，编译Url匹配器
  */
 
 /*

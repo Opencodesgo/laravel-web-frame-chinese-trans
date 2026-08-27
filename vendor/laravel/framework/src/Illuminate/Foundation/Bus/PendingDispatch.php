@@ -23,7 +23,7 @@ class PendingDispatch
 
     /**
      * Indicates if the job should be dispatched immediately after sending the response.
-	 * 指明是否应在发送响应后立即分派作业
+	 * 指示是否应在发送响应后立即分派作业
      *
      * @var bool
      */
@@ -57,7 +57,7 @@ class PendingDispatch
 
     /**
      * Set the desired queue for the job.
-	 * 为任务设置所需的队列
+	 * 为作业设置所需的队列
      *
      * @param  string|null  $queue
      * @return $this
@@ -98,8 +98,8 @@ class PendingDispatch
     }
 
     /**
-     * Set the desired delay for the job.
-	 * 为作业设置所需的延迟
+     * Set the desired delay in seconds for the job.
+	 * 为作业设置所需的延迟(以秒为单位)
      *
      * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
@@ -113,7 +113,7 @@ class PendingDispatch
 
     /**
      * Indicate that the job should be dispatched after all database transactions have committed.
-	 * 指明应在所有数据库事务提交后分派作业
+	 * 指示应在所有数据库事务提交后分派作业
      *
      * @return $this
      */
@@ -139,7 +139,7 @@ class PendingDispatch
 
     /**
      * Set the jobs that should run if this job is successful.
-	 * 设置任务成功时应该运行的任务
+	 * 设置作业成功时应该运行的作业
      *
      * @param  array  $chain
      * @return $this
@@ -153,7 +153,7 @@ class PendingDispatch
 
     /**
      * Indicate that the job should be dispatched after the response is sent to the browser.
-	 * 指明应该在响应发送到浏览器后分派作业
+	 * 指示应该在响应发送到浏览器后分派作业
      *
      * @return $this
      */

@@ -34,20 +34,20 @@ class ProgressIndicator
         'very_verbose_no_ansi' => ' %message% (%elapsed:6s%, %memory:6s%)',
     ];
 
-    private $output;
-    private $startTime;
-    private $format;
-    private $message;
-    private $indicatorValues;
-    private $indicatorCurrent;
-    private $indicatorChangeInterval;
-    private $indicatorUpdateTime;
-    private $started = false;
+    private OutputInterface $output;
+    private int $startTime;
+    private ?string $format = null;
+    private ?string $message = null;
+    private array $indicatorValues;
+    private int $indicatorCurrent;
+    private int $indicatorChangeInterval;
+    private float $indicatorUpdateTime;
+    private bool $started = false;
 
     /**
      * @var array<string, callable>
      */
-    private static $formatters;
+    private static array $formatters;
 
     /**
      * @param int        $indicatorChangeInterval Change interval in milliseconds
@@ -57,14 +57,8 @@ class ProgressIndicator
     {
         $this->output = $output;
 
-        if (null === $format) {
-            $format = $this->determineBestFormat();
-        }
-
-        if (null === $indicatorValues) {
-            $indicatorValues = ['-', '\\', '|', '/'];
-        }
-
+        $format ??= $this->determineBestFormat();
+        $indicatorValues ??= ['-', '\\', '|', '/'];
         $indicatorValues = array_values($indicatorValues);
 
         if (2 > \count($indicatorValues)) {
@@ -79,7 +73,9 @@ class ProgressIndicator
 
     /**
      * Sets the current indicator message.
-	 * 设置当前的指示信息
+	 * 设置当前指示器消息
+     *
+     * @return void
      */
     public function setMessage(?string $message)
     {
@@ -90,7 +86,9 @@ class ProgressIndicator
 
     /**
      * Starts the indicator output.
-	 * 启动指示输出
+	 * 启动指示灯输出
+     *
+     * @return void
      */
     public function start(string $message)
     {
@@ -109,7 +107,9 @@ class ProgressIndicator
 
     /**
      * Advances the indicator.
-	 * 推进指示器
+	 * 推进指示灯
+     *
+     * @return void
      */
     public function advance()
     {
@@ -136,6 +136,8 @@ class ProgressIndicator
     /**
      * Finish the indicator with message.
 	 * 用消息完成指示器
+     *
+     * @return void
      */
     public function finish(string $message)
     {
@@ -152,45 +154,39 @@ class ProgressIndicator
     /**
      * Gets the format for a given name.
 	 * 获取给定名称的格式
-     *
-     * @return string|null
      */
-    public static function getFormatDefinition(string $name)
+    public static function getFormatDefinition(string $name): ?string
     {
         return self::FORMATS[$name] ?? null;
     }
 
     /**
      * Sets a placeholder formatter for a given name.
-	 * 为给定名称设置一个占位符格式器。
+	 * 为给定名称设置占位符格式化程序。
      *
      * This method also allow you to override an existing placeholder.
+     *
+     * @return void
      */
     public static function setPlaceholderFormatterDefinition(string $name, callable $callable)
     {
-        if (!self::$formatters) {
-            self::$formatters = self::initPlaceholderFormatters();
-        }
+        self::$formatters ??= self::initPlaceholderFormatters();
 
         self::$formatters[$name] = $callable;
     }
 
     /**
      * Gets the placeholder formatter for a given name (including the delimiter char like %).
-	 * 获取给定名称的占位符格式器(包括分隔符char,如%)
-     *
-     * @return callable|null
+	 * 获取给定名称的占位符格式化程序（包括分隔符字符，如%）
      */
-    public static function getPlaceholderFormatterDefinition(string $name)
+    public static function getPlaceholderFormatterDefinition(string $name): ?callable
     {
-        if (!self::$formatters) {
-            self::$formatters = self::initPlaceholderFormatters();
-        }
+        self::$formatters ??= self::initPlaceholderFormatters();
 
         return self::$formatters[$name] ?? null;
     }
 
-    private function display()
+    private function display(): void
     {
         if (OutputInterface::VERBOSITY_QUIET === $this->output->getVerbosity()) {
             return;
@@ -207,23 +203,20 @@ class ProgressIndicator
 
     private function determineBestFormat(): string
     {
-        switch ($this->output->getVerbosity()) {
+        return match ($this->output->getVerbosity()) {
             // OutputInterface::VERBOSITY_QUIET: display is disabled anyway
-            case OutputInterface::VERBOSITY_VERBOSE:
-                return $this->output->isDecorated() ? 'verbose' : 'verbose_no_ansi';
-            case OutputInterface::VERBOSITY_VERY_VERBOSE:
-            case OutputInterface::VERBOSITY_DEBUG:
-                return $this->output->isDecorated() ? 'very_verbose' : 'very_verbose_no_ansi';
-            default:
-                return $this->output->isDecorated() ? 'normal' : 'normal_no_ansi';
-        }
+            OutputInterface::VERBOSITY_VERBOSE => $this->output->isDecorated() ? 'verbose' : 'verbose_no_ansi',
+            OutputInterface::VERBOSITY_VERY_VERBOSE,
+            OutputInterface::VERBOSITY_DEBUG => $this->output->isDecorated() ? 'very_verbose' : 'very_verbose_no_ansi',
+            default => $this->output->isDecorated() ? 'normal' : 'normal_no_ansi',
+        };
     }
 
     /**
      * Overwrites a previous message to the output.
-	 * 将前面的消息覆盖到输出中
+	 * 将以前的消息覆盖到输出中
      */
-    private function overwrite(string $message)
+    private function overwrite(string $message): void
     {
         if ($this->output->isDecorated()) {
             $this->output->write("\x0D\x1B[2K");
@@ -238,21 +231,16 @@ class ProgressIndicator
         return round(microtime(true) * 1000);
     }
 
+    /**
+     * @return array<string, \Closure>
+     */
     private static function initPlaceholderFormatters(): array
     {
         return [
-            'indicator' => function (self $indicator) {
-                return $indicator->indicatorValues[$indicator->indicatorCurrent % \count($indicator->indicatorValues)];
-            },
-            'message' => function (self $indicator) {
-                return $indicator->message;
-            },
-            'elapsed' => function (self $indicator) {
-                return Helper::formatTime(time() - $indicator->startTime);
-            },
-            'memory' => function () {
-                return Helper::formatMemory(memory_get_usage(true));
-            },
+            'indicator' => fn (self $indicator) => $indicator->indicatorValues[$indicator->indicatorCurrent % \count($indicator->indicatorValues)],
+            'message' => fn (self $indicator) => $indicator->message,
+            'elapsed' => fn (self $indicator) => Helper::formatTime(time() - $indicator->startTime, 2),
+            'memory' => fn () => Helper::formatMemory(memory_get_usage(true)),
         ];
     }
 }

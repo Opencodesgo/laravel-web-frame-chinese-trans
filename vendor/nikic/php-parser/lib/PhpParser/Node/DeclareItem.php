@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，说明数据项
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Node;
@@ -13,6 +17,7 @@ class DeclareItem extends NodeAbstract {
 
     /**
      * Constructs a declare key=>value pair node.
+	 * 构造一个declare key=>值对节点
      *
      * @param string|Node\Identifier $key Key
      * @param Node\Expr $value Value

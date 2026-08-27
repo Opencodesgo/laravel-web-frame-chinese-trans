@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，queue:monitor 监视指令
+ * Illuminate，队列，控制台，queue:monitor 监督命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -10,7 +10,9 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Queue\Factory;
 use Illuminate\Queue\Events\QueueBusy;
 use Illuminate\Support\Collection;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'queue:monitor')]
 class MonitorCommand extends Command
 {
     /**
@@ -22,6 +24,19 @@ class MonitorCommand extends Command
     protected $signature = 'queue:monitor
                        {queues : The names of the queues to monitor}
                        {--max=1000 : The maximum number of jobs that can be on the queue before an event is dispatched}';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'queue:monitor';
 
     /**
      * The console command description.
@@ -56,8 +71,8 @@ class MonitorCommand extends Command
     protected $headers = ['Connection', 'Queue', 'Size', 'Status'];
 
     /**
-     * Create a new queue listen command.
-	 * 创建一个新的queue listen命令
+     * Create a new queue monitor command.
+	 * 创建一个新的队列监视器命令
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $manager
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
@@ -107,21 +122,31 @@ class MonitorCommand extends Command
                 'connection' => $connection,
                 'queue' => $queue,
                 'size' => $size = $this->manager->connection($connection)->size($queue),
-                'status' => $size >= $this->option('max') ? '<fg=red>ALERT</>' : 'OK',
+                'status' => $size >= $this->option('max') ? '<fg=yellow;options=bold>ALERT</>' : '<fg=green;options=bold>OK</>',
             ];
         });
     }
 
     /**
-     * Display the failed jobs in the console.
-	 * 在控制台中显示失败的作业
+     * Display the queue sizes in the console.
+	 * 在控制台中显示队列大小
      *
      * @param  \Illuminate\Support\Collection  $queues
      * @return void
      */
     protected function displaySizes(Collection $queues)
     {
-        $this->table($this->headers, $queues);
+        $this->newLine();
+
+        $this->components->twoColumnDetail('<fg=gray>Queue name</>', '<fg=gray>Size / Status</>');
+
+        $queues->each(function ($queue) {
+            $status = '['.$queue['size'].'] '.$queue['status'];
+
+            $this->components->twoColumnDetail($queue['queue'], $status);
+        });
+
+        $this->newLine();
     }
 
     /**
@@ -134,7 +159,7 @@ class MonitorCommand extends Command
     protected function dispatchEvents(Collection $queues)
     {
         foreach ($queues as $queue) {
-            if ($queue['status'] == 'OK') {
+            if ($queue['status'] == '<fg=green;options=bold>OK</>') {
                 continue;
             }
 

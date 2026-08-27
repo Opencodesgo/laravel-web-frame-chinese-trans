@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，任务列表，任务列表项目标记分析器
+ * League，CommonMark，扩展，任务列表，任务列表项标记分析器
  */
 
 declare(strict_types=1);
@@ -34,7 +34,6 @@ final class TaskListItemMarkerParser implements InlineParserInterface
         $container = $inlineContext->getContainer();
 
         // Checkbox must come at the beginning of the first paragraph of the list item
-		// 复选框必须出现在列表项的第一段的开头
         if ($container->hasChildren() || ! ($container instanceof Paragraph && $container->parent() && $container->parent() instanceof ListItem)) {
             return false;
         }

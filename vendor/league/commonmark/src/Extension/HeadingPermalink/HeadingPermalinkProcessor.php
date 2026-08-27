@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，标题永久链接，标题永久链接处理器
+ */
 
 declare(strict_types=1);
 
@@ -26,6 +29,7 @@ use League\Config\Exception\InvalidConfigurationException;
 
 /**
  * Searches the Document for Heading elements and adds HeadingPermalinks to each one
+ * 在Document中搜索Heading元素，并为每个元素添加headingpermallinks。
  */
 final class HeadingPermalinkProcessor implements EnvironmentAwareInterface
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，Html Lorem
+ */
 
 namespace Faker\Provider;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，异常，无此元素异常
+ * Ramsey，集合，异常，无此元素例外
  */
 
 /**
@@ -21,8 +21,8 @@ use RuntimeException;
 
 /**
  * Thrown when attempting to access an element that does not exist.
- * 当试图访问不存在的元素时抛出。
+ * 试图访问不存在的元素时抛出
  */
-class NoSuchElementException extends RuntimeException
+class NoSuchElementException extends RuntimeException implements CollectionException
 {
 }

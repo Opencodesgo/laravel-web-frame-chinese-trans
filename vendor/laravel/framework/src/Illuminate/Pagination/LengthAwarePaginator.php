@@ -26,7 +26,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * The last available page.
-	 * 最后可用的页面
+	 * 上一可用页
      *
      * @var int
      */
@@ -34,7 +34,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Create a new paginator instance.
-	 * 创建一个新的分页器实例
+	 * 创建分页器实例
      *
      * @param  mixed  $items
      * @param  int  $total
@@ -52,7 +52,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
         }
 
         $this->total = $total;
-        $this->perPage = $perPage;
+        $this->perPage = (int) $perPage;
         $this->lastPage = max((int) ceil($total / $perPage), 1);
         $this->path = $this->path !== '/' ? rtrim($this->path, '/') : $this->path;
         $this->currentPage = $this->setCurrentPage($currentPage, $this->pageName);
@@ -61,7 +61,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the current page for the request.
-	 * 得到请求的当前页面
+	 * 获取请求的当前页面
      *
      * @param  int  $currentPage
      * @param  string  $pageName
@@ -105,7 +105,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the paginator links as a collection (for JSON responses).
-	 * 获取分页器链接作为一个集合（用于JSON响应）
+	 * 获取分页器链接作为一个集合(用于JSON响应)
      *
      * @return \Illuminate\Support\Collection
      */
@@ -226,19 +226,18 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Convert the object into something JSON serializable.
-	 * 转换对象为JSON可序列化的对象
+	 * 将对象转换为JSON可序列化的对象
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
     /**
      * Convert the object to its JSON representation.
-	 * 转换对象为其JSON表示形式
+	 * 将对象转换为其JSON表示形式
      *
      * @param  int  $options
      * @return string

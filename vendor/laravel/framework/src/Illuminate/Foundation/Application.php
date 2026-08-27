@@ -10,6 +10,7 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Contracts\Foundation\CachesRoutes;
+use Illuminate\Contracts\Foundation\MaintenanceMode as MaintenanceModeContract;
 use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Filesystem\Filesystem;
@@ -23,25 +24,29 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Env;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class Application extends Container implements ApplicationContract, CachesConfiguration, CachesRoutes, HttpKernelInterface
 {
+    use Macroable;
+
     /**
      * The Laravel framework version.
-	 * 框架版本
+	 * Laravel框架版本
      *
      * @var string
      */
-    const VERSION = '8.83.29';
+    const VERSION = '9.52.20';
 
     /**
      * The base path for the Laravel installation.
-	 * 安装的基本路径
+	 * 框架安装的基本路径
      *
      * @var string
      */
@@ -49,7 +54,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Indicates if the application has been bootstrapped before.
-	 * 指明应用程序以前是否引导过
+	 * 指示应用程序以前是否引导过
      *
      * @var bool
      */
@@ -57,7 +62,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Indicates if the application has "booted".
-	 * 指明应用程序是否已"启动"
+	 * 指示应用程序是否已"启动"
      *
      * @var bool
      */
@@ -65,7 +70,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * The array of booting callbacks.
-	 * 启动中回调函数数组
+	 * 启动回调函数数组
      *
      * @var callable[]
      */
@@ -73,7 +78,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * The array of booted callbacks.
-	 * 已启动回调函数的数组
+	 * 启动回调函数的数组
      *
      * @var callable[]
      */
@@ -161,7 +166,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Indicates if the application is running in the console.
-	 * 指明应用程序是否在控制台中运行
+	 * 指示应用程序是否在控制台中运行
      *
      * @var bool|null
      */
@@ -177,7 +182,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * The prefixes of absolute cache paths for use during normalization.
-	 * 在规范化过程中使用的绝对缓存路径的前缀
+	 * 在规范化期间使用的绝对缓存路径的前缀
      *
      * @var string[]
      */
@@ -199,6 +204,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
         $this->registerCoreContainerAliases();
+        $this->registerLaravelCloudServices();
     }
 
     /**
@@ -214,7 +220,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Register the basic bindings into the container.
-	 * 注册基本绑定到容器中
+	 * 将基本绑定注册到容器中
      *
      * @return void
      */
@@ -245,6 +251,29 @@ class Application extends Container implements ApplicationContract, CachesConfig
         $this->register(new EventServiceProvider($this));
         $this->register(new LogServiceProvider($this));
         $this->register(new RoutingServiceProvider($this));
+    }
+
+    /**
+     * Register any services needed for Laravel Cloud.
+	 * 注册Laravel Cloud所需的任何服务
+     *
+     * @return void
+     */
+    protected function registerLaravelCloudServices()
+    {
+        if (! laravel_cloud()) {
+            return;
+        }
+
+        $this['events']->listen(
+            'bootstrapping: *',
+            fn ($bootstrapper) => Cloud::bootstrapperBootstrapping($this, Str::after($bootstrapper, 'bootstrapping: '))
+        );
+
+        $this['events']->listen(
+            'bootstrapped: *',
+            fn ($bootstrapper) => Cloud::bootstrapperBootstrapped($this, Str::after($bootstrapper, 'bootstrapped: '))
+        );
     }
 
     /**
@@ -296,7 +325,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Register a callback to run after a bootstrapper.
-	 * 注册一个回调以在引导程序之后运行
+	 * 注册一个回调以在引导程序之后运
      *
      * @param  string  $bootstrapper
      * @param  \Closure  $callback
@@ -344,13 +373,20 @@ class Application extends Container implements ApplicationContract, CachesConfig
     {
         $this->instance('path', $this->path());
         $this->instance('path.base', $this->basePath());
-        $this->instance('path.lang', $this->langPath());
         $this->instance('path.config', $this->configPath());
         $this->instance('path.public', $this->publicPath());
         $this->instance('path.storage', $this->storagePath());
         $this->instance('path.database', $this->databasePath());
         $this->instance('path.resources', $this->resourcePath());
         $this->instance('path.bootstrap', $this->bootstrapPath());
+
+        $this->useLangPath(value(function () {
+            if (is_dir($directory = $this->resourcePath('lang'))) {
+                return $directory;
+            }
+
+            return $this->basePath('lang');
+        }));
     }
 
     /**
@@ -364,7 +400,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
     {
         $appPath = $this->appPath ?: $this->basePath.DIRECTORY_SEPARATOR.'app';
 
-        return $appPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $appPath.($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -392,7 +428,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function basePath($path = '')
     {
-        return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath.($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -404,7 +440,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function bootstrapPath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'bootstrap'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath.DIRECTORY_SEPARATOR.'bootstrap'.($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -416,7 +452,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function configPath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'config'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath.DIRECTORY_SEPARATOR.'config'.($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -428,7 +464,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function databasePath($path = '')
     {
-        return ($this->databasePath ?: $this->basePath.DIRECTORY_SEPARATOR.'database').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return ($this->databasePath ?: $this->basePath.DIRECTORY_SEPARATOR.'database').($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -451,19 +487,12 @@ class Application extends Container implements ApplicationContract, CachesConfig
      * Get the path to the language files.
 	 * 获取语言文件的路径
      *
+     * @param  string  $path
      * @return string
      */
-    public function langPath()
+    public function langPath($path = '')
     {
-        if ($this->langPath) {
-            return $this->langPath;
-        }
-
-        if (is_dir($path = $this->resourcePath().DIRECTORY_SEPARATOR.'lang')) {
-            return $path;
-        }
-
-        return $this->basePath().DIRECTORY_SEPARATOR.'lang';
+        return $this->langPath.($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -497,11 +526,13 @@ class Application extends Container implements ApplicationContract, CachesConfig
      * Get the path to the storage directory.
 	 * 获取存储目录的路径
      *
+     * @param  string  $path
      * @return string
      */
-    public function storagePath()
+    public function storagePath($path = '')
     {
-        return $this->storagePath ?: $this->basePath.DIRECTORY_SEPARATOR.'storage';
+        return ($this->storagePath ?: $this->basePath.DIRECTORY_SEPARATOR.'storage')
+                            .($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -529,7 +560,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function resourcePath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'resources'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath.DIRECTORY_SEPARATOR.'resources'.($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -537,7 +568,6 @@ class Application extends Container implements ApplicationContract, CachesConfig
 	 * 获取视图目录的路径
      *
      * This method returns the first configured path in the array of view paths.
-	 * 此方法返回视图路径数组中第一个配置的路径
      *
      * @param  string  $path
      * @return string
@@ -546,7 +576,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
     {
         $basePath = $this['config']->get('view.paths')[0];
 
-        return rtrim($basePath, DIRECTORY_SEPARATOR).($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return rtrim($basePath, DIRECTORY_SEPARATOR).($path != '' ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
@@ -614,7 +644,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      * Get or check the current application environment.
 	 * 获取或检查当前应用程序环境
      *
-     * @param  string|array  $environments
+     * @param  string|array  ...$environments
      * @return string|bool
      */
     public function environment(...$environments)
@@ -659,7 +689,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function detectEnvironment(Closure $callback)
     {
-        $args = $this->runningInConsole() && $_SERVER['argv']
+        $args = $this->runningInConsole() && isset($_SERVER['argv'])
             ? $_SERVER['argv']
             : null;
 
@@ -705,16 +735,14 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Register all of the configured providers.
-	 * 注册所有已配置的提供者
+	 * 注册所有已配置的提供程序
      *
      * @return void
      */
     public function registerConfiguredProviders()
     {
         $providers = Collection::make($this->make('config')->get('app.providers'))
-                        ->partition(function ($provider) {
-                            return strpos($provider, 'Illuminate\\') === 0;
-                        });
+                        ->partition(fn ($provider) => str_starts_with($provider, 'Illuminate\\'));
 
         $providers->splice(1, 0, [$this->make(PackageManifest::class)->providers()]);
 
@@ -739,7 +767,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
         // If the given "provider" is a string, we will resolve it, passing in the
         // application instance automatically for the developer. This is simply
         // a more convenient way of specifying your service provider classes.
-		// 如果给定的"provider"是一个字符串，我们将解析它，并传入应用程序实例自动为开发人员。
+		// 如果给定的"provider"是一个字符串，我们将解析它，并自动传入应用实例。
         if (is_string($provider)) {
             $provider = $this->resolveProvider($provider);
         }
@@ -758,6 +786,8 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
         if (property_exists($provider, 'singletons')) {
             foreach ($provider->singletons as $key => $value) {
+                $key = is_int($key) ? $value : $key;
+
                 $this->singleton($key, $value);
             }
         }
@@ -798,9 +828,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
     {
         $name = is_string($provider) ? $provider : get_class($provider);
 
-        return Arr::where($this->serviceProviders, function ($value) use ($name) {
-            return $value instanceof $name;
-        });
+        return Arr::where($this->serviceProviders, fn ($value) => $value instanceof $name);
     }
 
     /**
@@ -817,7 +845,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Mark the given provider as registered.
-	 * 标记给定的提供程序为已注册
+	 * 将给定的提供程序标记为已注册
      *
      * @param  \Illuminate\Support\ServiceProvider  $provider
      * @return void
@@ -840,7 +868,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
         // We will simply spin through each of the deferred providers and register each
         // one and boot them if the application has booted. This should make each of
         // the remaining services available to this application for immediate use.
-		// 我们将简单地遍历每个延迟提供程序并注册它们。
+		// 我们将简单地遍历每个延迟提供程序并注册它们，如果应用程序已经启动，则启动它们。
         foreach ($this->deferredServices as $service => $provider) {
             $this->loadDeferredProvider($service);
         }
@@ -866,7 +894,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
         // If the service provider has not already been loaded and registered we can
         // register it with the application and remove the service from this list
         // of deferred services, since it will already be loaded on subsequent.
-		// 如果服务提供者还没有加载和注册，我们可以将其注册到应用程序中。
+		// 如果服务提供程序尚未加载和注册，我们将其注册到应用程序中，并从此列表中删除该服务。
         if (! isset($this->loadedProviders[$provider])) {
             $this->registerDeferredProvider($provider, $service);
         }
@@ -885,7 +913,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
         // Once the provider that provides the deferred service has been registered we
         // will remove it from our local list of the deferred services with related
         // providers so that this container does not try to resolve it out again.
-		// 一旦提供延迟服务的提供者被注册，我们将它从本地延迟服务列表中删除。
+		// 一旦提供延迟服务的提供者被注册。
         if ($service) {
             unset($this->deferredServices[$service]);
         }
@@ -901,7 +929,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Resolve the given type from the container.
-	 * 解析容器中给定的类型
+	 * 从容器中解析给定的类型
      *
      * @param  string  $abstract
      * @param  array  $parameters
@@ -982,7 +1010,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
         // Once the application has booted we will also fire some "booted" callbacks
         // for any listeners that need to do work after this initial booting gets
         // finished. This is useful when ordering the boot-up processes we run.
-		// 一旦应用程序启动，我们还将触发一些"已启动"的回调"。
+		// 一旦应用程序启动，我们还将触发一些"已启动"的回调。
         $this->fireAppCallbacks($this->bootingCallbacks);
 
         array_walk($this->serviceProviders, function ($p) {
@@ -1014,7 +1042,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Register a new boot listener.
-	 * 注册一个新的引导监听器
+	 * 注册一个新的引导侦听器
      *
      * @param  callable  $callback
      * @return void
@@ -1026,7 +1054,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Register a new "booted" listener.
-	 * 注册一个新的”已启动“监听器
+	 * 注册一个新的"已启动"侦听器
      *
      * @param  callable  $callback
      * @return void
@@ -1063,15 +1091,14 @@ class Application extends Container implements ApplicationContract, CachesConfig
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(SymfonyRequest $request, int $type = self::MASTER_REQUEST, bool $catch = true)
+    public function handle(SymfonyRequest $request, int $type = self::MAIN_REQUEST, bool $catch = true): SymfonyResponse
     {
-		// Illuminate\Foundation\Http\Kernel 118 public function handle($request)
         return $this[HttpKernelContract::class]->handle(Request::createFromBase($request));
     }
 
     /**
      * Determine if middleware has been disabled for the application.
-	 * 确定是否为应用禁用了中间件
+	 * 确定是否为应用程序禁用了中间件
      *
      * @return bool
      */
@@ -1094,7 +1121,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Get the path to the cached packages.php file.
-	 * 得到缓存的packages.php文件的路径
+	 * 获取缓存的packages.php文件的路径
      *
      * @return string
      */
@@ -1203,6 +1230,17 @@ class Application extends Container implements ApplicationContract, CachesConfig
     }
 
     /**
+     * Get an instance of the maintenance mode manager implementation.
+	 * 获取维护模式管理器实现的实例
+     *
+     * @return \Illuminate\Contracts\Foundation\MaintenanceMode
+     */
+    public function maintenanceMode()
+    {
+        return $this->make(MaintenanceModeContract::class);
+    }
+
+    /**
      * Determine if the application is currently down for maintenance.
 	 * 确定应用程序当前是否关闭以进行维护
      *
@@ -1210,7 +1248,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
      */
     public function isDownForMaintenance()
     {
-        return file_exists($this->storagePath().'/framework/down');
+        return $this->maintenanceMode()->active();
     }
 
     /**
@@ -1290,7 +1328,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
 
     /**
      * Get the application's deferred services.
-	 * 得到应用程序的延迟服务
+	 * 获取应用程序的延迟服务
      *
      * @return array
      */
@@ -1442,6 +1480,7 @@ class Application extends Container implements ApplicationContract, CachesConfig
             'cookie' => [\Illuminate\Cookie\CookieJar::class, \Illuminate\Contracts\Cookie\Factory::class, \Illuminate\Contracts\Cookie\QueueingFactory::class],
             'db' => [\Illuminate\Database\DatabaseManager::class, \Illuminate\Database\ConnectionResolverInterface::class],
             'db.connection' => [\Illuminate\Database\Connection::class, \Illuminate\Database\ConnectionInterface::class],
+            'db.schema' => [\Illuminate\Database\Schema\Builder::class],
             'encrypter' => [\Illuminate\Encryption\Encrypter::class, \Illuminate\Contracts\Encryption\Encrypter::class, \Illuminate\Contracts\Encryption\StringEncrypter::class],
             'events' => [\Illuminate\Events\Dispatcher::class, \Illuminate\Contracts\Events\Dispatcher::class],
             'files' => [\Illuminate\Filesystem\Filesystem::class],

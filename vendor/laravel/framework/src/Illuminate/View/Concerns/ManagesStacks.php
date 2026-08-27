@@ -133,7 +133,6 @@ trait ManagesStacks
     /**
      * Prepend content to a given stack.
 	 * 将内容预放到给定的堆栈中
-	 * 
      *
      * @param  string  $section
      * @param  string  $content
@@ -181,7 +180,7 @@ trait ManagesStacks
 
     /**
      * Flush all of the stacks.
-	 * 冲洗所有的堆栈
+	 * 刷新所有的堆栈
      *
      * @return void
      */

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，谷歌云日志格式化程序
+ * Monolog，格式化，谷歌云日志格式化程序
  */
 
 /*
@@ -20,7 +20,7 @@ use Monolog\LogRecord;
 
 /**
  * Encodes message information into JSON in a format compatible with Cloud logging.
- * 以与云日志兼容的格式将消息信息编码为JSON
+ * 以与云日志兼容的格式将消息信息编码为JSON。
  *
  * @see https://cloud.google.com/logging/docs/structured-logging
  * @see https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry

@@ -13,7 +13,7 @@ class SoftDeletingScope implements Scope
      *
      * @var string[]
      */
-    protected $extensions = ['Restore', 'WithTrashed', 'WithoutTrashed', 'OnlyTrashed'];
+    protected $extensions = ['Restore', 'RestoreOrCreate', 'WithTrashed', 'WithoutTrashed', 'OnlyTrashed'];
 
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -52,7 +52,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Get the "deleted at" column for the builder.
-	 * 获取构建器的"删除时间"列
+	 * 获取构建器的"deleted at"列
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return string
@@ -79,6 +79,24 @@ class SoftDeletingScope implements Scope
             $builder->withTrashed();
 
             return $builder->update([$builder->getModel()->getDeletedAtColumn() => null]);
+        });
+    }
+
+    /**
+     * Add the restore-or-create extension to the builder.
+	 * 向构建器添加还原或创建扩展
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @return void
+     */
+    protected function addRestoreOrCreate(Builder $builder)
+    {
+        $builder->macro('restoreOrCreate', function (Builder $builder, array $attributes = [], array $values = []) {
+            $builder->withTrashed();
+
+            return tap($builder->firstOrCreate($attributes, $values), function ($instance) {
+                $instance->restore();
+            });
         });
     }
 

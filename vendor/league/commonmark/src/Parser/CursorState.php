@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，解析器，游标状态 
+ * League，CommonMark，解析器，游标状态
  */
 
 declare(strict_types=1);

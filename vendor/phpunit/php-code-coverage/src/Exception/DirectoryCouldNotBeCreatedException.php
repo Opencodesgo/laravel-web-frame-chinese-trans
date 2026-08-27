@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，工具，目录不能创建异常
+ * SebastianBergmann，CodeCoverage，目录无法被创建异常
  */
 
 /*

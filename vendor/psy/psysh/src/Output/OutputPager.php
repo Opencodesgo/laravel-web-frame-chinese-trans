@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输出，输出页
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ interface OutputPager extends OutputInterface
 {
     /**
      * Close the current pager process.
+	 * 关闭当前寻呼机进程
      */
     public function close();
 }

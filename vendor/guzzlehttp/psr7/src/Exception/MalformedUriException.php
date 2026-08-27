@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，异常，畸形的 Uri异常
+ * GuzzleHttp，Psr7，异常，有缺陷Uri 异常
  */
 
 declare(strict_types=1);
@@ -11,7 +11,7 @@ use InvalidArgumentException;
 
 /**
  * Exception thrown if a URI cannot be parsed because it's malformed.
- * 如果一个URI不能被解析,因为它是畸形的。
+ * 如果URI由于格式错误而无法解析，则抛出异常。
  */
 class MalformedUriException extends InvalidArgumentException
 {

@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Thrown when a resource cannot be loaded.
- * 当资源不能加载时抛出。
+ * 当无法加载资源时抛出。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

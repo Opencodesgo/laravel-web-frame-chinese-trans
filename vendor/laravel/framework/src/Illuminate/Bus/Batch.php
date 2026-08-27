@@ -51,7 +51,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * The total number of jobs that belong to the batch.
-	 * 属于批处理的任务总数
+	 * 属于批处理的作业总数
      *
      * @var int
      */
@@ -59,7 +59,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * The total number of jobs that are still pending.
-	 * 仍待处理的任务总数
+	 * 仍在等待中的作业总数
      *
      * @var int
      */
@@ -67,7 +67,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * The total number of jobs that have failed.
-	 * 失败的任务总数
+	 * 失败的作业总数
      *
      * @var int
      */
@@ -91,7 +91,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * The date indicating when the batch was created.
-	 * 指明创建批处理的日期
+	 * 指示创建批处理的日期
      *
      * @var \Carbon\CarbonImmutable
      */
@@ -99,7 +99,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * The date indicating when the batch was cancelled.
-	 * 指明批次被取消的日期
+	 * 指示批处理被取消的日期
      *
      * @var \Carbon\CarbonImmutable|null
      */
@@ -107,7 +107,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * The date indicating when the batch was finished.
-	 * 指明批处理完成的日期
+	 * 指示批处理完成的日期
      *
      * @var \Carbon\CarbonImmutable|null
      */
@@ -115,7 +115,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Create a new batch instance.
-	 * 创建新的批次实例
+	 * 创建新的批处理实例
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
      * @param  \Illuminate\Bus\BatchRepository  $repository
@@ -171,9 +171,9 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Add additional jobs to the batch.
-	 * 向批处理添加其他任务
+	 * 向批处理添加其他作业
      *
-     * @param  \Illuminate\Support\Enumerable|array  $jobs
+     * @param  \Illuminate\Support\Enumerable|object|array  $jobs
      * @return self
      */
     public function add($jobs)
@@ -254,7 +254,6 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Record that a job within the batch finished successfully, executing any callbacks if necessary.
-	 * 记录批处理中的作业成功完成，并在必要时执行任何回调。
      *
      * @param  string  $jobId
      * @return void
@@ -286,7 +285,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Decrement the pending jobs for the batch.
-	 * 减少批处理的待处理任务
+	 * 减少批处理的待处理作业
      *
      * @param  string  $jobId
      * @return \Illuminate\Bus\UpdatedBatchJobCounts
@@ -320,7 +319,6 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Determine if the batch allows jobs to fail without cancelling the batch.
-	 * 确定批处理是否允许任务失败而不取消批处理
      *
      * @return bool
      */
@@ -331,7 +329,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Determine if the batch has job failures.
-	 * 确定批处理是否有任务失败
+	 * 确定批处理是否有作业失败
      *
      * @return bool
      */
@@ -342,7 +340,6 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Record that a job within the batch failed to finish successfully, executing any callbacks if necessary.
-	 * 记录批处理中的作业未能成功完成，并在必要时执行任何回调。
      *
      * @param  string  $jobId
      * @param  \Throwable  $e
@@ -375,7 +372,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Increment the failed jobs for the batch.
-	 * 增加批处理的失败任务
+	 * 增加批处理的失败作业
      *
      * @param  string  $jobId
      * @return \Illuminate\Bus\UpdatedBatchJobCounts
@@ -473,7 +470,7 @@ class Batch implements Arrayable, JsonSerializable
 
     /**
      * Convert the batch to an array.
-	 * 转换批处理为数组
+	 * 将批处理转换为数组
      *
      * @return array
      */
@@ -500,8 +497,7 @@ class Batch implements Arrayable, JsonSerializable
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

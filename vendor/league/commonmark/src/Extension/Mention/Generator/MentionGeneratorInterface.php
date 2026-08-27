@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，提及，生成器，提及生成器接口
+ */
 
 declare(strict_types=1);
 

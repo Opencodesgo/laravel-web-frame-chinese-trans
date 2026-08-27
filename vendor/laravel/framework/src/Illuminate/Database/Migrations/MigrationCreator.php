@@ -38,7 +38,7 @@ class MigrationCreator
 
     /**
      * Create a new migration creator instance.
-	 * 创建新的迁移创建器实例
+	 * 创建一个新的迁移创建器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $customStubPath
@@ -69,7 +69,7 @@ class MigrationCreator
         // First we will get the stub file for the migration, which serves as a type
         // of template for the migration. Once we have those we will populate the
         // various place-holders, save the file, and run the post create event.
-		// 首先，我们将获得用于迁移的存根文件，它用作类型用于迁移的模板。
+		// 首先，我们将获得用于迁移的存根文件，
         $stub = $this->getStub($table, $create);
 
         $path = $this->getPath($name, $path);
@@ -77,14 +77,14 @@ class MigrationCreator
         $this->files->ensureDirectoryExists(dirname($path));
 
         $this->files->put(
-            $path, $this->populateStub($name, $stub, $table)
+            $path, $this->populateStub($stub, $table)
         );
 
         // Next, we will fire any hooks that are supposed to fire after a migration is
         // created. Once that is done we'll be ready to return the full path to the
         // migration file so it can be used however it's needed by the developer.
 		// 接下来，我们将触发所有应该在迁移完成后触发的钩子。
-        $this->firePostCreateHooks($table);
+        $this->firePostCreateHooks($table, $path);
 
         return $path;
     }
@@ -145,22 +145,16 @@ class MigrationCreator
      * Populate the place-holders in the migration stub.
 	 * 在迁移存根中填充占位符
      *
-     * @param  string  $name
      * @param  string  $stub
      * @param  string|null  $table
      * @return string
      */
-    protected function populateStub($name, $stub, $table)
+    protected function populateStub($stub, $table)
     {
-        $stub = str_replace(
-            ['DummyClass', '{{ class }}', '{{class}}'],
-            $this->getClassName($name), $stub
-        );
-
         // Here we will replace the table place-holders with the table specified by
         // the developer, which is useful for quickly creating a tables creation
         // or update migration from the console instead of typing it manually.
-		// 在这里，我们将替换表的占位人使用指定的表开发者。
+		// 指定的表替换表占位符。
         if (! is_null($table)) {
             $stub = str_replace(
                 ['DummyTable', '{{ table }}', '{{table}}'],
@@ -201,12 +195,13 @@ class MigrationCreator
 	 * 触发注册的帖子创建钩子
      *
      * @param  string|null  $table
+     * @param  string  $path
      * @return void
      */
-    protected function firePostCreateHooks($table)
+    protected function firePostCreateHooks($table, $path)
     {
         foreach ($this->postCreate as $callback) {
-            $callback($table);
+            $callback($table, $path);
         }
     }
 

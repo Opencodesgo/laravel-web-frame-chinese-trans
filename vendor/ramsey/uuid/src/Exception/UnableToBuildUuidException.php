@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，异常，无法生成 Uuid异常
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -18,6 +21,7 @@ use RuntimeException as PhpRuntimeException;
 
 /**
  * Thrown to indicate a builder is unable to build a UUID
+ * 抛出以指示构建器无法构建UUID
  */
 class UnableToBuildUuidException extends PhpRuntimeException implements UuidExceptionInterface
 {

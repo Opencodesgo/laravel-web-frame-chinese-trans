@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Web 请求识别器特征
- *
+ * Monolog，处理器，Web 请求识别器特征
+ */
 
 /*
  * This file is part of the Monolog package.

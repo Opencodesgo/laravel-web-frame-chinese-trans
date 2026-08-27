@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Flowdock 处理程序
+ * Monolog，处理器，Flowdock 处理器
  */
 
 /*
@@ -22,10 +22,9 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Sends notifications through the Flowdock push API
- * 通过Flowdock push API发送通知
+ * 通过Flowdock推送API发送通知
  *
  * This must be configured with a FlowdockFormatter instance via setFormatter()
- * 这必须通过setFormatter()配置一个FlowdockFormatter实例()
  *
  * Notes:
  * API token - Flowdock API token
@@ -127,7 +126,7 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * Builds the header of the API Call
-	 * 构建API调用的头
+	 * 构建API调用的头文件
      */
     private function buildHeader(string $content): string
     {

@@ -13,7 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Middleware that retries requests based on the boolean result of
  * invoking the provided "decider" function.
- * 的布尔结果重试请求的中间件。
  *
  * @final
  */
@@ -53,7 +52,7 @@ class RetryMiddleware
 
     /**
      * Default exponential backoff delay function.
-	 * 默认的指数回程延迟函数
+	 * 默认指数回退延迟函数
      *
      * @return int milliseconds.
      */
@@ -79,7 +78,6 @@ class RetryMiddleware
 
     /**
      * Execute fulfilled closure
-	 * 执行完成的闭包
      */
     private function onFulfilled(RequestInterface $request, array $options): callable
     {
@@ -99,7 +97,6 @@ class RetryMiddleware
 
     /**
      * Execute rejected closure
-	 * 执行拒绝关闭
      */
     private function onRejected(RequestInterface $req, array $options): callable
     {

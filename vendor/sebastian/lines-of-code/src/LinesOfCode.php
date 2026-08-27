@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，代码行数，Lines Of Code
+ */
+
 /*
  * This file is part of sebastian/lines-of-code.
  *

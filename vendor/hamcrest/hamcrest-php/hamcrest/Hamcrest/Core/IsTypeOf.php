@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Is Type Of
+ * Hamcrest，核心，IsTypeOf
  */
 
 namespace Hamcrest\Core;
@@ -13,7 +13,7 @@ use Hamcrest\Description;
 
 /**
  * Tests whether the value has a built-in type.
- * 测试值是否具有内置类型。
+ * 测试该值是否有内置类型。
  */
 class IsTypeOf extends BaseMatcher
 {
@@ -22,6 +22,7 @@ class IsTypeOf extends BaseMatcher
 
     /**
      * Creates a new instance of IsTypeOf
+	 * 创建IsTypeOf的新实例
      *
      * @param string $theType
      *   The predicate evaluates to true for values with this built-in type.
@@ -66,6 +67,7 @@ class IsTypeOf extends BaseMatcher
 
     /**
      * Is the value a particular built-in type?
+	 * 价值是特定的内置类型吗?
      *
      * @factory
      */

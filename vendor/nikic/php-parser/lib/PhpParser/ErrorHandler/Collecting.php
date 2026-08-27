@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，错误处理程序，收集
+ * PhpParser，错误处理器，收集
  */
 
 namespace PhpParser\ErrorHandler;
@@ -43,8 +43,7 @@ class Collecting implements ErrorHandler {
 
     /**
      * Reset/clear collected errors.
-	 * 重置/清除收集错误
-	 * 
+	 * 重置/清除收集的错误
      */
     public function clearErrors(): void {
         $this->errors = [];

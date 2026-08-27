@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，是否等于忽略大小写
- */
-
 namespace Hamcrest\Text;
 
 /*
@@ -13,7 +9,6 @@ use Hamcrest\TypeSafeMatcher;
 
 /**
  * Tests if a string is equal to another string, regardless of the case.
- * 测试一个字符串是否等于另一个字符串，而不考虑情况。
  */
 class IsEqualIgnoringCase extends TypeSafeMatcher
 {
@@ -47,7 +42,6 @@ class IsEqualIgnoringCase extends TypeSafeMatcher
 
     /**
      * Matches if value is a string equal to $string, regardless of the case.
-	 * 匹配如果value是一个等于$string的字符串，无论哪种情况。
      *
      * @factory
      */

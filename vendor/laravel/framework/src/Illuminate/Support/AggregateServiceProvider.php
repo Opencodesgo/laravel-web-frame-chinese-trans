@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，综合服务提供者
+ * Illuminate, 支持, 综合服务提供商
  */
 
 namespace Illuminate\Support;
@@ -9,7 +9,7 @@ class AggregateServiceProvider extends ServiceProvider
 {
     /**
      * The provider class names.
-	 * 提供者类名
+	 * 提供程序类名
      *
      * @var array
      */

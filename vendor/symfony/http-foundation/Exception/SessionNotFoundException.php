@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，异常，会话未找到异常
+ * Symfony，Component，HttpFoundation，异常，会话未发现异常
  */
 
 /*

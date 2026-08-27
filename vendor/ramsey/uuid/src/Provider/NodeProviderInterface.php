@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，提供者，节点提供程序接口
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -18,11 +21,13 @@ use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A node provider retrieves or generates a node ID
+ * 节点提供程序检索或生成节点ID
  */
 interface NodeProviderInterface
 {
     /**
      * Returns a node ID
+	 * 返回节点ID
      *
      * @return Hexadecimal The node ID as a hexadecimal string
      */

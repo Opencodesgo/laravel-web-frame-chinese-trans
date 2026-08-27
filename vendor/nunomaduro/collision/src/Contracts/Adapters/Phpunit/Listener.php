@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，契约，适配器，Php单元，监听者
+ * NunoMaduro，Collision，契约，适配器，Phpunit，监听器
  */
 
 declare(strict_types=1);
@@ -18,7 +18,7 @@ interface Listener extends TestListener
     /**
      * Renders the provided error
      * on the console.
-	 * 呈现所提供的错误在控制台上
+	 * 在控制台显示提供的错误信息
      *
      * @return void
      */

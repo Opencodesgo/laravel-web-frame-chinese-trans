@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据控制器，数据采集器
- */
+ * Symfony，Component，HttpKernel，数据收集者，数据收集者
+ *
 
 /*
  * This file is part of the Symfony package.
@@ -23,9 +23,10 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * DataCollector.
- * 数据采集器
+ * 数据收集者
  *
  * Children of this class must store the collected data in the data property.
+ * 此类的子类必须将收集的数据存储在data属性中。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@symfony.com>
@@ -37,10 +38,7 @@ abstract class DataCollector implements DataCollectorInterface
      */
     protected $data = [];
 
-    /**
-     * @var ClonerInterface
-     */
-    private $cloner;
+    private ClonerInterface $cloner;
 
     /**
      * Converts the variable into a serializable Data instance.
@@ -48,17 +46,13 @@ abstract class DataCollector implements DataCollectorInterface
      *
      * This array can be displayed in the template using
      * the VarDumper component.
-     *
-     * @param mixed $var
-     *
-     * @return Data
      */
-    protected function cloneVar($var)
+    protected function cloneVar(mixed $var): Data
     {
         if ($var instanceof Data) {
             return $var;
         }
-        if (null === $this->cloner) {
+        if (!isset($this->cloner)) {
             $this->cloner = new VarCloner();
             $this->cloner->setMaxItems(-1);
             $this->cloner->addCasters($this->getCasters());
@@ -101,14 +95,14 @@ abstract class DataCollector implements DataCollectorInterface
         return $casters;
     }
 
-    /**
-     * @return array
-     */
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['data'];
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
     }
@@ -116,14 +110,22 @@ abstract class DataCollector implements DataCollectorInterface
     /**
      * @internal to prevent implementing \Serializable
      */
-    final protected function serialize()
+    final protected function serialize(): void
     {
     }
 
     /**
      * @internal to prevent implementing \Serializable
      */
-    final protected function unserialize($data)
+    final protected function unserialize(string $data): void
     {
+    }
+
+    /**
+     * @return void
+     */
+    public function reset()
+    {
+        $this->data = [];
     }
 }

@@ -34,6 +34,7 @@ interface DelimiterInterface
 
     /**
      * @deprecated This method is no longer used internally and will be removed in 3.0
+	 * 该方法不再在内部使用，并将在3.0中删除。
      */
     public function setActive(bool $active): void;
 

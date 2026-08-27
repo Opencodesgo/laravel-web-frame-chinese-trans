@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Config，配置生成器接口
+ * League，Config，配置生成器界面
  */
 
 declare(strict_types=1);
@@ -18,7 +18,7 @@ namespace League\Config;
 
 /**
  * An interface that provides the ability to set both the schema and configuration values
- * 一个提供了设置模式和配置值的接口
+ * 提供设置模式值和配置值的功能的接口
  */
 interface ConfigurationBuilderInterface extends MutableConfigurationInterface, SchemaBuilderInterface
 {

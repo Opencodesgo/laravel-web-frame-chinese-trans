@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session，存储
+ * Illuminate，Session，储存
  */
 
 namespace Illuminate\Session;
@@ -8,15 +8,20 @@ namespace Illuminate\Session;
 use Closure;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Arr;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\ViewErrorBag;
 use SessionHandlerInterface;
 use stdClass;
 
 class Store implements Session
 {
+    use Macroable;
+
     /**
      * The session ID.
-	 * Session ID
+	 * 会话ID
      *
      * @var string
      */
@@ -24,7 +29,7 @@ class Store implements Session
 
     /**
      * The session name.
-	 * session名称
+	 * 会话名称
      *
      * @var string
      */
@@ -47,6 +52,14 @@ class Store implements Session
     protected $handler;
 
     /**
+     * The session store's serialization strategy.
+	 * 会话存储的序列化策略
+     *
+     * @var string
+     */
+    protected $serialization = 'php';
+
+    /**
      * Session store started status.
 	 * 会话存储启动状态
      *
@@ -56,18 +69,20 @@ class Store implements Session
 
     /**
      * Create a new session instance.
-	 * 创建新的session实例
+	 * 创建一个新的会话实例
      *
      * @param  string  $name
      * @param  \SessionHandlerInterface  $handler
      * @param  string|null  $id
+     * @param  string  $serialization
      * @return void
      */
-    public function __construct($name, SessionHandlerInterface $handler, $id = null)
+    public function __construct($name, SessionHandlerInterface $handler, $id = null, $serialization = 'php')
     {
         $this->setId($id);
         $this->name = $name;
         $this->handler = $handler;
+        $this->serialization = $serialization;
     }
 
     /**
@@ -96,6 +111,8 @@ class Store implements Session
     protected function loadSession()
     {
         $this->attributes = array_merge($this->attributes, $this->readFromHandler());
+
+        $this->marshalErrorBag();
     }
 
     /**
@@ -107,9 +124,13 @@ class Store implements Session
     protected function readFromHandler()
     {
         if ($data = $this->handler->read($this->getId())) {
-            $data = @unserialize($this->prepareForUnserialize($data));
+            if ($this->serialization === 'json') {
+                $data = json_decode($this->prepareForUnserialize($data), true);
+            } else {
+                $data = @unserialize($this->prepareForUnserialize($data));
+            }
 
-            if ($data !== false && ! is_null($data) && is_array($data)) {
+            if ($data !== false && is_array($data)) {
                 return $data;
             }
         }
@@ -130,6 +151,29 @@ class Store implements Session
     }
 
     /**
+     * Marshal the ViewErrorBag when using JSON serialization for sessions.
+	 * 当对会话使用JSON序列化时封送ViewErrorBag
+     *
+     * @return void
+     */
+    protected function marshalErrorBag()
+    {
+        if ($this->serialization !== 'json' || $this->missing('errors')) {
+            return;
+        }
+
+        $errorBag = new ViewErrorBag;
+
+        foreach ($this->get('errors') as $key => $value) {
+            $messageBag = new MessageBag($value['messages']);
+
+            $errorBag->put($key, $messageBag->setFormat($value['format']));
+        }
+
+        $this->put('errors', $errorBag);
+    }
+
+    /**
      * Save the session data to storage.
 	 * 将会话数据保存到存储中
      *
@@ -139,11 +183,37 @@ class Store implements Session
     {
         $this->ageFlashData();
 
+        $this->prepareErrorBagForSerialization();
+
         $this->handler->write($this->getId(), $this->prepareForStorage(
-            serialize($this->attributes)
+            $this->serialization === 'json' ? json_encode($this->attributes) : serialize($this->attributes)
         ));
 
         $this->started = false;
+    }
+
+    /**
+     * Prepare the ViewErrorBag instance for JSON serialization.
+	 * 为JSON序列化准备ViewErrorBag实例
+     *
+     * @return void
+     */
+    protected function prepareErrorBagForSerialization()
+    {
+        if ($this->serialization !== 'json' || $this->missing('errors')) {
+            return;
+        }
+
+        $errors = [];
+
+        foreach ($this->attributes['errors']->getBags() as $key => $value) {
+            $errors[$key] = [
+                'format' => $value->getFormat(),
+                'messages' => $value->getMessages(),
+            ];
+        }
+
+        $this->attributes['errors'] = $errors;
     }
 
     /**
@@ -614,7 +684,7 @@ class Store implements Session
      * Set the session ID.
 	 * 设置会话ID
      *
-     * @param  string  $id
+     * @param  string|null  $id
      * @return void
      */
     public function setId($id)
@@ -626,7 +696,7 @@ class Store implements Session
      * Determine if this is a valid session ID.
 	 * 确定这是否是有效的会话ID
      *
-     * @param  string  $id
+     * @param  string|null  $id
      * @return bool
      */
     public function isValidId($id)
@@ -724,6 +794,18 @@ class Store implements Session
     public function getHandler()
     {
         return $this->handler;
+    }
+
+    /**
+     * Set the underlying session handler implementation.
+	 * 设置底层会话处理程序实现
+     *
+     * @param  \SessionHandlerInterface  $handler
+     * @return \SessionHandlerInterface
+     */
+    public function setHandler(SessionHandlerInterface $handler)
+    {
+        return $this->handler = $handler;
     }
 
     /**

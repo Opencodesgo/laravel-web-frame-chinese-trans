@@ -11,7 +11,7 @@ interface Connection
 {
     /**
      * Subscribe to a set of given channels for messages.
-	 * 为消息订阅一组给定的通道
+	 * 订阅消息给定的信道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，邮件
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
@@ -8,6 +8,8 @@ namespace {{ namespace }};
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class {{ class }} extends Mailable
@@ -16,7 +18,7 @@ class {{ class }} extends Mailable
 
     /**
      * Create a new message instance.
-	 * 创建新的消息实例
+	 * 创建一个新的消息实例
      *
      * @return void
      */
@@ -26,13 +28,39 @@ class {{ class }} extends Mailable
     }
 
     /**
-     * Build the message.
-	 * 构建消息
+     * Get the message envelope.
+	 * 获取消息信封
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function build()
+    public function envelope()
     {
-        return $this->view('view.name');
+        return new Envelope(
+            subject: '{{ subject }}',
+        );
+    }
+
+    /**
+     * Get the message content definition.
+	 * 获取消息内容定义
+     *
+     * @return \Illuminate\Mail\Mailables\Content
+     */
+    public function content()
+    {
+        return new Content(
+            view: 'view.name',
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+	 * 获取消息的附件
+     *
+     * @return array
+     */
+    public function attachments()
+    {
+        return [];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，CssSelector，节点，伪装的节点
+ * Symfony，Component，CssSelector，节点，Pseudo 节点
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>:<identifier>" node.
- * 表示一个“<selector>:<identifier>”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,8 +26,8 @@ namespace Symfony\Component\CssSelector\Node;
  */
 class PseudoNode extends AbstractNode
 {
-    private $selector;
-    private $identifier;
+    private NodeInterface $selector;
+    private string $identifier;
 
     public function __construct(NodeInterface $selector, string $identifier)
     {
@@ -46,9 +45,6 @@ class PseudoNode extends AbstractNode
         return $this->identifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSpecificity(): Specificity
     {
         return $this->selector->getSpecificity()->plus(new Specificity(0, 1, 0));
@@ -56,6 +52,6 @@ class PseudoNode extends AbstractNode
 
     public function __toString(): string
     {
-        return sprintf('%s[%s:%s]', $this->getNodeName(), $this->selector, $this->identifier);
+        return \sprintf('%s[%s:%s]', $this->getNodeName(), $this->selector, $this->identifier);
     }
 }

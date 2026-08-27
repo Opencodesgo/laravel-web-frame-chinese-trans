@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，异常，缺少所需的选项异常
+ * Symfony，Component，Translation，异常，缺少必需选项异常
  */
 
 /*
@@ -21,7 +21,7 @@ class MissingRequiredOptionException extends IncompleteDsnException
 {
     public function __construct(string $option, ?string $dsn = null, ?\Throwable $previous = null)
     {
-        $message = sprintf('The option "%s" is required but missing.', $option);
+        $message = \sprintf('The option "%s" is required but missing.', $option);
 
         parent::__construct($message, $dsn, $previous);
     }

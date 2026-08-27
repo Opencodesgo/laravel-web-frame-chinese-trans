@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，超出范围异常 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,11 +19,13 @@ use Throwable;
 
 // This will extends OutOfRangeException instead of InvalidArgumentException since 3.0.0
 // use OutOfRangeException as BaseOutOfRangeException;
+// 这将从3.0.0扩展OutOfRangeException而不是InvalidArgumentException
 
 class OutOfRangeException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
     /**
      * The unit or name of the value.
+	 * 值的单位或名称
      *
      * @var string
      */
@@ -28,6 +33,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The range minimum.
+	 * 最小值范围
      *
      * @var mixed
      */
@@ -35,6 +41,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The range maximum.
+	 * 最大值范围
      *
      * @var mixed
      */
@@ -42,6 +49,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * The invalid value.
+	 * 无效值
      *
      * @var mixed
      */
@@ -49,6 +57,7 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string         $unit
      * @param mixed          $min

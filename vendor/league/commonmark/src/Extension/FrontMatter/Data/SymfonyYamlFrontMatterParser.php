@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，前物质，数据，Symfony Yaml 前物解析器
+ * League，CommonMark，扩展，前言，数据，Symfony Yaml 前问题解析器
  */
 
 declare(strict_types=1);

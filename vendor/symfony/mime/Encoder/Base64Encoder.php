@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Mime，编码器，基64编码器
+ * Symfony，Component，Mime，译码器，Base64内容编码器
  */
 
 /*
@@ -21,7 +21,7 @@ class Base64Encoder implements EncoderInterface
 {
     /**
      * Takes an unencoded string and produces a Base64 encoded string from it.
-	 * 取一个未编码的字符串,并从它生成一个Base64编码的字符串。
+	 * 获取一个未编码的字符串，并从中生成一个Base64编码的字符串。
      *
      * Base64 encoded strings have a maximum line length of 76 characters.
      * If the first line needs to be shorter, indicate the difference with

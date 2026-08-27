@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，schedule:clear-cache 计划清空缓存命令
+ * Illuminate，控制台，线程调度，清空缓存命令
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -23,7 +23,7 @@ class ScheduleClearCacheCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Delete the cached mutex files created by scheduler';		#删除调度器创建的缓存互斥文件
+    protected $description = 'Delete the cached mutex files created by scheduler';
 
     /**
      * Execute the console command.
@@ -38,7 +38,7 @@ class ScheduleClearCacheCommand extends Command
 
         foreach ($schedule->events($this->laravel) as $event) {
             if ($event->mutex->exists($event)) {
-                $this->line('<info>Deleting mutex for:</info> '.$event->command);
+                $this->components->info(sprintf('Deleting mutex for [%s]', $event->command));
 
                 $event->mutex->forget($event);
 
@@ -47,7 +47,7 @@ class ScheduleClearCacheCommand extends Command
         }
 
         if (! $mutexCleared) {
-            $this->info('No mutex files were found.');
+            $this->components->info('No mutex files were found.');
         }
     }
 }

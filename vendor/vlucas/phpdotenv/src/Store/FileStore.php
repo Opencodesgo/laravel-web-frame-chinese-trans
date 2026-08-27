@@ -22,7 +22,7 @@ final class FileStore implements StoreInterface
 
     /**
      * Should file loading short circuit?
-	 * 文件加载应该短路吗
+	 * 文件加载应该短路吗？
      *
      * @var bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，migrate:status 状态命令
+ * Illuminate，数据库，控制台，状态命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -13,7 +13,7 @@ class StatusCommand extends BaseCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * console命令名称
      *
      * @var string
      */
@@ -21,15 +21,15 @@ class StatusCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console控制说明
      *
      * @var string
      */
-    protected $description = 'Show the status of each migration';		#显示每个迁移的状态
+    protected $description = 'Show the status of each migration';
 
     /**
      * The migrator instance.
-	 * 迁移实例
+	 * 迁移器实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */
@@ -51,7 +51,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return int|null
      */
@@ -59,7 +59,7 @@ class StatusCommand extends BaseCommand
     {
         return $this->migrator->usingConnection($this->option('database'), function () {
             if (! $this->migrator->repositoryExists()) {
-                $this->error('Migration table not found.');
+                $this->components->error('Migration table not found.');
 
                 return 1;
             }
@@ -69,15 +69,27 @@ class StatusCommand extends BaseCommand
             $batches = $this->migrator->getRepository()->getMigrationBatches();
 
             if (count($migrations = $this->getStatusFor($ran, $batches)) > 0) {
-                $this->table(['Ran?', 'Migration', 'Batch'], $migrations);
+                $this->newLine();
+
+                $this->components->twoColumnDetail('<fg=gray>Migration name</>', '<fg=gray>Batch / Status</>');
+
+                $migrations
+                    ->when($this->option('pending'), fn ($collection) => $collection->filter(function ($migration) {
+                        return str($migration[1])->contains('Pending');
+                    }))
+                    ->each(
+                        fn ($migration) => $this->components->twoColumnDetail($migration[0], $migration[1])
+                    );
+
+                $this->newLine();
             } else {
-                $this->error('No migrations found');
+                $this->components->info('No migrations found');
             }
         });
     }
 
     /**
-     * Get the status for the given ran migrations.
+     * Get the status for the given run migrations.
 	 * 获取给定运行迁移的状态
      *
      * @param  array  $ran
@@ -90,9 +102,15 @@ class StatusCommand extends BaseCommand
                     ->map(function ($migration) use ($ran, $batches) {
                         $migrationName = $this->migrator->getMigrationName($migration);
 
-                        return in_array($migrationName, $ran)
-                                ? ['<info>Yes</info>', $migrationName, $batches[$migrationName]]
-                                : ['<fg=red>No</fg=red>', $migrationName];
+                        $status = in_array($migrationName, $ran)
+                            ? '<fg=green;options=bold>Ran</>'
+                            : '<fg=yellow;options=bold>Pending</>';
+
+                        if (in_array($migrationName, $ran)) {
+                            $status = '['.$batches[$migrationName].'] '.$status;
+                        }
+
+                        return [$migrationName, $status];
                     });
     }
 
@@ -117,9 +135,8 @@ class StatusCommand extends BaseCommand
     {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
-
+            ['pending', null, InputOption::VALUE_NONE, 'Only list pending migrations'],
             ['path', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The path(s) to the migrations files to use'],
-
             ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
         ];
     }

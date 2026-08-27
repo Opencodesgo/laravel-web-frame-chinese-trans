@@ -1,6 +1,6 @@
 <?php
 /**
- * app，提供者，Broadcast 广播服务提供者
+ * App, 提供者, 广播服务提供者
  */
 
 namespace App\Providers;

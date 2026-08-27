@@ -32,4 +32,31 @@ trait HandlesAuthorization
     {
         return Response::deny($message, $code);
     }
+
+    /**
+     * Deny with a HTTP status code.
+	 * 使用HTTP状态码拒绝
+     *
+     * @param  int  $status
+     * @param  string|null  $message
+     * @param  int|null  $code
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function denyWithStatus($status, $message = null, $code = null)
+    {
+        return Response::denyWithStatus($status, $message, $code);
+    }
+
+    /**
+     * Deny with a 404 HTTP status code.
+	 * 使用404 HTTP状态码拒绝
+     *
+     * @param  string|null  $message
+     * @param  int|null  $code
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function denyAsNotFound($message = null, $code = null)
+    {
+        return Response::denyWithStatus(404, $message, $code);
+    }
 }

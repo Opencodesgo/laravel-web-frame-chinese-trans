@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，离开 Psysh AlonePass
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,11 +20,13 @@ use Psy\Exception\RuntimeException;
 
 /**
  * Validate that the user input does not reference the `$__psysh__` variable.
+ * 验证用户输入没有引用‘ $__psysh__ ’变量。
  */
 class LeavePsyshAlonePass extends CodeCleanerPass
 {
     /**
      * Validate that the user input does not reference the `$__psysh__` variable.
+	 * 验证用户输入没有引用‘ $__psysh__ ’变量。
      *
      * @throws RuntimeException if the user is messing with $__psysh__
      *

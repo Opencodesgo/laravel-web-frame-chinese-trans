@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，循环执行，监听器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,16 +18,19 @@ use Psy\Shell;
 
 /**
  * Execution Loop Listener interface.
+ * 执行循环监听器接口。
  */
 interface Listener
 {
     /**
      * Determines whether this listener should be active.
+	 * 确定此侦听器是否应处于活动状态
      */
     public static function isSupported(): bool;
 
     /**
      * Called once before the REPL session starts.
+	 * 在REPL会话开始之前调用一次
      *
      * @param Shell $shell
      */
@@ -32,6 +38,7 @@ interface Listener
 
     /**
      * Called at the start of each loop.
+	 * 在每个循环开始时调用
      *
      * @param Shell $shell
      */
@@ -39,6 +46,7 @@ interface Listener
 
     /**
      * Called on user input.
+	 * 在用户输入时调用。
      *
      * Return a new string to override or rewrite user input.
      *
@@ -51,6 +59,7 @@ interface Listener
 
     /**
      * Called before executing user code.
+	 * 在执行用户代码之前调用。
      *
      * Return a new string to override or rewrite user code.
      *
@@ -67,6 +76,7 @@ interface Listener
 
     /**
      * Called at the end of each loop.
+	 * 在每个循环结束时调用
      *
      * @param Shell $shell
      */
@@ -74,6 +84,7 @@ interface Listener
 
     /**
      * Called once after the REPL session ends.
+	 * 在REPL会话结束后调用一次
      *
      * @param Shell $shell
      */

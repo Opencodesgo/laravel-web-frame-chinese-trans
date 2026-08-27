@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，DynamoDb 存储
- * Aws\DynamoDb 默认不包含，需要自己安装
+ * Illuminate，缓存，DynamoDb存储
  */
 
 namespace Illuminate\Cache;
@@ -21,7 +20,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * The DynamoDB client instance.
-	 * DynamoDb客户端实例
+	 * DynamoDB客户端实例
      *
      * @var \Aws\DynamoDb\DynamoDbClient
      */
@@ -69,7 +68,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Create a new store instance.
-	 * 创建新的存储实例
+	 * 创建一个新的存储实例
      *
      * @param  \Aws\DynamoDb\DynamoDbClient  $dynamo
      * @param  string  $table
@@ -227,8 +226,8 @@ class DynamoDbStore implements LockProvider, Store
     }
 
     /**
-     * Store multiple items in the cache for a given number of $seconds.
-	 * 在给定的$秒数内将多个项存储在缓存中
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int  $seconds
@@ -265,7 +264,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Store an item in the cache if the key doesn't exist.
-	 * 如果键不存在，则将项存储在缓存中。
+	 * 如果键不存在，则将项存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -302,7 +301,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return true;
         } catch (DynamoDbException $e) {
-            if (Str::contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
                 return false;
             }
 
@@ -348,7 +347,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return (int) $response['Attributes'][$this->valueAttribute]['N'];
         } catch (DynamoDbException $e) {
-            if (Str::contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
                 return false;
             }
 
@@ -394,7 +393,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return (int) $response['Attributes'][$this->valueAttribute]['N'];
         } catch (DynamoDbException $e) {
-            if (Str::contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
                 return false;
             }
 
@@ -417,7 +416,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Get a lock instance.
-	 * 得到锁实例
+	 * 获取一个锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
@@ -504,7 +503,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Unserialize the value.
-	 * 反序列化值
+	 * 反序列化该值
      *
      * @param  mixed  $value
      * @return mixed
@@ -559,9 +558,9 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Get the DynamoDb Client instance.
-	 * 获取DynamoDb客户端实例
+	 * 获取DynamoDb Client实例
      *
-     * @return DynamoDbClient
+     * @return \Aws\DynamoDb\DynamoDbClient
      */
     public function getClient()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，转储，转储接口
+ * Symfony，Component，Translation，转存器，转储接口
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 /**
  * DumperInterface is the interface implemented by all translation dumpers.
  * There is no common option.
- * DumperInterface是由所有翻译dumpers实现的接口。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -27,9 +26,10 @@ interface DumperInterface
 {
     /**
      * Dumps the message catalogue.
-	 * 转储信息目录
      *
      * @param array $options Options that are used by the dumper
+     *
+     * @return void
      */
     public function dump(MessageCatalogue $messages, array $options = []);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，格式化程序，输出格式化程序接口
+ * Symfony，Component，Console，格式化程序，输出格式化接口
  */
 
 /*
@@ -24,47 +24,43 @@ interface OutputFormatterInterface
 {
     /**
      * Sets the decorated flag.
-	 * 设置装饰的标志
+	 * 设置装饰标记
+     *
+     * @return void
      */
     public function setDecorated(bool $decorated);
 
     /**
      * Whether the output will decorate messages.
-	 * 输出是否会装饰信息
-     *
-     * @return bool
+	 * 输出是否会修饰消息
      */
-    public function isDecorated();
+    public function isDecorated(): bool;
 
     /**
      * Sets a new style.
-	 * 设置一种新的风格
+	 * 设置一个新样式
+     *
+     * @return void
      */
     public function setStyle(string $name, OutputFormatterStyleInterface $style);
 
     /**
      * Checks if output formatter has style with specified name.
-	 * 检查输出格式化程序是否有指定名称的样式
-     *
-     * @return bool
+	 * 检查输出格式化程序是否具有指定名称的样式
      */
-    public function hasStyle(string $name);
+    public function hasStyle(string $name): bool;
 
     /**
      * Gets style options from style with specified name.
-	 * 以指定的名称获取样式选项
-     *
-     * @return OutputFormatterStyleInterface
+	 * 从具有指定名称的样式获取样式选项
      *
      * @throws \InvalidArgumentException When style isn't defined
      */
-    public function getStyle(string $name);
+    public function getStyle(string $name): OutputFormatterStyleInterface;
 
     /**
      * Formats a message according to the given styles.
 	 * 根据给定的样式格式化消息
-     *
-     * @return string|null
      */
-    public function format(?string $message);
+    public function format(?string $message): ?string;
 }

@@ -48,6 +48,7 @@ final class NodeIterator implements \IteratorAggregate
             yield $index++ => $node;
 
             // Push all children onto the stack in reverse order
+			// 将所有子节点按相反顺序压入堆栈
             $child = $node->lastChild();
             while ($child !== null) {
                 if (! $this->blocksOnly || $child instanceof AbstractBlock) {

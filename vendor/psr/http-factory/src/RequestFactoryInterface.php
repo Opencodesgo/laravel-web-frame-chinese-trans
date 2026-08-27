@@ -9,7 +9,7 @@ interface RequestFactoryInterface
 {
     /**
      * Create a new request.
-	 * 创建新的请求
+	 * 创建请求
      *
      * @param string $method The HTTP method associated with the request.
      * @param UriInterface|string $uri The URI associated with the request. If

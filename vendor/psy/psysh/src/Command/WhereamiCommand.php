@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，我在哪里
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Show the context of where you opened the debugger.
+ * 显示打开调试器的上下文。
  */
 class WhereamiCommand extends Command
 {
@@ -61,6 +65,7 @@ HELP
 
     /**
      * Obtains the correct stack frame in the full backtrace.
+	 * 在完整回溯中获取正确的堆栈帧。
      *
      * @return array
      */
@@ -86,6 +91,7 @@ HELP
 
     /**
      * Determine the file and line based on the specific backtrace.
+	 * 根据特定的回溯确定文件和行
      *
      * @return array
      */
@@ -139,6 +145,7 @@ HELP
 
     /**
      * Replace the given directory from the start of a filepath.
+	 * 从文件路径的开头替换给定的目录
      *
      * @param string $file
      */

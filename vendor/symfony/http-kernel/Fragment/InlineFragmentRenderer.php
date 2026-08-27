@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，碎片，内联片段渲染器
+ * Symfony，Component，HttpKernel，片段，内联片段渲染器
  */
 
 /*
@@ -25,14 +25,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Implements the inline rendering strategy where the Request is rendered by the current HTTP kernel.
- * 实现由当前HTTP内核呈现请求的内线呈现策略。
+ * 实现内联呈现策略，其中Request由当前HTTP内核呈现。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class InlineFragmentRenderer extends RoutableFragmentRenderer
 {
-    private $kernel;
-    private $dispatcher;
+    private HttpKernelInterface $kernel;
+    private ?EventDispatcherInterface $dispatcher;
 
     public function __construct(HttpKernelInterface $kernel, ?EventDispatcherInterface $dispatcher = null)
     {
@@ -41,14 +41,12 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Additional available options:
 	 * 其他可用选项：
      *
      *  * alt: an alternative URI to render in case of an error
      */
-    public function render($uri, Request $request, array $options = [])
+    public function render(string|ControllerReference $uri, Request $request, array $options = []): Response
     {
         $reference = null;
         if ($uri instanceof ControllerReference) {
@@ -110,6 +108,9 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         }
     }
 
+    /**
+     * @return Request
+     */
     protected function createSubRequest(string $uri, Request $request)
     {
         $cookies = $request->cookies->all();
@@ -125,9 +126,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
 
         static $setSession;
 
-        if (null === $setSession) {
-            $setSession = \Closure::bind(static function ($subRequest, $request) { $subRequest->session = $request->session; }, null, Request::class);
-        }
+        $setSession ??= \Closure::bind(static function ($subRequest, $request) { $subRequest->session = $request->session; }, null, Request::class);
         $setSession($subRequest, $request);
 
         if ($request->get('_format')) {
@@ -136,14 +135,17 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         if ($request->getDefaultLocale() !== $request->getLocale()) {
             $subRequest->setLocale($request->getLocale());
         }
+        if ($request->attributes->has('_stateless')) {
+            $subRequest->attributes->set('_stateless', $request->attributes->get('_stateless'));
+        }
+        if ($request->attributes->has('_check_controller_is_allowed')) {
+            $subRequest->attributes->set('_check_controller_is_allowed', $request->attributes->get('_check_controller_is_allowed'));
+        }
 
         return $subRequest;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'inline';
     }

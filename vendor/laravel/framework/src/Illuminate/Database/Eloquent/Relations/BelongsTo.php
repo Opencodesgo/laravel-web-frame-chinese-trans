@@ -70,7 +70,7 @@ class BelongsTo extends Relation
         // In the underlying base relationship class, this variable is referred to as
         // the "parent" since most relationships are not inversed. But, since this
         // one is we will create a "child" variable for much better readability.
-		// 在基础基关系类中，该变量被称为"父母"自大多数关系都不是反向的。
+		// 在基础基关系类中，该变量被称为。
         $this->child = $child;
 
         parent::__construct($query, $child);
@@ -122,7 +122,7 @@ class BelongsTo extends Relation
         // We'll grab the primary key name of the related models since it could be set to
         // a non-standard name and not "id". We will then construct the constraint for
         // our eagerly loading query so it returns the proper models from execution.
-		// 我们将获取相关模型的主键名，因为它可以设置为非标准名称，而不是"id"。
+		// 我们将获取相关模型的主键名。
         $key = $this->related->getTable().'.'.$this->ownerKey;
 
         $whereIn = $this->whereInMethod($this->related, $this->ownerKey);
@@ -252,7 +252,7 @@ class BelongsTo extends Relation
 
     /**
      * Alias of "dissociate" method.
-	 * "解离"方法的别名
+	 * "dissociate"方法的别名
      *
      * @return \Illuminate\Database\Eloquent\Model
      */

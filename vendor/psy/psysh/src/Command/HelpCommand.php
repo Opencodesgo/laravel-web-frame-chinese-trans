@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，帮助命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Help command.
+ * 帮助命令
  *
  * Lists available commands, and gives command-specific help when asked nicely.
  */
@@ -42,6 +46,7 @@ class HelpCommand extends Command
 
     /**
      * Helper for setting a subcommand to retrieve help for.
+	 * 帮助器，用于设置要检索帮助的子命令。
      *
      * @param Command $command
      */

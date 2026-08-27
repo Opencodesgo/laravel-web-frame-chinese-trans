@@ -1,11 +1,10 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，字符串名称生成器
+ * Ramsey，Uuid，生成器，PeclUuid 名称生成器
  */
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,32 +26,27 @@ use function uuid_generate_sha1;
 use function uuid_parse;
 
 /**
- * PeclUuidNameGenerator generates strings of binary data from a namespace and a
- * name, using ext-uuid
+ * PeclUuidNameGenerator generates strings of binary data from a namespace and a name, using ext-uuid
+ * PeclUuidNameGenerator 使用ext-uuid从名称空间和名称生成二进制数据字符串
  *
  * @link https://pecl.php.net/package/uuid ext-uuid
  */
 class PeclUuidNameGenerator implements NameGeneratorInterface
 {
-    /** @psalm-pure */
+    /**
+     * @pure
+     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
-        switch ($hashAlgorithm) {
-            case 'md5':
-                $uuid = uuid_generate_md5($ns->toString(), $name);
+        $uuid = match ($hashAlgorithm) {
+            'md5' => uuid_generate_md5($ns->toString(), $name), /** @phpstan-ignore possiblyImpure.functionCall */
+            'sha1' => uuid_generate_sha1($ns->toString(), $name), /** @phpstan-ignore possiblyImpure.functionCall */
+            default => throw new NameException(
+                sprintf('Unable to hash namespace and name with algorithm \'%s\'', $hashAlgorithm),
+            ),
+        };
 
-                break;
-            case 'sha1':
-                $uuid = uuid_generate_sha1($ns->toString(), $name);
-
-                break;
-            default:
-                throw new NameException(sprintf(
-                    'Unable to hash namespace and name with algorithm \'%s\'',
-                    $hashAlgorithm
-                ));
-        }
-
-        return uuid_parse($uuid);
+        /** @phpstan-ignore possiblyImpure.functionCall */
+        return (string) uuid_parse($uuid);
     }
 }

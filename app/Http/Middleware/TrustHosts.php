@@ -1,6 +1,6 @@
 <?php
 /**
- * app，Http，中间件，信任主机
+ * App, Http, 中间件, 信任主机
  */
 
 namespace App\Http\Middleware;

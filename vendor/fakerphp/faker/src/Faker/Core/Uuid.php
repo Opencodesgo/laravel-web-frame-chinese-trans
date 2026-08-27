@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，核心，Uuid
+ * Faker，Core，Uuid
  */
 
 namespace Faker\Core;
@@ -9,6 +9,7 @@ use Faker\Extension;
 
 /**
  * @experimental This class is experimental and does not fall under our BC promise
+ * 这门课是实验性的，不属于我们BC的承诺。
  */
 final class Uuid implements Extension\UuidExtension
 {

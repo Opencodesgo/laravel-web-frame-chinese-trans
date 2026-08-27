@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Routing，路由收集
+ * Symfony，Component，Routing，路由集合
  */
 
 /*
@@ -36,22 +36,22 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * @var array<string, Route>
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
      * @var array<string, Alias>
      */
-    private $aliases = [];
+    private array $aliases = [];
 
     /**
      * @var array<string, ResourceInterface>
      */
-    private $resources = [];
+    private array $resources = [];
 
     /**
      * @var array<string, int>
      */
-    private $priorities = [];
+    private array $priorities = [];
 
     public function __clone()
     {
@@ -66,7 +66,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets the current RouteCollection as an Iterator that includes all routes.
-	 * 获取当前的RouteCollection作为包含所有路由的迭代器
+	 * 获取当前的RouteCollection作为包含所有路由的迭代器。
      *
      * It implements \IteratorAggregate.
      *
@@ -74,8 +74,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator<string, Route>
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->all());
     }
@@ -83,29 +82,22 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Gets the number of Routes in this collection.
 	 * 获取此集合中路由的数目
-     *
-     * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return \count($this->routes);
     }
 
     /**
-     * @param int $priority
+     * @return void
      */
-    public function add(string $name, Route $route/* , int $priority = 0 */)
+    public function add(string $name, Route $route, int $priority = 0)
     {
-        if (\func_num_args() < 3 && __CLASS__ !== static::class && __CLASS__ !== (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof \PHPUnit\Framework\MockObject\MockObject && !$this instanceof \Prophecy\Prophecy\ProphecySubjectInterface && !$this instanceof \Mockery\MockInterface) {
-            trigger_deprecation('symfony/routing', '5.1', 'The "%s()" method will have a new "int $priority = 0" argument in version 6.0, not defining it is deprecated.', __METHOD__);
-        }
-
         unset($this->routes[$name], $this->priorities[$name], $this->aliases[$name]);
 
         $this->routes[$name] = $route;
 
-        if ($priority = 3 <= \func_num_args() ? func_get_arg(2) : 0) {
+        if ($priority) {
             $this->priorities[$name] = $priority;
         }
     }
@@ -116,14 +108,12 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * @return array<string, Route>
      */
-    public function all()
+    public function all(): array
     {
         if ($this->priorities) {
             $priorities = $this->priorities;
             $keysOrder = array_flip(array_keys($this->routes));
-            uksort($this->routes, static function ($n1, $n2) use ($priorities, $keysOrder) {
-                return (($priorities[$n2] ?? 0) <=> ($priorities[$n1] ?? 0)) ?: ($keysOrder[$n1] <=> $keysOrder[$n2]);
-            });
+            uksort($this->routes, static fn ($n1, $n2) => (($priorities[$n2] ?? 0) <=> ($priorities[$n1] ?? 0)) ?: ($keysOrder[$n1] <=> $keysOrder[$n2]));
         }
 
         return $this->routes;
@@ -132,10 +122,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Gets a route by name.
 	 * 按名称获取路由
-     *
-     * @return Route|null
      */
-    public function get(string $name)
+    public function get(string $name): ?Route
     {
         $visited = [];
         while (null !== $alias = $this->aliases[$name] ?? null) {
@@ -160,11 +148,13 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Removes a route or an array of routes by name from the collection.
-	 * 按名称从集合中删除路由或路由数组
+	 * 按名称从集合中删除路由或路由数组。
      *
      * @param string|string[] $name The route name or an array of route names
+     *
+     * @return void
      */
-    public function remove($name)
+    public function remove(string|array $name)
     {
         $routes = [];
         foreach ((array) $name as $n) {
@@ -189,6 +179,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Adds a route collection at the end of the current set by appending all
      * routes of the added collection.
+     *
+     * @return void
      */
     public function addCollection(self $collection)
     {
@@ -216,7 +208,9 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds a prefix to the path of all child routes.
-	 * 为所有子路由的路径添加前缀
+	 * 为所有子路由的路径添加前缀。
+     *
+     * @return void
      */
     public function addPrefix(string $prefix, array $defaults = [], array $requirements = [])
     {
@@ -235,7 +229,9 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Adds a prefix to the name of all the routes within in the collection.
-	 * 向集合中的所有路由的名称添加前缀
+	 * 向集合中的所有路由的名称添加前缀。
+     *
+     * @return void
      */
     public function addNamePrefix(string $prefix)
     {
@@ -265,6 +261,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Sets the host pattern on all routes.
 	 * 在所有路由上设置主机模式
+     *
+     * @return void
      */
     public function setHost(?string $pattern, array $defaults = [], array $requirements = [])
     {
@@ -280,6 +278,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
 	 * 为所有路由设置一个条件。
      *
      * Existing conditions will be overridden.
+     *
+     * @return void
      */
     public function setCondition(?string $condition)
     {
@@ -293,6 +293,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
 	 * 为所有路由添加缺省值。
      *
      * An existing default value under the same name in a route will be overridden.
+     *
+     * @return void
      */
     public function addDefaults(array $defaults)
     {
@@ -308,6 +310,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
 	 * 为所有路由添加需求。
      *
      * An existing requirement under the same name in a route will be overridden.
+     *
+     * @return void
      */
     public function addRequirements(array $requirements)
     {
@@ -323,6 +327,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
 	 * 为所有路由添加选项。
      *
      * An existing option value under the same name in a route will be overridden.
+     *
+     * @return void
      */
     public function addOptions(array $options)
     {
@@ -335,11 +341,12 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Sets the schemes (e.g. 'https') all child routes are restricted to.
-	 * 设置方案(例如：‘https’)所有子路由都被限制
      *
      * @param string|string[] $schemes The scheme or an array of schemes
+     *
+     * @return void
      */
-    public function setSchemes($schemes)
+    public function setSchemes(string|array $schemes)
     {
         foreach ($this->routes as $route) {
             $route->setSchemes($schemes);
@@ -350,8 +357,10 @@ class RouteCollection implements \IteratorAggregate, \Countable
      * Sets the HTTP methods (e.g. 'POST') all child routes are restricted to.
      *
      * @param string|string[] $methods The method or an array of methods
+     *
+     * @return void
      */
-    public function setMethods($methods)
+    public function setMethods(string|array $methods)
     {
         foreach ($this->routes as $route) {
             $route->setMethods($methods);
@@ -364,7 +373,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      *
      * @return ResourceInterface[]
      */
-    public function getResources()
+    public function getResources(): array
     {
         return array_values($this->resources);
     }
@@ -372,6 +381,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
     /**
      * Adds a resource for this collection. If the resource already exists
      * it is not added.
+     *
+     * @return void
      */
     public function addResource(ResourceInterface $resource)
     {
@@ -384,7 +395,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Sets an alias for an existing route.
-	 * 为现有路由设置别名
+	 * 为现有路由设置别名。
      *
      * @param string $name  The alias to create
      * @param string $alias The route to alias
@@ -394,7 +405,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
     public function addAlias(string $name, string $alias): Alias
     {
         if ($name === $alias) {
-            throw new InvalidArgumentException(sprintf('Route alias "%s" can not reference itself.', $name));
+            throw new InvalidArgumentException(\sprintf('Route alias "%s" can not reference itself.', $name));
         }
 
         unset($this->routes[$name], $this->priorities[$name]);

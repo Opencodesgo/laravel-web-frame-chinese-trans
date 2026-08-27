@@ -17,7 +17,6 @@ namespace Psy;
 /**
  * Helpers for bypassing visibility restrictions, mostly used in code generated
  * by the `sudo` command.
- * 用于绕过可见性限制的帮助程序，主要用于生成的代码。
  */
 class Sudo
 {
@@ -69,7 +68,9 @@ class Sudo
     {
         $refl = new \ReflectionObject($object);
         $reflMethod = $refl->getMethod($method);
-        $reflMethod->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $reflMethod->setAccessible(true);
+        }
 
         return $reflMethod->invokeArgs($object, $args);
     }
@@ -86,7 +87,9 @@ class Sudo
     public static function fetchStaticProperty($class, string $property)
     {
         $prop = self::getProperty(new \ReflectionClass($class), $property);
-        $prop->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $prop->setAccessible(true);
+        }
 
         return $prop->getValue();
     }
@@ -129,7 +132,9 @@ class Sudo
     {
         $refl = new \ReflectionClass($class);
         $reflMethod = $refl->getMethod($method);
-        $reflMethod->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $reflMethod->setAccessible(true);
+        }
 
         return $reflMethod->invokeArgs(null, $args);
     }
@@ -176,7 +181,9 @@ class Sudo
         $instance = $refl->newInstanceWithoutConstructor();
 
         $constructor = $refl->getConstructor();
-        $constructor->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $constructor->setAccessible(true);
+        }
         $constructor->invokeArgs($instance, $args);
 
         return $instance;
@@ -184,7 +191,7 @@ class Sudo
 
     /**
      * Get a ReflectionProperty from an object (or its parent classes).
-	 * 从对象（或它的父类）获取一个ReflectionProperty
+	 * 从对象（或它的父类）获取一个ReflectionProperty。
      *
      * @throws \ReflectionException if neither the object nor any of its parents has this property
      *
@@ -199,7 +206,9 @@ class Sudo
         do {
             try {
                 $prop = $refl->getProperty($property);
-                $prop->setAccessible(true);
+                if (\PHP_VERSION_ID < 80100) {
+                    $prop->setAccessible(true);
+                }
 
                 return $prop;
             } catch (\ReflectionException $e) {

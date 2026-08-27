@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，挂起假批处理
+ * Illuminate，支持，测试，佯装，待定批 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -39,6 +39,17 @@ class PendingBatchFake extends PendingBatch
      * @return \Illuminate\Bus\Batch
      */
     public function dispatch()
+    {
+        return $this->bus->recordPendingBatch($this);
+    }
+
+    /**
+     * Dispatch the batch after the response is sent to the browser.
+	 * 在将响应发送到浏览器后，分派该批处理。
+     *
+     * @return \Illuminate\Bus\Batch
+     */
+    public function dispatchAfterResponse()
     {
         return $this->bus->recordPendingBatch($this);
     }

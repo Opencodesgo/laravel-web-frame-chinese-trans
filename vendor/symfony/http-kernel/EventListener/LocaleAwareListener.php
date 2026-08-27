@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，事件监听器，现场环境感知器
+ * Symfony，Component，HttpKernel，事件监听器，语言环境感知监听器
  */
 
 /*
@@ -23,14 +23,14 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Pass the current locale to the provided services.
- * 将当前语言环境传递给提供的服务。
+ * 将当前区域设置传递给所提供的服务。
  *
  * @author Pierre Bobiet <pierrebobiet@gmail.com>
  */
 class LocaleAwareListener implements EventSubscriberInterface
 {
-    private $localeAwareServices;
-    private $requestStack;
+    private iterable $localeAwareServices;
+    private RequestStack $requestStack;
 
     /**
      * @param iterable<mixed, LocaleAwareInterface> $localeAwareServices
@@ -59,7 +59,7 @@ class LocaleAwareListener implements EventSubscriberInterface
         $this->setLocale($parentRequest->getLocale(), $parentRequest->getDefaultLocale());
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // must be registered after the Locale listener
@@ -73,7 +73,7 @@ class LocaleAwareListener implements EventSubscriberInterface
         foreach ($this->localeAwareServices as $service) {
             try {
                 $service->setLocale($locale);
-            } catch (\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException) {
                 $service->setLocale($defaultLocale);
             }
         }

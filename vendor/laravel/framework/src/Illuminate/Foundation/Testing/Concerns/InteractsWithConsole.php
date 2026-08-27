@@ -13,7 +13,7 @@ trait InteractsWithConsole
 {
     /**
      * Indicates if the console output should be mocked.
-	 * 指明是否应该模拟控制台输出
+	 * 指示是否应该模拟控制台输出
      *
      * @var bool
      */
@@ -28,12 +28,28 @@ trait InteractsWithConsole
     public $expectedOutput = [];
 
     /**
+     * All of the expected text to be present in the output.
+	 * 所有期望的文本都将出现在输出中
+     *
+     * @var array
+     */
+    public $expectedOutputSubstrings = [];
+
+    /**
      * All of the output lines that aren't expected to be displayed.
 	 * 所有不希望显示的输出行
      *
      * @var array
      */
     public $unexpectedOutput = [];
+
+    /**
+     * All of the text that is not expected to be present in the output.
+	 * 所有不希望在输出中出现的文本
+     *
+     * @var array
+     */
+    public $unexpectedOutputSubstrings = [];
 
     /**
      * All of the expected output tables.

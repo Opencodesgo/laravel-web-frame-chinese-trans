@@ -8,7 +8,6 @@ namespace Illuminate\Redis\Connections;
 use Closure;
 use Illuminate\Contracts\Redis\Connection as ConnectionContract;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Redis;
 use RedisException;
 
@@ -29,7 +28,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * The connection configuration array.
-	 * 连接配置数组
+	 * 连接配置阵列
      *
      * @var array
      */
@@ -37,7 +36,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Create a new PhpRedis connection.
-	 * 创建新的PhpRedis连接
+	 * 创建一个新的PhpRedis连接
      *
      * @param  \Redis  $client
      * @param  callable|null  $connector
@@ -67,7 +66,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Get the values of all the given keys.
-	 * 得到所有给定键的值
+	 * 获取所有给定键的值
      *
      * @param  array  $keys
      * @return array
@@ -114,10 +113,10 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Get the value of the given hash fields.
-	 * 得到给定哈希字段的值
+	 * 获取给定哈希字段的值
      *
      * @param  string  $key
-     * @param  mixed  $dictionary
+     * @param  mixed  ...$dictionary
      * @return array
      */
     public function hmget($key, ...$dictionary)
@@ -134,7 +133,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 	 * 将给定的散列字段设置为各自的值
      *
      * @param  string  $key
-     * @param  mixed  $dictionary
+     * @param  mixed  ...$dictionary
      * @return int
      */
     public function hmset($key, ...$dictionary)
@@ -180,9 +179,9 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Removes and returns the first element of the list stored at key.
-	 * 移除并返回存储在key处的列表的第一个元素
+	 * 移除并返回存储在key处的列表的第一个元素。
      *
-     * @param  mixed  $arguments
+     * @param  mixed  ...$arguments
      * @return array|null
      */
     public function blpop(...$arguments)
@@ -196,7 +195,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Removes and returns the last element of the list stored at key.
 	 * 删除并返回存储在key处的列表的最后一个元素
      *
-     * @param  mixed  $arguments
+     * @param  mixed  ...$arguments
      * @return array|null
      */
     public function brpop(...$arguments)
@@ -224,7 +223,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 	 * 向排序集添加一个或多个成员，如果排序集已经存在，则更新其分数。
      *
      * @param  string  $key
-     * @param  mixed  $dictionary
+     * @param  mixed  ...$dictionary
      * @return int
      */
     public function zadd($key, ...$dictionary)
@@ -456,7 +455,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      *
      * @param  string  $script
      * @param  int  $numkeys
-     * @param  mixed  $arguments
+     * @param  mixed  ...$arguments
      * @return mixed
      */
     public function evalsha($script, $numkeys, ...$arguments)
@@ -472,7 +471,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      *
      * @param  string  $script
      * @param  int  $numberOfKeys
-     * @param  dynamic  $arguments
+     * @param  dynamic  ...$arguments
      * @return mixed
      */
     public function eval($script, $numberOfKeys, ...$arguments)
@@ -568,8 +567,12 @@ class PhpRedisConnection extends Connection implements ConnectionContract
         try {
             return parent::command($method, $parameters);
         } catch (RedisException $e) {
-            if (Str::contains($e->getMessage(), 'went away')) {
-                $this->client = $this->connector ? call_user_func($this->connector) : $this->client;
+            foreach (['went away', 'socket', 'read error on connection'] as $errorMessage) {
+                if (str_contains($e->getMessage(), $errorMessage)) {
+                    $this->client = $this->connector ? call_user_func($this->connector) : $this->client;
+
+                    break;
+                }
             }
 
             throw $e;
@@ -585,20 +588,6 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     public function disconnect()
     {
         $this->client->close();
-    }
-
-    /**
-     * Apply a prefix to the given key if necessary.
-	 * 必要时对给定的键应用前缀
-     *
-     * @param  string  $key
-     * @return string
-     */
-    private function applyPrefix($key)
-    {
-        $prefix = (string) $this->client->getOption(Redis::OPT_PREFIX);
-
-        return $prefix.$key;
     }
 
     /**

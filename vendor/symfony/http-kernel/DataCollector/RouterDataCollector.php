@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集器，路由器数据采集器
- */
+ * Symfony，Component，HttpKernel，数据收集者，路由器数据采集器
+ *
 
 /*
  * This file is part of the Symfony package.
@@ -35,11 +35,9 @@ class RouterDataCollector extends DataCollector
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @final
      */
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         if ($response instanceof RedirectResponse) {
             $this->data['redirect'] = true;
@@ -53,6 +51,9 @@ class RouterDataCollector extends DataCollector
         unset($this->controllers[$request]);
     }
 
+    /**
+     * @return void
+     */
     public function reset()
     {
         $this->controllers = new \SplObjectStorage();
@@ -64,7 +65,10 @@ class RouterDataCollector extends DataCollector
         ];
     }
 
-    protected function guessRoute(Request $request, $controller)
+    /**
+     * @return string
+     */
+    protected function guessRoute(Request $request, string|object|array $controller)
     {
         return 'n/a';
     }
@@ -72,6 +76,8 @@ class RouterDataCollector extends DataCollector
     /**
      * Remembers the controller associated to each request.
 	 * 记住与每个请求相关联的控制器
+     *
+     * @return void
      */
     public function onKernelController(ControllerEvent $event)
     {
@@ -81,31 +87,22 @@ class RouterDataCollector extends DataCollector
     /**
      * @return bool Whether this request will result in a redirect
      */
-    public function getRedirect()
+    public function getRedirect(): bool
     {
         return $this->data['redirect'];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTargetUrl()
+    public function getTargetUrl(): ?string
     {
         return $this->data['url'];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTargetRoute()
+    public function getTargetRoute(): ?string
     {
         return $this->data['route'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'router';
     }

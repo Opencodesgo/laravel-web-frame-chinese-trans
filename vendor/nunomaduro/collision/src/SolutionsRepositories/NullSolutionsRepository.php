@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，解决方案库，零解决库
+ * NunoMaduro，Collision，异常，解决方案存储库，Null 解决方案存储库
  */
 
 declare(strict_types=1);

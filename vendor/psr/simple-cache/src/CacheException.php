@@ -7,8 +7,8 @@ namespace Psr\SimpleCache;
 
 /**
  * Interface used for all types of exceptions thrown by the implementing library.
- * 用于实现库抛出的所有类型异常的接口。
+ * 接口，用于实现库抛出的所有类型的异常。
  */
-interface CacheException
+interface CacheException extends \Throwable
 {
 }

@@ -11,7 +11,7 @@ class BaseCommand extends Command
 {
     /**
      * Get all of the migration paths.
-	 * 获取所有迁移路径
+	 * 得到所有迁移路径
      *
      * @return array
      */

@@ -12,7 +12,6 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * PSR-7 response implementation.
- * PSR-7 响应实现
  */
 class Response implements ResponseInterface
 {

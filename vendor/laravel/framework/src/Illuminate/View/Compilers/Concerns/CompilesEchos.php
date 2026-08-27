@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译，问题，编译Echo
+ * Illuminate，视图，编译器，问题，编译 Echo
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -68,7 +68,7 @@ trait CompilesEchos
 
     /**
      * Compile the "raw" echo statements.
-	 * 编译"原始"echo语句
+	 * 编译“原始”echo语句
      *
      * @param  string  $value
      * @return string
@@ -90,7 +90,7 @@ trait CompilesEchos
 
     /**
      * Compile the "regular" echo statements.
-	 * 编译"常规"echo语句
+	 * 编译“常规”echo语句
      *
      * @param  string  $value
      * @return string
@@ -155,7 +155,7 @@ trait CompilesEchos
     {
         $value = Str::of($value)
             ->trim()
-            ->when(Str::endsWith($value, ';'), function ($str) {
+            ->when(str_ends_with($value, ';'), function ($str) {
                 return $str->beforeLast(';');
             });
 

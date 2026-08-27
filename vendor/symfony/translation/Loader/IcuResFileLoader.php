@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，载入程序，IcuRes 文件装载机
+ * Symfony，Component，Translation，加载器，IcuRes 文件加载器
  */
 
 /*
@@ -21,33 +21,29 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IcuResFileLoader loads translations from a resource bundle.
- * IcuResFileLoader 加载一个资源包的翻译。
  *
  * @author stealth35
  */
 class IcuResFileLoader implements LoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load($resource, string $locale, string $domain = 'messages')
+    public function load(mixed $resource, string $locale, string $domain = 'messages'): MessageCatalogue
     {
         if (!stream_is_local($resource)) {
-            throw new InvalidResourceException(sprintf('This is not a local file "%s".', $resource));
+            throw new InvalidResourceException(\sprintf('This is not a local file "%s".', $resource));
         }
 
         if (!is_dir($resource)) {
-            throw new NotFoundResourceException(sprintf('File "%s" not found.', $resource));
+            throw new NotFoundResourceException(\sprintf('File "%s" not found.', $resource));
         }
 
         try {
             $rb = new \ResourceBundle($locale, $resource);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $rb = null;
         }
 
         if (!$rb) {
-            throw new InvalidResourceException(sprintf('Cannot load resource "%s".', $resource));
+            throw new InvalidResourceException(\sprintf('Cannot load resource "%s".', $resource));
         } elseif (intl_is_failure($rb->getErrorCode())) {
             throw new InvalidResourceException($rb->getErrorMessage(), $rb->getErrorCode());
         }
@@ -65,7 +61,6 @@ class IcuResFileLoader implements LoaderInterface
 
     /**
      * Flattens an ResourceBundle.
-	 * 足智多谋
      *
      * The scheme used is:
      *   key { key2 { key3 { "value" } } }
@@ -77,10 +72,8 @@ class IcuResFileLoader implements LoaderInterface
      * @param \ResourceBundle $rb       The ResourceBundle that will be flattened
      * @param array           $messages Used internally for recursive calls
      * @param string|null     $path     Current path being parsed, used internally for recursive calls
-     *
-     * @return array
      */
-    protected function flatten(\ResourceBundle $rb, array &$messages = [], ?string $path = null)
+    protected function flatten(\ResourceBundle $rb, array &$messages = [], ?string $path = null): array
     {
         foreach ($rb as $key => $value) {
             $nodePath = $path ? $path.'.'.$key : $key;

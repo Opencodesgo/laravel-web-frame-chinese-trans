@@ -9,7 +9,7 @@ class ModelIdentifier
 {
     /**
      * The class name of the model.
-	 * 模型的类名
+	 * 模型类名
      *
      * @var string
      */
@@ -20,7 +20,6 @@ class ModelIdentifier
 	 * 模型的唯一标识符
      *
      * This may be either a single ID or an array of IDs.
-	 * 它可以是单个ID，也可以是一个ID数组。
      *
      * @var mixed
      */
@@ -43,8 +42,16 @@ class ModelIdentifier
     public $connection;
 
     /**
+     * The class name of the model collection.
+	 * 模型集合的类名
+     *
+     * @var string|null
+     */
+    public $collectionClass;
+
+    /**
      * Create a new model identifier.
-	 * 创建新的模型标识符
+	 * 创建一个新的模型标识符
      *
      * @param  string  $class
      * @param  mixed  $id
@@ -58,5 +65,19 @@ class ModelIdentifier
         $this->class = $class;
         $this->relations = $relations;
         $this->connection = $connection;
+    }
+
+    /**
+     * Specify the collection class that should be used when serializing / restoring collections.
+	 * 指定序列化/恢复集合时应该使用的集合类
+     *
+     * @param  string|null  $collectionClass
+     * @return $this
+     */
+    public function useCollectionClass(?string $collectionClass)
+    {
+        $this->collectionClass = $collectionClass;
+
+        return $this;
     }
 }

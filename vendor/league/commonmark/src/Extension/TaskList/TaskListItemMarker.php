@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，任务列表，任务列表列表项标志
+ * League，CommonMark，扩展，任务列表，列表项标记
  */
 
 declare(strict_types=1);

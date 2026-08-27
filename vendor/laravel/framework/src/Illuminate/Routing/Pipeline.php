@@ -35,7 +35,7 @@ class Pipeline extends BasePipeline
 
     /**
      * Handle the given exception.
-	 * 处理给定异常
+	 * 处理给定的异常
      *
      * @param  mixed  $passable
      * @param  \Throwable  $e
@@ -60,6 +60,6 @@ class Pipeline extends BasePipeline
             $response->withException($e);
         }
 
-        return $response;
+        return $this->handleCarry($response);
     }
 }

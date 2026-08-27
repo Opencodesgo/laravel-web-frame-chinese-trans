@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Collection，映射，类型映射
+ * Ramsey，集合，映射，类型的映射
  */
 
 /**
@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection\Map;
 
-use Ramsey\Collection\Tool\TypeTrait;
-
 /**
  * A `TypedMap` represents a map of elements where key and value are typed.
  *
@@ -34,7 +32,7 @@ use Ramsey\Collection\Tool\TypeTrait;
  *
  * Example usage:
  *
- * ```php
+ * ```
  * $map = new TypedMap('string', Foo::class);
  * $map['x'] = new Foo();
  * foreach ($map as $key => $value) {
@@ -56,7 +54,7 @@ use Ramsey\Collection\Tool\TypeTrait;
  * It is preferable to subclass `AbstractTypedMap` to create your own typed map
  * implementation:
  *
- * ```php
+ * ```
  * class FooTypedMap extends AbstractTypedMap
  * {
  *     public function getKeyType()
@@ -73,7 +71,7 @@ use Ramsey\Collection\Tool\TypeTrait;
  *
  * … but you also may use the `TypedMap` class:
  *
- * ```php
+ * ```
  * class FooTypedMap extends TypedMap
  * {
  *     public function __constructor(array $data = [])
@@ -89,37 +87,20 @@ use Ramsey\Collection\Tool\TypeTrait;
  */
 class TypedMap extends AbstractTypedMap
 {
-    use TypeTrait;
-
-    /**
-     * The data type of keys stored in this collection.
-     *
-     * A map key's type is immutable once it is set. For this reason, this
-     * property is set private.
-     */
-    private string $keyType;
-
-    /**
-     * The data type of values stored in this collection.
-     *
-     * A map value's type is immutable once it is set. For this reason, this
-     * property is set private.
-     */
-    private string $valueType;
-
     /**
      * Constructs a map object of the specified key and value types,
      * optionally with the specified data.
+	 * 构造指定键和值类型的映射对象，可选地使用指定的数据。
      *
      * @param string $keyType The data type of the map's keys.
      * @param string $valueType The data type of the map's values.
      * @param array<K, T> $data The initial data to set for this map.
      */
-    public function __construct(string $keyType, string $valueType, array $data = [])
-    {
-        $this->keyType = $keyType;
-        $this->valueType = $valueType;
-
+    public function __construct(
+        private readonly string $keyType,
+        private readonly string $valueType,
+        array $data = [],
+    ) {
         parent::__construct($data);
     }
 

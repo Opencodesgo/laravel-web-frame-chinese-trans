@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，处理代码覆盖率数据
+ * SebastianBergmann，CodeCoverage，处理过的代码覆盖率数据
  */
 
 /*
@@ -25,14 +25,13 @@ use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for phpunit/php-code-coverage
- * 该类不包括在phpunit/php-code-coverage的向后兼容性承诺中
  */
 final class ProcessedCodeCoverageData
 {
     /**
      * Line coverage data.
      * An array of filenames, each having an array of linenumbers, each executable line having an array of testcase ids.
-	 * 行覆盖数据。
+	 * 线路覆盖数据。
      *
      * @var array
      */
@@ -149,6 +148,7 @@ final class ProcessedCodeCoverageData
             }
 
             // we should compare the lines if any of two contains data
+			// 如果两行中有任何一行包含数据，我们应该比较这两行。
             $compareLineNumbers = array_unique(
                 array_merge(
                     array_keys($this->lineCoverage[$file]),
@@ -197,6 +197,7 @@ final class ProcessedCodeCoverageData
 
     /**
      * Determine the priority for a line.
+	 * 确定线路的优先级
      *
      * 1 = the line is not set
      * 2 = the line has not been tested
@@ -243,7 +244,6 @@ final class ProcessedCodeCoverageData
      * For a function we have seen before, only copy over and init the 'hit' array for any unseen branches and paths.
      * Techniques such as mocking and where the contents of a file are different vary during tests (e.g. compiling
      * containers) mean that the functions inside a file cannot be relied upon to be static.
-	 * 对于我们之前见过的函数，只复制并初始化hit数组中未见过的分支和路径。
      */
     private function initPreviouslySeenFunction(string $file, string $functionName, array $functionData): void
     {

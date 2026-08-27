@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpParser，建立者，枚举用例
+ * PhpParser，构建者，枚举用例
  */
 
 declare(strict_types=1);

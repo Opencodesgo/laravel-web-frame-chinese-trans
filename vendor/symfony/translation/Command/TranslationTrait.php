@@ -56,6 +56,7 @@ trait TranslationTrait
         }
 
         // extract all messages and subtract intl-icu messages
+		// 提取所有消息并减去inti -icu消息
         if ($messages = array_diff($catalogue->all($domain), $intlMessages)) {
             $filteredCatalogue->add($messages, $domain);
         }

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，进程处理程序
- *
+ * Monolog，处理器，进程处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 /**
  * Stores to STDIN of any process, specified by a command.
- * 存储到任何流程的STDIN,由命令指定。
+ * 存储任何进程的STDIN，由命令指定。
  *
  * Usage example:
  * <pre>
@@ -33,7 +33,7 @@ class ProcessHandler extends AbstractProcessingHandler
 {
     /**
      * Holds the process to receive data on its STDIN.
-	 * 保存过程以接收其STDIN的数据
+	 * 保存进程以接收其STDIN上的数据
      *
      * @var resource|bool|null
      */

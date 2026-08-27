@@ -1,10 +1,13 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，TLD
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
 class TLD extends Warning
 {
-    const CODE = 9;
+    public const CODE = 9;
 
     public function __construct()
     {

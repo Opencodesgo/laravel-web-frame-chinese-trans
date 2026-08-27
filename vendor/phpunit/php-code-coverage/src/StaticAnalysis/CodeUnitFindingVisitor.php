@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，静态分析，CodeUnitFindingVisitor
+ * SebastianBergmann，CodeCoverage，静态分析，代码单元查找访客
  */
 
 /*

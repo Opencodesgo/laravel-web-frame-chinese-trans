@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session，缓存会话处理程序
+ * Illuminate，Session，基于缓存的会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -45,8 +45,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
@@ -56,8 +55,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -65,10 +63,9 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      *
-     * @return string|false
+     * @return string
      */
-    #[\ReturnTypeWillChange]
-    public function read($sessionId)
+    public function read($sessionId): string
     {
         return $this->cache->get($sessionId, '');
     }
@@ -78,8 +75,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function write($sessionId, $data)
+    public function write($sessionId, $data): bool
     {
         return $this->cache->put($sessionId, $data, $this->minutes * 60);
     }
@@ -89,8 +85,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function destroy($sessionId)
+    public function destroy($sessionId): bool
     {
         return $this->cache->forget($sessionId);
     }
@@ -98,17 +93,16 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      *
-     * @return int|false
+     * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function gc($lifetime)
+    public function gc($lifetime): int
     {
-        return true;
+        return 0;
     }
 
     /**
      * Get the underlying cache repository.
-	 * 得到底层缓存存储库
+	 * 获取底层缓存存储库
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */

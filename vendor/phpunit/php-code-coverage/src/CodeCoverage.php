@@ -40,7 +40,7 @@ use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 
 /**
  * Provides collection functionality for PHP code coverage information.
- * 为PHP代码覆盖信息提供集合功能。
+ * 提供PHP代码覆盖率信息的收集功能。
  */
 final class CodeCoverage
 {
@@ -88,6 +88,7 @@ final class CodeCoverage
 
     /**
      * Code coverage data.
+	 * 代码覆盖率数据
      *
      * @var ProcessedCodeCoverageData
      */
@@ -100,6 +101,7 @@ final class CodeCoverage
 
     /**
      * Test data.
+	 * 测试数据
      *
      * @var array
      */
@@ -135,7 +137,7 @@ final class CodeCoverage
 
     /**
      * Returns the code coverage information as a graph of node objects.
-	 * 将代码覆盖信息作为节点对象的图形返回
+	 * 以节点对象图的形式返回代码覆盖率信息
      */
     public function getReport(): Directory
     {
@@ -148,7 +150,7 @@ final class CodeCoverage
 
     /**
      * Clears collected code coverage data.
-	 * 清除收集的代码覆盖数据
+	 * 清除收集的代码覆盖率数据
      */
     public function clear(): void
     {
@@ -168,7 +170,7 @@ final class CodeCoverage
 
     /**
      * Returns the filter object used.
-	 * 返回使用的过滤器对象
+	 * 返回使用的筛选器对象
      */
     public function filter(): Filter
     {
@@ -177,7 +179,7 @@ final class CodeCoverage
 
     /**
      * Returns the collected code coverage data.
-	 * 返回收集的代码覆盖数据
+	 * 返回收集的代码覆盖率数据
      */
     public function getData(bool $raw = false): ProcessedCodeCoverageData
     {
@@ -468,6 +470,7 @@ final class CodeCoverage
 
     /**
      * Applies the @covers annotation filtering.
+	 * 应用@covers注释过滤
      *
      * @param array|false $linesToBeCovered
      *

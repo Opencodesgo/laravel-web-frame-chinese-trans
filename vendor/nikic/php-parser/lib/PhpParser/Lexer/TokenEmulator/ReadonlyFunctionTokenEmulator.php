@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer，内部，令牌仿真器，只读函数令牌仿真器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
 use PhpParser\PhpVersion;

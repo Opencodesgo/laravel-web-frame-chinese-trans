@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，数据采集器，后期数据采集器接口
- */
+ * Symfony，Component，HttpKernel，数据收集者，后期数据采集器接口
+ *
 
 /*
  * This file is part of the Symfony package.
@@ -25,6 +25,8 @@ interface LateDataCollectorInterface
     /**
      * Collects data as late as possible.
 	 * 尽量晚收集数据
+     *
+     * @return void
      */
     public function lateCollect();
 }

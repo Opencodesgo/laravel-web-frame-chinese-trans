@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，节点，构建者
+ * SebastianBergmann，CodeCoverage，节点，迭代程序
  */
 
 /*
@@ -39,6 +39,7 @@ final class Iterator implements RecursiveIterator
 
     /**
      * Rewinds the Iterator to the first element.
+	 * 将迭代器倒回到第一个元素
      */
     public function rewind(): void
     {

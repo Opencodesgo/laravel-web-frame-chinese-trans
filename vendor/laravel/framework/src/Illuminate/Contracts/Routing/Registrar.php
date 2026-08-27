@@ -9,7 +9,7 @@ interface Registrar
 {
     /**
      * Register a new GET route with the router.
-	 * 向路由器注册一个新的GET路由
+	 * 注册新的GET路由至路由器中
      *
      * @param  string  $uri
      * @param  array|string|callable  $action

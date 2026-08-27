@@ -29,6 +29,14 @@ class CompilerEngine extends PhpEngine
     protected $lastCompiled = [];
 
     /**
+     * The view paths that were compiled or are not expired, keyed by the path.
+	 * 已编译或未过期的视图路径，由路径指定键。
+     *
+     * @var array<string, true>
+     */
+    protected $compiledOrNotExpired = [];
+
+    /**
      * Create a new compiler engine instance.
 	 * 创建一个新的编译器引擎实例
      *
@@ -59,15 +67,32 @@ class CompilerEngine extends PhpEngine
         // it was last compiled, we will re-compile the views so we can evaluate a
         // fresh copy of the view. We'll pass the compiler the path of the view.
 		// 如果这个给定的视图已经过期，这意味着它已经被编辑过。
-        if ($this->compiler->isExpired($path)) {
+        if (! isset($this->compiledOrNotExpired[$path]) && $this->compiler->isExpired($path)) {
             $this->compiler->compile($path);
         }
 
         // Once we have the path to the compiled file, we will evaluate the paths with
         // typical PHP just like any other templates. We also keep a stack of views
         // which have been rendered for right exception messages to be generated.
-		// 获得编译文件的路径后，我们将使用就像其他模板一样。
-        $results = $this->evaluatePath($this->compiler->getCompiledPath($path), $data);
+		// 获得编译文件的路径后，我们将使用。
+
+        try {
+            $results = $this->evaluatePath($this->compiler->getCompiledPath($path), $data);
+        } catch (ViewException $e) {
+            if (! str($e->getMessage())->contains(['No such file or directory', 'File does not exist at path'])) {
+                throw $e;
+            }
+
+            if (! isset($this->compiledOrNotExpired[$path])) {
+                throw $e;
+            }
+
+            $this->compiler->compile($path);
+
+            $results = $this->evaluatePath($this->compiler->getCompiledPath($path), $data);
+        }
+
+        $this->compiledOrNotExpired[$path] = true;
 
         array_pop($this->lastCompiled);
 
@@ -112,5 +137,16 @@ class CompilerEngine extends PhpEngine
     public function getCompiler()
     {
         return $this->compiler;
+    }
+
+    /**
+     * Clear the cache of views that were compiled or not expired.
+	 * 清除已编译或未过期的视图的缓存
+     *
+     * @return void
+     */
+    public function forgetCompiledOrNotExpired()
+    {
+        $this->compiledOrNotExpired = [];
     }
 }

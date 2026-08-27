@@ -19,6 +19,7 @@ class Token {
 
     /**
      * Token constructor.
+	 * 令牌构造方法
      */
     public function __construct(int $line, string $name, string $value) {
         $this->line  = $line;

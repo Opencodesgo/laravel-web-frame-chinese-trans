@@ -7,10 +7,13 @@ namespace Illuminate\Http\Resources;
 
 use Exception;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
 
 trait DelegatesToResource
 {
-    use ForwardsCalls;
+    use ForwardsCalls, Macroable {
+        __call as macroCall;
+    }
 
     /**
      * Get the value of the resource's route key.
@@ -72,8 +75,7 @@ trait DelegatesToResource
      * @param  mixed  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->resource[$offset]);
     }
@@ -85,8 +87,7 @@ trait DelegatesToResource
      * @param  mixed  $offset
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->resource[$offset];
     }
@@ -99,8 +100,7 @@ trait DelegatesToResource
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->resource[$offset] = $value;
     }
@@ -112,8 +112,7 @@ trait DelegatesToResource
      * @param  mixed  $offset
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->resource[$offset]);
     }
@@ -164,6 +163,10 @@ trait DelegatesToResource
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         return $this->forwardCallTo($this->resource, $method, $parameters);
     }
 }

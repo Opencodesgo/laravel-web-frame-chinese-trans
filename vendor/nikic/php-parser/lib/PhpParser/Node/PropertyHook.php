@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，属性钩子
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Modifiers;
@@ -26,6 +30,7 @@ class PropertyHook extends NodeAbstract implements FunctionLike {
 
     /**
      * Constructs a property hook node.
+	 * 构造属性钩子节点。
      *
      * @param string|Identifier $name Hook name
      * @param null|Expr|Stmt[] $body Hook body
@@ -65,6 +70,7 @@ class PropertyHook extends NodeAbstract implements FunctionLike {
 
     /**
      * Whether the property hook is final.
+	 * 属性钩子是否为final
      */
     public function isFinal(): bool {
         return (bool) ($this->flags & Modifiers::FINAL);

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Formatter，Elasticsearch 格式化
+ * Monolog，格式化，Elasticsearch 格式化程序
  */
 
 /*
@@ -60,7 +60,6 @@ class ElasticsearchFormatter extends NormalizerFormatter
 
     /**
      * Getter index
-	 * 吸气指数
      *
      * @return string
      */
@@ -71,7 +70,6 @@ class ElasticsearchFormatter extends NormalizerFormatter
 
     /**
      * Getter type
-	 * 吸气型
      *
      * @return string
      */
@@ -82,7 +80,7 @@ class ElasticsearchFormatter extends NormalizerFormatter
 
     /**
      * Convert a log message into an Elasticsearch record
-	 * 将日志消息转换为弹性搜索记录
+	 * 将日志消息转换为Elasticsearch记录
      *
      * @param  mixed[] $record Log message
      * @return mixed[]

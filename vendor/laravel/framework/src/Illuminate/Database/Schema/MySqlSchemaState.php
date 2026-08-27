@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，MySql 模式状态
+ * Illuminate，数据库，模式，MySql 模式状态
  */
 
 namespace Illuminate\Database\Schema;
@@ -104,7 +104,7 @@ class MySqlSchemaState extends SchemaState
 
     /**
      * Generate a basic connection string (--socket, --host, --port, --user, --password) for the database.
-	 * 为数据库生成一个基本连接字符串（——socket、——host、——port、——user、——password）。
+	 * 为数据库生成一个基本连接字符串（——socket、——host、——port、——user、——password）
      *
      * @return string
      */
@@ -112,9 +112,15 @@ class MySqlSchemaState extends SchemaState
     {
         $value = ' --user="${:LARAVEL_LOAD_USER}" --password="${:LARAVEL_LOAD_PASSWORD}"';
 
-        $value .= $this->connection->getConfig()['unix_socket'] ?? false
+        $config = $this->connection->getConfig();
+
+        $value .= $config['unix_socket'] ?? false
                         ? ' --socket="${:LARAVEL_LOAD_SOCKET}"'
                         : ' --host="${:LARAVEL_LOAD_HOST}" --port="${:LARAVEL_LOAD_PORT}"';
+
+        if (isset($config['options'][\PDO::MYSQL_ATTR_SSL_CA])) {
+            $value .= ' --ssl-ca="${:LARAVEL_LOAD_SSL_CA}"';
+        }
 
         return $value;
     }
@@ -128,7 +134,7 @@ class MySqlSchemaState extends SchemaState
      */
     protected function baseVariables(array $config)
     {
-        $config['host'] = $config['host'] ?? '';
+        $config['host'] ??= '';
 
         return [
             'LARAVEL_LOAD_SOCKET' => $config['unix_socket'] ?? '',
@@ -137,6 +143,7 @@ class MySqlSchemaState extends SchemaState
             'LARAVEL_LOAD_USER' => $config['username'],
             'LARAVEL_LOAD_PASSWORD' => $config['password'] ?? '',
             'LARAVEL_LOAD_DATABASE' => $config['database'],
+            'LARAVEL_LOAD_SSL_CA' => $config['options'][\PDO::MYSQL_ATTR_SSL_CA] ?? '',
         ];
     }
 
@@ -160,7 +167,7 @@ class MySqlSchemaState extends SchemaState
                 ), $output, $variables);
             }
 
-            if (Str::contains($e->getMessage(), ['set-gtid-purged'])) {
+            if (str_contains($e->getMessage(), 'set-gtid-purged')) {
                 return $this->executeDumpProcess(Process::fromShellCommandLine(
                     str_replace(' --set-gtid-purged=OFF', '', $process->getCommandLine())
                 ), $output, $variables);

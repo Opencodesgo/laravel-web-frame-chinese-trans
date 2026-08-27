@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Rotating 文件处理程序
- *
+ * Monolog，处理器，轮转文件 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -21,7 +21,7 @@ use Monolog\Utils;
 
 /**
  * Stores logs to files that are rotated every day and a limited number of files are kept.
- * 存储日志到每天旋转的文件,保存数量有限的文件。
+ * 将日志存储到每天轮换的文件中，并保留有限数量的文件。
  *
  * This rotation is only intended to be used as a workaround. Using logrotate to
  * handle the rotation is strongly encouraged when you can use it.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，反射命名空间
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Reflection;
 
 /**
  * A fake Reflector for namespaces.
+ * 名称空间的伪反射器。
  */
 class ReflectionNamespace implements \Reflector
 {
@@ -20,6 +24,7 @@ class ReflectionNamespace implements \Reflector
 
     /**
      * Construct a ReflectionNamespace object.
+	 * 构造一个ReflectionNamespace对象
      *
      * @param string $name
      */
@@ -30,6 +35,7 @@ class ReflectionNamespace implements \Reflector
 
     /**
      * Gets the constant name.
+	 * 获取常量名称
      *
      * @return string
      */
@@ -50,6 +56,7 @@ class ReflectionNamespace implements \Reflector
 
     /**
      * To string.
+	 * 转换为字符串
      *
      * @return string
      */

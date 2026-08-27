@@ -39,10 +39,9 @@ if (interface_exists('Symfony\\Contracts\\Translation\\TranslatorInterface') &&
 
 /**
  * Trait Localization.
- * 特征定位。
+ * 本地化特征
  *
  * Embed default and locale translators and translation base methods.
- * 嵌入默认和区域翻译和翻译基方法。
  */
 trait Localization
 {
@@ -56,7 +55,6 @@ trait Localization
 
     /**
      * Specific translator of the current instance.
-	 * 当前实例的特定转换器
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
@@ -107,7 +105,6 @@ trait Localization
 
     /**
      * Return default humanDiff() options (merged flags as integer).
-	 * 返回默认的humanDiff（）选项（合并标志为整数）
      *
      * @return int
      */
@@ -118,6 +115,7 @@ trait Localization
 
     /**
      * Get the default translator instance in use.
+	 * 获取正在使用的默认转换器实例
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
      */
@@ -128,6 +126,7 @@ trait Localization
 
     /**
      * Set the default translator instance to use.
+	 * 设置要使用的默认转换器实例
      *
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      *
@@ -140,6 +139,7 @@ trait Localization
 
     /**
      * Return true if the current instance has its own translator.
+	 * 如果当前实例有自己的转换器，则返回true。
      *
      * @return bool
      */
@@ -150,6 +150,7 @@ trait Localization
 
     /**
      * Get the translator of the current instance or the default if none set.
+	 * 获取当前实例的转换器，如果未设置则获取默认值。
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
      */
@@ -160,6 +161,7 @@ trait Localization
 
     /**
      * Set the translator for the current instance.
+	 * 为当前实例设置翻译程序
      *
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      *
@@ -250,6 +252,7 @@ trait Localization
 
     /**
      * Translate using translation string or callback available.
+	 * 使用翻译字符串或可用的回调进行翻译
      *
      * @param string                                                  $key
      * @param array                                                   $parameters
@@ -272,6 +275,7 @@ trait Localization
 
     /**
      * Returns the alternative number for a given integer if available in the current locale.
+	 * 如果在当前语言环境中可用，则返回给定整数的替代数字。
      *
      * @param int $number
      *
@@ -322,6 +326,7 @@ trait Localization
 
     /**
      * Translate a time string from a locale to an other.
+	 * 将时间字符串从一个地区转换为另一个地区
      *
      * @param string      $timeString date/time/duration string to translate (may also contain English)
      * @param string|null $from       input locale of the $timeString parameter (`Carbon::getLocale()` by default)
@@ -446,6 +451,7 @@ trait Localization
 
     /**
      * Get/set the locale for the current instance.
+	 * 获取/设置当前实例的区域设置
      *
      * @param string|null $locale
      * @param string      ...$fallbackLocales
@@ -481,6 +487,7 @@ trait Localization
 
     /**
      * Get the current translator locale.
+	 * 获取当前的翻译语言环境
      *
      * @return string
      */
@@ -492,6 +499,7 @@ trait Localization
     /**
      * Set the current translator locale and indicate if the source locale file exists.
      * Pass 'auto' as locale to use closest language from the current LC_TIME locale.
+	 * 设置当前的翻译语言环境，并指出源语言环境文件是否存在。
      *
      * @param string $locale locale ex. en
      *
@@ -504,6 +512,7 @@ trait Localization
 
     /**
      * Set the fallback locale.
+	 * 设置回退区域设置
      *
      * @see https://symfony.com/doc/current/components/translation.html#fallback-locales
      *
@@ -529,6 +538,7 @@ trait Localization
 
     /**
      * Get the fallback locale.
+	 * 找到备用地点
      *
      * @see https://symfony.com/doc/current/components/translation.html#fallback-locales
      *
@@ -566,6 +576,7 @@ trait Localization
     /**
      * Returns true if the given locale is internally supported and has short-units support.
      * Support is considered enabled if either year, day or hour has a short variant translated.
+	 * 如果给定的语言环境是内部支持的并且具有短单位支持，则返回true。
      *
      * @param string $locale locale ex. en
      *
@@ -672,6 +683,7 @@ trait Localization
     /**
      * Returns the list of internally available locales and already loaded custom locales.
      * (It will ignore custom translator dynamic loading.)
+	 * 返回内部可用区域设置和已加载的自定义区域设置的列表。
      *
      * @return array
      */
@@ -702,6 +714,7 @@ trait Localization
 
     /**
      * Initialize the default translator instance if necessary.
+	 * 如有必要，初始化默认转换器实例。
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
      */
@@ -716,6 +729,7 @@ trait Localization
 
     /**
      * Get the locale of a given translator.
+	 * 获取给定翻译器的区域设置。
      *
      * If null or omitted, current local translator is used.
      * If no local translator is in use, current global translator is used.
@@ -737,6 +751,7 @@ trait Localization
 
     /**
      * Throw an error if passed object is not LocaleAwareInterface.
+	 * 如果传递的对象不是LocaleAwareInterface，则抛出错误。
      *
      * @param LocaleAwareInterface|null $translator
      *
@@ -770,6 +785,7 @@ trait Localization
 
     /**
      * Return the word cleaned from its translation codes.
+	 * 返回从翻译代码中清除的单词
      *
      * @param string $word
      *
@@ -786,6 +802,7 @@ trait Localization
 
     /**
      * Translate a list of words.
+	 * 翻译一组单词
      *
      * @param string[] $keys     keys to translate.
      * @param string[] $messages messages bag handling translations.

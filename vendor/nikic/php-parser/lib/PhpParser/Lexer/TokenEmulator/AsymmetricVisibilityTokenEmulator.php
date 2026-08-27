@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，词法分析程序，令牌模拟器，非对称可见令牌仿真器
+ * PhpParser，Lexer，内部，令牌仿真器，非对称可见令牌仿真器
  */
 
 namespace PhpParser\Lexer\TokenEmulator;

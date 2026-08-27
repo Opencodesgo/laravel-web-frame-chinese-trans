@@ -1,12 +1,14 @@
 <?php
 /**
- * Illuminate，基础，控制台，clear-compiled 清除编译命令
+ * Illuminate，基础，控制台，clear-compiled清除编译命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'clear-compiled')]
 class ClearCompiledCommand extends Command
 {
     /**
@@ -18,8 +20,20 @@ class ClearCompiledCommand extends Command
     protected $name = 'clear-compiled';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'clear-compiled';
+
+    /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -41,6 +55,6 @@ class ClearCompiledCommand extends Command
             @unlink($packagesPath);
         }
 
-        $this->info('Compiled services and packages files removed!');
+        $this->components->info('Compiled services and packages files removed successfully.');
     }
 }

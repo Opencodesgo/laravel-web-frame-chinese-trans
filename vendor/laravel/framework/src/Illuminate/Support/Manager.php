@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，管理者
+ * Illuminate, 支持, 管理者
  */
 
 namespace Illuminate\Support;
@@ -58,7 +58,7 @@ abstract class Manager
 
     /**
      * Get the default driver name.
-	 * 获取默认驱动程序名称
+	 * 得到默认驱动名称
      *
      * @return string
      */
@@ -66,7 +66,7 @@ abstract class Manager
 
     /**
      * Get a driver instance.
-	 * 获取驱动程序实例
+	 * 得到驱动实例
      *
      * @param  string|null  $driver
      * @return mixed
@@ -86,7 +86,7 @@ abstract class Manager
         // If the given driver has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
         // already a driver created by this name, we'll just return that instance.
-		// 如果之前没有创建给定的驱动程序，我们将在这里创建实例并缓存它。
+		// 如果之前没有创建给定的驱动程序，我们将创建实例把它缓存起来，这样下次我们就可以很快地还给它。
         if (! isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }

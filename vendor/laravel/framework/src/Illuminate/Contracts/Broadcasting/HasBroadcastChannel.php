@@ -9,7 +9,7 @@ interface HasBroadcastChannel
 {
     /**
      * Get the broadcast channel route definition that is associated with the given entity.
-	 * 获取与给定实体关联的广播通道路由定义
+	 * 获取与给定实体关联的广播信道路由定义
      *
      * @return string
      */
@@ -17,7 +17,7 @@ interface HasBroadcastChannel
 
     /**
      * Get the broadcast channel name that is associated with the given entity.
-	 * 获取与给定实体关联的广播通道名称
+	 * 获取与给定实体关联的广播信道名称
      *
      * @return string
      */

@@ -16,10 +16,9 @@ namespace Carbon\Traits;
 
 /**
  * Trait MagicParameter.
- * MagicParameter特征。
+ * 神奇的参数特征
  *
  * Allows to retrieve parameter in magic calls by index or name.
- * 允许通过索引或名称检索魔术调用中的参数。
  */
 trait MagicParameter
 {

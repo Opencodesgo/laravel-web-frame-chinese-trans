@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，译码器，Qp Mime头编码器
+ */
 
 /*
  * This file is part of the Symfony package.

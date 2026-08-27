@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，挂起假链
+ * Illuminate，支持，测试，佯装，挂起链 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;

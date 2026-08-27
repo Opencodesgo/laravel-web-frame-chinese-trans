@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，点 env
+ * Dotenv，Dotenv
  */
 
 declare(strict_types=1);
@@ -40,7 +40,7 @@ class Dotenv
 
     /**
      * The loader instance.
-	 * 加载实例
+	 * 加载器实例
      *
      * @var \Dotenv\Loader\LoaderInterface
      */
@@ -56,7 +56,7 @@ class Dotenv
 
     /**
      * Create a new dotenv instance.
-	 * 创建一个新的dotenv实例
+	 * 创建新的dotenv实例
      *
      * @param \Dotenv\Store\StoreInterface           $store
      * @param \Dotenv\Parser\ParserInterface         $parser
@@ -79,7 +79,7 @@ class Dotenv
 
     /**
      * Create a new dotenv instance.
-	 * 创建一个新的dotenv实例
+	 * 创建新的dotenv实例
      *
      * @param \Dotenv\Repository\RepositoryInterface $repository
      * @param string|string[]                        $paths
@@ -110,7 +110,7 @@ class Dotenv
 
     /**
      * Create a new mutable dotenv instance with default repository.
-	 * 在默认存储库中创建一个新的可变dotenv实例
+	 * 使用默认存储库创建一个新的可变dotenv实例
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -128,7 +128,7 @@ class Dotenv
 
     /**
      * Create a new mutable dotenv instance with default repository with the putenv adapter.
-	 * 使用putenv适配器创建一个新的可变dotenv实例
+	 * 使用putenv适配器使用默认存储库创建一个新的可变dotenv实例
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -148,7 +148,7 @@ class Dotenv
 
     /**
      * Create a new immutable dotenv instance with default repository.
-	 * 在默认存储库中创建一个新的不可变的
+	 * 使用默认存储库创建一个新的不可变dotenv实例
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -166,7 +166,7 @@ class Dotenv
 
     /**
      * Create a new immutable dotenv instance with default repository with the putenv adapter.
-	 * 使用putenv适配器创建一个新的不可变的dotenv实例
+	 * 使用putenv适配器使用默认存储库创建一个新的不可变dotenv实例
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -187,7 +187,7 @@ class Dotenv
 
     /**
      * Create a new dotenv instance with an array backed repository.
-	 * 用一个数组支持的存储库创建一个新的dotenv实例
+	 * 使用阵列支持的存储库创建一个新的dotenv实例
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -205,16 +205,17 @@ class Dotenv
 
     /**
      * Parse the given content and resolve nested variables.
-	 * 解析给定的内容并解析嵌套变量
+	 * 解析给定的内容并解析嵌套变量。
      *
      * This method behaves just like load(), only without mutating your actual
      * environment. We do this by using an array backed repository.
+	 * 此方法的行为与 load() 完全相同，只是不会修改实际的环境。我们通过使用基于数组的存储库来实现这一点。
      *
      * @param string $content
      *
      * @throws \Dotenv\Exception\InvalidFileException
      *
-     * @return array<string,string|null>
+     * @return array<string, string|null>
      */
     public static function parse(string $content)
     {
@@ -231,7 +232,7 @@ class Dotenv
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidEncodingException|\Dotenv\Exception\InvalidFileException
      *
-     * @return array<string,string|null>
+     * @return array<string, string|null>
      */
     public function load()
     {
@@ -242,11 +243,11 @@ class Dotenv
 
     /**
      * Read and load environment file(s), silently failing if no files can be read.
-	 * 读取和加载环境文件,如果没有文件可以读取,则静默失败
+	 * 读取和加载环境文件，如果没有文件可以读取，则静默失败。
      *
      * @throws \Dotenv\Exception\InvalidEncodingException|\Dotenv\Exception\InvalidFileException
      *
-     * @return array<string,string|null>
+     * @return array<string, string|null>
      */
     public function safeLoad()
     {
@@ -260,7 +261,7 @@ class Dotenv
 
     /**
      * Required ensures that the specified variables exist, and returns a new validator object.
-	 * 需要确保指定的变量存在,并返回一个新的验证器对象
+	 * Required确保指定的变量存在，并返回一个新的验证器对象。
      *
      * @param string|string[] $variables
      *
@@ -273,7 +274,7 @@ class Dotenv
 
     /**
      * Returns a new validator object that won't check if the specified variables exist.
-	 * 返回一个无法检查指定变量是否存在的新验证器对象
+	 * 返回一个新的验证器对象，该对象不会检查指定的变量是否存在。
      *
      * @param string|string[] $variables
      *

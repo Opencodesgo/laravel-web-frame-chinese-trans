@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，多实例管理器
+ * Illuminate, 支持, 多实例管理器
  */
 
 namespace Illuminate\Support;
@@ -37,7 +37,7 @@ abstract class MultipleInstanceManager
 
     /**
      * Create a new manager instance.
-	 * 创建一个新的管理器实例
+	 * 创建新的实例管理器
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -154,7 +154,7 @@ abstract class MultipleInstanceManager
      */
     public function forgetInstance($name = null)
     {
-        $name = $name ?? $this->getDefaultInstance();
+        $name ??= $this->getDefaultInstance();
 
         foreach ((array) $name as $instanceName) {
             if (isset($this->instances[$instanceName])) {
@@ -174,7 +174,7 @@ abstract class MultipleInstanceManager
      */
     public function purge($name = null)
     {
-        $name = $name ?? $this->getDefaultInstance();
+        $name ??= $this->getDefaultInstance();
 
         unset($this->instances[$name]);
     }

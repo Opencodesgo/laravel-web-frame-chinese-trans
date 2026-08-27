@@ -19,7 +19,7 @@ use Psy\Exception\ThrowUpException;
 
 /**
  * The Psy Shell's execution loop scope.
- * Psy Shell的执行循环范围。
+ * Psy Shell 的执行循环范围。
  *
  * @todo Switch ExecutionClosure to a generator and get rid of the duplicate closure implementations?
  */

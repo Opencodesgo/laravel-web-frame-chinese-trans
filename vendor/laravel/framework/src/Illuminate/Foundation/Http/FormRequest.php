@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，请求表格
+ * Illuminate, 基础, Http, 表单请求
  */
 
 namespace Illuminate\Foundation\Http;
@@ -86,7 +86,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get the validator instance for the request.
-	 * 得到请求的验证器实例
+	 * 获取请求的验证器实例
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
@@ -122,10 +122,20 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     protected function createDefaultValidator(ValidationFactory $factory)
     {
-        return $factory->make(
-            $this->validationData(), $this->container->call([$this, 'rules']),
+        $rules = method_exists($this, 'rules') ? $this->container->call([$this, 'rules']) : [];
+
+        $validator = $factory->make(
+            $this->validationData(), $rules,
             $this->messages(), $this->attributes()
         )->stopOnFirstFailure($this->stopOnFirstFailure);
+
+        if ($this->isPrecognitive()) {
+            $validator->setRules(
+                $this->filterPrecognitiveRules($validator->getRulesWithoutPlaceholders())
+            );
+        }
+
+        return $validator;
     }
 
     /**
@@ -178,7 +188,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Determine if the request passes the authorization check.
-	 * 确定请求是否通过授权检查
+	 * 确定请求是否通过授权检
      *
      * @return bool
      *
@@ -226,11 +236,13 @@ class FormRequest extends Request implements ValidatesWhenResolved
      * Get the validated data from the request.
 	 * 从请求中获取经过验证的数据
      *
-     * @return array
+     * @param  array|int|string|null  $key
+     * @param  mixed  $default
+     * @return mixed
      */
-    public function validated()
+    public function validated($key = null, $default = null)
     {
-        return $this->validator->validated();
+        return data_get($this->validator->validated(), $key, $default);
     }
 
     /**

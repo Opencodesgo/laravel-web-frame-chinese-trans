@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，提供者，条码
+ */
 
 namespace Faker\Provider;
 
@@ -20,6 +23,7 @@ class Barcode extends Base
 
     /**
      * Utility function for computing EAN checksums
+	 * 计算EAN校验和的实用函数
      *
      * @deprecated Use \Faker\Calculator\Ean::checksum() instead
      *

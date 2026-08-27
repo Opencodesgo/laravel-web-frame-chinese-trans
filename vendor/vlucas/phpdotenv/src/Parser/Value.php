@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，分析程序，值
+ * Dotenv，解析器，值 
  */
 
 declare(strict_types=1);
@@ -13,7 +13,7 @@ final class Value
 {
     /**
      * The string representation of the parsed value.
-	 * 解析值的字符串表示
+	 * 已解析值的字符串表示形式
      *
      * @var string
      */
@@ -21,7 +21,7 @@ final class Value
 
     /**
      * The locations of the variables in the value.
-	 * 值的变量的位置
+	 * 值中变量的位置
      *
      * @var int[]
      */
@@ -29,7 +29,7 @@ final class Value
 
     /**
      * Internal constructor for a value.
-	 * 一个值的内部构造函数
+	 * 值的内部构造函数
      *
      * @param string $chars
      * @param int[]  $vars
@@ -55,7 +55,7 @@ final class Value
 
     /**
      * Create a new value instance, appending the characters.
-	 * 创建一个新的值实例,附加字符
+	 * 创建一个新的值实例，附加字符。
      *
      * @param string $chars
      * @param bool   $var
@@ -72,7 +72,7 @@ final class Value
 
     /**
      * Get the string representation of the parsed value.
-	 * 获取解析值的字符串表示
+	 * 获取已解析值的字符串表示形式
      *
      * @return string
      */
@@ -83,7 +83,7 @@ final class Value
 
     /**
      * Get the locations of the variables in the value.
-	 * 获取值的变量的位置
+	 * 获取值中变量的位置
      *
      * @return int[]
      */

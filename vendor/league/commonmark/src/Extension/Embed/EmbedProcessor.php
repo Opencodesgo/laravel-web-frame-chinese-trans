@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，内嵌，多处理器嵌入式
+ * League，CommonMark，扩展，嵌入，多处理器嵌入式系统
  */
 
 declare(strict_types=1);
@@ -54,7 +54,9 @@ final class EmbedProcessor
             }
         }
 
-        $this->adapter->updateEmbeds($embeds);
+        if ($embeds) {
+            $this->adapter->updateEmbeds($embeds);
+        }
 
         foreach ($embeds as $embed) {
             if ($embed->getEmbedCode() !== null) {

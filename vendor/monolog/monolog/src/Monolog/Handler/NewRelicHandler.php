@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，New Relic 处理程序
- *
+ * Monolog，处理器，New Relic 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -23,7 +23,7 @@ use Monolog\Formatter\FormatterInterface;
 /**
  * Class to record a log on a NewRelic application.
  * Enabling New Relic High Security mode may prevent capture of useful information.
- * 在一个新应用程序上记录一个日志。
+ * 类来记录NewRelic应用程序上的日志。
  *
  * This handler requires a NormalizerFormatter to function and expects an array in $record['formatted']
  *
@@ -34,7 +34,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 {
     /**
      * Name of the New Relic application that will receive logs from this handler.
-	 * 将从这个处理程序接收日志的新遗物应用程序的名称。
+	 * 将从此处理程序接收日志的New Relic应用程序的名称
      *
      * @var ?string
      */
@@ -42,7 +42,6 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Name of the current transaction
-	 * 当前事务的名称
      *
      * @var ?string
      */
@@ -51,7 +50,6 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * Some context and extra data is passed into the handler as arrays of values. Do we send them as is
      * (useful if we are using the API), or explode them for display on the NewRelic RPM website?
-	 * 一些上下文和额外的数据被传递到处理程序中,作为值的数组。
      *
      * @var bool
      */
@@ -130,7 +128,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Checks whether the NewRelic extension is enabled in the system.
-	 * 检查系统中是否启用了新残端扩展
+	 * 检查系统中是否启用了NewRelic扩展
      *
      * @return bool
      */
@@ -142,7 +140,6 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * Returns the appname where this log should be sent. Each log can override the default appname, set in this
      * handler's constructor, by providing the appname in it's context.
-	 * 返回该日志应该发送的appname。
      *
      * @param mixed[] $context
      */
@@ -158,7 +155,7 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * Returns the name of the current transaction. Each log can override the default transaction name, set in this
      * handler's constructor, by providing the transaction_name in it's context
-	 * 返回当前事务的名称。每个日志都可以覆盖默认的事务名称，设置在此处理程序的构造函数，通过在其上下文中提供transaction_name。
+	 * 返回当前事务的名称。
      *
      * @param mixed[] $context
      */
@@ -173,7 +170,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Sets the NewRelic application that should receive this log.
-	 * 设置应该接收此日志的新应用程序
+	 * 设置应该接收此日志的NewRelic应用程序。
      */
     protected function setNewRelicAppName(string $appName): void
     {
@@ -182,7 +179,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Overwrites the name of the current transaction
-	 * 重写当前事务的名称
+	 * 覆盖当前事务的名称
      */
     protected function setNewRelicTransactionName(string $transactionName): void
     {

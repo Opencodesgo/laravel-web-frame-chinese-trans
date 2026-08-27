@@ -1,11 +1,10 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，时间生成器工厂
+ * Ramsey，Uuid，生成器，时间发生器工厂
  */
 
 /**
  * This file is part of the ramsey/uuid library
- * 这个文件是ramsey/uuid库的一部分
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,45 +22,24 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**
- * TimeGeneratorFactory retrieves a default time generator, based on the
- * environment
+ * TimeGeneratorFactory retrieves a default time generator, based on the environment
+ * TimeGeneratorFactory 根据环境检索默认的时间生成器
  */
 class TimeGeneratorFactory
 {
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
-     * @var TimeProviderInterface
-     */
-    private $timeProvider;
-
     public function __construct(
-        NodeProviderInterface $nodeProvider,
-        TimeConverterInterface $timeConverter,
-        TimeProviderInterface $timeProvider
+        private NodeProviderInterface $nodeProvider,
+        private TimeConverterInterface $timeConverter,
+        private TimeProviderInterface $timeProvider,
     ) {
-        $this->nodeProvider = $nodeProvider;
-        $this->timeConverter = $timeConverter;
-        $this->timeProvider = $timeProvider;
     }
 
     /**
      * Returns a default time generator, based on the current environment
+	 * 返回基于当前环境的默认时间生成器
      */
     public function getGenerator(): TimeGeneratorInterface
     {
-        return new DefaultTimeGenerator(
-            $this->nodeProvider,
-            $this->timeConverter,
-            $this->timeProvider
-        );
+        return new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
     }
 }

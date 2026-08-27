@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，助手，表格行
+ * Symfony，Component，Console，助手，表行数
  */
 
 /*
@@ -19,7 +19,7 @@ namespace Symfony\Component\Console\Helper;
  */
 class TableRows implements \IteratorAggregate
 {
-    private $generator;
+    private \Closure $generator;
 
     public function __construct(\Closure $generator)
     {

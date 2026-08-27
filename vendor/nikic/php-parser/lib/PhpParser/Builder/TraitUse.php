@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，建立者，特质使用
+ * PhpParser，构建者，特征使用
  */
 
 namespace PhpParser\Builder;
@@ -19,7 +19,7 @@ class TraitUse implements Builder {
 
     /**
      * Creates a trait use builder.
-	 * 创建一个特性使用生成器
+	 * 创建一个trait使用构建器
      *
      * @param Node\Name|string ...$traits Names of used traits
      */
@@ -31,7 +31,7 @@ class TraitUse implements Builder {
 
     /**
      * Adds used trait.
-	 * 增加了使用的特质
+	 * 添加used trait
      *
      * @param Node\Name|string $trait Trait name
      *
@@ -44,7 +44,7 @@ class TraitUse implements Builder {
 
     /**
      * Adds trait adaptation.
-	 * 增加特质适应
+	 * 增加性状适应
      *
      * @param Stmt\TraitUseAdaptation|Builder\TraitUseAdaptation $adaptation Trait adaptation
      *
@@ -63,7 +63,7 @@ class TraitUse implements Builder {
 
     /**
      * Returns the built node.
-	 * 返回构建节点
+	 * 返回构建的节点
      *
      * @return Node The built node
      */

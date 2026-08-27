@@ -12,13 +12,12 @@ trait ConfirmableTrait
 	 * 在继续操作之前进行确认
      *
      * This method only asks for confirmation in production.
-	 * 此方法仅在生产中要求确认
      *
      * @param  string  $warning
      * @param  \Closure|bool|null  $callback
      * @return bool
      */
-    public function confirmToProceed($warning = 'Application In Production!', $callback = null)
+    public function confirmToProceed($warning = 'Application In Production', $callback = null)
     {
         $callback = is_null($callback) ? $this->getDefaultConfirmCallback() : $callback;
 
@@ -29,12 +28,14 @@ trait ConfirmableTrait
                 return true;
             }
 
-            $this->alert($warning);
+            $this->components->alert($warning);
 
-            $confirmed = $this->confirm('Do you really wish to run this command?');
+            $confirmed = $this->components->confirm('Do you really wish to run this command?');
 
             if (! $confirmed) {
-                $this->comment('Command Canceled!');
+                $this->newLine();
+
+                $this->components->warn('Command canceled.');
 
                 return false;
             }

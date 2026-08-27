@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，配置 URL解析器
+ * Illuminate, 支持, 配置 Url解析器
  */
 
 namespace Illuminate\Support;
@@ -73,9 +73,7 @@ class ConfigurationUrlParser
             'port' => $url['port'] ?? null,
             'username' => $url['user'] ?? null,
             'password' => $url['pass'] ?? null,
-        ], function ($value) {
-            return ! is_null($value);
-        });
+        ], fn ($value) => ! is_null($value));
     }
 
     /**
@@ -182,7 +180,7 @@ class ConfigurationUrlParser
 
     /**
      * Get all of the current drivers' aliases.
-	 * 找出所有当前司机的化名
+	 * 找出所有当前司机的别名
      *
      * @return array
      */

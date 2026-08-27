@@ -26,7 +26,7 @@ class QuickDefinitionsConfiguration
      * definitions define a stub.
      * - self::QUICK_DEFINITIONS_MODE_MOCK_AT_LEAST_ONCE: in this case quick
      * definitions define a mock with an 'at least once' expectation.
-	 * 定义一个快速定义应该产生什么。
+	 * 定义快速定义应该产生什么。
      *
      * @var string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，测试，流畅的，问题，匹配
+ * Illuminate, 测试, 流利的，问题，匹配
  */
 
 namespace Illuminate\Testing\Fluent\Concerns;
@@ -46,6 +46,50 @@ trait Matching
             $expected,
             $actual,
             sprintf('Property [%s] does not match the expected value.', $this->dotPath($key))
+        );
+
+        return $this;
+    }
+
+    /**
+     * Asserts that the property does not match the expected value.
+	 * 断言属性与期望值不匹配
+     *
+     * @param  string  $key
+     * @param  mixed|\Closure  $expected
+     * @return $this
+     */
+    public function whereNot(string $key, $expected): self
+    {
+        $this->has($key);
+
+        $actual = $this->prop($key);
+
+        if ($expected instanceof Closure) {
+            PHPUnit::assertFalse(
+                $expected(is_array($actual) ? Collection::make($actual) : $actual),
+                sprintf('Property [%s] was marked as invalid using a closure.', $this->dotPath($key))
+            );
+
+            return $this;
+        }
+
+        if ($expected instanceof Arrayable) {
+            $expected = $expected->toArray();
+        }
+
+        $this->ensureSorted($expected);
+        $this->ensureSorted($actual);
+
+        PHPUnit::assertNotSame(
+            $expected,
+            $actual,
+            sprintf(
+                'Property [%s] contains a value that should be missing: [%s, %s]',
+                $this->dotPath($key),
+                $key,
+                $expected
+            )
         );
 
         return $this;

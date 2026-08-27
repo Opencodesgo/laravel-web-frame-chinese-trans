@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，HTTP缓存，储存
+ * Symfony，Component，HttpKernel，HTTP缓存，存储
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Store implements all the logic for storing cache metadata (Request and Response headers).
- * 存储实现存储缓存元数据(请求和响应头)的所有逻辑。
+ * Store实现存储缓存元数据（请求和响应标头）的所有逻辑。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,14 +30,14 @@ class Store implements StoreInterface
 {
     protected $root;
     /** @var \SplObjectStorage<Request, string> */
-    private $keyCache;
+    private \SplObjectStorage $keyCache;
     /** @var array<string, resource> */
-    private $locks = [];
-    private $options;
+    private array $locks = [];
+    private array $options;
 
     /**
      * Constructor.
-	 * 构造函数
+	 * 构造方法
      *
      * The available options are:
      *
@@ -50,7 +50,7 @@ class Store implements StoreInterface
     {
         $this->root = $root;
         if (!is_dir($this->root) && !@mkdir($this->root, 0777, true) && !is_dir($this->root)) {
-            throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
+            throw new \RuntimeException(\sprintf('Unable to create the store directory (%s).', $this->root));
         }
         $this->keyCache = new \SplObjectStorage();
         $this->options = array_merge([
@@ -61,6 +61,8 @@ class Store implements StoreInterface
     /**
      * Cleanups storage.
 	 * 清理存储
+     *
+     * @return void
      */
     public function cleanup()
     {
@@ -75,11 +77,11 @@ class Store implements StoreInterface
 
     /**
      * Tries to lock the cache for a given Request, without blocking.
-	 * 试图锁定缓存的请求,而不阻塞。
+	 * 尝试锁定给定请求的缓存，而不阻塞。
      *
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
-    public function lock(Request $request)
+    public function lock(Request $request): bool|string
     {
         $key = $this->getCacheKey($request);
 
@@ -107,7 +109,7 @@ class Store implements StoreInterface
      *
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
-    public function unlock(Request $request)
+    public function unlock(Request $request): bool
     {
         $key = $this->getCacheKey($request);
 
@@ -122,7 +124,7 @@ class Store implements StoreInterface
         return false;
     }
 
-    public function isLocked(Request $request)
+    public function isLocked(Request $request): bool
     {
         $key = $this->getCacheKey($request);
 
@@ -144,11 +146,9 @@ class Store implements StoreInterface
 
     /**
      * Locates a cached Response for the Request provided.
-	 * 为所提供的请求定位缓存响应
-     *
-     * @return Response|null
+	 * 定位所提供请求的缓存响应
      */
-    public function lookup(Request $request)
+    public function lookup(Request $request): ?Response
     {
         $key = $this->getCacheKey($request);
 
@@ -183,16 +183,14 @@ class Store implements StoreInterface
 
     /**
      * Writes a cache entry to the store for the given Request and Response.
-	 * 为给定的请求和响应写入存储的缓存条目。
+	 * 将给定请求和响应的缓存项写入存储区。
      *
      * Existing entries are read and any that match the response are removed. This
      * method calls write with the new list of cache entries.
      *
-     * @return string
-     *
      * @throws \RuntimeException
      */
-    public function write(Request $request, Response $response)
+    public function write(Request $request, Response $response): string
     {
         $key = $this->getCacheKey($request);
         $storedEnv = $this->persistRequest($request);
@@ -252,18 +250,18 @@ class Store implements StoreInterface
 
     /**
      * Returns content digest for $response.
-	 * 返回内容摘要,以响应$响应
-     *
-     * @return string
+	 * 返回$response的内容摘要
      */
-    protected function generateContentDigest(Response $response)
+    protected function generateContentDigest(Response $response): string
     {
-        return 'en'.hash('sha256', $response->getContent());
+        return 'en'.hash('xxh128', $response->getContent());
     }
 
     /**
      * Invalidates all cache entries that match the request.
-	 * 使所有缓存条目都无效,与请求相匹配
+	 * 使与请求匹配的所有缓存项无效
+     *
+     * @return void
      *
      * @throws \RuntimeException
      */
@@ -317,7 +315,7 @@ class Store implements StoreInterface
 
     /**
      * Gets all data associated with the given key.
-	 * 获取与给定键相关的所有数据。
+	 * 获取与给定键关联的所有数据。
      *
      * Use this method only if you know what you are doing.
      */
@@ -338,7 +336,7 @@ class Store implements StoreInterface
      *
      * @return bool true if the URL exists with either HTTP or HTTPS scheme and has been purged, false otherwise
      */
-    public function purge(string $url)
+    public function purge(string $url): bool
     {
         $http = preg_replace('#^https:#', 'http:', $url);
         $https = preg_replace('#^http:#', 'https:', $url);
@@ -436,6 +434,9 @@ class Store implements StoreInterface
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function getPath(string $key)
     {
         return $this->root.\DIRECTORY_SEPARATOR.substr($key, 0, 2).\DIRECTORY_SEPARATOR.substr($key, 2, 2).\DIRECTORY_SEPARATOR.substr($key, 4, 2).\DIRECTORY_SEPARATOR.substr($key, 6);
@@ -443,7 +444,7 @@ class Store implements StoreInterface
 
     /**
      * Generates a cache key for the given Request.
-	 * 生成给定请求的缓存键。
+	 * 为给定的请求生成一个缓存键。
      *
      * This method should return a key that must only depend on a
      * normalized version of the request URI.
@@ -451,10 +452,8 @@ class Store implements StoreInterface
      * If the same URI can have more than one representation, based on some
      * headers, use a Vary header to indicate them, and each representation will
      * be stored independently under the same cache key.
-     *
-     * @return string
      */
-    protected function generateCacheKey(Request $request)
+    protected function generateCacheKey(Request $request): string
     {
         return 'md'.hash('sha256', $request->getUri());
     }
@@ -474,7 +473,7 @@ class Store implements StoreInterface
 
     /**
      * Persists the Request HTTP headers.
-	 * 继续请求HTTP头
+	 * 持久化请求HTTP标头
      */
     private function persistRequest(Request $request): array
     {
@@ -483,7 +482,7 @@ class Store implements StoreInterface
 
     /**
      * Persists the Response HTTP headers.
-	 * 持久化响应HTTP头
+	 * 持久化响应HTTP标头
      */
     private function persistResponse(Response $response): array
     {
@@ -495,7 +494,7 @@ class Store implements StoreInterface
 
     /**
      * Restores a Response from the HTTP headers and body.
-	 * 重新存储来自HTTP头和正文的响应
+	 * 从HTTP报头和正文中恢复响应
      */
     private function restoreResponse(array $headers, ?string $path = null): ?Response
     {

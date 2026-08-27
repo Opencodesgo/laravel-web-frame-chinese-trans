@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，服务提供者抽象类，提供给服务提供者继承使用
+ * Illuminate, 支持, 服务提供者
  */
 
 namespace Illuminate\Support;
@@ -57,7 +57,7 @@ abstract class ServiceProvider
 
     /**
      * Create a new service provider instance.
-	 * 创建新的服务提供者实例
+	 * 创建一个新的服务提供者实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -69,7 +69,7 @@ abstract class ServiceProvider
 
     /**
      * Register any application services.
-	 * 注册任何应用程序服务，服务提供者自己去完善
+	 * 注册任何应用程序服务
      *
      * @return void
      */
@@ -80,7 +80,7 @@ abstract class ServiceProvider
 
     /**
      * Register a booting callback to be run before the "boot" method is called.
-	 * 注册一个启动回调，以便在调用"boot"方法之前运行。
+	 * 注册一个启动回调，以便在调用“boot”方法之前运行。
      *
      * @param  \Closure  $callback
      * @return void
@@ -92,7 +92,7 @@ abstract class ServiceProvider
 
     /**
      * Register a booted callback to be run after the "boot" method is called.
-	 * 注册一个被引导的回调，在"boot"方法被调用后运行。
+	 * 注册一个被引导的回调，在“boot”方法被调用后运行。
      *
      * @param  \Closure  $callback
      * @return void
@@ -461,7 +461,7 @@ abstract class ServiceProvider
 
     /**
      * Determine if the provider is deferred.
-	 * 确定是否延迟提供者
+	 * 确定是否延迟提供程序
      *
      * @return bool
      */

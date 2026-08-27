@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，类型，十进制
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -19,35 +22,25 @@ use ValueError;
 
 use function is_numeric;
 use function sprintf;
+use function str_starts_with;
 
 /**
  * A value object representing a decimal
+ * 表示小数的值对象
  *
- * This class exists for type-safety purposes, to ensure that decimals
- * returned from ramsey/uuid methods as strings are truly decimals and not some
- * other kind of string.
+ * This class exists for type-safety purposes, to ensure that decimals returned from ramsey/uuid methods as strings are
+ * truly decimals and not some other kind of string.
  *
- * To support values as true decimals and not as floats or doubles, we store the
- * decimals as strings.
+ * To support values as true decimals and not as floats or doubles, we store the decimals as strings.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Decimal implements NumberInterface
 {
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
+    private bool $isNegative;
 
-    /**
-     * @var bool
-     */
-    private $isNegative = false;
-
-    /**
-     * @param mixed $value The decimal value to store
-     */
-    public function __construct($value)
+    public function __construct(float | int | string | self $value)
     {
         $value = (string) $value;
 
@@ -59,7 +52,7 @@ final class Decimal implements NumberInterface
         }
 
         // Remove the leading +-symbol.
-        if (strpos($value, '+') === 0) {
+        if (str_starts_with($value, '+')) {
             $value = substr($value, 1);
         }
 
@@ -68,8 +61,10 @@ final class Decimal implements NumberInterface
             $value = '0';
         }
 
-        if (strpos($value, '-') === 0) {
+        if (str_starts_with($value, '-')) {
             $this->isNegative = true;
+        } else {
+            $this->isNegative = false;
         }
 
         $this->value = $value;
@@ -110,19 +105,17 @@ final class Decimal implements NumberInterface
 
     /**
      * Constructs the object from a serialized string representation
+	 * 从序列化字符串表示构造对象
      *
-     * @param string $serialized The serialized string representation of the object
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress UnusedMethodCall
+     * @param string $data The serialized string representation of the object
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data): void
     {
-        $this->__construct($serialized);
+        $this->__construct($data);
     }
 
     /**
-     * @param array{string: string} $data
+     * @param array{string?: string} $data
      */
     public function __unserialize(array $data): void
     {

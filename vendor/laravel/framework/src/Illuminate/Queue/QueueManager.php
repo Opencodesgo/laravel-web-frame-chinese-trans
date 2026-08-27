@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列管理器
+ * Illuminate，队列，队列管理者
  */
 
 namespace Illuminate\Queue;
@@ -33,7 +33,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * The array of resolved queue connectors.
-	 * 已解析队列连接器的数组
+	 * 注册数据库队列连接器
      *
      * @var array
      */
@@ -53,7 +53,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the before job event.
-	 * 为before作业事件注册一个事件监听器
+	 * 为before作业事件注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -65,7 +65,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the after job event.
-	 * 为after job事件注册一个事件监听器
+	 * 为after job事件注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -77,7 +77,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the exception occurred job event.
-	 * 为异常发生的作业事件注册事件监听器
+	 * 为异常发生的作业事件注册事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -89,7 +89,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the daemon queue loop.
-	 * 为守护进程队列循环注册一个事件监听器
+	 * 为守护进程队列循环注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -101,7 +101,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the failed job event.
-	 * 为失败的作业事件注册一个事件监听器
+	 * 为失败的作业事件注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -113,7 +113,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the daemon queue stopping.
-	 * 为守护进程队列停止注册一个事件监听器
+	 * 为守护进程队列停止注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -149,7 +149,7 @@ class QueueManager implements FactoryContract, MonitorContract
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
-		// 如果连接尚未解析，我们将解决连接被解析的这个问题。
+		// 如果连接尚未解决，我们现在将解决它作为所有。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolve($name);
 
@@ -183,7 +183,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the connector for a given driver.
-	 * 得到给定驱动程序的连接器
+	 * 获取给定驱动程序的连接器
      *
      * @param  string  $driver
      * @return \Illuminate\Queue\Connectors\ConnectorInterface
@@ -227,7 +227,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the queue connection configuration.
-	 * 得到队列连接配置
+	 * 获取队列连接配置
      *
      * @param  string  $name
      * @return array|null
@@ -243,7 +243,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the name of the default queue connection.
-	 * 得到默认队列连接的名称
+	 * 获取默认队列连接的名称
      *
      * @return string
      */
@@ -266,7 +266,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the full name for the given connection.
-	 * 得到给定连接的全名
+	 * 获取给定连接的全名
      *
      * @param  string|null  $connection
      * @return string
@@ -278,7 +278,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the application instance used by the manager.
-	 * 得到管理器使用的应用程序实例
+	 * 获取管理器使用的应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

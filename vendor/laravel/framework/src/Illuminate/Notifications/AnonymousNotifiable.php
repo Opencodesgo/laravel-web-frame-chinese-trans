@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，匿名通知
+ * Illuminate，通知，匿名通报
  */
 
 namespace Illuminate\Notifications;

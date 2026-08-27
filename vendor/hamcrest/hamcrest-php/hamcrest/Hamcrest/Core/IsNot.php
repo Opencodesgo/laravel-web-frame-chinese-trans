@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Is Not
+ * Hamcrest，核心，IsNot
  */
 
 namespace Hamcrest\Core;
@@ -15,7 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Calculates the logical negation of a matcher.
- * 计算匹配器的逻辑否定。
+ * 计算一个matcher的逻辑否定。
  */
 class IsNot extends BaseMatcher
 {
@@ -39,7 +39,7 @@ class IsNot extends BaseMatcher
 
     /**
      * Matches if value does not match $value.
-	 * 如果value不匹配$value，则匹配。
+	 * 匹配如果值不匹配$值
      *
      * @factory
      */

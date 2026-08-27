@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，CodeCoverage，驱动，Xdebug2 驱动
+ * SebastianBergmann，CodeCoverage，驱动，Xdebug2Driver
  */
 
 /*
@@ -35,6 +35,7 @@ use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for phpunit/php-code-coverage
+ * 该类不包括在phpunit/php-code-coverage的向后兼容性承诺中
  */
 final class Xdebug2Driver extends Driver
 {

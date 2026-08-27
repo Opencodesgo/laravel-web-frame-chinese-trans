@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，IsEqual
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -53,6 +58,7 @@ final class IsEqual extends Constraint
 
     /**
      * Evaluates the constraint for parameter $other.
+	 * 计算参数$other的约束。
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.

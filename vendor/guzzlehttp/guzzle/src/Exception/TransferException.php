@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，异常，转移异常
+ * GuzzleHttp，异常，传输异常
  */
 
 namespace GuzzleHttp\Exception;

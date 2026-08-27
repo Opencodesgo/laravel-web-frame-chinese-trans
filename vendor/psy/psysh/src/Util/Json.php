@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，工具，Json
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Util;
 
 /**
  * A static class to wrap JSON encoding/decoding with PsySH's default options.
+ * 一个静态类，用PsySH的默认选项包装JSON编码/解码。
  */
 class Json
 {

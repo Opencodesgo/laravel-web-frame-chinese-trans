@@ -162,7 +162,6 @@ class Inspector implements InspectorInterface
 
     /**
      * Returns an array of all previous exceptions for this inspector's exception
-	 * 返回该检查器异常的所有先前异常数组
      * @return \Throwable[]
      */
     public function getPreviousExceptions()
@@ -258,7 +257,6 @@ class Inspector implements InspectorInterface
 
     /**
      * Gets the backtrace from an exception.
-	 * 从异常获取回溯
      *
      * If xdebug is installed
      *

@@ -13,7 +13,6 @@ class ConsoleSupportServiceProvider extends AggregateServiceProvider implements 
 {
     /**
      * The provider class names.
-	 * 提供者类名
      *
      * @var string[]
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，渲染器，内联，不匹配渲染器异常
+ * League，CommonMark，渲染器，没有匹配渲染器异常
  */
 
 declare(strict_types=1);

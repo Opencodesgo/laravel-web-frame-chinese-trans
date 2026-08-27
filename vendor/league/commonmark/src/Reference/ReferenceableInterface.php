@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，引用，可引用的接口
+ * League，CommonMark，参考，可引用的接口
  */
 
 /*

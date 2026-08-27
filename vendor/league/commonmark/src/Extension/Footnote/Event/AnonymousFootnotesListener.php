@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，扩展，脚注，节点，匿名脚注听众
+ * League，CommonMark，扩展，注脚，事件，匿名脚注听众
  */
 
 /*

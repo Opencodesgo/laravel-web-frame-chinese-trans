@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，Handler，Mail 处理程序
- *
+ * Monolog，处理器，邮件处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -51,7 +51,7 @@ abstract class MailHandler extends AbstractProcessingHandler
 
     /**
      * Send a mail with the given content
-	 * 用给定的内容发送邮件
+	 * 发送带有给定内容的邮件
      *
      * @param string $content formatted email body to be sent
      * @param array  $records the array of log records that formed this content

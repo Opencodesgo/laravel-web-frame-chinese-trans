@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，模型
+ * Illuminate，数据库，Eloquent，模型抽象类
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -71,7 +71,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Indicates if the IDs are auto-incrementing.
-	 * 指示id是否自动递增
+	 * 指示IDs是否自动递增
      *
      * @var bool
      */
@@ -111,7 +111,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Indicates if the model exists.
-	 * 指明模型是否存在
+	 * 指示模型是否存在
      *
      * @var bool
      */
@@ -119,7 +119,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Indicates if the model was inserted during the current request lifecycle.
-	 * 指明模型是否在当前请求生命周期中插入
+	 * 指示模型是否在当前请求生命周期中插入
      *
      * @var bool
      */
@@ -198,6 +198,38 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     protected static $lazyLoadingViolationCallback;
 
     /**
+     * Indicates if an exception should be thrown instead of silently discarding non-fillable attributes.
+	 * 指示是否应抛出异常，而不是静默地丢弃不可填充的属性。
+     *
+     * @var bool
+     */
+    protected static $modelsShouldPreventSilentlyDiscardingAttributes = false;
+
+    /**
+     * The callback that is responsible for handling discarded attribute violations.
+	 * 负责处理丢弃的属性违规的回调
+     *
+     * @var callable|null
+     */
+    protected static $discardedAttributeViolationCallback;
+
+    /**
+     * Indicates if an exception should be thrown when trying to access a missing attribute on a retrieved model.
+	 * 指示在尝试访问检索模型上的缺失属性时是否应抛出异常
+     *
+     * @var bool
+     */
+    protected static $modelsShouldPreventAccessingMissingAttributes = false;
+
+    /**
+     * The callback that is responsible for handling missing attribute violations.
+	 * 负责处理缺失的属性违规的回调
+     *
+     * @var callable|null
+     */
+    protected static $missingAttributeViolationCallback;
+
+    /**
      * Indicates if broadcasting is currently enabled.
 	 * 指示当前是否启用广播
      *
@@ -207,7 +239,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * The name of the "created at" column.
-	 * "创建时间"列的名称
+	 * "created at"列的名称
      *
      * @var string|null
      */
@@ -215,7 +247,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * The name of the "updated at" column.
-	 * "更新时间"列的名称
+	 * "updated at"列的名称
      *
      * @var string|null
      */
@@ -223,7 +255,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Create a new Eloquent model instance.
-	 * 创建一个新的Eloquent模型实例
+	 * 创建新的Eloquent模型实例
      *
      * @param  array  $attributes
      * @return void
@@ -408,6 +440,19 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Indicate that models should prevent lazy loading, silently discarding attributes, and accessing missing attributes.
+     *
+     * @param  bool  $shouldBeStrict
+     * @return void
+     */
+    public static function shouldBeStrict(bool $shouldBeStrict = true)
+    {
+        static::preventLazyLoading($shouldBeStrict);
+        static::preventSilentlyDiscardingAttributes($shouldBeStrict);
+        static::preventAccessingMissingAttributes($shouldBeStrict);
+    }
+
+    /**
      * Prevent model relationships from being lazy loaded.
 	 * 防止模型关系被惰性加载
      *
@@ -432,8 +477,56 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Prevent non-fillable attributes from being silently discarded.
+	 * 防止不可填充属性被静默丢弃
+     *
+     * @param  bool  $value
+     * @return void
+     */
+    public static function preventSilentlyDiscardingAttributes($value = true)
+    {
+        static::$modelsShouldPreventSilentlyDiscardingAttributes = $value;
+    }
+
+    /**
+     * Register a callback that is responsible for handling discarded attribute violations.
+	 * 注册一个负责处理丢弃的属性违规的回调
+     *
+     * @param  callable|null  $callback
+     * @return void
+     */
+    public static function handleDiscardedAttributeViolationUsing(?callable $callback)
+    {
+        static::$discardedAttributeViolationCallback = $callback;
+    }
+
+    /**
+     * Prevent accessing missing attributes on retrieved models.
+	 * 防止访问检索模型上缺失的属性
+     *
+     * @param  bool  $value
+     * @return void
+     */
+    public static function preventAccessingMissingAttributes($value = true)
+    {
+        static::$modelsShouldPreventAccessingMissingAttributes = $value;
+    }
+
+    /**
+     * Register a callback that is responsible for handling lazy loading violations.
+	 * 注册一个负责处理延迟加载违规的回调
+     *
+     * @param  callable|null  $callback
+     * @return void
+     */
+    public static function handleMissingAttributeViolationUsing(?callable $callback)
+    {
+        static::$missingAttributeViolationCallback = $callback;
+    }
+
+    /**
      * Execute a callback without broadcasting any model events for all model types.
-	 * 执行回调，而不为所有模型类型广播任何模型事件
+	 * 执行回调，而不为所有模型类型广播任何模型事件。
      *
      * @param  callable  $callback
      * @return mixed
@@ -464,17 +557,37 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     {
         $totallyGuarded = $this->totallyGuarded();
 
-        foreach ($this->fillableFromArray($attributes) as $key => $value) {
+        $fillable = $this->fillableFromArray($attributes);
+
+        foreach ($fillable as $key => $value) {
             // The developers may choose to place some attributes in the "fillable" array
             // which means only those attributes may be set through mass assignment to
             // the model, and all others will just get ignored for security reasons.
-			// 开发人员可以选择在"可填充"数组中放置一些属性。
             if ($this->isFillable($key)) {
                 $this->setAttribute($key, $value);
-            } elseif ($totallyGuarded) {
+            } elseif ($totallyGuarded || static::preventsSilentlyDiscardingAttributes()) {
+                if (isset(static::$discardedAttributeViolationCallback)) {
+                    call_user_func(static::$discardedAttributeViolationCallback, $this, [$key]);
+                } else {
+                    throw new MassAssignmentException(sprintf(
+                        'Add [%s] to fillable property to allow mass assignment on [%s].',
+                        $key, get_class($this)
+                    ));
+                }
+            }
+        }
+
+        if (count($attributes) !== count($fillable) &&
+            static::preventsSilentlyDiscardingAttributes()) {
+            $keys = array_diff(array_keys($attributes), array_keys($fillable));
+
+            if (isset(static::$discardedAttributeViolationCallback)) {
+                call_user_func(static::$discardedAttributeViolationCallback, $this, $keys);
+            } else {
                 throw new MassAssignmentException(sprintf(
-                    'Add [%s] to fillable property to allow mass assignment on [%s].',
-                    $key, get_class($this)
+                    'Add fillable property [%s] to allow mass assignment on [%s].',
+                    implode(', ', $keys),
+                    get_class($this)
                 ));
             }
         }
@@ -491,9 +604,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function forceFill(array $attributes)
     {
-        return static::unguarded(function () use ($attributes) {
-            return $this->fill($attributes);
-        });
+        return static::unguarded(fn () => $this->fill($attributes));
     }
 
     /**
@@ -505,7 +616,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function qualifyColumn($column)
     {
-        if (Str::contains($column, '.')) {
+        if (str_contains($column, '.')) {
             return $column;
         }
 
@@ -539,8 +650,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // This method just provides a convenient way for us to generate fresh model
         // instances of this current model. It is particularly useful during the
         // hydration of new objects via the Eloquent query builder instances.
-		// 该方法为我们生成新的模型提供了一种方便的方法。
-        $model = new static((array) $attributes);
+        $model = new static;
 
         $model->exists = $exists;
 
@@ -551,6 +661,8 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         $model->setTable($this->getTable());
 
         $model->mergeCasts($this->casts);
+
+        $model->fill((array) $attributes);
 
         return $model;
     }
@@ -588,7 +700,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // First we will just create a fresh instance of this model, and then we can set the
         // connection on the model so that it is used for the queries we execute, as well
         // as being set on every relation we retrieve without a custom connection name.
-		// 首先，我们将创建这个模型的一个新实例，然后我们可以设置模型上的连接。
+		// 首先，我们将创建这个模型的一个新实例，
         $instance = new static;
 
         $instance->setConnection($connection);
@@ -600,7 +712,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * Begin querying the model on the write connection.
 	 * 开始查询写连接上的模型
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function onWriteConnection()
     {
@@ -611,8 +723,8 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * Get all of the models from the database.
 	 * 从数据库中获取所有的模型
      *
-     * @param  array|mixed  $columns
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @param  array|string  $columns
+     * @return \Illuminate\Database\Eloquent\Collection<int, static>
      */
     public static function all($columns = ['*'])
     {
@@ -708,7 +820,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Eager load relation counts on the model.
-	 * 急切负荷关系依赖于模型
      *
      * @param  array|string  $relations
      * @return $this
@@ -722,7 +833,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Eager load relation max column values on the model.
-	 * 模型上最大列值的热切荷载关系
      *
      * @param  array|string  $relations
      * @param  string  $column
@@ -735,7 +845,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Eager load relation min column values on the model.
-	 * 模型上的动态荷载关系最小列值
      *
      * @param  array|string  $relations
      * @param  string  $column
@@ -748,7 +857,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Eager load relation's column summations on the model.
-	 * 急于荷载关系在模型上的列求和
      *
      * @param  array|string  $relations
      * @param  string  $column
@@ -761,7 +869,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Eager load relation average column values on the model.
-	 * 模型上各列的热切荷载关系平均值
      *
      * @param  array|string  $relations
      * @param  string  $column
@@ -995,6 +1102,38 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Increment a column's value by a given amount without raising any events.
+	 * 在不引发任何事件的情况下，将列的值增加给定的量。
+     *
+     * @param  string  $column
+     * @param  float|int  $amount
+     * @param  array  $extra
+     * @return int
+     */
+    protected function incrementQuietly($column, $amount = 1, array $extra = [])
+    {
+        return static::withoutEvents(function () use ($column, $amount, $extra) {
+            return $this->incrementOrDecrement($column, $amount, $extra, 'increment');
+        });
+    }
+
+    /**
+     * Decrement a column's value by a given amount without raising any events.
+	 * 在不引发任何事件的情况下，将列的值递减给定的量。
+     *
+     * @param  string  $column
+     * @param  float|int  $amount
+     * @param  array  $extra
+     * @return int
+     */
+    protected function decrementQuietly($column, $amount = 1, array $extra = [])
+    {
+        return static::withoutEvents(function () use ($column, $amount, $extra) {
+            return $this->incrementOrDecrement($column, $amount, $extra, 'decrement');
+        });
+    }
+
+    /**
      * Save the model and all of its relationships.
 	 * 保存模型及其所有关系
      *
@@ -1009,10 +1148,10 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // To sync all of the relationships to the database, we will simply spin through
         // the relationships and save each model via this "push" method, which allows
         // us to recurse into all of these nested relations for the model instance.
-		// 要将所有关系同步到数据库，我们只需旋转即可。
+		// 要将所有关系同步到数据库，我们将简单地旋转过去。
         foreach ($this->relations as $models) {
             $models = $models instanceof Collection
-                        ? $models->all() : [$models];
+                ? $models->all() : [$models];
 
             foreach (array_filter($models) as $model) {
                 if (! $model->push()) {
@@ -1025,6 +1164,17 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Save the model and all of its relationships without raising any events to the parent model.
+	 * 保存模型及其所有关系，而不向父模型引发任何事件。
+     *
+     * @return bool
+     */
+    public function pushQuietly()
+    {
+        return static::withoutEvents(fn () => $this->push());
+    }
+
+    /**
      * Save the model to the database without raising any events.
 	 * 在不引发任何事件的情况下将模型保存到数据库中
      *
@@ -1033,14 +1183,12 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function saveQuietly(array $options = [])
     {
-        return static::withoutEvents(function () use ($options) {
-            return $this->save($options);
-        });
+        return static::withoutEvents(fn () => $this->save($options));
     }
 
     /**
      * Save the model to the database.
-	 * 保存模型到数据库
+	 * 将模型保存到数据库中
      *
      * @param  array  $options
      * @return bool
@@ -1054,7 +1202,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // If the "saving" event returns false we'll bail out of the save and return
         // false, indicating that the save failed. This provides a chance for any
         // listeners to cancel save operations if validations fail or whatever.
-		// 如果"saving"事件返回false，我们将退出保存并返回。
         if ($this->fireModelEvent('saving') === false) {
             return false;
         }
@@ -1065,13 +1212,12 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 		// 如果模型已经存在于数据库中，我们可以更新我们的记录。
         if ($this->exists) {
             $saved = $this->isDirty() ?
-                        $this->performUpdate($query) : true;
+                $this->performUpdate($query) : true;
         }
 
         // If the model is brand new, we'll insert it into our database and set the
         // ID attribute on the model to the value of the newly inserted row's ID
         // which is typically an auto-increment value managed by the database.
-		// 如果模型是全新的，我们将把它插入数据库并设置。
         else {
             $saved = $this->performInsert($query);
 
@@ -1084,7 +1230,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // If the model is successfully saved, we need to do a few more things once
         // that is done. We will call the "saved" method here to run any actions
         // we need to happen after a model gets successfully saved right here.
-		// 如果成功保存了模型，我们需要再做一些事情。
         if ($saved) {
             $this->finishSave($options);
         }
@@ -1103,9 +1248,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function saveOrFail(array $options = [])
     {
-        return $this->getConnection()->transaction(function () use ($options) {
-            return $this->save($options);
-        });
+        return $this->getConnection()->transaction(fn () => $this->save($options));
     }
 
     /**
@@ -1146,7 +1289,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // First we need to create a fresh query instance and touch the creation and
         // update timestamp on the model which are maintained by us for developer
         // convenience. Then we will just continue saving the model instances.
-		// 首先，我们需要创建一个新的查询实例，并触摸创建并更新我们为开发人员维护的模型上的时间戳。
         if ($this->usesTimestamps()) {
             $this->updateTimestamps();
         }
@@ -1154,7 +1296,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // Once we have run the update operation, we will fire the "updated" event for
         // this model instance. This will allow developers to hook into these after
         // models are updated, giving them a chance to do any special processing.
-		// 一旦我们运行了更新操作，我们将触发"updated"事件。
         $dirty = $this->getDirty();
 
         if (count($dirty) > 0) {
@@ -1234,7 +1375,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // First we'll need to create a fresh query instance and touch the creation and
         // update timestamps on this model, which are maintained by us for developer
         // convenience. After, we will just continue saving these model instances.
-		// 首先，我们需要创建一个新的查询实例，并触摸创建并更新此模型上的时间戳。
+		// 首先，我们需要创建一个新的查询实例并触摸创建。
         if ($this->usesTimestamps()) {
             $this->updateTimestamps();
         }
@@ -1242,7 +1383,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // If the model has an incrementing key, we can use the "insertGetId" method on
         // the query builder, which will give us back the final inserted ID for this
         // table from the database. Not all tables have to be incrementing though.
-		// 如果模型有一个递增键，我们可以使用"insertGetId"方法。
         $attributes = $this->getAttributesForInsert();
 
         if ($this->getIncrementing()) {
@@ -1252,7 +1392,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // If the table isn't incrementing we'll simply insert these attributes as they
         // are. These attribute arrays must contain an "id" column previously placed
         // there by the developer as the manually determined key for these models.
-		// 如果表没有增加，我们将简单地插入这些属性。
         else {
             if (empty($attributes)) {
                 return true;
@@ -1264,7 +1403,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // We will go ahead and set the exists property to true, so that it is set when
         // the created event is fired, just in case the developer tries to update it
         // during the event. This will allow them to do so and run an update here.
-		// 我们将继续并将exists属性设置为true，以便在创建的事件被触发。
         $this->exists = true;
 
         $this->wasRecentlyCreated = true;
@@ -1315,7 +1453,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // We will actually pull the models from the database table and call delete on
         // each of them individually so that their events get fired properly with a
         // correct set of attributes in case the developers wants to check these.
-		// 实际上，我们将从数据库表中提取模型并调用delete。
+		// 我们将实际从数据库表中提取模型，并删除每一个都是单独的。
         $key = ($instance = new static)->getKeyName();
 
         $count = 0;
@@ -1348,7 +1486,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // If the model doesn't exist, there is nothing to delete so we'll just return
         // immediately and not do anything else. Otherwise, we will continue with a
         // deletion process on the model, firing the proper events, and so forth.
-		// 如果模型不存在，则没有什么可删除的，因此我们将立即返回，不要做其他任何事。
+		// 如果模型不存在，则没有什么可删除的。
         if (! $this->exists) {
             return;
         }
@@ -1360,7 +1498,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // Here, we'll touch the owning models, verifying these timestamps get updated
         // for the models. This will allow any caching to get broken on the parents
         // by the timestamp. Then we will go ahead and delete the model instance.
-		// 这里，我们将接触拥有的模型，验证这些时间戳是否得到更新。
         $this->touchOwners();
 
         $this->performDeleteOnModel();
@@ -1368,10 +1505,20 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // Once the model has been deleted, we will fire off the deleted event so that
         // the developers may hook into post-delete operations. We will then return
         // a boolean true as the delete is presumably successful on the database.
-		// 一旦模型被删除，我们将触发被删除的事件，以便开发人员可以钩入后删除操作。
         $this->fireModelEvent('deleted', false);
 
         return true;
+    }
+
+    /**
+     * Delete the model from the database without raising any events.
+	 * 在不引发任何事件的情况下从数据库中删除模型
+     *
+     * @return bool
+     */
+    public function deleteQuietly()
+    {
+        return static::withoutEvents(fn () => $this->delete());
     }
 
     /**
@@ -1388,9 +1535,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             return false;
         }
 
-        return $this->getConnection()->transaction(function () {
-            return $this->delete();
-        });
+        return $this->getConnection()->transaction(fn () => $this->delete());
     }
 
     /**
@@ -1398,7 +1543,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 	 * 对已软删除的模型强制执行硬删除
      *
      * This method protects developers from running forceDelete when the trait is missing.
-	 * 这个方法可以防止开发人员在缺少trait时运行forceDelete
      *
      * @return bool|null
      */
@@ -1491,8 +1635,8 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     public function newQueryWithoutScopes()
     {
         return $this->newModelQuery()
-                    ->with($this->with)
-                    ->withCount($this->withCount);
+            ->with($this->with)
+            ->withCount($this->withCount);
     }
 
     /**
@@ -1516,9 +1660,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function newQueryForRestoration($ids)
     {
-        return is_array($ids)
-                ? $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids)
-                : $this->newQueryWithoutScopes()->whereKey($ids);
+        return $this->newQueryWithoutScopes()->whereKey($ids);
     }
 
     /**
@@ -1570,7 +1712,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     public function newPivot(self $parent, array $attributes, $table, $exists, $using = null)
     {
         return $using ? $using::fromRawAttributes($parent, $attributes, $table, $exists)
-                      : Pivot::fromAttributes($parent, $attributes, $table, $exists);
+            : Pivot::fromAttributes($parent, $attributes, $table, $exists);
     }
 
     /**
@@ -1600,7 +1742,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Convert the model instance to an array.
-	 * 转换模型实例为数组
+	 * 将模型实例转换为数组
      *
      * @return array
      */
@@ -1611,7 +1753,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
     /**
      * Convert the model instance to JSON.
-	 * 转换模型实例为JSON
+	 * 将模型实例转换为JSON
      *
      * @param  int  $options
      * @return string
@@ -1622,7 +1764,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     {
         $json = json_encode($this->jsonSerialize(), $options);
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw JsonEncodingException::forModel($this, json_last_error_msg());
         }
 
@@ -1633,10 +1775,9 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * Convert the object into something JSON serializable.
 	 * 将对象转换为JSON可序列化的对象
      *
-     * @return array
+     * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }
@@ -1655,8 +1796,9 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         }
 
         return $this->setKeysForSelectQuery($this->newQueryWithoutScopes())
-                        ->with(is_string($with) ? func_get_args() : $with)
-                        ->first();
+            ->useWritePdo()
+            ->with(is_string($with) ? func_get_args() : $with)
+            ->first();
     }
 
     /**
@@ -1672,7 +1814,10 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         }
 
         $this->setRawAttributes(
-            $this->setKeysForSelectQuery($this->newQueryWithoutScopes())->firstOrFail()->attributes
+            $this->setKeysForSelectQuery($this->newQueryWithoutScopes())
+                ->useWritePdo()
+                ->firstOrFail()
+                ->attributes
         );
 
         $this->load(collect($this->relations)->reject(function ($relation) {
@@ -1694,11 +1839,11 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function replicate(array $except = null)
     {
-        $defaults = [
+        $defaults = array_values(array_filter([
             $this->getKeyName(),
             $this->getCreatedAtColumn(),
             $this->getUpdatedAtColumn(),
-        ];
+        ]));
 
         $attributes = Arr::except(
             $this->getAttributes(), $except ? array_unique(array_merge($except, $defaults)) : $defaults
@@ -1714,6 +1859,18 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Clone the model into a new, non-existing instance without raising any events.
+	 * 将模型克隆到一个新的、不存在的实例中，而不引发任何事件。
+     *
+     * @param  array|null  $except
+     * @return static
+     */
+    public function replicateQuietly(array $except = null)
+    {
+        return static::withoutEvents(fn () => $this->replicate($except));
+    }
+
+    /**
      * Determine if two models have the same ID and belong to the same table.
 	 * 确定两个模型是否具有相同的ID并属于同一表
      *
@@ -1723,9 +1880,9 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     public function is($model)
     {
         return ! is_null($model) &&
-               $this->getKey() === $model->getKey() &&
-               $this->getTable() === $model->getTable() &&
-               $this->getConnectionName() === $model->getConnectionName();
+            $this->getKey() === $model->getKey() &&
+            $this->getTable() === $model->getTable() &&
+            $this->getConnectionName() === $model->getConnectionName();
     }
 
     /**
@@ -1979,7 +2136,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             }
 
             if ($relation instanceof QueueableEntity) {
-                foreach ($relation->getQueueableRelations() as $entityKey => $entityValue) {
+                foreach ($relation->getQueueableRelations() as $entityValue) {
                     $relations[] = $key.'.'.$entityValue;
                 }
             }
@@ -2086,7 +2243,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     protected function resolveChildRouteBindingQuery($childType, $value, $field)
     {
-        $relationship = $this->{Str::plural(Str::camel($childType))}();
+        $relationship = $this->{$this->childRouteBindingRelationshipName($childType)}();
 
         $field = $field ?: $relationship->getRelated()->getRouteKeyName();
 
@@ -2096,15 +2253,27 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         }
 
         return $relationship instanceof Model
-                ? $relationship->resolveRouteBindingQuery($relationship, $value, $field)
-                : $relationship->getRelated()->resolveRouteBindingQuery($relationship, $value, $field);
+            ? $relationship->resolveRouteBindingQuery($relationship, $value, $field)
+            : $relationship->getRelated()->resolveRouteBindingQuery($relationship, $value, $field);
+    }
+
+    /**
+     * Retrieve the child route model binding relationship name for the given child type.
+	 * 检索给定子类型的子路由模型绑定关系名称
+     *
+     * @param  string  $childType
+     * @return string
+     */
+    protected function childRouteBindingRelationshipName($childType)
+    {
+        return Str::plural(Str::camel($childType));
     }
 
     /**
      * Retrieve the model for a bound value.
 	 * 检索绑定值的模型
      *
-     * @param  \Illuminate\Database\Eloquent\Model|Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\Relation  $query
      * @param  mixed  $value
      * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Relations\Relation
@@ -2162,6 +2331,28 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Determine if discarding guarded attribute fills is disabled.
+	 * 确定是否禁用丢弃受保护的属性填充
+     *
+     * @return bool
+     */
+    public static function preventsSilentlyDiscardingAttributes()
+    {
+        return static::$modelsShouldPreventSilentlyDiscardingAttributes;
+    }
+
+    /**
+     * Determine if accessing missing attributes is disabled.
+	 * 确定是否禁用了对缺失属性的访问
+     *
+     * @return bool
+     */
+    public static function preventsAccessingMissingAttributes()
+    {
+        return static::$modelsShouldPreventAccessingMissingAttributes;
+    }
+
+    /**
      * Get the broadcast channel route definition that is associated with the given entity.
 	 * 获取与给定实体关联的广播通道路由定义
      *
@@ -2215,10 +2406,13 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * @param  mixed  $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
-        return ! is_null($this->getAttribute($offset));
+        try {
+            return ! is_null($this->getAttribute($offset));
+        } catch (MissingAttributeException) {
+            return false;
+        }
     }
 
     /**
@@ -2228,8 +2422,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * @param  mixed  $offset
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->getAttribute($offset);
     }
@@ -2242,8 +2435,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->setAttribute($offset, $value);
     }
@@ -2255,8 +2447,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * @param  mixed  $offset
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset], $this->relations[$offset]);
     }
@@ -2299,8 +2490,13 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             return $this->$method(...$parameters);
         }
 
-        if ($resolver = (static::$relationResolvers[get_class($this)][$method] ?? null)) {
+        if ($resolver = $this->relationResolver(static::class, $method)) {
             return $resolver($this);
+        }
+
+        if (Str::startsWith($method, 'through') &&
+            method_exists($this, $relationMethod = Str::of($method)->after('through')->lcfirst()->toString())) {
+            return $this->through($relationMethod);
         }
 
         return $this->forwardCallTo($this->newQuery(), $method, $parameters);
@@ -2328,8 +2524,8 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     public function __toString()
     {
         return $this->escapeWhenCastingToString
-                    ? e($this->toJson())
-                    : $this->toJson();
+            ? e($this->toJson())
+            : $this->toJson();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Brick，Math，异常，数字格式化异常
+ * Brick，Math，异常，数字格式异常
  */
 
 declare(strict_types=1);
@@ -15,8 +15,6 @@ class NumberFormatException extends MathException
 {
     /**
      * @param string $char The failing character.
-     *
-     * @return NumberFormatException
      *
      * @psalm-pure
      */

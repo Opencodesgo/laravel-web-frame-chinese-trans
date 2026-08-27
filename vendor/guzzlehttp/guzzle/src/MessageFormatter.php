@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，消息格式化程序
+ * GuzzleHttp，消息格式化
  */
 
 namespace GuzzleHttp;
@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Formats log messages using variable substitutions for requests, responses,
  * and other transactional data.
- * 格式化日志消息,使用变量替换来请求请求、响应，其他事务数据。
+ * 使用变量替换格式化请求、响应及其他事务数据的日志消息。
  *
  * The following variable substitutions are supported:
  *
@@ -43,7 +43,7 @@ class MessageFormatter implements MessageFormatterInterface
 {
     /**
      * Apache Common Log Format.
-	 * Apache公共日志格式
+	 * Apache通用日志格式。
      *
      * @see https://httpd.apache.org/docs/2.4/logs.html#common
      *
@@ -68,7 +68,7 @@ class MessageFormatter implements MessageFormatterInterface
 
     /**
      * Returns a formatted message string.
-	 * 返回一个格式化的消息字符串
+	 * 返回格式化的消息字符串
      *
      * @param RequestInterface       $request  Request that was sent
      * @param ResponseInterface|null $response Response that was received
@@ -192,7 +192,7 @@ class MessageFormatter implements MessageFormatterInterface
 
     /**
      * Get headers from message as string
-	 * 将消息头从消息作为字符串获取
+	 * 从消息中获取消息头作为字符串
      */
     private function headers(MessageInterface $message): string
     {

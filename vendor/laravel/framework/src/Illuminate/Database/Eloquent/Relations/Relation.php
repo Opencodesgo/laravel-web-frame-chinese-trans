@@ -6,6 +6,7 @@
 namespace Illuminate\Database\Eloquent\Relations;
 
 use Closure;
+use Illuminate\Contracts\Database\Eloquent\Builder as BuilderContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -16,13 +17,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
 
-/**
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
-abstract class Relation
+abstract class Relation implements BuilderContract
 {
     use ForwardsCalls, Macroable {
-        __call as macroCall;
+        Macroable::__call as macroCall;
     }
 
     /**
@@ -51,7 +49,7 @@ abstract class Relation
 
     /**
      * Indicates if the relation is adding constraints.
-	 * 指明关系是否正在添加约束
+	 * 指示关系是否正在添加约束
      *
      * @var bool
      */
@@ -75,7 +73,7 @@ abstract class Relation
 
     /**
      * The count of self joins.
-	 * 自连接的计数
+	 * 自连接的数
      *
      * @var int
      */
@@ -83,7 +81,7 @@ abstract class Relation
 
     /**
      * Create a new relation instance.
-	 * 创建一个新的关系实例
+	 * 创建新的关系实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -114,7 +112,7 @@ abstract class Relation
         // When resetting the relation where clause, we want to shift the first element
         // off of the bindings, leaving only the constraints that the developers put
         // as "extra" on the relationships, and not original relation constraints.
-		// 当重置where子句的关系时，我们想要移动绑定的第一个元素。
+		// 当重置where子句的关系时，我们想要移动第一个元素。
         try {
             return $callback();
         } finally {
@@ -186,19 +184,21 @@ abstract class Relation
      * @param  array|string  $columns
      * @return \Illuminate\Database\Eloquent\Model
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      * @throws \Illuminate\Database\MultipleRecordsFoundException
      */
     public function sole($columns = ['*'])
     {
         $result = $this->take(2)->get($columns);
 
-        if ($result->isEmpty()) {
+        $count = $result->count();
+
+        if ($count === 0) {
             throw (new ModelNotFoundException)->setModel(get_class($this->related));
         }
 
-        if ($result->count() > 1) {
-            throw new MultipleRecordsFoundException;
+        if ($count > 1) {
+            throw new MultipleRecordsFoundException($count);
         }
 
         return $result->first();
@@ -339,6 +339,17 @@ abstract class Relation
     }
 
     /**
+     * Get a base query builder instance.
+	 * 获取基本查询生成器实例
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function toBase()
+    {
+        return $this->query->toBase();
+    }
+
+    /**
      * Get the parent model of the relation.
 	 * 获取关系的父模型
      *
@@ -395,7 +406,7 @@ abstract class Relation
 
     /**
      * Get the name of the related model's "updated at" column.
-	 * 获取相关模型的"更新时间"列的名称
+	 * 获取相关模型的"updated at"列的名称
      *
      * @return string
      */

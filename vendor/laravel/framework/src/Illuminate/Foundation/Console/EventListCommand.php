@@ -5,86 +5,201 @@
 
 namespace Illuminate\Foundation\Console;
 
+use Closure;
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use ReflectionFunction;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'event:list')]
 class EventListCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * 控制台命令的名称和签名 event:list
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
     protected $signature = 'event:list {--event= : Filter the events by name}';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'event:list';
+
+    /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令描述
      *
      * @var string
      */
     protected $description = "List the application's events and listeners";
 
     /**
+     * The events dispatcher resolver callback.
+	 * 事件调度程序解析器回调
+     *
+     * @var \Closure|null
+     */
+    protected static $eventsResolver;
+
+    /**
      * Execute the console command.
 	 * 执行控制台命令
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
-        $events = $this->getEvents();
+        $events = $this->getEvents()->sortKeys();
 
-        if (empty($events)) {
-            return $this->error("Your application doesn't have any events matching the given criteria.");
+        if ($events->isEmpty()) {
+            $this->components->info("Your application doesn't have any events matching the given criteria.");
+
+            return;
         }
 
-        $this->table(['Event', 'Listeners'], $events);
+        $this->newLine();
+
+        $events->each(function ($listeners, $event) {
+            $this->components->twoColumnDetail($this->appendEventInterfaces($event));
+            $this->components->bulletList($listeners);
+        });
+
+        $this->newLine();
     }
 
     /**
      * Get all of the events and listeners configured for the application.
-	 * 设置为应用程序配置的所有事件和侦听者
+	 * 获取为应用程序配置的所有事件和侦听器
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     protected function getEvents()
     {
-        $events = [];
-
-        foreach ($this->laravel->getProviders(EventServiceProvider::class) as $provider) {
-            $providerEvents = array_merge_recursive($provider->shouldDiscoverEvents() ? $provider->discoverEvents() : [], $provider->listens());
-
-            $events = array_merge_recursive($events, $providerEvents);
-        }
+        $events = collect($this->getListenersOnDispatcher());
 
         if ($this->filteringByEvent()) {
             $events = $this->filterEvents($events);
         }
 
-        return collect($events)->map(function ($listeners, $event) {
-            return ['Event' => $event, 'Listeners' => implode(PHP_EOL, $listeners)];
-        })->sortBy('Event')->values()->toArray();
+        return $events;
+    }
+
+    /**
+     * Get the event / listeners from the dispatcher object.
+	 * 从调度程序对象获取事件/侦听器
+     *
+     * @return array
+     */
+    protected function getListenersOnDispatcher()
+    {
+        $events = [];
+
+        foreach ($this->getRawListeners() as $event => $rawListeners) {
+            foreach ($rawListeners as $rawListener) {
+                if (is_string($rawListener)) {
+                    $events[$event][] = $this->appendListenerInterfaces($rawListener);
+                } elseif ($rawListener instanceof Closure) {
+                    $events[$event][] = $this->stringifyClosure($rawListener);
+                } elseif (is_array($rawListener) && count($rawListener) === 2) {
+                    if (is_object($rawListener[0])) {
+                        $rawListener[0] = get_class($rawListener[0]);
+                    }
+
+                    $events[$event][] = $this->appendListenerInterfaces(implode('@', $rawListener));
+                }
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Add the event implemented interfaces to the output.
+	 * 将事件实现的接口添加到输出中
+     *
+     * @param  string  $event
+     * @return string
+     */
+    protected function appendEventInterfaces($event)
+    {
+        if (! class_exists($event)) {
+            return $event;
+        }
+
+        $interfaces = class_implements($event);
+
+        if (in_array(ShouldBroadcast::class, $interfaces)) {
+            $event .= ' <fg=bright-blue>(ShouldBroadcast)</>';
+        }
+
+        return $event;
+    }
+
+    /**
+     * Add the listener implemented interfaces to the output.
+	 * 将侦听器实现的接口添加到输出中
+     *
+     * @param  string  $listener
+     * @return string
+     */
+    protected function appendListenerInterfaces($listener)
+    {
+        $listener = explode('@', $listener);
+
+        $interfaces = class_implements($listener[0]);
+
+        $listener = implode('@', $listener);
+
+        if (in_array(ShouldQueue::class, $interfaces)) {
+            $listener .= ' <fg=bright-blue>(ShouldQueue)</>';
+        }
+
+        return $listener;
+    }
+
+    /**
+     * Get a displayable string representation of a Closure listener.
+	 * 获取Closure侦听器的可显示字符串表示形式
+     *
+     * @param  \Closure  $rawListener
+     * @return string
+     */
+    protected function stringifyClosure(Closure $rawListener)
+    {
+        $reflection = new ReflectionFunction($rawListener);
+
+        $path = str_replace([base_path(), DIRECTORY_SEPARATOR], ['', '/'], $reflection->getFileName() ?: '');
+
+        return 'Closure at: '.$path.':'.$reflection->getStartLine();
     }
 
     /**
      * Filter the given events using the provided event name filter.
 	 * 使用提供的事件名称筛选器筛选给定的事件
      *
-     * @param  array  $events
-     * @return array
+     * @param  \Illuminate\Support\Collection  $events
+     * @return \Illuminate\Support\Collection
      */
-    protected function filterEvents(array $events)
+    protected function filterEvents($events)
     {
         if (! $eventName = $this->option('event')) {
             return $events;
         }
 
-        return collect($events)->filter(function ($listeners, $event) use ($eventName) {
-            return Str::contains($event, $eventName);
-        })->toArray();
+        return $events->filter(
+            fn ($listeners, $event) => str_contains($event, $eventName)
+        );
     }
 
     /**
@@ -96,5 +211,41 @@ class EventListCommand extends Command
     protected function filteringByEvent()
     {
         return ! empty($this->option('event'));
+    }
+
+    /**
+     * Gets the raw version of event listeners from the event dispatcher.
+	 * 从事件调度程序获取事件侦听器的原始版本
+     *
+     * @return array
+     */
+    protected function getRawListeners()
+    {
+        return $this->getEventsDispatcher()->getRawListeners();
+    }
+
+    /**
+     * Get the event dispatcher.
+	 * 获取事件调度程序
+     *
+     * @return Illuminate\Events\Dispatcher
+     */
+    public function getEventsDispatcher()
+    {
+        return is_null(self::$eventsResolver)
+            ? $this->getLaravel()->make('events')
+            : call_user_func(self::$eventsResolver);
+    }
+
+    /**
+     * Set a callback that should be used when resolving the events dispatcher.
+	 * 设置在解析事件调度程序时应该使用的回调
+     *
+     * @param  \Closure|null  $resolver
+     * @return void
+     */
+    public static function resolveEventsUsing($resolver)
+    {
+        static::$eventsResolver = $resolver;
     }
 }

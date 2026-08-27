@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，Swift Mailer 处理程序
- *
+ * Monolog，处理器，Swift 邮件处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -75,7 +75,7 @@ class SwiftMailerHandler extends MailHandler
 
     /**
      * Creates instance of Swift_Message to be sent
-	 * 创建可发送的Swift_Message实例
+	 * 创建要发送的Swift_Message实例
      *
      * @param  string        $content formatted email body to be sent
      * @param  array         $records Log records that formed the content

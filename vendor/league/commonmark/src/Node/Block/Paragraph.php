@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，节点，块，段落 
+ * League，CommonMark，节点，块，段落
  */
 
 declare(strict_types=1);

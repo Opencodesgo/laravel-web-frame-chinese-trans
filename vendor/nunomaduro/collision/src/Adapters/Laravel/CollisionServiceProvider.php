@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Laravel，碰撞服务供应者
+ * NunoMaduro，Collision，适配器，Laravel，碰撞服务提供者
  */
 
 declare(strict_types=1);
@@ -32,7 +32,7 @@ class CollisionServiceProvider extends ServiceProvider
 
     /**
      * Boots application services.
-	 * 引导应用程序服务
+	 * 启动应用程序服务
      *
      * @return void
      */
@@ -48,12 +48,14 @@ class CollisionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->runningInConsole() && !$this->app->runningUnitTests()) {
+        if ($this->app->runningInConsole() && ! $this->app->runningUnitTests()) {
             $this->app->bind(ProviderContract::class, function () {
-                if ($this->app->has(\Facade\IgnitionContracts\SolutionProviderRepository::class)) {
-                    $solutionsRepository = new IgnitionSolutionsRepository(
-                        $this->app->get(\Facade\IgnitionContracts\SolutionProviderRepository::class)
-                    );
+                // @phpstan-ignore-next-line
+                if ($this->app->has(\Spatie\Ignition\Contracts\SolutionProviderRepository::class)) {
+                    /** @var \Spatie\Ignition\Contracts\SolutionProviderRepository $solutionProviderRepository */
+                    $solutionProviderRepository = $this->app->get(\Spatie\Ignition\Contracts\SolutionProviderRepository::class);
+
+                    $solutionsRepository = new IgnitionSolutionsRepository($solutionProviderRepository);
                 } else {
                     $solutionsRepository = new NullSolutionsRepository();
                 }
@@ -64,6 +66,7 @@ class CollisionServiceProvider extends ServiceProvider
                 return new Provider(null, $handler);
             });
 
+            /** @var \Illuminate\Contracts\Debug\ExceptionHandler $appExceptionHandler */
             $appExceptionHandler = $this->app->make(ExceptionHandlerContract::class);
 
             $this->app->singleton(

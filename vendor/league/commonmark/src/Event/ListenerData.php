@@ -1,6 +1,6 @@
 <?php
 /**
- * League，CommonMark，事件，侦听器数据
+ * League，CommonMark，事件，监听器数据
  */
 
 declare(strict_types=1);

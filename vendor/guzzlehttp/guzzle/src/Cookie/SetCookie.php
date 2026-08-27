@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Cookie，设置 Cookie
+ * GuzzleHttp，Cookie，设置 cookie
  */
 
 namespace GuzzleHttp\Cookie;
@@ -32,7 +32,7 @@ class SetCookie
 
     /**
      * Create a new SetCookie object from a string.
-	 * 从字符串中创建一个新的SetCookie对象
+	 * 从字符串创建一个新的SetCookie对象
      *
      * @param string $cookie Set-Cookie header string
      */
@@ -65,6 +65,10 @@ class SetCookie
                         if ($search === 'Max-Age') {
                             if (is_numeric($value)) {
                                 $data[$search] = (int) $value;
+                            }
+                        } elseif ($search === 'Secure' || $search === 'Discard' || $search === 'HttpOnly') {
+                            if ($value) {
+                                $data[$search] = true;
                             }
                         } else {
                             $data[$search] = $value;
@@ -211,7 +215,7 @@ class SetCookie
 
     /**
      * Get the domain.
-	 * 获取域
+	 * 获取域名
      *
      * @return string|null
      */
@@ -237,7 +241,6 @@ class SetCookie
 
     /**
      * Get the path.
-	 * 得到路径
      *
      * @return string
      */
@@ -248,7 +251,6 @@ class SetCookie
 
     /**
      * Set the path of the cookie.
-	 * 设置cookie的路径
      *
      * @param string $path Path of the cookie
      */
@@ -263,7 +265,6 @@ class SetCookie
 
     /**
      * Maximum lifetime of the cookie in seconds.
-	 * 在几秒钟内最大限度地完成cookie
      *
      * @return int|null
      */
@@ -312,6 +313,7 @@ class SetCookie
 
     /**
      * Get whether or not this is a secure cookie.
+	 * 获取此cookie是否安全
      *
      * @return bool
      */
@@ -346,7 +348,6 @@ class SetCookie
 
     /**
      * Set whether or not this is a session cookie.
-	 * 设置是否这是一个会话cookie
      *
      * @param bool $discard Set to true or false if this is a session cookie
      */
@@ -361,7 +362,7 @@ class SetCookie
 
     /**
      * Get whether or not this is an HTTP only cookie.
-	 * 了解这是否是HTTP唯一的cookie
+	 * 获取这是否是一个仅HTTP的cookie
      *
      * @return bool
      */
@@ -372,7 +373,7 @@ class SetCookie
 
     /**
      * Set whether or not this is an HTTP only cookie.
-	 * 设置是否这是一个HTTP只cookie
+	 * 设置这是否是仅HTTP cookie
      *
      * @param bool $httpOnly Set to true or false if this is HTTP only
      */
@@ -387,7 +388,6 @@ class SetCookie
 
     /**
      * Check if the cookie matches a path value.
-	 * 检查cookie是否匹配路径值
      *
      * A request-path path-matches a given cookie-path if at least one of
      * the following conditions holds:
@@ -468,7 +468,7 @@ class SetCookie
 
     /**
      * Check if the cookie is valid according to RFC 6265.
-	 * 检查cookie是否有效根据RFC 6265
+	 * 根据RFC 6265检查cookie是否有效
      *
      * @return bool|string Returns true if valid or an error message if invalid
      */
@@ -480,6 +480,7 @@ class SetCookie
         }
 
         // Check if any of the invalid characters are present in the cookie name
+		// 检查cookie名称中是否存在任何无效字符
         if (\preg_match(
             '/[\x00-\x20\x22\x28-\x29\x2c\x2f\x3a-\x40\x5c\x7b\x7d\x7f]/',
             $name

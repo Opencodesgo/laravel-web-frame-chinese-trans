@@ -9,7 +9,7 @@ interface MustVerifyEmail
 {
     /**
      * Determine if the user has verified their email address.
-	 * 确定用户是否验证了他们的电子邮件地址
+	 * 确定用户是否已验证了他们的邮件地址
      *
      * @return bool
      */

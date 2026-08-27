@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，客户端，集中资源
+ * Illuminate，Http，客户端，水池
  */
 
 namespace Illuminate\Http\Client;

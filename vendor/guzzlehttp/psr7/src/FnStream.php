@@ -11,7 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * Compose stream implementations based on a hash of functions.
- * 基于函数的散列编写流实现。
+ * 基于函数的散列组合流实现。
  *
  * Allows for easy testing and extension of a provided stream without needing
  * to create a concrete class for a simple extension point.
@@ -66,7 +66,6 @@ final class FnStream implements StreamInterface
 
     /**
      * An unserialize would allow the __destruct to run when the unserialized value goes out of scope.
-	 * 一个未序列化将允许在未序列化值超出范围时运行的__销毁
      *
      * @throws \LogicException
      */

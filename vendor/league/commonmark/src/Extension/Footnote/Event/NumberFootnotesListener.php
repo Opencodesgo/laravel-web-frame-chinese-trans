@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，注脚，事件，数字脚注监听器 
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -48,6 +51,7 @@ final class NumberFootnotesListener
             }
 
             // rewrite reference title to use a numeric link
+			// 重写引用标题以使用数字链接
             $newReference = new Reference(
                 $label,
                 $existingReference->getDestination(),

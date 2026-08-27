@@ -27,7 +27,7 @@ namespace Symfony\Component\Finder\Iterator;
  */
 class CustomFilterIterator extends \FilterIterator
 {
-    private $filters = [];
+    private array $filters = [];
 
     /**
      * @param \Iterator<string, \SplFileInfo> $iterator The Iterator to filter
@@ -50,11 +50,8 @@ class CustomFilterIterator extends \FilterIterator
     /**
      * Filters the iterator values.
 	 * 过滤迭代器值
-     *
-     * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function accept()
+    public function accept(): bool
     {
         $fileinfo = $this->current();
 

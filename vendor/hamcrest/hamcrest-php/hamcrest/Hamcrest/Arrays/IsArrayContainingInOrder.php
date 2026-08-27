@@ -14,7 +14,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains a set of items satisfying nested matchers.
- * 如果数组包含一组满足嵌套匹配器的项，则匹配。
+ * 匹配如果一个数组包含一组令人满意的嵌套解码器。
  */
 class IsArrayContainingInOrder extends TypeSafeDiagnosingMatcher
 {

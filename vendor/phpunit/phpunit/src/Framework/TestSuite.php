@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，测试套件
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -56,6 +61,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
+	 * 启用或禁用$GLOBALS数组的备份和恢复
      *
      * @var bool
      */
@@ -63,6 +69,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Enable or disable the backup and restoration of static attributes.
+	 * 启用或禁用静态属性的备份和恢复
      *
      * @var bool
      */
@@ -75,6 +82,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * The name of the test suite.
+	 * 测试套件的名称
      *
      * @var string
      */

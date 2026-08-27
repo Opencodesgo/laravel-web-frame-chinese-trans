@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，助手，表单元格
+ * Symfony，Component，Console，助手，表格单元格
  */
 
 /*
@@ -21,8 +21,8 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  */
 class TableCell
 {
-    private $value;
-    private $options = [
+    private string $value;
+    private array $options = [
         'rowspan' => 1,
         'colspan' => 1,
         'style' => null,
@@ -34,7 +34,7 @@ class TableCell
 
         // check option names
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
-            throw new InvalidArgumentException(sprintf('The TableCell does not support the following options: \'%s\'.', implode('\', \'', $diff)));
+            throw new InvalidArgumentException(\sprintf('The TableCell does not support the following options: \'%s\'.', implode('\', \'', $diff)));
         }
 
         if (isset($options['style']) && !$options['style'] instanceof TableCellStyle) {
@@ -46,33 +46,26 @@ class TableCell
 
     /**
      * Returns the cell value.
-	 * 返回单元格值
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->value;
     }
 
     /**
      * Gets number of colspan.
-	 * 获得colspan的数量
-     *
-     * @return int
+	 * 获取colspan的数目
      */
-    public function getColspan()
+    public function getColspan(): int
     {
         return (int) $this->options['colspan'];
     }
 
     /**
      * Gets number of rowspan.
-	 * 得到行张数
-     *
-     * @return int
+	 * 获取行跨度的数目
      */
-    public function getRowspan()
+    public function getRowspan(): int
     {
         return (int) $this->options['rowspan'];
     }

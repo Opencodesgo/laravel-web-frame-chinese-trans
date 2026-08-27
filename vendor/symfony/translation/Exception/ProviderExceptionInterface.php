@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，异常，提供者异常接口
+ * Symfony，Component，Translation，异常，提供程序异常接口
  */
 
 /*

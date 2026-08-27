@@ -1,6 +1,6 @@
 <?php
 /**
- * app，Http，控制器，Controller
+ * App, Http, 控制器, Controller
  */
 
 namespace App\Http\Controllers;
