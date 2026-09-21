@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，是否空字符串
+ */
+
 namespace Hamcrest\Text;
 
 /*
@@ -11,6 +15,7 @@ use Hamcrest\Description;
 
 /**
  * Matches empty Strings (and null).
+ * 匹配空字符串(和null)。
  */
 class IsEmptyString extends BaseMatcher
 {
@@ -40,6 +45,7 @@ class IsEmptyString extends BaseMatcher
 
     /**
      * Matches if value is a zero-length string.
+	 * 如果value是零长度字符串则匹配
      *
      * @factory emptyString
      */
@@ -54,6 +60,7 @@ class IsEmptyString extends BaseMatcher
 
     /**
      * Matches if value is null or a zero-length string.
+	 * 匹配如果值为null或零长度字符串
      *
      * @factory nullOrEmptyString
      */
@@ -71,6 +78,7 @@ class IsEmptyString extends BaseMatcher
 
     /**
      * Matches if value is a non-zero-length string.
+	 * 匹配如果值是非零长度字符串
      *
      * @factory nonEmptyString
      */

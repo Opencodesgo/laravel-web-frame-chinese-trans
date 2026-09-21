@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Process，异常，运行进程失败异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,12 +18,13 @@ use Symfony\Component\Process\Process;
 
 /**
  * Exception for failed processes.
+ * 失败进程的异常。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class ProcessFailedException extends RuntimeException
 {
-    private $process;
+    private Process $process;
 
     public function __construct(Process $process)
     {
@@ -28,7 +32,7 @@ class ProcessFailedException extends RuntimeException
             throw new InvalidArgumentException('Expected a failed process, but the given process was successful.');
         }
 
-        $error = sprintf('The command "%s" failed.'."\n\nExit Code: %s(%s)\n\nWorking directory: %s",
+        $error = \sprintf('The command "%s" failed.'."\n\nExit Code: %s(%s)\n\nWorking directory: %s",
             $process->getCommandLine(),
             $process->getExitCode(),
             $process->getExitCodeText(),
@@ -36,7 +40,7 @@ class ProcessFailedException extends RuntimeException
         );
 
         if (!$process->isOutputDisabled()) {
-            $error .= sprintf("\n\nOutput:\n================\n%s\n\nError Output:\n================\n%s",
+            $error .= \sprintf("\n\nOutput:\n================\n%s\n\nError Output:\n================\n%s",
                 $process->getOutput(),
                 $process->getErrorOutput()
             );
@@ -47,6 +51,9 @@ class ProcessFailedException extends RuntimeException
         $this->process = $process;
     }
 
+    /**
+     * @return Process
+     */
     public function getProcess()
     {
         return $this->process;

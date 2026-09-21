@@ -7,21 +7,33 @@ namespace Illuminate\Mail;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+use Illuminate\Contracts\Mail\Attachable;
 use Illuminate\Contracts\Mail\Factory as MailFactory;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Queue\Factory as Queue;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Localizable;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Testing\Constraints\SeeInOrder;
+use PHPUnit\Framework\Assert as PHPUnit;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Component\Mailer\Header\MetadataHeader;
+use Symfony\Component\Mailer\Header\TagHeader;
+use Symfony\Component\Mime\Address;
 
 class Mailable implements MailableContract, Renderable
 {
-    use ForwardsCalls, Localizable;
+    use Conditionable, ForwardsCalls, Localizable, Macroable {
+        __call as macroCall;
+    }
 
     /**
      * The locale of the message.
@@ -33,7 +45,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The person the message is from.
-	 * 发件人
+	 * 信息来自的人
      *
      * @var array
      */
@@ -41,7 +53,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "to" recipients of the message.
-	 * 收件人
+	 * 消息的"to"收件人
      *
      * @var array
      */
@@ -49,7 +61,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "cc" recipients of the message.
-	 * 抄送人
+	 * 邮件的"抄送"收件人
      *
      * @var array
      */
@@ -57,7 +69,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "bcc" recipients of the message.
-	 * 密件抄送人
+	 * 消息的"密件抄送"收件人
      *
      * @var array
      */
@@ -85,7 +97,7 @@ class Mailable implements MailableContract, Renderable
      *
      * @var string
      */
-    protected $markdown;
+    public $markdown;
 
     /**
      * The HTML to use for the message.
@@ -144,6 +156,22 @@ class Mailable implements MailableContract, Renderable
     public $diskAttachments = [];
 
     /**
+     * The tags for the message.
+	 * 消息的标签
+     *
+     * @var array
+     */
+    protected $tags = [];
+
+    /**
+     * The metadata for the message.
+	 * 消息的元数据
+     *
+     * @var array
+     */
+    protected $metadata = [];
+
+    /**
      * The callbacks for the message.
 	 * 消息的回调
      *
@@ -168,6 +196,14 @@ class Mailable implements MailableContract, Renderable
     public $mailer;
 
     /**
+     * The rendered mailable views for testing / assertions.
+	 * 为测试/断言呈现的可邮寄视图
+     *
+     * @var array
+     */
+    protected $assertionableRenderStrings;
+
+    /**
      * The callback that should be invoked while building the view data.
 	 * 在构建视图数据时应该调用的回调
      *
@@ -180,12 +216,12 @@ class Mailable implements MailableContract, Renderable
 	 * 使用给定的邮件发送器发送消息
      *
      * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
-     * @return void
+     * @return \Illuminate\Mail\SentMessage|null
      */
     public function send($mailer)
     {
         return $this->withLocale($this->locale, function () use ($mailer) {
-            Container::getInstance()->call([$this, 'build']);
+            $this->prepareMailableForDelivery();
 
             $mailer = $mailer instanceof MailFactory
                             ? $mailer->mailer($this->mailer)
@@ -195,6 +231,8 @@ class Mailable implements MailableContract, Renderable
                 $this->buildFrom($message)
                      ->buildRecipients($message)
                      ->buildSubject($message)
+                     ->buildTags($message)
+                     ->buildMetadata($message)
                      ->runCallbacks($message)
                      ->buildAttachments($message);
             });
@@ -224,8 +262,8 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
-     * Deliver the queued message after the given delay.
-	 * 在给定的延迟之后交付排队消息
+     * Deliver the queued message after (n) seconds.
+	 * 在(n)秒后交付排队消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
@@ -250,7 +288,11 @@ class Mailable implements MailableContract, Renderable
      */
     protected function newQueuedJob()
     {
-        return new SendQueuedMailable($this);
+        return Container::getInstance()->make(SendQueuedMailable::class, ['mailable' => $this])
+                    ->through(array_merge(
+                        method_exists($this, 'middleware') ? $this->middleware() : [],
+                        $this->middleware ?? []
+                    ));
     }
 
     /**
@@ -264,7 +306,7 @@ class Mailable implements MailableContract, Renderable
     public function render()
     {
         return $this->withLocale($this->locale, function () {
-            Container::getInstance()->call([$this, 'build']);
+            $this->prepareMailableForDelivery();
 
             return Container::getInstance()->make('mailer')->render(
                 $this->buildView(), $this->buildViewData()
@@ -464,6 +506,42 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Add all defined tags to the message.
+	 * 将所有定义的标记添加到消息中
+     *
+     * @param  \Illuminate\Mail\Message  $message
+     * @return $this
+     */
+    protected function buildTags($message)
+    {
+        if ($this->tags) {
+            foreach ($this->tags as $tag) {
+                $message->getHeaders()->add(new TagHeader($tag));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add all defined metadata to the message.
+	 * 将所有定义的元数据添加到消息中
+     *
+     * @param  \Illuminate\Mail\Message  $message
+     * @return $this
+     */
+    protected function buildMetadata($message)
+    {
+        if ($this->metadata) {
+            foreach ($this->metadata as $key => $value) {
+                $message->getHeaders()->add(new MetadataHeader($key, $value));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Run the callbacks for the message.
 	 * 运行消息的回调
      *
@@ -473,7 +551,7 @@ class Mailable implements MailableContract, Renderable
     protected function runCallbacks($message)
     {
         foreach ($this->callbacks as $callback) {
-            $callback($message->getSwiftMessage());
+            $callback($message->getSymfonyMessage());
         }
 
         return $this;
@@ -506,7 +584,7 @@ class Mailable implements MailableContract, Renderable
     public function priority($level = 3)
     {
         $this->callbacks[] = function ($message) use ($level) {
-            $message->setPriority($level);
+            $message->priority($level);
         };
 
         return $this;
@@ -548,6 +626,10 @@ class Mailable implements MailableContract, Renderable
      */
     public function to($address, $name = null)
     {
+        if (! $this->locale && $address instanceof HasLocalePreference) {
+            $this->locale($address->preferredLocale());
+        }
+
         return $this->setAddress($address, $name, 'to');
     }
 
@@ -656,6 +738,10 @@ class Mailable implements MailableContract, Renderable
      */
     protected function setAddress($address, $name = null, $property = 'to')
     {
+        if (empty($address)) {
+            return $this;
+        }
+
         foreach ($this->addressesToArray($address, $name) as $recipient) {
             $recipient = $this->normalizeRecipient($recipient);
 
@@ -664,6 +750,13 @@ class Mailable implements MailableContract, Renderable
                 'address' => $recipient->email,
             ];
         }
+
+        $this->{$property} = collect($this->{$property})
+            ->reverse()
+            ->unique('address')
+            ->reverse()
+            ->values()
+            ->all();
 
         return $this;
     }
@@ -704,6 +797,10 @@ class Mailable implements MailableContract, Renderable
             return (object) $recipient;
         } elseif (is_string($recipient)) {
             return (object) ['email' => $recipient];
+        } elseif ($recipient instanceof Address) {
+            return (object) ['email' => $recipient->getAddress(), 'name' => $recipient->getName()];
+        } elseif ($recipient instanceof Mailables\Address) {
+            return (object) ['email' => $recipient->address, 'name' => $recipient->name];
         }
 
         return $recipient;
@@ -720,6 +817,10 @@ class Mailable implements MailableContract, Renderable
      */
     protected function hasRecipient($address, $name = null, $property = 'to')
     {
+        if (empty($address)) {
+            return false;
+        }
+
         $expected = $this->normalizeRecipient(
             $this->addressesToArray($address, $name)[0]
         );
@@ -729,6 +830,10 @@ class Mailable implements MailableContract, Renderable
             'address' => $expected->email,
         ];
 
+        if ($this->hasEnvelopeRecipient($expected['address'], $expected['name'], $property)) {
+            return true;
+        }
+
         return collect($this->{$property})->contains(function ($actual) use ($expected) {
             if (! isset($expected['name'])) {
                 return $actual['address'] == $expected['address'];
@@ -736,6 +841,26 @@ class Mailable implements MailableContract, Renderable
 
             return $actual == $expected;
         });
+    }
+
+    /**
+     * Determine if the mailable "envelope" method defines a recipient.
+	 * 确定可邮寄的“信封”方法是否定义了收件人
+     *
+     * @param  string  $address
+     * @param  string|null  $name
+     * @param  string  $property
+     * @return bool
+     */
+    private function hasEnvelopeRecipient($address, $name, $property)
+    {
+        return method_exists($this, 'envelope') && match ($property) {
+            'from' => $this->envelope()->isFrom($address, $name),
+            'to' => $this->envelope()->hasTo($address, $name),
+            'cc' => $this->envelope()->hasCc($address, $name),
+            'bcc' => $this->envelope()->hasBcc($address, $name),
+            'replyTo' => $this->envelope()->hasReplyTo($address, $name),
+        };
     }
 
     /**
@@ -750,6 +875,19 @@ class Mailable implements MailableContract, Renderable
         $this->subject = $subject;
 
         return $this;
+    }
+
+    /**
+     * Determine if the mailable has the given subject.
+	 * 确定邮件是否具有给定的主题
+     *
+     * @param  string  $subject
+     * @return bool
+     */
+    public function hasSubject($subject)
+    {
+        return $this->subject === $subject ||
+               (method_exists($this, 'envelope') && $this->envelope()->hasSubject($subject));
     }
 
     /**
@@ -837,18 +975,104 @@ class Mailable implements MailableContract, Renderable
      * Attach a file to the message.
 	 * 将文件附加到消息中
      *
-     * @param  string  $file
+     * @param  string|\Illuminate\Contracts\Mail\Attachable|\Illuminate\Mail\Attachment  $file
      * @param  array  $options
      * @return $this
      */
     public function attach($file, array $options = [])
     {
+        if ($file instanceof Attachable) {
+            $file = $file->toMailAttachment();
+        }
+
+        if ($file instanceof Attachment) {
+            return $file->attachTo($this);
+        }
+
         $this->attachments = collect($this->attachments)
                     ->push(compact('file', 'options'))
                     ->unique('file')
                     ->all();
 
         return $this;
+    }
+
+    /**
+     * Attach multiple files to the message.
+	 * 将多个文件附加到消息中
+     *
+     * @param  array  $files
+     * @return $this
+     */
+    public function attachMany($files)
+    {
+        foreach ($files as $file => $options) {
+            if (is_int($file)) {
+                $this->attach($options);
+            } else {
+                $this->attach($file, $options);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Determine if the mailable has the given attachment.
+	 * 确定邮件是否具有给定的附件
+     *
+     * @param  string|\Illuminate\Contracts\Mail\Attachable|\Illuminate\Mail\Attachment  $file
+     * @param  array  $options
+     * @return bool
+     */
+    public function hasAttachment($file, array $options = [])
+    {
+        if ($file instanceof Attachable) {
+            $file = $file->toMailAttachment();
+        }
+
+        if ($file instanceof Attachment && $this->hasEnvelopeAttachment($file)) {
+            return true;
+        }
+
+        if ($file instanceof Attachment) {
+            $parts = $file->attachWith(
+                fn ($path) => [$path, ['as' => $file->as, 'mime' => $file->mime]],
+                fn ($data) => $this->hasAttachedData($data(), $file->as, ['mime' => $file->mime])
+            );
+
+            if ($parts === true) {
+                return true;
+            }
+
+            [$file, $options] = $parts === false
+                ? [null, []]
+                : $parts;
+        }
+
+        return collect($this->attachments)->contains(
+            fn ($attachment) => $attachment['file'] === $file && array_filter($attachment['options']) === array_filter($options)
+        );
+    }
+
+    /**
+     * Determine if the mailable has the given envelope attachment.
+	 * 确定邮件是否具有给定的信封附件
+     *
+     * @param  \Illuminate\Mail\Attachment  $attachment
+     * @return bool
+     */
+    private function hasEnvelopeAttachment($attachment)
+    {
+        if (! method_exists($this, 'envelope')) {
+            return false;
+        }
+
+        $attachments = $this->attachments();
+
+        return Collection::make(is_object($attachments) ? [$attachments] : $attachments)
+                ->map(fn ($attached) => $attached instanceof Attachable ? $attached->toMailAttachment() : $attached)
+                ->contains(fn ($attached) => $attached->isEquivalent($attachment));
     }
 
     /**
@@ -890,6 +1114,40 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Determine if the mailable has the given attachment from storage.
+	 * 确定邮件是否具有来自存储的给定附件
+     *
+     * @param  string  $path
+     * @param  string|null  $name
+     * @param  array  $options
+     * @return bool
+     */
+    public function hasAttachmentFromStorage($path, $name = null, array $options = [])
+    {
+        return $this->hasAttachmentFromStorageDisk(null, $path, $name, $options);
+    }
+
+    /**
+     * Determine if the mailable has the given attachment from a specific storage disk.
+	 * 确定邮件是否具有来自特定存储磁盘的给定附件
+     *
+     * @param  string  $disk
+     * @param  string  $path
+     * @param  string|null  $name
+     * @param  array  $options
+     * @return bool
+     */
+    public function hasAttachmentFromStorageDisk($disk, $path, $name = null, array $options = [])
+    {
+        return collect($this->diskAttachments)->contains(
+            fn ($attachment) => $attachment['disk'] === $disk
+                && $attachment['path'] === $path
+                && $attachment['name'] === ($name ?? basename($path))
+                && $attachment['options'] === $options
+        );
+    }
+
+    /**
      * Attach in-memory data as an attachment.
 	 * 将内存中的数据作为附件附加
      *
@@ -910,6 +1168,646 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Determine if the mailable has the given data as an attachment.
+	 * 确定邮件是否将给定的数据作为附件
+     *
+     * @param  string  $data
+     * @param  string  $name
+     * @param  array  $options
+     * @return bool
+     */
+    public function hasAttachedData($data, $name, array $options = [])
+    {
+        return collect($this->rawAttachments)->contains(
+            fn ($attachment) => $attachment['data'] === $data
+                && $attachment['name'] === $name
+                && array_filter($attachment['options']) === array_filter($options)
+        );
+    }
+
+    /**
+     * Add a tag header to the message when supported by the underlying transport.
+	 * 在底层传输支持的情况下，向消息添加标记标头。
+     *
+     * @param  string  $value
+     * @return $this
+     */
+    public function tag($value)
+    {
+        array_push($this->tags, $value);
+
+        return $this;
+    }
+
+    /**
+     * Determine if the mailable has the given tag.
+	 * 确定mailable是否具有给定的标记
+     *
+     * @param  string  $value
+     * @return bool
+     */
+    public function hasTag($value)
+    {
+        return in_array($value, $this->tags) ||
+               (method_exists($this, 'envelope') && in_array($value, $this->envelope()->tags));
+    }
+
+    /**
+     * Add a metadata header to the message when supported by the underlying transport.
+	 * 当底层传输支持时，向消息添加元数据标头。
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return $this
+     */
+    public function metadata($key, $value)
+    {
+        $this->metadata[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Determine if the mailable has the given metadata.
+	 * 确定邮件是否具有给定的元数据
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return bool
+     */
+    public function hasMetadata($key, $value)
+    {
+        return (isset($this->metadata[$key]) && $this->metadata[$key] === $value) ||
+               (method_exists($this, 'envelope') && $this->envelope()->hasMetadata($key, $value));
+    }
+
+    /**
+     * Assert that the mailable is from the given address.
+	 * 断言邮件来自给定地址
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return $this
+     */
+    public function assertFrom($address, $name = null)
+    {
+        $recipient = $this->formatAssertionRecipient($address, $name);
+
+        PHPUnit::assertTrue(
+            $this->hasFrom($address, $name),
+            "Email was not from expected address [{$recipient}]."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the mailable has the given recipient.
+	 * 断言邮件具有给定的收件人
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return $this
+     */
+    public function assertTo($address, $name = null)
+    {
+        $recipient = $this->formatAssertionRecipient($address, $name);
+
+        PHPUnit::assertTrue(
+            $this->hasTo($address, $name),
+            "Did not see expected recipient [{$recipient}] in email recipients."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the mailable has the given recipient.
+	 * 断言邮件具有给定的收件人
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return $this
+     */
+    public function assertHasTo($address, $name = null)
+    {
+        return $this->assertTo($address, $name);
+    }
+
+    /**
+     * Assert that the mailable has the given recipient.
+	 * 断言邮件具有给定的收件人
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return $this
+     */
+    public function assertHasCc($address, $name = null)
+    {
+        $recipient = $this->formatAssertionRecipient($address, $name);
+
+        PHPUnit::assertTrue(
+            $this->hasCc($address, $name),
+            "Did not see expected recipient [{$recipient}] in email recipients."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the mailable has the given recipient.
+	 * 断言邮件具有给定的收件人
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return $this
+     */
+    public function assertHasBcc($address, $name = null)
+    {
+        $recipient = $this->formatAssertionRecipient($address, $name);
+
+        PHPUnit::assertTrue(
+            $this->hasBcc($address, $name),
+            "Did not see expected recipient [{$recipient}] in email recipients."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the mailable has the given "reply to" address.
+	 * 断言邮件具有给定的"回复"地址
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return $this
+     */
+    public function assertHasReplyTo($address, $name = null)
+    {
+        $replyTo = $this->formatAssertionRecipient($address, $name);
+
+        PHPUnit::assertTrue(
+            $this->hasReplyTo($address, $name),
+            "Did not see expected address [{$replyTo}] as email 'reply to' recipient."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Format the mailable recipient for display in an assertion message.
+	 * 格式化可发送的收件人，以便在断言消息中显示。
+     *
+     * @param  object|array|string  $address
+     * @param  string|null  $name
+     * @return string
+     */
+    private function formatAssertionRecipient($address, $name = null)
+    {
+        if (! is_string($address)) {
+            $address = json_encode($address);
+        }
+
+        if (filled($name)) {
+            $address .= ' ('.$name.')';
+        }
+
+        return $address;
+    }
+
+    /**
+     * Assert that the mailable has the given subject.
+	 * 断言邮件具有给定的主题
+     *
+     * @param  string  $subject
+     * @return $this
+     */
+    public function assertHasSubject($subject)
+    {
+        PHPUnit::assertTrue(
+            $this->hasSubject($subject),
+            "Did not see expected text [{$subject}] in email subject."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is present in the HTML email body.
+	 * 断言给定的文本存在于HTML电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertSeeInHtml($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertStringContainsString(
+            $string,
+            $html,
+            "Did not see expected text [{$string}] within email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is not present in the HTML email body.
+	 * 断言给定的文本不存在于HTML邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertDontSeeInHtml($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertStringNotContainsString(
+            $string,
+            $html,
+            "Saw unexpected text [{$string}] within email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text strings are present in order in the HTML email body.
+	 * 断言给定的文本字符串按顺序出现在HTML电子邮件正文中
+     *
+     * @param  array  $strings
+     * @return $this
+     */
+    public function assertSeeInOrderInHtml($strings)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertThat($strings, new SeeInOrder($html));
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is present in the plain-text email body.
+	 * 断言给定的文本存在于纯文本电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertSeeInText($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertStringContainsString(
+            $string,
+            $text,
+            "Did not see expected text [{$string}] within text email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is not present in the plain-text email body.
+	 * 断言给定的文本不存在于纯文本电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertDontSeeInText($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertStringNotContainsString(
+            $string,
+            $text,
+            "Saw unexpected text [{$string}] within text email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text strings are present in order in the plain-text email body.
+	 * 断言给定的文本字符串按顺序出现在纯文本电子邮件正文中
+     *
+     * @param  array  $strings
+     * @return $this
+     */
+    public function assertSeeInOrderInText($strings)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertThat($strings, new SeeInOrder($text));
+
+        return $this;
+    }
+
+    /**
+     * Assert the mailable has the given attachment.
+	 * 断言邮件具有给定的附件
+     *
+     * @param  string|\Illuminate\Contracts\Mail\Attachable|\Illuminate\Mail\Attachment  $file
+     * @param  array  $options
+     * @return $this
+     */
+    public function assertHasAttachment($file, array $options = [])
+    {
+        $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            $this->hasAttachment($file, $options),
+            'Did not find the expected attachment.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert the mailable has the given data as an attachment.
+	 * 断言邮件具有作为附件的给定数据
+     *
+     * @param  string  $data
+     * @param  string  $name
+     * @param  array  $options
+     * @return $this
+     */
+    public function assertHasAttachedData($data, $name, array $options = [])
+    {
+        $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            $this->hasAttachedData($data, $name, $options),
+            'Did not find the expected attachment.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert the mailable has the given attachment from storage.
+	 * 断言邮件具有来自存储的给定附件
+     *
+     * @param  string  $path
+     * @param  string|null  $name
+     * @param  array  $options
+     * @return $this
+     */
+    public function assertHasAttachmentFromStorage($path, $name = null, array $options = [])
+    {
+        $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            $this->hasAttachmentFromStorage($path, $name, $options),
+            'Did not find the expected attachment.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert the mailable has the given attachment from a specific storage disk.
+	 * 断言邮件具有来自特定存储磁盘的给定附件
+     *
+     * @param  string  $disk
+     * @param  string  $path
+     * @param  string|null  $name
+     * @param  array  $options
+     * @return $this
+     */
+    public function assertHasAttachmentFromStorageDisk($disk, $path, $name = null, array $options = [])
+    {
+        $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            $this->hasAttachmentFromStorageDisk($disk, $path, $name, $options),
+            'Did not find the expected attachment.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the mailable has the given tag.
+	 * 断言邮件具有给定的标记
+     *
+     * @param  string  $tag
+     * @return $this
+     */
+    public function assertHasTag($tag)
+    {
+        PHPUnit::assertTrue(
+            $this->hasTag($tag),
+            "Did not see expected tag [{$tag}] in email tags."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the mailable has the given metadata.
+	 * 断言邮件具有给定的元数据
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return $this
+     */
+    public function assertHasMetadata($key, $value)
+    {
+        PHPUnit::assertTrue(
+            $this->hasMetadata($key, $value),
+            "Did not see expected key [{$key}] and value [{$value}] in email metadata."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Render the HTML and plain-text version of the mailable into views for assertions.
+	 * 将可邮件的HTML和纯文本版本呈现到断言视图中
+     *
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    protected function renderForAssertions()
+    {
+        if ($this->assertionableRenderStrings) {
+            return $this->assertionableRenderStrings;
+        }
+
+        return $this->assertionableRenderStrings = $this->withLocale($this->locale, function () {
+            $this->prepareMailableForDelivery();
+
+            $html = Container::getInstance()->make('mailer')->render(
+                $view = $this->buildView(), $this->buildViewData()
+            );
+
+            if (is_array($view) && isset($view[1])) {
+                $text = $view[1];
+            }
+
+            $text ??= $view['text'] ?? '';
+
+            if (! empty($text) && ! $text instanceof Htmlable) {
+                $text = Container::getInstance()->make('mailer')->render(
+                    $text, $this->buildViewData()
+                );
+            }
+
+            return [(string) $html, (string) $text];
+        });
+    }
+
+    /**
+     * Prepare the mailable instance for delivery.
+	 * 为交付准备可邮寄实例
+     *
+     * @return void
+     */
+    private function prepareMailableForDelivery()
+    {
+        if (method_exists($this, 'build')) {
+            Container::getInstance()->call([$this, 'build']);
+        }
+
+        $this->ensureHeadersAreHydrated();
+        $this->ensureEnvelopeIsHydrated();
+        $this->ensureContentIsHydrated();
+        $this->ensureAttachmentsAreHydrated();
+    }
+
+    /**
+     * Ensure the mailable's headers are hydrated from the "headers" method.
+	 * 确保mailable的标头已从"headers"方法中获取
+     *
+     * @return void
+     */
+    private function ensureHeadersAreHydrated()
+    {
+        if (! method_exists($this, 'headers')) {
+            return;
+        }
+
+        $headers = $this->headers();
+
+        $this->withSymfonyMessage(function ($message) use ($headers) {
+            if ($headers->messageId) {
+                $message->getHeaders()->addIdHeader('Message-Id', $headers->messageId);
+            }
+
+            if (count($headers->references) > 0) {
+                $message->getHeaders()->addTextHeader('References', $headers->referencesString());
+            }
+
+            foreach ($headers->text as $key => $value) {
+                $message->getHeaders()->addTextHeader($key, $value);
+            }
+        });
+    }
+
+    /**
+     * Ensure the mailable's "envelope" data is hydrated from the "envelope" method.
+	 * 确保mailable的“信封”数据是从"信封"方法中获取的
+     *
+     * @return void
+     */
+    private function ensureEnvelopeIsHydrated()
+    {
+        if (! method_exists($this, 'envelope')) {
+            return;
+        }
+
+        $envelope = $this->envelope();
+
+        if (isset($envelope->from)) {
+            $this->from($envelope->from->address, $envelope->from->name);
+        }
+
+        foreach (['to', 'cc', 'bcc', 'replyTo'] as $type) {
+            foreach ($envelope->{$type} as $address) {
+                $this->{$type}($address->address, $address->name);
+            }
+        }
+
+        if ($envelope->subject) {
+            $this->subject($envelope->subject);
+        }
+
+        foreach ($envelope->tags as $tag) {
+            $this->tag($tag);
+        }
+
+        foreach ($envelope->metadata as $key => $value) {
+            $this->metadata($key, $value);
+        }
+
+        foreach ($envelope->using as $callback) {
+            $this->withSymfonyMessage($callback);
+        }
+    }
+
+    /**
+     * Ensure the mailable's content is hydrated from the "content" method.
+	 * 确保mailable的内容从"content"方法中得到水分
+     *
+     * @return void
+     */
+    private function ensureContentIsHydrated()
+    {
+        if (! method_exists($this, 'content')) {
+            return;
+        }
+
+        $content = $this->content();
+
+        if ($content->view) {
+            $this->view($content->view);
+        }
+
+        if ($content->html) {
+            $this->view($content->html);
+        }
+
+        if ($content->text) {
+            $this->text($content->text);
+        }
+
+        if ($content->markdown) {
+            $this->markdown($content->markdown);
+        }
+
+        if ($content->htmlString) {
+            $this->html($content->htmlString);
+        }
+
+        foreach ($content->with as $key => $value) {
+            $this->with($key, $value);
+        }
+    }
+
+    /**
+     * Ensure the mailable's attachments are hydrated from the "attachments" method.
+	 * 确保mailable的附件已从"attachments"方法中添加
+     *
+     * @return void
+     */
+    private function ensureAttachmentsAreHydrated()
+    {
+        if (! method_exists($this, 'attachments')) {
+            return;
+        }
+
+        $attachments = $this->attachments();
+
+        Collection::make(is_object($attachments) ? [$attachments] : $attachments)
+            ->each(function ($attachment) {
+                $this->attach($attachment);
+            });
+    }
+
+    /**
      * Set the name of the mailer that should send the message.
 	 * 设置应该发送邮件的邮件发件人的名称
      *
@@ -924,13 +1822,13 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
-     * Register a callback to be called with the Swift message instance.
-	 * 在Swift消息实例中注册一个回调函数
+     * Register a callback to be called with the Symfony message instance.
+	 * 注册一个要用Symfony消息实例调用的回调
      *
      * @param  callable  $callback
      * @return $this
      */
-    public function withSwiftMessage($callback)
+    public function withSymfonyMessage($callback)
     {
         $this->callbacks[] = $callback;
 
@@ -950,26 +1848,6 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
-     * Apply the callback's message changes if the given "value" is true.
-	 * 如果给定的"value"为真，则应用回调的消息更改。
-     *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  mixed  $default
-     * @return mixed|$this
-     */
-    public function when($value, $callback, $default = null)
-    {
-        if ($value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
-        }
-
-        return $this;
-    }
-
-    /**
      * Dynamically bind parameters to the message.
 	 * 动态地将参数绑定到消息
      *
@@ -981,7 +1859,11 @@ class Mailable implements MailableContract, Renderable
      */
     public function __call($method, $parameters)
     {
-        if (Str::startsWith($method, 'with')) {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        if (str_starts_with($method, 'with')) {
             return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
         }
 

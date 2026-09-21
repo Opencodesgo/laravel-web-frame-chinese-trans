@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Readline，Hoa，自动完成路径
+ */
 
 /**
  * Hoa
@@ -45,6 +48,7 @@ class AutocompleterPath implements Autocompleter
 {
     /**
      * Root is the current working directory.
+	 * Root是当前工作目录
      */
     const PWD = null;
 

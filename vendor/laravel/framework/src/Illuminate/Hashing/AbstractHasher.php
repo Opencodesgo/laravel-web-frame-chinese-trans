@@ -9,7 +9,7 @@ abstract class AbstractHasher
 {
     /**
      * Get information about the given hashed value.
-	 * 获取关于给定哈罗德值的信息
+	 * 获取有关给定散列值的信息
      *
      * @param  string  $hashedValue
      * @return array
@@ -21,16 +21,16 @@ abstract class AbstractHasher
 
     /**
      * Check the given plain value against a hash.
-	 * 检查给定的极值与散列
+	 * 根据散列检查给定的普通值
      *
      * @param  string  $value
-     * @param  string  $hashedValue
+     * @param  string|null  $hashedValue
      * @param  array  $options
      * @return bool
      */
     public function check($value, $hashedValue, array $options = [])
     {
-        if (strlen($hashedValue) === 0) {
+        if (is_null($hashedValue) || strlen($hashedValue) === 0) {
             return false;
         }
 

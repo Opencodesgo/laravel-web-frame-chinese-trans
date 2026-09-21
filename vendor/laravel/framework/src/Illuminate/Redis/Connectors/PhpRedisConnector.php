@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，连接，Php Redis 连接器
+ * Illuminate，Redis，连接器，Php Redis 连接器
  */
 
 namespace Illuminate\Redis\Connectors;
@@ -27,9 +27,15 @@ class PhpRedisConnector implements Connector
      */
     public function connect(array $config, array $options)
     {
-        $connector = function () use ($config, $options) {
+        $formattedOptions = Arr::pull($config, 'options', []);
+
+        if (isset($config['prefix'])) {
+            $formattedOptions['prefix'] = $config['prefix'];
+        }
+
+        $connector = function () use ($config, $options, $formattedOptions) {
             return $this->createClient(array_merge(
-                $config, $options, Arr::pull($config, 'options', [])
+                $config, $options, $formattedOptions
             ));
         };
 
@@ -55,7 +61,7 @@ class PhpRedisConnector implements Connector
     }
 
     /**
-     * Build a single cluster seed string from array.
+     * Build a single cluster seed string from an array.
 	 * 从数组构建单个集群种子字符串
      *
      * @param  array  $server
@@ -91,7 +97,11 @@ class PhpRedisConnector implements Connector
             $this->establishConnection($client, $config);
 
             if (! empty($config['password'])) {
-                $client->auth($config['password']);
+                if (isset($config['username']) && $config['username'] !== '' && is_string($config['password'])) {
+                    $client->auth([$config['username'], $config['password']]);
+                } else {
+                    $client->auth($config['password']);
+                }
             }
 
             if (isset($config['database'])) {
@@ -108,6 +118,22 @@ class PhpRedisConnector implements Connector
 
             if (! empty($config['scan'])) {
                 $client->setOption(Redis::OPT_SCAN, $config['scan']);
+            }
+
+            if (! empty($config['name'])) {
+                $client->client('SETNAME', $config['name']);
+            }
+
+            if (array_key_exists('serializer', $config)) {
+                $client->setOption(Redis::OPT_SERIALIZER, $config['serializer']);
+            }
+
+            if (array_key_exists('compression', $config)) {
+                $client->setOption(Redis::OPT_COMPRESSION, $config['compression']);
+            }
+
+            if (array_key_exists('compression_level', $config)) {
+                $client->setOption(Redis::OPT_COMPRESSION_LEVEL, $config['compression_level']);
             }
         });
     }
@@ -136,13 +162,11 @@ class PhpRedisConnector implements Connector
             $parameters[] = Arr::get($config, 'read_timeout', 0.0);
         }
 
-        if (version_compare(phpversion('redis'), '5.3.0', '>=')) {
-            if (! is_null($context = Arr::get($config, 'context'))) {
-                $parameters[] = $context;
-            }
+        if (version_compare(phpversion('redis'), '5.3.0', '>=') && ! is_null($context = Arr::get($config, 'context'))) {
+            $parameters[] = $context;
         }
 
-        $client->{($persistent ? 'pconnect' : 'connect')}(...$parameters);
+        $client->{$persistent ? 'pconnect' : 'connect'}(...$parameters);
     }
 
     /**
@@ -167,23 +191,37 @@ class PhpRedisConnector implements Connector
             $parameters[] = $options['password'] ?? null;
         }
 
-        if (version_compare(phpversion('redis'), '5.3.2', '>=')) {
-            if (! is_null($context = Arr::get($options, 'context'))) {
-                $parameters[] = $context;
-            }
+        if (version_compare(phpversion('redis'), '5.3.2', '>=') && ! is_null($context = Arr::get($options, 'context'))) {
+            $parameters[] = $context;
         }
 
         return tap(new RedisCluster(...$parameters), function ($client) use ($options) {
             if (! empty($options['prefix'])) {
-                $client->setOption(RedisCluster::OPT_PREFIX, $options['prefix']);
+                $client->setOption(Redis::OPT_PREFIX, $options['prefix']);
             }
 
             if (! empty($options['scan'])) {
-                $client->setOption(RedisCluster::OPT_SCAN, $options['scan']);
+                $client->setOption(Redis::OPT_SCAN, $options['scan']);
             }
 
             if (! empty($options['failover'])) {
                 $client->setOption(RedisCluster::OPT_SLAVE_FAILOVER, $options['failover']);
+            }
+
+            if (! empty($options['name'])) {
+                $client->client('SETNAME', $options['name']);
+            }
+
+            if (array_key_exists('serializer', $options)) {
+                $client->setOption(Redis::OPT_SERIALIZER, $options['serializer']);
+            }
+
+            if (array_key_exists('compression', $options)) {
+                $client->setOption(Redis::OPT_COMPRESSION, $options['compression']);
+            }
+
+            if (array_key_exists('compression_level', $options)) {
+                $client->setOption(Redis::OPT_COMPRESSION_LEVEL, $options['compression_level']);
             }
         });
     }

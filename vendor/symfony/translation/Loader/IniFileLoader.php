@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，加载器，Ini 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,10 +21,7 @@ namespace Symfony\Component\Translation\Loader;
  */
 class IniFileLoader extends FileLoader
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function loadResource(string $resource)
+    protected function loadResource(string $resource): array
     {
         return parse_ini_file($resource, true);
     }

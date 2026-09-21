@@ -6,20 +6,36 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:event')]
 class EventMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
     protected $name = 'make:event';
 
     /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:event';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -54,7 +70,21 @@ class EventMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/event.stub';
+        return $this->resolveStubPath('/stubs/event.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 
     /**
@@ -67,5 +97,18 @@ class EventMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\Events';
+    }
+
+    /**
+     * Get the console command options.
+	 * 获取控制台命令选项
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the event already exists'],
+        ];
     }
 }

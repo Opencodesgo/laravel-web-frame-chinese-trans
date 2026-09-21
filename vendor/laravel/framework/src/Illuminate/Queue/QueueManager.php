@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列管理
- * 服务容器绑定queue
+ * Illuminate，队列，队列管理者
  */
 
 namespace Illuminate\Queue;
@@ -34,7 +33,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * The array of resolved queue connectors.
-	 * 已解析队列连接器的数组
+	 * 注册数据库队列连接器
      *
      * @var array
      */
@@ -42,7 +41,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Create a new queue manager instance.
-	 * 创建一个新的队列管理器实例
+	 * 创建新的队列管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -150,7 +149,7 @@ class QueueManager implements FactoryContract, MonitorContract
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
-		// 如果连接尚未解决，我们现在将解决它。
+		// 如果连接尚未解决，我们现在将解决它作为所有。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolve($name);
 
@@ -166,10 +165,16 @@ class QueueManager implements FactoryContract, MonitorContract
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Queue\Queue
+     *
+     * @throws \InvalidArgumentException
      */
     protected function resolve($name)
     {
         $config = $this->getConfig($name);
+
+        if (is_null($config)) {
+            throw new InvalidArgumentException("The [{$name}] queue connection has not been configured.");
+        }
 
         return $this->getConnector($config['driver'])
                         ->connect($config)
@@ -225,7 +230,7 @@ class QueueManager implements FactoryContract, MonitorContract
 	 * 获取队列连接配置
      *
      * @param  string  $name
-     * @return array
+     * @return array|null
      */
     protected function getConfig($name)
     {
@@ -269,6 +274,35 @@ class QueueManager implements FactoryContract, MonitorContract
     public function getName($connection = null)
     {
         return $connection ?: $this->getDefaultDriver();
+    }
+
+    /**
+     * Get the application instance used by the manager.
+	 * 获取管理器使用的应用程序实例
+     *
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    public function getApplication()
+    {
+        return $this->app;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        foreach ($this->connections as $connection) {
+            $connection->setContainer($app);
+        }
+
+        return $this;
     }
 
     /**

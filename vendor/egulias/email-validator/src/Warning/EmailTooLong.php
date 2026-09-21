@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，邮件太长
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
@@ -6,7 +9,7 @@ use Egulias\EmailValidator\EmailParser;
 
 class EmailTooLong extends Warning
 {
-    const CODE = 66;
+    public const CODE = 66;
 
     public function __construct()
     {

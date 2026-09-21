@@ -6,13 +6,15 @@
 namespace Illuminate\Database\Concerns;
 
 use Closure;
+use Illuminate\Database\DeadlockException;
+use RuntimeException;
 use Throwable;
 
 trait ManagesTransactions
 {
     /**
      * Execute a Closure within a transaction.
-	 * 在事务中执行闭包
+	 * 执行事务中闭包
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
@@ -28,16 +30,15 @@ trait ManagesTransactions
             // We'll simply execute the given callback within a try / catch block and if we
             // catch any exception we can rollback this transaction so that none of this
             // gets actually persisted to a database or stored in a permanent fashion.
-			// 我们将简单地在try / catch块中执行给定的回调捕获任何异常，我们可以回滚这个事务，
-			// 这样这些都不会发生实际持久化到数据库或以永久方式存储。
+			// 我们将简单地在try / catch块中执行给定的回调。
             try {
                 $callbackResult = $callback($this);
             }
 
             // If we catch an exception we'll rollback this transaction and try again if we
             // are not out of attempts. If we are out of attempts we will just throw the
-            // exception back out and let the developer handle an uncaught exceptions.
-			// 如果捕获异常，我们将回滚此事务并再次尝试。
+            // exception back out, and let the developer handle an uncaught exception.
+			// 如果我们捕获一个异常，我们将回滚这个事务并且尝试不是没有尝试过。
             catch (Throwable $e) {
                 $this->handleTransactionException(
                     $e, $currentAttempt, $attempts
@@ -48,10 +49,15 @@ trait ManagesTransactions
 
             try {
                 if ($this->transactions == 1) {
+                    $this->fireConnectionEvent('committing');
                     $this->getPdo()->commit();
                 }
 
                 $this->transactions = max(0, $this->transactions - 1);
+
+                if ($this->afterCommitCallbacksShouldBeExecuted()) {
+                    $this->transactionsManager?->commit($this->getName());
+                }
             } catch (Throwable $e) {
                 $this->handleCommitTransactionException(
                     $e, $currentAttempt, $attempts
@@ -82,18 +88,22 @@ trait ManagesTransactions
         // On a deadlock, MySQL rolls back the entire transaction so we can't just
         // retry the query. We have to throw this exception all the way out and
         // let the developer handle it in another way. We will decrement too.
-		// 在死锁中，MySQL回滚整个事务，所以我们不能只是重试查询。
+		// 当发生死锁时，MySQL回滚整个事务以便我们不能重试查询。
         if ($this->causedByConcurrencyError($e) &&
             $this->transactions > 1) {
             $this->transactions--;
 
-            throw $e;
+            $this->transactionsManager?->rollback(
+                $this->getName(), $this->transactions
+            );
+
+            throw new DeadlockException($e->getMessage(), is_int($e->getCode()) ? $e->getCode() : 0, $e);
         }
 
         // If there was an exception we will rollback this transaction and then we
         // can check if we have exceeded the maximum attempt count for this and
         // if we haven't we will return and try this query again in our loop.
-		// 如果出现异常，我们将回滚此事务，然后我们可以检查我们是否已经超过了这个和的最大尝试数。
+		// 如果出现异常，我们将回滚此事务。
         $this->rollBack();
 
         if ($this->causedByConcurrencyError($e) &&
@@ -117,6 +127,10 @@ trait ManagesTransactions
         $this->createTransaction();
 
         $this->transactions++;
+
+        $this->transactionsManager?->begin(
+            $this->getName(), $this->transactions
+        );
 
         $this->fireConnectionEvent('beganTransaction');
     }
@@ -189,13 +203,31 @@ trait ManagesTransactions
      */
     public function commit()
     {
-        if ($this->transactions == 1) {
+        if ($this->transactionLevel() == 1) {
+            $this->fireConnectionEvent('committing');
             $this->getPdo()->commit();
         }
 
         $this->transactions = max(0, $this->transactions - 1);
 
+        if ($this->afterCommitCallbacksShouldBeExecuted()) {
+            $this->transactionsManager?->commit($this->getName());
+        }
+
         $this->fireConnectionEvent('committed');
+    }
+
+    /**
+     * Determine if after commit callbacks should be executed.
+	 * 确定提交后是否应该执行回调
+     *
+     * @return bool
+     */
+    protected function afterCommitCallbacksShouldBeExecuted()
+    {
+        return $this->transactions == 0 ||
+            ($this->transactionsManager &&
+             $this->transactionsManager->callbackApplicableTransactions()->count() === 1);
     }
 
     /**
@@ -213,8 +245,7 @@ trait ManagesTransactions
     {
         $this->transactions = max(0, $this->transactions - 1);
 
-        if ($this->causedByConcurrencyError($e) &&
-            $currentAttempt < $maxAttempts) {
+        if ($this->causedByConcurrencyError($e) && $currentAttempt < $maxAttempts) {
             return;
         }
 
@@ -260,6 +291,10 @@ trait ManagesTransactions
 
         $this->transactions = $toLevel;
 
+        $this->transactionsManager?->rollback(
+            $this->getName(), $this->transactions
+        );
+
         $this->fireConnectionEvent('rollingBack');
     }
 
@@ -275,7 +310,11 @@ trait ManagesTransactions
     protected function performRollBack($toLevel)
     {
         if ($toLevel == 0) {
-            $this->getPdo()->rollBack();
+            $pdo = $this->getPdo();
+
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
         } elseif ($this->queryGrammar->supportsSavepoints()) {
             $this->getPdo()->exec(
                 $this->queryGrammar->compileSavepointRollBack('trans'.($toLevel + 1))
@@ -296,6 +335,10 @@ trait ManagesTransactions
     {
         if ($this->causedByLostConnection($e)) {
             $this->transactions = 0;
+
+            $this->transactionsManager?->rollback(
+                $this->getName(), $this->transactions
+            );
         }
 
         throw $e;
@@ -310,5 +353,23 @@ trait ManagesTransactions
     public function transactionLevel()
     {
         return $this->transactions;
+    }
+
+    /**
+     * Execute the callback after a transaction commits.
+	 * 在事务提交后执行回调
+     *
+     * @param  callable  $callback
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    public function afterCommit($callback)
+    {
+        if ($this->transactionsManager) {
+            return $this->transactionsManager->addCallback($callback);
+        }
+
+        throw new RuntimeException('Transactions Manager has not been set.');
     }
 }

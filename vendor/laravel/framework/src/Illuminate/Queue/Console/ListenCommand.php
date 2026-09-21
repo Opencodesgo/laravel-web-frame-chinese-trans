@@ -8,28 +8,46 @@ namespace Illuminate\Queue\Console;
 use Illuminate\Console\Command;
 use Illuminate\Queue\Listener;
 use Illuminate\Queue\ListenerOptions;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'queue:listen')]
 class ListenCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称 queue:listen
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $signature = 'queue:listen
                             {connection? : The name of connection}
-                            {--delay=0 : The number of seconds to delay failed jobs}
+                            {--name=default : The name of the worker}
+                            {--delay=0 : The number of seconds to delay failed jobs (Deprecated)}
+                            {--backoff=0 : The number of seconds to wait before retrying a job that encountered an uncaught exception}
                             {--force : Force the worker to run even in maintenance mode}
                             {--memory=128 : The memory limit in megabytes}
                             {--queue= : The queue to listen on}
                             {--sleep=3 : Number of seconds to sleep when no job is available}
+                            {--rest=0 : Number of seconds to rest between jobs}
                             {--timeout=60 : The number of seconds a child process can run}
                             {--tries=1 : Number of times to attempt a job before logging it failed}';
 
     /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'queue:listen';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -37,7 +55,7 @@ class ListenCommand extends Command
 
     /**
      * The queue listener instance.
-	 * 队列监听器实例
+	 * 队列侦听器实例
      *
      * @var \Illuminate\Queue\Listener
      */
@@ -45,7 +63,7 @@ class ListenCommand extends Command
 
     /**
      * Create a new queue listen command.
-	 * 创建一个新的队列监听命令
+	 * 创建一个新的queue listen命令
      *
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void
@@ -68,10 +86,12 @@ class ListenCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要为在队列中设置的连接获得应用中正确的队列配置文件
+		// 我们需要为连接获得正确的队列。
         $queue = $this->getQueue(
             $connection = $this->input->getArgument('connection')
         );
+
+        $this->components->info(sprintf('Processing jobs from the [%s] %s.', $queue, str('queue')->plural(explode(',', $queue))));
 
         $this->listener->listen(
             $connection, $queue, $this->gatherOptions()
@@ -96,23 +116,32 @@ class ListenCommand extends Command
 
     /**
      * Get the listener options for the command.
-	 * 获取该命令的监听器选项
+	 * 获取该命令的侦听器选项
      *
      * @return \Illuminate\Queue\ListenerOptions
      */
     protected function gatherOptions()
     {
+        $backoff = $this->hasOption('backoff')
+                ? $this->option('backoff')
+                : $this->option('delay');
+
         return new ListenerOptions(
-            $this->option('env'), $this->option('delay'),
-            $this->option('memory'), $this->option('timeout'),
-            $this->option('sleep'), $this->option('tries'),
-            $this->option('force')
+            name: $this->option('name'),
+            environment: $this->option('env'),
+            backoff: $backoff,
+            memory: $this->option('memory'),
+            timeout: $this->option('timeout'),
+            sleep: $this->option('sleep'),
+            rest: $this->option('rest'),
+            maxTries: $this->option('tries'),
+            force: $this->option('force')
         );
     }
 
     /**
      * Set the options on the queue listener.
-	 * 设置队列监听器上的选项
+	 * 设置队列侦听器上的选项
      *
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void

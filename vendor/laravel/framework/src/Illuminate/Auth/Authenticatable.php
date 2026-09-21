@@ -9,7 +9,7 @@ trait Authenticatable
 {
     /**
      * The column name of the "remember me" token.
-	 * "记住我"令牌的列名
+	 * "记得我"令牌名
      *
      * @var string
      */
@@ -38,8 +38,19 @@ trait Authenticatable
     }
 
     /**
+     * Get the unique broadcast identifier for the user.
+	 * 获取用户的唯一广播标识符
+     *
+     * @return mixed
+     */
+    public function getAuthIdentifierForBroadcasting()
+    {
+        return $this->getAuthIdentifier();
+    }
+
+    /**
      * Get the password for the user.
-	 * 得到用户的密码
+	 * 获取用户的密码
      *
      * @return string
      */

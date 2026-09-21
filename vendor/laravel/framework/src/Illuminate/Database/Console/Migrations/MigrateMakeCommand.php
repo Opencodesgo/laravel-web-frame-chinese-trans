@@ -1,15 +1,16 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，make:migration 迁移Make命令
+ * Illuminate，数据库，控制台，监督指令
  */
 
 namespace Illuminate\Database\Console\Migrations;
 
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
 
-class MigrateMakeCommand extends BaseCommand
+class MigrateMakeCommand extends BaseCommand implements PromptsForMissingInput
 {
     /**
      * The console command signature.
@@ -22,11 +23,11 @@ class MigrateMakeCommand extends BaseCommand
         {--table= : The table to migrate}
         {--path= : The location where the migration file should be created}
         {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}
-        {--fullpath : Output the full path of the migration}';
+        {--fullpath : Output the full path of the migration (Deprecated)}';
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -66,7 +67,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -85,7 +86,7 @@ class MigrateMakeCommand extends BaseCommand
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-		// 如果没有表作为一个选项，但一个创建选项给出，然后我们将使用"create"选项作为表名。
+		// 如果没有给出表作为选项，但给出了创建选项。
         if (! $table && is_string($create)) {
             $table = $create;
 
@@ -95,7 +96,6 @@ class MigrateMakeCommand extends BaseCommand
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-		// 接下来，我们将尝试猜测迁移中是名称中有"create"。
         if (! $table) {
             [$table, $create] = TableGuesser::guess($name);
         }
@@ -103,7 +103,6 @@ class MigrateMakeCommand extends BaseCommand
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to
         // make sure that the migrations are registered by the class loaders.
-		// 现在我们准备将迁移写入磁盘。
         $this->writeMigration($name, $table, $create);
 
         $this->composer->dumpAutoloads();
@@ -111,7 +110,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Write the migration file to disk.
-	 * 写入迁移文件至磁盘
+	 * 将迁移文件写入磁盘
      *
      * @param  string  $name
      * @param  string  $table
@@ -124,16 +123,12 @@ class MigrateMakeCommand extends BaseCommand
             $name, $this->getMigrationPath(), $table, $create
         );
 
-        if (! $this->option('fullpath')) {
-            $file = pathinfo($file, PATHINFO_FILENAME);
-        }
-
-        $this->line("<info>Created Migration:</info> {$file}");
+        $this->components->info(sprintf('Migration [%s] created successfully.', $file));
     }
 
     /**
      * Get migration path (either specified by '--path' option or default location).
-	 * 获取迁移路径（由'——path'选项指定或默认位置）。
+	 * 获取迁移路径（由‘——path’选项指定或默认位置）
      *
      * @return string
      */
@@ -149,13 +144,15 @@ class MigrateMakeCommand extends BaseCommand
     }
 
     /**
-     * Determine if the given path(s) are pre-resolved "real" paths.
-	 * 确定给定的路径是否是预先解析的"真实"路径
+     * Prompt for missing input arguments using the returned questions.
+	 * 使用返回的问题提示缺少输入参数
      *
-     * @return bool
+     * @return array
      */
-    protected function usingRealPath()
+    protected function promptForMissingArgumentsUsing()
     {
-        return $this->input->hasOption('realpath') && $this->option('realpath');
+        return [
+            'name' => 'What should the migration be named?',
+        ];
     }
 }

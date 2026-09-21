@@ -5,9 +5,15 @@
 
 namespace Illuminate\Queue\Console;
 
+use DateTimeInterface;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Queue\Events\JobRetryRequested;
 use Illuminate\Support\Arr;
+use RuntimeException;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'queue:retry')]
 class RetryCommand extends Command
 {
     /**
@@ -18,7 +24,21 @@ class RetryCommand extends Command
      */
     protected $signature = 'queue:retry
                             {id?* : The ID of the failed job or "all" to retry all jobs}
+                            {--queue= : Retry all of the failed jobs for the specified queue}
                             {--range=* : Range of job IDs (numeric) to be retried}';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'queue:retry';
 
     /**
      * The console command description.
@@ -36,24 +56,32 @@ class RetryCommand extends Command
      */
     public function handle()
     {
-        foreach ($this->getJobIds() as $id) {
+        $jobsFound = count($ids = $this->getJobIds()) > 0;
+
+        if ($jobsFound) {
+            $this->components->info('Pushing failed queue jobs back onto the queue.');
+        }
+
+        foreach ($ids as $id) {
             $job = $this->laravel['queue.failer']->find($id);
 
             if (is_null($job)) {
-                $this->error("Unable to find failed job with ID [{$id}].");
+                $this->components->error("Unable to find failed job with ID [{$id}].");
             } else {
-                $this->retryJob($job);
+                $this->laravel['events']->dispatch(new JobRetryRequested($job));
 
-                $this->info("The failed job [{$id}] has been pushed back onto the queue!");
+                $this->components->task($id, fn () => $this->retryJob($job));
 
                 $this->laravel['queue.failer']->forget($id);
             }
         }
+
+        $jobsFound ? $this->newLine() : $this->components->info('No retryable jobs found.');
     }
 
     /**
      * Get the job IDs to be retried.
-	 * 获取要重试的作业ID
+	 * 得到要重试的作业ID
      *
      * @return array
      */
@@ -65,6 +93,10 @@ class RetryCommand extends Command
             return Arr::pluck($this->laravel['queue.failer']->all(), 'id');
         }
 
+        if ($queue = $this->option('queue')) {
+            return $this->getJobIdsByQueue($queue);
+        }
+
         if ($ranges = (array) $this->option('range')) {
             $ids = array_merge($ids, $this->getJobIdsByRanges($ranges));
         }
@@ -73,8 +105,29 @@ class RetryCommand extends Command
     }
 
     /**
+     * Get the job IDs by queue, if applicable.
+	 * 如果适用，按队列获取作业id。
+     *
+     * @param  string  $queue
+     * @return array
+     */
+    protected function getJobIdsByQueue($queue)
+    {
+        $ids = collect($this->laravel['queue.failer']->all())
+                        ->where('queue', $queue)
+                        ->pluck('id')
+                        ->toArray();
+
+        if (count($ids) === 0) {
+            $this->components->error("Unable to find failed jobs for queue [{$queue}].");
+        }
+
+        return $ids;
+    }
+
+    /**
      * Get the job IDs ranges, if applicable.
-	 * 如果适用，获取作业id范围
+	 * 如果适用，获取作业id范围。
      *
      * @param  array  $ranges
      * @return array
@@ -94,7 +147,7 @@ class RetryCommand extends Command
 
     /**
      * Retry the queue job.
-	 * 重试队列合作
+	 * 重试队列作业
      *
      * @param  \stdClass  $job
      * @return void
@@ -102,7 +155,7 @@ class RetryCommand extends Command
     protected function retryJob($job)
     {
         $this->laravel['queue']->connection($job->connection)->pushRaw(
-            $this->resetAttempts($job->payload), $job->queue
+            $this->refreshRetryUntil($this->resetAttempts($job->payload)), $job->queue
         );
     }
 
@@ -110,8 +163,8 @@ class RetryCommand extends Command
      * Reset the payload attempts.
 	 * 重置负载尝试
      *
-     * Applicable to Redis jobs which store attempts in their payload.
-	 * 适用于在负载中存储尝试的Redis作业
+     * Applicable to Redis and other jobs which store attempts in their payload.
+	 * 适用于Redis和其他在其有效负载中存储尝试的作业
      *
      * @param  string  $payload
      * @return string
@@ -122,6 +175,44 @@ class RetryCommand extends Command
 
         if (isset($payload['attempts'])) {
             $payload['attempts'] = 0;
+        }
+
+        return json_encode($payload);
+    }
+
+    /**
+     * Refresh the "retry until" timestamp for the job.
+	 * 刷新作业的"retry until"时间戳
+     *
+     * @param  string  $payload
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    protected function refreshRetryUntil($payload)
+    {
+        $payload = json_decode($payload, true);
+
+        if (! isset($payload['data']['command'])) {
+            return json_encode($payload);
+        }
+
+        if (str_starts_with($payload['data']['command'], 'O:')) {
+            $instance = unserialize($payload['data']['command']);
+        } elseif ($this->laravel->bound(Encrypter::class)) {
+            $instance = unserialize($this->laravel->make(Encrypter::class)->decrypt($payload['data']['command']));
+        }
+
+        if (! isset($instance)) {
+            throw new RuntimeException('Unable to extract job payload.');
+        }
+
+        if (is_object($instance) && ! $instance instanceof \__PHP_Incomplete_Class && method_exists($instance, 'retryUntil')) {
+            $retryUntil = $instance->retryUntil();
+
+            $payload['retryUntil'] = $retryUntil instanceof DateTimeInterface
+                                        ? $retryUntil->getTimestamp()
+                                        : $retryUntil;
         }
 
         return json_encode($payload);

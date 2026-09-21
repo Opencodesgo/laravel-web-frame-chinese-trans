@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，Sync 同步作业
+ * Illuminate，队列，作业，Sync 作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -12,7 +12,7 @@ class SyncJob extends Job implements JobContract
 {
     /**
      * The class name of the job.
-	 * 作业类名
+	 * 作业的类名
      *
      * @var string
      */
@@ -45,8 +45,8 @@ class SyncJob extends Job implements JobContract
     }
 
     /**
-     * Release the job back into the queue.
-	 * 将作业释放回队列
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -58,7 +58,7 @@ class SyncJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该作业被尝试的次数
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -69,7 +69,7 @@ class SyncJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 获取作业标识符
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorHandler，错误渲染器，客户端错误渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,13 +26,10 @@ class_exists(CliDumper::class);
  */
 class CliErrorRenderer implements ErrorRendererInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function render(\Throwable $exception): FlattenException
     {
         $cloner = new VarCloner();
-        $dumper = new class() extends CliDumper {
+        $dumper = new class extends CliDumper {
             protected function supportsColors(): bool
             {
                 $outputStream = $this->outputStream;

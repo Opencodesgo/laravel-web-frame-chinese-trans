@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，文档块格式化器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,6 +29,7 @@ class DocblockFormatter implements ReflectorFormatter
 
     /**
      * Format a docblock.
+	 * 格式化docblock
      *
      * @param \Reflector $reflector
      *
@@ -101,6 +105,7 @@ class DocblockFormatter implements ReflectorFormatter
 
     /**
      * Format docblock tags.
+	 * 格式化docblock标签
      *
      * @param array $skip Tags to exclude
      * @param array $tags Tags to format
@@ -128,6 +133,7 @@ class DocblockFormatter implements ReflectorFormatter
 
     /**
      * Get a docblock vector template.
+	 * 获取docblock矢量模板
      *
      * @param string $type Vector type
      * @param int    $max  Pad width
@@ -143,6 +149,7 @@ class DocblockFormatter implements ReflectorFormatter
 
     /**
      * Indent a string.
+	 * 缩进字符串
      *
      * @param string $text   String to indent
      * @param string $indent (default: '  ')
@@ -154,6 +161,7 @@ class DocblockFormatter implements ReflectorFormatter
 
     /**
      * Convert underscored or whitespace separated words into sentence case.
+	 * 将下划线或空格分隔的单词转换为句子大小写
      *
      * @param string $text
      */

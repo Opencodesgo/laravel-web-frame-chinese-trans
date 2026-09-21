@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Template，Template
+ */
+
 /*
  * This file is part of phpunit/php-text-template.
  *

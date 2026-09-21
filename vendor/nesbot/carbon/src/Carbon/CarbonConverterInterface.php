@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 转化器接口
+ */
 
 /**
  * This file is part of the Carbon package.

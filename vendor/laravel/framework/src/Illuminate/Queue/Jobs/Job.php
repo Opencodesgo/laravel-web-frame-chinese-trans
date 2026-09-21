@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，作业抽象类
+ * Illuminate，队列，作业，作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -32,7 +32,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been deleted.
-	 * 指明任务是否已删除
+	 * 指示作业是否已删除
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been released.
-	 * 指明任务是否已释放
+	 * 指示作业是否已释放
      *
      * @var bool
      */
@@ -48,7 +48,7 @@ abstract class Job
 
     /**
      * Indicates if the job has failed.
-	 * 指明任务是否失败
+	 * 指示作业是否失败
      *
      * @var bool
      */
@@ -72,7 +72,7 @@ abstract class Job
 
     /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 获取工作标识符
      *
      * @return string
      */
@@ -80,7 +80,7 @@ abstract class Job
 
     /**
      * Get the raw body of the job.
-	 * 得到作业的原始主体
+	 * 得到工作的原始主体
      *
      * @return string
      */
@@ -88,7 +88,7 @@ abstract class Job
 
     /**
      * Get the UUID of the job.
-	 * 得到作业的UUID
+	 * 获取作业的UUID
      *
      * @return string|null
      */
@@ -125,7 +125,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted.
-	 * 确定作业是否已被删除
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -135,8 +135,8 @@ abstract class Job
     }
 
     /**
-     * Release the job back into the queue.
-	 * 将作业释放回队列
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -181,7 +181,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 把这项工作标记为"失败"
+	 * 标记作业为"失败"
      *
      * @return void
      */
@@ -209,7 +209,7 @@ abstract class Job
             // If the job has failed, we will delete it, call the "failed" method and then call
             // an event indicating the job has failed so it can be logged if needed. This is
             // to allow every developer to better keep monitor of their failed queue jobs.
-			// 如果作业失败，我们将删除它，调用"failed"方法，然后调用指示作业失败的事件，以便在需要时对其进行记录。
+			// 如果作业失败了，我们将删除它，调用"failed"方法。
             $this->delete();
 
             $this->failed($e);
@@ -234,7 +234,7 @@ abstract class Job
         [$class, $method] = JobName::parse($payload['job']);
 
         if (method_exists($this->instance = $this->resolve($class), 'failed')) {
-            $this->instance->failed($payload['data'], $e);
+            $this->instance->failed($payload['data'], $e, $payload['uuid'] ?? '');
         }
     }
 
@@ -263,7 +263,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 拿到解码后的主体
+	 * 拿到解码后的文件
      *
      * @return array
      */
@@ -295,14 +295,25 @@ abstract class Job
     }
 
     /**
-     * Get the number of seconds to delay a failed job before retrying it.
-	 * 获取在重试失败作业之前延迟该作业的秒数
+     * Determine if the job should fail when it timeouts.
+	 * 确定作业超时时是否应该失败
      *
-     * @return int|null
+     * @return bool
      */
-    public function delaySeconds()
+    public function shouldFailOnTimeout()
     {
-        return $this->payload()['delay'] ?? null;
+        return $this->payload()['failOnTimeout'] ?? false;
+    }
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+	 * 在重试遇到未捕获异常的作业之前等待的秒数
+     *
+     * @return int|int[]|null
+     */
+    public function backoff()
+    {
+        return $this->payload()['backoff'] ?? $this->payload()['delay'] ?? null;
     }
 
     /**
@@ -322,9 +333,9 @@ abstract class Job
      *
      * @return int|null
      */
-    public function timeoutAt()
+    public function retryUntil()
     {
-        return $this->payload()['timeoutAt'] ?? null;
+        return $this->payload()['retryUntil'] ?? null;
     }
 
     /**
@@ -364,7 +375,7 @@ abstract class Job
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取任务所属队列的名称
+	 * 获取作业所属队列的名称
      *
      * @return string
      */

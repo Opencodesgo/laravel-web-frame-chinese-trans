@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，子串匹配程序
+ */
+
 namespace Hamcrest\Text;
 
 /*

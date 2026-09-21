@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，标题，路径标题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,12 +19,13 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * A Path Header, such a Return-Path (one address).
+ * 一个路径头，如返回路径（一个地址）。
  *
  * @author Chris Corbyn
  */
 final class PathHeader extends AbstractHeader
 {
-    private $address;
+    private Address $address;
 
     public function __construct(string $name, Address $address)
     {
@@ -35,7 +39,7 @@ final class PathHeader extends AbstractHeader
      *
      * @throws RfcComplianceException
      */
-    public function setBody($body)
+    public function setBody(mixed $body): void
     {
         $this->setAddress($body);
     }
@@ -45,7 +49,7 @@ final class PathHeader extends AbstractHeader
         return $this->getAddress();
     }
 
-    public function setAddress(Address $address)
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
@@ -57,6 +61,6 @@ final class PathHeader extends AbstractHeader
 
     public function getBodyAsString(): string
     {
-        return '<'.$this->address->toString().'>';
+        return '<'.$this->address->getEncodedAddress().'>';
     }
 }

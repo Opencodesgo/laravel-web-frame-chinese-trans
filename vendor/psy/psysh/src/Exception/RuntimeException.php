@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，运行时异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A RuntimeException for Psy.
+ * 一个运行时异常的Psy。
  */
 class RuntimeException extends \RuntimeException implements Exception
 {
@@ -20,6 +24,7 @@ class RuntimeException extends \RuntimeException implements Exception
 
     /**
      * Make this bad boy.
+	 * 让这个坏男孩
      *
      * @param string          $message  (default: "")
      * @param int             $code     (default: 0)
@@ -33,6 +38,7 @@ class RuntimeException extends \RuntimeException implements Exception
 
     /**
      * Return a raw (unformatted) version of the error message.
+	 * 返回错误消息的原始（未格式化）版本
      */
     public function getRawMessage(): string
     {

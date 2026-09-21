@@ -9,16 +9,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cache Store 	默认缓存存储
+    | Default Cache Store	默认缓存存储
     |--------------------------------------------------------------------------
     |
     | This option controls the default cache connection that gets used while
     | using this caching library. This connection is used when another is
     | not explicitly specified when executing a given caching function.
-	| 此选项控制默认缓存连接，运行时使用这个缓存库。
-    |
-    | Supported: "apc", "array", "database", "file",
-    |            "memcached", "redis", "dynamodb"
+	| 此选项控制使用缓存库的默认缓存连接。
     |
     */
 
@@ -26,13 +23,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores 	缓存存储
+    | Cache Stores	缓存存储
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the cache "stores" for your application as
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
-	| 在这里，你可以为定用定义所有缓存"存储"和他们的驱动。
+	| 在这里您可以定义应用的所有缓存"存储"。
+    |
+    | Supported drivers: "apc", "array", "database", "file",
+    |         "memcached", "redis", "dynamodb", "octane", "null"
     |
     */
 
@@ -51,6 +51,7 @@ return [
             'driver' => 'database',
             'table' => 'cache',
             'connection' => null,
+            'lock_connection' => null,
         ],
 
         'file' => [
@@ -80,6 +81,7 @@ return [
         'redis' => [
             'driver' => 'redis',
             'connection' => 'cache',
+            'lock_connection' => 'default',
         ],
 
         'dynamodb' => [
@@ -91,20 +93,25 @@ return [
             'endpoint' => env('DYNAMODB_ENDPOINT'),
         ],
 
+        'octane' => [
+            'driver' => 'octane',
+        ],
+
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Key Prefix 	缓存前缀
+    | Cache Key Prefix		缓存键前缀
     |--------------------------------------------------------------------------
     |
-    | When utilizing a RAM based store such as APC or Memcached, there might
-    | be other applications utilizing the same cache. So, we'll specify a
-    | value to get prefixed to all our keys so we can avoid collisions.
-	| 当使用基于内存的存储（如APC或Memcached）时，这可能被使用相同缓存的其他应用。
+    | When utilizing the APC, database, memcached, Redis, or DynamoDB cache
+    | stores there might be other applications using the same cache. For
+    | that reason, you may prefix every cache key to avoid collisions.
+	| 当使用APC，数据库，memcached, Redis, or DynamoDB 缓存存储时，
+	| 可能还有其他应用程序使用相同的缓存。
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
 
 ];

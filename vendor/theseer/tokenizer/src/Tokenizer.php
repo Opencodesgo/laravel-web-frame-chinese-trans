@@ -1,10 +1,16 @@
 <?php declare(strict_types = 1);
+
+/**
+ * TheSeer，Tokenizer，分词器
+ */
+
 namespace TheSeer\Tokenizer;
 
 class Tokenizer {
 
     /**
      * Token Map for "non-tokens"
+	 * “非令牌”的令牌映射
      *
      * @var array
      */

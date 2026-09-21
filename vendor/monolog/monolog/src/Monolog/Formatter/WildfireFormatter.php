@@ -31,7 +31,6 @@ class WildfireFormatter extends NormalizerFormatter
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
-	 * 将Monolog日志级别转换为Wildfire级别
      *
      * @var array<Level, string>
      */
@@ -65,6 +64,7 @@ class WildfireFormatter extends NormalizerFormatter
     public function format(array $record): string
     {
         // Retrieve the line and file if set and remove them from the formatted extra
+		// 如果设置了行和文件，则检索它们，并将它们从格式化的extra中删除。
         $file = $line = '';
         if (isset($record['extra']['file'])) {
             $file = $record['extra']['file'];

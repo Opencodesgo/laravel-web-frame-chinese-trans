@@ -1,0 +1,26 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，根据需要实际修改
+ */
+
+namespace {{ namespace }};
+
+use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
+
+class {{ class }} implements CastsInboundAttributes
+{
+    /**
+     * Prepare the given value for storage.
+	 * 为存储准备给定的值
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
+     * @return mixed
+     */
+    public function set($model, string $key, $value, array $attributes)
+    {
+        return $value;
+    }
+}

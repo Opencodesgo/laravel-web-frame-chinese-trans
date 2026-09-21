@@ -1,6 +1,6 @@
 <?php
 /**
- * App，提供者，事件服务提供者
+ * App, 提供者, 事件服务提供者
  */
 
 namespace App\Providers;
@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Event;
 class EventServiceProvider extends ServiceProvider
 {
     /**
-     * The event listener mappings for the application.
-	 * 事件监听映射
+     * The event to listener mappings for the application.
+	 * 应用程序的事件到监听器映射
      *
-     * @var array
+     * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
         Registered::class => [
@@ -26,14 +26,23 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register any events for your application.
-	 * 为应用注册任何事件
+	 * 为您的应用程序注册任何事件
      *
      * @return void
      */
     public function boot()
     {
-        parent::boot();
-
         //
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+	 * 确定是否应该自动发现事件和监听器
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return false;
     }
 }

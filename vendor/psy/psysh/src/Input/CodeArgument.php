@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输入，代码参数
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * An input argument for code.
+ * 代码的输入参数。
  *
  * A CodeArgument must be the final argument of the command. Once all options
  * and other arguments are used, any remaining input until the end of the string
@@ -31,6 +35,7 @@ class CodeArgument extends InputArgument
 {
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string $name        The argument name
      * @param int    $mode        The argument mode: self::REQUIRED or self::OPTIONAL

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，参数解析器，请求属性值解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,28 +16,29 @@ namespace Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Yields a non-variadic argument's value from the request attributes.
+ * 从请求属性中产生非可变参数的值。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-final class RequestAttributeValueResolver implements ArgumentValueResolverInterface
+final class RequestAttributeValueResolver implements ArgumentValueResolverInterface, ValueResolverInterface
 {
     /**
-     * {@inheritdoc}
+     * @deprecated since Symfony 6.2, use resolve() instead
      */
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
+        @trigger_deprecation('symfony/http-kernel', '6.2', 'The "%s()" method is deprecated, use "resolve()" instead.', __METHOD__);
+
         return !$argument->isVariadic() && $request->attributes->has($argument->getName());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(Request $request, ArgumentMetadata $argument): iterable
+    public function resolve(Request $request, ArgumentMetadata $argument): array
     {
-        yield $request->attributes->get($argument->getName());
+        return !$argument->isVariadic() && $request->attributes->has($argument->getName()) ? [$request->attributes->get($argument->getName())] : [];
     }
 }

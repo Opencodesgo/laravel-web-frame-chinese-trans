@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，XPath，扩展，组合扩展
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
 
 /**
  * XPath expression translator combination extension.
+ * XPath表达式转换器组合扩展。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -25,16 +29,13 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
  */
 class CombinationExtension extends AbstractExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getCombinationTranslators(): array
     {
         return [
-            ' ' => [$this, 'translateDescendant'],
-            '>' => [$this, 'translateChild'],
-            '+' => [$this, 'translateDirectAdjacent'],
-            '~' => [$this, 'translateIndirectAdjacent'],
+            ' ' => $this->translateDescendant(...),
+            '>' => $this->translateChild(...),
+            '+' => $this->translateDirectAdjacent(...),
+            '~' => $this->translateIndirectAdjacent(...),
         ];
     }
 
@@ -61,9 +62,6 @@ class CombinationExtension extends AbstractExtension
         return $xpath->join('/following-sibling::', $combinedXpath);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'combination';

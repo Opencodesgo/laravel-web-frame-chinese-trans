@@ -14,7 +14,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * The Redis connection.
-	 * Redis连接器
+	 * Redis连接
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -53,6 +53,14 @@ class ConcurrencyLimiterBuilder
     public $timeout = 3;
 
     /**
+     * The number of milliseconds to wait between attempts to acquire the lock.
+	 * 两次获取锁的尝试之间等待的毫秒数
+     *
+     * @var int
+     */
+    public $sleep = 250;
+
+    /**
      * Create a new builder instance.
 	 * 创建一个新的构建器实例
      *
@@ -67,7 +75,7 @@ class ConcurrencyLimiterBuilder
     }
 
     /**
-     * Set the maximum number of locks that can obtained per time window.
+     * Set the maximum number of locks that can be obtained per time window.
 	 * 设置每个时间窗口可以获得的最大锁数
      *
      * @param  int  $maxLocks
@@ -109,6 +117,20 @@ class ConcurrencyLimiterBuilder
     }
 
     /**
+     * The number of milliseconds to wait between lock acquisition attempts.
+	 * 两次锁获取尝试之间等待的毫秒数
+     *
+     * @param  int  $sleep
+     * @return $this
+     */
+    public function sleep($sleep)
+    {
+        $this->sleep = $sleep;
+
+        return $this;
+    }
+
+    /**
      * Execute the given callback if a lock is obtained, otherwise call the failure callback.
 	 * 如果获得了锁，则执行给定的回调，否则调用失败回调。
      *
@@ -123,7 +145,7 @@ class ConcurrencyLimiterBuilder
         try {
             return (new ConcurrencyLimiter(
                 $this->connection, $this->name, $this->maxLocks, $this->releaseAfter
-            ))->block($this->timeout, $callback);
+            ))->block($this->timeout, $callback, $this->sleep);
         } catch (LimiterTimeoutException $e) {
             if ($failure) {
                 return $failure($e);

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，报告，Html，Dashboard
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -72,6 +77,7 @@ final class Dashboard extends Renderer
 
     /**
      * Returns the data for the Class/Method Complexity charts.
+	 * 返回类/方法复杂度图表的数据
      */
     private function complexity(array $classes, string $baseLink): array
     {
@@ -113,6 +119,7 @@ final class Dashboard extends Renderer
 
     /**
      * Returns the data for the Class / Method Coverage Distribution chart.
+	 * 返回类/方法覆盖率分布图的数据
      */
     private function coverageDistribution(array $classes): array
     {

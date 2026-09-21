@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，文件，异常，无文件异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 /**
  * Thrown when an UPLOAD_ERR_NO_FILE error occurred with UploadedFile.
+ * 当UploadedFile发生UPLOAD_ERR_NO_FILE错误时抛出
  *
  * @author Florent Mata <florentmata@gmail.com>
  */

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Diff，TimeEfficientLongestCommonSubsequenceCalculator
+ */
+
 /*
  * This file is part of sebastian/diff.
  *

@@ -5,14 +5,20 @@
 
 namespace Illuminate\Broadcasting;
 
+use Ably\AblyRest;
 use Closure;
+use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Broadcasting\Broadcasters\AblyBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\LogBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\NullBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\RedisBroadcaster;
+use Illuminate\Bus\UniqueLock;
 use Illuminate\Contracts\Broadcasting\Factory as FactoryContract;
+use Illuminate\Contracts\Broadcasting\ShouldBeUnique;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Contracts\Bus\Dispatcher as BusDispatcherContract;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Foundation\CachesRoutes;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -49,7 +55,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Create a new manager instance.
-	 * 创建新的管理实例
+	 * 创建新的管理器实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $app
      * @return void
@@ -60,8 +66,8 @@ class BroadcastManager implements FactoryContract
     }
 
     /**
-     * Register the routes for handling broadcast authentication and sockets.
-	 * 注册处理广播认证和套接字的路由
+     * Register the routes for handling broadcast channel authentication and sockets.
+	 * 注册处理广播通道认证和套接字的路由
      *
      * @param  array|null  $attributes
      * @return void
@@ -78,8 +84,45 @@ class BroadcastManager implements FactoryContract
             $router->match(
                 ['get', 'post'], '/broadcasting/auth',
                 '\\'.BroadcastController::class.'@authenticate'
-            );
+            )->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
         });
+    }
+
+    /**
+     * Register the routes for handling broadcast user authentication.
+	 * 注册处理广播用户认证的路由
+     *
+     * @param  array|null  $attributes
+     * @return void
+     */
+    public function userRoutes(array $attributes = null)
+    {
+        if ($this->app instanceof CachesRoutes && $this->app->routesAreCached()) {
+            return;
+        }
+
+        $attributes = $attributes ?: ['middleware' => ['web']];
+
+        $this->app['router']->group($attributes, function ($router) {
+            $router->match(
+                ['get', 'post'], '/broadcasting/user-auth',
+                '\\'.BroadcastController::class.'@authenticateUser'
+            )->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+        });
+    }
+
+    /**
+     * Register the routes for handling broadcast authentication and sockets.
+	 * 注册处理广播认证和套接字的路由
+     *
+     * Alias of "routes" method.
+     *
+     * @param  array|null  $attributes
+     * @return void
+     */
+    public function channelRoutes(array $attributes = null)
+    {
+        return $this->routes($attributes);
     }
 
     /**
@@ -121,7 +164,10 @@ class BroadcastManager implements FactoryContract
      */
     public function queue($event)
     {
-        if ($event instanceof ShouldBroadcastNow) {
+        if ($event instanceof ShouldBroadcastNow ||
+            (is_object($event) &&
+             method_exists($event, 'shouldBroadcastNow') &&
+             $event->shouldBroadcastNow())) {
             return $this->app->make(BusDispatcherContract::class)->dispatchNow(new BroadcastEvent(clone $event));
         }
 
@@ -135,14 +181,40 @@ class BroadcastManager implements FactoryContract
             $queue = $event->queue;
         }
 
-        $this->app->make('queue')->connection($event->connection ?? null)->pushOn(
-            $queue, new BroadcastEvent(clone $event)
-        );
+        $broadcastEvent = new BroadcastEvent(clone $event);
+
+        if ($event instanceof ShouldBeUnique) {
+            $broadcastEvent = new UniqueBroadcastEvent(clone $event);
+
+            if ($this->mustBeUniqueAndCannotAcquireLock($broadcastEvent)) {
+                return;
+            }
+        }
+
+        $this->app->make('queue')
+            ->connection($event->connection ?? null)
+            ->pushOn($queue, $broadcastEvent);
+    }
+
+    /**
+     * Determine if the broadcastable event must be unique and determine if we can acquire the necessary lock.
+	 * 确定可广播事件是否必须是唯一的，并确定我们是否可以获得必要的锁。
+     *
+     * @param  mixed  $event
+     * @return bool
+     */
+    protected function mustBeUniqueAndCannotAcquireLock($event)
+    {
+        return ! (new UniqueLock(
+            method_exists($event, 'uniqueVia')
+                ? $event->uniqueVia()
+                : $this->app->make(Cache::class)
+        ))->acquire($event);
     }
 
     /**
      * Get a driver instance.
-	 * 获取驱动实例
+	 * 得到驱动实例
      *
      * @param  string|null  $driver
      * @return mixed
@@ -180,7 +252,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Resolve the given broadcaster.
-	 * 解析给定的广播器
+	 * 解析给定广播程序
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -190,6 +262,10 @@ class BroadcastManager implements FactoryContract
     protected function resolve($name)
     {
         $config = $this->getConfig($name);
+
+        if (is_null($config)) {
+            throw new InvalidArgumentException("Broadcast connection [{$name}] is not defined.");
+        }
 
         if (isset($this->customCreators[$config['driver']])) {
             return $this->callCustomCreator($config);
@@ -206,7 +282,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动创建者
+	 * 调用自定义驱动程序创建者
      *
      * @param  array  $config
      * @return mixed
@@ -225,16 +301,57 @@ class BroadcastManager implements FactoryContract
      */
     protected function createPusherDriver(array $config)
     {
+        return new PusherBroadcaster($this->pusher($config));
+    }
+
+    /**
+     * Get a Pusher instance for the given configuration.
+	 * 获取给定配置的push实例
+     *
+     * @param  array  $config
+     * @return \Pusher\Pusher
+     */
+    public function pusher(array $config)
+    {
         $pusher = new Pusher(
-            $config['key'], $config['secret'],
-            $config['app_id'], $config['options'] ?? []
+            $config['key'],
+            $config['secret'],
+            $config['app_id'],
+            $config['options'] ?? [],
+            isset($config['client_options']) && ! empty($config['client_options'])
+                    ? new GuzzleClient($config['client_options'])
+                    : null,
         );
 
         if ($config['log'] ?? false) {
             $pusher->setLogger($this->app->make(LoggerInterface::class));
         }
 
-        return new PusherBroadcaster($pusher);
+        return $pusher;
+    }
+
+    /**
+     * Create an instance of the driver.
+	 * 创建驱动程序的实例
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Broadcasting\Broadcaster
+     */
+    protected function createAblyDriver(array $config)
+    {
+        return new AblyBroadcaster($this->ably($config));
+    }
+
+    /**
+     * Get an Ably instance for the given configuration.
+	 * 获取给定配置的able实例
+     *
+     * @param  array  $config
+     * @return \Ably\AblyRest
+     */
+    public function ably(array $config)
+    {
+        return new AblyRest($config);
     }
 
     /**
@@ -280,7 +397,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Get the connection configuration.
-	 * 得到连接配置
+	 * 获取连接配置
      *
      * @param  string  $name
      * @return array
@@ -296,7 +413,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Get the default driver name.
-	 * 得到默认驱动名称
+	 * 获取默认驱动程序名称
      *
      * @return string
      */
@@ -307,7 +424,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Set the default driver name.
-	 * 设置默认驱动名称
+	 * 设置默认驱动程序名称
      *
      * @param  string  $name
      * @return void
@@ -315,6 +432,20 @@ class BroadcastManager implements FactoryContract
     public function setDefaultDriver($name)
     {
         $this->app['config']['broadcasting.default'] = $name;
+    }
+
+    /**
+     * Disconnect the given disk and remove from local cache.
+	 * 断开给定磁盘的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name ??= $this->getDefaultDriver();
+
+        unset($this->drivers[$name]);
     }
 
     /**
@@ -333,8 +464,46 @@ class BroadcastManager implements FactoryContract
     }
 
     /**
+     * Get the application instance used by the manager.
+	 * 获取管理器使用的应用程序实例
+     *
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    public function getApplication()
+    {
+        return $this->app;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
+     * Forget all of the resolved driver instances.
+	 * 忘记所有已解析的驱动程序实例
+     *
+     * @return $this
+     */
+    public function forgetDrivers()
+    {
+        $this->drivers = [];
+
+        return $this;
+    }
+
+    /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动实例
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array  $parameters

@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，表行数
- *
+ * Symfony，Component，Console，助手，表行数
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,7 +19,7 @@ namespace Symfony\Component\Console\Helper;
  */
 class TableRows implements \IteratorAggregate
 {
-    private $generator;
+    private \Closure $generator;
 
     public function __construct(\Closure $generator)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，中间件，信任主机
+ * Illuminate，Http，中间件，信任主机抽象类
  */
 
 namespace Illuminate\Http\Middleware;
@@ -20,7 +20,7 @@ abstract class TrustHosts
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -43,7 +43,7 @@ abstract class TrustHosts
 	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  callable  $next
+     * @param  \Closure  $next
      * @return \Illuminate\Http\Response
      */
     public function handle(Request $request, $next)
@@ -63,7 +63,7 @@ abstract class TrustHosts
      */
     protected function shouldSpecifyTrustedHosts()
     {
-        return config('app.env') !== 'local' &&
+        return ! $this->app->environment('local') &&
                ! $this->app->runningUnitTests();
     }
 

@@ -1,20 +1,24 @@
 <?php
 /**
- * Illuminate，支持，门面，门面，为所有的门面提供继承
+ * Illuminate, 支持, 门面，门面
  */
 
 namespace Illuminate\Support\Facades;
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Js;
+use Illuminate\Support\Str;
 use Mockery;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use RuntimeException;
 
 abstract class Facade
 {
     /**
      * The application instance being facaded.
-	 * 被门面的应用实例
+	 * 正在facade的应用程序实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -29,8 +33,16 @@ abstract class Facade
     protected static $resolvedInstance;
 
     /**
+     * Indicates if the resolved instance should be cached.
+	 * 指示是否应该缓存已解析的实例
+     *
+     * @var bool
+     */
+    protected static $cached = true;
+
+    /**
      * Run a Closure when the facade has been resolved.
-	 * 在门面被解析后运行闭包
+	 * 在解决facade时运行Closure
      *
      * @param  \Closure  $callback
      * @return void
@@ -50,7 +62,7 @@ abstract class Facade
 
     /**
      * Convert the facade into a Mockery spy.
-	 * 转换门面为歪曲间谍
+	 * 把门面变成一个嘲弄间谍
      *
      * @return \Mockery\MockInterface
      */
@@ -93,10 +105,27 @@ abstract class Facade
         $name = static::getFacadeAccessor();
 
         $mock = static::isMock()
-                    ? static::$resolvedInstance[$name]
-                    : static::createFreshMockInstance();
+            ? static::$resolvedInstance[$name]
+            : static::createFreshMockInstance();
 
         return $mock->shouldReceive(...func_get_args());
+    }
+
+    /**
+     * Initiate a mock expectation on the facade.
+	 * 在facade上初始化一个模拟期望
+     *
+     * @return \Mockery\Expectation
+     */
+    public static function expects()
+    {
+        $name = static::getFacadeAccessor();
+
+        $mock = static::isMock()
+            ? static::$resolvedInstance[$name]
+            : static::createFreshMockInstance();
+
+        return $mock->expects(...func_get_args());
     }
 
     /**
@@ -138,7 +167,7 @@ abstract class Facade
         $name = static::getFacadeAccessor();
 
         return isset(static::$resolvedInstance[$name]) &&
-               static::$resolvedInstance[$name] instanceof MockInterface;
+               static::$resolvedInstance[$name] instanceof LegacyMockInterface;
     }
 
     /**
@@ -198,21 +227,21 @@ abstract class Facade
      * Resolve the facade root instance from the container.
 	 * 从容器中解析facade根实例
      *
-     * @param  object|string  $name
+     * @param  string  $name
      * @return mixed
      */
     protected static function resolveFacadeInstance($name)
     {
-        if (is_object($name)) {
-            return $name;
-        }
-
         if (isset(static::$resolvedInstance[$name])) {
             return static::$resolvedInstance[$name];
         }
 
         if (static::$app) {
-            return static::$resolvedInstance[$name] = static::$app[$name];
+            if (static::$cached) {
+                return static::$resolvedInstance[$name] = static::$app[$name];
+            }
+
+            return static::$app[$name];
         }
     }
 
@@ -240,8 +269,59 @@ abstract class Facade
     }
 
     /**
+     * Get the application default aliases.
+	 * 获取应用程序默认别名
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function defaultAliases()
+    {
+        return collect([
+            'App' => App::class,
+            'Arr' => Arr::class,
+            'Artisan' => Artisan::class,
+            'Auth' => Auth::class,
+            'Blade' => Blade::class,
+            'Broadcast' => Broadcast::class,
+            'Bus' => Bus::class,
+            'Cache' => Cache::class,
+            'Config' => Config::class,
+            'Cookie' => Cookie::class,
+            'Crypt' => Crypt::class,
+            'Date' => Date::class,
+            'DB' => DB::class,
+            'Eloquent' => Model::class,
+            'Event' => Event::class,
+            'File' => File::class,
+            'Gate' => Gate::class,
+            'Hash' => Hash::class,
+            'Http' => Http::class,
+            'Js' => Js::class,
+            'Lang' => Lang::class,
+            'Log' => Log::class,
+            'Mail' => Mail::class,
+            'Notification' => Notification::class,
+            'Password' => Password::class,
+            'Queue' => Queue::class,
+            'RateLimiter' => RateLimiter::class,
+            'Redirect' => Redirect::class,
+            'Request' => Request::class,
+            'Response' => Response::class,
+            'Route' => Route::class,
+            'Schema' => Schema::class,
+            'Session' => Session::class,
+            'Storage' => Storage::class,
+            'Str' => Str::class,
+            'URL' => URL::class,
+            'Validator' => Validator::class,
+            'View' => View::class,
+            'Vite' => Vite::class,
+        ]);
+    }
+
+    /**
      * Get the application instance behind the facade.
-	 * 获取facade后面的应用实例
+	 * 获取facade后面的应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -264,7 +344,7 @@ abstract class Facade
 
     /**
      * Handle dynamic, static calls to the object.
-	 * 处理对对象的动态、静态调用
+	 * 处理对对象的动态、静态调用。
      *
      * @param  string  $method
      * @param  array  $args

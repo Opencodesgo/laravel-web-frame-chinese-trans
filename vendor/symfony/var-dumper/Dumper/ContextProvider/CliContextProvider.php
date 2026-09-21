@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储器，内容提供器，Cli 内容提供商
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Dumper\ContextProvider;
 
 /**
  * Tries to provide context on CLI.
+ * 尝试在CLI上提供上下文。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
@@ -26,7 +30,7 @@ final class CliContextProvider implements ContextProviderInterface
 
         return [
             'command_line' => $commandLine = implode(' ', $_SERVER['argv'] ?? []),
-            'identifier' => hash('crc32b', $commandLine.$_SERVER['REQUEST_TIME_FLOAT']),
+            'identifier' => hash('xxh128', $commandLine.'@'.$_SERVER['REQUEST_TIME_FLOAT']),
         ];
     }
 }

@@ -1,23 +1,30 @@
 <?php
 /**
- * Illuminate，数据库，数据库管理
- * 服务容器绑定db
+ * Illuminate，数据库，数据库管理器
  */
 
 namespace Illuminate\Database;
 
+use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Database\Events\ConnectionEstablished;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ConfigurationUrlParser;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use PDO;
+use RuntimeException;
 
 /**
  * @mixin \Illuminate\Database\Connection
  */
 class DatabaseManager implements ConnectionResolverInterface
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * The application instance.
 	 * 应用实例
@@ -36,9 +43,9 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * The active connection instances.
-	 * 当前连接实例
+	 * 活动连接实例
      *
-     * @var array
+     * @var array<string, \Illuminate\Database\Connection>
      */
     protected $connections = [];
 
@@ -46,21 +53,29 @@ class DatabaseManager implements ConnectionResolverInterface
      * The custom connection resolvers.
 	 * 自定义连接解析器
      *
-     * @var array
+     * @var array<string, callable>
      */
     protected $extensions = [];
 
     /**
      * The callback to be executed to reconnect to a database.
-	 * 被执行的回调将重新连接到数据库
+	 * 为重新连接数据库而执行的回调
      *
      * @var callable
      */
     protected $reconnector;
 
     /**
+     * The custom Doctrine column types.
+	 * 自定义Doctrine列类型
+     *
+     * @var array<string, array>
+     */
+    protected $doctrineTypes = [];
+
+    /**
      * Create a new database manager instance.
-	 * 创建新的数据库管理实例
+	 * 创建一个新的数据库管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Database\Connectors\ConnectionFactory  $factory
@@ -72,13 +87,13 @@ class DatabaseManager implements ConnectionResolverInterface
         $this->factory = $factory;
 
         $this->reconnector = function ($connection) {
-            $this->reconnect($connection->getName());
+            $this->reconnect($connection->getNameWithReadWriteType());
         };
     }
 
     /**
      * Get a database connection instance.
-	 * 得到数据库连接实例
+	 * 获取数据库连接实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Database\Connection
@@ -92,11 +107,17 @@ class DatabaseManager implements ConnectionResolverInterface
         // If we haven't created this connection, we'll create it based on the config
         // provided in the application. Once we've created the connections we will
         // set the "fetch mode" for PDO which determines the query return types.
-		// 如果我们还没有创建这个连接，我们将根据配置创建它。
+		// 如果我们没有建立这种联系，
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->configure(
                 $this->makeConnection($database), $type
             );
+
+            if ($this->app->bound('events')) {
+                $this->app['events']->dispatch(
+                    new ConnectionEstablished($this->connections[$name])
+                );
+            }
         }
 
         return $this->connections[$name];
@@ -119,7 +140,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Make the database connection instance.
-	 * 构建数据库连接实例
+	 * 创建数据库连接实例
      *
      * @param  string  $name
      * @return \Illuminate\Database\Connection
@@ -131,7 +152,7 @@ class DatabaseManager implements ConnectionResolverInterface
         // First we will check by the connection name to see if an extension has been
         // registered specifically for that connection. If it has we will call the
         // Closure and pass it the config allowing it to resolve the connection.
-		// 首先，我们将检查连接名称，看看是否有扩展专门为该连接注册的。
+		// 首先，我们将检查连接名称，看看是否有扩展。
         if (isset($this->extensions[$name])) {
             return call_user_func($this->extensions[$name], $config, $name);
         }
@@ -149,7 +170,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get the configuration for a connection.
-	 * 得到连接配置
+	 * 获取连接的配置
      *
      * @param  string  $name
      * @return array
@@ -163,7 +184,7 @@ class DatabaseManager implements ConnectionResolverInterface
         // To get the database connection configuration, we will just pull each of the
         // connection configurations and get the configurations for the given name.
         // If the configuration doesn't exist, we'll throw an exception and bail.
-		// 要获得数据库连接配置，我们只需拉出每个连接配置并获取给定名称的配置。
+		// 要获得数据库连接配置，我们只需拉出每个。
         $connections = $this->app['config']['database.connections'];
 
         if (is_null($config = Arr::get($connections, $name))) {
@@ -184,7 +205,7 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     protected function configure(Connection $connection, $type)
     {
-        $connection = $this->setPdoForType($connection, $type);
+        $connection = $this->setPdoForType($connection, $type)->setReadWriteType($type);
 
         // First we'll set the fetch mode and a few other dependencies of the database
         // connection. This method basically just configures and prepares it to get
@@ -194,18 +215,23 @@ class DatabaseManager implements ConnectionResolverInterface
             $connection->setEventDispatcher($this->app['events']);
         }
 
+        if ($this->app->bound('db.transactions')) {
+            $connection->setTransactionManager($this->app['db.transactions']);
+        }
+
         // Here we'll set a reconnector callback. This reconnector can be any callable
         // so we will set a Closure to reconnect from this manager with the name of
         // the connection, which will allow us to reconnect from the connections.
-		// 这里我们将设置一个reconnector回调。这个重新连接器可以是任何可调用的。
         $connection->setReconnector($this->reconnector);
+
+        $this->registerConfiguredDoctrineTypes($connection);
 
         return $connection;
     }
 
     /**
      * Prepare the read / write mode for database connection instance.
-	 * 为数据库连接实例编写读取/写入模式
+	 * 为数据库连接实例准备读写模式
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string|null  $type
@@ -223,8 +249,53 @@ class DatabaseManager implements ConnectionResolverInterface
     }
 
     /**
+     * Register custom Doctrine types with the connection.
+	 * 用连接注册自定义Doctrine类型
+     *
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return void
+     */
+    protected function registerConfiguredDoctrineTypes(Connection $connection): void
+    {
+        foreach ($this->app['config']->get('database.dbal.types', []) as $name => $class) {
+            $this->registerDoctrineType($class, $name, $name);
+        }
+
+        foreach ($this->doctrineTypes as $name => [$type, $class]) {
+            $connection->registerDoctrineType($class, $name, $type);
+        }
+    }
+
+    /**
+     * Register a custom Doctrine type.
+	 * 注册一个自定义Doctrine类型
+     *
+     * @param  string  $class
+     * @param  string  $name
+     * @param  string  $type
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \RuntimeException
+     */
+    public function registerDoctrineType(string $class, string $name, string $type): void
+    {
+        if (! class_exists('Doctrine\DBAL\Connection')) {
+            throw new RuntimeException(
+                'Registering a custom Doctrine type requires Doctrine DBAL (doctrine/dbal).'
+            );
+        }
+
+        if (! Type::hasType($name)) {
+            Type::addType($name, $class);
+        }
+
+        $this->doctrineTypes[$name] = [$type, $class];
+    }
+
+    /**
      * Disconnect from the given database and remove from local cache.
-	 * 从给定的数据库断开并从本地缓存中删除
+	 * 断开与给定数据库的连接，并从本地缓存中删除。
      *
      * @param  string|null  $name
      * @return void
@@ -240,7 +311,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Disconnect from the given database.
-	 * 关闭数据库连接
+	 * 断开与给定数据库的连接
      *
      * @param  string|null  $name
      * @return void
@@ -254,7 +325,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Reconnect to the given database.
-	 * 重连接数据库
+	 * 重新连接到给定的数据库
      *
      * @param  string|null  $name
      * @return \Illuminate\Database\Connection
@@ -291,23 +362,27 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Refresh the PDO connections on a given connection.
-	 * 在给定的连接上刷新PDO连接
+	 * 刷新给定连接上的PDO连接
      *
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
     protected function refreshPdoConnections($name)
     {
-        $fresh = $this->makeConnection($name);
+        [$database, $type] = $this->parseConnectionName($name);
+
+        $fresh = $this->configure(
+            $this->makeConnection($database), $type
+        );
 
         return $this->connections[$name]
-                                ->setPdo($fresh->getRawPdo())
-                                ->setReadPdo($fresh->getRawReadPdo());
+                    ->setPdo($fresh->getRawPdo())
+                    ->setReadPdo($fresh->getRawReadPdo());
     }
 
     /**
      * Get the default connection name.
-	 * 得到默认连接名
+	 * 获取默认连接名称
      *
      * @return string
      */
@@ -318,7 +393,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Set the default connection name.
-	 * 设置默认连接名
+	 * 设置默认连接名称
      *
      * @param  string  $name
      * @return void
@@ -330,9 +405,9 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get all of the support drivers.
-	 * 得到所有的支持驱动程序
+	 * 找所有的支持司机
      *
-     * @return array
+     * @return string[]
      */
     public function supportedDrivers()
     {
@@ -343,7 +418,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * Get all of the drivers that are actually available.
 	 * 获取所有可用的驱动程序
      *
-     * @return array
+     * @return string[]
      */
     public function availableDrivers()
     {
@@ -367,10 +442,22 @@ class DatabaseManager implements ConnectionResolverInterface
     }
 
     /**
+     * Remove an extension connection resolver.
+	 * 删除扩展连接解析器
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function forgetExtension($name)
+    {
+        unset($this->extensions[$name]);
+    }
+
+    /**
      * Return all of the created connections.
 	 * 返回所有创建的连接
      *
-     * @return array
+     * @return array<string, \Illuminate\Database\Connection>
      */
     public function getConnections()
     {
@@ -390,6 +477,20 @@ class DatabaseManager implements ConnectionResolverInterface
     }
 
     /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
      * Dynamically pass methods to the default connection.
 	 * 动态地将方法传递给默认连接
      *
@@ -399,6 +500,10 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         return $this->connection()->$method(...$parameters);
     }
 }

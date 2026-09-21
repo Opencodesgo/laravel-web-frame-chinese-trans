@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，处理器，MySql 处理器
+ * Illuminate，数据库，PDO，处理器，MySql处理器
  */
 
 namespace Illuminate\Database\Query\Processors;

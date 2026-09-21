@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输出，Passthru 寻呼机
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 /**
  * A passthrough pager is a no-op. It simply wraps a StreamOutput's stream and
  * does nothing when the pager is closed.
+ * 传呼是无操作的。它只是包装了一个StreamOutput的流和关闭寻呼机时不执行任何操作。
  */
 class PassthruPager extends StreamOutput implements OutputPager
 {
@@ -31,6 +35,7 @@ class PassthruPager extends StreamOutput implements OutputPager
 
     /**
      * Close the current pager process.
+	 * 关闭当前寻呼机进程
      */
     public function close()
     {

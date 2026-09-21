@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，数据库会话处理程序
+ * Illuminate，Session，数据库会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -46,7 +46,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
      * The container instance.
 	 * 容器实例
      *
-     * @var \Illuminate\Contracts\Container\Container
+     * @var \Illuminate\Contracts\Container\Container|null
      */
     protected $container;
 
@@ -60,7 +60,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Create a new database session handler instance.
-	 * 创建新的数据库会话处理实例
+	 * 创建一个新的数据库会话处理程序实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
@@ -78,24 +78,30 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function close()
+    public function close(): bool
     {
         return true;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
-    public function read($sessionId)
+    public function read($sessionId): string|false
     {
         $session = (object) $this->getQuery()->find($sessionId);
 
@@ -129,8 +135,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function write($sessionId, $data)
+    public function write($sessionId, $data): bool
     {
         $payload = $this->getDefaultPayload($data);
 
@@ -149,10 +157,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Perform an insert operation on the session ID.
-	 * 在会话ID上执行插入操作
+	 * 对会话ID执行插入操作
      *
      * @param  string  $sessionId
-     * @param  string  $payload
+     * @param  array<string, mixed>  $payload
      * @return bool|null
      */
     protected function performInsert($sessionId, $payload)
@@ -169,7 +177,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 	 * 对会话ID进行更新操作
      *
      * @param  string  $sessionId
-     * @param  string  $payload
+     * @param  array<string, mixed>  $payload
      * @return int
      */
     protected function performUpdate($sessionId, $payload)
@@ -248,10 +256,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
     }
 
     /**
-     * Get the IP address for the current request
+     * Get the IP address for the current request.
 	 * 获取当前请求的IP地址
      *
-     * @return string
+     * @return string|null
      */
     protected function ipAddress()
     {
@@ -271,8 +279,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function destroy($sessionId)
+    public function destroy($sessionId): bool
     {
         $this->getQuery()->where('id', $sessionId)->delete();
 
@@ -281,10 +291,12 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return int
      */
-    public function gc($lifetime)
+    public function gc($lifetime): int
     {
-        $this->getQuery()->where('last_activity', '<=', $this->currentTime() - $lifetime)->delete();
+        return $this->getQuery()->where('last_activity', '<=', $this->currentTime() - $lifetime)->delete();
     }
 
     /**
@@ -296,6 +308,20 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
     protected function getQuery()
     {
         return $this->connection->table($this->table);
+    }
+
+    /**
+     * Set the application instance used by the handler.
+	 * 设置处理程序使用的应用程序实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $container
+     * @return $this
+     */
+    public function setContainer($container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 
     /**

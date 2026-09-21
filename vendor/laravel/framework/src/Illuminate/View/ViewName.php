@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图名
+ * Illuminate，视图，视图名称
  */
 
 namespace Illuminate\View;
@@ -18,7 +18,7 @@ class ViewName
     {
         $delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
 
-        if (strpos($name, $delimiter) === false) {
+        if (! str_contains($name, $delimiter)) {
             return str_replace('/', '.', $name);
         }
 

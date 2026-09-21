@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，异常事件
+ * Symfony，Component，HttpKernel，事件，异常事件
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows to create a response for a thrown exception.
- * 允许为抛出的异常创建响应
+ * 允许为抛出的异常创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a
@@ -33,12 +33,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 final class ExceptionEvent extends RequestEvent
 {
-    private $throwable;
-
-    /**
-     * @var bool
-     */
-    private $allowCustomResponseCode = false;
+    private \Throwable $throwable;
+    private bool $allowCustomResponseCode = false;
 
     public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, \Throwable $e)
     {
@@ -54,7 +50,7 @@ final class ExceptionEvent extends RequestEvent
 
     /**
      * Replaces the thrown exception.
-	 * 替换引发的异常
+	 * 替换引发的异常。
      *
      * This exception will be thrown if no response is set in the event.
      */

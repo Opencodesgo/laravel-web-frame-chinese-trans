@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，译码器，Mime 报头编码器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ interface MimeHeaderEncoderInterface
 {
     /**
      * Get the MIME name of this content encoding scheme.
+	 * 获取此内容编码方案的MIME名称
      */
     public function getName(): string;
 }

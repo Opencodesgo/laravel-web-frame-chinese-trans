@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，致命错误异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A "fatal error" Exception for Psy.
+ * Psy的"致命错误"异常。
  */
 class FatalErrorException extends \ErrorException implements Exception
 {
@@ -20,6 +24,7 @@ class FatalErrorException extends \ErrorException implements Exception
 
     /**
      * Create a fatal error.
+	 * 创建致命错误
      *
      * @param string          $message  (default: "")
      * @param int             $code     (default: 0)
@@ -42,6 +47,7 @@ class FatalErrorException extends \ErrorException implements Exception
 
     /**
      * Return a raw (unformatted) version of the error message.
+	 * 返回错误消息的原始（未格式化）版本
      */
     public function getRawMessage(): string
     {

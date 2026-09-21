@@ -1,7 +1,6 @@
 <?php
 /**
  * Illuminate，队列，Beanstalkd 队列
- * Pheanstalk\Pheanstalk 需要自己安装
  */
 
 namespace Illuminate\Queue;
@@ -47,20 +46,26 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Create a new Beanstalkd queue instance.
-	 * 创建新的Beanstalkd队列实例
+	 * 创建一个新的beanstald队列实例
      *
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
      * @param  string  $default
      * @param  int  $timeToRun
      * @param  int  $blockFor
+     * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(Pheanstalk $pheanstalk, $default, $timeToRun, $blockFor = 0)
+    public function __construct(Pheanstalk $pheanstalk,
+                                $default,
+                                $timeToRun,
+                                $blockFor = 0,
+                                $dispatchAfterCommit = false)
     {
         $this->default = $default;
         $this->blockFor = $blockFor;
         $this->timeToRun = $timeToRun;
         $this->pheanstalk = $pheanstalk;
+        $this->dispatchAfterCommit = $dispatchAfterCommit;
     }
 
     /**
@@ -88,7 +93,15 @@ class BeanstalkdQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushRaw($this->createPayload($job, $this->getQueue($queue), $data), $queue);
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $this->getQueue($queue), $data),
+            $queue,
+            null,
+            function ($payload, $queue) {
+                return $this->pushRaw($payload, $queue);
+            }
+        );
     }
 
     /**
@@ -108,8 +121,8 @@ class BeanstalkdQueue extends Queue implements QueueContract
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -119,14 +132,40 @@ class BeanstalkdQueue extends Queue implements QueueContract
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        $pheanstalk = $this->pheanstalk->useTube($this->getQueue($queue));
-
-        return $pheanstalk->put(
+        return $this->enqueueUsing(
+            $job,
             $this->createPayload($job, $this->getQueue($queue), $data),
-            Pheanstalk::DEFAULT_PRIORITY,
-            $this->secondsUntil($delay),
-            $this->timeToRun
+            $queue,
+            $delay,
+            function ($payload, $queue, $delay) {
+                return $this->pheanstalk->useTube($this->getQueue($queue))->put(
+                    $payload,
+                    Pheanstalk::DEFAULT_PRIORITY,
+                    $this->secondsUntil($delay),
+                    $this->timeToRun
+                );
+            }
         );
+    }
+
+    /**
+     * Push an array of jobs onto the queue.
+	 * 将一组作业推入队列
+     *
+     * @param  array  $jobs
+     * @param  mixed  $data
+     * @param  string|null  $queue
+     * @return void
+     */
+    public function bulk($jobs, $data = '', $queue = null)
+    {
+        foreach ((array) $jobs as $job) {
+            if (isset($job->delay)) {
+                $this->later($job->delay, $job, $data, $queue);
+            } else {
+                $this->push($job, $data, $queue);
+            }
+        }
     }
 
     /**

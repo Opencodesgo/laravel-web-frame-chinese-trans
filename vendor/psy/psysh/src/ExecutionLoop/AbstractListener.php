@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，循环执行，抽象的侦听器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\Shell;
 
 /**
  * Abstract Execution Loop Listener class.
+ * 抽象执行循环监听器类。
  */
 abstract class AbstractListener implements Listener
 {

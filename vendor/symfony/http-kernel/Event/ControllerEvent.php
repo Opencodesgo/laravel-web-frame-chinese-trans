@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，事件控制器
+ * Symfony，Component，HttpKernel，事件，控制器事件
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows filtering of a controller callable.
- * 允许筛选可调用的控制器
+ * 允许筛选可调用的控制器。
  *
  * You can call getController() to retrieve the current controller. With
  * setController() you can set a new controller that is used in the processing
@@ -31,7 +31,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 final class ControllerEvent extends KernelEvent
 {
-    private $controller;
+    private string|array|object $controller;
+    private \ReflectionFunctionAbstract $controllerReflector;
+    private array $attributes;
 
     public function __construct(HttpKernelInterface $kernel, callable $controller, Request $request, ?int $requestType)
     {
@@ -45,8 +47,71 @@ final class ControllerEvent extends KernelEvent
         return $this->controller;
     }
 
-    public function setController(callable $controller): void
+    public function getControllerReflector(): \ReflectionFunctionAbstract
     {
+        return $this->controllerReflector;
+    }
+
+    /**
+     * @param array<class-string, list<object>>|null $attributes
+     */
+    public function setController(callable $controller, ?array $attributes = null): void
+    {
+        if (null !== $attributes) {
+            $this->attributes = $attributes;
+        }
+
+        if (isset($this->controller) && ($controller instanceof \Closure ? $controller == $this->controller : $controller === $this->controller)) {
+            $this->controller = $controller;
+
+            return;
+        }
+
+        if (null === $attributes) {
+            unset($this->attributes);
+        }
+
+        if (\is_array($controller) && method_exists(...$controller)) {
+            $this->controllerReflector = new \ReflectionMethod(...$controller);
+        } elseif (\is_string($controller) && str_contains($controller, '::')) {
+            $this->controllerReflector = new \ReflectionMethod(...explode('::', $controller, 2));
+        } else {
+            $this->controllerReflector = new \ReflectionFunction($controller(...));
+        }
+
         $this->controller = $controller;
+    }
+
+    /**
+     * @template T of class-string|null
+     *
+     * @param T $className
+     *
+     * @return array<class-string, list<object>>|list<object>
+     *
+     * @psalm-return (T is null ? array<class-string, list<object>> : list<object>)
+     */
+    public function getAttributes(?string $className = null): array
+    {
+        if (isset($this->attributes)) {
+            return null === $className ? $this->attributes : $this->attributes[$className] ?? [];
+        }
+
+        if (\is_array($this->controller) && method_exists(...$this->controller)) {
+            $class = new \ReflectionClass($this->controller[0]);
+        } elseif (\is_string($this->controller) && false !== $i = strpos($this->controller, '::')) {
+            $class = new \ReflectionClass(substr($this->controller, 0, $i));
+        } else {
+            $class = str_contains($this->controllerReflector->name, '{closure') ? null : (\PHP_VERSION_ID >= 80111 ? $this->controllerReflector->getClosureCalledClass() : $this->controllerReflector->getClosureScopeClass());
+        }
+        $this->attributes = [];
+
+        foreach (array_merge($class?->getAttributes() ?? [], $this->controllerReflector->getAttributes()) as $attribute) {
+            if (class_exists($attribute->getName())) {
+                $this->attributes[$attribute->getName()][] = $attribute->newInstance();
+            }
+        }
+
+        return null === $className ? $this->attributes : $this->attributes[$className] ?? [];
     }
 }

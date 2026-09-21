@@ -1,24 +1,23 @@
 <?php
 /**
- * Illuminate，翻译，翻译程序
- * 服务容器绑定translator
+ * Illuminate, 翻译, 翻译程序
  */
 
 namespace Illuminate\Translation;
 
-use Countable;
+use Closure;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\ReflectsClosures;
 use InvalidArgumentException;
 
 class Translator extends NamespacedItemResolver implements TranslatorContract
 {
-    use Macroable;
+    use Macroable, ReflectsClosures;
 
     /**
      * The loader implementation.
@@ -61,6 +60,22 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     protected $selector;
 
     /**
+     * The callable that should be invoked to determine applicable locales.
+	 * 应调用的可调用对象，以确定适用的区域设置。
+     *
+     * @var callable
+     */
+    protected $determineLocalesUsing;
+
+    /**
+     * The custom rendering callbacks for stringable objects.
+	 * 可字符串对象的自定义呈现回调
+     *
+     * @var array
+     */
+    protected $stringableHandlers = [];
+
+    /**
      * Create a new translator instance.
 	 * 创建一个新的翻译器实例
      *
@@ -99,7 +114,19 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      */
     public function has($key, $locale = null, $fallback = true)
     {
-        return $this->get($key, [], $locale, $fallback) !== $key;
+        $locale = $locale ?: $this->locale;
+
+        $line = $this->get($key, [], $locale, $fallback);
+
+        // For JSON translations, the loaded files will contain the correct line.
+        // Otherwise, we must assume we are handling typical translation file
+        // and check if the returned line is not the same as the given key.
+		// 对于JSON翻译，加载的文件将包含正确的行。
+        if (! is_null($this->loaded['*']['*'][$locale][$key] ?? null)) {
+            return true;
+        }
+
+        return $line !== $key;
     }
 
     /**
@@ -119,7 +146,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // For JSON translations, there is only one file per locale, so we will simply load
         // that file and then we will be ready to check the array for the key. These are
         // only one level deep so we do not need to do any fancy searching through it.
-		// 对于JSON翻译，每个语言环境只有一个文件，因此我们将简单地加载。
+		// 对于JSON翻译，每个语言环境只有一个文件，所以我们将加载那个文件。
         $this->load('*', '*', $locale);
 
         $line = $this->loaded['*']['*'][$locale][$key] ?? null;
@@ -135,14 +162,13 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
             // was not passed, we will use the default locales which was given to us when
             // the translator was instantiated. Then, we can load the lines and return.
 			// 在这里，我们将获得语言行应该使用的区域设置。
-			// 没有传递，我们将使用默认的区域设置，它是什么时候给我们的。
             $locales = $fallback ? $this->localeArray($locale) : [$locale];
 
             foreach ($locales as $locale) {
                 if (! is_null($line = $this->getLine(
                     $namespace, $group, $locale, $item, $replace
                 ))) {
-                    return $line ?? $key;
+                    return $line;
                 }
             }
         }
@@ -173,8 +199,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the given "number" is actually an array or countable we will simply count the
         // number of elements in an instance. This allows developers to pass an array of
         // items without having to count it on their end first which gives bad syntax.
-		// 如果给定的"number"实际上是一个数组或可数数，我们将简单地计数。
-        if (is_array($number) || $number instanceof Countable) {
+		// 如果给定的“number”实际上是一个数组或可数数，我们将简单地计数实例中的元素数量。
+        if (is_countable($number)) {
             $number = count($number);
         }
 
@@ -217,9 +243,9 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         if (is_string($line)) {
             return $this->makeReplacements($line, $replace);
         } elseif (is_array($line) && count($line) > 0) {
-            foreach ($line as $key => $value) {
-                $line[$key] = $this->makeReplacements($value, $replace);
-            }
+            array_walk_recursive($line, function (&$value, $key) use ($replace) {
+                $value = $this->makeReplacements($value, $replace);
+            });
 
             return $line;
         }
@@ -239,31 +265,19 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
             return $line;
         }
 
-        $replace = $this->sortReplacements($replace);
+        $shouldReplace = [];
 
         foreach ($replace as $key => $value) {
-            $line = str_replace(
-                [':'.$key, ':'.Str::upper($key), ':'.Str::ucfirst($key)],
-                [$value, Str::upper($value), Str::ucfirst($value)],
-                $line
-            );
+            if (is_object($value) && isset($this->stringableHandlers[get_class($value)])) {
+                $value = call_user_func($this->stringableHandlers[get_class($value)], $value);
+            }
+
+            $shouldReplace[':'.Str::ucfirst($key ?? '')] = Str::ucfirst($value ?? '');
+            $shouldReplace[':'.Str::upper($key ?? '')] = Str::upper($value ?? '');
+            $shouldReplace[':'.$key] = $value;
         }
 
-        return $line;
-    }
-
-    /**
-     * Sort the replacements array.
-	 * 对替换数组进行排序
-     *
-     * @param  array  $replace
-     * @return array
-     */
-    protected function sortReplacements(array $replace)
-    {
-        return (new Collection($replace))->sortBy(function ($value, $key) {
-            return mb_strlen($key) * -1;
-        })->all();
+        return strtr($line, $shouldReplace);
     }
 
     /**
@@ -302,7 +316,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // The loader is responsible for returning the array of language lines for the
         // given namespace, group, and locale. We'll set the lines in this array of
         // lines that have already been loaded so that we can easily access them.
-		// 加载器负责返回给定命名空间语言行数组。
+		// 加载器负责返回语言行数组。
         $lines = $this->loader->load($locale, $group, $namespace);
 
         $this->loaded[$namespace][$group][$locale] = $lines;
@@ -374,7 +388,21 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      */
     protected function localeArray($locale)
     {
-        return array_filter([$locale ?: $this->locale, $this->fallback]);
+        $locales = array_filter([$locale ?: $this->locale, $this->fallback]);
+
+        return call_user_func($this->determineLocalesUsing ?: fn () => $locales, $locales);
+    }
+
+    /**
+     * Specify a callback that should be invoked to determined the applicable locale array.
+	 * 指定应调用的回调函数，以确定适用的区域设置数组。
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public function determineLocalesUsing($callback)
+    {
+        $this->determineLocalesUsing = $callback;
     }
 
     /**
@@ -443,6 +471,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      *
      * @param  string  $locale
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function setLocale($locale)
     {
@@ -486,5 +516,25 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     public function setLoaded(array $loaded)
     {
         $this->loaded = $loaded;
+    }
+
+    /**
+     * Add a handler to be executed in order to format a given class to a string during translation replacements.
+	 * 添加要执行的处理程序，以便在转换替换期间将给定类格式化为字符串。
+     *
+     * @param  callable|string  $class
+     * @param  callable|null  $handler
+     * @return void
+     */
+    public function stringable($class, $handler = null)
+    {
+        if ($class instanceof Closure) {
+            [$class, $handler] = [
+                $this->firstClosureParameterType($class),
+                $class,
+            ];
+        }
+
+        $this->stringableHandlers[$class] = $handler;
     }
 }

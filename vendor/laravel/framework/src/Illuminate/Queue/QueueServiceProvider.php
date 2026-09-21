@@ -15,15 +15,18 @@ use Illuminate\Queue\Connectors\RedisConnector;
 use Illuminate\Queue\Connectors\SqsConnector;
 use Illuminate\Queue\Connectors\SyncConnector;
 use Illuminate\Queue\Failed\DatabaseFailedJobProvider;
+use Illuminate\Queue\Failed\DatabaseUuidFailedJobProvider;
 use Illuminate\Queue\Failed\DynamoDbFailedJobProvider;
 use Illuminate\Queue\Failed\NullFailedJobProvider;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 {
+    use SerializesAndRestoresModelIdentifiers;
+
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -32,12 +35,38 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
+        $this->configureSerializableClosureUses();
+
         $this->registerManager();
         $this->registerConnection();
         $this->registerWorker();
         $this->registerListener();
         $this->registerFailedJobServices();
-        $this->registerOpisSecurityKey();
+    }
+
+    /**
+     * Configure serializable closures uses.
+	 * 配置可序列化的闭包使用
+     *
+     * @return void
+     */
+    protected function configureSerializableClosureUses()
+    {
+        SerializableClosure::transformUseVariablesUsing(function ($data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->getSerializedPropertyValue($value);
+            }
+
+            return $data;
+        });
+
+        SerializableClosure::resolveUseVariablesUsing(function ($data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->getRestoredPropertyValue($value);
+            }
+
+            return $data;
+        });
     }
 
     /**
@@ -158,7 +187,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the Amazon SQS queue connector.
-	 * 
+	 * 注册Amazon SQS队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -172,7 +201,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the queue worker.
-	 * 注册队列工作进程 
+	 * 注册队列工作器
      *
      * @return void
      */
@@ -183,18 +212,36 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
                 return $this->app->isDownForMaintenance();
             };
 
+            $resetScope = function () use ($app) {
+                if (method_exists($app['log']->driver(), 'withoutContext')) {
+                    $app['log']->withoutContext();
+                }
+
+                if (method_exists($app['db'], 'getConnections')) {
+                    foreach ($app['db']->getConnections() as $connection) {
+                        $connection->resetTotalQueryDuration();
+                        $connection->allowQueryDurationHandlersToRunAgain();
+                    }
+                }
+
+                $app->forgetScopedInstances();
+
+                return Facade::clearResolvedInstances();
+            };
+
             return new Worker(
                 $app['queue'],
                 $app['events'],
                 $app[ExceptionHandler::class],
-                $isDownForMaintenance
+                $isDownForMaintenance,
+                $resetScope
             );
         });
     }
 
     /**
      * Register the queue listener.
-	 * 注册队列监听器
+	 * 注册队列侦听器
      *
      * @return void
      */
@@ -216,8 +263,15 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
         $this->app->singleton('queue.failer', function ($app) {
             $config = $app['config']['queue.failed'];
 
+            if (array_key_exists('driver', $config) &&
+                (is_null($config['driver']) || $config['driver'] === 'null')) {
+                return new NullFailedJobProvider;
+            }
+
             if (isset($config['driver']) && $config['driver'] === 'dynamodb') {
                 return $this->dynamoFailedJobProvider($config);
+            } elseif (isset($config['driver']) && $config['driver'] === 'database-uuids') {
+                return $this->databaseUuidFailedJobProvider($config);
             } elseif (isset($config['table'])) {
                 return $this->databaseFailedJobProvider($config);
             } else {
@@ -236,6 +290,20 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
     protected function databaseFailedJobProvider($config)
     {
         return new DatabaseFailedJobProvider(
+            $this->app['db'], $config['database'], $config['table']
+        );
+    }
+
+    /**
+     * Create a new database failed job provider that uses UUIDs as IDs.
+	 * 创建一个使用uuid作为id的新的数据库失败作业提供程序
+     *
+     * @param  array  $config
+     * @return \Illuminate\Queue\Failed\DatabaseUuidFailedJobProvider
+     */
+    protected function databaseUuidFailedJobProvider($config)
+    {
+        return new DatabaseUuidFailedJobProvider(
             $this->app['db'], $config['database'], $config['table']
         );
     }
@@ -269,31 +337,19 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
-     * Configure Opis Closure signing for security.
-	 * 为安全性配置Opis闭包签名
-     *
-     * @return void
-     */
-    protected function registerOpisSecurityKey()
-    {
-        if (Str::startsWith($key = $this->app['config']->get('app.key'), 'base64:')) {
-            $key = base64_decode(substr($key, 7));
-        }
-
-        SerializableClosure::setSecretKey($key);
-    }
-
-    /**
      * Get the services provided by the provider.
-	 * 得到提供者提供的服务
+	 * 获取提供者提供的服务
      *
      * @return array
      */
     public function provides()
     {
         return [
-            'queue', 'queue.worker', 'queue.listener',
-            'queue.failer', 'queue.connection',
+            'queue',
+            'queue.connection',
+            'queue.failer',
+            'queue.listener',
+            'queue.worker',
         ];
     }
 }

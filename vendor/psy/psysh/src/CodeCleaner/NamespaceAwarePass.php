@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，命名空间感知传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use PhpParser\Node\Stmt\Namespace_;
 
 /**
  * Abstract namespace-aware code cleaner pass.
+ * 抽象名称空间感知代码清理器通过。
  */
 abstract class NamespaceAwarePass extends CodeCleanerPass
 {
@@ -55,6 +59,7 @@ abstract class NamespaceAwarePass extends CodeCleanerPass
 
     /**
      * Get a fully-qualified name (class, function, interface, etc).
+	 * 获取全限定名称（类、函数、接口等）
      *
      * @param mixed $name
      */
@@ -75,6 +80,7 @@ abstract class NamespaceAwarePass extends CodeCleanerPass
 
     /**
      * Backwards compatibility shim for PHP-Parser 4.x.
+	 * PHP-Parser 4.x的向后兼容性。
      *
      * At some point we might want to make $namespace a plain string, to match how Name works?
      */

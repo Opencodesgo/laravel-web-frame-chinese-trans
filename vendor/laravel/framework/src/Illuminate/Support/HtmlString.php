@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，消息包
+ * Illuminate, 支持, Html 字符串
  */
 
 namespace Illuminate\Support;
@@ -11,7 +11,7 @@ class HtmlString implements Htmlable
 {
     /**
      * The HTML string.
-	 * HTML字符串
+	 * Html字符串
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class HtmlString implements Htmlable
 
     /**
      * Get the HTML string.
-	 * 得到HTML字符串
+	 * 获取HTML字符串
      *
      * @return string
      */
@@ -52,8 +52,19 @@ class HtmlString implements Htmlable
     }
 
     /**
+     * Determine if the given HTML string is not empty.
+	 * 确定给定的HTML字符串是否为空
+     *
+     * @return bool
+     */
+    public function isNotEmpty()
+    {
+        return ! $this->isEmpty();
+    }
+
+    /**
      * Get the HTML string.
-	 * 获取HTML字符串
+	 * 得到Html字符串
      *
      * @return string
      */

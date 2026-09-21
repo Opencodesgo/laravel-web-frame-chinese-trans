@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Fallback Group 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Throwable;
 
 /**
  * Forwards records to at most one handler
+ * 最多将记录转发给一个处理程序
  *
  * If a handler fails, the exception is suppressed and the record is forwarded to the next handler.
  *

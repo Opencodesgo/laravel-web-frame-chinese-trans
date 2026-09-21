@@ -11,7 +11,7 @@ trait WithoutMiddleware
 {
     /**
      * Prevent all middleware from being executed for this test class.
-	 * 防止所有中间件为这个测试类执行
+	 * 防止为此测试类执行所有中间件
      *
      * @throws \Exception
      */

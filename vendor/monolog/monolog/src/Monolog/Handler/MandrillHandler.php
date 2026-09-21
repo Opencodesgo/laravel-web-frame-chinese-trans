@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Mandrill 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Swift_Message;
 
 /**
  * MandrillHandler uses cURL to send the emails to the Mandrill API
+ * MandrillHandler使用cURL将电子邮件发送到Mandrill API
  *
  * @author Adam Nicholson <adamnicholson10@gmail.com>
  */

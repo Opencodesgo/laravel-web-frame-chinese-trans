@@ -1,24 +1,28 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，语法抽象类
+ * Illuminate，数据库，语法，语法抽象类
  */
 
 namespace Illuminate\Database\Schema\Grammars;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 use Doctrine\DBAL\Schema\TableDiff;
+use Illuminate\Database\Concerns\CompilesJsonPaths;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Grammar as BaseGrammar;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Fluent;
+use LogicException;
 use RuntimeException;
 
 abstract class Grammar extends BaseGrammar
 {
+    use CompilesJsonPaths;
+
     /**
      * If this Grammar supports schema changes wrapped in a transaction.
-	 * 如果这个语法支持在事务中包的模式更改
+	 * 如果此语法支持封装在事务中的模式更改
      *
      * @var bool
      */
@@ -26,20 +30,49 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * The commands to be executed outside of create or alter command.
-	 * 在创建或alter命令之外执行的命令
+	 * 要在create或alter命令之外执行的命令
      *
      * @var array
      */
     protected $fluentCommands = [];
 
     /**
+     * Compile a create database command.
+	 * 编译一个创建数据库命令
+     *
+     * @param  string  $name
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function compileCreateDatabase($name, $connection)
+    {
+        throw new LogicException('This database driver does not support creating databases.');
+    }
+
+    /**
+     * Compile a drop database if exists command.
+	 * 编译一个drop database if exists命令
+     *
+     * @param  string  $name
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function compileDropDatabaseIfExists($name)
+    {
+        throw new LogicException('This database driver does not support dropping databases.');
+    }
+
+    /**
      * Compile a rename column command.
-	 * 编译一个重命名列命令
+	 * 编译重命名列命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
      * @param  \Illuminate\Database\Connection  $connection
-     * @return array
+     * @return array|string
      */
     public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
@@ -63,6 +96,36 @@ abstract class Grammar extends BaseGrammar
     }
 
     /**
+     * Compile a fulltext index key command.
+	 * 编译一个全文索引键命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function compileFulltext(Blueprint $blueprint, Fluent $command)
+    {
+        throw new RuntimeException('This database driver does not support fulltext index creation.');
+    }
+
+    /**
+     * Compile a drop fulltext index command.
+	 * 编译一个删除全文索引命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function compileDropFullText(Blueprint $blueprint, Fluent $command)
+    {
+        throw new RuntimeException('This database driver does not support fulltext index removal.');
+    }
+
+    /**
      * Compile a foreign key command.
 	 * 编译外键命令
      *
@@ -75,7 +138,6 @@ abstract class Grammar extends BaseGrammar
         // We need to prepare several of the elements of the foreign key definition
         // before we can create the SQL, such as wrapping the tables and convert
         // an array of columns to comma-delimited strings for the SQL queries.
-		// 我们需要准备外键定义的几个元素在我们创建SQL前，例如包装表和转换用于SQL查询的以逗号分隔的字符串的列数组。
         $sql = sprintf('alter table %s add constraint %s ',
             $this->wrapTable($blueprint),
             $this->wrap($command->index)
@@ -84,7 +146,7 @@ abstract class Grammar extends BaseGrammar
         // Once we have the initial portion of the SQL statement we will add on the
         // key name, table name, and referenced columns. These will complete the
         // main portion of the SQL statement and this SQL will almost be done.
-		// 一旦我们有了SQL语句的初始部分，我们将添加键名，表名，和引用列。
+		// 一旦我们有了SQL语句的初始部分
         $sql .= sprintf('foreign key (%s) references %s (%s)',
             $this->columnize($command->columns),
             $this->wrapTable($command->on),
@@ -94,7 +156,6 @@ abstract class Grammar extends BaseGrammar
         // Once we have the basic foreign key creation statement constructed we can
         // build out the syntax for what should happen on an update or delete of
         // the affected columns, which will get something like "cascade", etc.
-		// 一旦构造了基本的外键创建语句，就可以更新或删除时应该发生的情况构建语法。
         if (! is_null($command->onDelete)) {
             $sql .= " on delete {$command->onDelete}";
         }
@@ -118,10 +179,9 @@ abstract class Grammar extends BaseGrammar
         $columns = [];
 
         foreach ($blueprint->getAddedColumns() as $column) {
-            // Each of the column types have their own compiler functions which are tasked
+            // Each of the column types has their own compiler functions, which are tasked
             // with turning the column definition into its SQL format for this platform
             // used by the connection. The column's modifiers are compiled and added.
-			// 每种列类型都有自己的编译器函数。
             $sql = $this->wrap($column).' '.$this->getType($column);
 
             $columns[] = $this->addModifiers($sql, $blueprint, $column);

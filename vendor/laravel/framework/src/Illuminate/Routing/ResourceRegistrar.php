@@ -5,6 +5,7 @@
 
 namespace Illuminate\Routing;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ResourceRegistrar
@@ -21,9 +22,17 @@ class ResourceRegistrar
      * The default actions for a resourceful controller.
 	 * 资源控制器的默认动作
      *
-     * @var array
+     * @var string[]
      */
     protected $resourceDefaults = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
+
+    /**
+     * The default actions for a singleton resource controller.
+	 * 单个资源控制器的默认操作
+     *
+     * @var string[]
+     */
+    protected $singletonResourceDefaults = ['show', 'edit', 'update'];
 
     /**
      * The parameters set for this resource instance.
@@ -43,7 +52,7 @@ class ResourceRegistrar
 
     /**
      * Singular global parameters.
-	 * 全局参数单数形式
+	 * 奇异全局参数
      *
      * @var bool
      */
@@ -51,7 +60,7 @@ class ResourceRegistrar
 
     /**
      * The verbs used in the resource URIs.
-	 * 资源URI中使用的动作，create和edit
+	 * 资源uri中使用的动词
      *
      * @var array
      */
@@ -62,7 +71,7 @@ class ResourceRegistrar
 
     /**
      * Create a new resource registrar instance.
-	 * 创建新的资源注册器实例
+	 * 创建一个新的资源注册器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -90,9 +99,8 @@ class ResourceRegistrar
         // If the resource name contains a slash, we will assume the developer wishes to
         // register these resource routes with a prefix so we will set that up out of
         // the box so they don't have to mess with it. Otherwise, we will continue.
-		// 如果资源名包含斜杠，我们假定开发人员希望这样用前缀注册这些资源路由，这
-		// 样我们就可以把它设置为out，这样他们就不会乱动它了。
-        if (Str::contains($name, '/')) {
+		// 如果资源名包含斜杠，我们将假定开发人员希望这样去注册这些资源路由。
+        if (str_contains($name, '/')) {
             $this->prefixedResource($name, $controller, $options);
 
             return;
@@ -108,9 +116,62 @@ class ResourceRegistrar
 
         $collection = new RouteCollection;
 
-        foreach ($this->getResourceMethods($defaults, $options) as $m) {
+        $resourceMethods = $this->getResourceMethods($defaults, $options);
+
+        foreach ($resourceMethods as $m) {
             $route = $this->{'addResource'.ucfirst($m)}(
                 $name, $base, $controller, $options
+            );
+
+            if (isset($options['bindingFields'])) {
+                $this->setResourceBindingFields($route, $options['bindingFields']);
+            }
+
+            if (isset($options['trashed']) &&
+                in_array($m, ! empty($options['trashed']) ? $options['trashed'] : array_intersect($resourceMethods, ['show', 'edit', 'update']))) {
+                $route->withTrashed();
+            }
+
+            $collection->add($route);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Route a singleton resource to a controller.
+	 * 将单例资源路由到控制器
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\RouteCollection
+     */
+    public function singleton($name, $controller, array $options = [])
+    {
+        if (isset($options['parameters']) && ! isset($this->parameters)) {
+            $this->parameters = $options['parameters'];
+        }
+
+        // If the resource name contains a slash, we will assume the developer wishes to
+        // register these singleton routes with a prefix so we will set that up out of
+        // the box so they don't have to mess with it. Otherwise, we will continue.
+		// 如果资源名包含斜杠，我们将假定开发人员希望用前缀注册这些单例路由。
+        if (str_contains($name, '/')) {
+            $this->prefixedSingleton($name, $controller, $options);
+
+            return;
+        }
+
+        $defaults = $this->singletonResourceDefaults;
+
+        $collection = new RouteCollection;
+
+        $resourceMethods = $this->getResourceMethods($defaults, $options);
+
+        foreach ($resourceMethods as $m) {
+            $route = $this->{'addSingleton'.ucfirst($m)}(
+                $name, $controller, $options
             );
 
             if (isset($options['bindingFields'])) {
@@ -142,6 +203,30 @@ class ResourceRegistrar
 		// 我们需要从资源名中提取基本资源。
         $callback = function ($me) use ($name, $controller, $options) {
             $me->resource($name, $controller, $options);
+        };
+
+        return $this->router->group(compact('prefix'), $callback);
+    }
+
+    /**
+     * Build a set of prefixed singleton routes.
+	 * 构建一组带前缀的单例路由
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return void
+     */
+    protected function prefixedSingleton($name, $controller, array $options)
+    {
+        [$name, $prefix] = $this->getResourcePrefix($name);
+
+        // We need to extract the base resource from the resource name. Nested resources
+        // are supported in the framework, but we need to know what name to use for a
+        // place-holder on the route parameters, which should be the base resources.
+		// 我们需要从资源名中提取基本资源。
+        $callback = function ($me) use ($name, $controller, $options) {
+            $me->singleton($name, $controller, $options);
         };
 
         return $this->router->group(compact('prefix'), $callback);
@@ -187,6 +272,24 @@ class ResourceRegistrar
             $methods = array_diff($methods, (array) $options['except']);
         }
 
+        if (isset($options['creatable'])) {
+            $methods = isset($options['apiSingleton'])
+                            ? array_merge(['store', 'destroy'], $methods)
+                            : array_merge(['create', 'store', 'destroy'], $methods);
+
+            return $this->getResourceMethods(
+                $methods, array_values(Arr::except($options, ['creatable']))
+            );
+        }
+
+        if (isset($options['destroyable'])) {
+            $methods = array_merge(['destroy'], $methods);
+
+            return $this->getResourceMethods(
+                $methods, array_values(Arr::except($options, ['destroyable']))
+            );
+        }
+
         return $methods;
     }
 
@@ -203,6 +306,8 @@ class ResourceRegistrar
     protected function addResourceIndex($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name);
+
+        unset($options['missing']);
 
         $action = $this->getResourceAction($name, $controller, 'index', $options);
 
@@ -223,6 +328,8 @@ class ResourceRegistrar
     {
         $uri = $this->getResourceUri($name).'/'.static::$verbs['create'];
 
+        unset($options['missing']);
+
         $action = $this->getResourceAction($name, $controller, 'create', $options);
 
         return $this->router->get($uri, $action);
@@ -241,6 +348,8 @@ class ResourceRegistrar
     protected function addResourceStore($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name);
+
+        unset($options['missing']);
 
         $action = $this->getResourceAction($name, $controller, 'store', $options);
 
@@ -332,6 +441,127 @@ class ResourceRegistrar
     }
 
     /**
+     * Add the create method for a singleton route.
+	 * 为单例路由添加create方法
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\Route
+     */
+    protected function addSingletonCreate($name, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/'.static::$verbs['create'];
+
+        unset($options['missing']);
+
+        $action = $this->getResourceAction($name, $controller, 'create', $options);
+
+        return $this->router->get($uri, $action);
+    }
+
+    /**
+     * Add the store method for a singleton route.
+	 * 为单例路由添加store方法
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\Route
+     */
+    protected function addSingletonStore($name, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name);
+
+        unset($options['missing']);
+
+        $action = $this->getResourceAction($name, $controller, 'store', $options);
+
+        return $this->router->post($uri, $action);
+    }
+
+    /**
+     * Add the show method for a singleton route.
+	 * 为单例路由增加show方法
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\Route
+     */
+    protected function addSingletonShow($name, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name);
+
+        unset($options['missing']);
+
+        $action = $this->getResourceAction($name, $controller, 'show', $options);
+
+        return $this->router->get($uri, $action);
+    }
+
+    /**
+     * Add the edit method for a singleton route.
+	 * 为单例路由添加edit方法
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\Route
+     */
+    protected function addSingletonEdit($name, $controller, $options)
+    {
+        $name = $this->getShallowName($name, $options);
+
+        $uri = $this->getResourceUri($name).'/'.static::$verbs['edit'];
+
+        $action = $this->getResourceAction($name, $controller, 'edit', $options);
+
+        return $this->router->get($uri, $action);
+    }
+
+    /**
+     * Add the update method for a singleton route.
+	 * 为单例路由添加更新方法
+     *
+     * @param  string  $name
+     * @param  string  $base
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\Route
+     */
+    protected function addSingletonUpdate($name, $controller, $options)
+    {
+        $name = $this->getShallowName($name, $options);
+
+        $uri = $this->getResourceUri($name);
+
+        $action = $this->getResourceAction($name, $controller, 'update', $options);
+
+        return $this->router->match(['PUT', 'PATCH'], $uri, $action);
+    }
+
+    /**
+     * Add the destroy method for a singleton route.
+	 * 为单例路由添加destroy方法
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\Route
+     */
+    protected function addSingletonDestroy($name, $controller, $options)
+    {
+        $name = $this->getShallowName($name, $options);
+
+        $uri = $this->getResourceUri($name);
+
+        $action = $this->getResourceAction($name, $controller, 'destroy', $options);
+
+        return $this->router->delete($uri, $action);
+    }
+
+    /**
      * Get the name for a given resource with shallowness applied when applicable.
 	 * 获取给定资源的名称，并在适用时应用浅度。
      *
@@ -374,15 +604,14 @@ class ResourceRegistrar
      */
     public function getResourceUri($resource)
     {
-        if (! Str::contains($resource, '.')) {
+        if (! str_contains($resource, '.')) {
             return $resource;
         }
 
         // Once we have built the base URI, we'll remove the parameter holder for this
         // base resource name so that the individual route adders can suffix these
         // paths however they need to, as some do not have any parameters at all.
-		// 一旦我们构建了基本URI，我们将删除它的参数持有者基本资源名，
-		// 以便各个路由加法器可以给它们加上他们需要的后缀路径，因为有些根本没有任何参数。
+		// 一旦我们构建了基本URI，我们将删除它的参数持有者。
         $segments = explode('.', $resource);
 
         $uri = $this->getNestedResourceUri($segments);
@@ -402,7 +631,7 @@ class ResourceRegistrar
         // We will spin through the segments and create a place-holder for each of the
         // resource segments, as well as the resource itself. Then we should get an
         // entire string for the resource URI that contains all nested resources.
-		// 我们将旋转这些片段，并为每个资源段，以及资源本身。
+		// 我们将旋转这些片段，为每个资源段，以及资源本身。
         return implode('/', array_map(function ($s) {
             return $s.'/{'.$this->getResourceWildcard($s).'}';
         }, $segments));
@@ -456,6 +685,10 @@ class ResourceRegistrar
             $action['where'] = $options['wheres'];
         }
 
+        if (isset($options['missing'])) {
+            $action['missing'] = $options['missing'];
+        }
+
         return $action;
     }
 
@@ -487,7 +720,7 @@ class ResourceRegistrar
         // If a global prefix has been assigned to all names for this resource, we will
         // grab that so we can prepend it onto the name when we create this name for
         // the resource action. Otherwise we'll just use an empty string for here.
-		// 如果已为该资源的所有名称分配了全局前缀，我们将抓住它，我们可以把它加到名字前面。
+		// 如果已为该资源的所有名称分配了全局前缀，则将抓住它，这样我们就可以在创建这个名字的时候把它加到名字上。
         $prefix = isset($options['as']) ? $options['as'].'.' : '';
 
         return trim(sprintf('%s%s.%s', $prefix, $name, $method), '.');
@@ -530,7 +763,7 @@ class ResourceRegistrar
 
     /**
      * Get or set the action verbs used in the resource URIs.
-	 * 获取或设置动作
+	 * 获取或设置资源uri中使用的动作动词
      *
      * @param  array  $verbs
      * @return array

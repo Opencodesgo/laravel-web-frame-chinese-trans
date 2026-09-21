@@ -11,7 +11,7 @@ class FilesystemServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
-	 * 注册服务提供者
+	 * 注册服务提供程序
      *
      * @return void
      */
@@ -24,7 +24,7 @@ class FilesystemServiceProvider extends ServiceProvider
 
     /**
      * Register the native filesystem implementation.
-	 * 注册本地文件系统实现
+	 * 注册本机文件系统实现
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class FilesystemServiceProvider extends ServiceProvider
 
     /**
      * Register the filesystem manager.
-	 * 注册文件系统管理
+	 * 注册文件系统管理器
      *
      * @return void
      */
@@ -69,7 +69,7 @@ class FilesystemServiceProvider extends ServiceProvider
 
     /**
      * Get the default file driver.
-	 * 得到默认文件驱动
+	 * 获取默认的文件驱动程序
      *
      * @return string
      */

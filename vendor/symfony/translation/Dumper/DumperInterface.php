@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转存器，转储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,6 +28,8 @@ interface DumperInterface
      * Dumps the message catalogue.
      *
      * @param array $options Options that are used by the dumper
+     *
+     * @return void
      */
     public function dump(MessageCatalogue $messages, array $options = []);
 }

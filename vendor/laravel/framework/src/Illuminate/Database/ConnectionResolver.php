@@ -11,7 +11,7 @@ class ConnectionResolver implements ConnectionResolverInterface
      * All of the registered connections.
 	 * 所有已注册的连接
      *
-     * @var array
+     * @var \Illuminate\Database\ConnectionInterface[]
      */
     protected $connections = [];
 
@@ -25,9 +25,9 @@ class ConnectionResolver implements ConnectionResolverInterface
 
     /**
      * Create a new connection resolver instance.
-	 * 创建一个新的连接解析器实例
+	 * 创建新的连接解析器实例
      *
-     * @param  array  $connections
+     * @param  array<string, \Illuminate\Database\ConnectionInterface>  $connections
      * @return void
      */
     public function __construct(array $connections = [])
@@ -39,7 +39,7 @@ class ConnectionResolver implements ConnectionResolverInterface
 
     /**
      * Get a database connection instance.
-	 * 获取数据库连接实例
+	 * 得到数据库连接实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Database\ConnectionInterface
@@ -68,7 +68,7 @@ class ConnectionResolver implements ConnectionResolverInterface
 
     /**
      * Check if a connection has been registered.
-	 * 检查是否已经注册了连接
+	 * 检查是否已注册连接
      *
      * @param  string  $name
      * @return bool

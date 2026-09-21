@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，采样处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -83,6 +87,7 @@ class SamplingHandler extends AbstractHandler implements ProcessableHandlerInter
 
     /**
      * Return the nested handler
+	 * 返回嵌套处理程序
      *
      * If the handler was provided as a factory callable, this will trigger the handler's instantiation.
      *

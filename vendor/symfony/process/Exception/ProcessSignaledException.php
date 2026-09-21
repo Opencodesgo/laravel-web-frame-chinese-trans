@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Process，异常，进程信号异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,18 +18,19 @@ use Symfony\Component\Process\Process;
 
 /**
  * Exception that is thrown when a process has been signaled.
+ * 当进程被发出信号时引发的异常。
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class ProcessSignaledException extends RuntimeException
 {
-    private $process;
+    private Process $process;
 
     public function __construct(Process $process)
     {
         $this->process = $process;
 
-        parent::__construct(sprintf('The process has been signaled with signal "%s".', $process->getTermSignal()));
+        parent::__construct(\sprintf('The process has been signaled with signal "%s".', $process->getTermSignal()));
     }
 
     public function getProcess(): Process

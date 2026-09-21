@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，过滤 处理器 (根据日志级别或条件过滤日志记录)
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Simple handler wrapper that filters records based on a list of levels
+ * 基于级别列表筛选记录的简单处理程序包装器
  *
  * It can be configured with an exact list of levels to allow, or a min/max level.
  *
@@ -34,6 +39,7 @@ class FilterHandler extends Handler implements ProcessableHandlerInterface, Rese
 
     /**
      * Handler or factory callable($record, $this)
+	 * 处理程序或工厂可调用($record, $this)
      *
      * @var callable|HandlerInterface
      * @phpstan-var callable(?Record, HandlerInterface): HandlerInterface|HandlerInterface
@@ -42,6 +48,7 @@ class FilterHandler extends Handler implements ProcessableHandlerInterface, Rese
 
     /**
      * Minimum level for logs that are passed to handler
+	 * 传递给处理程序的日志的最小级别
      *
      * @var int[]
      * @phpstan-var array<Level, int>
@@ -50,6 +57,7 @@ class FilterHandler extends Handler implements ProcessableHandlerInterface, Rese
 
     /**
      * Whether the messages that are handled can bubble up the stack or not
+	 * 所处理的消息是否会在堆栈中冒泡
      *
      * @var bool
      */
@@ -154,6 +162,7 @@ class FilterHandler extends Handler implements ProcessableHandlerInterface, Rese
 
     /**
      * Return the nested handler
+	 * 返回嵌套处理程序
      *
      * If the handler was provided as a factory callable, this will trigger the handler's instantiation.
      *

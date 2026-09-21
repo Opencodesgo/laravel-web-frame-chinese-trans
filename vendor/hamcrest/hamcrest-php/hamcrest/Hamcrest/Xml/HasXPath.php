@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Xml，有 X路径
+ */
+
 namespace Hamcrest\Xml;
 
 /*
@@ -13,12 +17,15 @@ use Hamcrest\Matcher;
  * Matches if XPath applied to XML/HTML/XHTML document either
  * evaluates to result matching the matcher or returns at least
  * one node, matching the matcher if present.
+ * 如果将 XPath 应用于 XML/HTML/XHTML 文档，则该表达式要么返回与匹配器相匹配的结果，
+ * 要么返回至少一个与匹配器相匹配的节点（如果存在的话）。
  */
 class HasXPath extends DiagnosingMatcher
 {
 
     /**
      * XPath to apply to the DOM.
+	 * 将XPath应用于DOM
      *
      * @var string
      */
@@ -27,12 +34,13 @@ class HasXPath extends DiagnosingMatcher
     /**
      * Optional matcher to apply to the XPath expression result
      * or the content of the returned nodes.
+	 * 可选的匹配器，用于应用于 XPath 表达式的结果或返回节点的内容。
      *
      * @var Matcher
      */
     private $_matcher;
 
-    public function __construct($xpath, Matcher $matcher = null)
+    public function __construct($xpath, ?Matcher $matcher = null)
     {
         $this->_xpath = $xpath;
         $this->_matcher = $matcher;
@@ -40,6 +48,7 @@ class HasXPath extends DiagnosingMatcher
 
     /**
      * Matches if the XPath matches against the DOM node and the matcher.
+	 * 如果XPath与DOM节点和匹配器匹配，则匹配。
      *
      * @param string|\DOMNode $actual
      * @param Description $mismatchDescription
@@ -89,6 +98,7 @@ class HasXPath extends DiagnosingMatcher
     /**
      * Applies the configured XPath to the DOM node and returns either
      * the result if it's an expression or the node list if it's a query.
+	 * 将配置过的XPath应用于DOM节点并返回结果,如果它是一个表达式或节点列表,如果它是一个查询。
      *
      * @param \DOMNode $node context from which to issue query
      * @return mixed result of expression or DOMNodeList from query
@@ -109,6 +119,7 @@ class HasXPath extends DiagnosingMatcher
     /**
      * Matches if the list of nodes is not empty and the content of at least
      * one node matches the configured matcher, if supplied.
+	 * 如果节点列表不是空的,则匹配配置的matcher,如果提供,则至少一个节点的内容匹配。
      *
      * @param \DOMNodeList $nodes selected by the XPath query
      * @param Description $mismatchDescription

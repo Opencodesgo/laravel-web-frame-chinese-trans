@@ -1,4 +1,8 @@
 <?php
+/**
+ * DeepCopy，类型过滤器，Spl，数组对象过滤器
+ */
+
 namespace DeepCopy\TypeFilter\Spl;
 
 use DeepCopy\DeepCopy;

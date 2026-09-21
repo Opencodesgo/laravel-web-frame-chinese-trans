@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，深度范围过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * DepthRangeFilterIterator limits the directory depth.
+ * DepthRangeFilterIterator限制目录深度
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -23,7 +27,7 @@ namespace Symfony\Component\Finder\Iterator;
  */
 class DepthRangeFilterIterator extends \FilterIterator
 {
-    private $minDepth = 0;
+    private int $minDepth = 0;
 
     /**
      * @param \RecursiveIteratorIterator<\RecursiveIterator<TKey, TValue>> $iterator The Iterator to filter
@@ -40,11 +44,9 @@ class DepthRangeFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
-     *
-     * @return bool
+	 * 过滤迭代器值
      */
-    #[\ReturnTypeWillChange]
-    public function accept()
+    public function accept(): bool
     {
         return $this->getInnerIterator()->getDepth() >= $this->minDepth;
     }

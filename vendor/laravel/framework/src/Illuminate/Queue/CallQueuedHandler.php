@@ -1,17 +1,24 @@
 <?php
 /**
- * Illuminate，队列，调用队列处理者
+ * Illuminate，队列，调用队列处理程序
  */
 
 namespace Illuminate\Queue;
 
 use Exception;
+use Illuminate\Bus\Batchable;
+use Illuminate\Bus\UniqueLock;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Contracts\Queue\Job;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pipeline\Pipeline;
 use ReflectionClass;
+use RuntimeException;
 
 class CallQueuedHandler
 {
@@ -33,7 +40,7 @@ class CallQueuedHandler
 
     /**
      * Create a new handler instance.
-	 * 创建新的处理程序实例
+	 * 创建一个新的处理程序实例
      *
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $dispatcher
      * @param  \Illuminate\Contracts\Container\Container  $container
@@ -47,7 +54,7 @@ class CallQueuedHandler
 
     /**
      * Handle the queued job.
-	 * 处理队列任务
+	 * 处理排队作业
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  array  $data
@@ -57,21 +64,52 @@ class CallQueuedHandler
     {
         try {
             $command = $this->setJobInstanceIfNecessary(
-                $job, unserialize($data['command'])
+                $job, $this->getCommand($data)
             );
         } catch (ModelNotFoundException $e) {
             return $this->handleModelNotFound($job, $e);
         }
 
+        if ($command instanceof ShouldBeUniqueUntilProcessing) {
+            $this->ensureUniqueJobLockIsReleased($command);
+        }
+
         $this->dispatchThroughMiddleware($job, $command);
+
+        if (! $job->isReleased() && ! $command instanceof ShouldBeUniqueUntilProcessing) {
+            $this->ensureUniqueJobLockIsReleased($command);
+        }
 
         if (! $job->hasFailed() && ! $job->isReleased()) {
             $this->ensureNextJobInChainIsDispatched($command);
+            $this->ensureSuccessfulBatchJobIsRecorded($command);
         }
 
         if (! $job->isDeletedOrReleased()) {
             $job->delete();
         }
+    }
+
+    /**
+     * Get the command from the given payload.
+	 * 从给定的有效负载获取命令
+     *
+     * @param  array  $data
+     * @return mixed
+     *
+     * @throws \RuntimeException
+     */
+    protected function getCommand(array $data)
+    {
+        if (str_starts_with($data['command'], 'O:')) {
+            return unserialize($data['command']);
+        }
+
+        if ($this->container->bound(Encrypter::class)) {
+            return unserialize($this->container[Encrypter::class]->decrypt($data['command']));
+        }
+
+        throw new RuntimeException('Unable to extract job payload.');
     }
 
     /**
@@ -84,6 +122,10 @@ class CallQueuedHandler
      */
     protected function dispatchThroughMiddleware(Job $job, $command)
     {
+        if ($command instanceof \__PHP_Incomplete_Class) {
+            throw new Exception('Job is incomplete class: '.json_encode($command));
+        }
+
         return (new Pipeline($this->container))->send($command)
                 ->through(array_merge(method_exists($command, 'middleware') ? $command->middleware() : [], $command->middleware ?? []))
                 ->then(function ($command) use ($job) {
@@ -144,8 +186,43 @@ class CallQueuedHandler
     }
 
     /**
+     * Ensure the batch is notified of the successful job completion.
+	 * 确保将作业成功完成通知批处理
+     *
+     * @param  mixed  $command
+     * @return void
+     */
+    protected function ensureSuccessfulBatchJobIsRecorded($command)
+    {
+        $uses = class_uses_recursive($command);
+
+        if (! in_array(Batchable::class, $uses) ||
+            ! in_array(InteractsWithQueue::class, $uses)) {
+            return;
+        }
+
+        if ($batch = $command->batch()) {
+            $batch->recordSuccessfulJob($command->job->uuid());
+        }
+    }
+
+    /**
+     * Ensure the lock for a unique job is released.
+	 * 确保唯一作业的锁被释放
+     *
+     * @param  mixed  $command
+     * @return void
+     */
+    protected function ensureUniqueJobLockIsReleased($command)
+    {
+        if ($command instanceof ShouldBeUnique) {
+            (new UniqueLock($this->container->make(Cache::class)))->release($command);
+        }
+    }
+
+    /**
      * Handle a model not found exception.
-	 * 处理模型未找到异常
+	 * 处理未找到模型的异常
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  \Throwable  $e
@@ -171,20 +248,69 @@ class CallQueuedHandler
 
     /**
      * Call the failed method on the job instance.
-	 * 在任务实例上调用失败的方法
+	 * 在作业实例上调用失败的方法
      *
      * The exception that caused the failure will be passed.
+	 * 导致失败的异常将被传递
      *
      * @param  array  $data
-     * @param  \Throwable  $e
+     * @param  \Throwable|null  $e
+     * @param  string  $uuid
      * @return void
      */
-    public function failed(array $data, $e)
+    public function failed(array $data, $e, string $uuid)
     {
-        $command = unserialize($data['command']);
+        $command = $this->getCommand($data);
+
+        if (! $command instanceof ShouldBeUniqueUntilProcessing) {
+            $this->ensureUniqueJobLockIsReleased($command);
+        }
+
+        if ($command instanceof \__PHP_Incomplete_Class) {
+            return;
+        }
+
+        $this->ensureFailedBatchJobIsRecorded($uuid, $command, $e);
+        $this->ensureChainCatchCallbacksAreInvoked($uuid, $command, $e);
 
         if (method_exists($command, 'failed')) {
             $command->failed($e);
+        }
+    }
+
+    /**
+     * Ensure the batch is notified of the failed job.
+	 * 确保将失败的作业通知批处理
+     *
+     * @param  string  $uuid
+     * @param  mixed  $command
+     * @param  \Throwable  $e
+     * @return void
+     */
+    protected function ensureFailedBatchJobIsRecorded(string $uuid, $command, $e)
+    {
+        if (! in_array(Batchable::class, class_uses_recursive($command))) {
+            return;
+        }
+
+        if ($batch = $command->batch()) {
+            $batch->recordFailedJob($uuid, $e);
+        }
+    }
+
+    /**
+     * Ensure the chained job catch callbacks are invoked.
+	 * 确保调用了链接的作业捕获回调
+     *
+     * @param  string  $uuid
+     * @param  mixed  $command
+     * @param  \Throwable  $e
+     * @return void
+     */
+    protected function ensureChainCatchCallbacksAreInvoked(string $uuid, $command, $e)
+    {
+        if (method_exists($command, 'invokeChainCatchCallbacks')) {
+            $command->invokeChainCatchCallbacks($e);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，文件系统，文件系统
+ * Illuminate，契约，文件系统，文件系统接口
  */
 
 namespace Illuminate\Contracts\Filesystem;
@@ -9,7 +9,7 @@ interface Filesystem
 {
     /**
      * The public visibility setting.
-	 * 公众能见度设置
+	 * 公共能见度设置
      *
      * @var string
      */
@@ -34,12 +34,10 @@ interface Filesystem
 
     /**
      * Get the contents of a file.
-	 * 获取文件的内容
+	 * 得到文件内容
      *
      * @param  string  $path
-     * @return string
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return string|null
      */
     public function get($path);
 
@@ -49,8 +47,6 @@ interface Filesystem
      *
      * @param  string  $path
      * @return resource|null The path resource or null on failure.
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function readStream($path);
 
@@ -73,9 +69,6 @@ interface Filesystem
      * @param  resource  $resource
      * @param  array  $options
      * @return bool
-     *
-     * @throws \InvalidArgumentException If $resource is not a file handle.
-     * @throws \Illuminate\Contracts\Filesystem\FileExistsException
      */
     public function writeStream($path, $resource, array $options = []);
 
@@ -196,7 +189,7 @@ interface Filesystem
 
     /**
      * Get all (recursive) of the directories within a given directory.
-	 * 在给定目录中删除所有（递归）目录
+	 * 获取给定目录中的所有（递归）目录
      *
      * @param  string|null  $directory
      * @return array

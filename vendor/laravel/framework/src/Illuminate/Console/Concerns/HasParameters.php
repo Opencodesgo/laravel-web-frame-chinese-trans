@@ -26,7 +26,7 @@ trait HasParameters
             if ($arguments instanceof InputArgument) {
                 $this->getDefinition()->addArgument($arguments);
             } else {
-                $this->addArgument(...array_values($arguments));
+                $this->addArgument(...$arguments);
             }
         }
 
@@ -34,14 +34,14 @@ trait HasParameters
             if ($options instanceof InputOption) {
                 $this->getDefinition()->addOption($options);
             } else {
-                $this->addOption(...array_values($options));
+                $this->addOption(...$options);
             }
         }
     }
 
     /**
      * Get the console command arguments.
-	 * 获取控制台命令参数
+	 * 得到控制台命令参数
      *
      * @return array
      */
@@ -52,7 +52,7 @@ trait HasParameters
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

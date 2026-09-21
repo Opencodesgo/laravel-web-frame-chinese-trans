@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，字符串处理，经过，取消对内部可序列化类的非序列化
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

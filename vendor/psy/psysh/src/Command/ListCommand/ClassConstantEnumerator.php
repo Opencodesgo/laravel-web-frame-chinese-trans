@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，类常量枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Class Constant Enumerator class.
+ * 类常量枚举器类。
  */
 class ClassConstantEnumerator extends Enumerator
 {
@@ -54,6 +58,7 @@ class ClassConstantEnumerator extends Enumerator
 
     /**
      * Get defined constants for the given class or object Reflector.
+	 * 获取给定类或对象Reflector的定义常量
      *
      * @param \ReflectionClass $reflector
      * @param bool             $noInherit Exclude inherited constants
@@ -82,6 +87,7 @@ class ClassConstantEnumerator extends Enumerator
 
     /**
      * Prepare formatted constant array.
+	 * 准备格式化的常量数组
      *
      * @param array $constants
      *
@@ -107,6 +113,7 @@ class ClassConstantEnumerator extends Enumerator
 
     /**
      * Get a label for the particular kind of "class" represented.
+	 * 获取所表示的特定类型的“类”的标签
      *
      * @param \ReflectionClass $reflector
      */

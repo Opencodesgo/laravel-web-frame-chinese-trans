@@ -9,9 +9,9 @@ interface ShouldBroadcast
 {
     /**
      * Get the channels the event should broadcast on.
-	 * 获取该事件应该播放的信道
+	 * 得到应该广播的事件信道
      *
-     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]
+     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]|string[]|string
      */
     public function broadcastOn();
 }

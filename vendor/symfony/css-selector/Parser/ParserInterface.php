@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，解析器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\CssSelector\Node\SelectorNode;
 
 /**
  * CSS selector parser interface.
+ * CSS选择器解析器接口。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,6 +31,7 @@ interface ParserInterface
 {
     /**
      * Parses given selector source into an array of tokens.
+	 * 将给定的选择器源解析为令牌数组
      *
      * @return SelectorNode[]
      */

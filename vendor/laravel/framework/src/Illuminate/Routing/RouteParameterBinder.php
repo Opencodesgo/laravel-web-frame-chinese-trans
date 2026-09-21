@@ -19,7 +19,7 @@ class RouteParameterBinder
 
     /**
      * Create a new Route parameter binder instance.
-	 * 创建新的路由参数绑定实例
+	 * 创建一个新的路由参数绑定实例
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void

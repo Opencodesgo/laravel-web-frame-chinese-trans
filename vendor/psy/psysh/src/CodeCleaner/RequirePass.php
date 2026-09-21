@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，需要通过
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Add runtime validation for `require` and `require_once` calls.
+ * 增加‘ require ’和‘ require_once ’调用的运行时验证。
  */
 class RequirePass extends CodeCleanerPass
 {
@@ -67,6 +71,7 @@ class RequirePass extends CodeCleanerPass
 
     /**
      * Runtime validation that $file can be resolved as an include path.
+	 * 运行时验证$file可以解析为包含路径。
      *
      * If $file can be resolved, return $file. Otherwise throw a fatal error exception.
      *

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，环境，运行时
+ */
+
 /*
  * This file is part of sebastian/environment.
  *
@@ -32,6 +37,7 @@ use function strpos;
 
 /**
  * Utility class for HHVM/PHP environment handling.
+ * 用于HHVM/PHP环境处理的实用程序类。
  */
 final class Runtime
 {
@@ -43,6 +49,7 @@ final class Runtime
     /**
      * Returns true when Xdebug or PCOV is available or
      * the runtime used is PHPDBG.
+	 * 当 Xdebug 或 PCOV 可用，或所使用的运行时为 PHPDBG 时返回 true。
      */
     public function canCollectCodeCoverage(): bool
     {

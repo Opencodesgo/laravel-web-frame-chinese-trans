@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输出，Shell 输出
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * A ConsoleOutput subclass specifically for Psy Shell output.
+ * 一个ConsoleOutput子类，专门用于Psy Shell输出。
  */
 class ShellOutput extends ConsoleOutput
 {
@@ -28,6 +32,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Construct a ShellOutput instance.
+	 * 构造一个ShellOutput实例
      *
      * @param mixed                         $verbosity (default: self::VERBOSITY_NORMAL)
      * @param bool|null                     $decorated (default: null)
@@ -54,6 +59,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Page multiple lines of output.
+	 * 对多行输出进行分页。
      *
      * The output pager is started
      *
@@ -88,6 +94,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Start sending output to the output pager.
+	 * 开始向输出分页发送输出
      */
     public function startPaging()
     {
@@ -96,6 +103,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Stop paging output and flush the output pager.
+	 * 停止分页输出并刷新输出分页
      */
     public function stopPaging()
     {
@@ -105,6 +113,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Writes a message to the output.
+	 * 将消息写入输出。
      *
      * Optionally, pass `$type | self::NUMBER_LINES` as the $type parameter to
      * number the lines of output.
@@ -144,6 +153,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Writes a message to the output.
+	 * 将消息写入输出。
      *
      * Handles paged output, or writes directly to the output stream.
      *
@@ -162,6 +172,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Set the output Theme.
+	 * 设置输出主题
      */
     public function setTheme(Theme $theme)
     {
@@ -171,6 +182,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Flush and close the output pager.
+	 * 刷新并关闭输出页。
      */
     private function closePager()
     {
@@ -181,6 +193,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Initialize output formatter styles.
+	 * 初始化输出格式化程序样式
      */
     private function initFormatters()
     {
@@ -191,6 +204,7 @@ class ShellOutput extends ConsoleOutput
 
     /**
      * Checks if the "gray" color exists on the output.
+	 * 检查输出上是否存在“灰色”颜色。
      */
     private function grayExists(): bool
     {

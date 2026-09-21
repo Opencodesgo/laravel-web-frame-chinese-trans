@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Contracts，Service，测试，服务定位器测试用例
+ */
 
 /*
  * This file is part of the Symfony package.

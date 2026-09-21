@@ -1,28 +1,31 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，模型未找到异常
+ * Illuminate，数据库，Eloquent，模型未发现异常
  */
 
 namespace Illuminate\Database\Eloquent;
 
+use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Support\Arr;
-use RuntimeException;
 
-class ModelNotFoundException extends RuntimeException
+/**
+ * @template TModel of \Illuminate\Database\Eloquent\Model
+ */
+class ModelNotFoundException extends RecordsNotFoundException
 {
     /**
      * Name of the affected Eloquent model.
 	 * 受影响的Eloquent模型的名称
      *
-     * @var string
+     * @var class-string<TModel>
      */
     protected $model;
 
     /**
      * The affected model IDs.
-	 * 受影响的型号id
+	 * 受影响的模型IDS
      *
-     * @var int|array
+     * @var array<int, int|string>
      */
     protected $ids;
 
@@ -30,8 +33,8 @@ class ModelNotFoundException extends RuntimeException
      * Set the affected Eloquent model and instance ids.
 	 * 设置受影响的Eloquent模型和实例id
      *
-     * @param  string  $model
-     * @param  int|array  $ids
+     * @param  class-string<TModel>  $model
+     * @param  array<int, int|string>|int|string  $ids
      * @return $this
      */
     public function setModel($model, $ids = [])
@@ -54,7 +57,7 @@ class ModelNotFoundException extends RuntimeException
      * Get the affected Eloquent model.
 	 * 获取受影响的Eloquent模型
      *
-     * @return string
+     * @return class-string<TModel>
      */
     public function getModel()
     {
@@ -63,9 +66,9 @@ class ModelNotFoundException extends RuntimeException
 
     /**
      * Get the affected Eloquent model IDs.
-	 * 获取受影响的Eloquent模型id
+	 * 获取受影响的Eloquent模型
      *
-     * @return int|array
+     * @return array<int, int|string>
      */
     public function getIds()
     {

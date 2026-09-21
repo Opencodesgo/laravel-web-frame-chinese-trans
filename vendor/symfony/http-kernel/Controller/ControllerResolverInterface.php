@@ -28,6 +28,7 @@ interface ControllerResolverInterface
 {
     /**
      * Returns the Controller instance associated with a Request.
+	 * 返回与请求关联的控制器实例。
      *
      * As several resolvers can exist for a single application, a resolver must
      * return false when it is not able to determine the controller.
@@ -40,5 +41,5 @@ interface ControllerResolverInterface
      *
      * @throws \LogicException If a controller was found based on the request but it is not callable
      */
-    public function getController(Request $request);
+    public function getController(Request $request): callable|false;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特征，转换器
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -25,6 +28,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Converter.
+ * 特征转换器。
  *
  * Change date into different string formats and types and
  * handle the string cast.
@@ -39,6 +43,7 @@ trait Converter
 
     /**
      * Returns the formatted date string on success or FALSE on failure.
+	 * 成功时返回格式化日期字符串，失败时返回FALSE。
      *
      * @see https://php.net/manual/en/datetime.format.php
      *
@@ -76,6 +81,7 @@ trait Converter
 
     /**
      * Format the instance as a string using the set format
+	 * 使用set Format将实例格式化为字符串
      *
      * @example
      * ```
@@ -99,6 +105,7 @@ trait Converter
 
     /**
      * Format the instance as date
+	 * 将实例格式化为date
      *
      * @example
      * ```
@@ -114,6 +121,7 @@ trait Converter
 
     /**
      * Format the instance as a readable date
+	 * 将实例格式化为可读日期
      *
      * @example
      * ```
@@ -127,8 +135,11 @@ trait Converter
         return $this->rawFormat('M j, Y');
     }
 
+
+
     /**
      * Format the instance with the day, and a readable date
+	 * 用日期和可读日期格式化实例
      *
      * @example
      * ```
@@ -144,6 +155,7 @@ trait Converter
 
     /**
      * Format the instance as time
+	 * 将实例格式化为time
      *
      * @example
      * ```
@@ -161,6 +173,7 @@ trait Converter
 
     /**
      * Format the instance as date and time
+	 * 将实例格式化为日期和时间
      *
      * @example
      * ```
@@ -178,6 +191,7 @@ trait Converter
 
     /**
      * Return a format from H:i to H:i:s.u according to given unit precision.
+	 * 返回从H:i到H:i:s的格式。U按给定的单位精度。
      *
      * @param string $unitPrecision "minute", "second", "millisecond" or "microsecond"
      *
@@ -203,6 +217,7 @@ trait Converter
 
     /**
      * Format the instance as date and time T-separated with no timezone
+	 * 将实例格式化为日期和时间t分隔，不带时区
      *
      * @example
      * ```
@@ -222,6 +237,7 @@ trait Converter
 
     /**
      * Format the instance with day, date and time
+	 * 用日期、日期和时间格式化实例
      *
      * @example
      * ```
@@ -237,6 +253,7 @@ trait Converter
 
     /**
      * Format the instance as ATOM
+	 * 将实例格式化为ATOM
      *
      * @example
      * ```
@@ -446,6 +463,7 @@ trait Converter
 
     /**
      * Get default array representation.
+	 * 获取默认数组表示
      *
      * @example
      * ```
@@ -474,6 +492,7 @@ trait Converter
 
     /**
      * Get default object representation.
+	 * 获取默认对象表示
      *
      * @example
      * ```
@@ -489,6 +508,7 @@ trait Converter
 
     /**
      * Returns english human readable complete date string.
+	 * 返回英文人类可读的完整日期字符串
      *
      * @example
      * ```
@@ -546,6 +566,7 @@ trait Converter
 
     /**
      * Return native DateTime PHP object matching the current instance.
+	 * 返回与当前实例匹配的本机DateTime PHP对象
      *
      * @example
      * ```
@@ -561,6 +582,7 @@ trait Converter
 
     /**
      * Return native toDateTimeImmutable PHP object matching the current instance.
+	 * 返回与当前实例匹配的原生toDateTimeImmutable PHP对象
      *
      * @example
      * ```
@@ -593,6 +615,7 @@ trait Converter
 
     /**
      * Create a iterable CarbonPeriod object from current date to a given end date (and optional interval).
+	 * 创建一个从当前日期到给定结束日期（和可选间隔）的可迭代CarbonPeriod对象
      *
      * @param \DateTimeInterface|Carbon|CarbonImmutable|int|null $end      period end date or recurrences count if int
      * @param int|\DateInterval|string|null                      $interval period default interval or number of the given $unit
@@ -625,6 +648,7 @@ trait Converter
 
     /**
      * Create a iterable CarbonPeriod object from current date to a given end date (and optional interval).
+	 * 创建一个从当前日期到给定结束日期（和可选间隔）的可迭代CarbonPeriod对象
      *
      * @param \DateTimeInterface|Carbon|CarbonImmutable|null $end      period end date
      * @param int|\DateInterval|string|null                  $interval period default interval or number of the given $unit

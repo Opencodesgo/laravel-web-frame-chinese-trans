@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，中间件，身份验证会话
+ * Illuminate，Session，中间件，身份验证会话
  */
 
 namespace Illuminate\Session\Middleware;
@@ -8,12 +8,13 @@ namespace Illuminate\Session\Middleware;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Contracts\Session\Middleware\AuthenticatesSessions;
 
-class AuthenticateSession
+class AuthenticateSession implements AuthenticatesSessions
 {
     /**
      * The authentication factory implementation.
-	 * 身份验证工厂实现。
+	 * 身份验证工厂实现
      *
      * @var \Illuminate\Contracts\Auth\Factory
      */
@@ -21,7 +22,7 @@ class AuthenticateSession
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
@@ -45,24 +46,26 @@ class AuthenticateSession
             return $next($request);
         }
 
-        if ($this->auth->viaRemember()) {
-            $passwordHash = explode('|', $request->cookies->get($this->auth->getRecallerName()))[2] ?? null;
+        if ($this->guard()->viaRemember()) {
+            $passwordHash = explode('|', $request->cookies->get($this->guard()->getRecallerName()))[2] ?? null;
 
             if (! $passwordHash || $passwordHash != $request->user()->getAuthPassword()) {
                 $this->logout($request);
             }
         }
 
-        if (! $request->session()->has('password_hash')) {
+        if (! $request->session()->has('password_hash_'.$this->auth->getDefaultDriver())) {
             $this->storePasswordHashInSession($request);
         }
 
-        if ($request->session()->get('password_hash') !== $request->user()->getAuthPassword()) {
+        if ($request->session()->get('password_hash_'.$this->auth->getDefaultDriver()) !== $request->user()->getAuthPassword()) {
             $this->logout($request);
         }
 
         return tap($next($request), function () use ($request) {
-            $this->storePasswordHashInSession($request);
+            if (! is_null($this->guard()->user())) {
+                $this->storePasswordHashInSession($request);
+            }
         });
     }
 
@@ -80,7 +83,7 @@ class AuthenticateSession
         }
 
         $request->session()->put([
-            'password_hash' => $request->user()->getAuthPassword(),
+            'password_hash_'.$this->auth->getDefaultDriver() => $request->user()->getAuthPassword(),
         ]);
     }
 
@@ -95,10 +98,21 @@ class AuthenticateSession
      */
     protected function logout($request)
     {
-        $this->auth->logoutCurrentDevice();
+        $this->guard()->logoutCurrentDevice();
 
         $request->session()->flush();
 
-        throw new AuthenticationException;
+        throw new AuthenticationException('Unauthenticated.', [$this->auth->getDefaultDriver()]);
+    }
+
+    /**
+     * Get the guard instance that should be used by the middleware.
+	 * 获取中间件应该使用的保护实例
+     *
+     * @return \Illuminate\Contracts\Auth\Factory|\Illuminate\Contracts\Auth\Guard
+     */
+    protected function guard()
+    {
+        return $this->auth;
     }
 }

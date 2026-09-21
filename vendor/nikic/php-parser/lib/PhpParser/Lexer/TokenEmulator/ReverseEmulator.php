@@ -1,11 +1,16 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer，内部，令牌仿真器，反向模拟器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
 use PhpParser\PhpVersion;
 
 /**
  * Reverses emulation direction of the inner emulator.
+ * 反转内部仿真器的仿真方向。
  */
 final class ReverseEmulator extends TokenEmulator {
     /** @var TokenEmulator Inner emulator */

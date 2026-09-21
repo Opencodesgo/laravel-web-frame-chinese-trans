@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Group 处理器	(允许将日志同时发送到多个处理器)
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\ResettableInterface;
 
 /**
  * Forwards records to multiple handlers
+ * 将记录转发给多个处理程序
  *
  * @author Lenar Lõhmus <lenar@city.ee>
  *

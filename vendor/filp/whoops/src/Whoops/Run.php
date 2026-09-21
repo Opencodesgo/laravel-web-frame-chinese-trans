@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，运行
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -64,6 +68,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
+	 * 在某些情况下，比如在shutdown处理程序中，我们不能抛出异常。
      *
      * @var bool
      */
@@ -87,8 +92,14 @@ final class Run implements RunInterface
         $this->inspectorFactory = new InspectorFactory();
     }
 
+    public function __destruct()
+    {
+        $this->unregister();
+    }
+
     /**
      * Explicitly request your handler runs as the last of all currently registered handlers.
+	 * 显式请求您的处理程序作为所有当前注册的处理程序中的最后一个运行。
      *
      * @param callable|HandlerInterface $handler
      *
@@ -172,6 +183,7 @@ final class Run implements RunInterface
 
     /**
      * Clears all handlers in the handlerStack, including the default PrettyPage handler.
+	 * 清除handlerStack中的所有处理程序，包括默认的pretypage处理程序。
      *
      * @return Run
      */
@@ -365,6 +377,7 @@ final class Run implements RunInterface
 
     /**
      * Handles an exception, ultimately generating a Whoops error page.
+	 * 处理一个异常，最终生成一个Whoops错误页面。
      *
      * @param Throwable $exception
      *
@@ -448,6 +461,7 @@ final class Run implements RunInterface
 
     /**
      * Converts generic PHP errors to \ErrorException instances, before passing them off to be handled.
+	 * 将一般PHP错误转换为ErrorException实例，然后将其传递给处理。
      *
      * This method MUST be compatible with set_error_handler.
      *
@@ -492,6 +506,7 @@ final class Run implements RunInterface
 
     /**
      * Special case to deal with Fatal errors and the like.
+	 * 处理致命错误等的特殊情况
      *
      * @return void
      */
@@ -501,6 +516,11 @@ final class Run implements RunInterface
         // An exception thrown in a shutdown handler will not be propagated
         // to the exception handler. Pass that information along.
         $this->canThrowExceptions = false;
+
+        // If we are not currently registered, we should not do anything
+        if (!$this->isRegistered) {
+            return;
+        }
 
         $error = $this->system->getLastError();
         if ($error && Misc::isLevelFatal($error['type'])) {
@@ -531,7 +551,7 @@ final class Run implements RunInterface
     {
         if (!is_callable($filterCallback)) {
             throw new \InvalidArgumentException(sprintf(
-                "A frame filter must be of type callable, %s type given.", 
+                "A frame filter must be of type callable, %s type given.",
                 gettype($filterCallback)
             ));
         }
@@ -552,6 +572,7 @@ final class Run implements RunInterface
 
     /**
      * Resolves the giving handler.
+	 * 解析给出的处理程序
      *
      * @param callable|HandlerInterface $handler
      *
@@ -577,6 +598,7 @@ final class Run implements RunInterface
 
     /**
      * Echo something to the browser.
+	 * 向浏览器回显一些内容
      *
      * @param string $output
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，XPath，扩展，节点扩展
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
 
 /**
  * XPath expression translator node extension.
+ * XPath表达式转换器节点扩展。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -31,7 +35,7 @@ class NodeExtension extends AbstractExtension
     public const ATTRIBUTE_NAME_IN_LOWER_CASE = 2;
     public const ATTRIBUTE_VALUE_IN_LOWER_CASE = 4;
 
-    private $flags;
+    private int $flags;
 
     public function __construct(int $flags = 0)
     {
@@ -41,7 +45,7 @@ class NodeExtension extends AbstractExtension
     /**
      * @return $this
      */
-    public function setFlag(int $flag, bool $on): self
+    public function setFlag(int $flag, bool $on): static
     {
         if ($on && !$this->hasFlag($flag)) {
             $this->flags += $flag;
@@ -59,21 +63,18 @@ class NodeExtension extends AbstractExtension
         return (bool) ($this->flags & $flag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNodeTranslators(): array
     {
         return [
-            'Selector' => [$this, 'translateSelector'],
-            'CombinedSelector' => [$this, 'translateCombinedSelector'],
-            'Negation' => [$this, 'translateNegation'],
-            'Function' => [$this, 'translateFunction'],
-            'Pseudo' => [$this, 'translatePseudo'],
-            'Attribute' => [$this, 'translateAttribute'],
-            'Class' => [$this, 'translateClass'],
-            'Hash' => [$this, 'translateHash'],
-            'Element' => [$this, 'translateElement'],
+            'Selector' => $this->translateSelector(...),
+            'CombinedSelector' => $this->translateCombinedSelector(...),
+            'Negation' => $this->translateNegation(...),
+            'Function' => $this->translateFunction(...),
+            'Pseudo' => $this->translatePseudo(...),
+            'Attribute' => $this->translateAttribute(...),
+            'Class' => $this->translateClass(...),
+            'Hash' => $this->translateHash(...),
+            'Element' => $this->translateElement(...),
         ];
     }
 
@@ -94,7 +95,7 @@ class NodeExtension extends AbstractExtension
         $subXpath->addNameTest();
 
         if ($subXpath->getCondition()) {
-            return $xpath->addCondition(sprintf('not(%s)', $subXpath->getCondition()));
+            return $xpath->addCondition(\sprintf('not(%s)', $subXpath->getCondition()));
         }
 
         return $xpath->addCondition('0');
@@ -124,11 +125,11 @@ class NodeExtension extends AbstractExtension
         }
 
         if ($node->getNamespace()) {
-            $name = sprintf('%s:%s', $node->getNamespace(), $name);
+            $name = \sprintf('%s:%s', $node->getNamespace(), $name);
             $safe = $safe && $this->isSafeName($node->getNamespace());
         }
 
-        $attribute = $safe ? '@'.$name : sprintf('attribute::*[name() = %s]', Translator::getXpathLiteral($name));
+        $attribute = $safe ? '@'.$name : \sprintf('attribute::*[name() = %s]', Translator::getXpathLiteral($name));
         $value = $node->getValue();
         $xpath = $translator->nodeToXPath($node->getSelector());
 
@@ -169,7 +170,7 @@ class NodeExtension extends AbstractExtension
         }
 
         if ($node->getNamespace()) {
-            $element = sprintf('%s:%s', $node->getNamespace(), $element);
+            $element = \sprintf('%s:%s', $node->getNamespace(), $element);
             $safe = $safe && $this->isSafeName($node->getNamespace());
         }
 
@@ -182,9 +183,6 @@ class NodeExtension extends AbstractExtension
         return $xpath;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'node';

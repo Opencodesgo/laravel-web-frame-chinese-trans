@@ -30,10 +30,10 @@ class ViewException extends ErrorException
 
     /**
      * Render the exception into an HTTP response.
-	 * 呈现异常为HTTP响应
+	 * 将异常呈现为HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|null
      */
     public function render($request)
     {

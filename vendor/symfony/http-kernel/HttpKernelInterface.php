@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * HttpKernelInterface handles a Request to convert it to a Response.
- * HttpKernelInterface 处理请求并将其转换为响应
+ * HttpKernelInterface处理请求并将其转换为响应。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -36,6 +36,7 @@ interface HttpKernelInterface
 
     /**
      * Handles a Request to convert it to a Response.
+	 * 处理请求以将其转换为响应。
      *
      * When $catch is true, the implementation must catch all exceptions
      * and do its best to convert them to a Response instance.
@@ -44,9 +45,7 @@ interface HttpKernelInterface
      *                    (one of HttpKernelInterface::MAIN_REQUEST or HttpKernelInterface::SUB_REQUEST)
      * @param bool $catch Whether to catch exceptions or not
      *
-     * @return Response
-     *
      * @throws \Exception When an Exception occurs during processing
      */
-    public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true);
+    public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response;
 }

@@ -5,15 +5,20 @@
 
 namespace Illuminate\Foundation\Testing;
 
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use Illuminate\Queue\Queue;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Str;
+use Illuminate\View\Component;
 use Mockery;
 use Mockery\Exception\InvalidCountException;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use PHPUnit\Util\Annotation\Registry;
 use Throwable;
 
 abstract class TestCase extends BaseTestCase
@@ -23,21 +28,24 @@ abstract class TestCase extends BaseTestCase
         Concerns\InteractsWithAuthentication,
         Concerns\InteractsWithConsole,
         Concerns\InteractsWithDatabase,
+        Concerns\InteractsWithDeprecationHandling,
         Concerns\InteractsWithExceptionHandling,
         Concerns\InteractsWithSession,
+        Concerns\InteractsWithTime,
+        Concerns\InteractsWithViews,
         Concerns\MocksApplicationServices;
 
     /**
      * The Illuminate application instance.
-	 * 点亮应用实例
+	 * Illuminate应用实例
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
     /**
      * The callbacks that should be run after the application is created.
-	 * 在创建应用程序后应该运行的回调
+	 * 创建应用程序后应该运行的回调函数
      *
      * @var array
      */
@@ -45,7 +53,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * The callbacks that should be run before the application is destroyed.
-	 * 在应用程序被销毁之前应该运行的回调
+	 * 在销毁应用程序之前应该运行的回调函数
      *
      * @var array
      */
@@ -61,7 +69,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Indicates if we have made it through the base setUp function.
-	 * 如果我们通过基本设置函数来表示
+	 * 指示我们是否通过了基本setUp函数
      *
      * @var bool
      */
@@ -80,16 +88,20 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Setup the test environment.
-	 * 设置测试环境
+	 * 安装测试环境
      *
      * @return void
      */
     protected function setUp(): void
     {
+        static::$latestResponse = null;
+
         Facade::clearResolvedInstances();
 
         if (! $this->app) {
             $this->refreshApplication();
+
+            ParallelTesting::callSetUpTestCaseCallbacks($this);
         }
 
         $this->setUpTraits();
@@ -105,7 +117,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Refresh the application instance.
-	 * 刷新应用程序实例
+	 * 刷新应用实例
      *
      * @return void
      */
@@ -116,7 +128,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Boot the testing helper traits.
-	 * 引导测试助手的特性
+	 * 启动测试助手特征
      *
      * @return array
      */
@@ -130,6 +142,10 @@ abstract class TestCase extends BaseTestCase
 
         if (isset($uses[DatabaseMigrations::class])) {
             $this->runDatabaseMigrations();
+        }
+
+        if (isset($uses[DatabaseTruncation::class])) {
+            $this->truncateDatabaseTables();
         }
 
         if (isset($uses[DatabaseTransactions::class])) {
@@ -148,12 +164,22 @@ abstract class TestCase extends BaseTestCase
             $this->setUpFaker();
         }
 
+        foreach ($uses as $trait) {
+            if (method_exists($this, $method = 'setUp'.class_basename($trait))) {
+                $this->{$method}();
+            }
+
+            if (method_exists($this, $method = 'tearDown'.class_basename($trait))) {
+                $this->beforeApplicationDestroyed(fn () => $this->{$method}());
+            }
+        }
+
         return $uses;
     }
 
     /**
      * Clean up the testing environment before the next test.
-	 * 在下一次测试前清理测试环境
+	 * 在下次测试前清理测试环境
      *
      * @return void
      *
@@ -163,6 +189,8 @@ abstract class TestCase extends BaseTestCase
     {
         if ($this->app) {
             $this->callBeforeApplicationDestroyedCallbacks();
+
+            ParallelTesting::callTearDownTestCaseCallbacks($this);
 
             $this->app->flush();
 
@@ -204,11 +232,35 @@ abstract class TestCase extends BaseTestCase
         $this->afterApplicationCreatedCallbacks = [];
         $this->beforeApplicationDestroyedCallbacks = [];
 
+        $this->originalExceptionHandler = null;
+        $this->originalDeprecationHandler = null;
+
         Artisan::forgetBootstrappers();
+        Component::flushCache();
+        Component::forgetComponentsResolver();
+        Component::forgetFactory();
+        Queue::createPayloadUsing(null);
+        HandleExceptions::forgetApp();
 
         if ($this->callbackException) {
             throw $this->callbackException;
         }
+    }
+
+    /**
+     * Clean up the testing environment before the next test case.
+	 * 在下一个测试用例之前清理测试环境
+     *
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        static::$latestResponse = null;
+
+        (function () {
+            $this->classDocBlocks = [];
+            $this->methodDocBlocks = [];
+        })->call(Registry::getInstance());
     }
 
     /**
@@ -229,7 +281,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Register a callback to be run before the application is destroyed.
-	 * 在应用程序被销毁之前注册回调
+	 * 注册一个回调，以便在销毁应用程序之前运行。
      *
      * @param  callable  $callback
      * @return void
@@ -241,7 +293,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Execute the application's pre-destruction callbacks.
-	 * 执行应用程序预先销毁的回调
+	 * 执行应用程序的预销毁回调
      *
      * @return void
      */
@@ -256,5 +308,21 @@ abstract class TestCase extends BaseTestCase
                 }
             }
         }
+    }
+
+    /**
+     * This method is called when a test method did not execute successfully.
+	 * 当测试方法未成功执行时，将调用此方法。
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     */
+    protected function onNotSuccessfulTest(Throwable $exception): void
+    {
+        parent::onNotSuccessfulTest(
+            is_null(static::$latestResponse)
+                ? $exception
+                : static::$latestResponse->transformNotSuccessfulException($exception)
+        );
     }
 }

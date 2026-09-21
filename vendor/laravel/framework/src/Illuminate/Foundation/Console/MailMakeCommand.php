@@ -5,11 +5,17 @@
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:mail')]
 class MailMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
 	 * 控制台命令名称
@@ -17,6 +23,19 @@ class MailMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:mail';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:mail';
 
     /**
      * The console command description.
@@ -32,7 +51,7 @@ class MailMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'Mail';
+    protected $type = 'Mailable';
 
     /**
      * Execute the console command.
@@ -46,7 +65,7 @@ class MailMakeCommand extends GeneratorCommand
             return;
         }
 
-        if ($this->option('markdown')) {
+        if ($this->option('markdown') !== false) {
             $this->writeMarkdownTemplate();
         }
     }
@@ -60,7 +79,7 @@ class MailMakeCommand extends GeneratorCommand
     protected function writeMarkdownTemplate()
     {
         $path = $this->viewPath(
-            str_replace('.', '/', $this->option('markdown')).'.blade.php'
+            str_replace('.', '/', $this->getView()).'.blade.php'
         );
 
         if (! $this->files->isDirectory(dirname($path))) {
@@ -79,13 +98,38 @@ class MailMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $class = parent::buildClass($name);
+        $class = str_replace(
+            '{{ subject }}',
+            Str::headline(str_replace($this->getNamespace($name).'\\', '', $name)),
+            parent::buildClass($name)
+        );
 
-        if ($this->option('markdown')) {
-            $class = str_replace('DummyView', $this->option('markdown'), $class);
+        if ($this->option('markdown') !== false) {
+            $class = str_replace(['DummyView', '{{ view }}'], $this->getView(), $class);
         }
 
         return $class;
+    }
+
+    /**
+     * Get the view name.
+	 * 得到视图名称
+     *
+     * @return string
+     */
+    protected function getView()
+    {
+        $view = $this->option('markdown');
+
+        if (! $view) {
+            $name = str_replace('\\', '/', $this->argument('name'));
+
+            $view = 'mail.'.collect(explode('/', $name))
+                ->map(fn ($part) => Str::kebab($part))
+                ->implode('.');
+        }
+
+        return $view;
     }
 
     /**
@@ -96,9 +140,24 @@ class MailMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return $this->option('markdown')
-                        ? __DIR__.'/stubs/markdown-mail.stub'
-                        : __DIR__.'/stubs/mail.stub';
+        return $this->resolveStubPath(
+            $this->option('markdown') !== false
+                ? '/stubs/markdown-mail.stub'
+                : '/stubs/mail.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
@@ -123,8 +182,7 @@ class MailMakeCommand extends GeneratorCommand
     {
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the mailable already exists'],
-
-            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable'],
+            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable', false],
         ];
     }
 }

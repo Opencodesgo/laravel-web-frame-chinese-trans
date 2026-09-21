@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，扩展，提及，生成器，提及生成器接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -12,14 +17,9 @@
 namespace League\CommonMark\Extension\Mention\Generator;
 
 use League\CommonMark\Extension\Mention\Mention;
-use League\CommonMark\Inline\Element\AbstractInline;
+use League\CommonMark\Node\Inline\AbstractInline;
 
 interface MentionGeneratorInterface
 {
-    /**
-     * @param Mention $mention
-     *
-     * @return AbstractInline|null
-     */
     public function generateMention(Mention $mention): ?AbstractInline;
 }

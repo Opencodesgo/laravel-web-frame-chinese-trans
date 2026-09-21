@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转存器，Qt 文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,10 +23,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 class QtFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;
@@ -51,10 +51,7 @@ class QtFileDumper extends FileDumper
         return $dom->saveXML();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'ts';
     }

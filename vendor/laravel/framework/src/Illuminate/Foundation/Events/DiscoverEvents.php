@@ -17,7 +17,7 @@ class DiscoverEvents
 {
     /**
      * Get all of the events and listeners by searching the given listener directory.
-	 * 通过搜索给定的侦听器目录获取所有事件和监听器
+	 * 通过搜索给定的侦听器目录获取所有事件和侦听器
      *
      * @param  string  $listenerPath
      * @param  string  $basePath
@@ -25,16 +25,28 @@ class DiscoverEvents
      */
     public static function within($listenerPath, $basePath)
     {
-        return collect(static::getListenerEvents(
+        $listeners = collect(static::getListenerEvents(
             (new Finder)->files()->in($listenerPath), $basePath
-        ))->mapToDictionary(function ($event, $listener) {
-            return [$event => $listener];
-        })->all();
+        ));
+
+        $discoveredEvents = [];
+
+        foreach ($listeners as $listener => $events) {
+            foreach ($events as $event) {
+                if (! isset($discoveredEvents[$event])) {
+                    $discoveredEvents[$event] = [];
+                }
+
+                $discoveredEvents[$event][] = $listener;
+            }
+        }
+
+        return $discoveredEvents;
     }
 
     /**
      * Get all of the listeners and their corresponding events.
-	 * 获取所有的监听器及其相应的事件
+	 * 获取所有的侦听器及其相应的事件
      *
      * @param  iterable  $listeners
      * @param  string  $basePath
@@ -58,13 +70,13 @@ class DiscoverEvents
             }
 
             foreach ($listener->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-                if (! Str::is('handle*', $method->name) ||
+                if ((! Str::is('handle*', $method->name) && ! Str::is('__invoke', $method->name)) ||
                     ! isset($method->getParameters()[0])) {
                     continue;
                 }
 
                 $listenerEvents[$listener->name.'@'.$method->name] =
-                                Reflector::getParameterClassName($method->getParameters()[0]);
+                                Reflector::getParameterClassNames($method->getParameters()[0]);
             }
         }
 
@@ -73,7 +85,7 @@ class DiscoverEvents
 
     /**
      * Extract the class name from the given file path.
-	 * 提取类名从给定的文件路径
+	 * 从给定的文件路径中提取类名
      *
      * @param  \SplFileInfo  $file
      * @param  string  $basePath

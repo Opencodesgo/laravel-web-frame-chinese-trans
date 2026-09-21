@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，宏
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -22,6 +25,7 @@ trait Macro
 
     /**
      * The registered macros.
+	 * 已注册宏
      *
      * @var array
      */
@@ -100,6 +104,7 @@ trait Macro
 
     /**
      * Get the raw callable macro registered globally for a given name.
+	 * 获取为给定名称全局注册的原始可调用宏
      *
      * @param string $name
      *
@@ -112,6 +117,7 @@ trait Macro
 
     /**
      * Checks if macro is registered globally or locally.
+	 * 检查宏是全局注册还是本地注册
      *
      * @param string $name
      *
@@ -124,6 +130,7 @@ trait Macro
 
     /**
      * Get the raw callable macro registered globally or locally for a given name.
+	 * 获取为给定名称全局或本地注册的原始可调用宏
      *
      * @param string $name
      *

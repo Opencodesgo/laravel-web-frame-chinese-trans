@@ -22,8 +22,8 @@ class BroadcastChannel
     protected $events;
 
     /**
-     * Create a new database channel.
-	 * 创建一个新的数据库通道
+     * Create a new broadcast channel.
+	 * 创建一个新的广播通道
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void

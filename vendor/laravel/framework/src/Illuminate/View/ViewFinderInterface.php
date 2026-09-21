@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图查找器接口
+ * Illuminate，视图，视图查找程序接口
  */
 
 namespace Illuminate\View;
@@ -65,7 +65,7 @@ interface ViewFinderInterface
 
     /**
      * Add a valid view extension to the finder.
-	 * 向发现器添加有效的视图扩展
+	 * 向查找器添加有效的视图扩展
      *
      * @param  string  $extension
      * @return void

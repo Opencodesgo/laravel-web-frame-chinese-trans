@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，工厂参数
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org
@@ -54,7 +57,8 @@ class FactoryParameter
     }
 
     /**
-     * Compute the type code for the paramater.
+     * Compute the type code for the parameter.
+	 * 计算参数的类型代码
      *
      * @return string
      */
@@ -84,9 +88,11 @@ class FactoryParameter
 
     /**
      * Compute qualified name for the given type.
+	 * 计算给定类型的合格名称。
      *
      * This function knows how to prefix class names with a leading slash and
      * also how to handle PHP 8's union types.
+	 * 这个函数知道如何用领先的斜杠来前缀类名,以及如何处理PHP 8的union类型。
      *
      * @param ReflectionType $type
      *
@@ -95,6 +101,7 @@ class FactoryParameter
     private static function getQualifiedName(ReflectionType $type)
     {
         // PHP 8 union types can be recursively processed
+		// PHP 8 union类型可以递归处理
         if ($type instanceof ReflectionUnionType) {
             return implode('|', array_map(function (ReflectionType $type) {
                 // The "self::" call within a Closure is fine here because this
@@ -111,6 +118,7 @@ class FactoryParameter
 
     /**
      * Compute the invocation code.
+	 * 计算调用代码
      *
      * @return string
      */
@@ -121,6 +129,7 @@ class FactoryParameter
 
     /**
      * Compute the method name.
+	 * 计算方法名称
      *
      * @return string
      */

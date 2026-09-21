@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，编译后的路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,19 +16,20 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
+ * compileroutes由RouteCompiler类返回
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class CompiledRoute implements \Serializable
 {
-    private $variables;
-    private $tokens;
-    private $staticPrefix;
-    private $regex;
-    private $pathVariables;
-    private $hostVariables;
-    private $hostRegex;
-    private $hostTokens;
+    private array $variables;
+    private array $tokens;
+    private string $staticPrefix;
+    private string $regex;
+    private array $pathVariables;
+    private array $hostVariables;
+    private ?string $hostRegex;
+    private array $hostTokens;
 
     /**
      * @param string      $staticPrefix  The static prefix of the compiled route
@@ -68,7 +72,7 @@ class CompiledRoute implements \Serializable
      */
     final public function serialize(): string
     {
-        return serialize($this->__serialize());
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
 
     public function __unserialize(array $data): void
@@ -86,87 +90,79 @@ class CompiledRoute implements \Serializable
     /**
      * @internal
      */
-    final public function unserialize($serialized)
+    final public function unserialize(string $serialized): void
     {
         $this->__unserialize(unserialize($serialized, ['allowed_classes' => false]));
     }
 
     /**
      * Returns the static prefix.
-     *
-     * @return string
+	 * 返回静态前缀
      */
-    public function getStaticPrefix()
+    public function getStaticPrefix(): string
     {
         return $this->staticPrefix;
     }
 
     /**
      * Returns the regex.
-     *
-     * @return string
+	 * 返回正则表达式
      */
-    public function getRegex()
+    public function getRegex(): string
     {
         return $this->regex;
     }
 
     /**
      * Returns the host regex.
-     *
-     * @return string|null
+	 * 返回主机正则表达式
      */
-    public function getHostRegex()
+    public function getHostRegex(): ?string
     {
         return $this->hostRegex;
     }
 
     /**
      * Returns the tokens.
-     *
-     * @return array
+	 * 返回令牌
      */
-    public function getTokens()
+    public function getTokens(): array
     {
         return $this->tokens;
     }
 
     /**
      * Returns the host tokens.
-     *
-     * @return array
+	 * 返回主机令牌
      */
-    public function getHostTokens()
+    public function getHostTokens(): array
     {
         return $this->hostTokens;
     }
 
     /**
      * Returns the variables.
-     *
-     * @return array
+	 * 返回变量
      */
-    public function getVariables()
+    public function getVariables(): array
     {
         return $this->variables;
     }
 
     /**
      * Returns the path variables.
-     *
-     * @return array
+	 * 返回路径变量
      */
-    public function getPathVariables()
+    public function getPathVariables(): array
     {
         return $this->pathVariables;
     }
 
     /**
      * Returns the host variables.
-     *
-     * @return array
+	 * 返回主机变量
      */
-    public function getHostVariables()
+    public function getHostVariables(): array
     {
         return $this->hostVariables;
     }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Sudo 命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Evaluate PHP code, bypassing visibility restrictions.
+ * 评估PHP代码，绕过可见性限制。
  */
 class SudoCommand extends Command
 {
@@ -47,6 +51,7 @@ class SudoCommand extends Command
 
     /**
      * Set the Shell's Readline service.
+	 * 设置Shell的Readline服务
      *
      * @param Readline $readline
      */

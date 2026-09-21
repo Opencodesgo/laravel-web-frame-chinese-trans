@@ -1,0 +1,58 @@
+<?php
+/**
+ * Illuminate，路由，控制台，存根，根据实际需要修改
+ */
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class {{ class }} extends Controller
+{
+    /**
+     * Store the newly created resource in storage.
+	 * 将新创建的资源存储到存储中
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        abort(404);
+    }
+
+    /**
+     * Display the resource.
+	 * 显示资源
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show()
+    {
+        //
+    }
+
+    /**
+     * Update the resource in storage.
+	 * 更新存储资源
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Remove the resource from storage.
+	 * 从存储中移除资源
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy()
+    {
+        abort(404);
+    }
+}

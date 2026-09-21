@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -32,6 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * List available local variables, object properties, etc.
+ * 列出可用的局部变量、对象属性等。
  */
 class ListCommand extends ReflectingCommand implements PresenterAware
 {
@@ -40,6 +44,7 @@ class ListCommand extends ReflectingCommand implements PresenterAware
 
     /**
      * PresenterAware interface.
+	 * PresenterAware 接口
      *
      * @param Presenter $presenter
      */
@@ -150,6 +155,7 @@ HELP
 
     /**
      * Initialize Enumerators.
+	 * 初始化计数器
      */
     protected function initEnumerators()
     {
@@ -171,6 +177,7 @@ HELP
 
     /**
      * Write the list items to $output.
+	 * 将列表项写入$output
      *
      * @param OutputInterface $output
      * @param array           $result List of enumerated items
@@ -189,6 +196,7 @@ HELP
 
     /**
      * Write the list items to $output.
+	 * 将列表项写入$output
      *
      * Items are listed one per line, and include the item signature.
      *
@@ -218,6 +226,7 @@ HELP
 
     /**
      * Format an item name given its visibility.
+	 * 给定项目的可见性，格式化项目名称。
      *
      * @param array $item
      */
@@ -228,6 +237,7 @@ HELP
 
     /**
      * Validate that input options make sense, provide defaults when called without options.
+	 * 验证输入选项是否有意义，在没有选项的情况下调用时提供默认值。
      *
      * @throws RuntimeException if options are inconsistent
      *

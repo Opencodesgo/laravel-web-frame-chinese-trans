@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，New Relic 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -19,6 +23,7 @@ use Monolog\Formatter\FormatterInterface;
 /**
  * Class to record a log on a NewRelic application.
  * Enabling New Relic High Security mode may prevent capture of useful information.
+ * 类来记录NewRelic应用程序上的日志。
  *
  * This handler requires a NormalizerFormatter to function and expects an array in $record['formatted']
  *
@@ -29,6 +34,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 {
     /**
      * Name of the New Relic application that will receive logs from this handler.
+	 * 将从此处理程序接收日志的New Relic应用程序的名称
      *
      * @var ?string
      */
@@ -122,6 +128,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Checks whether the NewRelic extension is enabled in the system.
+	 * 检查系统中是否启用了NewRelic扩展
      *
      * @return bool
      */
@@ -148,6 +155,7 @@ class NewRelicHandler extends AbstractProcessingHandler
     /**
      * Returns the name of the current transaction. Each log can override the default transaction name, set in this
      * handler's constructor, by providing the transaction_name in it's context
+	 * 返回当前事务的名称。
      *
      * @param mixed[] $context
      */
@@ -162,6 +170,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Sets the NewRelic application that should receive this log.
+	 * 设置应该接收此日志的NewRelic应用程序。
      */
     protected function setNewRelicAppName(string $appName): void
     {
@@ -170,6 +179,7 @@ class NewRelicHandler extends AbstractProcessingHandler
 
     /**
      * Overwrites the name of the current transaction
+	 * 覆盖当前事务的名称
      */
     protected function setNewRelicTransactionName(string $transactionName): void
     {

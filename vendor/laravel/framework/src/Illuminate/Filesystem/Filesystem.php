@@ -8,18 +8,23 @@ namespace Illuminate\Filesystem;
 use ErrorException;
 use FilesystemIterator;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
+use SplFileObject;
+use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Mime\MimeTypes;
 
 class Filesystem
 {
+    use Conditionable;
     use Macroable;
 
     /**
      * Determine if a file or directory exists.
-	 * 确定文件或目录是否存在
+	 * 确定是否文件或目录存在
      *
      * @param  string  $path
      * @return bool
@@ -95,14 +100,22 @@ class Filesystem
 	 * 获取文件的返回值
      *
      * @param  string  $path
+     * @param  array  $data
      * @return mixed
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function getRequire($path)
+    public function getRequire($path, array $data = [])
     {
         if ($this->isFile($path)) {
-            return require $path;
+            $__path = $path;
+            $__data = $data;
+
+            return (static function () use ($__path, $__data) {
+                extract($__data, EXTR_SKIP);
+
+                return require $__path;
+            })();
         }
 
         throw new FileNotFoundException("File does not exist at path {$path}.");
@@ -110,26 +123,69 @@ class Filesystem
 
     /**
      * Require the given file once.
-	 * 要求给定的文件一次
+	 * 引入给定的文件一次
      *
-     * @param  string  $file
+     * @param  string  $path
+     * @param  array  $data
      * @return mixed
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function requireOnce($file)
+    public function requireOnce($path, array $data = [])
     {
-        require_once $file;
+        if ($this->isFile($path)) {
+            $__path = $path;
+            $__data = $data;
+
+            return (static function () use ($__path, $__data) {
+                extract($__data, EXTR_SKIP);
+
+                return require_once $__path;
+            })();
+        }
+
+        throw new FileNotFoundException("File does not exist at path {$path}.");
     }
 
     /**
-     * Get the MD5 hash of the file at the given path.
-	 * 获取给定路径上文件的MD5哈希值
+     * Get the contents of a file one line at a time.
+	 * 一次一行地获取文件的内容
      *
      * @param  string  $path
+     * @return \Illuminate\Support\LazyCollection
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function lines($path)
+    {
+        if (! $this->isFile($path)) {
+            throw new FileNotFoundException(
+                "File does not exist at path {$path}."
+            );
+        }
+
+        return LazyCollection::make(function () use ($path) {
+            $file = new SplFileObject($path);
+
+            $file->setFlags(SplFileObject::DROP_NEW_LINE);
+
+            while (! $file->eof()) {
+                yield $file->fgets();
+            }
+        });
+    }
+
+    /**
+     * Get the hash of the file at the given path.
+	 * 获取给定路径上文件的哈希值
+     *
+     * @param  string  $path
+     * @param  string  $algorithm
      * @return string
      */
-    public function hash($path)
+    public function hash($path, $algorithm = 'md5')
     {
-        return md5_file($path);
+        return hash_file($algorithm, $path);
     }
 
     /**
@@ -152,12 +208,12 @@ class Filesystem
      *
      * @param  string  $path
      * @param  string  $content
+     * @param  int|null  $mode
      * @return void
      */
-    public function replace($path, $content)
+    public function replace($path, $content, $mode = null)
     {
         // If the path already exists and is a symlink, get the real path...
-		// 如果路径已经存在并且是一个符号链接，则获取真实路径…
         clearstatcache(true, $path);
 
         $path = realpath($path) ?: $path;
@@ -165,12 +221,29 @@ class Filesystem
         $tempPath = tempnam(dirname($path), basename($path));
 
         // Fix permissions of tempPath because `tempnam()` creates it with permissions set to 0600...
-		// 修复tempPath的权限，因为‘tempnam()’创建它时权限设置为0600…
-        chmod($tempPath, 0777 - umask());
+        if (! is_null($mode)) {
+            chmod($tempPath, $mode);
+        } else {
+            chmod($tempPath, 0777 - umask());
+        }
 
         file_put_contents($tempPath, $content);
 
         rename($tempPath, $path);
+    }
+
+    /**
+     * Replace a given string within a given file.
+	 * 替换给定文件中的给定字符串
+     *
+     * @param  array|string  $search
+     * @param  array|string  $replace
+     * @param  string  $path
+     * @return void
+     */
+    public function replaceInFile($search, $replace, $path)
+    {
+        file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
     }
 
     /**
@@ -192,7 +265,7 @@ class Filesystem
 
     /**
      * Append to a file.
-	 * 追加到文件中
+	 * 追加至文件
      *
      * @param  string  $path
      * @param  string  $data
@@ -235,7 +308,9 @@ class Filesystem
 
         foreach ($paths as $path) {
             try {
-                if (! @unlink($path)) {
+                if (@unlink($path)) {
+                    clearstatcache(false, $path);
+                } else {
                     $success = false;
                 }
             } catch (ErrorException $e) {
@@ -292,6 +367,29 @@ class Filesystem
     }
 
     /**
+     * Create a relative symlink to the target file or directory.
+	 * 创建到目标文件或目录的相对符号链接
+     *
+     * @param  string  $target
+     * @param  string  $link
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    public function relativeLink($target, $link)
+    {
+        if (! class_exists(SymfonyFilesystem::class)) {
+            throw new RuntimeException(
+                'To enable support for relative links, please install the symfony/filesystem package.'
+            );
+        }
+
+        $relativeTarget = (new SymfonyFilesystem)->makePathRelative($target, dirname($link));
+
+        $this->link($this->isFile($target) ? rtrim($relativeTarget, '/') : $relativeTarget, $link);
+    }
+
+    /**
      * Extract the file name from a file path.
 	 * 从文件路径中提取文件名
      *
@@ -345,6 +443,8 @@ class Filesystem
      *
      * @param  string  $path
      * @return string|null
+     *
+     * @throws \RuntimeException
      */
     public function guessExtension($path)
     {
@@ -418,6 +518,19 @@ class Filesystem
     }
 
     /**
+     * Determine if the given path is a directory that does not contain any other files or directories.
+	 * 确定给定的路径是否为不包含任何其他文件或目录的目录
+     *
+     * @param  string  $directory
+     * @param  bool  $ignoreDotFiles
+     * @return bool
+     */
+    public function isEmptyDirectory($directory, $ignoreDotFiles = false)
+    {
+        return ! Finder::create()->ignoreDotFiles($ignoreDotFiles)->in($directory)->depth(0)->hasResults();
+    }
+
+    /**
      * Determine if the given path is readable.
 	 * 确定给定的路径是否可读
      *
@@ -439,6 +552,21 @@ class Filesystem
     public function isWritable($path)
     {
         return is_writable($path);
+    }
+
+    /**
+     * Determine if two files are the same by comparing their hashes.
+	 * 通过比较两个文件的哈希值来确定它们是否相同
+     *
+     * @param  string  $firstFile
+     * @param  string  $secondFile
+     * @return bool
+     */
+    public function hasSameHash($firstFile, $secondFile)
+    {
+        $hash = @md5_file($firstFile);
+
+        return $hash && $hash === @md5_file($secondFile);
     }
 
     /**
@@ -589,8 +717,7 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-		// 如果目标目录实际上不存在，我们继续递归地创建它，
-		// 这样就能让目的地做好复制的准备。
+		// 如果目标目录实际上不存在，我们将继续执行。
         $this->ensureDirectoryExists($destination, 0777);
 
         $items = new FilesystemIterator($directory, $options);
@@ -599,7 +726,7 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
-			// 在遍历项时，我们将检查当前文件是否实际存在。
+			// 在遍历项时，我们将检查当前文件是否实际为一个目录或文件。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -613,11 +740,9 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
-			// 如果当前项目只是一个常规文件，我们将把它复制到新的。
-            else {
-                if (! $this->copy($item->getPathname(), $target)) {
-                    return false;
-                }
+			// 如果当前项目只是一个常规文件，我们将把它复制到新的定位并继续循环。
+            elseif (! $this->copy($item->getPathname(), $target)) {
+                return false;
             }
         }
 
@@ -629,7 +754,6 @@ class Filesystem
 	 * 递归删除目录
      *
      * The directory itself may be optionally preserved.
-	 * 可以选择保留目录本身
      *
      * @param  string  $directory
      * @param  bool  $preserve
@@ -647,7 +771,7 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
-			// 如果项是一个目录，我们可以递归到函数中。
+			// 如果项是一个目录，我们可以递归到函数且删除该子目录。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }

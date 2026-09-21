@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -45,6 +48,7 @@ use Psy\Exception\ParseErrorException;
 /**
  * A service to clean up user input, detect parse errors before they happen,
  * and generally work around issues with the PHP code evaluation experience.
+ * 清理用户输入的服务，在解析错误发生之前检测到它们，
  */
 class CodeCleaner
 {
@@ -58,6 +62,7 @@ class CodeCleaner
 
     /**
      * CodeCleaner constructor.
+	 * CodeCleaner构造函数
      *
      * @param Parser|null        $parser      A PhpParser Parser instance. One will be created if not explicitly supplied
      * @param Printer|null       $printer     A PhpParser Printer instance. One will be created if not explicitly supplied
@@ -81,6 +86,7 @@ class CodeCleaner
 
     /**
      * Check whether this CodeCleaner is in YOLO mode.
+	 * 检查此cocleaner是否处于YOLO模式
      */
     public function yolo(): bool
     {
@@ -89,6 +95,7 @@ class CodeCleaner
 
     /**
      * Get default CodeCleaner passes.
+	 * 获取默认的CodeCleaner通行证
      *
      * @return CodeCleanerPass[]
      */
@@ -149,6 +156,7 @@ class CodeCleaner
 
     /**
      * "Warm up" code cleaner passes when we're coming from a debug call.
+	 * “预热”代码清理器在调试调用结束时通过。
      *
      * This is useful, for example, for `UseStatementPass` and `NamespacePass`
      * which keep track of state between calls, to maintain the current
@@ -189,6 +197,7 @@ class CodeCleaner
 
     /**
      * Search the stack trace for a file in which the user called Psy\debug.
+	 * 在堆栈跟踪中搜索用户名为Psy\debug的文件。
      *
      * @return string|null
      */
@@ -213,6 +222,7 @@ class CodeCleaner
 
     /**
      * Check whether a given backtrace frame is a call to Psy\debug.
+	 * 检查给定的回溯帧是否为对Psy\debug的调用
      *
      * @param array $stackFrame
      */
@@ -227,6 +237,7 @@ class CodeCleaner
 
     /**
      * Clean the given array of code.
+	 * 清理给定的代码数组。
      *
      * @throws ParseErrorException if the code is invalid PHP, and cannot be coerced into valid PHP
      *
@@ -259,6 +270,7 @@ class CodeCleaner
 
     /**
      * Set the current local namespace.
+	 * 设置当前本地命名空间
      */
     public function setNamespace(?array $namespace = null)
     {
@@ -267,6 +279,7 @@ class CodeCleaner
 
     /**
      * Get the current local namespace.
+	 * 获取当前本地命名空间
      *
      * @return array|null
      */
@@ -277,6 +290,7 @@ class CodeCleaner
 
     /**
      * Lex and parse a block of code.
+	 * Lex和解析代码块
      *
      * @see Parser::parse
      *
@@ -328,6 +342,7 @@ class CodeCleaner
 
     /**
      * A special test for unclosed single-quoted strings.
+	 * 对未闭合单引号字符串的特殊测试。
      *
      * Unlike (all?) other unclosed statements, single quoted strings have
      * their own special beautiful snowflake syntax error just for

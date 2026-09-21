@@ -16,14 +16,14 @@ namespace Symfony\Component\HttpKernel\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\UriSigner;
 
 /**
  * Handles content fragments represented by special URIs.
- * 处理由特殊 URIs 表示的内容片段
+ * 处理由特殊uri表示的内容片段。
  *
  * All URL paths starting with /_fragment are handled as
  * content fragments by this listener.
@@ -37,8 +37,8 @@ use Symfony\Component\HttpKernel\UriSigner;
  */
 class FragmentListener implements EventSubscriberInterface
 {
-    private $signer;
-    private $fragmentPath;
+    private UriSigner $signer;
+    private string $fragmentPath;
 
     /**
      * @param string $fragmentPath The path that triggers this listener
@@ -51,10 +51,11 @@ class FragmentListener implements EventSubscriberInterface
 
     /**
      * Fixes request attributes when the path is '/_fragment'.
+	 * 修复了路径为‘/_fragment’时的请求属性。
      *
      * @throws AccessDeniedHttpException if the request does not come from a trusted IP
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -74,12 +75,13 @@ class FragmentListener implements EventSubscriberInterface
         }
 
         parse_str($request->query->get('_path', ''), $attributes);
+        $attributes['_check_controller_is_allowed'] = -1; // @deprecated, switch to true in Symfony 7
         $request->attributes->add($attributes);
         $request->attributes->set('_route_params', array_replace($request->attributes->get('_route_params', []), $attributes));
         $request->query->remove('_path');
     }
 
-    protected function validateRequest(Request $request)
+    protected function validateRequest(Request $request): void
     {
         // is the Request safe?
         if (!$request->isMethodSafe()) {

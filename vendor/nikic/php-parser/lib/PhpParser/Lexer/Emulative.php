@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer，竞争性的
+ */
+
 namespace PhpParser\Lexer;
 
 use PhpParser\Error;
@@ -11,11 +15,13 @@ use PhpParser\Lexer\TokenEmulator\EnumTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\ExplicitOctalEmulator;
 use PhpParser\Lexer\TokenEmulator\MatchTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\NullsafeTokenEmulator;
+use PhpParser\Lexer\TokenEmulator\PipeOperatorEmulator;
 use PhpParser\Lexer\TokenEmulator\PropertyTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\ReadonlyFunctionTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\ReadonlyTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\ReverseEmulator;
 use PhpParser\Lexer\TokenEmulator\TokenEmulator;
+use PhpParser\Lexer\TokenEmulator\VoidCastEmulator;
 use PhpParser\PhpVersion;
 use PhpParser\Token;
 
@@ -47,6 +53,8 @@ class Emulative extends Lexer {
             new ReadonlyFunctionTokenEmulator(),
             new PropertyTokenEmulator(),
             new AsymmetricVisibilityTokenEmulator(),
+            new PipeOperatorEmulator(),
+            new VoidCastEmulator(),
         ];
 
         // Collect emulators that are relevant for the PHP version we're running
@@ -132,6 +140,7 @@ class Emulative extends Lexer {
         list($patchPos, $patchType, $patchText) = $this->patches[$patchIdx];
 
         // We use a manual loop over the tokens, because we modify the array on the fly
+		// 我们在令牌上使用手动循环，因为我们动态地修改了数组。
         $posDelta = 0;
         $lineDelta = 0;
         for ($i = 0, $c = \count($tokens); $i < $c; $i++) {
@@ -191,6 +200,7 @@ class Emulative extends Lexer {
 
     /**
      * Fixup line and position information in errors.
+	 * 修复线路和位置信息错误
      *
      * @param Error[] $errors
      */

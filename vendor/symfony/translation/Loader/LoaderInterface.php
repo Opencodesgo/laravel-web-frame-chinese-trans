@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，加载器，加载器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,14 +28,8 @@ interface LoaderInterface
     /**
      * Loads a locale.
      *
-     * @param mixed  $resource A resource
-     * @param string $locale   A locale
-     * @param string $domain   The domain
-     *
-     * @return MessageCatalogue
-     *
      * @throws NotFoundResourceException when the resource cannot be found
      * @throws InvalidResourceException  when the resource cannot be loaded
      */
-    public function load($resource, string $locale, string $domain = 'messages');
+    public function load(mixed $resource, string $locale, string $domain = 'messages'): MessageCatalogue;
 }

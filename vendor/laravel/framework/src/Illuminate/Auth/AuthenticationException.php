@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，认证异常
+ * Illuminate，认证，身份验证异常
  */
 
 namespace Illuminate\Auth;
@@ -19,9 +19,9 @@ class AuthenticationException extends Exception
 
     /**
      * The path the user should be redirected to.
-	 * 用户应该重定向到的路径
+	 * 用户路径应该被重定向的
      *
-     * @var string
+     * @var string|null
      */
     protected $redirectTo;
 
@@ -44,7 +44,7 @@ class AuthenticationException extends Exception
 
     /**
      * Get the guards that were checked.
-	 * 得到检查过的守卫
+	 * 得到已检查守卫
      *
      * @return array
      */
@@ -55,9 +55,9 @@ class AuthenticationException extends Exception
 
     /**
      * Get the path the user should be redirected to.
-	 * 得到应该被重定向的用户路径
+	 * 获取用户应该重定向到的路径
      *
-     * @return string
+     * @return string|null
      */
     public function redirectTo()
     {

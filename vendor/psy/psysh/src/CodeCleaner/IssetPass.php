@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，收取传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -22,6 +25,7 @@ use Psy\Exception\FatalErrorException;
 /**
  * Code cleaner pass to ensure we only allow variables, array fetch and property
  * fetch expressions in isset() calls.
+ * 代码清洁器通过，以确保我们只允许变量，数组获取和属性在isset（）调用中获取表达式。
  */
 class IssetPass extends CodeCleanerPass
 {

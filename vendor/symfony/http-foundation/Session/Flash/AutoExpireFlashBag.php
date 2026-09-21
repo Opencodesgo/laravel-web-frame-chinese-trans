@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，Flash，自动过期闪光袋
+ * Symfony，Component，HttpFoundation，会话，闪存，自动过期闪存包
  */
 
 /*
@@ -16,14 +16,15 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 
 /**
  * AutoExpireFlashBag flash message container.
+ * AutoExpireFlashBag flash消息容器。
  *
  * @author Drak <drak@zikula.org>
  */
 class AutoExpireFlashBag implements FlashBagInterface
 {
-    private $name = 'flashes';
-    private $flashes = ['display' => [], 'new' => []];
-    private $storageKey;
+    private string $name = 'flashes';
+    private array $flashes = ['display' => [], 'new' => []];
+    private string $storageKey;
 
     /**
      * @param string $storageKey The key used to store flashes in the session
@@ -33,21 +34,21 @@ class AutoExpireFlashBag implements FlashBagInterface
         $this->storageKey = $storageKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function initialize(array &$flashes)
     {
@@ -56,39 +57,29 @@ class AutoExpireFlashBag implements FlashBagInterface
         // The logic: messages from the last request will be stored in new, so we move them to previous
         // This request we will show what is in 'display'.  What is placed into 'new' this time round will
         // be moved to display next time round.
-		// 逻辑：来自最后一个请求的消息将存储在new，所以我们把它们移到前面。
         $this->flashes['display'] = \array_key_exists('new', $this->flashes) ? $this->flashes['new'] : [];
         $this->flashes['new'] = [];
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function add(string $type, $message)
+    public function add(string $type, mixed $message)
     {
         $this->flashes['new'][$type][] = $message;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function peek(string $type, array $default = [])
+    public function peek(string $type, array $default = []): array
     {
         return $this->has($type) ? $this->flashes['display'][$type] : $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function peekAll()
+    public function peekAll(): array
     {
         return \array_key_exists('display', $this->flashes) ? $this->flashes['display'] : [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(string $type, array $default = [])
+    public function get(string $type, array $default = []): array
     {
         $return = $default;
 
@@ -104,10 +95,7 @@ class AutoExpireFlashBag implements FlashBagInterface
         return $return;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
+    public function all(): array
     {
         $return = $this->flashes['display'];
         $this->flashes['display'] = [];
@@ -116,7 +104,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function setAll(array $messages)
     {
@@ -124,41 +112,29 @@ class AutoExpireFlashBag implements FlashBagInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function set(string $type, $messages)
+    public function set(string $type, string|array $messages)
     {
         $this->flashes['new'][$type] = (array) $messages;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has(string $type)
+    public function has(string $type): bool
     {
         return \array_key_exists($type, $this->flashes['display']) && $this->flashes['display'][$type];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function keys()
+    public function keys(): array
     {
         return array_keys($this->flashes['display']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStorageKey()
+    public function getStorageKey(): string
     {
         return $this->storageKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clear()
+    public function clear(): mixed
     {
         return $this->all();
     }

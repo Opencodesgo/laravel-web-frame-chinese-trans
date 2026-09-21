@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，普通事件
+ * Symfony，Component，EventDispatcher，普通事件
  */
 
 /*
@@ -18,8 +18,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event encapsulation class.
+ * 事件封装类。
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
+ * 封装事件，从而将观察者与其封装的主题解耦。
  *
  * @author Drak <drak@zikula.org>
  *
@@ -33,11 +35,12 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Encapsulate an event with $subject and $arguments.
+	 * 用$subject和$arguments封装一个事件
      *
      * @param mixed $subject   The subject of the event, usually an object or a callable
      * @param array $arguments Arguments to store in the event
      */
-    public function __construct($subject = null, array $arguments = [])
+    public function __construct(mixed $subject = null, array $arguments = [])
     {
         $this->subject = $subject;
         $this->arguments = $arguments;
@@ -45,38 +48,35 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for subject property.
-     *
-     * @return mixed
+	 * 主体属性的Getter
      */
-    public function getSubject()
+    public function getSubject(): mixed
     {
         return $this->subject;
     }
 
     /**
      * Get argument by key.
-     *
-     * @return mixed
+	 * 按键获取参数
      *
      * @throws \InvalidArgumentException if key is not found
      */
-    public function getArgument(string $key)
+    public function getArgument(string $key): mixed
     {
         if ($this->hasArgument($key)) {
             return $this->arguments[$key];
         }
 
-        throw new \InvalidArgumentException(sprintf('Argument "%s" not found.', $key));
+        throw new \InvalidArgumentException(\sprintf('Argument "%s" not found.', $key));
     }
 
     /**
      * Add argument to event.
-     *
-     * @param mixed $value Value
+	 * 向事件添加参数
      *
      * @return $this
      */
-    public function setArgument(string $key, $value)
+    public function setArgument(string $key, mixed $value): static
     {
         $this->arguments[$key] = $value;
 
@@ -85,20 +85,20 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for all arguments.
-     *
-     * @return array
+	 * 所有参数的Getter
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
 
     /**
      * Set args property.
+	 * 设置args属性
      *
      * @return $this
      */
-    public function setArguments(array $args = [])
+    public function setArguments(array $args = []): static
     {
         $this->arguments = $args;
 
@@ -107,52 +107,44 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Has argument.
-     *
-     * @return bool
+	 * 有参数
      */
-    public function hasArgument(string $key)
+    public function hasArgument(string $key): bool
     {
         return \array_key_exists($key, $this->arguments);
     }
 
     /**
      * ArrayAccess for argument getter.
+	 * 参数getter的ArrayAccess
      *
      * @param string $key Array key
      *
-     * @return mixed
-     *
      * @throws \InvalidArgumentException if key does not exist in $this->args
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($key)
+    public function offsetGet(mixed $key): mixed
     {
         return $this->getArgument($key);
     }
 
     /**
      * ArrayAccess for argument setter.
+	 * 参数设置器的ArrayAccess
      *
-     * @param string $key   Array key to set
-     * @param mixed  $value Value
-     *
-     * @return void
+     * @param string $key Array key to set
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($key, $value)
+    public function offsetSet(mixed $key, mixed $value): void
     {
         $this->setArgument($key, $value);
     }
 
     /**
      * ArrayAccess for unset argument.
+	 * 用于未设置参数的ArrayAccess
      *
      * @param string $key Array key
-     *
-     * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($key)
+    public function offsetUnset(mixed $key): void
     {
         if ($this->hasArgument($key)) {
             unset($this->arguments[$key]);
@@ -161,24 +153,22 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess has argument.
+	 * ArrayAccess有参数
      *
      * @param string $key Array key
-     *
-     * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($key)
+    public function offsetExists(mixed $key): bool
     {
         return $this->hasArgument($key);
     }
 
     /**
      * IteratorAggregate for iterating over the object like an array.
+	 * IteratorAggregate用于像数组一样遍历对象
      *
      * @return \ArrayIterator<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->arguments);
     }

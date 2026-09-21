@@ -21,6 +21,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Allows to inspect input and output of a command.
+ * 允许检查命令的输入和输出。
  *
  * @author Francesco Levorato <git@flevour.net>
  */
@@ -28,8 +29,8 @@ class ConsoleEvent extends Event
 {
     protected $command;
 
-    private $input;
-    private $output;
+    private InputInterface $input;
+    private OutputInterface $output;
 
     public function __construct(?Command $command, InputInterface $input, OutputInterface $output)
     {
@@ -40,30 +41,27 @@ class ConsoleEvent extends Event
 
     /**
      * Gets the command that is executed.
-     *
-     * @return Command|null
+	 * 获取正在执行的命令
      */
-    public function getCommand()
+    public function getCommand(): ?Command
     {
         return $this->command;
     }
 
     /**
      * Gets the input instance.
-     *
-     * @return InputInterface
+	 * 获取输入实例
      */
-    public function getInput()
+    public function getInput(): InputInterface
     {
         return $this->input;
     }
 
     /**
      * Gets the output instance.
-     *
-     * @return OutputInterface
+	 * 获取输出实例
      */
-    public function getOutput()
+    public function getOutput(): OutputInterface
     {
         return $this->output;
     }

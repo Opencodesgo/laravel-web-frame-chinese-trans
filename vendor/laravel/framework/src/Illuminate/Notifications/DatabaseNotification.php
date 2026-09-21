@@ -5,6 +5,7 @@
 
 namespace Illuminate\Notifications;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class DatabaseNotification extends Model
@@ -19,7 +20,7 @@ class DatabaseNotification extends Model
 
     /**
      * Indicates if the IDs are auto-incrementing.
-	 * 指明ID是否自动递增
+	 * 指示id是否自动递增
      *
      * @var bool
      */
@@ -65,7 +66,7 @@ class DatabaseNotification extends Model
 
     /**
      * Mark the notification as read.
-	 * 将通知标记为已读
+	 * 标记通知为已读
      *
      * @return void
      */
@@ -78,7 +79,7 @@ class DatabaseNotification extends Model
 
     /**
      * Mark the notification as unread.
-	 * 将通知标记为未读
+	 * 标记通知为未读
      *
      * @return void
      */
@@ -109,6 +110,30 @@ class DatabaseNotification extends Model
     public function unread()
     {
         return $this->read_at === null;
+    }
+
+    /**
+     * Scope a query to only include read notifications.
+	 * 将查询限定为仅包括读通知
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRead(Builder $query)
+    {
+        return $query->whereNotNull('read_at');
+    }
+
+    /**
+     * Scope a query to only include unread notifications.
+	 * 将查询限定为仅包括未读通知
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUnread(Builder $query)
+    {
+        return $query->whereNull('read_at');
     }
 
     /**

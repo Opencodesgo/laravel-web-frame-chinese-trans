@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，失败，空值失败的作业提供者
+ * Illuminate，队列，失败，失败的作业提供程序
  */
 
 namespace Illuminate\Queue\Failed;
@@ -35,7 +35,7 @@ class NullFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 得到一个失败的作业
+	 * 得到一份失败的作业
      *
      * @param  mixed  $id
      * @return object|null
@@ -61,9 +61,10 @@ class NullFailedJobProvider implements FailedJobProviderInterface
      * Flush all of the failed jobs from storage.
 	 * 从存储中清除所有失败的作业
      *
+     * @param  int|null  $hours
      * @return void
      */
-    public function flush()
+    public function flush($hours = null)
     {
         //
     }

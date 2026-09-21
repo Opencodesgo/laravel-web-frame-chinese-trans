@@ -9,7 +9,7 @@ trait CompilesAuthorizations
 {
     /**
      * Compile the can statements into valid PHP.
-	 * 编译can语句成有效的PHP
+	 * 将can语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -21,7 +21,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the cannot statements into valid PHP.
-	 * 编译cannot语句成有效的PHP
+	 * 将cannot语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -33,7 +33,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the canany statements into valid PHP.
-	 * 编译canany语句成有效的PHP
+	 * 将canany语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string

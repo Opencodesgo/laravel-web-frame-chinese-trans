@@ -16,6 +16,14 @@ class AnonymousResourceCollection extends ResourceCollection
     public $collects;
 
     /**
+     * Indicates if the collection keys should be preserved.
+	 * 指示是否应保留集合键
+     *
+     * @var bool
+     */
+    public $preserveKeys = false;
+
+    /**
      * Create a new anonymous resource collection.
 	 * 创建一个新的匿名资源集合
      *

@@ -6,7 +6,10 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:request')]
 class RequestMakeCommand extends GeneratorCommand
 {
     /**
@@ -18,6 +21,19 @@ class RequestMakeCommand extends GeneratorCommand
     protected $name = 'make:request';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:request';
+
+    /**
      * The console command description.
 	 * 控制台命令描述
      *
@@ -27,7 +43,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -68,5 +84,18 @@ class RequestMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\Http\Requests';
+    }
+
+    /**
+     * Get the console command arguments.
+	 * 获取控制台命令参数
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
+        ];
     }
 }

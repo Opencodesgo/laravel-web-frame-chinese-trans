@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Fluentd 格式化
+ * Monolog，格式化，Fluentd 格式化程序
  */
 
 /*
@@ -19,6 +19,7 @@ use Monolog\Utils;
 
 /**
  * Class FluentdFormatter
+ * 类FluentdFormatter
  *
  * Serializes a log message to Fluentd unix socket protocol
  *

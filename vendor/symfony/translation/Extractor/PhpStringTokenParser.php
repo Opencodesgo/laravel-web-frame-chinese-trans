@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提取器，Php 字符串令牌解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -10,6 +13,8 @@
  */
 
 namespace Symfony\Component\Translation\Extractor;
+
+trigger_deprecation('symfony/translation', '6.2', '"%s" is deprecated.', PhpStringTokenParser::class);
 
 /*
  * The following is derived from code at http://github.com/nikic/PHP-Parser
@@ -47,6 +52,9 @@ namespace Symfony\Component\Translation\Extractor;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @deprecated since Symfony 6.2
+ */
 class PhpStringTokenParser
 {
     protected static $replacements = [
@@ -62,12 +70,11 @@ class PhpStringTokenParser
 
     /**
      * Parses a string token.
+	 * 解析字符串记号
      *
      * @param string $str String token content
-     *
-     * @return string
      */
-    public static function parse(string $str)
+    public static function parse(string $str): string
     {
         $bLength = 0;
         if ('b' === $str[0]) {
@@ -87,13 +94,12 @@ class PhpStringTokenParser
 
     /**
      * Parses escape sequences in strings (all string types apart from single quoted).
+	 * 解析字符串中的转义序列（除了单引号以外的所有字符串类型）
      *
      * @param string      $str   String without quotes
      * @param string|null $quote Quote type
-     *
-     * @return string
      */
-    public static function parseEscapeSequences(string $str, ?string $quote = null)
+    public static function parseEscapeSequences(string $str, ?string $quote = null): string
     {
         if (null !== $quote) {
             $str = str_replace('\\'.$quote, $quote, $str);
@@ -121,15 +127,15 @@ class PhpStringTokenParser
 
     /**
      * Parses a constant doc string.
+	 * 解析常量文档字符串
      *
      * @param string $startToken Doc string start token content (<<<SMTHG)
      * @param string $str        String token content
-     *
-     * @return string
      */
-    public static function parseDocString(string $startToken, string $str)
+    public static function parseDocString(string $startToken, string $str): string
     {
         // strip last newline (thanks tokenizer for sticking it into the string!)
+		// 去掉最后一个换行符（感谢标记器将其插入字符串中！）
         $str = preg_replace('~(\r\n|\n|\r)$~', '', $str);
 
         // nowdoc string

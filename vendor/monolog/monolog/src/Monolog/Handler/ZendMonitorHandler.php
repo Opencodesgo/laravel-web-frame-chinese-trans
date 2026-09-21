@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Zend 监控处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Handler sending logs to Zend Monitor
+ * 处理程序向Zend Monitor发送日志
  *
  * @author  Christian Bergau <cbergau86@gmail.com>
  * @author  Jason Davis <happydude@jasondavis.net>
@@ -71,6 +76,7 @@ class ZendMonitorHandler extends AbstractProcessingHandler
 
     /**
      * Write to Zend Monitor Events
+	 * 写入Zend Monitor Events
      * @param string $type      Text displayed in "Class Name (custom)" field
      * @param string $message   Text displayed in "Error String"
      * @param array  $formatted Displayed in Custom Variables tab

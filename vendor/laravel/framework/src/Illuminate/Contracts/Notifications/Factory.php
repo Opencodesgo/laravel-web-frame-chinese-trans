@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，通知，工厂
+ * Illuminate，契约，通知，工厂接口
  */
 
 namespace Illuminate\Contracts\Notifications;
@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Get a channel instance by name.
-	 * 按名称获取通道实例
+	 * 得以信息实例通过名称
      *
      * @param  string|null  $name
      * @return mixed

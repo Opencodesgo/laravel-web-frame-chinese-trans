@@ -29,7 +29,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送至队列中
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed  $data
@@ -115,7 +115,7 @@ class SyncQueue extends Queue implements QueueContract
      * Handle an exception that occurred while processing a job.
 	 * 处理在处理作业时发生的异常
      *
-     * @param  \Illuminate\Queue\Jobs\Job  $queueJob
+     * @param  \Illuminate\Contracts\Queue\Job  $queueJob
      * @param  \Throwable  $e
      * @return void
      *
@@ -145,8 +145,8 @@ class SyncQueue extends Queue implements QueueContract
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -161,7 +161,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个任务从队列中弹出
+	 * 将下一个作业从队列中弹出
      *
      * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null

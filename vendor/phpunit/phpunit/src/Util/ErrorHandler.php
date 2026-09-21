@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，错误处理程序
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,7 +16,6 @@ namespace PHPUnit\Util;
 
 use const E_DEPRECATED;
 use const E_NOTICE;
-use const E_STRICT;
 use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
@@ -99,7 +103,7 @@ final class ErrorHandler
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/5956
          */
-        if (defined('E_STRICT') && $errorNumber === @E_STRICT) {
+        if (defined('E_STRICT') && $errorNumber === 2048) {
             $errorNumber = E_NOTICE;
         }
 

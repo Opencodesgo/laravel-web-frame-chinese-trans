@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，生成器，可配置需求接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -40,14 +43,15 @@ interface ConfigurableRequirementsInterface
     /**
      * Enables or disables the exception on incorrect parameters.
      * Passing null will deactivate the requirements check completely.
+	 * 启用或禁用错误参数时的异常处理。传递 null 将完全关闭要求检查。
+     *
+     * @return void
      */
     public function setStrictRequirements(?bool $enabled);
 
     /**
      * Returns whether to throw an exception on incorrect parameters.
      * Null means the requirements check is deactivated completely.
-     *
-     * @return bool|null
      */
-    public function isStrictRequirements();
+    public function isStrictRequirements(): ?bool;
 }

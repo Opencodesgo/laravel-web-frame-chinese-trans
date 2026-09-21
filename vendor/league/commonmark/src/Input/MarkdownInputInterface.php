@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，输入，Markdown 输入接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.

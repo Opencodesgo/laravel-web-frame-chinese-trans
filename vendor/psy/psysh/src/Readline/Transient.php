@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，逐行读取，短暂的
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\Exception\BreakException;
 
 /**
  * An array-based Readline emulation implementation.
+ * 一个基于数组的Readline仿真实现。
  */
 class Transient implements Readline
 {
@@ -26,6 +30,7 @@ class Transient implements Readline
 
     /**
      * Transient Readline is always supported.
+	 * 始终支持瞬态读行
      *
      * {@inheritdoc}
      */
@@ -44,6 +49,7 @@ class Transient implements Readline
 
     /**
      * Transient Readline constructor.
+	 * 暂态Readline构造函数
      */
     public function __construct($historyFile = null, $historySize = 0, $eraseDups = false)
     {
@@ -136,6 +142,7 @@ class Transient implements Readline
 
     /**
      * Get a STDIN file handle.
+	 * 获取一个STDIN文件句柄。
      *
      * @throws BreakException if user hits Ctrl+D
      *

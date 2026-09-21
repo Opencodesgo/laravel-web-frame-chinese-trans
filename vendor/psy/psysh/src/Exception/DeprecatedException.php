@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，弃用异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A DeprecatedException for Psy.
+ * Psy depretedexception
  */
 class DeprecatedException extends RuntimeException
 {

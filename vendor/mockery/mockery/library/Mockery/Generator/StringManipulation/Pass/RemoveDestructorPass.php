@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，字符串处理，经过，移除析构函数
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -15,6 +18,7 @@ use function preg_replace;
 
 /**
  * Remove mock's empty destructor if we tend to use original class destructor
+ * 如果我们倾向于使用原始的类析构函数，则删除mock的空析构函数。
  */
 class RemoveDestructorPass implements Pass
 {

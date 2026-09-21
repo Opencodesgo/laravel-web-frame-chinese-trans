@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，加密，解密例外，待补充类
+ * Illuminate，契约，加密，解密异常
  */
 
 namespace Illuminate\Contracts\Encryption;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，Sudo 访客
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -30,6 +33,7 @@ use Psy\Sudo;
 /**
  * A PHP Parser node visitor which rewrites property and method access to use
  * the Psy\Sudo visibility bypass methods.
+ * 一个PHP解析器节点访问器，它重写属性和方法访问以供使用Psy\Sudo可见性绕过方法。
  *
  * @todo handle assigning by reference
  */

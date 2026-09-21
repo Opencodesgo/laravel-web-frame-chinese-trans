@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，功能匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * A function name tab completion Matcher.
+ * 一个函数名称选项卡完成匹配器。
  *
  * This matcher provides completion for all internal and user-defined functions.
  *
@@ -44,7 +48,7 @@ class FunctionsMatcher extends AbstractMatcher
         $prevToken = \array_pop($tokens);
 
         switch (true) {
-            case self::tokenIs($prevToken, self::T_NEW):
+            case self::hasToken([self::T_NEW, self::T_OBJECT_OPERATOR], $prevToken):
                 return false;
             case self::hasToken([self::T_OPEN_TAG, self::T_STRING], $token):
             case self::isOperator($token):

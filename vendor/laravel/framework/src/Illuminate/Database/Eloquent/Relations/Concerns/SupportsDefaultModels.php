@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，支持默认模型特征
+ * Illuminate，数据库，Eloquent，关系，问题，支持默认模型
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -11,7 +11,7 @@ trait SupportsDefaultModels
 {
     /**
      * Indicates if a default model instance should be used.
-	 * 指明是否应使用默认模型实例
+	 * 指示是否应使用默认模型实例
      *
      * Alternatively, may be a Closure or array.
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，匿名通知
+ * Illuminate，通知，匿名通报
  */
 
 namespace Illuminate\Notifications;
@@ -25,6 +25,8 @@ class AnonymousNotifiable
      * @param  string  $channel
      * @param  mixed  $route
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function route($channel, $route)
     {

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，递归上下文，上下文
+ */
+
 /*
  * This file is part of sebastian/recursion-context.
  *
@@ -24,6 +29,7 @@ use SplObjectStorage;
 /**
  * A context containing previously processed arrays and objects
  * when recursively processing a value.
+ * 在递归处理值时，包含先前已处理的数组和对象的上下文。
  */
 final class Context
 {
@@ -61,6 +67,7 @@ final class Context
 
     /**
      * Adds a value to the context.
+	 * 向上下文添加一个值
      *
      * @param array|object $value the value to add
      *
@@ -89,6 +96,7 @@ final class Context
 
     /**
      * Checks if the given value exists within the context.
+	 * 检查给定值是否存在于上下文中
      *
      * @param array|object $value the value to check
      *
@@ -158,8 +166,8 @@ final class Context
      */
     private function addObject($object): string
     {
-        if (!$this->objects->contains($object)) {
-            $this->objects->attach($object);
+        if (!$this->objects->offsetExists($object)) {
+            $this->objects->offsetSet($object);
         }
 
         return spl_object_hash($object);
@@ -182,7 +190,7 @@ final class Context
      */
     private function containsObject($value)
     {
-        if ($this->objects->contains($value)) {
+        if ($this->objects->offsetExists($value)) {
             return spl_object_hash($value);
         }
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，部分，多部件，相关配件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,7 +22,7 @@ use Symfony\Component\Mime\Part\AbstractPart;
  */
 final class RelatedPart extends AbstractMultipartPart
 {
-    private $mainPart;
+    private AbstractPart $mainPart;
 
     public function __construct(AbstractPart $mainPart, AbstractPart $part, AbstractPart ...$parts)
     {

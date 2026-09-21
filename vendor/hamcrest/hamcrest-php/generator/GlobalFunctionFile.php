@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，全局方法文件
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

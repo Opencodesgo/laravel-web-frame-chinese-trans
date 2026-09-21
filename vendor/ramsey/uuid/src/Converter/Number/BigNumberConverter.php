@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，转换器，编号，大数转换器
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -18,19 +21,17 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 
 /**
- * Previously used to integrate moontoast/math as a bignum arithmetic library,
- * BigNumberConverter is deprecated in favor of GenericNumberConverter
+ * Previously used to integrate moontoast/math as a bignum arithmetic library, BigNumberConverter is deprecated in favor
+ * of GenericNumberConverter
+ * 以前用于集成moontoast/math作为bigum算术库，
  *
- * @deprecated Transition to {@see GenericNumberConverter}.
+ * @deprecated Please transition to {@see GenericNumberConverter}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class BigNumberConverter implements NumberConverterInterface
 {
-    /**
-     * @var NumberConverterInterface
-     */
-    private $converter;
+    private NumberConverterInterface $converter;
 
     public function __construct()
     {
@@ -38,8 +39,7 @@ class BigNumberConverter implements NumberConverterInterface
     }
 
     /**
-     * @inheritDoc
-     * @psalm-pure
+     * @pure
      */
     public function fromHex(string $hex): string
     {
@@ -47,8 +47,7 @@ class BigNumberConverter implements NumberConverterInterface
     }
 
     /**
-     * @inheritDoc
-     * @psalm-pure
+     * @pure
      */
     public function toHex(string $number): string
     {

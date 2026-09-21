@@ -1,11 +1,9 @@
 <?php
 /**
- * Illuminate，翻译，消息选择器
+ * Illuminate, 翻译, 消息选择器
  */
 
 namespace Illuminate\Translation;
-
-use Illuminate\Support\Str;
 
 class MessageSelector
 {
@@ -67,14 +65,14 @@ class MessageSelector
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
         if (count($matches) !== 3) {
-            return;
+            return null;
         }
 
         $condition = $matches[1];
 
         $value = $matches[2];
 
-        if (Str::contains($condition, ',')) {
+        if (str_contains($condition, ',')) {
             [$from, $to] = explode(',', $condition, 2);
 
             if ($to === '*' && $number >= $from) {
@@ -98,9 +96,9 @@ class MessageSelector
      */
     private function stripConditions($segments)
     {
-        return collect($segments)->map(function ($part) {
-            return preg_replace('/^[\{\[]([^\[\]\{\}]*)[\}\]]/', '', $part);
-        })->all();
+        return collect($segments)
+            ->map(fn ($part) => preg_replace('/^[\{\[]([^\[\]\{\}]*)[\}\]]/', '', $part))
+            ->all();
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，生成器，转储器，编译Url生成器转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
 
 /**
  * CompiledUrlGeneratorDumper creates a PHP array to be used with CompiledUrlGenerator.
+ * CompiledUrlGeneratorDumper创建一个PHP数组与CompiledUrlGenerator一起使用。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -69,7 +73,7 @@ class CompiledUrlGeneratorDumper extends GeneratorDumper
             }
 
             if (null === $target = $routes->get($currentId)) {
-                throw new RouteNotFoundException(sprintf('Target route "%s" for alias "%s" does not exist.', $currentId, $name));
+                throw new RouteNotFoundException(\sprintf('Target route "%s" for alias "%s" does not exist.', $currentId, $name));
             }
 
             $compiledTarget = $target->compile();
@@ -88,10 +92,7 @@ class CompiledUrlGeneratorDumper extends GeneratorDumper
         return $compiledAliases;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function dump(array $options = [])
+    public function dump(array $options = []): string
     {
         return <<<EOF
 <?php
@@ -112,11 +113,11 @@ EOF;
     {
         $routes = '';
         foreach ($this->getCompiledRoutes() as $name => $properties) {
-            $routes .= sprintf("\n    '%s' => %s,", $name, CompiledUrlMatcherDumper::export($properties));
+            $routes .= \sprintf("\n    '%s' => %s,", $name, CompiledUrlMatcherDumper::export($properties));
         }
 
         foreach ($this->getCompiledAliases() as $alias => $properties) {
-            $routes .= sprintf("\n    '%s' => %s,", $alias, CompiledUrlMatcherDumper::export($properties));
+            $routes .= \sprintf("\n    '%s' => %s,", $alias, CompiledUrlMatcherDumper::export($properties));
         }
 
         return $routes;

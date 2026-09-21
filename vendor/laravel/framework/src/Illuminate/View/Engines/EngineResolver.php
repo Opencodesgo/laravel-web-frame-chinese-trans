@@ -28,7 +28,7 @@ class EngineResolver
 
     /**
      * Register a new engine resolver.
-	 * 注册新的引擎解析器
+	 * 注册一个新的引擎解析器
      *
      * The engine string typically corresponds to a file extension.
 	 * 引擎字符串通常对应于文件扩展名
@@ -39,7 +39,7 @@ class EngineResolver
      */
     public function register($engine, Closure $resolver)
     {
-        unset($this->resolved[$engine]);
+        $this->forget($engine);
 
         $this->resolvers[$engine] = $resolver;
     }
@@ -64,5 +64,17 @@ class EngineResolver
         }
 
         throw new InvalidArgumentException("Engine [{$engine}] not found.");
+    }
+
+    /**
+     * Remove a resolved engine.
+	 * 移除已解析的引擎
+     *
+     * @param  string  $engine
+     * @return void
+     */
+    public function forget($engine)
+    {
+        unset($this->resolved[$engine]);
     }
 }

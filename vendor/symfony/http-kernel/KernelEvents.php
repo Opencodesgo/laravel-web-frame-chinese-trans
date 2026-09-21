@@ -25,6 +25,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 /**
  * Contains all events thrown in the HttpKernel component.
+ * 包含HttpKernel组件中抛出的所有事件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -33,6 +34,7 @@ final class KernelEvents
     /**
      * The REQUEST event occurs at the very beginning of request
      * dispatching.
+	 * REQUEST 事件发生在请求分发的最开始阶段。
      *
      * This event allows you to create a response for a request before any
      * other code in the framework is executed.
@@ -43,6 +45,7 @@ final class KernelEvents
 
     /**
      * The EXCEPTION event occurs when an uncaught exception appears.
+	 * 当出现未捕获的异常时，将发生EXCEPTION事件。
      *
      * This event allows you to create a response for a thrown exception or
      * to modify the thrown exception.
@@ -64,6 +67,7 @@ final class KernelEvents
 
     /**
      * The CONTROLLER_ARGUMENTS event occurs once controller arguments have been resolved.
+	 * CONTROLLER_ARGUMENTS事件在控制器参数被解析后发生。
      *
      * This event allows you to change the arguments that will be passed to
      * the controller.
@@ -106,6 +110,7 @@ final class KernelEvents
 
     /**
      * The TERMINATE event occurs once a response was sent.
+	 * 一旦发送了响应，就会发生TERMINATE事件。
      *
      * This event allows you to run expensive post-response jobs.
      *
@@ -115,6 +120,7 @@ final class KernelEvents
 
     /**
      * Event aliases.
+	 * 事件别名
      *
      * These aliases can be consumed by RegisterListenersPass.
      */

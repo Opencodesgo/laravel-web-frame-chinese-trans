@@ -48,22 +48,22 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Set the base constraints on the relation query.
-	 * 设置关系查询的基本约束
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
     public function addConstraints()
     {
         if (static::$constraints) {
-            parent::addConstraints();
+            $this->getRelationQuery()->where($this->morphType, $this->morphClass);
 
-            $this->query->where($this->morphType, $this->morphClass);
+            parent::addConstraints();
         }
     }
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 为关系的急切负载设置约束
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -72,7 +72,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
     {
         parent::addEagerConstraints($models);
 
-        $this->query->where($this->morphType, $this->morphClass);
+        $this->getRelationQuery()->where($this->morphType, $this->morphClass);
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the plain morph type name without the table.
-	 * 没有桌子就能得到普通的morph类型的名字
+	 * 获取不含表的普通变形类型名称
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，配置，导入配置
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +25,7 @@ class ImportConfigurator
     use Traits\PrefixTrait;
     use Traits\RouteTrait;
 
-    private $parent;
+    private RouteCollection $parent;
 
     public function __construct(RouteCollection $parent, RouteCollection $route)
     {
@@ -30,14 +33,14 @@ class ImportConfigurator
         $this->route = $route;
     }
 
-    /**
-     * @return array
-     */
-    public function __sleep()
+    public function __sleep(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
@@ -50,12 +53,13 @@ class ImportConfigurator
 
     /**
      * Sets the prefix to add to the path of all child routes.
+	 * 设置要添加到所有子路由路径的前缀
      *
      * @param string|array $prefix the prefix, or the localized prefixes
      *
      * @return $this
      */
-    final public function prefix($prefix, bool $trailingSlashOnRoot = true): self
+    final public function prefix(string|array $prefix, bool $trailingSlashOnRoot = true): static
     {
         $this->addPrefix($this->route, $prefix, $trailingSlashOnRoot);
 
@@ -64,10 +68,11 @@ class ImportConfigurator
 
     /**
      * Sets the prefix to add to the name of all child routes.
+	 * 设置要添加到所有子路由名称的前缀
      *
      * @return $this
      */
-    final public function namePrefix(string $namePrefix): self
+    final public function namePrefix(string $namePrefix): static
     {
         $this->route->addNamePrefix($namePrefix);
 
@@ -76,12 +81,13 @@ class ImportConfigurator
 
     /**
      * Sets the host to use for all child routes.
+	 * 设置要用于所有子路由的主机
      *
      * @param string|array $host the host, or the localized hosts
      *
      * @return $this
      */
-    final public function host($host): self
+    final public function host(string|array $host): static
     {
         $this->addHost($this->route, $host);
 

@@ -1,16 +1,17 @@
 <?php
 /**
- * Illuminate，支持，可选的
+ * Illuminate, 支持, 选配
  */
 
 namespace Illuminate\Support;
 
 use ArrayAccess;
 use ArrayObject;
+use Illuminate\Support\Traits\Macroable;
 
 class Optional implements ArrayAccess
 {
-    use Traits\Macroable {
+    use Macroable {
         __call as macroCall;
     }
 
@@ -75,7 +76,7 @@ class Optional implements ArrayAccess
      * @param  mixed  $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return Arr::accessible($this->value) && Arr::exists($this->value, $key);
     }
@@ -87,7 +88,7 @@ class Optional implements ArrayAccess
      * @param  mixed  $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return Arr::get($this->value, $key);
     }
@@ -100,7 +101,7 @@ class Optional implements ArrayAccess
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         if (Arr::accessible($this->value)) {
             $this->value[$key] = $value;
@@ -114,7 +115,7 @@ class Optional implements ArrayAccess
      * @param  string  $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         if (Arr::accessible($this->value)) {
             unset($this->value[$key]);

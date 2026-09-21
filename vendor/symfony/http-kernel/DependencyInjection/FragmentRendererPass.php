@@ -23,42 +23,32 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 /**
  * Adds services tagged kernel.fragment_renderer as HTTP content rendering strategies.
- * 添加标记为 kernel.fragment_renderer 的服务作为HTTP内容呈现策略
+ * 添加标记为kernel.fragment_renderer的服务作为HTTP内容呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class FragmentRendererPass implements CompilerPassInterface
 {
-    private $handlerService;
-    private $rendererTag;
-
-    public function __construct(string $handlerService = 'fragment.handler', string $rendererTag = 'kernel.fragment_renderer')
-    {
-        if (0 < \func_num_args()) {
-            trigger_deprecation('symfony/http-kernel', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
-        }
-
-        $this->handlerService = $handlerService;
-        $this->rendererTag = $rendererTag;
-    }
-
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->handlerService)) {
+        if (!$container->hasDefinition('fragment.handler')) {
             return;
         }
 
-        $definition = $container->getDefinition($this->handlerService);
+        $definition = $container->getDefinition('fragment.handler');
         $renderers = [];
-        foreach ($container->findTaggedServiceIds($this->rendererTag, true) as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('kernel.fragment_renderer', true) as $id => $tags) {
             $def = $container->getDefinition($id);
             $class = $container->getParameterBag()->resolveValue($def->getClass());
 
             if (!$r = $container->getReflectionClass($class)) {
-                throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
+                throw new InvalidArgumentException(\sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
             }
             if (!$r->isSubclassOf(FragmentRendererInterface::class)) {
-                throw new InvalidArgumentException(sprintf('Service "%s" must implement interface "%s".', $id, FragmentRendererInterface::class));
+                throw new InvalidArgumentException(\sprintf('Service "%s" must implement interface "%s".', $id, FragmentRendererInterface::class));
             }
 
             foreach ($tags as $tag) {

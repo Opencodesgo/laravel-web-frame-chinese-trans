@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，密码，密码重置服务提供者
+ * Illuminate，认证，密码，重置密码服务提供者
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -40,7 +40,7 @@ class PasswordResetServiceProvider extends ServiceProvider implements Deferrable
 
     /**
      * Get the services provided by the provider.
-	 * 得到提供者提供的服务
+	 * 得到服务提供者提供的服务
      *
      * @return array
      */

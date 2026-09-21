@@ -1,67 +1,42 @@
 <?php
 /**
- * Illuminate，支持，多元
+ * Illuminate, 支持, Pluralizer
  */
 
 namespace Illuminate\Support;
 
-use Doctrine\Inflector\CachedWordInflector;
-use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\Rules\English;
-use Doctrine\Inflector\RulesetInflector;
+use Doctrine\Inflector\InflectorFactory;
 
 class Pluralizer
 {
     /**
-     * Uncountable word forms.
-	 * 不可数的单词形式
+     * The cached inflector instance.
+	 * 缓存的影响器实例
      *
-     * @var array
+     * @var static
+     */
+    protected static $inflector;
+
+    /**
+     * The language that should be used by the inflector.
+	 * 屈折器应该使用的语言
+     *
+     * @var string
+     */
+    protected static $language = 'english';
+
+    /**
+     * Uncountable non-nouns word forms.
+	 * 不可数非名词词的形式
+     *
+     * Contains words supported by Doctrine/Inflector/Rules/English/Uninflected.php
+	 * 包含Doctrine/Inflector/Rules/English/ uninflection .php支持的单词
+     *
+     * @var string[]
      */
     public static $uncountable = [
-        'audio',
-        'bison',
-        'cattle',
-        'chassis',
-        'compensation',
-        'coreopsis',
-        'data',
-        'deer',
-        'education',
-        'emoji',
-        'equipment',
-        'evidence',
-        'feedback',
-        'firmware',
-        'fish',
-        'furniture',
-        'gold',
-        'hardware',
-        'information',
-        'jedi',
-        'kin',
-        'knowledge',
-        'love',
-        'metadata',
-        'money',
-        'moose',
-        'news',
-        'nutrition',
-        'offspring',
-        'plankton',
-        'pokemon',
-        'police',
-        'rain',
         'recommended',
         'related',
-        'rice',
-        'series',
-        'sheep',
-        'software',
-        'species',
-        'swine',
-        'traffic',
-        'wheat',
     ];
 
     /**
@@ -69,12 +44,16 @@ class Pluralizer
 	 * 了解英语单词的复数形式
      *
      * @param  string  $value
-     * @param  int  $count
+     * @param  int|array|\Countable  $count
      * @return string
      */
     public static function plural($value, $count = 2)
     {
-        if ((int) abs($count) === 1 || static::uncountable($value)) {
+        if (is_countable($count)) {
+            $count = count($count);
+        }
+
+        if ((int) abs($count) === 1 || static::uncountable($value) || preg_match('/^(.*)[A-Za-z0-9\x{0080}-\x{FFFF}]$/u', $value) == 0) {
             return $value;
         }
 
@@ -111,7 +90,7 @@ class Pluralizer
 
     /**
      * Attempt to match the case on two strings.
-	 * 尝试用两个字符串匹配这个例子
+	 * 尝试在两个字符串上匹配大小写
      *
      * @param  string  $value
      * @param  string  $comparison
@@ -138,19 +117,24 @@ class Pluralizer
      */
     public static function inflector()
     {
-        static $inflector;
-
-        if (is_null($inflector)) {
-            $inflector = new Inflector(
-                new CachedWordInflector(new RulesetInflector(
-                    English\Rules::getSingularRuleset()
-                )),
-                new CachedWordInflector(new RulesetInflector(
-                    English\Rules::getPluralRuleset()
-                ))
-            );
+        if (is_null(static::$inflector)) {
+            static::$inflector = InflectorFactory::createForLanguage(static::$language)->build();
         }
 
-        return $inflector;
+        return static::$inflector;
+    }
+
+    /**
+     * Specify the language that should be used by the inflector.
+	 * 指定影响因子应使用的语言
+     *
+     * @param  string  $language
+     * @return void
+     */
+    public static function useLanguage(string $language)
+    {
+        static::$language = $language;
+
+        static::$inflector = null;
     }
 }

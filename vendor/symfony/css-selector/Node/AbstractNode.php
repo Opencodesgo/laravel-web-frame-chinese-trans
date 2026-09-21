@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，节点，抽象节点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Abstract base node class.
+ * 抽象基节点类。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -23,17 +27,10 @@ namespace Symfony\Component\CssSelector\Node;
  */
 abstract class AbstractNode implements NodeInterface
 {
-    /**
-     * @var string
-     */
-    private $nodeName;
+    private string $nodeName;
 
     public function getNodeName(): string
     {
-        if (null === $this->nodeName) {
-            $this->nodeName = preg_replace('~.*\\\\([^\\\\]+)Node$~', '$1', static::class);
-        }
-
-        return $this->nodeName;
+        return $this->nodeName ??= preg_replace('~.*\\\\([^\\\\]+)Node$~', '$1', static::class);
     }
 }

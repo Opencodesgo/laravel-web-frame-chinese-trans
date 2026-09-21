@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，向缓存传递添加带注释的类
+ * Symfony，Component，HttpKernel，依赖注入，将带注释的类添加到缓存通道
  */
 
 /*
@@ -15,7 +15,6 @@
 namespace Symfony\Component\HttpKernel\DependencyInjection;
 
 use Composer\Autoload\ClassLoader;
-use Symfony\Component\Debug\DebugClassLoader as LegacyDebugClassLoader;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\ErrorHandler\DebugClassLoader;
@@ -23,13 +22,13 @@ use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Sets the classes to compile in the cache for the container.
- * 在容器的缓存中设置要编译的类
+ * 在容器的缓存中设置要编译的类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class AddAnnotatedClassesToCachePass implements CompilerPassInterface
 {
-    private $kernel;
+    private Kernel $kernel;
 
     public function __construct(Kernel $kernel)
     {
@@ -37,7 +36,7 @@ class AddAnnotatedClassesToCachePass implements CompilerPassInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function process(ContainerBuilder $container)
     {
@@ -98,7 +97,7 @@ class AddAnnotatedClassesToCachePass implements CompilerPassInterface
                 continue;
             }
 
-            if ($function[0] instanceof DebugClassLoader || $function[0] instanceof LegacyDebugClassLoader) {
+            if ($function[0] instanceof DebugClassLoader) {
                 $function = $function[0]->getClassLoader();
             }
 
@@ -122,7 +121,8 @@ class AddAnnotatedClassesToCachePass implements CompilerPassInterface
             $regex = strtr($regex, ['\\*\\*' => '.*?', '\\*' => '[^\\\\]*?']);
 
             // If this class does not end by a slash, anchor the end
-            if ('\\' !== substr($regex, -1)) {
+			// 如果这个类不是以斜杠结束，则锚定结束。
+            if (!str_ends_with($regex, '\\')) {
                 $regex .= '$';
             }
 

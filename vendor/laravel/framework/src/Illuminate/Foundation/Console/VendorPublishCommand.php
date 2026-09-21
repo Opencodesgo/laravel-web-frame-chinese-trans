@@ -1,23 +1,29 @@
 <?php
 /**
- * Illuminate，基础，控制台，vendor:publish 厂商发布命令
+ * Illuminate，基础，控制台，vendor:publish 供应商发布命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Events\VendorTagPublished;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
-use League\Flysystem\Adapter\Local as LocalAdapter;
+use Illuminate\Support\Str;
 use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\Local\LocalFilesystemAdapter as LocalAdapter;
 use League\Flysystem\MountManager;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'vendor:publish')]
 class VendorPublishCommand extends Command
 {
     /**
      * The filesystem instance.
-	 * 文件系统实例 
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -45,14 +51,29 @@ class VendorPublishCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'vendor:publish {--force : Overwrite any existing files}
+    protected $signature = 'vendor:publish
+                    {--existing : Publish and overwrite only the files that have already been published}
+                    {--force : Overwrite any existing files}
                     {--all : Publish assets for all service providers without prompt}
                     {--provider= : The service provider that has assets you want to publish}
                     {--tag=* : One or many tags that have assets you want to publish}';
 
     /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'vendor:publish';
+
+    /**
      * The console command description.
-	 * 控制台命令名称
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -60,7 +81,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Create a new command instance.
-	 * 创建一个新的命令实例
+	 * 创建新的命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -85,8 +106,6 @@ class VendorPublishCommand extends Command
         foreach ($this->tags ?: [null] as $tag) {
             $this->publishTag($tag);
         }
-
-        $this->info('Publishing complete.');
     }
 
     /**
@@ -112,13 +131,13 @@ class VendorPublishCommand extends Command
 
     /**
      * Prompt for which provider or tag to publish.
-	 * 提示提供者或标记发布的提示符
+	 * 提示要发布哪个提供程序或标记
      *
      * @return void
      */
     protected function promptForProviderOrTag()
     {
-        $choice = $this->choice(
+        $choice = $this->components->choice(
             "Which provider or tag's files would you like to publish?",
             $choices = $this->publishableChoices()
         );
@@ -140,8 +159,8 @@ class VendorPublishCommand extends Command
     {
         return array_merge(
             ['<comment>Publish files from all providers and tags listed below</comment>'],
-            preg_filter('/^/', '<comment>Provider: </comment>', Arr::sort(ServiceProvider::publishableProviders())),
-            preg_filter('/^/', '<comment>Tag: </comment>', Arr::sort(ServiceProvider::publishableGroups()))
+            preg_filter('/^/', '<fg=gray>Provider:</> ', Arr::sort(ServiceProvider::publishableProviders())),
+            preg_filter('/^/', '<fg=gray>Tag:</> ', Arr::sort(ServiceProvider::publishableGroups()))
         );
     }
 
@@ -174,14 +193,25 @@ class VendorPublishCommand extends Command
     {
         $published = false;
 
-        foreach ($this->pathsToPublish($tag) as $from => $to) {
-            $this->publishItem($from, $to);
+        $pathsToPublish = $this->pathsToPublish($tag);
 
-            $published = true;
+        if ($publishing = count($pathsToPublish) > 0) {
+            $this->components->info(sprintf(
+                'Publishing %sassets',
+                $tag ? "[$tag] " : '',
+            ));
         }
 
-        if ($published === false) {
-            $this->error('Unable to locate publishable resources.');
+        foreach ($pathsToPublish as $from => $to) {
+            $this->publishItem($from, $to);
+        }
+
+        if ($publishing === false) {
+            $this->components->info('No publishable resources for tag ['.$tag.'].');
+        } else {
+            $this->laravel['events']->dispatch(new VendorTagPublished($tag, $pathsToPublish));
+
+            $this->newLine();
         }
     }
 
@@ -201,7 +231,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the given item from and to the given location.
-	 * 从给定的位置发布给定的项目
+	 * 将给定的项从给定位置发布到给定位置
      *
      * @param  string  $from
      * @param  string  $to
@@ -215,12 +245,12 @@ class VendorPublishCommand extends Command
             return $this->publishDirectory($from, $to);
         }
 
-        $this->error("Can't locate path: <{$from}>");
+        $this->components->error("Can't locate path: <{$from}>");
     }
 
     /**
      * Publish the file to the given path.
-	 * 将文件发布到给定路径
+	 * 将文件发布到给定的路径
      *
      * @param  string  $from
      * @param  string  $to
@@ -228,18 +258,31 @@ class VendorPublishCommand extends Command
      */
     protected function publishFile($from, $to)
     {
-        if (! $this->files->exists($to) || $this->option('force')) {
+        if ((! $this->option('existing') && (! $this->files->exists($to) || $this->option('force')))
+            || ($this->option('existing') && $this->files->exists($to))) {
             $this->createParentDirectory(dirname($to));
 
             $this->files->copy($from, $to);
 
-            $this->status($from, $to, 'File');
+            $this->status($from, $to, 'file');
+        } else {
+            if ($this->option('existing')) {
+                $this->components->twoColumnDetail(sprintf(
+                    'File [%s] does not exist',
+                    str_replace(base_path().'/', '', $to),
+                ), '<fg=yellow;options=bold>SKIPPED</>');
+            } else {
+                $this->components->twoColumnDetail(sprintf(
+                    'File [%s] already exists',
+                    str_replace(base_path().'/', '', realpath($to)),
+                ), '<fg=yellow;options=bold>SKIPPED</>');
+            }
         }
     }
 
     /**
      * Publish the directory to the given directory.
-	 * 将目录发布到给定的目录
+	 * 将目录发布到给定目录
      *
      * @param  string  $from
      * @param  string  $to
@@ -247,17 +290,19 @@ class VendorPublishCommand extends Command
      */
     protected function publishDirectory($from, $to)
     {
+        $visibility = PortableVisibilityConverter::fromArray([], Visibility::PUBLIC);
+
         $this->moveManagedFiles(new MountManager([
             'from' => new Flysystem(new LocalAdapter($from)),
-            'to' => new Flysystem(new LocalAdapter($to)),
+            'to' => new Flysystem(new LocalAdapter($to, $visibility)),
         ]));
 
-        $this->status($from, $to, 'Directory');
+        $this->status($from, $to, 'directory');
     }
 
     /**
      * Move all the files in the given MountManager.
-	 * 在给定的安装器中移动所有文件
+	 * 移动指定MountManager中的所有文件
      *
      * @param  \League\Flysystem\MountManager  $manager
      * @return void
@@ -265,15 +310,23 @@ class VendorPublishCommand extends Command
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (! $manager->has('to://'.$file['path']) || $this->option('force'))) {
-                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
+            $path = Str::after($file['path'], 'from://');
+
+            if (
+                $file['type'] === 'file'
+                && (
+                    (! $this->option('existing') && (! $manager->fileExists('to://'.$path) || $this->option('force')))
+                    || ($this->option('existing') && $manager->fileExists('to://'.$path))
+                )
+            ) {
+                $manager->write('to://'.$path, $manager->read($file['path']));
             }
         }
     }
 
     /**
      * Create the directory to house the published files if needed.
-	 * 如果需要，创建目录来存放发布的文件。
+	 * 如果需要，创建目录来存放发布的文件
      *
      * @param  string  $directory
      * @return void
@@ -296,10 +349,15 @@ class VendorPublishCommand extends Command
      */
     protected function status($from, $to, $type)
     {
-        $from = str_replace(base_path(), '', realpath($from));
+        $from = str_replace(base_path().'/', '', realpath($from));
 
-        $to = str_replace(base_path(), '', realpath($to));
+        $to = str_replace(base_path().'/', '', realpath($to));
 
-        $this->line('<info>Copied '.$type.'</info> <comment>['.$from.']</comment> <info>To</info> <comment>['.$to.']</comment>');
+        $this->components->task(sprintf(
+            'Copying %s [%s] to [%s]',
+            $type,
+            $from,
+            $to,
+        ));
     }
 }

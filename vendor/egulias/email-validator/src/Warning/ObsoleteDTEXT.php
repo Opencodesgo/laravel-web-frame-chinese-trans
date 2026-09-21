@@ -1,10 +1,13 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，过时 DTEXT
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
 class ObsoleteDTEXT extends Warning
 {
-    const CODE = 71;
+    public const CODE = 71;
 
     public function __construct()
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，部分，抽象多部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,8 +21,8 @@ use Symfony\Component\Mime\Header\Headers;
  */
 abstract class AbstractMultipartPart extends AbstractPart
 {
-    private $boundary;
-    private $parts = [];
+    private ?string $boundary = null;
+    private array $parts = [];
 
     public function __construct(AbstractPart ...$parts)
     {
@@ -90,10 +93,6 @@ abstract class AbstractMultipartPart extends AbstractPart
 
     private function getBoundary(): string
     {
-        if (null === $this->boundary) {
-            $this->boundary = strtr(base64_encode(random_bytes(6)), '+/', '-_');
-        }
-
-        return $this->boundary;
+        return $this->boundary ??= strtr(base64_encode(random_bytes(6)), '+/', '-_');
     }
 }

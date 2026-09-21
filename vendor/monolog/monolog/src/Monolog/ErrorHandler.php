@@ -20,9 +20,10 @@ use Psr\Log\LogLevel;
 
 /**
  * Monolog error handler
- * Monolog错误处理者
+ * Monolog错误处理程序
  *
  * A facility to enable logging of runtime errors, exceptions and fatal errors.
+ * 一种能够记录运行时错误、异常和致命错误的工具。
  *
  * Quick setup: <code>ErrorHandler::register($logger);</code>
  *

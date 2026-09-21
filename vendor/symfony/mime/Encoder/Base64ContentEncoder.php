@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，译码器，Base64内容编码器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +24,7 @@ final class Base64ContentEncoder extends Base64Encoder implements ContentEncoder
     public function encodeByteStream($stream, int $maxLineLength = 0): iterable
     {
         if (!\is_resource($stream)) {
-            throw new \TypeError(sprintf('Method "%s" takes a stream as a first argument.', __METHOD__));
+            throw new \TypeError(\sprintf('Method "%s" takes a stream as a first argument.', __METHOD__));
         }
 
         $filter = stream_filter_append($stream, 'convert.base64-encode', \STREAM_FILTER_READ, [

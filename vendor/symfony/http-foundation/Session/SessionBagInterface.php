@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，会话包接口
+ * Symfony，Component，HttpFoundation，会话，会话包接口
  */
 
 /*
@@ -24,25 +24,23 @@ interface SessionBagInterface
 {
     /**
      * Gets this bag's name.
-	 * 得到包名
-     *
-     * @return string
+	 * 得到包名称
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Initializes the Bag.
-	 * 初始化Bag
+	 * 初始化包
+     *
+     * @return void
      */
     public function initialize(array &$array);
 
     /**
      * Gets the storage key for this bag.
 	 * 获取这个包的存储钥匙
-     *
-     * @return string
      */
-    public function getStorageKey();
+    public function getStorageKey(): string;
 
     /**
      * Clears out data from bag.
@@ -50,5 +48,5 @@ interface SessionBagInterface
      *
      * @return mixed Whatever data was contained
      */
-    public function clear();
+    public function clear(): mixed;
 }

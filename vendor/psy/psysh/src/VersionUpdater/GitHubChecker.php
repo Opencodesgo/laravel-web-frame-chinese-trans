@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，Git Hub 检查器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ class GitHubChecker implements Checker
     {
         // version_compare doesn't handle semver completely;
         // strip pre-release and build metadata before comparing
+		// Version_compare不能完全处理semver；在比较之前剥离预发布和构建元数据。
         $version = \preg_replace('/[+-]\w+/', '', Shell::VERSION);
 
         return \version_compare($version, $this->getLatest(), '>=');
@@ -55,6 +59,7 @@ class GitHubChecker implements Checker
 
     /**
      * Set to public to make testing easier.
+	 * 设置为public以使测试更容易
      *
      * @return mixed
      */

@@ -38,7 +38,7 @@ class ArrayStore extends TaggableStore implements LockProvider
 
     /**
      * Create a new Array store.
-	 * 创建一个新的Array存储
+	 * 创建新的Array存储
      *
      * @param  bool  $serializesValues
      * @return void

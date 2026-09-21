@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，与时间交互
+ * Illuminate, 支持, 与时间互动
  */
 
 namespace Illuminate\Support;

@@ -7,9 +7,11 @@ namespace Illuminate\Http\Concerns;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Date;
 use SplFileInfo;
 use stdClass;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\VarDumper\VarDumper;
 
 trait InteractsWithInput
 {
@@ -61,8 +63,12 @@ trait InteractsWithInput
     {
         $header = $this->header('Authorization', '');
 
-        if (Str::startsWith($header, 'Bearer ')) {
-            return Str::substr($header, 7);
+        $position = strrpos($header, 'Bearer ');
+
+        if ($position !== false) {
+            $header = substr($header, $position + 7);
+
+            return str_contains($header, ',') ? strstr($header, ',', true) : $header;
         }
     }
 
@@ -122,12 +128,17 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  callable  $callback
+     * @param  callable|null  $default
      * @return $this|mixed
      */
-    public function whenHas($key, callable $callback)
+    public function whenHas($key, callable $callback, callable $default = null)
     {
         if ($this->has($key)) {
             return $callback(data_get($this->all(), $key)) ?: $this;
+        }
+
+        if ($default) {
+            return $default();
         }
 
         return $this;
@@ -199,12 +210,17 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  callable  $callback
+     * @param  callable|null  $default
      * @return $this|mixed
      */
-    public function whenFilled($key, callable $callback)
+    public function whenFilled($key, callable $callback, callable $default = null)
     {
         if ($this->filled($key)) {
             return $callback(data_get($this->all(), $key)) ?: $this;
+        }
+
+        if ($default) {
+            return $default();
         }
 
         return $this;
@@ -225,8 +241,30 @@ trait InteractsWithInput
     }
 
     /**
-     * Determine if the given input key is an empty string for "has".
-	 * 确定给定的输入键是否为"has"的空字符串
+     * Apply the callback if the request is missing the given input item key.
+	 * 如果请求缺少给定的输入项键，则应用回调。
+     *
+     * @param  string  $key
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return $this|mixed
+     */
+    public function whenMissing($key, callable $callback, callable $default = null)
+    {
+        if ($this->missing($key)) {
+            return $callback(data_get($this->all(), $key)) ?: $this;
+        }
+
+        if ($default) {
+            return $default();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Determine if the given input key is an empty string for "filled".
+	 * 确定给定的输入键是否为"填充"的空字符串
      *
      * @param  string  $key
      * @return bool
@@ -289,11 +327,37 @@ trait InteractsWithInput
     }
 
     /**
+     * Retrieve input from the request as a Stringable instance.
+	 * 作为Stringable实例从请求中检索输入
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return \Illuminate\Support\Stringable
+     */
+    public function str($key, $default = null)
+    {
+        return $this->string($key, $default);
+    }
+
+    /**
+     * Retrieve input from the request as a Stringable instance.
+	 * 作为Stringable实例从请求中检索输入
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return \Illuminate\Support\Stringable
+     */
+    public function string($key, $default = null)
+    {
+        return str($this->input($key, $default));
+    }
+
+    /**
      * Retrieve input as a boolean value.
 	 * 检索作为布尔值的输入
      *
      * Returns true when value is "1", "true", "on", and "yes". Otherwise, returns false.
-	 * 当value为"1"、"true"、"on"和"yes"时返回true。否则，返回false。
+	 * 当value为“1”、“true”、“on”和“yes”时返回true。否则，返回false。
      *
      * @param  string|null  $key
      * @param  bool  $default
@@ -302,6 +366,90 @@ trait InteractsWithInput
     public function boolean($key = null, $default = false)
     {
         return filter_var($this->input($key, $default), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * Retrieve input as an integer value.
+	 * 检索作为整数值的输入
+     *
+     * @param  string  $key
+     * @param  int  $default
+     * @return int
+     */
+    public function integer($key, $default = 0)
+    {
+        return intval($this->input($key, $default));
+    }
+
+    /**
+     * Retrieve input as a float value.
+	 * 检索作为浮点值的输入
+     *
+     * @param  string  $key
+     * @param  float  $default
+     * @return float
+     */
+    public function float($key, $default = 0.0)
+    {
+        return floatval($this->input($key, $default));
+    }
+
+    /**
+     * Retrieve input from the request as a Carbon instance.
+	 * 作为一个Carbon实例从请求中检索输入
+     *
+     * @param  string  $key
+     * @param  string|null  $format
+     * @param  string|null  $tz
+     * @return \Illuminate\Support\Carbon|null
+     *
+     * @throws \Carbon\Exceptions\InvalidFormatException
+     */
+    public function date($key, $format = null, $tz = null)
+    {
+        if ($this->isNotFilled($key)) {
+            return null;
+        }
+
+        if (is_null($format)) {
+            return Date::parse($this->input($key), $tz);
+        }
+
+        return Date::createFromFormat($format, $this->input($key), $tz);
+    }
+
+    /**
+     * Retrieve input from the request as an enum.
+	 * 作为枚举从请求中检索输入
+     *
+     * @template TEnum
+     *
+     * @param  string  $key
+     * @param  class-string<TEnum>  $enumClass
+     * @return TEnum|null
+     */
+    public function enum($key, $enumClass)
+    {
+        if ($this->isNotFilled($key) ||
+            ! function_exists('enum_exists') ||
+            ! enum_exists($enumClass) ||
+            ! method_exists($enumClass, 'tryFrom')) {
+            return null;
+        }
+
+        return $enumClass::tryFrom($this->input($key));
+    }
+
+    /**
+     * Retrieve input from the request as a collection.
+	 * 从请求中检索输入作为集合
+     *
+     * @param  array|string|null  $key
+     * @return \Illuminate\Support\Collection
+     */
+    public function collect($key = null)
+    {
+        return collect(is_array($key) ? $this->only($key) : $this->input($key));
     }
 
     /**
@@ -484,7 +632,7 @@ trait InteractsWithInput
 	 * 从给定源检索参数项
      *
      * @param  string  $source
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
      * @return string|array|null
      */
@@ -494,6 +642,40 @@ trait InteractsWithInput
             return $this->$source->all();
         }
 
+        if ($this->$source instanceof InputBag) {
+            return $this->$source->all()[$key] ?? $default;
+        }
+
         return $this->$source->get($key, $default);
+    }
+
+    /**
+     * Dump the request items and end the script.
+	 * 转储请求项并结束脚本
+     *
+     * @param  mixed  ...$keys
+     * @return never
+     */
+    public function dd(...$keys)
+    {
+        $this->dump(...$keys);
+
+        exit(1);
+    }
+
+    /**
+     * Dump the items.
+	 * 转存项目
+     *
+     * @param  mixed  $keys
+     * @return $this
+     */
+    public function dump($keys = [])
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        VarDumper::dump(count($keys) > 0 ? $this->only($keys) : $this->all());
+
+        return $this;
     }
 }

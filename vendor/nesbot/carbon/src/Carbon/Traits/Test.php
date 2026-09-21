@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，测试
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -27,6 +30,7 @@ trait Test
 
     /**
      * A test Carbon instance to be returned when now instances are created.
+	 * 现在创建实例时返回的测试Carbon实例
      *
      * @var Closure|static|null
      */
@@ -34,6 +38,7 @@ trait Test
 
     /**
      * The timezone to resto to when clearing the time mock.
+	 * 清除时间模拟时要恢复到的时区
      *
      * @var string|null
      */
@@ -116,6 +121,7 @@ trait Test
      * Temporarily sets a static date to be used within the callback.
      * Using setTestNow to set the date, executing the callback, then
      * clearing the test instance.
+	 * 临时设置回调中使用的静态日期。
      *
      * /!\ Use this method for unit tests only.
      *
@@ -163,6 +169,7 @@ trait Test
 
     /**
      * Get the mocked date passed in setTestNow() and if it's a Closure, execute it.
+	 * 获取setTestNow（）中传递的模拟日期，如果它是一个Closure，则执行它。
      *
      * @param string|\DateTimeZone $tz
      *

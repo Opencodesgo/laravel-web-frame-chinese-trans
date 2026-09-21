@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，Comparator
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -13,6 +18,7 @@ use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Abstract base class for comparators which compare values for equality.
+ * 用于比较值是否相等的比较器的抽象基类。
  */
 abstract class Comparator
 {
@@ -38,6 +44,7 @@ abstract class Comparator
 
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器是否可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare
@@ -48,6 +55,7 @@ abstract class Comparator
 
     /**
      * Asserts that two values are equal.
+	 * 断言两个值是否相等
      *
      * @param mixed $expected     First value to compare
      * @param mixed $actual       Second value to compare

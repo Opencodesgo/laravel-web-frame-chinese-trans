@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转存器，Php 文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,18 +23,12 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 class PhpFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         return "<?php\n\nreturn ".var_export($messages->all($domain), true).";\n";
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'php';
     }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -20,11 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell base command.
+ * Psy Shell基地命令。
  */
 abstract class Command extends BaseCommand
 {
     /**
      * Sets the application instance for this command.
+	 * 为该命令设置应用实例
      *
      * @param Application|null $application An Application instance
      *
@@ -41,6 +46,7 @@ abstract class Command extends BaseCommand
 
     /**
      * getApplication, but is guaranteed to return a Shell instance.
+	 * getApplication，但保证返回一个Shell实例。
      */
     protected function getShell(): Shell
     {
@@ -97,6 +103,7 @@ abstract class Command extends BaseCommand
 
     /**
      * These arguments will be excluded from help output.
+	 * 这些参数将从帮助输出中排除
      *
      * @return string[]
      */
@@ -119,6 +126,7 @@ abstract class Command extends BaseCommand
 
     /**
      * These options will be excluded from help output.
+	 * 这些选项将从帮助输出中排除
      *
      * @return string[]
      */
@@ -129,6 +137,7 @@ abstract class Command extends BaseCommand
 
     /**
      * Format command aliases as text..
+	 * 格式命令别名为文本..
      */
     private function aliasesAsText(): string
     {
@@ -137,6 +146,7 @@ abstract class Command extends BaseCommand
 
     /**
      * Format command arguments as text.
+	 * 将命令参数格式化为文本
      */
     private function argumentsAsText(): string
     {
@@ -168,6 +178,7 @@ abstract class Command extends BaseCommand
 
     /**
      * Format options as text.
+	 * 将选项格式化为文本
      */
     private function optionsAsText(): string
     {
@@ -207,6 +218,7 @@ abstract class Command extends BaseCommand
 
     /**
      * Calculate the maximum padding width for a set of lines.
+	 * 计算一组行的最大填充宽度
      */
     private function getMaxWidth(): int
     {
@@ -230,6 +242,7 @@ abstract class Command extends BaseCommand
 
     /**
      * Format an option default as text.
+	 * 将默认选项格式化为文本
      *
      * @param mixed $default
      */
@@ -244,6 +257,7 @@ abstract class Command extends BaseCommand
 
     /**
      * Get a Table instance.
+	 * 获取Table实例
      *
      * @return Table
      */

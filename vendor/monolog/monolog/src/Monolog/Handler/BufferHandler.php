@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Buffer 处理器 (通过缓冲机制批量处理日志，优化性能。)
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Buffers all records until closing the handler and then pass them as batch.
+ * 缓冲所有记录，直到关闭处理程序，然后将它们作为批处理传递。
  *
  * This is useful for a MailHandler to send only one mail per request instead of
  * sending one per log message.
@@ -119,6 +124,7 @@ class BufferHandler extends AbstractHandler implements ProcessableHandlerInterfa
 
     /**
      * Clears the buffer without flushing any messages down to the wrapped handler.
+	 * 清除缓冲区，而不将任何消息刷新到包装的处理程序。
      */
     public function clear(): void
     {

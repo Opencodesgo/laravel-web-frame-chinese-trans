@@ -1,18 +1,22 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，问题，查询关系
+ * Illuminate，数据库，Eloquent，问题，查询关系特征
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
+use BadMethodCallException;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\RelationNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Str;
-use RuntimeException;
+use InvalidArgumentException;
 
 trait QueriesRelationships
 {
@@ -32,7 +36,7 @@ trait QueriesRelationships
     public function has($relation, $operator = '>=', $count = 1, $boolean = 'and', Closure $callback = null)
     {
         if (is_string($relation)) {
-            if (strpos($relation, '.') !== false) {
+            if (str_contains($relation, '.')) {
                 return $this->hasNested($relation, $operator, $count, $boolean, $callback);
             }
 
@@ -40,13 +44,13 @@ trait QueriesRelationships
         }
 
         if ($relation instanceof MorphTo) {
-            throw new RuntimeException('Please use whereHasMorph() for MorphTo relationships.');
+            return $this->hasMorph($relation, ['*'], $operator, $count, $boolean, $callback);
         }
 
         // If we only need to check for the existence of the relation, then we can optimize
         // the subquery to only run a "where exists" clause instead of this full "count"
         // clause. This will make these queries run much faster compared with a count.
-		// 如果我们只需要检查关系是否存在。
+		// 如果我们只需要检查关系是否存在，然后我们可以优化子查询只运行"where exists"子句。
         $method = $this->canUseExistsForExistenceCheck($operator, $count)
                         ? 'getRelationExistenceQuery'
                         : 'getRelationExistenceCountQuery';
@@ -58,7 +62,7 @@ trait QueriesRelationships
         // Next we will call any given callback as an "anonymous" scope so they can get the
         // proper logical grouping of the where clauses if needed by this Eloquent query
         // builder. Then, we will be ready to finalize and return this query instance.
-		// 接下来，我们将调用任何给定的回调作为"匿名"作用域，以便它们可以获得。
+		// 接下来，我们将调用任何给定的回调作为"匿名"作用域。
         if ($callback) {
             $hasQuery->callScope($callback);
         }
@@ -73,7 +77,6 @@ trait QueriesRelationships
 	 * 向查询添加嵌套关系count / exists条件
      *
      * Sets up recursive call to whereHas until we finish the nested relation.
-	 * 设置对whereHas的递归调用，直到完成嵌套关系。
      *
      * @param  string  $relations
      * @param  string  $operator
@@ -162,8 +165,26 @@ trait QueriesRelationships
     }
 
     /**
+     * Add a relationship count / exists condition to the query with where clauses.
+	 * 使用where子句向查询添加关系count / exists条件
+     *
+     * Also load the relationship with same condition.
+     *
+     * @param  string  $relation
+     * @param  \Closure|null  $callback
+     * @param  string  $operator
+     * @param  int  $count
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function withWhereHas($relation, Closure $callback = null, $operator = '>=', $count = 1)
+    {
+        return $this->whereHas(Str::before($relation, ':'), $callback, $operator, $count)
+            ->with($callback ? [$relation => fn ($query) => $callback($query)] : $relation);
+    }
+
+    /**
      * Add a relationship count / exists condition to the query with where clauses and an "or".
-	 * 使用where子句和“或”向查询添加关系count / exists条件
+	 * 使用where子句和"或"向查询添加关系count / exists条件
      *
      * @param  string  $relation
      * @param  \Closure|null  $callback
@@ -191,7 +212,7 @@ trait QueriesRelationships
 
     /**
      * Add a relationship count / exists condition to the query with where clauses and an "or".
-	 * 使用where子句和“或”向查询添加关系count / exists条件
+	 * 使用where子句和"或"向查询添加关系count / exists条件
      *
      * @param  string  $relation
      * @param  \Closure|null  $callback
@@ -206,7 +227,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query.
 	 * 向查询添加一个多态关系计数/存在条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  string  $operator
      * @param  int  $count
@@ -216,7 +237,9 @@ trait QueriesRelationships
      */
     public function hasMorph($relation, $types, $operator = '>=', $count = 1, $boolean = 'and', Closure $callback = null)
     {
-        $relation = $this->getRelationWithoutConstraints($relation);
+        if (is_string($relation)) {
+            $relation = $this->getRelationWithoutConstraints($relation);
+        }
 
         $types = (array) $types;
 
@@ -239,7 +262,7 @@ trait QueriesRelationships
                         };
                     }
 
-                    $query->where($this->query->from.'.'.$relation->getMorphType(), '=', (new $type)->getMorphClass())
+                    $query->where($this->qualifyColumn($relation->getMorphType()), '=', (new $type)->getMorphClass())
                                 ->whereHas($belongsTo, $callback, $operator, $count);
                 });
             }
@@ -273,7 +296,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query with an "or".
 	 * 使用"或"向查询添加多态关系计数/存在条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  string  $operator
      * @param  int  $count
@@ -288,7 +311,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query.
 	 * 向查询添加一个多态关系计数/存在条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  string  $boolean
      * @param  \Closure|null  $callback
@@ -303,7 +326,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query with an "or".
 	 * 使用"或"向查询添加多态关系计数/存在条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
@@ -316,7 +339,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query with where clauses.
 	 * 使用where子句向查询添加一个多态关系count / exists条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  \Closure|null  $callback
      * @param  string  $operator
@@ -332,7 +355,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query with where clauses and an "or".
 	 * 使用where子句和"或"向查询添加一个多态关系count / exists条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  \Closure|null  $callback
      * @param  string  $operator
@@ -348,7 +371,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query with where clauses.
 	 * 使用where子句向查询添加一个多态关系count / exists条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Eloquent\Builder|static
@@ -362,7 +385,7 @@ trait QueriesRelationships
      * Add a polymorphic relationship count / exists condition to the query with where clauses and an "or".
 	 * 使用where子句和"或"向查询添加一个多态关系count / exists条件
      *
-     * @param  string  $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
      * @param  string|array  $types
      * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Eloquent\Builder|static
@@ -370,6 +393,348 @@ trait QueriesRelationships
     public function orWhereDoesntHaveMorph($relation, $types, Closure $callback = null)
     {
         return $this->doesntHaveMorph($relation, $types, 'or', $callback);
+    }
+
+    /**
+     * Add a basic where clause to a relationship query.
+	 * 向关系查询添加一个基本的where子句
+     *
+     * @param  string  $relation
+     * @param  \Closure|string|array|\Illuminate\Database\Query\Expression  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function whereRelation($relation, $column, $operator = null, $value = null)
+    {
+        return $this->whereHas($relation, function ($query) use ($column, $operator, $value) {
+            if ($column instanceof Closure) {
+                $column($query);
+            } else {
+                $query->where($column, $operator, $value);
+            }
+        });
+    }
+
+    /**
+     * Add an "or where" clause to a relationship query.
+	 * 向关系查询添加"or where"子句
+     *
+     * @param  string  $relation
+     * @param  \Closure|string|array|\Illuminate\Database\Query\Expression  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function orWhereRelation($relation, $column, $operator = null, $value = null)
+    {
+        return $this->orWhereHas($relation, function ($query) use ($column, $operator, $value) {
+            if ($column instanceof Closure) {
+                $column($query);
+            } else {
+                $query->where($column, $operator, $value);
+            }
+        });
+    }
+
+    /**
+     * Add a polymorphic relationship condition to the query with a where clause.
+	 * 使用where子句向查询添加多态关系条件
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
+     * @param  string|array  $types
+     * @param  \Closure|string|array|\Illuminate\Database\Query\Expression  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function whereMorphRelation($relation, $types, $column, $operator = null, $value = null)
+    {
+        return $this->whereHasMorph($relation, $types, function ($query) use ($column, $operator, $value) {
+            $query->where($column, $operator, $value);
+        });
+    }
+
+    /**
+     * Add a polymorphic relationship condition to the query with an "or where" clause.
+	 * 使用"or where"子句向查询添加多态关系条件
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
+     * @param  string|array  $types
+     * @param  \Closure|string|array|\Illuminate\Database\Query\Expression  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function orWhereMorphRelation($relation, $types, $column, $operator = null, $value = null)
+    {
+        return $this->orWhereHasMorph($relation, $types, function ($query) use ($column, $operator, $value) {
+            $query->where($column, $operator, $value);
+        });
+    }
+
+    /**
+     * Add a morph-to relationship condition to the query.
+	 * 向查询添加一个morphto关系条件
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
+     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function whereMorphedTo($relation, $model, $boolean = 'and')
+    {
+        if (is_string($relation)) {
+            $relation = $this->getRelationWithoutConstraints($relation);
+        }
+
+        if (is_string($model)) {
+            $morphMap = Relation::morphMap();
+
+            if (! empty($morphMap) && in_array($model, $morphMap)) {
+                $model = array_search($model, $morphMap, true);
+            }
+
+            return $this->where($relation->getMorphType(), $model, null, $boolean);
+        }
+
+        return $this->where(function ($query) use ($relation, $model) {
+            $query->where($relation->getMorphType(), $model->getMorphClass())
+                ->where($relation->getForeignKeyName(), $model->getKey());
+        }, null, null, $boolean);
+    }
+
+    /**
+     * Add a not morph-to relationship condition to the query.
+	 * 向查询添加一个not morphto关系条件
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
+     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function whereNotMorphedTo($relation, $model, $boolean = 'and')
+    {
+        if (is_string($relation)) {
+            $relation = $this->getRelationWithoutConstraints($relation);
+        }
+
+        if (is_string($model)) {
+            $morphMap = Relation::morphMap();
+
+            if (! empty($morphMap) && in_array($model, $morphMap)) {
+                $model = array_search($model, $morphMap, true);
+            }
+
+            return $this->whereNot($relation->getMorphType(), '<=>', $model, $boolean);
+        }
+
+        return $this->whereNot(function ($query) use ($relation, $model) {
+            $query->where($relation->getMorphType(), '<=>', $model->getMorphClass())
+                ->where($relation->getForeignKeyName(), '<=>', $model->getKey());
+        }, null, null, $boolean);
+    }
+
+    /**
+     * Add a morph-to relationship condition to the query with an "or where" clause.
+	 * 使用"or where"子句向查询添加一个morphto关系条件
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
+     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function orWhereMorphedTo($relation, $model)
+    {
+        return $this->whereMorphedTo($relation, $model, 'or');
+    }
+
+    /**
+     * Add a not morph-to relationship condition to the query with an "or where" clause.
+	 * 使用"or where"子句向查询添加一个not morphto关系条件
+     *
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
+     * @param  \Illuminate\Database\Eloquent\Model|string  $model
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function orWhereNotMorphedTo($relation, $model)
+    {
+        return $this->whereNotMorphedTo($relation, $model, 'or');
+    }
+
+    /**
+     * Add a "belongs to" relationship where clause to the query.
+	 * 向查询添加一个"属于"where关系子句
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection<\Illuminate\Database\Eloquent\Model>  $related
+     * @param  string|null  $relationshipName
+     * @param  string  $boolean
+     * @return $this
+     *
+     * @throws \Illuminate\Database\Eloquent\RelationNotFoundException
+     */
+    public function whereBelongsTo($related, $relationshipName = null, $boolean = 'and')
+    {
+        if (! $related instanceof Collection) {
+            $relatedCollection = $related->newCollection([$related]);
+        } else {
+            $relatedCollection = $related;
+
+            $related = $relatedCollection->first();
+        }
+
+        if ($relatedCollection->isEmpty()) {
+            throw new InvalidArgumentException('Collection given to whereBelongsTo method may not be empty.');
+        }
+
+        if ($relationshipName === null) {
+            $relationshipName = Str::camel(class_basename($related));
+        }
+
+        try {
+            $relationship = $this->model->{$relationshipName}();
+        } catch (BadMethodCallException $exception) {
+            throw RelationNotFoundException::make($this->model, $relationshipName);
+        }
+
+        if (! $relationship instanceof BelongsTo) {
+            throw RelationNotFoundException::make($this->model, $relationshipName, BelongsTo::class);
+        }
+
+        $this->whereIn(
+            $relationship->getQualifiedForeignKeyName(),
+            $relatedCollection->pluck($relationship->getOwnerKeyName())->toArray(),
+            $boolean,
+        );
+
+        return $this;
+    }
+
+    /**
+     * Add an "BelongsTo" relationship with an "or where" clause to the query.
+	 * 向查询中添加带有"or where"子句的“BelongsTo”关系
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $related
+     * @param  string|null  $relationshipName
+     * @return $this
+     *
+     * @throws \RuntimeException
+     */
+    public function orWhereBelongsTo($related, $relationshipName = null)
+    {
+        return $this->whereBelongsTo($related, $relationshipName, 'or');
+    }
+
+    /**
+     * Add subselect queries to include an aggregate value for a relationship.
+	 * 添加子选择查询以包含关系的聚合值
+     *
+     * @param  mixed  $relations
+     * @param  string  $column
+     * @param  string  $function
+     * @return $this
+     */
+    public function withAggregate($relations, $column, $function = null)
+    {
+        if (empty($relations)) {
+            return $this;
+        }
+
+        if (is_null($this->query->columns)) {
+            $this->query->select([$this->query->from.'.*']);
+        }
+
+        $relations = is_array($relations) ? $relations : [$relations];
+
+        foreach ($this->parseWithRelations($relations) as $name => $constraints) {
+            // First we will determine if the name has been aliased using an "as" clause on the name
+            // and if it has we will extract the actual relationship name and the desired name of
+            // the resulting column. This allows multiple aggregates on the same relationships.
+			// 首先，我们将使用名称上的"as"子句确定该名称是否已使用别名。
+            $segments = explode(' ', $name);
+
+            unset($alias);
+
+            if (count($segments) === 3 && Str::lower($segments[1]) === 'as') {
+                [$name, $alias] = [$segments[0], $segments[2]];
+            }
+
+            $relation = $this->getRelationWithoutConstraints($name);
+
+            if ($function) {
+                $hashedColumn = $this->getRelationHashedColumn($column, $relation);
+
+                $wrappedColumn = $this->getQuery()->getGrammar()->wrap(
+                    $column === '*' ? $column : $relation->getRelated()->qualifyColumn($hashedColumn)
+                );
+
+                $expression = $function === 'exists' ? $wrappedColumn : sprintf('%s(%s)', $function, $wrappedColumn);
+            } else {
+                $expression = $column;
+            }
+
+            // Here, we will grab the relationship sub-query and prepare to add it to the main query
+            // as a sub-select. First, we'll get the "has" query and use that to get the relation
+            // sub-query. We'll format this relationship name and append this column if needed.
+			// 在这里，我们将获取关系子查询并准备将其添加到主查询中。
+            $query = $relation->getRelationExistenceQuery(
+                $relation->getRelated()->newQuery(), $this, new Expression($expression)
+            )->setBindings([], 'select');
+
+            $query->callScope($constraints);
+
+            $query = $query->mergeConstraintsFrom($relation->getQuery())->toBase();
+
+            // If the query contains certain elements like orderings / more than one column selected
+            // then we will remove those elements from the query so that it will execute properly
+            // when given to the database. Otherwise, we may receive SQL errors or poor syntax.
+			// 如果查询包含某些元素，如orderings /所选的多个列。
+            $query->orders = null;
+            $query->setBindings([], 'order');
+
+            if (count($query->columns) > 1) {
+                $query->columns = [$query->columns[0]];
+                $query->bindings['select'] = [];
+            }
+
+            // Finally, we will make the proper column alias to the query and run this sub-select on
+            // the query builder. Then, we will return the builder instance back to the developer
+            // for further constraint chaining that needs to take place on the query as needed.
+			// 最后，我们将为查询设置适当的列别名，并运行此子选择。
+            $alias ??= Str::snake(
+                preg_replace('/[^[:alnum:][:space:]_]/u', '', "$name $function $column")
+            );
+
+            if ($function === 'exists') {
+                $this->selectRaw(
+                    sprintf('exists(%s) as %s', $query->toSql(), $this->getQuery()->grammar->wrap($alias)),
+                    $query->getBindings()
+                )->withCasts([$alias => 'bool']);
+            } else {
+                $this->selectSub(
+                    $function ? $query : $query->limit(1),
+                    $alias
+                );
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the relation hashed column name for the given column and relation.
+	 * 获取给定列和关系的关系哈希列名称
+     *
+     * @param  string  $column
+     * @param  \Illuminate\Database\Eloquent\Relations\Relationship  $relation
+     * @return string
+     */
+    protected function getRelationHashedColumn($column, $relation)
+    {
+        if (str_contains($column, '.')) {
+            return $column;
+        }
+
+        return $this->getQuery()->from === $relation->getQuery()->getQuery()->from
+            ? "{$relation->getRelationCountHash(false)}.$column"
+            : $column;
     }
 
     /**
@@ -381,63 +746,71 @@ trait QueriesRelationships
      */
     public function withCount($relations)
     {
-        if (empty($relations)) {
-            return $this;
-        }
+        return $this->withAggregate(is_array($relations) ? $relations : func_get_args(), '*', 'count');
+    }
 
-        if (is_null($this->query->columns)) {
-            $this->query->select([$this->query->from.'.*']);
-        }
+    /**
+     * Add subselect queries to include the max of the relation's column.
+	 * 添加子选择查询以包含关系列的最大
+     *
+     * @param  string|array  $relation
+     * @param  string  $column
+     * @return $this
+     */
+    public function withMax($relation, $column)
+    {
+        return $this->withAggregate($relation, $column, 'max');
+    }
 
-        $relations = is_array($relations) ? $relations : func_get_args();
+    /**
+     * Add subselect queries to include the min of the relation's column.
+	 * 添加子选择查询以包含关系列的最小值
+     *
+     * @param  string|array  $relation
+     * @param  string  $column
+     * @return $this
+     */
+    public function withMin($relation, $column)
+    {
+        return $this->withAggregate($relation, $column, 'min');
+    }
 
-        foreach ($this->parseWithRelations($relations) as $name => $constraints) {
-            // First we will determine if the name has been aliased using an "as" clause on the name
-            // and if it has we will extract the actual relationship name and the desired name of
-            // the resulting column. This allows multiple counts on the same relationship name.
-			// 首先，我们将使用名称上的"as"子句确定该名称是否已使用别名
-            $segments = explode(' ', $name);
+    /**
+     * Add subselect queries to include the sum of the relation's column.
+	 * 添加子选择查询以包含关系列的总和
+     *
+     * @param  string|array  $relation
+     * @param  string  $column
+     * @return $this
+     */
+    public function withSum($relation, $column)
+    {
+        return $this->withAggregate($relation, $column, 'sum');
+    }
 
-            unset($alias);
+    /**
+     * Add subselect queries to include the average of the relation's column.
+	 * 添加子选择查询以包含关系列的平均值
+     *
+     * @param  string|array  $relation
+     * @param  string  $column
+     * @return $this
+     */
+    public function withAvg($relation, $column)
+    {
+        return $this->withAggregate($relation, $column, 'avg');
+    }
 
-            if (count($segments) === 3 && Str::lower($segments[1]) === 'as') {
-                [$name, $alias] = [$segments[0], $segments[2]];
-            }
-
-            $relation = $this->getRelationWithoutConstraints($name);
-
-            // Here we will get the relationship count query and prepare to add it to the main query
-            // as a sub-select. First, we'll get the "has" query and use that to get the relation
-            // count query. We will normalize the relation name then append _count as the name.
-			// 这里我们将获得关系计数查询，并准备将其添加到主查询中。
-            $query = $relation->getRelationExistenceCountQuery(
-                $relation->getRelated()->newQuery(), $this
-            );
-
-            $query->callScope($constraints);
-
-            $query = $query->mergeConstraintsFrom($relation->getQuery())->toBase();
-
-            $query->orders = null;
-
-            $query->setBindings([], 'order');
-
-            if (count($query->columns) > 1) {
-                $query->columns = [$query->columns[0]];
-
-                $query->bindings['select'] = [];
-            }
-
-            // Finally we will add the proper result column alias to the query and run the subselect
-            // statement against the query builder. Then we will return the builder instance back
-            // to the developer for further constraint chaining that needs to take place on it.
-			// 最后，我们将向查询添加适当的结果列别名并运行子选择。
-            $column = $alias ?? Str::snake($name.'_count');
-
-            $this->selectSub($query, $column);
-        }
-
-        return $this;
+    /**
+     * Add subselect queries to include the existence of related models.
+	 * 添加子选择查询以包含相关模型的存在性
+     *
+     * @param  string|array  $relation
+     * @return $this
+     */
+    public function withExists($relation)
+    {
+        return $this->withAggregate($relation, '*', 'exists');
     }
 
     /**
@@ -471,6 +844,13 @@ trait QueriesRelationships
     {
         $whereBindings = $from->getQuery()->getRawBindings()['where'] ?? [];
 
+        $wheres = $from->getQuery()->from !== $this->getQuery()->from
+            ? $this->requalifyWhereTables(
+                $from->getQuery()->wheres,
+                $from->getQuery()->from,
+                $this->getModel()->getTable()
+            ) : $from->getQuery()->wheres;
+
         // Here we have some other query that we want to merge the where constraints from. We will
         // copy over any where constraints on the query as well as remove any global scopes the
         // query might have removed. Then we will return ourselves with the finished merging.
@@ -478,8 +858,28 @@ trait QueriesRelationships
         return $this->withoutGlobalScopes(
             $from->removedScopes()
         )->mergeWheres(
-            $from->getQuery()->wheres, $whereBindings
+            $wheres, $whereBindings
         );
+    }
+
+    /**
+     * Updates the table name for any columns with a new qualified name.
+	 * 使用新的限定名更新任何列的表名
+     *
+     * @param  array  $wheres
+     * @param  string  $from
+     * @param  string  $to
+     * @return array
+     */
+    protected function requalifyWhereTables(array $wheres, string $from, string $to): array
+    {
+        return collect($wheres)->map(function ($where) use ($from, $to) {
+            return collect($where)->map(function ($value) use ($from, $to) {
+                return is_string($value) && str_starts_with($value, $from.'.')
+                    ? $to.'.'.Str::afterLast($value, '.')
+                    : $value;
+            });
+        })->toArray();
     }
 
     /**
@@ -506,7 +906,7 @@ trait QueriesRelationships
 
     /**
      * Get the "has relation" base query instance.
-	 * 获取"有关系"基查询实例
+	 * 获取"有关系"基本查询实例
      *
      * @param  string  $relation
      * @return \Illuminate\Database\Eloquent\Relations\Relation

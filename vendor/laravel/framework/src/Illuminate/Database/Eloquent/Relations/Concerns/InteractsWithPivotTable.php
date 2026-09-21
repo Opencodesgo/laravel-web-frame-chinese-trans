@@ -33,7 +33,7 @@ trait InteractsWithPivotTable
         // Next, we will determine which IDs should get removed from the join table by
         // checking which of the given ID/records is in the list of current records
         // and removing all of those rows from this "intermediate" joining table.
-		// 接下来，我们将确定应该从连接表中删除哪些ID。
+		// 接下来，我们将确定应该从连接表中删除哪些id。
         $detach = array_values(array_intersect(
             $this->newPivotQuery()->pluck($this->relatedPivotKey)->all(),
             array_keys($records)
@@ -48,7 +48,7 @@ trait InteractsWithPivotTable
         // Finally, for all of the records which were not "detached", we'll attach the
         // records into the intermediate table. Then, we will add those attaches to
         // this change list and get ready to return these results to the callers.
-		// 最后，对于所有没有"分离"的记录，我们将记录到中间表。
+		// 最后，对于所有未“分离”的记录，我们将附加记录至中间表。
         $attach = array_diff_key($records, array_flip($detach));
 
         if (count($attach) > 0) {
@@ -60,7 +60,7 @@ trait InteractsWithPivotTable
         // Once we have finished attaching or detaching the records, we will see if we
         // have done any attaching or detaching, and if we have we will touch these
         // relationships if they are configured to touch on any database updates.
-		// 一旦我们完成了对记录的附加或分离，我们将预见未来做过任何连接或分离。
+		// 一旦我们完成了附加或分离记录，我们将看到我们是否。
         if ($touch && (count($changes['attached']) ||
                        count($changes['detached']))) {
             $this->touchIfTouching();
@@ -102,18 +102,20 @@ trait InteractsWithPivotTable
         $current = $this->getCurrentlyAttachedPivots()
                         ->pluck($this->relatedPivotKey)->all();
 
-        $detach = array_diff($current, array_keys(
-            $records = $this->formatRecordsList($this->parseIds($ids))
-        ));
+        $records = $this->formatRecordsList($this->parseIds($ids));
 
         // Next, we will take the differences of the currents and given IDs and detach
         // all of the entities that exist in the "current" array but are not in the
         // array of the new IDs given to the method which will complete the sync.
-		// 接下来,我们将考虑电流的差异,给出id和分离。
-        if ($detaching && count($detach) > 0) {
-            $this->detach($detach);
+		// 接下来，我们将取电流和给定id的差异并分离。
+        if ($detaching) {
+            $detach = array_diff($current, array_keys($records));
 
-            $changes['detached'] = $this->castKeys($detach);
+            if (count($detach) > 0) {
+                $this->detach($detach);
+
+                $changes['detached'] = $this->castKeys($detach);
+            }
         }
 
         // Now we are finally ready to attach the new records. Note that we'll disable
@@ -127,9 +129,10 @@ trait InteractsWithPivotTable
         // Once we have finished attaching or detaching the records, we will see if we
         // have done any attaching or detaching, and if we have we will touch these
         // relationships if they are configured to touch on any database updates.
-		// 一旦我们完成了对记录的附加或分离，我们会看看我们是否做过任何附加或分离。
+		// 一旦我们完成了对记录的附加或分离，我们将查看做过任何附加或分离吗。
         if (count($changes['attached']) ||
-            count($changes['updated'])) {
+            count($changes['updated']) ||
+            count($changes['detached'])) {
             $this->touchIfTouching();
         }
 
@@ -137,8 +140,24 @@ trait InteractsWithPivotTable
     }
 
     /**
+     * Sync the intermediate tables with a list of IDs or collection of models with the given pivot values.
+	 * 将带有id列表或模型集合的中间表与给定的枢轴值同步
+     *
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids
+     * @param  array  $values
+     * @param  bool  $detaching
+     * @return array
+     */
+    public function syncWithPivotValues($ids, array $values, bool $detaching = true)
+    {
+        return $this->sync(collect($this->parseIds($ids))->mapWithKeys(function ($id) use ($values) {
+            return [$id => $values];
+        }), $detaching);
+    }
+
+    /**
      * Format the sync / toggle record list so that it is keyed by ID.
-	 * 格式化同步/ toggle记录列表,使它被ID键入
+	 * 格式化同步/切换记录列表，使其按ID键。
      *
      * @param  array  $records
      * @return array
@@ -156,7 +175,7 @@ trait InteractsWithPivotTable
 
     /**
      * Attach all of the records that aren't in the given current records.
-	 * 将所有未在给定当前记录中的记录附加在一起
+	 * 附加所有不在给定当前记录中的记录
      *
      * @param  array  $records
      * @param  array  $current
@@ -171,7 +190,7 @@ trait InteractsWithPivotTable
             // If the ID is not in the list of existing pivot IDs, we will insert a new pivot
             // record, otherwise, we will just update this existing record on this joining
             // table, so that the developers will easily update these records pain free.
-			// 如果ID不在现有枢轴ID列表中，我们将插入一个新的枢轴记录。
+			// 如果ID不在现有枢轴ID列表中，我们将插入一个新的枢轴。
             if (! in_array($id, $current)) {
                 $this->attach($id, $attributes, $touch);
 
@@ -181,7 +200,7 @@ trait InteractsWithPivotTable
             // Now we'll try to update an existing pivot record with the attributes that were
             // given to the method. If the model is actually updated we will add it to the
             // list of updated pivot records so we return them back out to the consumer.
-			// 现在，我们将尝试使用如下属性更新现有的枢轴记录。
+			// 现在，我们将尝试使用这些属性更新现有的枢轴记录。
             elseif (count($attributes) > 0 &&
                 $this->updateExistingPivot($id, $attributes, $touch)) {
                 $changes['updated'][] = $this->castKey($id);
@@ -209,7 +228,7 @@ trait InteractsWithPivotTable
             return $this->updateExistingPivotUsingCustomClass($id, $attributes, $touch);
         }
 
-        if (in_array($this->updatedAt(), $this->pivotColumns)) {
+        if ($this->hasPivotColumn($this->updatedAt())) {
             $attributes = $this->addTimestampsToAttachment($attributes, true);
         }
 
@@ -226,7 +245,7 @@ trait InteractsWithPivotTable
 
     /**
      * Update an existing pivot record on the table via a custom class.
-	 * 通过自定义类更新表上现有的主记录
+	 * 通过自定义类更新表上的现有数据透视记录
      *
      * @param  mixed  $id
      * @param  array  $attributes
@@ -283,7 +302,7 @@ trait InteractsWithPivotTable
 
     /**
      * Attach a model to the parent using a custom class.
-	 * 使用自定义类将模型附加到父模型
+	 * 使用自定义类将模型附加到父类
      *
      * @param  mixed  $id
      * @param  array  $attributes
@@ -302,7 +321,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create an array of records to insert into the pivot table.
-	 * 创建一组记录插入到主表中
+	 * 创建要插入数据透视表的记录数组
      *
      * @param  array  $ids
      * @param  array  $attributes
@@ -318,7 +337,7 @@ trait InteractsWithPivotTable
         // To create the attachment records, we will simply spin through the IDs given
         // and create a new record to insert for each ID. Each ID may actually be a
         // key in the array, with extra attributes to be placed in other columns.
-		// 要创建附件记录，我们只需遍历给定的ID。
+		// 要创建附件记录，我们只需遍历给定的id。
         foreach ($ids as $key => $value) {
             $records[] = $this->formatAttachRecord(
                 $key, $value, $attributes, $hasTimestamps
@@ -330,7 +349,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a full attachment record payload.
-	 * 创建一个完整的连接记录有效负载
+	 * 创建一个完整的附件记录有效负载
      *
      * @param  int  $key
      * @param  mixed  $value
@@ -365,7 +384,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new pivot attachment record.
-	 * 创建一个新的pivot附件记录
+	 * 创建一个新的枢轴附件记录
      *
      * @param  int  $id
      * @param  bool  $timed
@@ -380,7 +399,7 @@ trait InteractsWithPivotTable
         // If the record needs to have creation and update timestamps, we will make
         // them by calling the parent model's "freshTimestamp" method which will
         // provide us with a fresh timestamp in this model's preferred format.
-		// 如果记录需要创建和更新时间戳，我们将通过调用父模型的"freshTimestamp"方法来获取。
+		// 如果记录需要创建和更新时间戳。
         if ($timed) {
             $record = $this->addTimestampsToAttachment($record);
         }
@@ -394,7 +413,7 @@ trait InteractsWithPivotTable
 
     /**
      * Set the creation and update timestamps on an attach record.
-	 * 在附加记录上设置创建和更新时间戳
+	 * 设置附加记录上的创建和更新时间戳
      *
      * @param  array  $record
      * @param  bool  $exists
@@ -423,7 +442,7 @@ trait InteractsWithPivotTable
 
     /**
      * Determine whether the given column is defined as a pivot column.
-	 * 确定给定的列是否被定义为主列
+	 * 确定给定列是否定义为主列
      *
      * @param  string  $column
      * @return bool
@@ -455,7 +474,7 @@ trait InteractsWithPivotTable
             // If associated IDs were passed to the method we will only delete those
             // associations, otherwise all of the association ties will be broken.
             // We'll return the numbers of affected rows when we do the deletes.
-			// 如果关联的id被传递给方法，我们将只删除关联。
+			// 如果关联的id被传递给方法，我们将只删除那些关联。
             if (! is_null($ids)) {
                 $ids = $this->parseIds($ids);
 
@@ -463,13 +482,13 @@ trait InteractsWithPivotTable
                     return 0;
                 }
 
-                $query->whereIn($this->relatedPivotKey, (array) $ids);
+                $query->whereIn($this->getQualifiedRelatedPivotKeyName(), (array) $ids);
             }
 
             // Once we have all of the conditions set on the statement, we are ready
             // to run the delete on the pivot table. Then, if the touch parameter
             // is true, we will go ahead and touch all related models to sync.
-			// 一旦我们有了所有的条件，我们准备在主表上运行delete。
+			// 一旦我们在表述中设置了所有的条件。
             $results = $query->delete();
         }
 
@@ -482,7 +501,7 @@ trait InteractsWithPivotTable
 
     /**
      * Detach models from the relationship using a custom class.
-	 * 使用自定义类的关系分离模型
+	 * 使用自定义类从关系中分离模型
      *
      * @param  mixed  $ids
      * @return int
@@ -503,14 +522,14 @@ trait InteractsWithPivotTable
 
     /**
      * Get the pivot models that are currently attached.
-	 * 获取当前附加的pivot模型
+	 * 获取当前附加的枢轴模型
      *
      * @return \Illuminate\Support\Collection
      */
     protected function getCurrentlyAttachedPivots()
     {
         return $this->newPivotQuery()->get()->map(function ($record) {
-            $class = $this->using ? $this->using : Pivot::class;
+            $class = $this->using ?: Pivot::class;
 
             $pivot = $class::fromRawAttributes($this->parent, (array) $record, $this->getTable(), true);
 
@@ -537,7 +556,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new existing pivot model instance.
-	 * 创建一个新的现有的pivot模型实例
+	 * 创建一个新的现有pivot模型实例
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
@@ -549,7 +568,7 @@ trait InteractsWithPivotTable
 
     /**
      * Get a new plain query builder for the pivot table.
-	 * 为pivot表获取一个新的纯查询生成器
+	 * 为数据透视表获取一个新的普通查询生成器
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -572,7 +591,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new query builder for the pivot table.
-	 * 为pivot表创建一个新的查询生成器
+	 * 为数据透视表创建一个新的查询生成器
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -592,7 +611,7 @@ trait InteractsWithPivotTable
             $query->whereNull(...$arguments);
         }
 
-        return $query->where($this->foreignPivotKey, $this->parent->{$this->parentKey});
+        return $query->where($this->getQualifiedForeignPivotKeyName(), $this->parent->{$this->parentKey});
     }
 
     /**
@@ -613,7 +632,7 @@ trait InteractsWithPivotTable
 
     /**
      * Get all of the IDs from the given mixed value.
-	 * 从给定的混合值中获取所有的id
+	 * 从给定的混合值中获取所有id
      *
      * @param  mixed  $value
      * @return array
@@ -649,7 +668,7 @@ trait InteractsWithPivotTable
 
     /**
      * Cast the given keys to integers if they are numeric and string otherwise.
-	 * 如果它们是数字和字符串,则将给定的键输入到整数
+	 * 如果给定的键是数字，则将其转换为整数，否则将其转换为字符串。
      *
      * @param  array  $keys
      * @return array
@@ -700,18 +719,11 @@ trait InteractsWithPivotTable
      */
     protected function getTypeSwapValue($type, $value)
     {
-        switch (strtolower($type)) {
-            case 'int':
-            case 'integer':
-                return (int) $value;
-            case 'real':
-            case 'float':
-            case 'double':
-                return (float) $value;
-            case 'string':
-                return (string) $value;
-            default:
-                return $value;
-        }
+        return match (strtolower($type)) {
+            'int', 'integer' => (int) $value,
+            'real', 'float', 'double' => (float) $value,
+            'string' => (string) $value,
+            default => $value,
+        };
     }
 }

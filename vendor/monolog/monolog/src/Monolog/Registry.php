@@ -19,6 +19,7 @@ use InvalidArgumentException;
 
 /**
  * Monolog log registry
+ * Monolog 日志注册表
  *
  * Allows to get `Logger` instances in the global scope
  * via static method calls on this class.
@@ -51,6 +52,7 @@ class Registry
 
     /**
      * Adds new logging channel to the registry
+	 * 向注册表添加新的日志通道
      *
      * @param  Logger                    $logger    Instance of the logging channel
      * @param  string|null               $name      Name of the logging channel ($logger->getName() by default)
@@ -105,6 +107,7 @@ class Registry
 
     /**
      * Clears the registry
+	 * 清除注册表
      */
     public static function clear(): void
     {

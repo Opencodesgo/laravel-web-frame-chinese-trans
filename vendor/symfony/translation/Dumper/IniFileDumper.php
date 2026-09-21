@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转存器，Ini 文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,10 +23,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 class IniFileDumper extends FileDumper
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string
     {
         $output = '';
 
@@ -35,10 +35,7 @@ class IniFileDumper extends FileDumper
         return $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'ini';
     }

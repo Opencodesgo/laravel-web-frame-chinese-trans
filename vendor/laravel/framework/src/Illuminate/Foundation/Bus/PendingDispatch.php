@@ -5,7 +5,11 @@
 
 namespace Illuminate\Foundation\Bus;
 
+use Illuminate\Bus\UniqueLock;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Cache\Repository as Cache;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class PendingDispatch
 {
@@ -94,8 +98,8 @@ class PendingDispatch
     }
 
     /**
-     * Set the desired delay for the job.
-	 * 为作业设置所需的延迟
+     * Set the desired delay in seconds for the job.
+	 * 为作业设置所需的延迟(以秒为单位)
      *
      * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
@@ -103,6 +107,32 @@ class PendingDispatch
     public function delay($delay)
     {
         $this->job->delay($delay);
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should be dispatched after all database transactions have committed.
+	 * 指示应在所有数据库事务提交后分派作业
+     *
+     * @return $this
+     */
+    public function afterCommit()
+    {
+        $this->job->afterCommit();
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should not wait until database transactions have been committed before dispatching.
+	 * 指示作业不应等到数据库事务提交后才进行调度
+     *
+     * @return $this
+     */
+    public function beforeCommit()
+    {
+        $this->job->beforeCommit();
 
         return $this;
     }
@@ -135,6 +165,37 @@ class PendingDispatch
     }
 
     /**
+     * Determine if the job should be dispatched.
+	 * 确定是否应该分派作业
+     *
+     * @return bool
+     */
+    protected function shouldDispatch()
+    {
+        if (! $this->job instanceof ShouldBeUnique) {
+            return true;
+        }
+
+        return (new UniqueLock(Container::getInstance()->make(Cache::class)))
+                    ->acquire($this->job);
+    }
+
+    /**
+     * Dynamically proxy methods to the underlying job.
+	 * 将方法动态代理到底层作业
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return $this
+     */
+    public function __call($method, $parameters)
+    {
+        $this->job->{$method}(...$parameters);
+
+        return $this;
+    }
+
+    /**
      * Handle the object's destruction.
 	 * 处理对象的销毁
      *
@@ -142,7 +203,9 @@ class PendingDispatch
      */
     public function __destruct()
     {
-        if ($this->afterResponse) {
+        if (! $this->shouldDispatch()) {
+            return;
+        } elseif ($this->afterResponse) {
             app(Dispatcher::class)->dispatchAfterResponse($this->job);
         } else {
             app(Dispatcher::class)->dispatch($this->job);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制器调度器
+ * Illuminate，路由，控制器调度
  */
 
 namespace Illuminate\Routing;
@@ -22,7 +22,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Create a new controller dispatcher instance.
-	 * 创建新的控制器调度实例
+	 * 创建一个新的控制器调度程序实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void
@@ -34,7 +34,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Dispatch a request to a given controller and method.
-	 * 分派请求给给定的控制器和方法
+	 * 将请求分派给给定的控制器和方法
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller
@@ -43,16 +43,29 @@ class ControllerDispatcher implements ControllerDispatcherContract
      */
     public function dispatch(Route $route, $controller, $method)
     {
-        $parameters = $this->resolveClassMethodDependencies(
-            $route->parametersWithoutNulls(), $controller, $method
-        );
+        $parameters = $this->resolveParameters($route, $controller, $method);
 
-		// 通过路由找到的动作action在这里执行了
         if (method_exists($controller, 'callAction')) {
             return $controller->callAction($method, $parameters);
         }
 
         return $controller->{$method}(...array_values($parameters));
+    }
+
+    /**
+     * Resolve the parameters for the controller.
+	 * 解析控制器的参数
+     *
+     * @param  \Illuminate\Routing\Route  $route
+     * @param  mixed  $controller
+     * @param  string  $method
+     * @return array
+     */
+    protected function resolveParameters(Route $route, $controller, $method)
+    {
+        return $this->resolveClassMethodDependencies(
+            $route->parametersWithoutNulls(), $controller, $method
+        );
     }
 
     /**
@@ -82,7 +95,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
      * @param  array  $options
      * @return bool
      */
-    protected static function methodExcludedByOptions($method, array $options)
+    public static function methodExcludedByOptions($method, array $options)
     {
         return (isset($options['only']) && ! in_array($method, (array) $options['only'])) ||
             (! empty($options['except']) && in_array($method, (array) $options['except']));

@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，格式化助手
- *
+ * Symfony，Component，Console，助手，格式化程序辅助
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * The Formatter class provides helpers to format messages.
+ * Formatter类提供了格式化消息的帮助程序。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,22 +26,18 @@ class FormatterHelper extends Helper
 {
     /**
      * Formats a message within a section.
-     *
-     * @return string
+	 * 格式化部分中的消息
      */
-    public function formatSection(string $section, string $message, string $style = 'info')
+    public function formatSection(string $section, string $message, string $style = 'info'): string
     {
-        return sprintf('<%s>[%s]</%s> %s', $style, $section, $style, $message);
+        return \sprintf('<%s>[%s]</%s> %s', $style, $section, $style, $message);
     }
 
     /**
      * Formats a message as a block of text.
-     *
-     * @param string|array $messages The message to write in the block
-     *
-     * @return string
+	 * 将消息格式化为文本块
      */
-    public function formatBlock($messages, string $style, bool $large = false)
+    public function formatBlock(string|array $messages, string $style, bool $large = false): string
     {
         if (!\is_array($messages)) {
             $messages = [$messages];
@@ -50,7 +47,7 @@ class FormatterHelper extends Helper
         $lines = [];
         foreach ($messages as $message) {
             $message = OutputFormatter::escape($message);
-            $lines[] = sprintf($large ? '  %s  ' : ' %s ', $message);
+            $lines[] = \sprintf($large ? '  %s  ' : ' %s ', $message);
             $len = max(self::width($message) + ($large ? 4 : 2), $len);
         }
 
@@ -63,7 +60,7 @@ class FormatterHelper extends Helper
         }
 
         for ($i = 0; isset($messages[$i]); ++$i) {
-            $messages[$i] = sprintf('<%s>%s</%s>', $style, $messages[$i], $style);
+            $messages[$i] = \sprintf('<%s>%s</%s>', $style, $messages[$i], $style);
         }
 
         return implode("\n", $messages);
@@ -71,10 +68,9 @@ class FormatterHelper extends Helper
 
     /**
      * Truncates a message to the given length.
-     *
-     * @return string
+	 * 将消息截断到给定的长度
      */
-    public function truncate(string $message, int $length, string $suffix = '...')
+    public function truncate(string $message, int $length, string $suffix = '...'): string
     {
         $computedLength = $length - self::width($suffix);
 
@@ -85,10 +81,7 @@ class FormatterHelper extends Helper
         return self::substr($message, 0, $length).$suffix;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'formatter';
     }

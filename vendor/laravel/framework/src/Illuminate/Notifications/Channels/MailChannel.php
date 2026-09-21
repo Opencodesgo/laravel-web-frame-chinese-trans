@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通道，电子邮件通道
+ * Illuminate，通知，通道，邮件通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -12,12 +12,14 @@ use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Symfony\Component\Mailer\Header\MetadataHeader;
+use Symfony\Component\Mailer\Header\TagHeader;
 
 class MailChannel
 {
     /**
      * The mailer implementation.
-	 * 邮件收发机实现
+	 * 邮件发送器实现
      *
      * @var \Illuminate\Contracts\Mail\Factory
      */
@@ -25,7 +27,7 @@ class MailChannel
 
     /**
      * The markdown implementation.
-	 * markdown实现
+	 * markdownp实现
      *
      * @var \Illuminate\Mail\Markdown
      */
@@ -33,7 +35,7 @@ class MailChannel
 
     /**
      * Create a new mail channel instance.
-	 * 创建一个邮件通道实例
+	 * 创建新的邮件通道实例
      *
      * @param  \Illuminate\Contracts\Mail\Factory  $mailer
      * @param  \Illuminate\Mail\Markdown  $markdown
@@ -47,7 +49,7 @@ class MailChannel
 
     /**
      * Send the given notification.
-	 * 发送给定的通知
+	 * 发送给定通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -75,7 +77,7 @@ class MailChannel
 
     /**
      * Get the mailer Closure for the message.
-	 * 获取邮件的邮件闭包
+	 * 获取邮件的邮件封包
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -152,7 +154,19 @@ class MailChannel
         $this->addAttachments($mailMessage, $message);
 
         if (! is_null($message->priority)) {
-            $mailMessage->setPriority($message->priority);
+            $mailMessage->priority($message->priority);
+        }
+
+        if ($message->tags) {
+            foreach ($message->tags as $tag) {
+                $mailMessage->getHeaders()->add(new TagHeader($tag));
+            }
+        }
+
+        if ($message->metadata) {
+            foreach ($message->metadata as $key => $value) {
+                $mailMessage->getHeaders()->add(new MetadataHeader($key, $value));
+            }
         }
 
         $this->runCallbacks($mailMessage, $message);
@@ -260,7 +274,7 @@ class MailChannel
     protected function runCallbacks($mailMessage, $message)
     {
         foreach ($message->callbacks as $callback) {
-            $callback($mailMessage->getSwiftMessage());
+            $callback($mailMessage->getSymfonyMessage());
         }
 
         return $this;

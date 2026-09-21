@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，Mockery
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -48,6 +51,7 @@ class Mockery
 
     /**
      * Global configuration handler containing configuration options.
+	 * 包含配置选项的全局配置处理程序。
      *
      * @var Configuration
      */
@@ -55,6 +59,7 @@ class Mockery
 
     /**
      * Global container to hold all mocks for the current unit test running.
+	 * 全局容器，用于保存正在运行的当前单元测试的所有模拟。
      *
      * @var null|Container
      */
@@ -77,6 +82,7 @@ class Mockery
 
     /**
      * Return instance of AndAnyOtherArgs matcher.
+	 * 返回AndAnyOtherArgs匹配器的实例
      *
      * @return AndAnyOtherArgs
      */
@@ -87,6 +93,7 @@ class Mockery
 
     /**
      * Return instance of AndAnyOtherArgs matcher.
+	 * 返回AndAnyOtherArgs匹配器的实例
      *
      * An alternative name to `andAnyOtherArgs` so
      * the API stays closer to `any` as well.
@@ -100,6 +107,7 @@ class Mockery
 
     /**
      * Return instance of ANY matcher.
+	 * 返回任意匹配器的实例
      *
      * @return Any
      */
@@ -110,6 +118,7 @@ class Mockery
 
     /**
      * Return instance of ANYOF matcher.
+	 * 返回ANYOF匹配器的实例
      *
      * @template TAnyOf
      *
@@ -134,6 +143,7 @@ class Mockery
 
     /**
      * Return instance of CLOSURE matcher.
+	 * 返回CLOSURE匹配器的实例
      *
      * @template TReference
      *
@@ -154,6 +164,7 @@ class Mockery
     /**
      * Static shortcut to closing up and verifying all mocks in the global
      * container, and resetting the container static variable to null.
+	 * 静态快捷方式，用于关闭并验证全局容器中的所有模拟对象，并将容器的静态变量重置为 null。
      *
      * @return void
      */
@@ -180,6 +191,7 @@ class Mockery
 
     /**
      * Return instance of CONTAINS matcher.
+	 * 返回CONTAINS匹配器的实例
      *
      * @template TContains
      *
@@ -214,6 +226,7 @@ class Mockery
 
     /**
      * Return instance of DUCKTYPE matcher.
+	 * 返回DUCKTYPE匹配器的实例
      *
      * @template TDucktype
      *
@@ -228,6 +241,7 @@ class Mockery
 
     /**
      * Static fetching of a mock associated with a name or explicit class poser.
+	 * 静态获取与名称或显式类关联的模拟
      *
      * @template TFetchMock of object
      *
@@ -242,6 +256,7 @@ class Mockery
 
     /**
      * Utility method to format method name and arguments into a string.
+	 * 将方法名称和参数格式化为字符串的实用工具方法
      *
      * @param string $method
      *
@@ -263,6 +278,7 @@ class Mockery
 
     /**
      * Utility function to format objects to printable arrays.
+	 * 将对象格式化为可打印数组的实用函数
      *
      * @return string
      */
@@ -312,6 +328,7 @@ class Mockery
 
     /**
      * Lazy loader and getter for the container property.
+	 * 容器属性的惰性加载器和getter
      *
      * @return Container
      */
@@ -337,6 +354,7 @@ class Mockery
 
     /**
      * Gets an EvalLoader to be used as default.
+	 * 获取作为默认值使用的EvalLoader
      *
      * @return EvalLoader
      */
@@ -377,6 +395,7 @@ class Mockery
 
     /**
      * Defines the global helper functions
+	 * 定义全局辅助函数
      *
      * @return void
      */
@@ -387,6 +406,7 @@ class Mockery
 
     /**
      * Return instance of HASKEY matcher.
+	 * 返回HASKEY匹配器实例
      *
      * @template THasKey
      *
@@ -401,6 +421,7 @@ class Mockery
 
     /**
      * Return instance of HASVALUE matcher.
+	 * 返回HASVALUE匹配器的实例
      *
      * @template THasValue
      *
@@ -415,6 +436,7 @@ class Mockery
 
     /**
      * Static and Semantic shortcut to Container::mock().
+	 * Container::mock（）的静态和语义快捷方式
      *
      * @template TInstanceMock
      *
@@ -441,6 +463,7 @@ class Mockery
 
     /**
      * Return instance of IsEqual matcher.
+	 * 返回IsEqual匹配器的实例
      *
      * @template TExpected
      *
@@ -453,6 +476,7 @@ class Mockery
 
     /**
      * Return instance of IsSame matcher.
+	 * 返回IsSame匹配器的实例
      *
      * @template TExpected
      *
@@ -465,6 +489,7 @@ class Mockery
 
     /**
      * Static shortcut to Container::mock().
+	 * Container::mock（）的静态快捷方式
      *
      * @template TMock of object
      *
@@ -479,6 +504,7 @@ class Mockery
 
     /**
      * Return instance of MUSTBE matcher.
+	 * 返回必须匹配器的实例
      *
      * @template TExpected
      *
@@ -493,6 +519,7 @@ class Mockery
 
     /**
      * Static shortcut to Container::mock(), first argument names the mock.
+	 * Container::mock（）的静态快捷方式，第一个参数命名模拟对象。
      *
      * @template TNamedMock
      *
@@ -514,6 +541,7 @@ class Mockery
 
     /**
      * Return instance of NOT matcher.
+	 * 返回NOT匹配器的实例
      *
      * @template TNotExpected
      *
@@ -528,6 +556,7 @@ class Mockery
 
     /**
      * Return instance of NOTANYOF matcher.
+	 * 返回NOTANYOF匹配器的实例
      *
      * @template TNotAnyOf
      *
@@ -542,6 +571,7 @@ class Mockery
 
     /**
      * Return instance of CLOSURE matcher.
+	 * 返回CLOSURE匹配器的实例
      *
      * @template TClosure of Closure
      *
@@ -588,6 +618,7 @@ class Mockery
 
     /**
      * Return instance of PATTERN matcher.
+	 * 返回PATTERN匹配器的实例
      *
      * @template TPatter
      *
@@ -602,6 +633,7 @@ class Mockery
 
     /**
      * Register a file to be deleted on tearDown.
+	 * 注册要在tearDown时删除的文件
      *
      * @param string $fileName
      */
@@ -612,6 +644,7 @@ class Mockery
 
     /**
      * Reset the container to null.
+	 * 将容器重置为空
      *
      * @return void
      */
@@ -638,6 +671,7 @@ class Mockery
 
     /**
      * Set the container.
+	 * 设置容器
      *
      * @return Container
      */
@@ -648,6 +682,7 @@ class Mockery
 
     /**
      * Setter for the $_generator static property.
+	 * $_generator静态属性的Setter
      */
     public static function setGenerator(Generator $generator)
     {
@@ -656,6 +691,7 @@ class Mockery
 
     /**
      * Setter for the $_loader static property.
+	 * $_loader静态属性的Setter
      */
     public static function setLoader(Loader $loader)
     {
@@ -665,6 +701,7 @@ class Mockery
     /**
      * Static and semantic shortcut for getting a mock from the container
      * and applying the spy's expected behavior into it.
+	 * 用于从容器获取模拟的静态和语义快捷方式
      *
      * @template TSpy
      *
@@ -683,6 +720,7 @@ class Mockery
 
     /**
      * Return instance of SUBSET matcher.
+	 * 返回子集匹配器的实例
      *
      * @param bool $strict - (Optional) True for strict comparison, false for loose
      *
@@ -695,6 +733,7 @@ class Mockery
 
     /**
      * Return instance of TYPE matcher.
+	 * 返回TYPE匹配器的实例
      *
      * @template TExpectedType
      *
@@ -776,6 +815,7 @@ class Mockery
 
     /**
      * Utility method for recursively generating a representation of the given array.
+	 * 递归生成给定数组表示的实用程序方法
      *
      * @template TArray or array
      *
@@ -868,6 +908,7 @@ class Mockery
 
     /**
      * Returns all public instance properties.
+	 * 返回所有公共实例属性
      *
      * @param object $object
      * @param int    $nesting
@@ -951,6 +992,7 @@ class Mockery
 
     /**
      * Gets a specific demeter mock from the ones kept by the container.
+	 * 从容器保存的模拟中获取特定的直径模拟。
      *
      * @template TMock of object
      *
@@ -1020,6 +1062,7 @@ class Mockery
     /**
      * Checks if the passed array representing a demeter
      * chain with the method names is empty.
+	 * 检查传入的数组是否表示一个距离带有方法名的链为空。
      *
      * @return bool
      */
@@ -1030,6 +1073,7 @@ class Mockery
 
     /**
      * Utility function to turn public properties and public get* and is* method values into an array.
+	 * 将公共属性和公共get*和is*方法值转换为数组的实用函数
      *
      * @param object $object
      * @param int    $nesting

@@ -19,6 +19,6 @@ namespace Symfony\Component\HttpFoundation\Exception;
  * suspicious from a security perspective.
  * 当用户执行了应考虑的操作时引发从安全角度来看很可疑。
  */
-class SuspiciousOperationException extends \UnexpectedValueException implements RequestExceptionInterface
+class SuspiciousOperationException extends UnexpectedValueException implements RequestExceptionInterface
 {
 }

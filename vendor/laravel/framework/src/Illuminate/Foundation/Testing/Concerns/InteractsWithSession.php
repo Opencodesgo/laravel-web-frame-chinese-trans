@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，关注，与会话交互
+ * Illuminate，基础，测试，问题，与会话交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -56,7 +56,7 @@ trait InteractsWithSession
 
     /**
      * Flush all of the current session data.
-	 * 刷新当前会话数据
+	 * 刷新所有当前会话数据
      *
      * @return $this
      */

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，是否实例
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -9,6 +13,7 @@ use Hamcrest\DiagnosingMatcher;
 
 /**
  * Tests whether the value is an instance of a class.
+ * 测试值是否是类的一个实例。
  */
 class IsInstanceOf extends DiagnosingMatcher
 {
@@ -17,6 +22,7 @@ class IsInstanceOf extends DiagnosingMatcher
 
     /**
      * Creates a new instance of IsInstanceOf
+	 * 创建IsInstanceOf IsInstanceOf的新实例
      *
      * @param string $theClass
      *   The predicate evaluates to true for instances of this class
@@ -57,6 +63,7 @@ class IsInstanceOf extends DiagnosingMatcher
      * This version assumes no relationship between the required type and
      * the signature of the method that sets it up, for example in
      * <code>assertThat($anObject, anInstanceOf('Thing'));</code>
+	 * 值是特定类型的实例吗?
      *
      * @factory any
      */

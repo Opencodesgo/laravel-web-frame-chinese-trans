@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，比较器，日期比较器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Comparator;
 
 /**
  * DateCompare compiles date comparisons.
+ * DateCompare编译日期比较。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,17 +30,17 @@ class DateComparator extends Comparator
     public function __construct(string $test)
     {
         if (!preg_match('#^\s*(==|!=|[<>]=?|after|since|before|until)?\s*(.+?)\s*$#i', $test, $matches)) {
-            throw new \InvalidArgumentException(sprintf('Don\'t understand "%s" as a date test.', $test));
+            throw new \InvalidArgumentException(\sprintf('Don\'t understand "%s" as a date test.', $test));
         }
 
         try {
-            $date = new \DateTime($matches[2]);
+            $date = new \DateTimeImmutable($matches[2]);
             $target = $date->format('U');
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('"%s" is not a valid date.', $matches[2]));
+        } catch (\Exception) {
+            throw new \InvalidArgumentException(\sprintf('"%s" is not a valid date.', $matches[2]));
         }
 
-        $operator = $matches[1] ?? '==';
+        $operator = $matches[1] ?: '==';
         if ('since' === $operator || 'after' === $operator) {
             $operator = '>';
         }

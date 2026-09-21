@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，模拟
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -33,6 +36,7 @@ class Mock implements MockInterface
 {
     /**
      * Stores an array of all expectation directors for this mock
+	 * 存储此模拟的所有期望董事的数组
      *
      * @var array
      */
@@ -72,6 +76,7 @@ class Mock implements MockInterface
 
     /**
      * Flag to indicate whether this mock was verified
+	 * 标志，指示是否验证了此模拟。
      *
      * @var bool
      */
@@ -79,6 +84,7 @@ class Mock implements MockInterface
 
     /**
      * Given name of the mock
+	 * mock的给定名称
      *
      * @var string
      */
@@ -86,6 +92,7 @@ class Mock implements MockInterface
 
     /**
      * Order number of allocation
+	 * 配货订单号
      *
      * @var int
      */
@@ -93,6 +100,7 @@ class Mock implements MockInterface
 
     /**
      * Current ordered number
+	 * 当前有序数
      *
      * @var int
      */
@@ -107,6 +115,7 @@ class Mock implements MockInterface
 
     /**
      * Mock container containing this mock object
+	 * 包含此模拟对象的模拟容器
      *
      * @var Container
      */
@@ -145,6 +154,7 @@ class Mock implements MockInterface
 
     /**
      * Just a local cache for this mock's target's methods
+	 * 只是这个mock的目标方法的本地缓存
      *
      * @var \ReflectionMethod[]
      */
@@ -162,6 +172,7 @@ class Mock implements MockInterface
 
     /**
      * Tracks internally all the bad method call exceptions that happened during runtime
+	 * 在内部跟踪运行期间发生的所有错误的方法调用异常
      *
      * @var array
      */
@@ -207,6 +218,7 @@ class Mock implements MockInterface
 
     /**
      * Set expected method calls
+	 * 设置预期的方法调用
      *
      * @param string ...$methodNames one or many methods that are expected to be called in this mock
      *
@@ -295,6 +307,7 @@ class Mock implements MockInterface
     // end method expects
     /**
      * Shortcut method for setting an expectation that a method should not be called.
+	 * 用于设置不应调用方法的期望的快捷方法。
      *
      * @param string ...$methodNames one or many methods that are expected not to be called in this mock
      * @return ExpectationInterface|Expectation|HigherOrderMessage
@@ -314,6 +327,7 @@ class Mock implements MockInterface
 
     /**
      * Allows additional methods to be mocked that do not explicitly exist on mocked class
+	 * 允许模拟未显式存在于模拟类中的其他方法
      *
      * @param string $method name of the method to be mocked
      * @return Mock|MockInterface|LegacyMockInterface
@@ -365,6 +379,7 @@ class Mock implements MockInterface
 
     /**
      * Set mock to defer unexpected methods to it's parent
+	 * 设置mock以将意外的方法推迟到它的父类
      *
      * This is particularly useless for this class, as it doesn't have a parent,
      * but included for completeness
@@ -380,6 +395,7 @@ class Mock implements MockInterface
 
     /**
      * Set mock to defer unexpected methods to it's parent
+	 * 设置mock以将意外的方法推迟到它的父类
      *
      * It was an alias for shouldDeferMissing(), which will be removed
      * in 2.0.0.
@@ -413,6 +429,7 @@ class Mock implements MockInterface
 
     /**
      * Capture calls to this mock
+	 * 捕获对该模拟的调用
      */
     public function __call($method, array $args)
     {
@@ -426,6 +443,7 @@ class Mock implements MockInterface
 
     /**
      * Forward calls to this magic method to the __call method
+	 * 将对这个神奇方法的调用转发给__call方法
      */
     #[\ReturnTypeWillChange]
     public function __toString()
@@ -435,6 +453,7 @@ class Mock implements MockInterface
 
     /**
      * Iterate across all expectation directors and validate each
+	 * 遍历所有期望董事并验证每个董事
      *
      * @throws Exception
      * @return void
@@ -458,6 +477,7 @@ class Mock implements MockInterface
 
     /**
      * Gets a list of exceptions thrown by this mock
+	 * 获取由此模拟抛出的异常列表
      *
      * @return array
      */
@@ -468,6 +488,7 @@ class Mock implements MockInterface
 
     /**
      * Tear down tasks for this mock
+	 * 删除此模拟的任务
      *
      * @return void
      */
@@ -477,6 +498,7 @@ class Mock implements MockInterface
 
     /**
      * Fetch the next available allocation order number
+	 * 获取下一个可用的分配订单号
      *
      * @return int
      */
@@ -488,6 +510,7 @@ class Mock implements MockInterface
 
     /**
      * Set ordering for a group
+	 * 为组设置排序
      *
      * @param mixed $group
      * @param int $order
@@ -499,6 +522,7 @@ class Mock implements MockInterface
 
     /**
      * Fetch array of ordered groups
+	 * 获取有序组的数组
      *
      * @return array
      */
@@ -509,6 +533,7 @@ class Mock implements MockInterface
 
     /**
      * Set current ordered number
+	 * 设置当前有序数
      *
      * @param int $order
      */
@@ -520,6 +545,7 @@ class Mock implements MockInterface
 
     /**
      * Get current ordered number
+	 * 获取当前订购编号
      *
      * @return int
      */
@@ -530,6 +556,7 @@ class Mock implements MockInterface
 
     /**
      * Validate the current mock's ordering
+	 * 验证当前mock的顺序
      *
      * @param string $method
      * @param int $order
@@ -556,6 +583,7 @@ class Mock implements MockInterface
 
     /**
      * Gets the count of expectations for this mock
+	 * 获取此模拟的期望计数
      *
      * @return int
      */
@@ -571,6 +599,7 @@ class Mock implements MockInterface
 
     /**
      * Return the expectations director for the given method
+	 * 返回给定方法的期望方向
      *
      * @var string $method
      * @return ExpectationDirector|null
@@ -582,6 +611,7 @@ class Mock implements MockInterface
 
     /**
      * Return the expectations director for the given method
+	 * 返回给定方法的期望方向
      *
      * @var string $method
      * @return ExpectationDirector|null
@@ -595,6 +625,7 @@ class Mock implements MockInterface
 
     /**
      * Find an expectation matching the given method and arguments
+	 * 查找与给定方法和参数匹配的期望
      *
      * @var string $method
      * @var array $args
@@ -613,6 +644,7 @@ class Mock implements MockInterface
 
     /**
      * Return the container for this mock
+	 * 返回此模拟的容器
      *
      * @return Container
      */
@@ -623,6 +655,7 @@ class Mock implements MockInterface
 
     /**
      * Return the name for this mock
+	 * 返回模拟的名称
      *
      * @return string
      */
@@ -665,6 +698,7 @@ class Mock implements MockInterface
      * Calls a parent class method and returns the result. Used in a passthru
      * expectation where a real return value is required while still taking
      * advantage of expectation matching and call count verification.
+	 * 调用父类方法并返回结果。
      *
      * @param string $name
      * @param array $args
@@ -867,6 +901,7 @@ class Mock implements MockInterface
 
     /**
      * Called when an instance Mock was created and its constructor is getting called
+	 * 当实例Mock被创建并且它的构造函数被调用时调用
      *
      * @see \Mockery\Generator\StringManipulation\Pass\InstanceMockPass
      * @param array $args

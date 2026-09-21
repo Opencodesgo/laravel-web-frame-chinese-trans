@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，类属性匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * A class attribute tab completion Matcher.
+ * 类属性选项卡完成匹配器。
  *
  * Given a namespace and class, this matcher provides completion for constants
  * and static properties.

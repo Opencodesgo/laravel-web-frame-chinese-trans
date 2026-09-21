@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，提供者，节点，随机节点提供程序
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -30,8 +33,9 @@ use const STR_PAD_LEFT;
 
 /**
  * RandomNodeProvider generates a random node ID
+ * RandomNodeProvider 生成一个随机节点ID
  *
- * @link http://tools.ietf.org/html/rfc4122#section-4.5 RFC 4122, § 4.5: Node IDs that Do Not Identify the Host
+ * @link https://www.rfc-editor.org/rfc/rfc9562#section-6.10 RFC 9562, 6.10. UUIDs That Do Not Identify the Host
  */
 class RandomNodeProvider implements NodeProviderInterface
 {
@@ -40,30 +44,16 @@ class RandomNodeProvider implements NodeProviderInterface
         try {
             $nodeBytes = random_bytes(6);
         } catch (Throwable $exception) {
-            throw new RandomSourceException(
-                $exception->getMessage(),
-                (int) $exception->getCode(),
-                $exception
-            );
+            throw new RandomSourceException($exception->getMessage(), (int) $exception->getCode(), $exception);
         }
 
         // Split the node bytes for math on 32-bit systems.
         $nodeMsb = substr($nodeBytes, 0, 3);
         $nodeLsb = substr($nodeBytes, 3);
 
-        // Set the multicast bit; see RFC 4122, section 4.5.
-        $nodeMsb = hex2bin(
-            str_pad(
-                dechex(hexdec(bin2hex($nodeMsb)) | 0x010000),
-                6,
-                '0',
-                STR_PAD_LEFT
-            )
-        );
+        // Set the multicast bit; see RFC 9562, section 6.10.
+        $nodeMsb = hex2bin(str_pad(dechex(hexdec(bin2hex($nodeMsb)) | 0x010000), 6, '0', STR_PAD_LEFT));
 
-        // Recombine the node bytes.
-        $node = $nodeMsb . $nodeLsb;
-
-        return new Hexadecimal(str_pad(bin2hex($node), 12, '0', STR_PAD_LEFT));
+        return new Hexadecimal(str_pad(bin2hex($nodeMsb . $nodeLsb), 12, '0', STR_PAD_LEFT));
     }
 }

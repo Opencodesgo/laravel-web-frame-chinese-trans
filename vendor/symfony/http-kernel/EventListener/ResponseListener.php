@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * ResponseListener fixes the Response headers based on the Request.
- * ResponseListener 根据请求修复响应头
+ * ResponseListener根据请求修复响应头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -28,8 +28,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class ResponseListener implements EventSubscriberInterface
 {
-    private $charset;
-    private $addContentLanguageHeader;
+    private string $charset;
+    private bool $addContentLanguageHeader;
 
     public function __construct(string $charset, bool $addContentLanguageHeader = false)
     {
@@ -39,8 +39,9 @@ class ResponseListener implements EventSubscriberInterface
 
     /**
      * Filters the Response.
+	 * 过滤响应
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;

@@ -6,10 +6,11 @@
 namespace Illuminate\Validation\Rules;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Conditionable;
 
 class Unique
 {
-    use DatabaseRule;
+    use Conditionable, DatabaseRule;
 
     /**
      * The ID that should be ignored.

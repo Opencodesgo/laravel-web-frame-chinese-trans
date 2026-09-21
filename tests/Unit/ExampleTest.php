@@ -11,11 +11,11 @@ class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
-	 * 一个基本的用例测试
+	 * 基本测试用例
      *
      * @return void
      */
-    public function testBasicTest()
+    public function test_that_true_is_true()
     {
         $this->assertTrue(true);
     }

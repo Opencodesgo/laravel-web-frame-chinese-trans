@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，综合服务提供者
+ * Illuminate, 支持, 综合服务提供商
  */
 
 namespace Illuminate\Support;

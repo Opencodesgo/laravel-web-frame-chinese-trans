@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，工厂文件
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org
@@ -8,6 +11,7 @@ abstract class FactoryFile
 {
     /**
      * Hamcrest standard is two spaces for each level of indentation.
+	 * Hamcrest标准是每一个压痕的两个空间
      *
      * @var string
      */

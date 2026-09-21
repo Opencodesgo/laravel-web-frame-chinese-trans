@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，向多变形
+ * Illuminate，数据库，Eloquent，关系，向许多变形
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -76,7 +76,7 @@ class MorphToMany extends BelongsToMany
     {
         parent::addWhereConstraints();
 
-        $this->query->where($this->table.'.'.$this->morphType, $this->morphClass);
+        $this->query->where($this->qualifyPivotColumn($this->morphType), $this->morphClass);
 
         return $this;
     }
@@ -92,7 +92,7 @@ class MorphToMany extends BelongsToMany
     {
         parent::addEagerConstraints($models);
 
-        $this->query->where($this->table.'.'.$this->morphType, $this->morphClass);
+        $this->query->where($this->qualifyPivotColumn($this->morphType), $this->morphClass);
     }
 
     /**
@@ -122,7 +122,7 @@ class MorphToMany extends BelongsToMany
     public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
     {
         return parent::getRelationExistenceQuery($query, $parentQuery, $columns)->where(
-            $this->table.'.'.$this->morphType, $this->morphClass
+            $this->qualifyPivotColumn($this->morphType), $this->morphClass
         );
     }
 
@@ -180,7 +180,6 @@ class MorphToMany extends BelongsToMany
 	 * 得到关系的主列
      *
      * "pivot_" is prefixed at each column for easy removal later.
-	 * "pivot_"在每一列前加上前缀，以便稍后删除。
      *
      * @return array
      */
@@ -189,7 +188,7 @@ class MorphToMany extends BelongsToMany
         $defaults = [$this->foreignPivotKey, $this->relatedPivotKey, $this->morphType];
 
         return collect(array_merge($defaults, $this->pivotColumns))->map(function ($column) {
-            return $this->table.'.'.$column.' as pivot_'.$column;
+            return $this->qualifyPivotColumn($column).' as pivot_'.$column;
         })->unique()->all();
     }
 

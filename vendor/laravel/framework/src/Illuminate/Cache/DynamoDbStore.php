@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，DynamoDb 存储
+ * Illuminate，缓存，DynamoDb存储
  */
 
 namespace Illuminate\Cache;
@@ -226,8 +226,8 @@ class DynamoDbStore implements LockProvider, Store
     }
 
     /**
-     * Store multiple items in the cache for a given number of $seconds.
-	 * 在给定的$秒数内将多个项存储在缓存中
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int  $seconds
@@ -264,7 +264,7 @@ class DynamoDbStore implements LockProvider, Store
 
     /**
      * Store an item in the cache if the key doesn't exist.
-	 * 如果键不存在，则将项存储在缓存中。
+	 * 如果键不存在，则将项存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -301,7 +301,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return true;
         } catch (DynamoDbException $e) {
-            if (Str::contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
                 return false;
             }
 
@@ -347,7 +347,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return (int) $response['Attributes'][$this->valueAttribute]['N'];
         } catch (DynamoDbException $e) {
-            if (Str::contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
                 return false;
             }
 
@@ -393,7 +393,7 @@ class DynamoDbStore implements LockProvider, Store
 
             return (int) $response['Attributes'][$this->valueAttribute]['N'];
         } catch (DynamoDbException $e) {
-            if (Str::contains($e->getMessage(), 'ConditionalCheckFailed')) {
+            if (str_contains($e->getMessage(), 'ConditionalCheckFailed')) {
                 return false;
             }
 
@@ -554,5 +554,16 @@ class DynamoDbStore implements LockProvider, Store
     public function setPrefix($prefix)
     {
         $this->prefix = ! empty($prefix) ? $prefix.':' : '';
+    }
+
+    /**
+     * Get the DynamoDb Client instance.
+	 * 获取DynamoDb Client实例
+     *
+     * @return \Aws\DynamoDb\DynamoDbClient
+     */
+    public function getClient()
+    {
+        return $this->dynamo;
     }
 }

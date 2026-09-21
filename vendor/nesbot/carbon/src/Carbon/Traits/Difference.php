@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，差异
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -24,6 +27,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Difference.
+ * 形态差异
  *
  * Depends on the following methods:
  *
@@ -114,6 +118,7 @@ trait Difference
      * Get the difference as a DateInterval instance.
      * Return relative interval (negative if $absolute flag is not set to true and the given date is before
      * current one).
+	 * 将差值作为DateInterval实例获取。
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -142,6 +147,7 @@ trait Difference
      * Get the difference as a CarbonInterval instance.
      * Return relative interval (negative if $absolute flag is not set to true and the given date is before
      * current one).
+	 * 以CarbonInterval实例的形式获取差值。
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -155,6 +161,7 @@ trait Difference
 
     /**
      * Get the difference in years
+	 * 得到年份的差异
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -168,6 +175,7 @@ trait Difference
 
     /**
      * Get the difference in quarters rounded down.
+	 * 把差值四舍五入。
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -181,6 +189,7 @@ trait Difference
 
     /**
      * Get the difference in months rounded down.
+	 * 把月差四舍五入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -208,6 +217,7 @@ trait Difference
 
     /**
      * Get the difference in weeks rounded down.
+	 * 将差值以周为单位舍入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -221,6 +231,7 @@ trait Difference
 
     /**
      * Get the difference in days rounded down.
+	 * 把天数差取四舍五入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -234,6 +245,7 @@ trait Difference
 
     /**
      * Get the difference in days using a filter closure rounded down.
+	 * 使用向下舍入的过滤器闭包获取天数的差值。
      *
      * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
@@ -248,6 +260,7 @@ trait Difference
 
     /**
      * Get the difference in hours using a filter closure rounded down.
+	 * 使用过滤器闭包四舍五入获取小时差值
      *
      * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
@@ -262,6 +275,7 @@ trait Difference
 
     /**
      * Get the difference by the given interval using a filter closure.
+	 * 使用过滤器闭包获取给定间隔的差值
      *
      * @param CarbonInterval                                         $ci       An interval to traverse by
      * @param Closure                                                $callback
@@ -290,6 +304,7 @@ trait Difference
 
     /**
      * Get the difference in weekdays rounded down.
+	 * 把工作日的差四舍五入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -305,6 +320,7 @@ trait Difference
 
     /**
      * Get the difference in weekend days using a filter rounded down.
+	 * 使用向下舍入的过滤器获取周末天数的差异
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -320,6 +336,7 @@ trait Difference
 
     /**
      * Get the difference in hours rounded down.
+	 * 把小时差取整
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -333,6 +350,7 @@ trait Difference
 
     /**
      * Get the difference in hours rounded down using timestamps.
+	 * 使用时间戳获取小时差的四舍五入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -346,6 +364,7 @@ trait Difference
 
     /**
      * Get the difference in minutes rounded down.
+	 * 把差的分钟数四舍五入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -359,6 +378,7 @@ trait Difference
 
     /**
      * Get the difference in minutes rounded down using timestamps.
+	 * 使用时间戳获取以分钟为单位的差值
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -372,6 +392,7 @@ trait Difference
 
     /**
      * Get the difference in seconds rounded down.
+	 * 把差的秒数四舍五入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -396,6 +417,7 @@ trait Difference
 
     /**
      * Get the difference in microseconds.
+	 * 得到以微秒为单位的差值
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -415,6 +437,7 @@ trait Difference
 
     /**
      * Get the difference in milliseconds rounded down.
+	 * 将差值以毫秒为单位舍入
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -428,6 +451,7 @@ trait Difference
 
     /**
      * Get the difference in seconds using timestamps.
+	 * 使用时间戳获取秒差
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -445,6 +469,7 @@ trait Difference
 
     /**
      * Get the difference in microseconds using timestamps.
+	 * 使用时间戳获取以微秒为单位的差异
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -463,6 +488,7 @@ trait Difference
 
     /**
      * Get the difference in milliseconds rounded down using timestamps.
+	 * 使用时间戳获取以毫秒为单位的差值
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -476,6 +502,7 @@ trait Difference
 
     /**
      * Get the difference in seconds as float (microsecond-precision).
+	 * 以浮点数（微秒精度）获取秒差
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -620,6 +647,7 @@ trait Difference
 
     /**
      * Get the difference in seconds as float (microsecond-precision) using timestamps.
+	 * 使用时间戳以浮点数（微秒精度）的形式获取秒差
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -633,6 +661,7 @@ trait Difference
 
     /**
      * Get the difference in minutes as float (microsecond-precision) using timestamps.
+	 * 使用时间戳获取以分钟为单位的浮点数（微秒精度）
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -646,6 +675,7 @@ trait Difference
 
     /**
      * Get the difference in hours as float (microsecond-precision) using timestamps.
+	 * 使用时间戳获取以浮点数（微秒精度）表示的小时差
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -659,6 +689,7 @@ trait Difference
 
     /**
      * Get the difference in days as float (microsecond-precision).
+	 * 以浮点数（微秒精度）获取天数的差值
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -759,6 +790,7 @@ trait Difference
 
     /**
      * The number of seconds since midnight.
+	 * 从午夜开始的秒数
      *
      * @return int
      */

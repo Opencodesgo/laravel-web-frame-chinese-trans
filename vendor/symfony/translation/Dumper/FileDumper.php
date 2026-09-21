@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转存器，文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * FileDumper is an implementation of DumperInterface that dump a message catalogue to file(s).
+ * FileDumper是DumperInterface的实现，它将消息目录转储到文件中。
  *
  * Options:
  * - path (mandatory): the directory where the files should be saved
@@ -27,6 +31,7 @@ abstract class FileDumper implements DumperInterface
 {
     /**
      * A template for the relative paths to files.
+	 * 文件的相对路径模板
      *
      * @var string
      */
@@ -34,8 +39,9 @@ abstract class FileDumper implements DumperInterface
 
     /**
      * Sets the template for the relative paths to files.
+	 * 为文件的相对路径设置模板
      *
-     * @param string $relativePathTemplate A template for the relative paths to files
+     * @return void
      */
     public function setRelativePathTemplate(string $relativePathTemplate)
     {
@@ -43,7 +49,7 @@ abstract class FileDumper implements DumperInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function dump(MessageCatalogue $messages, array $options = [])
     {
@@ -57,7 +63,7 @@ abstract class FileDumper implements DumperInterface
             if (!file_exists($fullpath)) {
                 $directory = \dirname($fullpath);
                 if (!file_exists($directory) && !@mkdir($directory, 0777, true)) {
-                    throw new RuntimeException(sprintf('Unable to create directory "%s".', $directory));
+                    throw new RuntimeException(\sprintf('Unable to create directory "%s".', $directory));
                 }
             }
 
@@ -86,20 +92,19 @@ abstract class FileDumper implements DumperInterface
 
     /**
      * Transforms a domain of a message catalogue to its string representation.
-     *
-     * @return string
+	 * 将消息目录的域转换为其字符串表示形式
      */
-    abstract public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []);
+    abstract public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []): string;
 
     /**
      * Gets the file extension of the dumper.
-     *
-     * @return string
+	 * 获取转储程序的文件扩展名
      */
-    abstract protected function getExtension();
+    abstract protected function getExtension(): string;
 
     /**
      * Gets the relative file path using the template.
+	 * 使用模板获取相对文件路径
      */
     private function getRelativePath(string $domain, string $locale): string
     {

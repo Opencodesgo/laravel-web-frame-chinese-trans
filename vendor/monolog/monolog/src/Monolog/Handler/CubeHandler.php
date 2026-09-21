@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Cube 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Utils;
 
 /**
  * Logs to Cube.
+ * 写入Cube
  *
  * @link https://github.com/square/cube/wiki
  * @author Wan Chen <kami@kamisama.me>
@@ -38,6 +43,7 @@ class CubeHandler extends AbstractProcessingHandler
 
     /**
      * Create a Cube handler
+	 * 创建一个Cube处理程序
      *
      * @throws \UnexpectedValueException when given url is not a valid url.
      *                                   A valid url must consist of three parts : protocol://host:port
@@ -67,6 +73,7 @@ class CubeHandler extends AbstractProcessingHandler
 
     /**
      * Establish a connection to an UDP socket
+	 * 建立到UDP套接字的连接
      *
      * @throws \LogicException           when unable to connect to the socket
      * @throws MissingExtensionException when there is no socket extension
@@ -90,6 +97,7 @@ class CubeHandler extends AbstractProcessingHandler
 
     /**
      * Establish a connection to an http server
+	 * 建立到http服务器的连接
      *
      * @throws \LogicException           when unable to connect to the socket
      * @throws MissingExtensionException when no curl extension

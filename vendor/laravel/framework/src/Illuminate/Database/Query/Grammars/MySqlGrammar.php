@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，MySql 语法
+ * Illuminate，数据库，PDO，语法，MySql 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -14,18 +14,17 @@ class MySqlGrammar extends Grammar
      * The grammar specific operators.
 	 * 语法特定的操作符
      *
-     * @var array
+     * @var string[]
      */
     protected $operators = ['sounds like'];
 
     /**
      * Add a "where null" clause to the query.
-	 * 在查询中添加一个"where null"子句
+	 * 向查询添加"where null"子句
      *
-     * @param  string|array  $columns
-     * @param  string  $boolean
-     * @param  bool  $not
-     * @return $this
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
      */
     protected function whereNull(Builder $query, $where)
     {
@@ -42,9 +41,9 @@ class MySqlGrammar extends Grammar
      * Add a "where not null" clause to the query.
 	 * 在查询中添加"where not null"子句
      *
-     * @param  string|array  $columns
-     * @param  string  $boolean
-     * @return $this
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
      */
     protected function whereNotNull(Builder $query, $where)
     {
@@ -55,6 +54,48 @@ class MySqlGrammar extends Grammar
         }
 
         return parent::whereNotNull($query, $where);
+    }
+
+    /**
+     * Compile a "where fulltext" clause.
+	 * 编译一个"where fulltext"子句
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    public function whereFullText(Builder $query, $where)
+    {
+        $columns = $this->columnize($where['columns']);
+
+        $value = $this->parameter($where['value']);
+
+        $mode = ($where['options']['mode'] ?? []) === 'boolean'
+            ? ' in boolean mode'
+            : ' in natural language mode';
+
+        $expanded = ($where['options']['expanded'] ?? []) && ($where['options']['mode'] ?? []) !== 'boolean'
+            ? ' with query expansion'
+            : '';
+
+        return "match ({$columns}) against (".$value."{$mode}{$expanded})";
+    }
+
+    /**
+     * Compile the index hints for the query.
+	 * 为查询编译索引提示
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Query\IndexHint  $indexHint
+     * @return string
+     */
+    protected function compileIndexHint(Builder $query, $indexHint)
+    {
+        return match ($indexHint->type) {
+            'hint' => "use index ({$indexHint->index})",
+            'force' => "force index ({$indexHint->index})",
+            default => "ignore index ({$indexHint->index})",
+        };
     }
 
     /**
@@ -86,8 +127,22 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON contains key" statement into SQL.
+	 * 将"JSON contains key"语句编译成SQL
+     *
+     * @param  string  $column
+     * @return string
+     */
+    protected function compileJsonContainsKey($column)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+
+        return 'ifnull(json_contains_path('.$field.', \'one\''.$path.'), 0)';
+    }
+
+    /**
      * Compile a "JSON length" statement into SQL.
-	 * 将"JSON length"语句编译成SQL
+	 * 将"JSON长度"语句编译成SQL
      *
      * @param  string  $column
      * @param  string  $operator
@@ -102,10 +157,22 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON value cast" statement into SQL.
+	 * 将"JSON值转换"语句编译成SQL
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function compileJsonValueCast($value)
+    {
+        return 'cast('.$value.' as json)';
+    }
+
+    /**
      * Compile the random statement into SQL.
 	 * 将随机语句编译成SQL
      *
-     * @param  string  $seed
+     * @param  string|int  $seed
      * @return string
      */
     public function compileRandom($seed)
@@ -115,7 +182,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
-	 * 编译锁至SQL
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -164,6 +231,41 @@ class MySqlGrammar extends Grammar
 
             return $this->wrap($key).' = '.$this->parameter($value);
         })->implode(', ');
+    }
+
+    /**
+     * Compile an "upsert" statement into SQL.
+	 * 将"upsert"语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @param  array  $uniqueBy
+     * @param  array  $update
+     * @return string
+     */
+    public function compileUpsert(Builder $query, array $values, array $uniqueBy, array $update)
+    {
+        $useUpsertAlias = $query->connection->getConfig('use_upsert_alias');
+
+        $sql = $this->compileInsert($query, $values);
+
+        if ($useUpsertAlias) {
+            $sql .= ' as laravel_upsert_alias';
+        }
+
+        $sql .= ' on duplicate key update ';
+
+        $columns = collect($update)->map(function ($value, $key) use ($useUpsertAlias) {
+            if (! is_numeric($key)) {
+                return $this->wrap($key).' = '.$this->parameter($value);
+            }
+
+            return $useUpsertAlias
+                ? $this->wrap($value).' = '.$this->wrap('laravel_upsert_alias').'.'.$this->wrap($value)
+                : $this->wrap($value).' = values('.$this->wrap($value).')';
+        })->implode(', ');
+
+        return $sql.$columns;
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Psy 版本命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * A dumb little command for printing out the current Psy Shell version.
+ * 一个愚蠢的小命令，用于打印当前的Psy Shell版本。
  */
 class PsyVersionCommand extends Command
 {

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，是否空
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -9,6 +13,7 @@ use Hamcrest\Description;
 
 /**
  * Is the value null?
+ * 是否值空
  */
 class IsNull extends BaseMatcher
 {
@@ -28,6 +33,7 @@ class IsNull extends BaseMatcher
 
     /**
      * Matches if value is null.
+	 * 匹配值为null
      *
      * @factory
      */

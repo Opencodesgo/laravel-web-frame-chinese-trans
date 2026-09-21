@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，节点，特异性 
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a node specificity.
+ * 表示节点特异性。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -29,9 +33,9 @@ class Specificity
     public const B_FACTOR = 10;
     public const C_FACTOR = 1;
 
-    private $a;
-    private $b;
-    private $c;
+    private int $a;
+    private int $b;
+    private int $c;
 
     public function __construct(int $a, int $b, int $c)
     {
@@ -53,6 +57,7 @@ class Specificity
     /**
      * Returns -1 if the object specificity is lower than the argument,
      * 0 if they are equal, and 1 if the argument is lower.
+	 * 如果对象特异性低于参数，则返回-1；
      */
     public function compareTo(self $specificity): int
     {

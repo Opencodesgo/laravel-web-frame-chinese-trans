@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，性能命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class TimeitCommand.
+ * 类TimeitCommand。
  */
 class TimeitCommand extends Command
 {
@@ -115,6 +119,7 @@ HELP
 
     /**
      * Internal method for marking the start of timeit execution.
+	 * 标记时间执行开始的内部方法。
      *
      * A static call to this method will be injected at the start of the timeit
      * input code to instrument the call. We will use the saved start time to
@@ -127,6 +132,7 @@ HELP
 
     /**
      * Internal method for marking the end of timeit execution.
+	 * 用于标记时间执行结束的内部方法。
      *
      * A static call to this method is injected by TimeitVisitor at the end
      * of the timeit input code to instrument the call.
@@ -149,6 +155,7 @@ HELP
 
     /**
      * Ensure that the end of code execution was marked.
+	 * 确保标记了代码执行的结束。
      *
      * The end *should* be marked in the instrumented code, but just in case
      * we'll add a fallback here.
@@ -162,6 +169,7 @@ HELP
 
     /**
      * Instrument code for timeit execution.
+	 * 计时执行的仪器代码。
      *
      * This inserts `markStart` and `markEnd` calls to ensure that (reasonably)
      * accurate times are recorded for just the code being executed.

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理者，Xml 响应处理程序
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -93,6 +97,7 @@ class XmlResponseHandler extends Handler
 
     /**
      * The main function for converting to an XML document.
+	 * 转换为XML文档的主要函数
      *
      * @param  array|\Traversable $data
      * @return string            XML

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，进入，可授权的特征
+ * Illuminate，基础，认证, 访问, 可被授权的
  */
 
 namespace Illuminate\Foundation\Auth\Access;
@@ -20,6 +20,19 @@ trait Authorizable
     public function can($abilities, $arguments = [])
     {
         return app(Gate::class)->forUser($this)->check($abilities, $arguments);
+    }
+
+    /**
+     * Determine if the entity has any of the given abilities.
+	 * 确定该实体是否具有任何给定的能力
+     *
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
+     * @return bool
+     */
+    public function canAny($abilities, $arguments = [])
+    {
+        return app(Gate::class)->forUser($this)->any($abilities, $arguments);
     }
 
     /**

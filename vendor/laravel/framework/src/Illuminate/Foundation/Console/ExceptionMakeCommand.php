@@ -1,13 +1,15 @@
 <?php
 /**
- * Illuminate，基础，控制台，make:exception 异常生成命令
+ * Illuminate，基础，控制台，make:exception 异常排除命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:exception')]
 class ExceptionMakeCommand extends GeneratorCommand
 {
     /**
@@ -17,6 +19,19 @@ class ExceptionMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:exception';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令的名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:exception';
 
     /**
      * The console command description.
@@ -55,7 +70,7 @@ class ExceptionMakeCommand extends GeneratorCommand
 
     /**
      * Determine if the class already exists.
-	 * 确定类是否已经存在。
+	 * 确定类是否已经存在
      *
      * @param  string  $rawName
      * @return bool
@@ -86,8 +101,8 @@ class ExceptionMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the exception already exists'],
             ['render', null, InputOption::VALUE_NONE, 'Create the exception with an empty render method'],
-
             ['report', null, InputOption::VALUE_NONE, 'Create the exception with an empty report method'],
         ];
     }

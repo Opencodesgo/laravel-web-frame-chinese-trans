@@ -5,11 +5,16 @@
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'make:job')]
 class JobMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
 	 * 控制台命令名称
@@ -17,6 +22,19 @@ class JobMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:job';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'make:job';
 
     /**
      * The console command description.
@@ -82,6 +100,7 @@ class JobMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the job already exists'],
             ['sync', null, InputOption::VALUE_NONE, 'Indicates that job should be synchronous'],
         ];
     }

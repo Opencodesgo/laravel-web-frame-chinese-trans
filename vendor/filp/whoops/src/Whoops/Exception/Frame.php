@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，框架
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -301,6 +305,7 @@ class Frame implements Serializable
 
     /**
      * Mark as an frame belonging to the application.
+	 * 标记为属于应用程序的框架
      *
      * @param boolean $application
      */

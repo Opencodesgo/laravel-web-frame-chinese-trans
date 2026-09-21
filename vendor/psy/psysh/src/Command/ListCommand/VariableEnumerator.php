@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，变量枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Variable Enumerator class.
+ * 变量枚举器类。
  */
 class VariableEnumerator extends Enumerator
 {
@@ -29,6 +33,7 @@ class VariableEnumerator extends Enumerator
 
     /**
      * Variable Enumerator constructor.
+	 * 变量枚举构造函数。
      *
      * Unlike most other enumerators, the Variable Enumerator needs access to
      * the current scope variables, so we need to pass it a Context instance.
@@ -71,6 +76,7 @@ class VariableEnumerator extends Enumerator
 
     /**
      * Get scope variables.
+	 * 获取范围变量
      *
      * @param bool $showAll Include special variables (e.g. $_)
      *
@@ -112,6 +118,7 @@ class VariableEnumerator extends Enumerator
 
     /**
      * Prepare formatted variable array.
+	 * 准备格式化的变量数组
      *
      * @param array $variables
      *

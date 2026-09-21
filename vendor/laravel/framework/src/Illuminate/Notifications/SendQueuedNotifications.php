@@ -6,6 +6,7 @@
 namespace Illuminate\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -51,15 +52,31 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * The number of seconds the job can run before timing out.
-	 * 作业在计时结束前可以运行的秒数
+	 * 作业在超时之前可以运行的秒数
      *
      * @var int
      */
     public $timeout;
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+	 * 在失败之前允许的未处理异常的最大数量
+     *
+     * @var int
+     */
+    public $maxExceptions;
+
+    /**
+     * Indicates if the job should be encrypted.
+	 * 指示作业是否应该加密
+     *
+     * @var bool
+     */
+    public $shouldBeEncrypted = false;
+
+    /**
      * Create a new job instance.
-	 * 创建一个新的任务实例
+	 * 创建一个新的作业实例
      *
      * @param  \Illuminate\Notifications\Notifiable|\Illuminate\Support\Collection  $notifiables
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -73,6 +90,9 @@ class SendQueuedNotifications implements ShouldQueue
         $this->notifiables = $this->wrapNotifiables($notifiables);
         $this->tries = property_exists($notification, 'tries') ? $notification->tries : null;
         $this->timeout = property_exists($notification, 'timeout') ? $notification->timeout : null;
+        $this->maxExceptions = property_exists($notification, 'maxExceptions') ? $notification->maxExceptions : null;
+        $this->afterCommit = property_exists($notification, 'afterCommit') ? $notification->afterCommit : null;
+        $this->shouldBeEncrypted = $notification instanceof ShouldBeEncrypted;
     }
 
     /**
@@ -107,7 +127,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
-	 * 获取排队任务的显示名称
+	 * 获取排队作业的显示名称
      *
      * @return string
      */
@@ -131,33 +151,33 @@ class SendQueuedNotifications implements ShouldQueue
     }
 
     /**
-     * Get the retry delay for the notification.
-	 * 获取通知的重试延迟
+     * Get the number of seconds before a released notification will be available.
+	 * 获取释放通知可用之前的秒数
      *
      * @return mixed
      */
-    public function retryAfter()
+    public function backoff()
     {
-        if (! method_exists($this->notification, 'retryAfter') && ! isset($this->notification->retryAfter)) {
+        if (! method_exists($this->notification, 'backoff') && ! isset($this->notification->backoff)) {
             return;
         }
 
-        return $this->notification->retryAfter ?? $this->notification->retryAfter();
+        return $this->notification->backoff ?? $this->notification->backoff();
     }
 
     /**
-     * Get the expiration for the notification.
-	 * 获取通知的过期时间
+     * Determine the time at which the job should timeout.
+	 * 确定作业应该超时的时间
      *
-     * @return mixed
+     * @return \DateTime|null
      */
     public function retryUntil()
     {
-        if (! method_exists($this->notification, 'retryUntil') && ! isset($this->notification->timeoutAt)) {
+        if (! method_exists($this->notification, 'retryUntil') && ! isset($this->notification->retryUntil)) {
             return;
         }
 
-        return $this->notification->timeoutAt ?? $this->notification->retryUntil();
+        return $this->notification->retryUntil ?? $this->notification->retryUntil();
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，方法枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Method Enumerator class.
+ * 方法枚举器类。
  */
 class MethodEnumerator extends Enumerator
 {
@@ -54,6 +58,7 @@ class MethodEnumerator extends Enumerator
 
     /**
      * Get defined methods for the given class or object Reflector.
+	 * 获取给定类或对象Reflector的已定义方法。
      *
      * @param bool             $showAll   Include private and protected methods
      * @param \ReflectionClass $reflector
@@ -85,6 +90,7 @@ class MethodEnumerator extends Enumerator
 
     /**
      * Prepare formatted method array.
+	 * 准备格式化的方法数组。
      *
      * @param array $methods
      *
@@ -110,6 +116,7 @@ class MethodEnumerator extends Enumerator
 
     /**
      * Get a label for the particular kind of "class" represented.
+	 * 获取所表示的特定类型的“类”的标签。
      *
      * @param \ReflectionClass $reflector
      */
@@ -126,6 +133,7 @@ class MethodEnumerator extends Enumerator
 
     /**
      * Get output style for the given method's visibility.
+	 * 获取给定方法可见性的输出样式
      *
      * @param \ReflectionMethod $method
      */

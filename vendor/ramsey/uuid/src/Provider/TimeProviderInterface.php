@@ -1,4 +1,8 @@
 <?php
+/**
+ * Ramsey，Uuid，提供者，时间提供程序接口
+ */
+
 
 /**
  * This file is part of the ramsey/uuid library
@@ -18,6 +22,7 @@ use Ramsey\Uuid\Type\Time;
 
 /**
  * A time provider retrieves the current time
+ * 时间提供程序检索当前时间
  */
 interface TimeProviderInterface
 {

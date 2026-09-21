@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，令牌流
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
 
 /**
  * CSS selector token stream.
+ * CSS选择器标记流。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -29,34 +33,24 @@ class TokenStream
     /**
      * @var Token[]
      */
-    private $tokens = [];
+    private array $tokens = [];
 
     /**
      * @var Token[]
      */
-    private $used = [];
+    private array $used = [];
 
-    /**
-     * @var int
-     */
-    private $cursor = 0;
-
-    /**
-     * @var Token|null
-     */
-    private $peeked;
-
-    /**
-     * @var bool
-     */
-    private $peeking = false;
+    private int $cursor = 0;
+    private ?Token $peeked;
+    private bool $peeking = false;
 
     /**
      * Pushes a token.
+	 * 推令牌
      *
      * @return $this
      */
-    public function push(Token $token): self
+    public function push(Token $token): static
     {
         $this->tokens[] = $token;
 
@@ -65,16 +59,18 @@ class TokenStream
 
     /**
      * Freezes stream.
+	 * 冻结流
      *
      * @return $this
      */
-    public function freeze(): self
+    public function freeze(): static
     {
         return $this;
     }
 
     /**
      * Returns next token.
+	 * 返回下一个令牌
      *
      * @throws InternalErrorException If there is no more token
      */
@@ -96,6 +92,7 @@ class TokenStream
 
     /**
      * Returns peeked token.
+	 * 返回窥视令牌
      */
     public function getPeek(): Token
     {
@@ -109,6 +106,7 @@ class TokenStream
 
     /**
      * Returns used tokens.
+	 * 返回使用过的令牌
      *
      * @return Token[]
      */
@@ -119,6 +117,7 @@ class TokenStream
 
     /**
      * Returns next identifier token.
+	 * 返回下一个标识令牌
      *
      * @throws SyntaxErrorException If next token is not an identifier
      */
@@ -135,6 +134,7 @@ class TokenStream
 
     /**
      * Returns next identifier or null if star delimiter token is found.
+	 * 返回下一个标识符，如果找到星号分隔符标记则返回空。
      *
      * @throws SyntaxErrorException If next token is not an identifier or a star delimiter
      */
@@ -155,8 +155,9 @@ class TokenStream
 
     /**
      * Skips next whitespace if any.
+	 * 跳过下一个空格（如果有的话）
      */
-    public function skipWhitespace()
+    public function skipWhitespace(): void
     {
         $peek = $this->getPeek();
 

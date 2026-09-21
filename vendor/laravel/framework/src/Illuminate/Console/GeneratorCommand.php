@@ -1,15 +1,18 @@
 <?php
 /**
- * Illuminate，控制台，命令生成程序
+ * Illuminate，控制台，指令产生器抽象类
  */
 
 namespace Illuminate\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Finder\Finder;
 
-abstract class GeneratorCommand extends Command
+abstract class GeneratorCommand extends Command implements PromptsForMissingInput
 {
     /**
      * The filesystem instance.
@@ -31,7 +34,7 @@ abstract class GeneratorCommand extends Command
      * Reserved names that cannot be used for generation.
 	 * 不能用于生成的保留名称
      *
-     * @var array
+     * @var string[]
      */
     protected $reservedNames = [
         '__halt_compiler',
@@ -61,9 +64,11 @@ abstract class GeneratorCommand extends Command
         'endif',
         'endswitch',
         'endwhile',
+        'enum',
         'eval',
         'exit',
         'extends',
+        'false',
         'final',
         'finally',
         'fn',
@@ -81,6 +86,7 @@ abstract class GeneratorCommand extends Command
         'interface',
         'isset',
         'list',
+        'match',
         'namespace',
         'new',
         'or',
@@ -88,13 +94,16 @@ abstract class GeneratorCommand extends Command
         'private',
         'protected',
         'public',
+        'readonly',
         'require',
         'require_once',
         'return',
+        'self',
         'static',
         'switch',
         'throw',
         'trait',
+        'true',
         'try',
         'unset',
         'use',
@@ -102,6 +111,14 @@ abstract class GeneratorCommand extends Command
         'while',
         'xor',
         'yield',
+        '__CLASS__',
+        '__DIR__',
+        '__FILE__',
+        '__FUNCTION__',
+        '__LINE__',
+        '__METHOD__',
+        '__NAMESPACE__',
+        '__TRAIT__',
     ];
 
     /**
@@ -114,6 +131,10 @@ abstract class GeneratorCommand extends Command
     public function __construct(Filesystem $files)
     {
         parent::__construct();
+
+        if (in_array(CreatesMatchingTest::class, class_uses_recursive($this))) {
+            $this->addTestOptions();
+        }
 
         $this->files = $files;
     }
@@ -128,7 +149,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return bool|null
      *
@@ -139,9 +160,9 @@ abstract class GeneratorCommand extends Command
         // First we need to ensure that the given name is not a reserved word within the PHP
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
-		// 首先，我们需要确保给定的名称不是PHP中的保留字。
+		// 首先，我们需要确保给定的名称不是PHP中的保留字并且类名实际上是有效的。
         if ($this->isReservedName($this->getNameInput())) {
-            $this->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
+            $this->components->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
 
             return false;
         }
@@ -153,11 +174,11 @@ abstract class GeneratorCommand extends Command
         // Next, We will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-		// 接下来，我们将检查类是否已经存在。
+		// 接下来，我们将检查类是否已经存在。如果有，我们不想创建类并覆盖用户的代码。
         if ((! $this->hasOption('force') ||
              ! $this->option('force')) &&
              $this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type.' already exists!');
+            $this->components->error($this->type.' already exists.');
 
             return false;
         }
@@ -165,12 +186,20 @@ abstract class GeneratorCommand extends Command
         // Next, we will generate the path to the location where this class' file should get
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
-		// 接下来，我们将生成该类文件所在位置的路径。
+		// 接下来，我们将生成该类文件所在位置的写路径。
         $this->makeDirectory($path);
 
         $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
-        $this->info($this->type.' created successfully.');
+        $info = $this->type;
+
+        if (in_array(CreatesMatchingTest::class, class_uses_recursive($this))) {
+            if ($this->handleTestCreation($path)) {
+                $info .= ' and test';
+            }
+        }
+
+        $this->components->info(sprintf('%s [%s] created successfully.', $info, $path));
     }
 
     /**
@@ -184,17 +213,77 @@ abstract class GeneratorCommand extends Command
     {
         $name = ltrim($name, '\\/');
 
+        $name = str_replace('/', '\\', $name);
+
         $rootNamespace = $this->rootNamespace();
 
         if (Str::startsWith($name, $rootNamespace)) {
             return $name;
         }
 
-        $name = str_replace('/', '\\', $name);
-
         return $this->qualifyClass(
             $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name
         );
+    }
+
+    /**
+     * Qualify the given model class base name.
+	 * 限定给定的模型类基名
+     *
+     * @param  string  $model
+     * @return string
+     */
+    protected function qualifyModel(string $model)
+    {
+        $model = ltrim($model, '\\/');
+
+        $model = str_replace('/', '\\', $model);
+
+        $rootNamespace = $this->rootNamespace();
+
+        if (Str::startsWith($model, $rootNamespace)) {
+            return $model;
+        }
+
+        return is_dir(app_path('Models'))
+                    ? $rootNamespace.'Models\\'.$model
+                    : $rootNamespace.$model;
+    }
+
+    /**
+     * Get a list of possible model names.
+	 * 获取可能的模型名称列表
+     *
+     * @return array<int, string>
+     */
+    protected function possibleModels()
+    {
+        $modelPath = is_dir(app_path('Models')) ? app_path('Models') : app_path();
+
+        return collect((new Finder)->files()->depth(0)->in($modelPath))
+            ->map(fn ($file) => $file->getBasename('.php'))
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Get a list of possible event names.
+	 * 获取可能的事件名称列表
+     *
+     * @return array<int, string>
+     */
+    protected function possibleEvents()
+    {
+        $eventPath = app_path('Events');
+
+        if (! is_dir($eventPath)) {
+            return [];
+        }
+
+        return collect((new Finder)->files()->depth(0)->in($eventPath))
+            ->map(fn ($file) => $file->getBasename('.php'))
+            ->values()
+            ->all();
     }
 
     /**
@@ -330,7 +419,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function sortImports($stub)
     {
-        if (preg_match('/(?P<imports>(?:use [^;]+;$\n?)+)/m', $stub, $match)) {
+        if (preg_match('/(?P<imports>(?:^use [^;{]+;$\n?)+)/m', $stub, $match)) {
             $imports = explode("\n", trim($match['imports']));
 
             sort($imports);
@@ -415,7 +504,20 @@ abstract class GeneratorCommand extends Command
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the class'],
+            ['name', InputArgument::REQUIRED, 'The name of the '.strtolower($this->type)],
+        ];
+    }
+
+    /**
+     * Prompt for missing input arguments using the returned questions.
+	 * 使用返回的问题提示缺少输入参数
+     *
+     * @return array
+     */
+    protected function promptForMissingArgumentsUsing()
+    {
+        return [
+            'name' => 'What should the '.strtolower($this->type).' be named?',
         ];
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，处理器，Hash 处理器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector comment handler.
+ * CSS选择器注释处理程序。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -29,8 +33,8 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
  */
 class HashHandler implements HandlerInterface
 {
-    private $patterns;
-    private $escaping;
+    private TokenizerPatterns $patterns;
+    private TokenizerEscaping $escaping;
 
     public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
     {
@@ -38,9 +42,6 @@ class HashHandler implements HandlerInterface
         $this->escaping = $escaping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(Reader $reader, TokenStream $stream): bool
     {
         $match = $reader->findPattern($this->patterns->getHashPattern());

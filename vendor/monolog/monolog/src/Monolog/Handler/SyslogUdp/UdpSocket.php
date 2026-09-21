@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Syslog Udp，Udp Socke
+ */
+
 /*
  * This file is part of the Monolog package.
  *

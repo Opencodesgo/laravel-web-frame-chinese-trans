@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，抽象的匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * Abstract tab completion Matcher.
+ * 抽象选项卡完成匹配器。
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
@@ -45,6 +49,7 @@ abstract class AbstractMatcher
 
     /**
      * Check whether this matcher can provide completions for $tokens.
+	 * 检查这个匹配器是否可以为$tokens提供补全。
      *
      * @param array $tokens Tokenized readline input
      *
@@ -57,6 +62,7 @@ abstract class AbstractMatcher
 
     /**
      * Get current readline input word.
+	 * 获取当前的readline输入字
      *
      * @param array $tokens Tokenized readline input (see token_get_all)
      */
@@ -73,6 +79,7 @@ abstract class AbstractMatcher
 
     /**
      * Get current namespace and class (if any) from readline input.
+	 * 从readline输入获取当前名称空间和类（如果有的话）
      *
      * @param array $tokens Tokenized readline input (see token_get_all)
      */
@@ -95,6 +102,7 @@ abstract class AbstractMatcher
 
     /**
      * Provide tab completion matches for readline input.
+	 * 为readline输入提供制表符完成匹配
      *
      * @param array $tokens information substracted with get_token_all
      * @param array $info   readline_info object
@@ -105,6 +113,7 @@ abstract class AbstractMatcher
 
     /**
      * Check whether $word starts with $prefix.
+	 * 检查$word是否以$prefix开头
      *
      * @param string $prefix
      * @param string $word
@@ -116,6 +125,7 @@ abstract class AbstractMatcher
 
     /**
      * Check whether $token matches a given syntax pattern.
+	 * 检查$token是否匹配给定的语法模式
      *
      * @param mixed  $token  A PHP token (see token_get_all)
      * @param string $syntax A syntax pattern (default: variable pattern)
@@ -133,6 +143,7 @@ abstract class AbstractMatcher
 
     /**
      * Check whether $token type is $which.
+	 * 检查$token type是否为$which
      *
      * @param mixed  $token A PHP token (see token_get_all)
      * @param string $which A PHP token type
@@ -148,6 +159,7 @@ abstract class AbstractMatcher
 
     /**
      * Check whether $token is an operator.
+	 * 检查$token是否为操作符
      *
      * @param mixed $token A PHP token (see token_get_all)
      */
@@ -167,6 +179,7 @@ abstract class AbstractMatcher
 
     /**
      * Check whether $token type is present in $coll.
+	 * 检查$coll中是否存在$token类型
      *
      * @param array $coll  A list of token types
      * @param mixed $token A PHP token (see token_get_all)

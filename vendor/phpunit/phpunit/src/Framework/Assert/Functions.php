@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，方法
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -76,6 +81,7 @@ use Throwable;
 if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
     /**
      * Asserts that an array has a specified key.
+	 * 断言数组是否具有指定的键
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array
@@ -97,6 +103,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
 if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     /**
      * Asserts that an array does not have a specified key.
+	 * 断言数组没有指定的键
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array
@@ -118,6 +125,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
 if (!function_exists('PHPUnit\Framework\assertContains')) {
     /**
      * Asserts that a haystack contains a needle.
+	 * 断言haystack中有一根针
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -143,6 +151,7 @@ if (!function_exists('PHPUnit\Framework\assertContainsEquals')) {
 if (!function_exists('PHPUnit\Framework\assertNotContains')) {
     /**
      * Asserts that a haystack does not contain a needle.
+	 * 断言haystack中不包含一根针
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -1487,12 +1496,12 @@ if (!function_exists('PHPUnit\Framework\assertSame')) {
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     *
      * @psalm-template ExpectedType
      *
      * @psalm-param ExpectedType $expected
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @psalm-assert =ExpectedType $actual
      *
@@ -1529,13 +1538,13 @@ if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws Exception
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @psalm-assert =ExpectedType $actual
      *
@@ -1553,13 +1562,13 @@ if (!function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws Exception
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @psalm-assert !ExpectedType $actual
      *

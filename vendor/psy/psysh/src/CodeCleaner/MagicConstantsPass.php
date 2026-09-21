@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，魔法常数通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -20,6 +23,7 @@ use PhpParser\Node\Scalar\String_;
 
 /**
  * Swap out __DIR__ and __FILE__ magic constants with our best guess?
+ * 换出__DIR__和__FILE__魔术常量与我们最好的猜测？
  */
 class MagicConstantsPass extends CodeCleanerPass
 {

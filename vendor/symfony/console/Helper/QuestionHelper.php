@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，问题帮助
- *
+ * Symfony，Component，Console，助手，问题助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -32,6 +32,7 @@ use function Symfony\Component\String\s;
 
 /**
  * The QuestionHelper class provides helpers to interact with the user.
+ * QuestionHelper类提供了与用户交互的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -42,17 +43,18 @@ class QuestionHelper extends Helper
      */
     private $inputStream;
 
-    private static $stty = true;
-    private static $stdinIsInteractive;
+    private static bool $stty = true;
+    private static bool $stdinIsInteractive;
 
     /**
      * Asks a question to the user.
+	 * 向用户询问一个问题
      *
      * @return mixed The user answer
      *
      * @throws RuntimeException If there is no data to read in the input stream
      */
-    public function ask(InputInterface $input, OutputInterface $output, Question $question)
+    public function ask(InputInterface $input, OutputInterface $output, Question $question): mixed
     {
         if ($output instanceof ConsoleOutputInterface) {
             $output = $output->getErrorOutput();
@@ -71,9 +73,7 @@ class QuestionHelper extends Helper
                 return $this->doAsk($output, $question);
             }
 
-            $interviewer = function () use ($output, $question) {
-                return $this->doAsk($output, $question);
-            };
+            $interviewer = fn () => $this->doAsk($output, $question);
 
             return $this->validateAttempts($interviewer, $output, $question);
         } catch (MissingInputException $exception) {
@@ -87,16 +87,16 @@ class QuestionHelper extends Helper
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'question';
     }
 
     /**
      * Prevents usage of stty.
+	 * 防止使用stty
+     *
+     * @return void
      */
     public static function disableStty()
     {
@@ -105,12 +105,11 @@ class QuestionHelper extends Helper
 
     /**
      * Asks the question to the user.
-     *
-     * @return mixed
+	 * 向用户询问问题
      *
      * @throws RuntimeException In case the fallback is deactivated and the response cannot be hidden
      */
-    private function doAsk(OutputInterface $output, Question $question)
+    private function doAsk(OutputInterface $output, Question $question): mixed
     {
         $this->writePrompt($output, $question);
 
@@ -156,6 +155,7 @@ class QuestionHelper extends Helper
         }
 
         if ($output instanceof ConsoleSectionOutput) {
+            $output->addContent(''); // add EOL to the question
             $output->addContent($ret);
         }
 
@@ -168,10 +168,7 @@ class QuestionHelper extends Helper
         return $ret;
     }
 
-    /**
-     * @return mixed
-     */
-    private function getDefaultAnswer(Question $question)
+    private function getDefaultAnswer(Question $question): mixed
     {
         $default = $question->getDefault();
 
@@ -180,7 +177,7 @@ class QuestionHelper extends Helper
         }
 
         if ($validator = $question->getValidator()) {
-            return \call_user_func($question->getValidator(), $default);
+            return \call_user_func($validator, $default);
         } elseif ($question instanceof ChoiceQuestion) {
             $choices = $question->getChoices();
 
@@ -200,6 +197,9 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs the question prompt.
+	 * 输出问题提示符
+     *
+     * @return void
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
@@ -219,7 +219,7 @@ class QuestionHelper extends Helper
     /**
      * @return string[]
      */
-    protected function formatChoiceQuestionChoices(ChoiceQuestion $question, string $tag)
+    protected function formatChoiceQuestionChoices(ChoiceQuestion $question, string $tag): array
     {
         $messages = [];
 
@@ -228,7 +228,7 @@ class QuestionHelper extends Helper
         foreach ($choices as $key => $value) {
             $padding = str_repeat(' ', $maxWidth - self::width($key));
 
-            $messages[] = sprintf("  [<$tag>%s$padding</$tag>] %s", $key, $value);
+            $messages[] = \sprintf("  [<$tag>%s$padding</$tag>] %s", $key, $value);
         }
 
         return $messages;
@@ -236,6 +236,9 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs an error message.
+	 * 输出错误消息
+     *
+     * @return void
      */
     protected function writeError(OutputInterface $output, \Exception $error)
     {
@@ -250,6 +253,7 @@ class QuestionHelper extends Helper
 
     /**
      * Autocompletes a question.
+	 * 自动完成一个问题
      *
      * @param resource $inputStream
      */
@@ -335,9 +339,7 @@ class QuestionHelper extends Helper
 
                         $matches = array_filter(
                             $autocomplete($ret),
-                            function ($match) use ($ret) {
-                                return '' === $ret || str_starts_with($match, $ret);
-                            }
+                            fn ($match) => '' === $ret || str_starts_with($match, $ret)
                         );
                         $numMatches = \count($matches);
                         $ofs = -1;
@@ -399,6 +401,7 @@ class QuestionHelper extends Helper
     private function mostRecentlyEnteredValue(string $entered): string
     {
         // Determine the most recent value that the user entered
+		// 确定用户最近输入的值
         if (!str_contains($entered, ',')) {
             return $entered;
         }
@@ -413,6 +416,7 @@ class QuestionHelper extends Helper
 
     /**
      * Gets a hidden response from user.
+	 * 从用户获取隐藏响应。
      *
      * @param resource $inputStream The handler resource
      * @param bool     $trimmable   Is the answer trimmable
@@ -425,7 +429,7 @@ class QuestionHelper extends Helper
             $exe = __DIR__.'/../Resources/bin/hiddeninput.exe';
 
             // handle code running from a phar
-            if ('phar:' === substr(__FILE__, 0, 5)) {
+            if (str_starts_with(__FILE__, 'phar:')) {
                 $tmpExe = sys_get_temp_dir().'/hiddeninput.exe';
                 copy($exe, $tmpExe);
                 $exe = $tmpExe;
@@ -451,6 +455,11 @@ class QuestionHelper extends Helper
 
         $value = fgets($inputStream, 4096);
 
+        if (4095 === \strlen($value)) {
+            $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
+            $errOutput->warning('The value was possibly truncated by your shell or terminal emulator');
+        }
+
         if (self::$stty && Terminal::hasSttyAvailable()) {
             shell_exec('stty '.$sttyMode);
         }
@@ -468,14 +477,13 @@ class QuestionHelper extends Helper
 
     /**
      * Validates an attempt.
+	 * 验证一个尝试
      *
      * @param callable $interviewer A callable that will ask for a question and return the result
      *
-     * @return mixed The validated response
-     *
      * @throws \Exception In case the max number of attempts has been reached and no valid response has been given
      */
-    private function validateAttempts(callable $interviewer, OutputInterface $output, Question $question)
+    private function validateAttempts(callable $interviewer, OutputInterface $output, Question $question): mixed
     {
         $error = null;
         $attempts = $question->getMaxAttempts();
@@ -502,7 +510,7 @@ class QuestionHelper extends Helper
             return false;
         }
 
-        if (null !== self::$stdinIsInteractive) {
+        if (isset(self::$stdinIsInteractive)) {
             return self::$stdinIsInteractive;
         }
 
@@ -511,13 +519,12 @@ class QuestionHelper extends Helper
 
     /**
      * Reads one or more lines of input and returns what is read.
+	 * 读取一行或多行输入并返回所读取的内容
      *
      * @param resource $inputStream The handler resource
      * @param Question $question    The question being asked
-     *
-     * @return string|false The input received, false in case input could not be read
      */
-    private function readInput($inputStream, Question $question)
+    private function readInput($inputStream, Question $question): string|false
     {
         if (!$question->isMultiline()) {
             $cp = $this->setIOCodepage();
@@ -543,11 +550,6 @@ class QuestionHelper extends Helper
         return $this->resetIOCodepage($cp, $ret);
     }
 
-    /**
-     * Sets console I/O to the host code page.
-     *
-     * @return int Previous code page in IBM/EBCDIC format
-     */
     private function setIOCodepage(): int
     {
         if (\function_exists('sapi_windows_cp_set')) {
@@ -562,12 +564,9 @@ class QuestionHelper extends Helper
 
     /**
      * Sets console I/O to the specified code page and converts the user input.
-     *
-     * @param string|false $input
-     *
-     * @return string|false
+	 * 将控制台I/O设置为指定的代码页并转换用户输入
      */
-    private function resetIOCodepage(int $cp, $input)
+    private function resetIOCodepage(int $cp, string|false $input): string|false
     {
         if (0 !== $cp) {
             sapi_windows_cp_set($cp);
@@ -583,6 +582,7 @@ class QuestionHelper extends Helper
     /**
      * Clones an input stream in order to act on one instance of the same
      * stream without affecting the other instance.
+	 * 克隆输入流，以便对同一输入流的一个实例进行操作流而不影响其他实例。
      *
      * @param resource $inputStream The handler resource
      *

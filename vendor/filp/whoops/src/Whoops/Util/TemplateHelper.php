@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，工具，模板辅助
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -14,11 +18,13 @@ use Whoops\Exception\Frame;
 
 /**
  * Exposes useful tools for working with/in templates
+ * 公开使用/in模板的有用工具
  */
 class TemplateHelper
 {
     /**
      * An array of variables to be passed to all templates
+	 * 传递给所有模板的变量数组
      * @var array
      */
     private $variables = [];
@@ -51,6 +57,7 @@ class TemplateHelper
 
     /**
      * Escapes a string for output in an HTML document
+	 * 转义要在HTML文档中输出的字符串
      *
      * @param  string $raw
      * @return string
@@ -95,6 +102,7 @@ class TemplateHelper
 
     /**
      * Makes sure that the given string breaks on the delimiter.
+	 * 确保给定的字符串在分隔符上断开
      *
      * @param  string $delimiter
      * @param  string $s
@@ -112,6 +120,7 @@ class TemplateHelper
 
     /**
      * Replace the part of the path that all files have in common.
+	 * 替换路径中所有文件共有的部分
      *
      * @param  string $path
      * @return string
@@ -154,6 +163,7 @@ class TemplateHelper
 
     /**
      * Format the given value into a human readable string.
+	 * 将给定值格式化为人类可读的字符串
      *
      * @param  mixed $value
      * @return string
@@ -188,6 +198,7 @@ class TemplateHelper
 
     /**
      * Format the args of the given Frame as a human readable html string
+	 * 将给定框架的参数格式化为人类可读的html字符串
      *
      * @param  Frame $frame
      * @return string the rendered html
@@ -215,6 +226,7 @@ class TemplateHelper
 
     /**
      * Convert a string to a slug version of itself
+	 * 将字符串转换为其自身的鼻涕虫版本
      *
      * @param  string $original
      * @return string
@@ -261,6 +273,7 @@ class TemplateHelper
 
     /**
      * Sets a single template variable, by its name:
+	 * 按其名称设置单个模板变量：
      *
      * @param string $variableName
      * @param mixed  $variableValue
@@ -286,6 +299,7 @@ class TemplateHelper
 
     /**
      * Unsets a single template variable, by its name
+	 * 按名称取消设置单个模板变量
      *
      * @param string $variableName
      */
@@ -296,6 +310,7 @@ class TemplateHelper
 
     /**
      * Returns all variables for this helper
+	 * 返回此帮助器的所有变量
      *
      * @return array
      */
@@ -306,6 +321,7 @@ class TemplateHelper
 
     /**
      * Set the cloner used for dumping variables.
+	 * 设置用于转储变量的克隆器
      *
      * @param AbstractCloner $cloner
      */
@@ -316,6 +332,7 @@ class TemplateHelper
 
     /**
      * Get the cloner used for dumping variables.
+	 * 获取用于转储变量的克隆器
      *
      * @return AbstractCloner
      */
@@ -329,6 +346,7 @@ class TemplateHelper
 
     /**
      * Set the application root path.
+	 * 设置应用程序根路径
      *
      * @param string $applicationRootPath
      */
@@ -339,6 +357,7 @@ class TemplateHelper
 
     /**
      * Return the application root path.
+	 * 返回应用程序根路径
      *
      * @return string
      */

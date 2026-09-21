@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，等待检查
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\Shell;
 
 /**
  * A version checker stub which always thinks the current version is up to date.
+ * 一个版本检查器存根，它总是认为当前版本是最新的。
  */
 class NoopChecker implements Checker
 {

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，节点，迭代程序
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -34,6 +39,7 @@ final class Iterator implements RecursiveIterator
 
     /**
      * Rewinds the Iterator to the first element.
+	 * 将迭代器倒回到第一个元素
      */
     public function rewind(): void
     {

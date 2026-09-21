@@ -19,6 +19,7 @@ class_exists(AcceptHeaderItem::class);
 
 /**
  * Represents an Accept-* header.
+ * 表示Accept-*报头。
  *
  * An accept header is compound with a list of items,
  * sorted by descending quality.
@@ -30,12 +31,9 @@ class AcceptHeader
     /**
      * @var AcceptHeaderItem[]
      */
-    private $items = [];
+    private array $items = [];
 
-    /**
-     * @var bool
-     */
-    private $sorted = true;
+    private bool $sorted = true;
 
     /**
      * @param AcceptHeaderItem[] $items
@@ -49,16 +47,14 @@ class AcceptHeader
 
     /**
      * Builds an AcceptHeader instance from a string.
-     *
-     * @return self
+	 * 从字符串生成一个AcceptHeader实例
      */
-    public static function fromString(?string $headerValue)
+    public static function fromString(?string $headerValue): self
     {
-        $index = 0;
-
         $parts = HeaderUtils::split($headerValue ?? '', ',;=');
 
-        return new self(array_map(function ($subParts) use (&$index) {
+        return new self(array_map(function ($subParts) {
+            static $index = 0;
             $part = array_shift($subParts);
             $attributes = HeaderUtils::combine($subParts);
 
@@ -71,40 +67,38 @@ class AcceptHeader
 
     /**
      * Returns header value's string representation.
-     *
-     * @return string
+	 * 返回报头值的字符串表示形式
      */
-    public function __toString()
+    public function __toString(): string
     {
         return implode(',', $this->items);
     }
 
     /**
      * Tests if header has given value.
-     *
-     * @return bool
+	 * 测试头文件是否给定值
      */
-    public function has(string $value)
+    public function has(string $value): bool
     {
         return isset($this->items[$value]);
     }
 
     /**
      * Returns given value's item, if exists.
-     *
-     * @return AcceptHeaderItem|null
+	 * 返回给定值的项，如果存在。
      */
-    public function get(string $value)
+    public function get(string $value): ?AcceptHeaderItem
     {
         return $this->items[$value] ?? $this->items[explode('/', $value)[0].'/*'] ?? $this->items['*/*'] ?? $this->items['*'] ?? null;
     }
 
     /**
      * Adds an item.
+	 * 添加项
      *
      * @return $this
      */
-    public function add(AcceptHeaderItem $item)
+    public function add(AcceptHeaderItem $item): static
     {
         $this->items[$item->getValue()] = $item;
         $this->sorted = false;
@@ -114,10 +108,11 @@ class AcceptHeader
 
     /**
      * Returns all items.
+	 * 返回所有项
      *
      * @return AcceptHeaderItem[]
      */
-    public function all()
+    public function all(): array
     {
         $this->sort();
 
@@ -126,30 +121,28 @@ class AcceptHeader
 
     /**
      * Filters items on their value using given regex.
-     *
-     * @return self
+	 * 使用给定的正则表达式过滤项的值
+	 * 
      */
-    public function filter(string $pattern)
+    public function filter(string $pattern): self
     {
-        return new self(array_filter($this->items, function (AcceptHeaderItem $item) use ($pattern) {
-            return preg_match($pattern, $item->getValue());
-        }));
+        return new self(array_filter($this->items, fn (AcceptHeaderItem $item) => preg_match($pattern, $item->getValue())));
     }
 
     /**
      * Returns first item.
-     *
-     * @return AcceptHeaderItem|null
+	 * 返回第一项
      */
-    public function first()
+    public function first(): ?AcceptHeaderItem
     {
         $this->sort();
 
-        return !empty($this->items) ? reset($this->items) : null;
+        return $this->items ? reset($this->items) : null;
     }
 
     /**
      * Sorts items by descending quality.
+	 * 按质量降序排序
      */
     private function sort(): void
     {

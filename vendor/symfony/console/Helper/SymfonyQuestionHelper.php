@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，Symfony 问题助手
- *
+ * Symfony，Component，Console，助手，Symfony 问题助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,13 +23,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Symfony Style Guide compliant question helper.
+ * Symfony 风格指南兼容的问题帮助。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 class SymfonyQuestionHelper extends QuestionHelper
 {
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
@@ -37,17 +38,17 @@ class SymfonyQuestionHelper extends QuestionHelper
         $default = $question->getDefault();
 
         if ($question->isMultiline()) {
-            $text .= sprintf(' (press %s to continue)', $this->getEofShortcut());
+            $text .= \sprintf(' (press %s to continue)', $this->getEofShortcut());
         }
 
         switch (true) {
             case null === $default:
-                $text = sprintf(' <info>%s</info>:', $text);
+                $text = \sprintf(' <info>%s</info>:', $text);
 
                 break;
 
             case $question instanceof ConfirmationQuestion:
-                $text = sprintf(' <info>%s (yes/no)</info> [<comment>%s</comment>]:', $text, $default ? 'yes' : 'no');
+                $text = \sprintf(' <info>%s (yes/no)</info> [<comment>%s</comment>]:', $text, $default ? 'yes' : 'no');
 
                 break;
 
@@ -59,18 +60,18 @@ class SymfonyQuestionHelper extends QuestionHelper
                     $default[$key] = $choices[trim($value)];
                 }
 
-                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
+                $text = \sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
 
                 break;
 
             case $question instanceof ChoiceQuestion:
                 $choices = $question->getChoices();
-                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default] ?? $default));
+                $text = \sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default] ?? $default));
 
                 break;
 
             default:
-                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
+                $text = \sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
         }
 
         $output->writeln($text);
@@ -87,7 +88,7 @@ class SymfonyQuestionHelper extends QuestionHelper
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     protected function writeError(OutputInterface $output, \Exception $error)
     {

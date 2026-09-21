@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，过滤器，主义，Doctrine 空集合过滤器
+ */
 
 namespace DeepCopy\Filter\Doctrine;
 

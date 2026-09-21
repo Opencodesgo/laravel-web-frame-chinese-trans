@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 周期
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -42,6 +45,7 @@ use RuntimeException;
 
 /**
  * Substitution of DatePeriod with some modifications and many more features.
+ * 用一些修改和更多特性替换DatePeriod。
  *
  * @property-read int|float $recurrences number of recurrences (if end not set).
  * @property-read bool $include_start_date rather the start date is included in the iteration.
@@ -184,6 +188,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Built-in filter for limit by recurrences.
+	 * 内置过滤器限制递归
      *
      * @var callable
      */
@@ -191,6 +196,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Built-in filter for limit to an end.
+	 * 内置过滤器限制到结束
      *
      * @var callable
      */
@@ -198,6 +204,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Special value which can be returned by filters to end iteration. Also a filter.
+	 * 可以由过滤器返回以结束迭代的特殊值。还有一个过滤器。
      *
      * @var callable
      */
@@ -205,6 +212,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Exclude start date from iteration.
+	 * 从迭代中排除开始日期
      *
      * @var int
      */
@@ -212,6 +220,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Exclude end date from iteration.
+	 * 从迭代中排除结束日期
      *
      * @var int
      */
@@ -219,6 +228,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Yield CarbonImmutable instances.
+	 * 产生CarbonImmutable实例
      *
      * @var int
      */
@@ -226,6 +236,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Number of maximum attempts before giving up on finding next valid date.
+	 * 在放弃查找下一个有效日期之前的最大尝试次数
      *
      * @var int
      */
@@ -233,6 +244,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Number of maximum attempts before giving up on finding end date.
+	 * 在放弃查找结束日期之前的最大尝试次数
      *
      * @var int
      */
@@ -240,6 +252,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Default date class of iteration items.
+	 * 迭代项的默认日期类
      *
      * @var string
      */
@@ -247,6 +260,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * The registered macros.
+	 * 已注册的宏
      *
      * @var array
      */
@@ -254,6 +268,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Date class of iteration items.
+	 * 迭代项的日期类
      *
      * @var string
      */
@@ -261,6 +276,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Underlying date interval instance. Always present, one day by default.
+	 * 底层日期间隔实例。永远存在，有一天是默认的。
      *
      * @var CarbonInterval
      */
@@ -275,6 +291,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Whether current date interval was set by default.
+	 * 是否默认设置当前日期间隔
      *
      * @var bool
      */
@@ -289,6 +306,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Period start date. Applied on rewind. Always present, now by default.
+	 * 周期开始日期。适用于倒带。永远存在，现在默认。
      *
      * @var CarbonInterface
      */
@@ -296,6 +314,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Period end date. For inverted interval should be before the start date. Applied via a filter.
+	 * 周期结束日期。对于倒置的间隔应在开始日期之前。通过过滤器应用。
      *
      * @var CarbonInterface|null
      */
@@ -303,6 +322,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Limit for number of recurrences. Applied via a filter.
+	 * 递归次数的限制。通过过滤器应用。
      *
      * @var int|null
      */
@@ -310,6 +330,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Iteration options.
+	 * 循环选项
      *
      * @var int
      */
@@ -318,6 +339,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Index of current date. Always sequential, even if some dates are skipped by filters.
      * Equal to null only before the first iteration.
+	 * 当前日期的索引。始终是顺序的，即使某些日期被过滤器跳过。
      *
      * @var int
      */
@@ -326,6 +348,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Current date. May temporarily hold unaccepted value when looking for a next valid date.
      * Equal to null only before the first iteration.
+	 * 当前日期。在查找下一个有效日期时，可能会暂时保存不可接受的值。
      *
      * @var CarbonInterface
      */
@@ -333,6 +356,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Timezone of current date. Taken from the start date.
+	 * 当前日期的时区。从开始日期算起。
      *
      * @var \DateTimeZone|null
      */
@@ -340,6 +364,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * The cached validation result for current date.
+	 * 当前日期的缓存验证结果
      *
      * @var bool|string|null
      */
@@ -347,6 +372,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Timezone handler for settings() method.
+	 * settings()方法的时区处理程序
      *
      * @var mixed
      */
@@ -354,6 +380,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Make a CarbonPeriod instance from given variable if possible.
+	 * 如果可能的话，从给定的变量创建一个CarbonPeriod实例。
      *
      * @param mixed $var
      *
@@ -370,6 +397,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a new instance from a DatePeriod or CarbonPeriod object.
+	 * 从DatePeriod或CarbonPeriod对象创建一个新实例。
      *
      * @param CarbonPeriod|DatePeriod $period
      *
@@ -411,6 +439,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a new instance.
+	 * 创建一个新的实例
      *
      * @return static
      */
@@ -421,6 +450,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a new instance from an array of parameters.
+	 * 从参数数组创建一个新实例
      *
      * @param array $params
      *
@@ -433,6 +463,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create CarbonPeriod from ISO 8601 string.
+	 * 从ISO 8601字符串创建CarbonPeriod
      *
      * @param string   $iso
      * @param int|null $options
@@ -454,6 +485,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return whether given interval contains non zero value of any time unit.
+	 * 返回给定区间是否包含任何时间单位的非零值
      *
      * @param \DateInterval $interval
      *
@@ -466,6 +498,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return whether given variable is an ISO 8601 specification.
+	 * 返回给定变量是否为ISO 8601规范。
      *
      * Note: Check is very basic, as actual validation will be done later when parsing.
      * We just want to ensure that variable is not any other type of a valid parameter.
@@ -490,6 +523,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Parse given ISO 8601 string into an array of arguments.
+	 * 将给定的ISO 8601字符串解析为参数数组
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      *
@@ -527,6 +561,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Add missing parts of the target date from the source date.
+	 * 从源日期中添加目标日期的缺失部分
      *
      * @param string $source
      * @param string $target
@@ -544,6 +579,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Register a custom macro.
+	 * 注册自定义宏。
      *
      * @example
      * ```
@@ -604,6 +640,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check if macro is registered.
+	 * 检查是否注册了宏
      *
      * @param string $name
      *
@@ -616,6 +653,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Provide static proxy for instance aliases.
+	 * 为实例别名提供静态代理
      *
      * @param string $method
      * @param array  $parameters
@@ -637,6 +675,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * CarbonPeriod constructor.
+	 * CarbonPeriod 构造函数
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      *
@@ -728,6 +767,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get a copy of the instance.
+	 * 获取实例的副本
      *
      * @return static
      */
@@ -749,6 +789,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get the getter for a property allowing both `DatePeriod` snakeCase and camelCase names.
+	 * 获取一个属性的getter，该属性允许同时使用‘ DatePeriod ’ snakeccase和‘ camelCase ’名称。
      *
      * @param string $name
      *
@@ -781,6 +822,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get a property allowing both `DatePeriod` snakeCase and camelCase names.
+	 * 获取一个允许‘ DatePeriod ’ snakeccase和camelCase名称的属性。
      *
      * @param string $name
      *
@@ -799,6 +841,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get a property allowing both `DatePeriod` snakeCase and camelCase names.
+	 * 获取一个允许‘ DatePeriod ’ snakeccase和camelCase名称的属性。
      *
      * @param string $name
      *
@@ -811,6 +854,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check if an attribute exists on the object
+	 * 检查对象上是否存在属性
      *
      * @param string $name
      *
@@ -835,6 +879,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Set the iteration item class.
+	 * 设置迭代项类
      *
      * @param string $dateClass
      *
@@ -990,6 +1035,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Toggle EXCLUDE_END_DATE option.
+	 * 切换EXCLUDE_END_DATE选项
      *
      * @param bool $state
      *
@@ -1002,6 +1048,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get the underlying date interval.
+	 * 获取基础日期间隔
      *
      * @return CarbonInterval
      */
@@ -1012,6 +1059,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get start date of the period.
+	 * 获取周期的开始日期
      *
      * @param string|null $rounding Optional rounding 'floor', 'ceil', 'round' using the period interval.
      *
@@ -1026,6 +1074,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get end date of the period.
+	 * 获取周期的结束日期
      *
      * @param string|null $rounding Optional rounding 'floor', 'ceil', 'round' using the period interval.
      *
@@ -1044,6 +1093,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get number of recurrences.
+	 * 得到递归的次数
      *
      * @return int|float|null
      */
@@ -1054,6 +1104,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Returns true if the start date should be excluded.
+	 * 如果应该排除开始日期，则返回true。
      *
      * @return bool
      */
@@ -1064,6 +1115,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Returns true if the end date should be excluded.
+	 * 如果应该排除结束日期，则返回true。
      *
      * @return bool
      */
@@ -1074,6 +1126,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Returns true if the start date should be included.
+	 * 如果应该包含开始日期，则返回true。
      *
      * @return bool
      */
@@ -1084,6 +1137,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Returns true if the end date should be included.
+	 * 如果应该包含结束日期，则返回true。
      *
      * @return bool
      */
@@ -1094,6 +1148,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return the start if it's included by option, else return the start + 1 period interval.
+	 * 如果包含在选项中，则返回起始值，否则返回起始+ 1周期间隔。
      *
      * @return CarbonInterface
      */
@@ -1175,6 +1230,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Remove a filter by instance or name.
+	 * 按实例或名称删除筛选器
      *
      * @param callable|string $filter
      *
@@ -1201,6 +1257,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return whether given instance or name is in the filter stack.
+	 * 返回给定的实例或名称是否在过滤器堆栈中
      *
      * @param callable|string $filter
      *
@@ -1221,6 +1278,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get filters stack.
+	 * 获取过滤器堆栈
      *
      * @return array
      */
@@ -1231,6 +1289,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Set filters stack.
+	 * 设置过滤器堆栈
      *
      * @param array $filters
      *
@@ -1250,6 +1309,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Reset filters stack.
+	 * 重置过滤器堆栈
      *
      * @return static
      */
@@ -1273,6 +1333,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Add a recurrences filter (set maximum number of recurrences).
+	 * 添加递归过滤器（设置递归的最大数目）
      *
      * @param int|float|null $recurrences
      *
@@ -1305,6 +1366,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Change the period start date.
+	 * 修改周期开始日期
      *
      * @param DateTime|DateTimeInterface|string $date
      * @param bool|null                         $inclusive
@@ -1331,6 +1393,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Change the period end date.
+	 * 更改周期结束日期
      *
      * @param DateTime|DateTimeInterface|string|null $date
      * @param bool|null                              $inclusive
@@ -1367,6 +1430,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check if the current position is valid.
+	 * 检查当前位置是否有效
      *
      * @return bool
      */
@@ -1425,6 +1489,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Rewind to the start date.
+	 * 倒回到开始日期
      *
      * Iterating over a date in the UTC timezone avoids bug during backward DST change.
      *
@@ -1463,6 +1528,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Skip iterations and returns iteration state (false if ended, true if still valid).
+	 * 跳过迭代并返回迭代状态（结束为false，仍然有效为true）。
      *
      * @param int $count steps number to skip (1 by default)
      *
@@ -1503,6 +1569,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Convert the date period into a string.
+	 * 将日期周期转换为字符串
      *
      * @return string
      */
@@ -1545,6 +1612,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Format the date period as ISO 8601.
+	 * 将日期周期格式化为ISO 8601
      *
      * @return string
      */
@@ -1555,6 +1623,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Cast the current instance into the given class.
+	 * 将当前实例强制转换为给定的类
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -1580,6 +1649,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return native DatePeriod PHP object matching the current instance.
+	 * 返回与当前实例匹配的本机DatePeriod PHP对象
      *
      * @example
      * ```
@@ -1628,6 +1698,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Convert the date period into an array without changing current iteration state.
+	 * 在不更改当前迭代状态的情况下将日期周期转换为数组
      *
      * @return CarbonInterface[]
      */
@@ -1652,6 +1723,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Count dates in the date period.
+	 * 统计日期周期内的日期
      *
      * @return int
      */
@@ -1705,6 +1777,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Add aliases for setters.
+	 * 为setter添加别名。
      *
      * CarbonPeriod::days(3)->hours(5)->invert()
      *     ->sinceNow()->until('2010-01-10')
@@ -1846,6 +1919,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Set the instance's timezone from a string or object and apply it to start/end.
+	 * 从字符串或对象设置实例的时区，并将其应用于start/end。
      *
      * @param \DateTimeZone|string $timezone
      *
@@ -1894,6 +1968,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Returns the end is set, else calculated from start an recurrences.
+	 * 返回结束设置，否则从开始和递归计算。
      *
      * @param string|null $rounding Optional rounding 'floor', 'ceil', 'round' using the period interval.
      *
@@ -1993,6 +2068,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Execute a given function on each date of the period.
+	 * 在周期的每个日期执行给定的函数。
      *
      * @example
      * ```
@@ -2012,6 +2088,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Execute a given function on each date of the period and yield the result of this function.
+	 * 在周期的每个日期执行给定的函数，并产生该函数的结果。
      *
      * @example
      * ```
@@ -2035,6 +2112,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Determines if the instance is equal to another.
      * Warning: if options differ, instances will never be equal.
+	 * 确定实例是否等于另一个实例。
      *
      * @param mixed $period
      *
@@ -2114,6 +2192,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Determines if the start date is before or the same as a given date.
      * (Rather start/end are included by options is ignored.)
+	 * 确定开始日期是在给定日期之前还是相同。
      *
      * @param mixed $date
      *
@@ -2263,6 +2342,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Round the current instance at the given unit with given precision if specified and the given function.
+	 * 如果指定并使用给定函数，则以给定精度四舍五入当前实例的给定单元。
      *
      * @param string                              $unit
      * @param float|int|string|\DateInterval|null $precision
@@ -2284,6 +2364,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Truncate the current instance at the given unit with given precision if specified.
+	 * 如果指定，以给定精度截断给定单元的当前实例。
      *
      * @param string                              $unit
      * @param float|int|string|\DateInterval|null $precision
@@ -2297,6 +2378,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Ceil the current instance at the given unit with given precision if specified.
+	 * 如果指定，则以给定的精度在给定单元上捕获当前实例。
      *
      * @param string                              $unit
      * @param float|int|string|\DateInterval|null $precision
@@ -2310,6 +2392,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Round the current instance second with given precision if specified (else period interval is used).
+	 * 如果指定，以给定的精度舍入当前实例秒（使用else period interval）。
      *
      * @param float|int|string|\DateInterval|null $precision
      * @param string                              $function
@@ -2350,6 +2433,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON.
+	 * 指定应该序列化为JSON的数据
      *
      * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
      *
@@ -2363,6 +2447,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return true if the given date is between start and end.
+	 * 如果给定的日期介于开始和结束之间，则返回true。
      *
      * @param \Carbon\Carbon|\Carbon\CarbonPeriod|\Carbon\CarbonInterval|\DateInterval|\DatePeriod|\DateTimeInterface|string|null $date
      *
@@ -2410,6 +2495,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return true if the given period either follows or is followed by the current one.
+	 * 如果给定的周期在当前周期之后或后面跟着当前周期，则返回true。
      *
      * @see follows()
      * @see isFollowedBy()
@@ -2425,6 +2511,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Update properties after removing built-in filters.
+	 * 删除内置过滤器后更新属性
      *
      * @return void
      */
@@ -2441,6 +2528,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a filter tuple from raw parameters.
+	 * 从原始参数创建一个过滤器元组。
      *
      * Will create an automatic filter callback for one of Carbon's is* methods.
      *
@@ -2477,6 +2565,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Recurrences filter callback (limits number of recurrences).
+	 * 递归过滤器回调（限制递归的数量）
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
@@ -2496,6 +2585,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * End date filter callback.
+	 * 结束日期过滤器回调
      *
      * @param \Carbon\Carbon $current
      *
@@ -2516,6 +2606,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * End iteration filter callback.
+	 * 结束迭代过滤器回调
      *
      * @return string
      */
@@ -2526,6 +2617,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Handle change of the parameters.
+	 * 处理参数变更
      */
     protected function handleChangedParameters()
     {
@@ -2540,6 +2632,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Validate current date and stop iteration when necessary.
+	 * 验证当前日期并在必要时停止迭代
      *
      * Returns true when current date is valid, false if it is not, or static::END_ITERATION
      * when iteration should be stopped.
@@ -2558,6 +2651,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check whether current value and key pass all the filters.
+	 * 检查当前值和键是否通过所有过滤器
      *
      * @return bool|string
      */
@@ -2587,6 +2681,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Prepare given date to be returned to the external logic.
+	 * 准备将给定的日期返回给外部逻辑
      *
      * @param CarbonInterface $date
      *
@@ -2605,6 +2700,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Keep incrementing the current date until a valid date is found or the iteration is ended.
+	 * 继续增加当前日期，直到找到有效日期或迭代结束。
      *
      * @throws RuntimeException
      *
@@ -2627,6 +2723,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Call given macro.
+	 * 调用给定的宏
      *
      * @param string $name
      * @param array  $parameters
@@ -2661,6 +2758,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Resolve passed arguments or DatePeriod to a CarbonPeriod object.
+	 * 将传递的参数或DatePeriod解析为CarbonPeriod对象
      *
      * @param mixed $period
      * @param mixed ...$arguments

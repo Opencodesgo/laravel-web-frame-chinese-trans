@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，模拟的定义
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

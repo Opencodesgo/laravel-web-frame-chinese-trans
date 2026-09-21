@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由文件注册器
+ * Illuminate，路由，路由文件注册者
  */
 
 namespace Illuminate\Routing;
@@ -17,7 +17,7 @@ class RouteFileRegistrar
 
     /**
      * Create a new route file registrar instance.
-	 * 创建新的路由文件注册器实例
+	 * 创建一个新的路由文件注册器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void

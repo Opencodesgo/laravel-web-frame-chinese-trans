@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，XPath，扩展，伪类扩展
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
 
 /**
  * XPath expression translator pseudo-class extension.
+ * XPath表达式转换器伪类扩展。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -26,26 +30,29 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
  */
 class PseudoClassExtension extends AbstractExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPseudoClassTranslators(): array
     {
         return [
-            'root' => [$this, 'translateRoot'],
-            'first-child' => [$this, 'translateFirstChild'],
-            'last-child' => [$this, 'translateLastChild'],
-            'first-of-type' => [$this, 'translateFirstOfType'],
-            'last-of-type' => [$this, 'translateLastOfType'],
-            'only-child' => [$this, 'translateOnlyChild'],
-            'only-of-type' => [$this, 'translateOnlyOfType'],
-            'empty' => [$this, 'translateEmpty'],
+            'root' => $this->translateRoot(...),
+            'scope' => $this->translateScopePseudo(...),
+            'first-child' => $this->translateFirstChild(...),
+            'last-child' => $this->translateLastChild(...),
+            'first-of-type' => $this->translateFirstOfType(...),
+            'last-of-type' => $this->translateLastOfType(...),
+            'only-child' => $this->translateOnlyChild(...),
+            'only-of-type' => $this->translateOnlyOfType(...),
+            'empty' => $this->translateEmpty(...),
         ];
     }
 
     public function translateRoot(XPathExpr $xpath): XPathExpr
     {
         return $xpath->addCondition('not(parent::*)');
+    }
+
+    public function translateScopePseudo(XPathExpr $xpath): XPathExpr
+    {
+        return $xpath->addCondition('1');
     }
 
     public function translateFirstChild(XPathExpr $xpath): XPathExpr
@@ -104,7 +111,7 @@ class PseudoClassExtension extends AbstractExtension
     {
         $element = $xpath->getElement();
 
-        return $xpath->addCondition(sprintf('count(preceding-sibling::%s)=0 and count(following-sibling::%s)=0', $element, $element));
+        return $xpath->addCondition(\sprintf('count(preceding-sibling::%s)=0 and count(following-sibling::%s)=0', $element, $element));
     }
 
     public function translateEmpty(XPathExpr $xpath): XPathExpr
@@ -112,9 +119,6 @@ class PseudoClassExtension extends AbstractExtension
         return $xpath->addCondition('not(*) and not(string-length())');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'pseudo-class';

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，进程，Php可执行文件查找器
+ * Symfony，Component，Process，Php 可执行的发现者
  */
 
 /*
@@ -16,14 +16,14 @@ namespace Symfony\Component\Process;
 
 /**
  * An executable finder specifically designed for the PHP executable.
- * 专门为PHP可执行文件设计的可执行对象
+ * 一个专门为PHP可执行文件设计的可执行查找器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class PhpExecutableFinder
 {
-    private $executableFinder;
+    private ExecutableFinder $executableFinder;
 
     public function __construct()
     {
@@ -32,10 +32,9 @@ class PhpExecutableFinder
 
     /**
      * Finds The PHP executable.
-     *
-     * @return string|false
+	 * 查找PHP可执行文件
      */
-    public function find(bool $includeArgs = true)
+    public function find(bool $includeArgs = true): string|false
     {
         if ($php = getenv('PHP_BINARY')) {
             if (!is_executable($php) && !$php = $this->executableFinder->find($php)) {
@@ -85,10 +84,9 @@ class PhpExecutableFinder
 
     /**
      * Finds the PHP executable arguments.
-     *
-     * @return array
+	 * 查找PHP可执行参数
      */
-    public function findArguments()
+    public function findArguments(): array
     {
         $arguments = [];
         if ('phpdbg' === \PHP_SAPI) {

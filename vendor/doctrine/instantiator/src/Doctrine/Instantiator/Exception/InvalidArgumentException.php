@@ -1,4 +1,9 @@
 <?php
+/**
+ * Doctrine，Instantiator，异常，无效参数异常
+ */
+
+declare(strict_types=1);
 
 namespace Doctrine\Instantiator\Exception;
 
@@ -11,6 +16,7 @@ use function trait_exists;
 
 /**
  * Exception for invalid arguments provided to the instantiator
+ * 提供给实例化器的无效参数异常
  */
 class InvalidArgumentException extends BaseInvalidArgumentException implements ExceptionInterface
 {
@@ -36,7 +42,7 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements E
     {
         return new self(sprintf(
             'The provided class "%s" is abstract, and cannot be instantiated',
-            $reflectionClass->getName()
+            $reflectionClass->getName(),
         ));
     }
 
@@ -44,7 +50,7 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements E
     {
         return new self(sprintf(
             'The provided class "%s" is an enum, and cannot be instantiated',
-            $className
+            $className,
         ));
     }
 }

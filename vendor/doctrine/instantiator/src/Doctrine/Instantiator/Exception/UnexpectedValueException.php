@@ -1,4 +1,9 @@
 <?php
+/**
+ * Doctrine，Instantiator，异常，意外的值异常
+ */
+
+declare(strict_types=1);
 
 namespace Doctrine\Instantiator\Exception;
 
@@ -10,6 +15,7 @@ use function sprintf;
 
 /**
  * Exception for given parameters causing invalid/unexpected state on instantiation
+ * 给定参数的异常导致实例化时的无效/意外状态
  */
 class UnexpectedValueException extends BaseUnexpectedValueException implements ExceptionInterface
 {
@@ -20,15 +26,15 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements E
      */
     public static function fromSerializationTriggeredException(
         ReflectionClass $reflectionClass,
-        Exception $exception
+        Exception $exception,
     ): self {
         return new self(
             sprintf(
                 'An exception was raised while trying to instantiate an instance of "%s" via un-serialization',
-                $reflectionClass->getName()
+                $reflectionClass->getName(),
             ),
             0,
-            $exception
+            $exception,
         );
     }
 
@@ -42,7 +48,7 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements E
         string $errorString,
         int $errorCode,
         string $errorFile,
-        int $errorLine
+        int $errorLine,
     ): self {
         return new self(
             sprintf(
@@ -50,10 +56,10 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements E
                 . 'in file "%s" at line "%d"',
                 $reflectionClass->getName(),
                 $errorFile,
-                $errorLine
+                $errorLine,
             ),
             0,
-            new Exception($errorString, $errorCode)
+            new Exception($errorString, $errorCode),
         );
     }
 }

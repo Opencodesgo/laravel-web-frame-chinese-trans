@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，多重过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * MultiplePcreFilterIterator filters files using patterns (regexps, globs or strings).
+ * MultiplePcreFilterIterator使用模式（regexp， globs或字符串）过滤文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -27,9 +31,9 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
     protected $noMatchRegexps = [];
 
     /**
-     * @param \Iterator $iterator        The Iterator to filter
-     * @param string[]  $matchPatterns   An array of patterns that need to match
-     * @param string[]  $noMatchPatterns An array of patterns that need to not match
+     * @param \Iterator<TKey, TValue> $iterator        The Iterator to filter
+     * @param string[]                $matchPatterns   An array of patterns that need to match
+     * @param string[]                $noMatchPatterns An array of patterns that need to not match
      */
     public function __construct(\Iterator $iterator, array $matchPatterns, array $noMatchPatterns)
     {
@@ -46,14 +50,14 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Checks whether the string is accepted by the regex filters.
+	 * 检查字符串是否被正则表达式过滤器接受。
      *
      * If there is no regexps defined in the class, this method will accept the string.
      * Such case can be handled by child classes before calling the method if they want to
      * apply a different behavior.
-     *
-     * @return bool
+	 * 如果类中未定义正则表达式，此方法将接受字符串。如果子类希望应用不同的行为，可以在调用该方法前对此类情况进行处理。
      */
-    protected function isAccepted(string $string)
+    protected function isAccepted(string $string): bool
     {
         // should at least not match one rule to exclude
         foreach ($this->noMatchRegexps as $regex) {
@@ -74,15 +78,15 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
         }
 
         // If there is no match rules, the file is accepted
+		// 如果没有匹配规则，则接受该文件。
         return true;
     }
 
     /**
      * Checks whether the string is a regex.
-     *
-     * @return bool
+	 * 检查字符串是否为正则表达式
      */
-    protected function isRegex(string $str)
+    protected function isRegex(string $str): bool
     {
         $availableModifiers = 'imsxuADU';
 
@@ -110,8 +114,7 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Converts string into regexp.
-     *
-     * @return string
+	 * 将字符串转换为regexp
      */
-    abstract protected function toRegex(string $str);
+    abstract protected function toRegex(string $str): string;
 }

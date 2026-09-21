@@ -9,7 +9,7 @@ class PresenceChannel extends Channel
 {
     /**
      * Create a new channel instance.
-	 * 创建一个新的信道实例
+	 * 创建新的信道实例
      *
      * @param  string  $name
      * @return void

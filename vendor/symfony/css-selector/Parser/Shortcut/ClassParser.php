@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，快捷方式，类解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\CssSelector\Parser\ParserInterface;
 
 /**
  * CSS selector class parser shortcut.
+ * CSS选择器类解析器快捷方式。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -28,9 +32,6 @@ use Symfony\Component\CssSelector\Parser\ParserInterface;
  */
 class ClassParser implements ParserInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function parse(string $source): array
     {
         // Matches an optional namespace, optional element, and required class

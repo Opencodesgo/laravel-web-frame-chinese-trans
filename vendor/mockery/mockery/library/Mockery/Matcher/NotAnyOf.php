@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配器，不是任何一个
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -14,6 +17,7 @@ class NotAnyOf extends MatcherAbstract
 {
     /**
      * Return a string representation of this Matcher
+	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */

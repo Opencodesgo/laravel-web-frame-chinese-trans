@@ -14,7 +14,7 @@ class Pivot extends Model
 
     /**
      * Indicates if the IDs are auto-incrementing.
-	 * 指明ID是否自动递增
+	 * 指示id是否自动递增
      *
      * @var bool
      */

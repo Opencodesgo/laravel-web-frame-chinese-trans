@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，命令，命令核心类
+ * Symfony，Component，Console，命令，可锁定的特征
  */
 
 /*
@@ -22,14 +22,13 @@ use Symfony\Component\Lock\Store\SemaphoreStore;
 
 /**
  * Basic lock feature for commands.
- * 命令的基本锁特性
+ * 命令的基本锁定特性。
  *
  * @author Geoffrey Brier <geoffrey.brier@gmail.com>
  */
 trait LockableTrait
 {
-    /** @var LockInterface|null */
-    private $lock;
+    private ?LockInterface $lock = null;
 
     /**
      * Locks a command.
@@ -37,7 +36,7 @@ trait LockableTrait
     private function lock(?string $name = null, bool $blocking = false): bool
     {
         if (!class_exists(SemaphoreStore::class)) {
-            throw new LogicException('To enable the locking feature you must install the symfony/lock component.');
+            throw new LogicException('To enable the locking feature you must install the symfony/lock component. Try running "composer require symfony/lock".');
         }
 
         if (null !== $this->lock) {
@@ -62,8 +61,9 @@ trait LockableTrait
 
     /**
      * Releases the command lock if there is one.
+	 * 如果有命令锁，则释放命令锁。
      */
-    private function release()
+    private function release(): void
     {
         if ($this->lock) {
             $this->lock->release();

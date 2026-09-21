@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Socket 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Logger;
 
 /**
  * Stores to any socket - uses fsockopen() or pfsockopen().
+ * 存储到任何套接字-使用fsockopen()或pfsockopen()。
  *
  * @author Pablo de Leon Belloc <pablolb@gmail.com>
  * @see    http://php.net/manual/en/function.fsockopen.php
@@ -86,6 +91,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Connect (if necessary) and write to the socket
+	 * 连接（如果需要）并写入套接字
      *
      * {@inheritDoc}
      *
@@ -101,6 +107,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * We will not close a PersistentSocket instance so it can be reused in other requests.
+	 * 我们不会关闭PersistentSocket实例，这样它就可以在其他请求中被重用。
      */
     public function close(): void
     {
@@ -122,6 +129,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Set socket connection to be persistent. It only has effect before the connection is initiated.
+	 * 将套接字连接设置为持久连接。它仅在连接启动之前有效。
      */
     public function setPersistent(bool $persistent): self
     {
@@ -132,6 +140,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Set connection timeout.  Only has effect before we connect.
+	 * 设置连接超时时间。只有在我们连接之前才有效。
      *
      * @see http://php.net/manual/en/function.fsockopen.php
      */
@@ -145,6 +154,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Set write timeout. Only has effect before we connect.
+	 * 设置写超时时间。只有在我们连接之前才有效。
      *
      * @see http://php.net/manual/en/function.stream-set-timeout.php
      */
@@ -158,6 +168,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Set writing timeout. Only has effect during connection in the writing cycle.
+	 * 设置写超时时间。仅在写入周期中连接时生效。
      *
      * @param float $seconds 0 for no timeout
      */
@@ -171,6 +182,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Set chunk size. Only has effect during connection in the writing cycle.
+	 * 设置块大小。仅在写入周期中连接时生效。
      */
     public function setChunkSize(int $bytes): self
     {
@@ -181,6 +193,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Get current connection string
+	 * 获取当前连接字符串
      */
     public function getConnectionString(): string
     {
@@ -189,6 +202,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Get persistent setting
+	 * 获得持久设置
      */
     public function isPersistent(): bool
     {
@@ -197,6 +211,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Get current connection timeout setting
+	 * 获取当前连接超时设置
      */
     public function getConnectionTimeout(): float
     {
@@ -205,6 +220,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Get current in-transfer timeout
+	 * 获取当前的传输中超时
      */
     public function getTimeout(): float
     {
@@ -213,6 +229,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Get current local writing timeout
+	 * 获取当前本地写超时
      *
      * @return float
      */
@@ -223,6 +240,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Get current chunk size
+	 * 获取当前块大小
      */
     public function getChunkSize(): ?int
     {
@@ -231,6 +249,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Check to see if the socket is currently available.
+	 * 检查套接字当前是否可用
      *
      * UDP might appear to be connected but might fail when writing.  See http://php.net/fsockopen for details.
      */
@@ -242,6 +261,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @return resource|false
      */
@@ -252,6 +272,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @return resource|false
      */
@@ -262,6 +283,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @see http://php.net/manual/en/function.stream-set-timeout.php
      *
@@ -281,6 +303,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @see http://php.net/manual/en/function.stream-set-chunk-size.php
      *
@@ -301,6 +324,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @return int|bool
      */
@@ -315,6 +339,7 @@ class SocketHandler extends AbstractProcessingHandler
 
     /**
      * Wrapper to allow mocking
+	 * 允许模拟的包装器
      *
      * @return mixed[]|bool
      */

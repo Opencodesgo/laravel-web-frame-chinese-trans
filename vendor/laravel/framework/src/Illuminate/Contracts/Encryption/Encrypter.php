@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，加密，加密器
+ * Illuminate，契约，加密，加密器接口
  */
 
 namespace Illuminate\Contracts\Encryption;
@@ -30,4 +30,12 @@ interface Encrypter
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */
     public function decrypt($payload, $unserialize = true);
+
+    /**
+     * Get the encryption key that the encrypter is currently using.
+	 * 获取加密器当前使用的加密密钥
+     *
+     * @return string
+     */
+    public function getKey();
 }

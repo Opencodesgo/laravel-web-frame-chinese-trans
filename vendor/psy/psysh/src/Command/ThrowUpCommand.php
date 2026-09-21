@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，抛起命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,6 +29,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Throw an exception or error out of the Psy Shell.
+ * 在Psy Shell中抛出异常或错误。
  */
 class ThrowUpCommand extends Command
 {
@@ -90,6 +94,7 @@ HELP
 
     /**
      * Parse the supplied command argument.
+	 * 解析提供的命令参数。
      *
      * If no argument was given, this falls back to `$_e`
      *

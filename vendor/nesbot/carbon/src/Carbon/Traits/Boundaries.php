@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，边界 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -15,8 +18,10 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Boundaries.
+ * 特征边界。
  *
  * startOf, endOf and derived method for each unit.
+ * 每个单元的startOf， endOf和派生方法。
  *
  * Depends on the following properties:
  *
@@ -35,6 +40,7 @@ trait Boundaries
 {
     /**
      * Resets the time to 00:00:00 start of day
+	 * 将时间重置为每天开始的00:00:00
      *
      * @example
      * ```
@@ -50,6 +56,7 @@ trait Boundaries
 
     /**
      * Resets the time to 23:59:59.999999 end of day
+	 * 将时间重置为一天结束的23:59:59.999999
      *
      * @example
      * ```
@@ -65,6 +72,7 @@ trait Boundaries
 
     /**
      * Resets the date to the first day of the month and the time to 00:00:00
+	 * 将日期重置为每月的第一天，时间重置为00:00:00
      *
      * @example
      * ```
@@ -80,6 +88,7 @@ trait Boundaries
 
     /**
      * Resets the date to end of the month and time to 23:59:59.999999
+	 * 将日期重置为月底，时间重置为23:59:59.999999
      *
      * @example
      * ```
@@ -95,6 +104,7 @@ trait Boundaries
 
     /**
      * Resets the date to the first day of the quarter and the time to 00:00:00
+	 * 将日期重置为季度的第一天，时间重置为00:00:00
      *
      * @example
      * ```
@@ -112,6 +122,7 @@ trait Boundaries
 
     /**
      * Resets the date to end of the quarter and time to 23:59:59.999999
+	 * 将日期重置为季度末，时间重置为23:59:59.999999
      *
      * @example
      * ```
@@ -127,6 +138,7 @@ trait Boundaries
 
     /**
      * Resets the date to the first day of the year and the time to 00:00:00
+	 * 将日期重置为一年的第一天，将时间重置为00:00:00
      *
      * @example
      * ```
@@ -174,6 +186,7 @@ trait Boundaries
 
     /**
      * Resets the date to end of the decade and time to 23:59:59.999999
+	 * 将日期重置为十年的末尾，将时间重置为23:59:59.999999
      *
      * @example
      * ```
@@ -297,6 +310,7 @@ trait Boundaries
 
     /**
      * Modify to start of current hour, minutes and seconds become 0
+	 * 修改为当前时、分、秒的起始值为0
      *
      * @example
      * ```
@@ -312,6 +326,7 @@ trait Boundaries
 
     /**
      * Modify to end of current hour, minutes and seconds become 59
+	 * 修改到当前时、分、秒结束时变为59
      *
      * @example
      * ```
@@ -327,6 +342,7 @@ trait Boundaries
 
     /**
      * Modify to start of current minute, seconds become 0
+	 * 修改为当前分钟开始，秒变为0
      *
      * @example
      * ```
@@ -342,6 +358,7 @@ trait Boundaries
 
     /**
      * Modify to end of current minute, seconds become 59
+	 * 修改到当前分结束时，秒变为59
      *
      * @example
      * ```
@@ -357,6 +374,7 @@ trait Boundaries
 
     /**
      * Modify to start of current second, microseconds become 0
+	 * 修改为当前秒开始时，微秒变为0
      *
      * @example
      * ```
@@ -374,6 +392,7 @@ trait Boundaries
 
     /**
      * Modify to end of current second, microseconds become 999999
+	 * 修改为当前秒的结尾，微秒变为999999
      *
      * @example
      * ```
@@ -417,6 +436,7 @@ trait Boundaries
 
     /**
      * Modify to end of current given unit.
+	 * 修改到当前给定单元的末尾。
      *
      * @example
      * ```

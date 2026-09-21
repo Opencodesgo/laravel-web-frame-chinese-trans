@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，类名匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * A class name tab completion Matcher.
+ * 类名称选项卡完成匹配器。
  *
  * This matcher provides completion for all declared classes.
  *

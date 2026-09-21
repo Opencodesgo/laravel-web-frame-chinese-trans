@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，逐行读取，Readline
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Readline;
 
 /**
  * An interface abstracting the various readline_* functions.
+ * 抽象各种readline_*函数的接口。
  */
 interface Readline
 {
@@ -25,16 +29,19 @@ interface Readline
 
     /**
      * Check whether this Readline class is supported by the current system.
+	 * 检查当前系统是否支持此Readline类
      */
     public static function isSupported(): bool;
 
     /**
      * Check whether this Readline class supports bracketed paste.
+	 * 一个基于libedit的Readline实现。
      */
     public static function supportsBracketedPaste(): bool;
 
     /**
      * Add a line to the command history.
+	 * 在命令历史记录中添加一行
      *
      * @param string $line
      *
@@ -44,6 +51,7 @@ interface Readline
 
     /**
      * Clear the command history.
+	 * 清除命令历史记录
      *
      * @return bool Success
      */
@@ -51,6 +59,7 @@ interface Readline
 
     /**
      * List the command history.
+	 * 列出命令历史记录
      *
      * @return string[]
      */
@@ -58,6 +67,7 @@ interface Readline
 
     /**
      * Read the command history.
+	 * 阅读命令历史
      *
      * @return bool Success
      */
@@ -65,6 +75,7 @@ interface Readline
 
     /**
      * Read a single line of input from the user.
+	 * 从用户那里读取一行输入
      *
      * @param string|null $prompt
      *
@@ -74,11 +85,13 @@ interface Readline
 
     /**
      * Redraw readline to redraw the display.
+	 * 重绘readline以重绘显示
      */
     public function redisplay();
 
     /**
      * Write the command history to a file.
+	 * 将命令历史记录写入文件
      *
      * @return bool Success
      */

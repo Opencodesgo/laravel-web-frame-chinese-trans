@@ -1,19 +1,22 @@
 #!/usr/bin/env php
 <?php
+/**
+ * artisan，工匠
+ */
 
 define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
-| Register The Auto Loader 	注册自动加载
+| Register The Auto Loader	注册自动加载程序
 |--------------------------------------------------------------------------
 |
 | Composer provides a convenient, automatically generated class loader
 | for our application. We just need to utilize it! We'll require it
 | into the script here so that we do not have to worry about the
-| loading of any our classes "manually". Feels great to relax.
-| Composer为我们的应用提供了一个方便的、自动生成的类装入器。我们只需要利用它。
-| 我们需要它到脚本中，这样我们就不必担心"手动"加载我们的任何类。
+| loading of any of our classes manually. It's great to relax.
+| Composer 为我们应用程序提供了一个便捷且自动生成的类加载器。
+| 我们只需要使用它！把它引入脚本中，这样就无需手动加载任何类了。放松一下非常棒。
 |
 */
 
@@ -23,20 +26,19 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
-| Run The Artisan Application 	运行工具应用
+| Run The Artisan Application	运行工匠应用程序
 |--------------------------------------------------------------------------
 |
 | When we run the console application, the current CLI command will be
 | executed in this console and the response sent back to a terminal
 | or another output device for the developers. Here goes nothing!
-| 当我们运行控制台应用，当前的CLI命令将在此控制台中执行，并将响应发送回终端
-| 或其他用于开发人员的输出设备。
+| 当我们运行控制台应用程序时，当前的命令行界面（CLI）命令将在该控制台中执行，
+| 并将响应发送回终端或其他输出设备，供开发者查看。一切就绪！
 |
 */
 
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
-// Illuminate\Foundation\Console\Kernel
 $status = $kernel->handle(
     $input = new Symfony\Component\Console\Input\ArgvInput,
     new Symfony\Component\Console\Output\ConsoleOutput
@@ -44,14 +46,14 @@ $status = $kernel->handle(
 
 /*
 |--------------------------------------------------------------------------
-| Shutdown The Application 	关闭应用
+| Shutdown The Application	关闭应用程序
 |--------------------------------------------------------------------------
 |
 | Once Artisan has finished running, we will fire off the shutdown events
 | so that any final work may be done by the application before we shut
 | down the process. This is the last thing to happen to the request.
-| 一旦工具已经完成运行，我们将触发关闭事件，以便在我们关闭之前，
-| 任何最后的工作都可以由应用程序完成。这是请求发生的最后一件事。
+| 一旦 Artisan 完成运行，我们将触发关闭事件，以便应用程序在我们关闭进程前完成任何最后的工作。
+| 这是请求的最后一个处理步骤。
 |
 */
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，functions
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -23,6 +26,7 @@ use Symfony\Component\Console\Input\InputOption;
 if (!\function_exists('Psy\\sh')) {
     /**
      * Command to return the eval-able code to startup PsySH.
+	 * 命令返回可执行的代码以启动PsySH
      *
      *     eval(\Psy\sh());
      */

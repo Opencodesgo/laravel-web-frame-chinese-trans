@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，字符串处理，经过，魔术方法类型提示通过
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -50,6 +53,7 @@ class MagicMethodTypeHintsPass implements Pass
 
     /**
      * Apply implementation.
+	 * 应用的实现
      *
      * @param string $code
      *
@@ -130,6 +134,7 @@ class MagicMethodTypeHintsPass implements Pass
 
     /**
      * Gets the declaration code, as a string, for the passed method.
+	 * 获取所传递方法的声明代码（字符串）
      *
      * @param array $namedParameters
      *
@@ -162,6 +167,7 @@ class MagicMethodTypeHintsPass implements Pass
     /**
      * Returns the method original parameters, as they're
      * described in the $code string.
+	 * 返回方法的原始参数，在$code字符串中描述。
      *
      * @param int $code
      *
@@ -185,6 +191,7 @@ class MagicMethodTypeHintsPass implements Pass
 
     /**
      * Checks if the method is declared within code.
+	 * 检查方法是否在代码中声明
      *
      * @param int $code
      *

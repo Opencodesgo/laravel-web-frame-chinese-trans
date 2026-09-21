@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，字符串处理，经过，实例模拟通行证
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

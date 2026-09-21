@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，计数器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Abstract Enumerator class.
+ * 抽象枚举器类。
  */
 abstract class Enumerator
 {
@@ -36,6 +40,7 @@ abstract class Enumerator
 
     /**
      * Enumerator constructor.
+	 * 枚举器的构造函数
      *
      * @param Presenter $presenter
      */
@@ -47,6 +52,7 @@ abstract class Enumerator
 
     /**
      * Return a list of categorized things with the given input options and target.
+	 * 返回具有给定输入选项和目标的分类事物列表
      *
      * @param InputInterface  $input
      * @param \Reflector|null $reflector
@@ -63,6 +69,7 @@ abstract class Enumerator
 
     /**
      * Enumerate specific items with the given input options and target.
+	 * 列举具有给定输入选项和目标的特定项。
      *
      * Implementing classes should return an array of arrays:
      *

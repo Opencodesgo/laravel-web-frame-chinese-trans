@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由注册器
+ * Illuminate，路由，路由注册
  */
 
 namespace Illuminate\Routing;
@@ -12,23 +12,29 @@ use Illuminate\Support\Reflector;
 use InvalidArgumentException;
 
 /**
+ * @method \Illuminate\Routing\Route any(string $uri, \Closure|array|string|null $action = null)
+ * @method \Illuminate\Routing\Route delete(string $uri, \Closure|array|string|null $action = null)
  * @method \Illuminate\Routing\Route get(string $uri, \Closure|array|string|null $action = null)
+ * @method \Illuminate\Routing\Route options(string $uri, \Closure|array|string|null $action = null)
+ * @method \Illuminate\Routing\Route patch(string $uri, \Closure|array|string|null $action = null)
  * @method \Illuminate\Routing\Route post(string $uri, \Closure|array|string|null $action = null)
  * @method \Illuminate\Routing\Route put(string $uri, \Closure|array|string|null $action = null)
- * @method \Illuminate\Routing\Route delete(string $uri, \Closure|array|string|null $action = null)
- * @method \Illuminate\Routing\Route patch(string $uri, \Closure|array|string|null $action = null)
- * @method \Illuminate\Routing\Route options(string $uri, \Closure|array|string|null $action = null)
- * @method \Illuminate\Routing\Route any(string $uri, \Closure|array|string|null $action = null)
  * @method \Illuminate\Routing\RouteRegistrar as(string $value)
+ * @method \Illuminate\Routing\RouteRegistrar controller(string $controller)
  * @method \Illuminate\Routing\RouteRegistrar domain(string $value)
  * @method \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
  * @method \Illuminate\Routing\RouteRegistrar name(string $value)
- * @method \Illuminate\Routing\RouteRegistrar namespace(string $value)
- * @method \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
- * @method \Illuminate\Routing\RouteRegistrar where(array  $where)
+ * @method \Illuminate\Routing\RouteRegistrar namespace(string|null $value)
+ * @method \Illuminate\Routing\RouteRegistrar prefix(string $prefix)
+ * @method \Illuminate\Routing\RouteRegistrar scopeBindings()
+ * @method \Illuminate\Routing\RouteRegistrar where(array $where)
+ * @method \Illuminate\Routing\RouteRegistrar withoutMiddleware(array|string $middleware)
+ * @method \Illuminate\Routing\RouteRegistrar withoutScopedBindings()
  */
 class RouteRegistrar
 {
+    use CreatesRegularExpressionRouteConstraints;
+
     /**
      * The router instance.
 	 * 路由器实例
@@ -49,7 +55,7 @@ class RouteRegistrar
      * The methods to dynamically pass through to the router.
 	 * 动态传递给路由器的方法
      *
-     * @var array
+     * @var string[]
      */
     protected $passthru = [
         'get', 'post', 'put', 'patch', 'delete', 'options', 'any',
@@ -59,10 +65,19 @@ class RouteRegistrar
      * The attributes that can be set through this class.
 	 * 可以通过该类设置的属性
      *
-     * @var array
+     * @var string[]
      */
     protected $allowedAttributes = [
-        'as', 'domain', 'middleware', 'name', 'namespace', 'prefix', 'where',
+        'as',
+        'controller',
+        'domain',
+        'middleware',
+        'name',
+        'namespace',
+        'prefix',
+        'scopeBindings',
+        'where',
+        'withoutMiddleware',
     ];
 
     /**
@@ -73,6 +88,8 @@ class RouteRegistrar
      */
     protected $aliases = [
         'name' => 'as',
+        'scopeBindings' => 'scope_bindings',
+        'withoutMiddleware' => 'excluded_middleware',
     ];
 
     /**
@@ -103,7 +120,21 @@ class RouteRegistrar
             throw new InvalidArgumentException("Attribute [{$key}] does not exist.");
         }
 
-        $this->attributes[Arr::get($this->aliases, $key, $key)] = $value;
+        if ($key === 'middleware') {
+            foreach ($value as $index => $middleware) {
+                $value[$index] = (string) $middleware;
+            }
+        }
+
+        $attributeKey = Arr::get($this->aliases, $key, $key);
+
+        if ($key === 'withoutMiddleware') {
+            $value = array_merge(
+                (array) ($this->attributes[$attributeKey] ?? []), Arr::wrap($value)
+            );
+        }
+
+        $this->attributes[$attributeKey] = $value;
 
         return $this;
     }
@@ -137,15 +168,45 @@ class RouteRegistrar
     }
 
     /**
+     * Route a singleton resource to a controller.
+	 * 将单例资源路由到控制器
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\PendingSingletonResourceRegistration
+     */
+    public function singleton($name, $controller, array $options = [])
+    {
+        return $this->router->singleton($name, $controller, $this->attributes + $options);
+    }
+
+    /**
+     * Route an API singleton resource to a controller.
+	 * 将API单例资源路由到控制器
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\PendingSingletonResourceRegistration
+     */
+    public function apiSingleton($name, $controller, array $options = [])
+    {
+        return $this->router->apiSingleton($name, $controller, $this->attributes + $options);
+    }
+
+    /**
      * Create a route group with shared attributes.
 	 * 创建具有共享属性的路由组
      *
-     * @param  \Closure|string  $callback
-     * @return void
+     * @param  \Closure|array|string  $callback
+     * @return $this
      */
     public function group($callback)
     {
         $this->router->group($this->attributes, $callback);
+
+        return $this;
     }
 
     /**
@@ -200,6 +261,9 @@ class RouteRegistrar
         if (is_array($action) &&
             ! Arr::isAssoc($action) &&
             Reflector::isCallable($action)) {
+            if (strncmp($action[0], '\\', 1)) {
+                $action[0] = '\\'.$action[0];
+            }
             $action = [
                 'uses' => $action[0].'@'.$action[1],
                 'controller' => $action[0].'@'.$action[1],
@@ -230,7 +294,7 @@ class RouteRegistrar
                 return $this->attribute($method, is_array($parameters[0]) ? $parameters[0] : $parameters);
             }
 
-            return $this->attribute($method, $parameters[0]);
+            return $this->attribute($method, array_key_exists(0, $parameters) ? $parameters[0] : true);
         }
 
         throw new BadMethodCallException(sprintf(

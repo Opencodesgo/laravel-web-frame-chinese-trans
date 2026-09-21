@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，克隆，克隆接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,10 +21,7 @@ interface ClonerInterface
 {
     /**
      * Clones a PHP variable.
-     *
-     * @param mixed $var Any PHP variable
-     *
-     * @return Data
+	 * 克隆一个PHP变量
      */
-    public function cloneVar($var);
+    public function cloneVar(mixed $var): Data;
 }

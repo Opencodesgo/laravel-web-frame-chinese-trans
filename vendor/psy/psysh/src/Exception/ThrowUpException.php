@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，抛出异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Exception;
 
 /**
  * A throw-up exception, used for throwing an exception out of the Psy Shell.
+ * 抛出异常，用于从Psy Shell抛出异常。
  */
 class ThrowUpException extends \Exception implements Exception
 {
@@ -27,6 +31,7 @@ class ThrowUpException extends \Exception implements Exception
 
     /**
      * Return a raw (unformatted) version of the error message.
+	 * 返回错误消息的原始（未格式化）版本
      */
     public function getRawMessage(): string
     {
@@ -35,6 +40,7 @@ class ThrowUpException extends \Exception implements Exception
 
     /**
      * Create a ThrowUpException from a Throwable.
+	 * 从Throwable中创建一个ThrowUpException
      *
      * @deprecated PsySH no longer wraps Throwables
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，匹配器，参数列表匹配器
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

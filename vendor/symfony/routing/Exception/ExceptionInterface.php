@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，异常，异常接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * ExceptionInterface.
+ * 异常接口
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Elastic Search 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -140,6 +144,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
 
     /**
      * Use Elasticsearch bulk API to send list of documents
+	 * 使用Elasticsearch批量API发送文档列表
      *
      * @param  array[]           $records Records + _index/_type keys
      * @throws \RuntimeException
@@ -180,6 +185,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
 
     /**
      * Creates elasticsearch exception from responses array
+	 * 从响应数组中创建elasticsearch异常
      *
      * Only the first error is converted into an exception.
      *
@@ -203,6 +209,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
 
     /**
      * Creates elasticsearch exception from error array
+	 * 从错误数组中创建elasticsearch异常
      *
      * @param mixed[] $error
      */

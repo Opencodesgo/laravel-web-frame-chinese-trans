@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，Redis管理
- * 服务容器绑定redis
+ * Illuminate，Redis，Redis 管理器
  */
 
 namespace Illuminate\Redis;
@@ -11,6 +10,7 @@ use Illuminate\Contracts\Redis\Factory;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Redis\Connectors\PhpRedisConnector;
 use Illuminate\Redis\Connectors\PredisConnector;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ConfigurationUrlParser;
 use InvalidArgumentException;
 
@@ -29,7 +29,7 @@ class RedisManager implements Factory
 
     /**
      * The name of the default driver.
-	 * 默认驱动名称
+	 * 默认驱动程序的名称
      *
      * @var string
      */
@@ -53,15 +53,15 @@ class RedisManager implements Factory
 
     /**
      * The Redis connections.
-	 * Redis连接
+	 * Redis的连接
      *
      * @var mixed
      */
     protected $connections;
 
     /**
-     * Indicates whether event dispatcher is set on connections.、
-	 * 指明是否在连接上设置事件调度程序
+     * Indicates whether event dispatcher is set on connections.
+	 * 指示是否在连接上设置事件调度程序
      *
      * @var bool
      */
@@ -121,7 +121,7 @@ class RedisManager implements Factory
         if (isset($this->config[$name])) {
             return $this->connector()->connect(
                 $this->parseConnectionConfiguration($this->config[$name]),
-                $options
+                array_merge(Arr::except($options, 'parameters'), ['parameters' => Arr::get($options, 'parameters.'.$name, Arr::get($options, 'parameters', []))])
             );
         }
 
@@ -173,7 +173,7 @@ class RedisManager implements Factory
      * Get the connector instance for the current driver.
 	 * 获取当前驱动程序的连接器实例
      *
-     * @return \Illuminate\Contracts\Redis\Connector
+     * @return \Illuminate\Contracts\Redis\Connector|null
      */
     protected function connector()
     {
@@ -183,12 +183,11 @@ class RedisManager implements Factory
             return $customCreator();
         }
 
-        switch ($this->driver) {
-            case 'predis':
-                return new PredisConnector;
-            case 'phpredis':
-                return new PhpRedisConnector;
-        }
+        return match ($this->driver) {
+            'predis' => new PredisConnector,
+            'phpredis' => new PhpRedisConnector,
+            default => null,
+        };
     }
 
     /**
@@ -209,7 +208,7 @@ class RedisManager implements Factory
         }
 
         return array_filter($parsed, function ($key) {
-            return ! in_array($key, ['driver', 'username'], true);
+            return ! in_array($key, ['driver'], true);
         }, ARRAY_FILTER_USE_KEY);
     }
 
@@ -259,8 +258,22 @@ class RedisManager implements Factory
     }
 
     /**
+     * Disconnect the given connection and remove from local cache.
+	 * 断开给定的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?: 'default';
+
+        unset($this->connections[$name]);
+    }
+
+    /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器闭包
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback

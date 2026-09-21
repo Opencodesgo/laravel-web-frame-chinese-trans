@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，事件假装
+ * Illuminate，支持，测试，佯装，事件 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -8,8 +8,10 @@ namespace Illuminate\Support\Testing\Fakes;
 use Closure;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
+use ReflectionFunction;
 
 class EventFake implements Dispatcher
 {
@@ -29,7 +31,15 @@ class EventFake implements Dispatcher
      *
      * @var array
      */
-    protected $eventsToFake;
+    protected $eventsToFake = [];
+
+    /**
+     * The event types that should be dispatched instead of intercepted.
+	 * 应该分派而不是拦截的事件类型
+     *
+     * @var array
+     */
+    protected $eventsToDispatch = [];
 
     /**
      * All of the events that have been intercepted keyed by type.
@@ -52,6 +62,73 @@ class EventFake implements Dispatcher
         $this->dispatcher = $dispatcher;
 
         $this->eventsToFake = Arr::wrap($eventsToFake);
+    }
+
+    /**
+     * Specify the events that should be dispatched instead of faked.
+	 * 指定应该分派而不是伪造的事件
+     *
+     * @param  array|string  $eventsToDispatch
+     * @return $this
+     */
+    public function except($eventsToDispatch)
+    {
+        $this->eventsToDispatch = array_merge(
+            $this->eventsToDispatch,
+            Arr::wrap($eventsToDispatch)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert if an event has a listener attached to it.
+	 * 如果事件附加了侦听器，则断言。
+     *
+     * @param  string  $expectedEvent
+     * @param  string|array  $expectedListener
+     * @return void
+     */
+    public function assertListening($expectedEvent, $expectedListener)
+    {
+        foreach ($this->dispatcher->getListeners($expectedEvent) as $listenerClosure) {
+            $actualListener = (new ReflectionFunction($listenerClosure))
+                        ->getStaticVariables()['listener'];
+
+            $normalizedListener = $expectedListener;
+
+            if (is_string($actualListener) && Str::contains($actualListener, '@')) {
+                $actualListener = Str::parseCallback($actualListener);
+
+                if (is_string($expectedListener)) {
+                    if (Str::contains($expectedListener, '@')) {
+                        $normalizedListener = Str::parseCallback($expectedListener);
+                    } else {
+                        $normalizedListener = [
+                            $expectedListener,
+                            method_exists($expectedListener, 'handle') ? 'handle' : '__invoke',
+                        ];
+                    }
+                }
+            }
+
+            if ($actualListener === $normalizedListener ||
+                ($actualListener instanceof Closure &&
+                $normalizedListener === Closure::class)) {
+                PHPUnit::assertTrue(true);
+
+                return;
+            }
+        }
+
+        PHPUnit::assertTrue(
+            false,
+            sprintf(
+                'Event [%s] does not have the [%s] listener attached to it',
+                $expectedEvent,
+                print_r($expectedListener, true)
+            )
+        );
     }
 
     /**
@@ -117,6 +194,22 @@ class EventFake implements Dispatcher
     }
 
     /**
+     * Assert that no events were dispatched.
+	 * 断言没有分派任何事件
+     *
+     * @return void
+     */
+    public function assertNothingDispatched()
+    {
+        $count = count(Arr::flatten($this->events));
+
+        PHPUnit::assertSame(
+            0, $count,
+            "{$count} unexpected events were dispatched."
+        );
+    }
+
+    /**
      * Get all of the events matching a truth-test callback.
 	 * 获取与true -test回调匹配的所有事件
      *
@@ -130,13 +223,11 @@ class EventFake implements Dispatcher
             return collect();
         }
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: fn () => true;
 
-        return collect($this->events[$event])->filter(function ($arguments) use ($callback) {
-            return $callback(...$arguments);
-        });
+        return collect($this->events[$event])->filter(
+            fn ($arguments) => $callback(...$arguments)
+        );
     }
 
     /**
@@ -155,11 +246,11 @@ class EventFake implements Dispatcher
      * Register an event listener with the dispatcher.
 	 * 向调度程序注册事件侦听器
      *
-     * @param  string|array  $events
+     * @param  \Closure|string|array  $events
      * @param  mixed  $listener
      * @return void
      */
-    public function listen($events, $listener)
+    public function listen($events, $listener = null)
     {
         $this->dispatcher->listen($events, $listener);
     }
@@ -243,6 +334,10 @@ class EventFake implements Dispatcher
      */
     protected function shouldFakeEvent($eventName, $payload)
     {
+        if ($this->shouldDispatchEvent($eventName, $payload)) {
+            return false;
+        }
+
         if (empty($this->eventsToFake)) {
             return true;
         }
@@ -252,6 +347,29 @@ class EventFake implements Dispatcher
                 return $event instanceof Closure
                             ? $event($eventName, $payload)
                             : $event === $eventName;
+            })
+            ->isNotEmpty();
+    }
+
+    /**
+     * Determine whether an event should be dispatched or not.
+	 * 确定是否应分派事件
+     *
+     * @param  string  $eventName
+     * @param  mixed  $payload
+     * @return bool
+     */
+    protected function shouldDispatchEvent($eventName, $payload)
+    {
+        if (empty($this->eventsToDispatch)) {
+            return false;
+        }
+
+        return collect($this->eventsToDispatch)
+            ->filter(function ($event) use ($eventName, $payload) {
+                return $event instanceof Closure
+                    ? $event($eventName, $payload)
+                    : $event === $eventName;
             })
             ->isNotEmpty();
     }
@@ -285,7 +403,7 @@ class EventFake implements Dispatcher
      *
      * @param  string|object  $event
      * @param  mixed  $payload
-     * @return void
+     * @return array|null
      */
     public function until($event, $payload = [])
     {

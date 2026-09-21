@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，访问，大门
+ * Illuminate，契约，认证，进入，大门
  */
 
 namespace Illuminate\Contracts\Auth\Access;
@@ -9,7 +9,7 @@ interface Gate
 {
     /**
      * Determine if a given ability has been defined.
-	 * 确定给定的能力是否已被定义
+	 * 确定是否给定的能力已被定义
      *
      * @param  string  $ability
      * @return bool
@@ -18,7 +18,7 @@ interface Gate
 
     /**
      * Define a new ability.
-	 * 定义新的能力
+	 * 定义一个新能力
      *
      * @param  string  $ability
      * @param  callable|string  $callback

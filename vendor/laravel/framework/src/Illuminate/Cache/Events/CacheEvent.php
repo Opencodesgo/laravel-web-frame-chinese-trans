@@ -9,7 +9,7 @@ abstract class CacheEvent
 {
     /**
      * The key of the event.
-	 * 事件的键
+	 * 事件主键
      *
      * @var string
      */
@@ -25,7 +25,7 @@ abstract class CacheEvent
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建新事件实例
      *
      * @param  string  $key
      * @param  array  $tags

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，节点，节点接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Interface for nodes.
+ * 节点接口。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -21,11 +25,9 @@ namespace Symfony\Component\CssSelector\Node;
  *
  * @internal
  */
-interface NodeInterface
+interface NodeInterface extends \Stringable
 {
     public function getNodeName(): string;
 
     public function getSpecificity(): Specificity;
-
-    public function __toString(): string;
 }

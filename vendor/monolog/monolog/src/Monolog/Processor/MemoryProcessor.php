@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，内存处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Some methods that are common for all memory processors
+ * 所有内存处理器都通用的一些方法。
  *
  * @author Rob Jensen
  */
@@ -20,6 +25,7 @@ abstract class MemoryProcessor implements ProcessorInterface
 {
     /**
      * @var bool If true, get the real size of memory allocated from system. Else, only the memory used by emalloc() is reported.
+	 * 如果为true，则获取从系统分配的实际内存大小。否则，只报告emalloc()使用的内存。
      */
     protected $realUsage;
 
@@ -40,6 +46,7 @@ abstract class MemoryProcessor implements ProcessorInterface
 
     /**
      * Formats bytes into a human readable string if $this->useFormatting is true, otherwise return $bytes as is
+	 * 如果$this->useFormatting为true，则将字节格式化为人类可读的字符串，否则按原样返回$bytes。
      *
      * @param  int        $bytes
      * @return string|int Formatted string if $this->useFormatting is true, otherwise return $bytes as int

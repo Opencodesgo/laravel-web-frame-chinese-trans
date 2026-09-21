@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，内核
+ * Illuminate，基础，控制台，内核核心类
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Carbon\CarbonInterval;
 use Closure;
+use DateTimeInterface;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
@@ -14,7 +16,9 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Env;
+use Illuminate\Support\InteractsWithTime;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
@@ -22,6 +26,8 @@ use Throwable;
 
 class Kernel implements KernelContract
 {
+    use InteractsWithTime;
+
     /**
      * The application implementation.
 	 * 应用实现
@@ -48,7 +54,7 @@ class Kernel implements KernelContract
 
     /**
      * The Artisan commands provided by the application.
-	 * 应用程序提供的Artisan命令
+	 * Artisan应用程序提供的命令
      *
      * @var array
      */
@@ -56,17 +62,33 @@ class Kernel implements KernelContract
 
     /**
      * Indicates if the Closure commands have been loaded.
-	 * 指示是否加载了关闭命令
+	 * 指示是否已加载关闭命令
      *
      * @var bool
      */
     protected $commandsLoaded = false;
 
     /**
-     * The bootstrap classes for the application.
-	 * 应用的引导类
+     * All of the registered command duration handlers.
+	 * 所有已注册的命令持续时间处理程序
      *
      * @var array
+     */
+    protected $commandLifecycleDurationHandlers = [];
+
+    /**
+     * When the currently handled command started.
+	 * 当前处理的命令启动的时间
+     *
+     * @var \Illuminate\Support\Carbon|null
+     */
+    protected $commandStartedAt;
+
+    /**
+     * The bootstrap classes for the application.
+	 * 应用程序的引导类
+     *
+     * @var string[]
      */
     protected $bootstrappers = [
         \Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
@@ -102,7 +124,7 @@ class Kernel implements KernelContract
 
     /**
      * Define the application's command schedule.
-	 * 定义应用程序的命令时间表
+	 * 定义应用程序的命令调度
      *
      * @return void
      */
@@ -123,12 +145,12 @@ class Kernel implements KernelContract
      */
     protected function scheduleCache()
     {
-        return Env::get('SCHEDULE_CACHE_DRIVER');
+        return $this->app['config']->get('cache.schedule_store', Env::get('SCHEDULE_CACHE_DRIVER'));
     }
 
     /**
      * Run the console application.
-	 * 运行控制台应用
+	 * 运行控制台应用程序
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface|null  $output
@@ -136,7 +158,13 @@ class Kernel implements KernelContract
      */
     public function handle($input, $output = null)
     {
+        $this->commandStartedAt = Carbon::now();
+
         try {
+            if (in_array($input->getFirstArgument(), ['env:encrypt', 'env:decrypt'], true)) {
+                $this->bootstrapWithoutBootingProviders();
+            }
+
             $this->bootstrap();
 
             return $this->getArtisan()->run($input, $output);
@@ -160,11 +188,56 @@ class Kernel implements KernelContract
     public function terminate($input, $status)
     {
         $this->app->terminate();
+
+        foreach ($this->commandLifecycleDurationHandlers as ['threshold' => $threshold, 'handler' => $handler]) {
+            $end ??= Carbon::now();
+
+            if ($this->commandStartedAt->diffInMilliseconds($end) > $threshold) {
+                $handler($this->commandStartedAt, $input, $status);
+            }
+        }
+
+        $this->commandStartedAt = null;
+    }
+
+    /**
+     * Register a callback to be invoked when the command lifecycle duration exceeds a given amount of time.
+	 * 注册一个回调，以便在命令生命周期持续时间超过给定时间时调用。
+     *
+     * @param  \DateTimeInterface|\Carbon\CarbonInterval|float|int  $threshold
+     * @param  callable  $handler
+     * @return void
+     */
+    public function whenCommandLifecycleIsLongerThan($threshold, $handler)
+    {
+        $threshold = $threshold instanceof DateTimeInterface
+            ? $this->secondsUntil($threshold) * 1000
+            : $threshold;
+
+        $threshold = $threshold instanceof CarbonInterval
+            ? $threshold->totalMilliseconds
+            : $threshold;
+
+        $this->commandLifecycleDurationHandlers[] = [
+            'threshold' => $threshold,
+            'handler' => $handler,
+        ];
+    }
+
+    /**
+     * When the command being handled started.
+	 * 正在处理的命令何时启动
+     *
+     * @return \Illuminate\Support\Carbon|null
+     */
+    public function commandStartedAt()
+    {
+        return $this->commandStartedAt;
     }
 
     /**
      * Define the application's command schedule.
-	 * 定义应用程序的命令时间表
+	 * 定义应用程序的命令调度
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
@@ -176,7 +249,7 @@ class Kernel implements KernelContract
 
     /**
      * Get the timezone that should be used by default for scheduled events.
-	 * 获取应该在默认情况下使用的时区
+	 * 获取默认情况下应用于计划事件的时区
      *
      * @return \DateTimeZone|string|null
      */
@@ -188,8 +261,8 @@ class Kernel implements KernelContract
     }
 
     /**
-     * Register the Closure based commands for the application.
-	 * 为应用程序注册关闭的命令
+     * Register the commands for the application.
+	 * 为应用程序注册命令
      *
      * @return void
      */
@@ -219,7 +292,7 @@ class Kernel implements KernelContract
 
     /**
      * Register all of the commands in the given directory.
-	 * 在给定目录中注册所有命令
+	 * 注册给定目录中的所有命令
      *
      * @param  array|string  $paths
      * @return void
@@ -242,7 +315,7 @@ class Kernel implements KernelContract
             $command = $namespace.str_replace(
                 ['/', '.php'],
                 ['\\', ''],
-                Str::after($command->getPathname(), realpath(app_path()).DIRECTORY_SEPARATOR)
+                Str::after($command->getRealPath(), realpath(app_path()).DIRECTORY_SEPARATOR)
             );
 
             if (is_subclass_of($command, Command::class) &&
@@ -256,7 +329,7 @@ class Kernel implements KernelContract
 
     /**
      * Register the given command with the console application.
-	 * 用控制台应用程序注册给定的命令
+	 * 向控制台应用程序注册给定的命令
      *
      * @param  \Symfony\Component\Console\Command\Command  $command
      * @return void
@@ -268,7 +341,7 @@ class Kernel implements KernelContract
 
     /**
      * Run an Artisan console command by name.
-	 * 按名称运行一个Artisan控制台命令
+	 * 按名称运行Artisan控制台命令
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -279,6 +352,10 @@ class Kernel implements KernelContract
      */
     public function call($command, array $parameters = [], $outputBuffer = null)
     {
+        if (in_array($command, ['env:encrypt', 'env:decrypt'], true)) {
+            $this->bootstrapWithoutBootingProviders();
+        }
+
         $this->bootstrap();
 
         return $this->getArtisan()->call($command, $parameters, $outputBuffer);
@@ -299,7 +376,7 @@ class Kernel implements KernelContract
 
     /**
      * Get all of the commands registered with the console.
-	 * 获取控制台注册的所有命令
+	 * 获取在控制台注册的所有命令
      *
      * @return array
      */
@@ -345,6 +422,21 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Bootstrap the application without booting service providers.
+	 * 在不引导服务提供者的情况下引导应用程序
+     *
+     * @return void
+     */
+    public function bootstrapWithoutBootingProviders()
+    {
+        $this->app->bootstrapWith(
+            collect($this->bootstrappers())->reject(function ($bootstrapper) {
+                return $bootstrapper === \Illuminate\Foundation\Bootstrap\BootProviders::class;
+            })->all()
+        );
+    }
+
+    /**
      * Get the Artisan application instance.
 	 * 获取Artisan应用程序实例
      *
@@ -353,8 +445,9 @@ class Kernel implements KernelContract
     protected function getArtisan()
     {
         if (is_null($this->artisan)) {
-            return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
-                                ->resolveCommands($this->commands);
+            $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
+                                    ->resolveCommands($this->commands)
+                                    ->setContainerCommandLoader();
         }
 
         return $this->artisan;
@@ -385,7 +478,7 @@ class Kernel implements KernelContract
 
     /**
      * Report the exception to the exception handler.
-	 * 报告异常处理程序的异常
+	 * 向异常处理程序报告异常
      *
      * @param  \Throwable  $e
      * @return void
@@ -397,7 +490,7 @@ class Kernel implements KernelContract
 
     /**
      * Render the given exception.
-	 * 呈现给定异常
+	 * 呈现给定的异常
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Throwable  $e

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，生成器，字符串处理，经过，删除最终通过的内置方法
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

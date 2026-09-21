@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，基本命令
+ * Illuminate，数据库，控制台，迁移，基本命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -11,7 +11,7 @@ class BaseCommand extends Command
 {
     /**
      * Get all of the migration paths.
-	 * 获取所有迁移路径
+	 * 得到所有迁移路径
      *
      * @return array
      */

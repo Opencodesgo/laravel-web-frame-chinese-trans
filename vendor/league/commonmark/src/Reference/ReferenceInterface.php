@@ -1,4 +1,9 @@
 <?php
+/**
+ * League，CommonMark，参考，引用接口
+ */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -16,6 +21,7 @@ namespace League\CommonMark\Reference;
 
 /**
  * Link reference
+ * 链引用
  */
 interface ReferenceInterface
 {

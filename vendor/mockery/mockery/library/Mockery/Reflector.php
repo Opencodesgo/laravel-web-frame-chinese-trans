@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，反射器
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -39,6 +42,7 @@ class Reflector
 {
     /**
      * List of built-in types.
+	 * 内置类型列表
      *
      * @var list<string>
      */
@@ -46,6 +50,7 @@ class Reflector
 
     /**
      * List of reserved words.
+	 * 保留词列表
      *
      * @var list<string>
      */
@@ -53,6 +58,7 @@ class Reflector
 
     /**
      * Iterable.
+	 * 可迭代的
      *
      * @var list<string>
      */
@@ -60,6 +66,7 @@ class Reflector
 
     /**
      * Traversable array.
+	 * 可否认的数组
      *
      * @var list<string>
      */
@@ -67,6 +74,7 @@ class Reflector
 
     /**
      * Compute the string representation for the return type.
+	 * 计算返回类型的字符串表示形式
      *
      * @param bool $withoutNullable
      *
@@ -91,6 +99,7 @@ class Reflector
 
     /**
      * Compute the string representation for the simplest return type.
+	 * 计算最简单返回类型的字符串表示形式
      *
      * @return null|string
      */
@@ -125,6 +134,7 @@ class Reflector
 
     /**
      * Compute the string representation for the paramater type.
+	 * 计算参数类型的字符串表示形式
      *
      * @param bool $withoutNullable
      *
@@ -145,6 +155,7 @@ class Reflector
 
     /**
      * Determine if the parameter is typed as an array.
+	 * 确定参数的类型是否为数组
      *
      * @return bool
      */
@@ -157,6 +168,7 @@ class Reflector
 
     /**
      * Determine if the given type is a reserved word.
+	 * 确定给定的类型是否为保留字
      */
     public static function isReservedWord(string $type): bool
     {
@@ -165,6 +177,7 @@ class Reflector
 
     /**
      * Format the given type as a nullable type.
+	 * 将给定类型格式化为可空类型
      */
     private static function formatNullableType(string $typeHint): string
     {
@@ -250,6 +263,7 @@ class Reflector
 
     /**
      * Get the string representation of the given type.
+	 * 获取给定类型的字符串表示形式
      *
      * @return list<array{typeHint:string,isPrimitive:bool}>
      */
@@ -306,6 +320,7 @@ class Reflector
         }
 
         // class names need prefixing with a slash
+		// 类名需要用斜杠作为前缀
         return [
             [
                 'typeHint' => sprintf('\\%s', $typeHint),

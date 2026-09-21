@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * An ArgumentResolverInterface instance knows how to determine the
  * arguments for a specific action.
+ * ArgumentResolverInterface实例知道如何确定特定操作的参数。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,10 +27,11 @@ interface ArgumentResolverInterface
 {
     /**
      * Returns the arguments to pass to the controller.
+	 * 返回要传递给控制器的参数
      *
-     * @return array
+     * @param \ReflectionFunctionAbstract|null $reflector
      *
      * @throws \RuntimeException When no value could be provided for a required argument
      */
-    public function getArguments(Request $request, callable $controller);
+    public function getArguments(Request $request, callable $controller/* , \ReflectionFunctionAbstract $reflector = null */): array;
 }

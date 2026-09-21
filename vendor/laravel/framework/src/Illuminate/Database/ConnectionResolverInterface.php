@@ -18,7 +18,7 @@ interface ConnectionResolverInterface
 
     /**
      * Get the default connection name.
-	 * 获取默认连接名称
+	 * 得到默认连接名称
      *
      * @return string
      */

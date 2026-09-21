@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储器，内容提供程序，请求上下文提供程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,13 +20,14 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * Tries to provide context from a request.
+ * 尝试提供来自请求的上下文。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 final class RequestContextProvider implements ContextProviderInterface
 {
-    private $requestStack;
-    private $cloner;
+    private RequestStack $requestStack;
+    private VarCloner $cloner;
 
     public function __construct(RequestStack $requestStack)
     {
@@ -45,7 +49,7 @@ final class RequestContextProvider implements ContextProviderInterface
             'uri' => $request->getUri(),
             'method' => $request->getMethod(),
             'controller' => $controller ? $this->cloner->cloneVar($controller) : $controller,
-            'identifier' => spl_object_hash($request),
+            'identifier' => hash('xxh128', spl_object_id($request).'@'.$_SERVER['REQUEST_TIME_FLOAT']),
         ];
     }
 }

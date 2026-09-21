@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，工具，文档块
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Util;
 
 /**
  * A docblock representation.
+ * docblock表示。
  *
  * Based on PHP-DocBlock-Parser by Paul Scott:
  *
@@ -40,6 +44,7 @@ class Docblock
 
     /**
      * The description of the symbol.
+	 * 符号的描述
      *
      * @var string
      */
@@ -47,6 +52,7 @@ class Docblock
 
     /**
      * The tags defined in the docblock.
+	 * docblock中定义的标签。
      *
      * The array has keys which are the tag names (excluding the @) and values
      * that are arrays, each of which is an entry for the tag.
@@ -61,6 +67,7 @@ class Docblock
 
     /**
      * The entire DocBlock comment that was parsed.
+	 * 被解析的整个DocBlock注释
      *
      * @var string
      */
@@ -68,6 +75,7 @@ class Docblock
 
     /**
      * Docblock constructor.
+	 * Docblock构造函数
      *
      * @param \Reflector $reflector
      */
@@ -82,6 +90,7 @@ class Docblock
 
     /**
      * Set and parse the docblock comment.
+	 * 设置并解析docblock注释
      *
      * @param string $comment The docblock
      */
@@ -96,6 +105,7 @@ class Docblock
 
     /**
      * Find the length of the docblock prefix.
+	 * 查找docblock前缀的长度
      *
      * @param array $lines
      *
@@ -132,6 +142,7 @@ class Docblock
 
     /**
      * Parse the comment into the component parts and set the state of the object.
+	 * 将注释解析为组件部分，并设置对象的状态。
      *
      * @param string $comment The docblock
      */
@@ -199,6 +210,7 @@ class Docblock
 
     /**
      * Whether or not a docblock contains a given @tag.
+	 * docblock是否包含给定的@tag
      *
      * @param string $tag The name of the @tag to check for
      */
@@ -209,6 +221,7 @@ class Docblock
 
     /**
      * The value of a tag.
+	 * 标签的值
      *
      * @param string $tag
      *
@@ -221,6 +234,7 @@ class Docblock
 
     /**
      * Whether or not a string begins with a @tag.
+	 * 字符串是否以@tag开头
      *
      * @param string $str
      */
@@ -231,6 +245,7 @@ class Docblock
 
     /**
      * The tag at the beginning of a string.
+	 * 字符串开头的标记
      *
      * @param string $str
      *

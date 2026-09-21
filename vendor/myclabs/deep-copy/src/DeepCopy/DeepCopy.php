@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，深层复制
+ */
 
 namespace DeepCopy;
 
@@ -34,6 +37,7 @@ class DeepCopy
 
     /**
      * Filters to apply.
+	 * 要应用的过滤器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -41,6 +45,7 @@ class DeepCopy
 
     /**
      * Type Filters to apply.
+	 * 键入要应用的筛选器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -72,6 +77,7 @@ class DeepCopy
 
     /**
      * If enabled, will not throw an exception when coming across an uncloneable property.
+	 * 如果启用，将不会在遇到不可克隆属性时抛出异常。
      *
      * @param $skipUncloneable
      *
@@ -86,10 +92,13 @@ class DeepCopy
 
     /**
      * Deep copies the given object.
+	 * 深度复制给定对象
      *
-     * @param mixed $object
+     * @template TObject
      *
-     * @return mixed
+     * @param TObject $object
+     *
+     * @return TObject
      */
     public function copy($object)
     {
@@ -163,6 +172,7 @@ class DeepCopy
 
     /**
      * Copy an array
+	 * 复制数组
      * @param array $array
      * @return array
      */
@@ -177,6 +187,7 @@ class DeepCopy
 
     /**
      * Copies an object.
+	 * 复制对象
      *
      * @param object $object
      *
@@ -265,7 +276,9 @@ class DeepCopy
             }
         }
 
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         // Ignore uninitialized properties (for PHP >7.4)
         if (method_exists($property, 'isInitialized') && !$property->isInitialized($object)) {
@@ -280,6 +293,7 @@ class DeepCopy
 
     /**
      * Returns first filter that matches variable, `null` if no such filter found.
+	 * 返回第一个匹配变量的过滤器，如果没有找到这样的过滤器，则返回‘ null ’。
      *
      * @param array $filterRecords Associative array with 2 members: 'filter' with value of type {@see TypeFilter} and
      *                             'matcher' with value of type {@see TypeMatcher}
@@ -304,6 +318,7 @@ class DeepCopy
 
     /**
      * Returns first element that matches predicate, `null` if no such element found.
+	 * 返回与谓词匹配的第一个元素，如果没有找到这样的元素，则返回‘ null ’。
      *
      * @param array    $elements Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      * @param callable $predicate Predicate arguments are: element.

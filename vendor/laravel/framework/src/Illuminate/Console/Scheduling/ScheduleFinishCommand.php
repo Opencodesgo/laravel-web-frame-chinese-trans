@@ -1,12 +1,16 @@
 <?php
 /**
- * Illuminate，控制台，调度，schedule:finish 计划完成命令
+ * Illuminate，控制台，线程调度，调度完成命令
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Events\ScheduledBackgroundTaskFinished;
+use Illuminate\Contracts\Events\Dispatcher;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'schedule:finish')]
 class ScheduleFinishCommand extends Command
 {
     /**
@@ -18,8 +22,20 @@ class ScheduleFinishCommand extends Command
     protected $signature = 'schedule:finish {id} {code=0}';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'schedule:finish';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -44,6 +60,10 @@ class ScheduleFinishCommand extends Command
     {
         collect($schedule->events())->filter(function ($value) {
             return $value->mutexName() == $this->argument('id');
-        })->each->callAfterCallbacksWithExitCode($this->laravel, $this->argument('code'));
+        })->each(function ($event) {
+            $event->finish($this->laravel, $this->argument('code'));
+
+            $this->laravel->make(Dispatcher::class)->dispatch(new ScheduledBackgroundTaskFinished($event));
+        });
     }
 }

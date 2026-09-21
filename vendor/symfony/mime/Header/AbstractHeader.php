@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，标题，抽象的头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Mime\Encoder\QpMimeHeaderEncoder;
 
 /**
  * An abstract base MIME Header.
+ * 一个抽象的基本MIME头。
  *
  * @author Chris Corbyn
  */
@@ -22,18 +26,21 @@ abstract class AbstractHeader implements HeaderInterface
 {
     public const PHRASE_PATTERN = '(?:(?:(?:(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))*(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))|(?:(?:[ \t]*(?:\r\n))?[ \t])))?[a-zA-Z0-9!#\$%&\'\*\+\-\/=\?\^_`\{\}\|~]+(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))*(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))|(?:(?:[ \t]*(?:\r\n))?[ \t])))?)|(?:(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))*(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))|(?:(?:[ \t]*(?:\r\n))?[ \t])))?"((?:(?:[ \t]*(?:\r\n))?[ \t])?(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21\x23-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])))*(?:(?:[ \t]*(?:\r\n))?[ \t])?"(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))*(?:(?:(?:(?:[ \t]*(?:\r\n))?[ \t])?(\((?:(?:(?:[ \t]*(?:\r\n))?[ \t])|(?:(?:[\x01-\x08\x0B\x0C\x0E-\x19\x7F]|[\x21-\x27\x2A-\x5B\x5D-\x7E])|(?:\\[\x00-\x08\x0B\x0C\x0E-\x7F])|(?1)))*(?:(?:[ \t]*(?:\r\n))?[ \t])?\)))|(?:(?:[ \t]*(?:\r\n))?[ \t])))?))+?)';
 
-    private static $encoder;
+    private static QpMimeHeaderEncoder $encoder;
 
-    private $name;
-    private $lineLength = 76;
-    private $lang;
-    private $charset = 'utf-8';
+    private string $name;
+    private int $lineLength = 76;
+    private ?string $lang = null;
+    private string $charset = 'utf-8';
 
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return void
+     */
     public function setCharset(string $charset)
     {
         $this->charset = $charset;
@@ -46,8 +53,11 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Set the language used in this Header.
+	 * 设置标题中使用的语言。
      *
      * For example, for US English, 'en-us'.
+     *
+     * @return void
      */
     public function setLanguage(string $lang)
     {
@@ -64,6 +74,9 @@ abstract class AbstractHeader implements HeaderInterface
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setMaxLineLength(int $lineLength)
     {
         $this->lineLength = $lineLength;
@@ -121,6 +134,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Encode needed word tokens within a string of input.
+	 * 在输入字符串中编码所需的字记号
      */
     protected function encodeWords(HeaderInterface $header, string $input, int $usedLength = -1): string
     {
@@ -157,6 +171,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Splits a string into tokens in blocks of words which can be encoded quickly.
+	 * 将字符串分割成可以快速编码的单词块中的令牌
      *
      * @return string[]
      */
@@ -199,12 +214,11 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Get a token as an encoded word for safe insertion into headers.
+	 * 获取令牌作为编码字，以便安全地插入到标头中。
      */
     protected function getTokenAsEncodedWord(string $token, int $firstLineOffset = 0): string
     {
-        if (null === self::$encoder) {
-            self::$encoder = new QpMimeHeaderEncoder();
-        }
+        self::$encoder ??= new QpMimeHeaderEncoder();
 
         // Adjust $firstLineOffset to account for space needed for syntax
         $charsetDecl = $this->charset;
@@ -234,6 +248,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Generates tokens from the given string which include CRLF as individual tokens.
+	 * 从给定字符串生成令牌，其中包括作为单独令牌的CRLF。
      *
      * @return string[]
      */
@@ -244,12 +259,11 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Generate a list of all tokens in the final header.
+	 * 在最终头文件中生成所有令牌的列表
      */
     protected function toTokens(?string $string = null): array
     {
-        if (null === $string) {
-            $string = $this->getBodyAsString();
-        }
+        $string ??= $this->getBodyAsString();
 
         $tokens = [];
         // Generate atoms; split at all invisible boundaries followed by WSP
@@ -279,8 +293,8 @@ abstract class AbstractHeader implements HeaderInterface
         // Build all tokens back into compliant header
         foreach ($tokens as $i => $token) {
             // Line longer than specified maximum or token was just a new line
-            if (("\r\n" === $token) ||
-                ($i > 0 && \strlen($currentLine.$token) > $this->lineLength)
+            if (("\r\n" === $token)
+                || ($i > 0 && \strlen($currentLine.$token) > $this->lineLength)
                 && '' !== $currentLine) {
                 $headerLines[] = '';
                 $currentLine = &$headerLines[$lineCount++];

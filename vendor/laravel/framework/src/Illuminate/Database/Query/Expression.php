@@ -9,7 +9,7 @@ class Expression
 {
     /**
      * The value of the expression.
-	 * 表达式的值
+	 * 表达式值
      *
      * @var mixed
      */
@@ -40,7 +40,7 @@ class Expression
 
     /**
      * Get the value of the expression.
-	 * 获取表达式的
+	 * 获取表达式的值
      *
      * @return string
      */

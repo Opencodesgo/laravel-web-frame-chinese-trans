@@ -9,7 +9,7 @@ interface UrlGenerator
 {
     /**
      * Get the current URL for the request.
-	 * 获取请求的当前URL
+	 * 得到请求的当前URL
      *
      * @return string
      */
@@ -78,6 +78,14 @@ interface UrlGenerator
      * @return string
      */
     public function action($action, $parameters = [], $absolute = true);
+
+    /**
+     * Get the root controller namespace.
+	 * 获取根控制器命名空间
+     *
+     * @return string
+     */
+    public function getRootControllerNamespace();
 
     /**
      * Set the root controller namespace.

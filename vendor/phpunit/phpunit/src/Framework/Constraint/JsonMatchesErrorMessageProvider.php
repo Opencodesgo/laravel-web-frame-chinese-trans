@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，约束，Json 匹配错误消息提供程序
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -24,6 +29,7 @@ final class JsonMatchesErrorMessageProvider
 {
     /**
      * Translates JSON error to a human readable string.
+	 * 将JSON错误转换为人类可读的字符串
      */
     public static function determineJsonError(string $error, string $prefix = ''): ?string
     {
@@ -53,6 +59,7 @@ final class JsonMatchesErrorMessageProvider
 
     /**
      * Translates a given type to a human readable message prefix.
+	 * 将给定类型转换为人类可读的消息前缀
      */
     public static function translateTypeToPrefix(string $type): string
     {

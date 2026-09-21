@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，接收的方法调用
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

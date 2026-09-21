@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，异常，命令未找到异常
+ * Symfony，Component，Console，异常，命令未发现异常
  */
 
 /*
@@ -16,12 +16,13 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect command name typed in the console.
+ * 表示在控制台中键入的错误命令名称。
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
 class CommandNotFoundException extends \InvalidArgumentException implements ExceptionInterface
 {
-    private $alternatives;
+    private array $alternatives;
 
     /**
      * @param string          $message      Exception message to throw
@@ -39,7 +40,7 @@ class CommandNotFoundException extends \InvalidArgumentException implements Exce
     /**
      * @return string[]
      */
-    public function getAlternatives()
+    public function getAlternatives(): array
     {
         return $this->alternatives;
     }

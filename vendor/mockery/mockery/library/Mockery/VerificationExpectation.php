@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，验证的期望
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

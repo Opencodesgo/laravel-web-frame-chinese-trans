@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，Assert
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -99,6 +104,7 @@ abstract class Assert
 
     /**
      * Asserts that an array has a specified key.
+	 * 断言数组是否具有指定的键
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array
@@ -130,6 +136,7 @@ abstract class Assert
 
     /**
      * Asserts that an array does not have a specified key.
+	 * 断言数组没有指定的键
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array
@@ -163,6 +170,7 @@ abstract class Assert
 
     /**
      * Asserts that a haystack contains a needle.
+	 * 断言干草堆中有一根针
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
@@ -184,6 +192,7 @@ abstract class Assert
 
     /**
      * Asserts that a haystack does not contain a needle.
+	 * 断言干草堆中没有针
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
@@ -1389,12 +1398,12 @@ abstract class Assert
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType
      *
      * @psalm-param ExpectedType $expected
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert =ExpectedType $actual
      */
@@ -1433,13 +1442,13 @@ abstract class Assert
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-assert =ExpectedType $actual
      */
@@ -1459,13 +1468,13 @@ abstract class Assert
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
      * @psalm-template ExpectedType of object
      *
      * @psalm-param class-string<ExpectedType> $expected
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !ExpectedType $actual
      */

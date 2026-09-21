@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Session会话，基于缓存的会话处理
+ * Illuminate，Session，基于缓存的会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -28,7 +28,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new cache driven handler instance.
-	 * 创建新的缓存驱动处理实例
+	 * 创建一个新的缓存驱动处理程序实例
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @param  int  $minutes
@@ -42,50 +42,62 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function close()
+    public function close(): bool
     {
         return true;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
-    public function read($sessionId)
+    public function read($sessionId): string
     {
         return $this->cache->get($sessionId, '');
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function write($sessionId, $data)
+    public function write($sessionId, $data): bool
     {
         return $this->cache->put($sessionId, $data, $this->minutes * 60);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
-    public function destroy($sessionId)
+    public function destroy($sessionId): bool
     {
         return $this->cache->forget($sessionId);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return int
      */
-    public function gc($lifetime)
+    public function gc($lifetime): int
     {
-        return true;
+        return 0;
     }
 
     /**

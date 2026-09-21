@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，匹配器 Assert
+ */
+
 namespace Hamcrest;
 
 /*
@@ -10,6 +14,7 @@ class MatcherAssert
 
     /**
      * Number of assertions performed.
+	 * 执行断言的数量
      *
      * @var int
      */

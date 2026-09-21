@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，过滤器，主义，Doctrine 集合过滤器
+ */
 
 namespace DeepCopy\Filter\Doctrine;
 
@@ -12,6 +15,7 @@ class DoctrineCollectionFilter implements Filter
 {
     /**
      * Copies the object property doctrine collection.
+	 * 复制对象属性原则集合
      *
      * {@inheritdoc}
      */
@@ -19,7 +23,9 @@ class DoctrineCollectionFilter implements Filter
     {
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
 
-        $reflectionProperty->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $reflectionProperty->setAccessible(true);
+        }
         $oldCollection = $reflectionProperty->getValue($object);
 
         $newCollection = $oldCollection->map(

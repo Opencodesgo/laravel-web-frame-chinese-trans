@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，测试，约束，响应被重定向
+ * Symfony，Component，HttpFoundation，测试，约束，响应头位置相同
  */
 
 /*
@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ResponseIsRedirected extends Constraint
 {
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return 'is redirected';
@@ -29,8 +26,6 @@ final class ResponseIsRedirected extends Constraint
 
     /**
      * @param Response $response
-     *
-     * {@inheritdoc}
      */
     protected function matches($response): bool
     {
@@ -39,8 +34,6 @@ final class ResponseIsRedirected extends Constraint
 
     /**
      * @param Response $response
-     *
-     * {@inheritdoc}
      */
     protected function failureDescription($response): string
     {
@@ -49,8 +42,6 @@ final class ResponseIsRedirected extends Constraint
 
     /**
      * @param Response $response
-     *
-     * {@inheritdoc}
      */
     protected function additionalFailureDescription($response): string
     {

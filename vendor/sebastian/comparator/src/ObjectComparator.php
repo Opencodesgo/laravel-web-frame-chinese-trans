@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，对象比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -17,11 +22,13 @@ use function substr_replace;
 
 /**
  * Compares objects for equality.
+ * 比较对象是否相等。
  */
 class ObjectComparator extends ArrayComparator
 {
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器是否可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare

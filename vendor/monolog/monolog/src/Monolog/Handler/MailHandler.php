@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，邮件处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Formatter\HtmlFormatter;
 
 /**
  * Base class for all mail handlers
+ * 所有邮件处理程序的基类
  *
  * @author Gyula Sallai
  *
@@ -46,6 +51,7 @@ abstract class MailHandler extends AbstractProcessingHandler
 
     /**
      * Send a mail with the given content
+	 * 发送带有给定内容的邮件
      *
      * @param string $content formatted email body to be sent
      * @param array  $records the array of log records that formed this content
@@ -85,6 +91,7 @@ abstract class MailHandler extends AbstractProcessingHandler
 
     /**
      * Gets the default formatter.
+	 * 获取默认格式化程序
      *
      * @return FormatterInterface
      */

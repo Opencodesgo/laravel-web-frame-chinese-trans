@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Mime，标题，邮箱列表标头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,12 +19,13 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * A Mailbox list MIME Header for something like From, To, Cc, and Bcc (one or more named addresses).
+ * 邮箱列表MIME头，用于发送、发送、抄送和密件抄送（一个或多个指定地址）。
  *
  * @author Chris Corbyn
  */
 final class MailboxListHeader extends AbstractHeader
 {
-    private $addresses = [];
+    private array $addresses = [];
 
     /**
      * @param Address[] $addresses
@@ -38,7 +42,7 @@ final class MailboxListHeader extends AbstractHeader
      *
      * @throws RfcComplianceException
      */
-    public function setBody($body)
+    public function setBody(mixed $body): void
     {
         $this->setAddresses($body);
     }
@@ -55,12 +59,13 @@ final class MailboxListHeader extends AbstractHeader
 
     /**
      * Sets a list of addresses to be shown in this Header.
+	 * 设置要在此报头中显示的地址列表
      *
      * @param Address[] $addresses
      *
      * @throws RfcComplianceException
      */
-    public function setAddresses(array $addresses)
+    public function setAddresses(array $addresses): void
     {
         $this->addresses = [];
         $this->addAddresses($addresses);
@@ -68,12 +73,13 @@ final class MailboxListHeader extends AbstractHeader
 
     /**
      * Sets a list of addresses to be shown in this Header.
+	 * 设置要在此报头中显示的地址列表
      *
      * @param Address[] $addresses
      *
      * @throws RfcComplianceException
      */
-    public function addAddresses(array $addresses)
+    public function addAddresses(array $addresses): void
     {
         foreach ($addresses as $address) {
             $this->addAddress($address);
@@ -83,7 +89,7 @@ final class MailboxListHeader extends AbstractHeader
     /**
      * @throws RfcComplianceException
      */
-    public function addAddress(Address $address)
+    public function addAddress(Address $address): void
     {
         $this->addresses[] = $address;
     }
@@ -98,6 +104,7 @@ final class MailboxListHeader extends AbstractHeader
 
     /**
      * Gets the full mailbox list of this Header as an array of valid RFC 2822 strings.
+	 * 以有效RFC 2822字符串数组的形式获取此标头的完整邮箱列表。
      *
      * @return string[]
      *
@@ -124,6 +131,7 @@ final class MailboxListHeader extends AbstractHeader
 
     /**
      * Redefine the encoding requirements for addresses.
+	 * 重新定义地址的编码要求
      *
      * All "specials" must be encoded as the full header value will not be quoted
      *

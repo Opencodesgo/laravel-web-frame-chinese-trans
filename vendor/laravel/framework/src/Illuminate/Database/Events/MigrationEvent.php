@@ -11,7 +11,7 @@ use Illuminate\Database\Migrations\Migration;
 abstract class MigrationEvent implements MigrationEventContract
 {
     /**
-     * An migration instance.
+     * A migration instance.
 	 * 迁移实例
      *
      * @var \Illuminate\Database\Migrations\Migration
@@ -28,7 +28,7 @@ abstract class MigrationEvent implements MigrationEventContract
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Database\Migrations\Migration  $migration
      * @param  string  $method

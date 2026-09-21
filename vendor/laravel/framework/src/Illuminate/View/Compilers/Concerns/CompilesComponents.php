@@ -5,7 +5,9 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
+use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Support\Str;
+use Illuminate\View\ComponentAttributeBag;
 
 trait CompilesComponents
 {
@@ -26,7 +28,7 @@ trait CompilesComponents
      */
     protected function compileComponent($expression)
     {
-        [$component, $alias, $data] = strpos($expression, ',') !== false
+        [$component, $alias, $data] = str_contains($expression, ',')
                     ? array_map('trim', explode(',', trim($expression, '()'), 3)) + ['', '', '']
                     : [trim($expression, '()'), '', ''];
 
@@ -69,7 +71,7 @@ trait CompilesComponents
     {
         return implode("\n", [
             '<?php if (isset($component)) { $__componentOriginal'.$hash.' = $component; } ?>',
-            '<?php $component = $__env->getContainer()->make('.Str::finish($component, '::class').', '.($data ?: '[]').'); ?>',
+            '<?php $component = '.$component.'::resolve('.($data ?: '[]').' + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>',
             '<?php $component->withName('.$alias.'); ?>',
             '<?php if ($component->shouldRender()): ?>',
             '<?php $__env->startComponent($component->resolveView(), $component->data()); ?>',
@@ -84,15 +86,7 @@ trait CompilesComponents
      */
     protected function compileEndComponent()
     {
-        $hash = array_pop(static::$componentHashStack);
-
-        return implode("\n", [
-            '<?php if (isset($__componentOriginal'.$hash.')): ?>',
-            '<?php $component = $__componentOriginal'.$hash.'; ?>',
-            '<?php unset($__componentOriginal'.$hash.'); ?>',
-            '<?php endif; ?>',
-            '<?php echo $__env->renderComponent(); ?>',
-        ]);
+        return '<?php echo $__env->renderComponent(); ?>';
     }
 
     /**
@@ -103,7 +97,13 @@ trait CompilesComponents
      */
     public function compileEndComponentClass()
     {
-        return static::compileEndComponent()."\n".implode("\n", [
+        $hash = array_pop(static::$componentHashStack);
+
+        return $this->compileEndComponent()."\n".implode("\n", [
+            '<?php endif; ?>',
+            '<?php if (isset($__componentOriginal'.$hash.')): ?>',
+            '<?php $component = $__componentOriginal'.$hash.'; ?>',
+            '<?php unset($__componentOriginal'.$hash.'); ?>',
             '<?php endif; ?>',
         ]);
     }
@@ -122,7 +122,7 @@ trait CompilesComponents
 
     /**
      * Compile the end-slot statements into valid PHP.
-	 * 将结束槽语句编译成有效的PHP
+	 * 将结束槽语句编译成有效的PH
      *
      * @return string
      */
@@ -163,7 +163,11 @@ trait CompilesComponents
      */
     protected function compileProps($expression)
     {
-        return "<?php \$attributes = \$attributes->exceptProps{$expression}; ?>
+        return "<?php \$attributes ??= new \\Illuminate\\View\\ComponentAttributeBag; ?>
+<?php foreach(\$attributes->onlyProps{$expression} as \$__key => \$__value) {
+    \$\$__key = \$\$__key ?? \$__value;
+} ?>
+<?php \$attributes = \$attributes->exceptProps{$expression}; ?>
 <?php foreach (array_filter({$expression}, 'is_string', ARRAY_FILTER_USE_KEY) as \$__key => \$__value) {
     \$\$__key = \$\$__key ?? \$__value;
 } ?>
@@ -175,6 +179,21 @@ trait CompilesComponents
     }
 
     /**
+     * Compile the aware statement into valid PHP.
+	 * 将aware语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileAware($expression)
+    {
+        return "<?php foreach ({$expression} as \$__key => \$__value) {
+    \$__consumeVariable = is_string(\$__key) ? \$__key : \$__value;
+    \$\$__consumeVariable = is_string(\$__key) ? \$__env->getConsumableComponentData(\$__key, \$__value) : \$__env->getConsumableComponentData(\$__value);
+} ?>";
+    }
+
+    /**
      * Sanitize the given component attribute value.
 	 * 清理给定的组件属性值
      *
@@ -183,8 +202,12 @@ trait CompilesComponents
      */
     public static function sanitizeComponentAttribute($value)
     {
+        if ($value instanceof CanBeEscapedWhenCastToString) {
+            return $value->escapeWhenCastingToString();
+        }
+
         return is_string($value) ||
-               (is_object($value) && method_exists($value, '__toString'))
+               (is_object($value) && ! $value instanceof ComponentAttributeBag && method_exists($value, '__toString'))
                         ? e($value)
                         : $value;
     }

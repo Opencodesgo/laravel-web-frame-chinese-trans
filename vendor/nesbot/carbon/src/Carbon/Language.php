@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，语言 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -80,6 +83,7 @@ class Language implements JsonSerializable
 
     /**
      * Get the list of the known languages.
+	 * 获取已知语言的列表
      *
      * @return array
      */
@@ -94,6 +98,7 @@ class Language implements JsonSerializable
 
     /**
      * Get the list of the known regions.
+	 * 获取已知区域的列表
      *
      * @return array
      */
@@ -108,6 +113,7 @@ class Language implements JsonSerializable
 
     /**
      * Get both isoName and nativeName as an array.
+	 * 获取isoName和nativeName作为数组
      *
      * @return array
      */
@@ -125,6 +131,7 @@ class Language implements JsonSerializable
 
     /**
      * Returns the original locale ID.
+	 * 返回原始语言环境ID
      *
      * @return string
      */
@@ -173,6 +180,7 @@ class Language implements JsonSerializable
 
     /**
      * Returns the region part of the locale.
+	 * 返回区域设置的区域部分
      *
      * @return string|null
      */
@@ -183,6 +191,7 @@ class Language implements JsonSerializable
 
     /**
      * Returns the region name for the current language.
+	 * 返回当前语言的地区名称
      *
      * @return string|null
      */
@@ -193,6 +202,7 @@ class Language implements JsonSerializable
 
     /**
      * Returns the long ISO language name.
+	 * 返回长ISO语言名称
      *
      * @return string
      */
@@ -207,6 +217,7 @@ class Language implements JsonSerializable
 
     /**
      * Set the ISO language name.
+	 * 设置ISO语言名称
      *
      * @param string $isoName
      */
@@ -219,6 +230,7 @@ class Language implements JsonSerializable
 
     /**
      * Return the full name of the language in this language.
+	 * 返回该语言中该语言的全名
      *
      * @return string
      */
@@ -233,6 +245,7 @@ class Language implements JsonSerializable
 
     /**
      * Set the name of the language in this language.
+	 * 设置该语言的语言名称
      *
      * @param string $nativeName
      */
@@ -245,6 +258,7 @@ class Language implements JsonSerializable
 
     /**
      * Returns the short ISO language name.
+	 * 返回简短的ISO语言名称
      *
      * @return string
      */
@@ -257,6 +271,7 @@ class Language implements JsonSerializable
 
     /**
      * Get the short name of the language in this language.
+	 * 获取该语言中该语言的简称
      *
      * @return string
      */
@@ -269,6 +284,7 @@ class Language implements JsonSerializable
 
     /**
      * Get a string with short ISO name, region in parentheses if applicable, variant in parentheses if applicable.
+	 * 获取具有短ISO名称的字符串，如果适用，区域在括号中，如果适用，变量在括号中。
      *
      * @return string
      */
@@ -282,6 +298,7 @@ class Language implements JsonSerializable
 
     /**
      * Get a string with short native name, region in parentheses if applicable, variant in parentheses if applicable.
+	 * 获取具有短本地名称的字符串，如果适用，区域在括号中，如果适用，变量在括号中。
      *
      * @return string
      */
@@ -295,6 +312,7 @@ class Language implements JsonSerializable
 
     /**
      * Get a string with long ISO name, region in parentheses if applicable, variant in parentheses if applicable.
+	 * 获取具有长ISO名称的字符串，如果适用，区域在括号中，如果适用，变量在括号中。
      *
      * @return string
      */
@@ -308,6 +326,7 @@ class Language implements JsonSerializable
 
     /**
      * Get a string with long native name, region in parentheses if applicable, variant in parentheses if applicable.
+	 * 获取具有长本地名称的字符串，如果适用，区域在括号中，如果适用，变量在括号中。
      *
      * @return string
      */
@@ -321,6 +340,7 @@ class Language implements JsonSerializable
 
     /**
      * Returns the original locale ID.
+	 * 返回原始语言环境ID
      *
      * @return string
      */
@@ -331,6 +351,7 @@ class Language implements JsonSerializable
 
     /**
      * Get a string with short ISO name, region in parentheses if applicable, variant in parentheses if applicable.
+	 * 获取具有短ISO名称的字符串，如果适用，区域在括号中，如果适用，变量在括号中。
      *
      * @return string
      */

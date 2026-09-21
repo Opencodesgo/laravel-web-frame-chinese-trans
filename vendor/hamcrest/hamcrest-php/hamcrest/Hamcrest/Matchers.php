@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，匹配器
+ */
 
 /*
  Copyright (c) 2009-2010 hamcrest.org
@@ -10,6 +13,7 @@ namespace Hamcrest;
 
 /**
  * A series of static factories for all hamcrest matchers.
+ * 所有hamcrest匹配器的一系列静态工厂。
  */
 class Matchers
 {

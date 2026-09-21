@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，Legacy 模拟接口
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -19,6 +22,7 @@ interface LegacyMockInterface
      * In the event shouldReceive() accepting an array of methods/returns
      * this method will switch them from normal expectations to default
      * expectations
+	 * 如果 eventReceive() 接受一个方法/返回值的数组，此方法将把它们从常规预期切换为默认预期。
      *
      * @return self
      */
@@ -26,6 +30,7 @@ interface LegacyMockInterface
 
     /**
      * Set mock to defer unexpected methods to its parent if possible
+	 * 如果可能的话，将mock设置为将意外的方法推迟给它的父方法。
      *
      * @return self
      */
@@ -33,6 +38,7 @@ interface LegacyMockInterface
 
     /**
      * Fetch the next available allocation order number
+	 * 获取下一个可用的分配订单号
      *
      * @return int
      */
@@ -40,6 +46,7 @@ interface LegacyMockInterface
 
     /**
      * Find an expectation matching the given method and arguments
+	 * 查找与给定方法和参数匹配的期望
      *
      * @template TMixed
      *
@@ -52,6 +59,7 @@ interface LegacyMockInterface
 
     /**
      * Return the container for this mock
+	 * 返回此模拟的容器
      *
      * @return Container
      */
@@ -59,6 +67,7 @@ interface LegacyMockInterface
 
     /**
      * Get current ordered number
+	 * 获取当前订购编号
      *
      * @return int
      */
@@ -66,6 +75,7 @@ interface LegacyMockInterface
 
     /**
      * Gets the count of expectations for this mock
+	 * 获取此模拟的期望计数
      *
      * @return int
      */
@@ -73,6 +83,7 @@ interface LegacyMockInterface
 
     /**
      * Return the expectations director for the given method
+	 * 返回给定方法的期望方向
      *
      * @param string $method
      *
@@ -82,6 +93,7 @@ interface LegacyMockInterface
 
     /**
      * Fetch array of ordered groups
+	 * 获取有序组的数组
      *
      * @return array<string,int>
      */
@@ -99,6 +111,7 @@ interface LegacyMockInterface
 
     /**
      * Return the name for this mock
+	 * 返回模拟的名称
      *
      * @return string
      */
@@ -106,6 +119,7 @@ interface LegacyMockInterface
 
     /**
      * Alternative setup method to constructor
+	 * 构造函数的可选设置方法
      *
      * @param object $partialObject
      *
@@ -120,6 +134,7 @@ interface LegacyMockInterface
 
     /**
      * Set current ordered number
+	 * 设置当前有序数
      *
      * @param int $order
      *
@@ -129,6 +144,7 @@ interface LegacyMockInterface
 
     /**
      * Return the expectations director for the given method
+	 * 返回给定方法的期望方向
      *
      * @param string $method
      *
@@ -138,6 +154,7 @@ interface LegacyMockInterface
 
     /**
      * Set ordering for a group
+	 * 为组设置排序
      *
      * @param string $group
      * @param int    $order
@@ -148,6 +165,7 @@ interface LegacyMockInterface
 
     /**
      * Tear down tasks for this mock
+	 * 删除此模拟的任务
      *
      * @return void
      */
@@ -155,6 +173,7 @@ interface LegacyMockInterface
 
     /**
      * Validate the current mock's ordering
+	 * 验证当前mock的顺序
      *
      * @param string $method
      * @param int    $order
@@ -167,6 +186,7 @@ interface LegacyMockInterface
 
     /**
      * Iterate across all expectation directors and validate each
+	 * 遍历所有期望董事并验证每个董事
      *
      * @throws Throwable
      *
@@ -176,6 +196,7 @@ interface LegacyMockInterface
 
     /**
      * Allows additional methods to be mocked that do not explicitly exist on mocked class
+	 * 允许模拟未显式存在于模拟类中的其他方法
      *
      * @param  string $method the method name to be mocked
      * @return self
@@ -189,6 +210,7 @@ interface LegacyMockInterface
 
     /**
      * Set mock to defer unexpected methods to its parent if possible
+	 * 如果可能的话，将mock设置为将意外的方法推迟给它的父方法。
      *
      * @deprecated since 1.4.0. Please use makePartial() instead.
      *
@@ -212,6 +234,7 @@ interface LegacyMockInterface
 
     /**
      * Set mock to ignore unexpected methods and return Undefined class
+	 * 将mock设置为忽略意外方法并返回未定义类
      *
      * @template TReturnValue
      *
@@ -240,6 +263,7 @@ interface LegacyMockInterface
 
     /**
      * Shortcut method for setting an expectation that a method should not be called.
+	 * 用于设置不应调用方法的期望的快捷方法。
      *
      * @param string ...$methodNames one or many methods that are expected not to be called in this mock
      *
@@ -249,6 +273,7 @@ interface LegacyMockInterface
 
     /**
      * Set expected method calls
+	 * 设置预期的方法调用
      *
      * @param string ...$methodNames one or many methods that are expected to be called in this mock
      *

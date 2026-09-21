@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，MySql 语法
+ * Illuminate，数据库，语法，MySql 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -16,10 +16,10 @@ class MySqlGrammar extends Grammar
      * The possible column modifiers.
 	 * 可能的列修饰符
      *
-     * @var array
+     * @var string[]
      */
     protected $modifiers = [
-        'Unsigned', 'Charset', 'Collate', 'VirtualAs', 'StoredAs', 'Nullable',
+        'Unsigned', 'Charset', 'Collate', 'VirtualAs', 'StoredAs', 'Nullable', 'Invisible',
         'Srid', 'Default', 'Increment', 'Comment', 'After', 'First',
     ];
 
@@ -27,9 +27,42 @@ class MySqlGrammar extends Grammar
      * The possible column serials.
 	 * 可能的列序列
      *
-     * @var array
+     * @var string[]
      */
     protected $serials = ['bigInteger', 'integer', 'mediumInteger', 'smallInteger', 'tinyInteger'];
+
+    /**
+     * Compile a create database command.
+	 * 编译一个创建数据库命令
+     *
+     * @param  string  $name
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return string
+     */
+    public function compileCreateDatabase($name, $connection)
+    {
+        return sprintf(
+            'create database %s default character set %s default collate %s',
+            $this->wrapValue($name),
+            $this->wrapValue($connection->getConfig('charset')),
+            $this->wrapValue($connection->getConfig('collation')),
+        );
+    }
+
+    /**
+     * Compile a drop database if exists command.
+	 * 编译一个drop database if exists命令
+     *
+     * @param  string  $name
+     * @return string
+     */
+    public function compileDropDatabaseIfExists($name)
+    {
+        return sprintf(
+            'drop database if exists %s',
+            $this->wrapValue($name)
+        );
+    }
 
     /**
      * Compile the query to determine the list of tables.
@@ -60,7 +93,7 @@ class MySqlGrammar extends Grammar
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
      * @param  \Illuminate\Database\Connection  $connection
-     * @return string
+     * @return array
      */
     public function compileCreate(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
@@ -79,28 +112,27 @@ class MySqlGrammar extends Grammar
         // Finally, we will append the engine configuration onto this SQL statement as
         // the final thing we do before returning this finished SQL. Once this gets
         // added the query will be ready to execute against the real connections.
-		// 最后，我们将把引擎配置附加到这个SQL语句中。
-        return $this->compileCreateEngine(
+        return array_values(array_filter(array_merge([$this->compileCreateEngine(
             $sql, $connection, $blueprint
-        );
+        )], $this->compileAutoIncrementStartingValues($blueprint))));
     }
 
     /**
      * Create the main create table clause.
-	 * 创建主创建表子句
+	 * 创建主Create table子句
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
      * @param  \Illuminate\Database\Connection  $connection
-     * @return string
+     * @return array
      */
     protected function compileCreateTable($blueprint, $command, $connection)
     {
-        return sprintf('%s table %s (%s)',
+        return trim(sprintf('%s table %s (%s)',
             $blueprint->temporary ? 'create temporary' : 'create',
             $this->wrapTable($blueprint),
             implode(', ', $this->getColumns($blueprint))
-        );
+        ));
     }
 
     /**
@@ -117,7 +149,7 @@ class MySqlGrammar extends Grammar
         // First we will set the character set if one has been set on either the create
         // blueprint itself or on the root configuration for the connection that the
         // table is being created on. We will add these to the create table query.
-		// 首先，我们将设置字符集，如果一个已经设置了创建蓝图本身。
+		// 首先，我们将设置字符集，如果一个已经设置了创建。
         if (isset($blueprint->charset)) {
             $sql .= ' default character set '.$blueprint->charset;
         } elseif (! is_null($charset = $connection->getConfig('charset'))) {
@@ -127,7 +159,6 @@ class MySqlGrammar extends Grammar
         // Next we will add the collation to the create table statement if one has been
         // added to either this create table blueprint or the configuration for this
         // connection that the query is targeting. We'll add it to this SQL query.
-		// 接下来，我们将把排序规则添加到create table语句中(如果有的话)。
         if (isset($blueprint->collation)) {
             $sql .= " collate '{$blueprint->collation}'";
         } elseif (! is_null($collation = $connection->getConfig('collation'))) {
@@ -163,13 +194,50 @@ class MySqlGrammar extends Grammar
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
-     * @return string
+     * @return array
      */
     public function compileAdd(Blueprint $blueprint, Fluent $command)
     {
         $columns = $this->prefixArray('add', $this->getColumns($blueprint));
 
-        return 'alter table '.$this->wrapTable($blueprint).' '.implode(', ', $columns);
+        return array_values(array_merge(
+            ['alter table '.$this->wrapTable($blueprint).' '.implode(', ', $columns)],
+            $this->compileAutoIncrementStartingValues($blueprint)
+        ));
+    }
+
+    /**
+     * Compile the auto-incrementing column starting values.
+	 * 编译自动递增的列起始值
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @return array
+     */
+    public function compileAutoIncrementStartingValues(Blueprint $blueprint)
+    {
+        return collect($blueprint->autoIncrementingStartingValues())->map(function ($value, $column) use ($blueprint) {
+            return 'alter table '.$this->wrapTable($blueprint->getTable()).' auto_increment = '.$value;
+        })->all();
+    }
+
+    /**
+     * Compile a rename column command.
+	 * 编译重命名列命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations()
+            ? sprintf('alter table %s rename column %s to %s',
+                $this->wrapTable($blueprint),
+                $this->wrap($command->from),
+                $this->wrap($command->to)
+            )
+            : parent::compileRenameColumn($blueprint, $command, $connection);
     }
 
     /**
@@ -182,9 +250,11 @@ class MySqlGrammar extends Grammar
      */
     public function compilePrimary(Blueprint $blueprint, Fluent $command)
     {
-        $command->name(null);
-
-        return $this->compileKey($blueprint, $command, 'primary key');
+        return sprintf('alter table %s add primary key %s(%s)',
+            $this->wrapTable($blueprint),
+            $command->algorithm ? 'using '.$command->algorithm : '',
+            $this->columnize($command->columns)
+        );
     }
 
     /**
@@ -211,6 +281,19 @@ class MySqlGrammar extends Grammar
     public function compileIndex(Blueprint $blueprint, Fluent $command)
     {
         return $this->compileKey($blueprint, $command, 'index');
+    }
+
+    /**
+     * Compile a fulltext index key command.
+	 * 编译一个全文索引键命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileFullText(Blueprint $blueprint, Fluent $command)
+    {
+        return $this->compileKey($blueprint, $command, 'fulltext');
     }
 
     /**
@@ -261,7 +344,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a drop table (if exists) command.
-	 * 编译一个删除表(i如果存在)命令
+	 * 编译一个删除表（如果存在）命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -331,6 +414,19 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a drop fulltext index command.
+	 * 编译一个删除全文索引命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileDropFullText(Blueprint $blueprint, Fluent $command)
+    {
+        return $this->compileDropIndex($blueprint, $command);
+    }
+
+    /**
      * Compile a drop spatial index command.
 	 * 编译一个删除空间索引命令
      *
@@ -345,7 +441,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a drop foreign key command.
-	 * 编译一个删除外键命令。
+	 * 编译一个删除外键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -427,7 +523,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the SQL needed to retrieve all view names.
-	 * 编译检索所有视图名所需的SQL。
+	 * 编译检索所有视图名所需的SQL
      *
      * @return string
      */
@@ -459,6 +555,22 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a table comment command.
+	 * 编译一个表注释命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileTableComment(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('alter table %s comment = %s',
+            $this->wrapTable($blueprint),
+            "'".str_replace("'", "''", $command->comment)."'"
+        );
+    }
+
+    /**
      * Create the column definition for a char type.
 	 * 为char类型创建列定义
      *
@@ -480,6 +592,18 @@ class MySqlGrammar extends Grammar
     protected function typeString(Fluent $column)
     {
         return "varchar({$column->length})";
+    }
+
+    /**
+     * Create the column definition for a tiny text type.
+	 * 为小型文本类型创建列定义
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeTinyText(Fluent $column)
+    {
+        return 'tinytext';
     }
 
     /**
@@ -701,7 +825,11 @@ class MySqlGrammar extends Grammar
     {
         $columnType = $column->precision ? "datetime($column->precision)" : 'datetime';
 
-        return $column->useCurrent ? "$columnType default CURRENT_TIMESTAMP" : $columnType;
+        $current = $column->precision ? "CURRENT_TIMESTAMP($column->precision)" : 'CURRENT_TIMESTAMP';
+
+        $columnType = $column->useCurrent ? "$columnType default $current" : $columnType;
+
+        return $column->useCurrentOnUpdate ? "$columnType on update $current" : $columnType;
     }
 
     /**
@@ -751,9 +879,11 @@ class MySqlGrammar extends Grammar
     {
         $columnType = $column->precision ? "timestamp($column->precision)" : 'timestamp';
 
-        $defaultCurrent = $column->precision ? "CURRENT_TIMESTAMP($column->precision)" : 'CURRENT_TIMESTAMP';
+        $current = $column->precision ? "CURRENT_TIMESTAMP($column->precision)" : 'CURRENT_TIMESTAMP';
 
-        return $column->useCurrent ? "$columnType default $defaultCurrent" : $columnType;
+        $columnType = $column->useCurrent ? "$columnType default $current" : $columnType;
+
+        return $column->useCurrentOnUpdate ? "$columnType on update $current" : $columnType;
     }
 
     /**
@@ -878,7 +1008,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial GeometryCollection type.
-	 * 为空间GeometryCollection类型创建列定义。
+	 * 为空间GeometryCollection类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -948,8 +1078,16 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyVirtualAs(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->virtualAs)) {
-            return " as ({$column->virtualAs})";
+        if (! is_null($virtualAs = $column->virtualAsJson)) {
+            if ($this->isJsonSelector($virtualAs)) {
+                $virtualAs = $this->wrapJsonSelector($virtualAs);
+            }
+
+            return " as ({$virtualAs})";
+        }
+
+        if (! is_null($virtualAs = $column->virtualAs)) {
+            return " as ({$virtualAs})";
         }
     }
 
@@ -963,8 +1101,16 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyStoredAs(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->storedAs)) {
-            return " as ({$column->storedAs}) stored";
+        if (! is_null($storedAs = $column->storedAsJson)) {
+            if ($this->isJsonSelector($storedAs)) {
+                $storedAs = $this->wrapJsonSelector($storedAs);
+            }
+
+            return " as ({$storedAs}) stored";
+        }
+
+        if (! is_null($storedAs = $column->storedAs)) {
+            return " as ({$storedAs}) stored";
         }
     }
 
@@ -1023,7 +1169,10 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyNullable(Blueprint $blueprint, Fluent $column)
     {
-        if (is_null($column->virtualAs) && is_null($column->storedAs)) {
+        if (is_null($column->virtualAs) &&
+            is_null($column->virtualAsJson) &&
+            is_null($column->storedAs) &&
+            is_null($column->storedAsJson)) {
             return $column->nullable ? ' null' : ' not null';
         }
 
@@ -1033,8 +1182,23 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Get the SQL for an invisible column modifier.
+	 * 获取不可见列修饰符的SQL
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyInvisible(Blueprint $blueprint, Fluent $column)
+    {
+        if (! is_null($column->invisible)) {
+            return ' invisible';
+        }
+    }
+
+    /**
      * Get the SQL for a default column modifier.
-	 * 为默认的列修改器获取SQL
+	 * 获取默认列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -1117,7 +1281,7 @@ class MySqlGrammar extends Grammar
      */
     protected function modifySrid(Blueprint $blueprint, Fluent $column)
     {
-        if (! is_null($column->srid) && is_int($column->srid) && $column->srid > 0) {
+        if (is_int($column->srid) && $column->srid > 0) {
             return ' srid '.$column->srid;
         }
     }
@@ -1136,5 +1300,19 @@ class MySqlGrammar extends Grammar
         }
 
         return $value;
+    }
+
+    /**
+     * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
+
+        return 'json_unquote(json_extract('.$field.$path.'))';
     }
 }

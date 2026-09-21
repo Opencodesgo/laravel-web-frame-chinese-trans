@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，全局变量枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Global Variable Enumerator class.
+ * 全局变量枚举器类。
  */
 class GlobalVariableEnumerator extends Enumerator
 {
@@ -46,6 +50,7 @@ class GlobalVariableEnumerator extends Enumerator
 
     /**
      * Get defined global variables.
+	 * 获取已定义的全局变量
      *
      * @return array
      */
@@ -66,6 +71,7 @@ class GlobalVariableEnumerator extends Enumerator
 
     /**
      * Prepare formatted global variable array.
+	 * 准备格式化的全局变量数组
      *
      * @param array $globals
      *

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，虚拟类，根据实际使用修改
+ * Illuminate，基础，控制台，存根，根据需要实际修改
  */
 
 namespace {{ namespace }};
 
-use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\{{ ruleType }};
 
-class {{ class }} implements Rule
+class {{ class }} implements {{ ruleType }}
 {
     /**
      * Create a new rule instance.

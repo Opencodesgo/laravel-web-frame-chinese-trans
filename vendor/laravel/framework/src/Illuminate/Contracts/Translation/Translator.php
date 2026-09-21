@@ -9,7 +9,7 @@ interface Translator
 {
     /**
      * Get the translation for a given key.
-	 * 获取给定键的翻译
+	 * 得到给定主键的翻译
      *
      * @param  string  $key
      * @param  array  $replace

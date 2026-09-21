@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Cookie，CookieJar
+ * Illuminate，Cookie，Cookie压缩包
  */
 
 namespace Illuminate\Cookie;
@@ -17,7 +17,7 @@ class CookieJar implements JarContract
 
     /**
      * The default path (if specified).
-	 * 默认路径（如果指定)
+	 * 默认路径（如果指定）
      *
      * @var string
      */
@@ -27,13 +27,13 @@ class CookieJar implements JarContract
      * The default domain (if specified).
 	 * 默认域（如果指定）
      *
-     * @var string
+     * @var string|null
      */
     protected $domain;
 
     /**
      * The default secure setting (defaults to null).
-	 * 默认值设置(默认值为null)
+	 * 默认的安全设置（默认为null）
      *
      * @var bool|null
      */
@@ -41,7 +41,7 @@ class CookieJar implements JarContract
 
     /**
      * The default SameSite option (defaults to lax).
-	 * 默认的SameSite选项(默认为lax)
+	 * 默认的SameSite选项（默认为lax）
      *
      * @var string
      */
@@ -49,7 +49,7 @@ class CookieJar implements JarContract
 
     /**
      * All of the cookies queued for sending.
-	 * 所有的cookie都排队发送
+	 * 所有排队等待发送的cookie
      *
      * @var \Symfony\Component\HttpFoundation\Cookie[]
      */
@@ -80,8 +80,8 @@ class CookieJar implements JarContract
     }
 
     /**
-     * Create a cookie that lasts "forever" (five years).
-	 * 创建一个"永远"(5年)的cookie
+     * Create a cookie that lasts "forever" (400 days).
+	 * 制作一个"永远"（400天）的cookie
      *
      * @param  string  $name
      * @param  string  $value
@@ -95,7 +95,7 @@ class CookieJar implements JarContract
      */
     public function forever($name, $value, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null)
     {
-        return $this->make($name, $value, 2628000, $path, $domain, $secure, $httpOnly, $raw, $sameSite);
+        return $this->make($name, $value, 576000, $path, $domain, $secure, $httpOnly, $raw, $sameSite);
     }
 
     /**
@@ -114,7 +114,7 @@ class CookieJar implements JarContract
 
     /**
      * Determine if a cookie has been queued.
-	 * 确定是否已经排队了
+	 * 确定cookie是否已排队
      *
      * @param  string  $key
      * @param  string|null  $path
@@ -127,7 +127,7 @@ class CookieJar implements JarContract
 
     /**
      * Get a queued cookie instance.
-	 * 得到一个排队的cookie实例
+	 * 获取一个排队的cookie实例
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -147,9 +147,9 @@ class CookieJar implements JarContract
 
     /**
      * Queue a cookie to send with the next response.
-	 * 队列一个cookie发送给下一个响应
+	 * 将cookie与下一个响应一起排队发送
      *
-     * @param  array  $parameters
+     * @param  mixed  ...$parameters
      * @return void
      */
     public function queue(...$parameters)
@@ -165,6 +165,20 @@ class CookieJar implements JarContract
         }
 
         $this->queued[$cookie->getName()][$cookie->getPath()] = $cookie;
+    }
+
+    /**
+     * Queue a cookie to expire with the next response.
+	 * 将cookie排队等待下一个响应过期
+     *
+     * @param  string  $name
+     * @param  string|null  $path
+     * @param  string|null  $domain
+     * @return void
+     */
+    public function expire($name, $path = null, $domain = null)
+    {
+        $this->queue($this->forget($name, $path, $domain));
     }
 
     /**
@@ -192,10 +206,10 @@ class CookieJar implements JarContract
 
     /**
      * Get the path and domain, or the default values.
-	 * 得到路径和域,或者默认值
+	 * 获取路径和域，或默认值。
      *
      * @param  string  $path
-     * @param  string  $domain
+     * @param  string|null  $domain
      * @param  bool|null  $secure
      * @param  string|null  $sameSite
      * @return array
@@ -207,11 +221,11 @@ class CookieJar implements JarContract
 
     /**
      * Set the default path and domain for the jar.
-	 * 设置jar的默认路径和域
+	 * 为jar设置默认路径和域
      *
      * @param  string  $path
-     * @param  string  $domain
-     * @param  bool  $secure
+     * @param  string|null  $domain
+     * @param  bool|null  $secure
      * @param  string|null  $sameSite
      * @return $this
      */
@@ -231,5 +245,18 @@ class CookieJar implements JarContract
     public function getQueuedCookies()
     {
         return Arr::flatten($this->queued);
+    }
+
+    /**
+     * Flush the cookies which have been queued for the next request.
+	 * 刷新为下一个请求排队的cookie
+     *
+     * @return $this
+     */
+    public function flushQueuedCookies()
+    {
+        $this->queued = [];
+
+        return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，数据库，模型识别
+ * Illuminate，契约，数据库，模型标识符
  */
 
 namespace Illuminate\Contracts\Database;
@@ -35,15 +35,23 @@ class ModelIdentifier
 
     /**
      * The connection name of the model.
-	 * 模型的连接名
+	 * 模型的连接名称
      *
      * @var string|null
      */
     public $connection;
 
     /**
+     * The class name of the model collection.
+	 * 模型集合的类名
+     *
+     * @var string|null
+     */
+    public $collectionClass;
+
+    /**
      * Create a new model identifier.
-	 * 创建新的模型标识符
+	 * 创建一个新的模型标识符
      *
      * @param  string  $class
      * @param  mixed  $id
@@ -57,5 +65,19 @@ class ModelIdentifier
         $this->class = $class;
         $this->relations = $relations;
         $this->connection = $connection;
+    }
+
+    /**
+     * Specify the collection class that should be used when serializing / restoring collections.
+	 * 指定序列化/恢复集合时应该使用的集合类
+     *
+     * @param  string|null  $collectionClass
+     * @return $this
+     */
+    public function useCollectionClass(?string $collectionClass)
+    {
+        $this->collectionClass = $collectionClass;
+
+        return $this;
     }
 }

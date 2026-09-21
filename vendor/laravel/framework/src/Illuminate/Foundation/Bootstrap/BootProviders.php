@@ -11,14 +11,13 @@ class BootProviders
 {
     /**
      * Bootstrap the given application.
-	 * 引导给定的应用
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function bootstrap(Application $app)
     {
-		//Application 928 public function boot()
         $app->boot();
     }
 }

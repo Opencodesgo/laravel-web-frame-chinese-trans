@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，历史命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Psy Shell history command.
+ * Psy Shell 历史命令。
  *
  * Shows, searches and replays readline history. Not too shabby.
  */
@@ -41,6 +45,7 @@ class HistoryCommand extends Command
 
     /**
      * Set the Shell's Readline service.
+	 * 设置Shell的Readline服务
      *
      * @param Readline $readline
      */
@@ -154,6 +159,7 @@ HELP
 
     /**
      * Extract a range from a string.
+	 * 从字符串中提取一个范围
      *
      * @param string $range
      *
@@ -178,6 +184,7 @@ HELP
 
     /**
      * Retrieve a slice of the readline history.
+	 * 检索读行历史记录的一部分
      *
      * @param string|null $show
      * @param string|null $head
@@ -218,6 +225,7 @@ HELP
 
     /**
      * Validate that only one of the given $options is set.
+	 * 验证只设置了给定$options中的一个
      *
      * @param InputInterface $input
      * @param array          $options
@@ -238,6 +246,7 @@ HELP
 
     /**
      * Clear the readline history.
+	 * 清除读行历史记录
      */
     private function clearHistory()
     {

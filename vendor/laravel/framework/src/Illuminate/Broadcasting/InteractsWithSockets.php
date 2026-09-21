@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，广播，套接字交互
+ * Illuminate，广播，与套接字交互
  */
 
 namespace Illuminate\Broadcasting;
 
 use Illuminate\Support\Facades\Broadcast;
 
-trait   
+trait InteractsWithSockets
 {
     /**
      * The socket ID for the user that raised the event.
-	 * 引发事件的用户套接字ID
+	 * 引发事件的用户的套接字ID
      *
      * @var string|null
      */

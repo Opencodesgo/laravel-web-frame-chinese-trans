@@ -1,17 +1,15 @@
 <?php
 /**
- * Illuminate，认证，Recaller调用器
+ * Illuminate，认证，调用器
  */
 
 namespace Illuminate\Auth;
-
-use Illuminate\Support\Str;
 
 class Recaller
 {
     /**
      * The "recaller" / "remember me" cookie string.
-	 * "调用器"/"记住我"cookie字符串
+	 * "回忆者"/"记住我"cookie字符串
      *
      * @var string
      */
@@ -19,7 +17,7 @@ class Recaller
 
     /**
      * Create a new recaller instance.
-	 * 创建新的调用器实例
+	 * 创建新的调用程序实例
      *
      * @param  string  $recaller
      * @return void
@@ -42,7 +40,7 @@ class Recaller
 
     /**
      * Get the "remember token" token from the recaller.
-	 * 从recaller中获取"记住令牌"令牌
+	 * 从调用器获得"记住令牌"令牌
      *
      * @return string
      */
@@ -59,12 +57,12 @@ class Recaller
      */
     public function hash()
     {
-        return explode('|', $this->recaller, 3)[2];
+        return explode('|', $this->recaller, 4)[2];
     }
 
     /**
      * Determine if the recaller is valid.
-	 * 确定调用器是否是有效的
+	 * 确定调用器是否有效
      *
      * @return bool
      */
@@ -81,7 +79,7 @@ class Recaller
      */
     protected function properString()
     {
-        return is_string($this->recaller) && Str::contains($this->recaller, '|');
+        return is_string($this->recaller) && str_contains($this->recaller, '|');
     }
 
     /**
@@ -94,6 +92,17 @@ class Recaller
     {
         $segments = explode('|', $this->recaller);
 
-        return count($segments) === 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
+        return count($segments) >= 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
+    }
+
+    /**
+     * Get the recaller's segments.
+	 * 得到召回者的片段
+     *
+     * @return array
+     */
+    public function segments()
+    {
+        return explode('|', $this->recaller);
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，不是 Carbon类异常 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -19,6 +22,7 @@ class NotACarbonClassException extends BaseInvalidArgumentException implements I
 {
     /**
      * The className.
+	 * 类名
      *
      * @var string
      */
@@ -26,6 +30,7 @@ class NotACarbonClassException extends BaseInvalidArgumentException implements I
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string         $className
      * @param int            $code
@@ -40,6 +45,7 @@ class NotACarbonClassException extends BaseInvalidArgumentException implements I
 
     /**
      * Get the className.
+	 * 得到类名
      *
      * @return string
      */

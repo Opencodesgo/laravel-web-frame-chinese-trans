@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，资源操作，Resource Operations
+ */
+
 /*
  * This file is part of resource-operations.
  *

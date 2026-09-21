@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，CommonMark，扩展，注脚，事件，数字脚注监听器 
+ */
 
 /*
  * This file is part of the league/commonmark package.
@@ -22,26 +25,19 @@ final class NumberFootnotesListener
 {
     public function onDocumentParsed(DocumentParsedEvent $event): void
     {
-        $document = $event->getDocument();
-        $walker = $document->walker();
-        $nextCounter = 1;
-        $usedLabels = [];
+        $document     = $event->getDocument();
+        $nextCounter  = 1;
+        $usedLabels   = [];
         $usedCounters = [];
 
-        while ($event = $walker->next()) {
-            if (!$event->isEntering()) {
+        foreach ($document->iterator() as $node) {
+            if (! $node instanceof FootnoteRef) {
                 continue;
             }
 
-            $node = $event->getNode();
-
-            if (!$node instanceof FootnoteRef) {
-                continue;
-            }
-
-            $existingReference = $node->getReference();
-            $label = $existingReference->getLabel();
-            $counter = $nextCounter;
+            $existingReference   = $node->getReference();
+            $label               = $existingReference->getLabel();
+            $counter             = $nextCounter;
             $canIncrementCounter = true;
 
             if (\array_key_exists($label, $usedLabels)) {
@@ -49,12 +45,13 @@ final class NumberFootnotesListener
                  * Reference is used again, we need to point
                  * to the same footnote. But with a different ID
                  */
-                $counter = $usedCounters[$label];
-                $label = $label . '__' . ++$usedLabels[$label];
+                $counter             = $usedCounters[$label];
+                $label              .= '__' . ++$usedLabels[$label];
                 $canIncrementCounter = false;
             }
 
             // rewrite reference title to use a numeric link
+			// 重写引用标题以使用数字链接
             $newReference = new Reference(
                 $label,
                 $existingReference->getDestination(),
@@ -63,19 +60,15 @@ final class NumberFootnotesListener
 
             // Override reference with numeric link
             $node->setReference($newReference);
-            $document->getReferenceMap()->addReference($newReference);
+            $document->getReferenceMap()->add($newReference);
 
             /*
              * Store created references in document for
              * creating FootnoteBackrefs
              */
-            if (false === $document->getData($existingReference->getDestination(), false)) {
-                $document->data[$existingReference->getDestination()] = [];
-            }
+            $document->data->append($existingReference->getDestination(), $newReference);
 
-            $document->data[$existingReference->getDestination()][] = $newReference;
-
-            $usedLabels[$label] = 1;
+            $usedLabels[$label]   = 1;
             $usedCounters[$label] = $nextCounter;
 
             if ($canIncrementCounter) {

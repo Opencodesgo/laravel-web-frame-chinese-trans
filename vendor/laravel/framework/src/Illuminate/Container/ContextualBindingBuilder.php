@@ -36,7 +36,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
     /**
      * Create a new contextual binding builder.
-	 * 创建一个新的上下文绑定构建器
+	 * 创建新的上下文绑定构建器
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  string|array  $concrete
@@ -90,5 +90,18 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
             return is_array($taggedServices) ? $taggedServices : iterator_to_array($taggedServices);
         });
+    }
+
+    /**
+     * Specify the configuration item to bind as a primitive.
+	 * 指定要绑定的配置项作为原语
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return void
+     */
+    public function giveConfig($key, $default = null)
+    {
+        $this->give(fn ($container) => $container->get('config')->get($key, $default));
     }
 }

@@ -31,8 +31,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class InlineFragmentRenderer extends RoutableFragmentRenderer
 {
-    private $kernel;
-    private $dispatcher;
+    private HttpKernelInterface $kernel;
+    private ?EventDispatcherInterface $dispatcher;
 
     public function __construct(HttpKernelInterface $kernel, ?EventDispatcherInterface $dispatcher = null)
     {
@@ -41,13 +41,12 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Additional available options:
+	 * 其他可用选项：
      *
      *  * alt: an alternative URI to render in case of an error
      */
-    public function render($uri, Request $request, array $options = [])
+    public function render(string|ControllerReference $uri, Request $request, array $options = []): Response
     {
         $reference = null;
         if ($uri instanceof ControllerReference) {
@@ -109,6 +108,9 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         }
     }
 
+    /**
+     * @return Request
+     */
     protected function createSubRequest(string $uri, Request $request)
     {
         $cookies = $request->cookies->all();
@@ -124,9 +126,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
 
         static $setSession;
 
-        if (null === $setSession) {
-            $setSession = \Closure::bind(static function ($subRequest, $request) { $subRequest->session = $request->session; }, null, Request::class);
-        }
+        $setSession ??= \Closure::bind(static function ($subRequest, $request) { $subRequest->session = $request->session; }, null, Request::class);
         $setSession($subRequest, $request);
 
         if ($request->get('_format')) {
@@ -135,14 +135,17 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         if ($request->getDefaultLocale() !== $request->getLocale()) {
             $subRequest->setLocale($request->getLocale());
         }
+        if ($request->attributes->has('_stateless')) {
+            $subRequest->attributes->set('_stateless', $request->attributes->get('_stateless'));
+        }
+        if ($request->attributes->has('_check_controller_is_allowed')) {
+            $subRequest->attributes->set('_check_controller_is_allowed', $request->attributes->get('_check_controller_is_allowed'));
+        }
 
         return $subRequest;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'inline';
     }

@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
  * Interface implemented by all rendering strategies.
- * 由所有呈现策略实现的接口
+ * 由所有呈现策略实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,17 +28,13 @@ interface FragmentRendererInterface
 {
     /**
      * Renders a URI and returns the Response content.
-     *
-     * @param string|ControllerReference $uri A URI as a string or a ControllerReference instance
-     *
-     * @return Response
+	 * 呈现一个URI并返回响应内容
      */
-    public function render($uri, Request $request, array $options = []);
+    public function render(string|ControllerReference $uri, Request $request, array $options = []): Response;
 
     /**
      * Gets the name of the strategy.
-     *
-     * @return string
+	 * 获取策略的名称
      */
-    public function getName();
+    public function getName(): string;
 }

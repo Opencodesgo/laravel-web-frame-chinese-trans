@@ -13,7 +13,7 @@ class Listener
 {
     /**
      * The command working path.
-	 * 命令工作路径
+	 * 命令工作者路径
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 工作进程工作的环境
+	 * 工人者们工作的环境
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class Listener
     protected $sleep = 3;
 
     /**
-     * The amount of times to try a job before logging it failed.
+     * The number of times to try a job before logging it failed.
 	 * 在记录作业失败之前尝试该作业的次数
      *
      * @var int
@@ -65,7 +65,7 @@ class Listener
 
     /**
      * Get the PHP binary.
-	 * 得到PHP类
+	 * 获取PHP二进制文件
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Listener
 
     /**
      * Get the Artisan binary.
-	 * 得到工具类
+	 * 获取Artisan二进制文件
      *
      * @return string
      */
@@ -100,6 +100,10 @@ class Listener
 
         while (true) {
             $this->runProcess($process, $options->memory);
+
+            if ($options->rest) {
+                sleep($options->rest);
+            }
         }
     }
 
@@ -123,7 +127,7 @@ class Listener
         // If the environment is set, we will append it to the command array so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
-		// 如果设置了环境，我们将把它附加到命令数组中，工人将在指定的环境下运行。
+		// 如果设置了环境，我们将把它附加到命令数组中。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -167,11 +171,13 @@ class Listener
             'queue:work',
             $connection,
             '--once',
+            "--name={$options->name}",
             "--queue={$queue}",
-            "--delay={$options->delay}",
+            "--backoff={$options->backoff}",
             "--memory={$options->memory}",
             "--sleep={$options->sleep}",
             "--tries={$options->maxTries}",
+            $options->force ? '--force' : null,
         ], function ($value) {
             return ! is_null($value);
         });
@@ -179,7 +185,7 @@ class Listener
 
     /**
      * Run the given process.
-	 * 运行给定进程
+	 * 运行给定的进程
      *
      * @param  \Symfony\Component\Process\Process  $process
      * @param  int  $memory

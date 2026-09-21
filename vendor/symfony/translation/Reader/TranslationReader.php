@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，阅读器，翻译阅读器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationReader reads translation messages from translation files.
+ * TranslationReader从翻译文件中读取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -27,12 +31,14 @@ class TranslationReader implements TranslationReaderInterface
      *
      * @var array<string, LoaderInterface>
      */
-    private $loaders = [];
+    private array $loaders = [];
 
     /**
      * Adds a loader to the translation extractor.
      *
      * @param string $format The format of the loader
+     *
+     * @return void
      */
     public function addLoader(string $format, LoaderInterface $loader)
     {
@@ -40,7 +46,7 @@ class TranslationReader implements TranslationReaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function read(string $directory, MessageCatalogue $catalogue)
     {

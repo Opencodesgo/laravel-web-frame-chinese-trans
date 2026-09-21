@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，依赖注入，查看事件
+ * Symfony，Component，HttpKernel，事件，视图事件
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Allows to create a response for the return value of a controller.
- * 允许为控制器的返回值创建响应
+ * 允许为控制器的返回值创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a
@@ -29,37 +29,23 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 final class ViewEvent extends RequestEvent
 {
-    /**
-     * The return value of the controller.
-     *
-     * @var mixed
-     */
-    private $controllerResult;
+    public readonly ?ControllerArgumentsEvent $controllerArgumentsEvent;
+    private mixed $controllerResult;
 
-    public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, $controllerResult)
+    public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, mixed $controllerResult, ?ControllerArgumentsEvent $controllerArgumentsEvent = null)
     {
         parent::__construct($kernel, $request, $requestType);
 
         $this->controllerResult = $controllerResult;
+        $this->controllerArgumentsEvent = $controllerArgumentsEvent;
     }
 
-    /**
-     * Returns the return value of the controller.
-     *
-     * @return mixed
-     */
-    public function getControllerResult()
+    public function getControllerResult(): mixed
     {
         return $this->controllerResult;
     }
 
-    /**
-     * Assigns the return value of the controller.
-	 * 分配控制器的返回值
-     *
-     * @param mixed $controllerResult The controller return value
-     */
-    public function setControllerResult($controllerResult): void
+    public function setControllerResult(mixed $controllerResult): void
     {
         $this->controllerResult = $controllerResult;
     }

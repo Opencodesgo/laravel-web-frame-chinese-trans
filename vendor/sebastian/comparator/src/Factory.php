@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，工厂
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -13,6 +18,7 @@ use function array_unshift;
 
 /**
  * Factory for comparators which compare values for equality.
+ * 用于比较值是否相等的比较器的工厂。
  */
 class Factory
 {
@@ -45,6 +51,7 @@ class Factory
 
     /**
      * Constructs a new factory.
+	 * 建造新工厂
      */
     public function __construct()
     {
@@ -53,6 +60,7 @@ class Factory
 
     /**
      * Returns the correct comparator for comparing two values.
+	 * 返回用于比较两个值的正确比较器
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare
@@ -78,6 +86,7 @@ class Factory
 
     /**
      * Registers a new comparator.
+	 * 注册一个新的比较器。
      *
      * This comparator will be returned by getComparatorFor() if its accept() method
      * returns TRUE for the compared values. It has higher priority than the
@@ -95,6 +104,7 @@ class Factory
 
     /**
      * Unregisters a comparator.
+	 * 取消比较器的注册。
      *
      * This comparator will no longer be considered by getComparatorFor().
      *
@@ -111,6 +121,7 @@ class Factory
 
     /**
      * Unregisters all non-default comparators.
+	 * 取消注册所有非默认比较器
      */
     public function reset()/*: void*/
     {

@@ -1,15 +1,17 @@
 <?php
 /**
- * Illuminate，路由，路由依赖解析器特性，一种代码复用机制
+ * Illuminate，路由，路由依赖解析器特性
  */
 
 namespace Illuminate\Routing;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Reflector;
+use ReflectionClass;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
+use stdClass;
 
 trait RouteDependencyResolverTrait
 {
@@ -47,7 +49,7 @@ trait RouteDependencyResolverTrait
 
         $values = array_values($parameters);
 
-        $skippableValue = new \stdClass;
+        $skippableValue = new stdClass;
 
         foreach ($reflector->getParameters() as $key => $parameter) {
             $instance = $this->transformDependency($parameter, $parameters, $skippableValue);
@@ -81,9 +83,13 @@ trait RouteDependencyResolverTrait
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
-		// 如果形参有一个类型暗示类，我们将检查它是否已经存在参数列表。
+		// 如果形参有一个类型暗示类，我们将检查它是否已经存在。
         if ($className && ! $this->alreadyInParameters($className, $parameters)) {
-            return $parameter->isDefaultValueAvailable() ? null : $this->container->make($className);
+            $isEnum = method_exists(ReflectionClass::class, 'isEnum') && (new ReflectionClass($className))->isEnum();
+
+            return $parameter->isDefaultValueAvailable()
+                ? ($isEnum ? $parameter->getDefaultValue() : null)
+                : $this->container->make($className);
         }
 
         return $skippableValue;
@@ -99,14 +105,12 @@ trait RouteDependencyResolverTrait
      */
     protected function alreadyInParameters($class, array $parameters)
     {
-        return ! is_null(Arr::first($parameters, function ($value) use ($class) {
-            return $value instanceof $class;
-        }));
+        return ! is_null(Arr::first($parameters, fn ($value) => $value instanceof $class));
     }
 
     /**
      * Splice the given value into the parameter list.
-	 * 拼接给定值至参数列表
+	 * 将给定的值拼接到参数列表中
      *
      * @param  array  $parameters
      * @param  string  $offset

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，事件，请求处理
+ * App, 基础, Http, 中间件, 请求处理程序
  */
 
 namespace Illuminate\Foundation\Http\Events;
@@ -25,7 +25,7 @@ class RequestHandled
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Response  $response

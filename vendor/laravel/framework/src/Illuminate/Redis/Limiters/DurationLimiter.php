@@ -81,11 +81,12 @@ class DurationLimiter
      *
      * @param  int  $timeout
      * @param  callable|null  $callback
+     * @param  int  $sleep
      * @return mixed
      *
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
      */
-    public function block($timeout, $callback = null)
+    public function block($timeout, $callback = null, $sleep = 750)
     {
         $starting = time();
 
@@ -94,7 +95,7 @@ class DurationLimiter
                 throw new LimiterTimeoutException;
             }
 
-            usleep(750 * 1000);
+            usleep($sleep * 1000);
         }
 
         if (is_callable($callback)) {
@@ -121,6 +122,32 @@ class DurationLimiter
         $this->remaining = max(0, $results[2]);
 
         return (bool) $results[0];
+    }
+
+    /**
+     * Determine if the key has been "accessed" too many times.
+	 * 确定密钥是否被"访问"过多次
+     *
+     * @return bool
+     */
+    public function tooManyAttempts()
+    {
+        [$this->decaysAt, $this->remaining] = $this->redis->eval(
+            $this->tooManyAttemptsLuaScript(), 1, $this->name, microtime(true), time(), $this->decay, $this->maxLocks
+        );
+
+        return $this->remaining <= 0;
+    }
+
+    /**
+     * Clear the limiter.
+	 * 清除限位器
+     *
+     * @return void
+     */
+    public function clear()
+    {
+        $this->redis->del($this->name);
     }
 
     /**
@@ -156,6 +183,37 @@ if ARGV[1] >= redis.call('HGET', KEYS[1], 'start') and ARGV[1] <= redis.call('HG
 end
 
 return {reset(), ARGV[2] + ARGV[3], ARGV[4] - 1}
+LUA;
+    }
+
+    /**
+     * Get the Lua script to determine if the key has been "accessed" too many times.
+	 * 让Lua脚本确定键是否被"访问"了太多次
+     *
+     * KEYS[1] - The limiter name
+     * ARGV[1] - Current time in microseconds
+     * ARGV[2] - Current time in seconds
+     * ARGV[3] - Duration of the bucket
+     * ARGV[4] - Allowed number of tasks
+     *
+     * @return string
+     */
+    protected function tooManyAttemptsLuaScript()
+    {
+        return <<<'LUA'
+
+if redis.call('EXISTS', KEYS[1]) == 0 then
+    return {0, ARGV[2] + ARGV[3]}
+end
+
+if ARGV[1] >= redis.call('HGET', KEYS[1], 'start') and ARGV[1] <= redis.call('HGET', KEYS[1], 'end') then
+    return {
+        redis.call('HGET', KEYS[1], 'end'),
+        ARGV[4] - redis.call('HGET', KEYS[1], 'count')
+    }
+end
+
+return {0, ARGV[2] + ARGV[3]}
 LUA;
     }
 }

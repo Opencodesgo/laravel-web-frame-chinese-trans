@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Img 存根
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，捷径组合
+ */
+
 namespace Hamcrest\Core;
 
 /*

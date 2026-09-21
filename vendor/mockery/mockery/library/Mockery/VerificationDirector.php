@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，验证管理者
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

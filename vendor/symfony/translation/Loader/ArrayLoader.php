@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，加载器，数组加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,10 +23,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 class ArrayLoader implements LoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load($resource, string $locale, string $domain = 'messages')
+    public function load(mixed $resource, string $locale, string $domain = 'messages'): MessageCatalogue
     {
         $resource = $this->flatten($resource);
         $catalogue = new MessageCatalogue($locale);

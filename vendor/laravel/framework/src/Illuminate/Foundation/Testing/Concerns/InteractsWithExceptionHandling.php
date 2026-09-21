@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，基础，测试，关注，与异常处理交互
+ * Illuminate，基础，测试，问题，与异常处理交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
+use Closure;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Testing\Assert;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,7 +52,7 @@ trait InteractsWithExceptionHandling
 
     /**
      * Only handle validation exceptions via the exception handler.
-	 * 只有通过异常处理程序来处理验证异常
+	 * 只通过异常处理程序处理验证异常
      *
      * @return $this
      */
@@ -61,7 +63,7 @@ trait InteractsWithExceptionHandling
 
     /**
      * Disable exception handling for the test.
-	 * 禁用异常处理测试
+	 * 禁用测试的异常处理
      *
      * @param  array  $except
      * @return $this
@@ -119,7 +121,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Render an exception into an HTTP response.
-			 * 将异常呈现到HTTP响应中
+			 * 呈现异常到HTTP响应中
              *
              * @param  \Illuminate\Http\Request  $request
              * @param  \Throwable  $e
@@ -137,7 +139,7 @@ trait InteractsWithExceptionHandling
 
                 if ($e instanceof NotFoundHttpException) {
                     throw new NotFoundHttpException(
-                        "{$request->method()} {$request->url()}", null, $e->getCode()
+                        "{$request->method()} {$request->url()}", $e, is_int($e->getCode()) ? $e->getCode() : 0
                     );
                 }
 
@@ -146,7 +148,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Render an exception to the console.
-			 * 向控制台呈现一个异常
+			 * 呈现一个异常至控制台
              *
              * @param  \Symfony\Component\Console\Output\OutputInterface  $output
              * @param  \Throwable  $e
@@ -157,6 +159,49 @@ trait InteractsWithExceptionHandling
                 (new ConsoleApplication)->renderThrowable($e, $output);
             }
         });
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given callback throws an exception with the given message when invoked.
+	 * 断言给定的回调函数在调用时抛出带有给定消息的异常
+     *
+     * @param  \Closure  $test
+     * @param  class-string<\Throwable>  $expectedClass
+     * @param  string|null  $expectedMessage
+     * @return $this
+     */
+    protected function assertThrows(Closure $test, string $expectedClass = Throwable::class, ?string $expectedMessage = null)
+    {
+        try {
+            $test();
+
+            $thrown = false;
+        } catch (Throwable $exception) {
+            $thrown = $exception instanceof $expectedClass;
+
+            $actualMessage = $exception->getMessage();
+        }
+
+        Assert::assertTrue(
+            $thrown,
+            sprintf('Failed asserting that exception of type "%s" was thrown.', $expectedClass)
+        );
+
+        if (isset($expectedMessage)) {
+            if (! isset($actualMessage)) {
+                Assert::fail(
+                    sprintf(
+                        'Failed asserting that exception of type "%s" with message "%s" was thrown.',
+                        $expectedClass,
+                        $expectedMessage
+                    )
+                );
+            } else {
+                Assert::assertStringContainsString($expectedMessage, $actualMessage);
+            }
+        }
 
         return $this;
     }

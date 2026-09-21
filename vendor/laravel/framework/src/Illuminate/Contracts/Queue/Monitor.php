@@ -17,8 +17,8 @@ interface Monitor
     public function looping($callback);
 
     /**
-     * Register a callback to be executed when a job fails after the maximum amount of retries.
-	 * 注册一个回调函数，当作业在重试的最大次数之后失败时执行。
+     * Register a callback to be executed when a job fails after the maximum number of retries.
+	 * 注册一个回调函数，当作业在最大重试次数之后失败时执行。
      *
      * @param  mixed  $callback
      * @return void

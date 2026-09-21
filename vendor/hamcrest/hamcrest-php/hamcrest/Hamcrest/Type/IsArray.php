@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否数组
+ */
+
 namespace Hamcrest\Type;
 
 /*
@@ -8,12 +12,14 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is an array.
+ * 测试值是否为数组。
  */
 class IsArray extends IsTypeOf
 {
 
     /**
      * Creates a new instance of IsArray
+	 * 创建一个新的is数组实例
      */
     public function __construct()
     {
@@ -22,6 +28,7 @@ class IsArray extends IsTypeOf
 
     /**
      * Is the value an array?
+	 * 值是数组吗?
      *
      * @factory
      */

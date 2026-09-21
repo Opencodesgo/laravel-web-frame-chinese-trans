@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，事件调度器，事件调度接口
+ * Symfony，Component，EventDispatcher，事件调度器接口
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEvent
  * The EventDispatcherInterface is the central point of Symfony's event listener system.
  * Listeners are registered on the manager and events are dispatched through the
  * manager.
+ * EventDispatcherInterface是Symfony事件监听器系统的中心点。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -27,47 +28,58 @@ interface EventDispatcherInterface extends ContractsEventDispatcherInterface
 {
     /**
      * Adds an event listener that listens on the specified events.
+	 * 添加侦听指定事件的事件侦听器。
      *
      * @param int $priority The higher this value, the earlier an event
      *                      listener will be triggered in the chain (defaults to 0)
+     *
+     * @return void
      */
     public function addListener(string $eventName, callable $listener, int $priority = 0);
 
     /**
      * Adds an event subscriber.
+	 * 添加事件订阅者。
      *
      * The subscriber is asked for all the events it is
      * interested in and added as a listener for these events.
+     *
+     * @return void
      */
     public function addSubscriber(EventSubscriberInterface $subscriber);
 
     /**
      * Removes an event listener from the specified events.
+	 * 从指定事件中移除事件监听器
+     *
+     * @return void
      */
     public function removeListener(string $eventName, callable $listener);
 
+    /**
+     * @return void
+     */
     public function removeSubscriber(EventSubscriberInterface $subscriber);
 
     /**
      * Gets the listeners of a specific event or all listeners sorted by descending priority.
+	 * 获取特定事件的侦听器或按优先级降序排序的所有侦听器
      *
      * @return array<callable[]|callable>
      */
-    public function getListeners(?string $eventName = null);
+    public function getListeners(?string $eventName = null): array;
 
     /**
      * Gets the listener priority for a specific event.
+	 * 获取特定事件的侦听器优先级。
      *
      * Returns null if the event or the listener does not exist.
-     *
-     * @return int|null
      */
-    public function getListenerPriority(string $eventName, callable $listener);
+    public function getListenerPriority(string $eventName, callable $listener): ?int;
 
     /**
      * Checks whether an event has any registered listeners.
-     *
-     * @return bool
+	 * 检查事件是否有任何已注册的监听器
      */
-    public function hasListeners(?string $eventName = null);
+    public function hasListeners(?string $eventName = null): bool;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，别名加载器
+ * Illuminate，基础，别名加载
  */
 
 namespace Illuminate\Foundation;
@@ -33,7 +33,7 @@ class AliasLoader
 
     /**
      * The singleton instance of the loader.
-	 * 加载程序的单例实例
+	 * 加载器的单例实例
      *
      * @var \Illuminate\Foundation\AliasLoader
      */
@@ -73,14 +73,14 @@ class AliasLoader
 
     /**
      * Load a class alias if it is registered.
-	 * 如果注册了一个类别名
+	 * 如果类别名已注册，则装入该类别名
      *
      * @param  string  $alias
      * @return bool|null
      */
     public function load($alias)
     {
-        if (static::$facadeNamespace && strpos($alias, static::$facadeNamespace) === 0) {
+        if (static::$facadeNamespace && str_starts_with($alias, static::$facadeNamespace)) {
             $this->loadFacade($alias);
 
             return true;
@@ -105,14 +105,14 @@ class AliasLoader
 
     /**
      * Ensure that the given alias has an existing real-time facade class.
-	 * 确保给定的别名有一个现有的实时facade类
+	 * 确保给定的别名具有现有的实时facade类
      *
      * @param  string  $alias
      * @return string
      */
     protected function ensureFacadeExists($alias)
     {
-        if (file_exists($path = storage_path('framework/cache/facade-'.sha1($alias).'.php'))) {
+        if (is_file($path = storage_path('framework/cache/facade-'.sha1($alias).'.php'))) {
             return $path;
         }
 
@@ -146,7 +146,7 @@ class AliasLoader
 
     /**
      * Add an alias to the loader.
-	 * 在加载器中添加别名
+	 * 向加载器添加别名
      *
      * @param  string  $alias
      * @param  string  $class
@@ -208,7 +208,7 @@ class AliasLoader
 
     /**
      * Indicates if the loader has been registered.
-	 * 指示是否已注册加载器
+	 * 指示加载程序是否已注册
      *
      * @return bool
      */
@@ -231,7 +231,7 @@ class AliasLoader
 
     /**
      * Set the real-time facade namespace.
-	 * 设置实时外观名称空间
+	 * 设置实时facade名称空间
      *
      * @param  string  $namespace
      * @return void
@@ -243,7 +243,7 @@ class AliasLoader
 
     /**
      * Set the value of the singleton alias loader.
-	 * 设置单例装载机的值
+	 * 设置单例别名加载器的值
      *
      * @param  \Illuminate\Foundation\AliasLoader  $loader
      * @return void

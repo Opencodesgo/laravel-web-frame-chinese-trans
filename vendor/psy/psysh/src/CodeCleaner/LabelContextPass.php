@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，标签上下文信息
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -19,6 +22,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * CodeCleanerPass for label context.
+ * 标签上下文的CodeCleanerPass。
  *
  * This class partially emulates the PHP label specification.
  * PsySH can not declare labels by sequentially executing lines with eval,

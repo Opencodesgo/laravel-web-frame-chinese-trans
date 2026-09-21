@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，反射命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -25,6 +28,7 @@ use Psy\Util\Mirror;
 
 /**
  * An abstract command with helpers for inspecting the current context.
+ * 带有帮助程序的抽象命令，用于检查当前上下文。
  */
 abstract class ReflectingCommand extends Command implements ContextAware
 {
@@ -56,6 +60,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * ContextAware interface.
+	 * ContextAware接口
      *
      * @param Context $context
      */
@@ -66,6 +71,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Get the target for a value.
+	 * 获取值的目标
      *
      * @throws \InvalidArgumentException when the value specified can't be resolved
      *
@@ -103,6 +109,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Resolve a class or function name (with the current shell namespace).
+	 * 解析类或函数名（使用当前shell名称空间）
      *
      * @throws ErrorException when `self` or `static` is used in a non-class scope
      *
@@ -153,6 +160,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Check whether a given name could be a class name.
+	 * 检查给定的名称是否可以是类名
      */
     protected function couldBeClassName(string $name): bool
     {
@@ -176,6 +184,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Resolve code to a value in the current scope.
+	 * 将代码解析为当前作用域中的值
      *
      * @throws RuntimeException when the code does not return a value in the current scope
      *
@@ -203,6 +212,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Resolve code to an object in the current scope.
+	 * 将代码解析为当前作用域中的对象
      *
      * @throws UnexpectedTargetException when the code resolves to a non-object value
      *
@@ -223,6 +233,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Get a variable from the current shell scope.
+	 * 从当前shell作用域获取一个变量
      *
      * @param string $name
      *
@@ -235,6 +246,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
 
     /**
      * Get all scope variables from the current shell scope.
+	 * 从当前shell作用域获取所有作用域变量
      *
      * @return array
      */

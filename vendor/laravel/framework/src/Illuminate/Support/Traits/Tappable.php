@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特征，大规模
+ * Illuminate，支持，特征，Tappable
  */
 
 namespace Illuminate\Support\Traits;
@@ -12,7 +12,7 @@ trait Tappable
 	 * 使用此实例调用给定的Closure，然后返回该实例。
      *
      * @param  callable|null  $callback
-     * @return mixed
+     * @return $this|\Illuminate\Support\HigherOrderTapProxy
      */
     public function tap($callback = null)
     {

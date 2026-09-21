@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，节点，构建器
+ */
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -91,6 +96,7 @@ final class Builder
 
     /**
      * Builds an array representation of the directory structure.
+	 * 生成目录结构的数组表示形式。
      *
      * For instance,
      *
@@ -159,6 +165,7 @@ final class Builder
 
     /**
      * Reduces the paths by cutting the longest common start path.
+	 * 通过切割最长的公共起始路径来减少路径。
      *
      * For instance,
      *

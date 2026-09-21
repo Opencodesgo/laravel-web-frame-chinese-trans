@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Logmatic 格式化器
+ * Monolog，格式化，Logmatic 格式化程序
  */
 
 /*
@@ -51,6 +51,7 @@ class LogmaticFormatter extends JsonFormatter
 
     /**
      * Appends the 'hostname' and 'appname' parameter for indexing by Logmatic.
+	 * 为Logmatic索引添加‘hostname’和‘appname’参数
      *
      * @see http://doc.logmatic.io/docs/basics-to-send-data
      * @see \Monolog\Formatter\JsonFormatter::format()

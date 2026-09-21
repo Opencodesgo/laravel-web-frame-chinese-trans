@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，Xml
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -55,6 +60,7 @@ final class Xml
 
     /**
      * Escapes a string for the use in XML documents.
+	 * 转义在XML文档中使用的字符串。
      *
      * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
      * and FFFF (not even as character reference).
@@ -75,6 +81,7 @@ final class Xml
 
     /**
      * "Convert" a DOMElement object into a PHP variable.
+	 * 将DOMElement对象“转换”为PHP变量
      */
     public static function xmlToVariable(DOMElement $element)
     {

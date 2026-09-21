@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon 接口
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -521,6 +524,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 {
     /**
      * Diff wording options(expressed in octal).
+	 * 不同的措辞选项（以八进制表示）
      */
     public const NO_ZERO_DIFF = 01;
     public const JUST_NOW = 02;
@@ -600,6 +604,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Special settings to get the start of week from current locale culture.
+	 * 从当前区域设置区域性获取周的开始的特殊设置
      */
     public const WEEK_DAY_AUTO = 'auto';
 
@@ -619,6 +624,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format for converting mocked time, includes microseconds.
+	 * 转换模拟时间的格式，包括微秒。
      *
      * @var string
      */
@@ -664,6 +670,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a new Carbon instance.
+	 * 创建一个新的Carbon实例。
      *
      * Please see the testing aids section (specifically static::setTestNow())
      * for more on the possibility of this constructor returning a test instance.
@@ -695,6 +702,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Check if an attribute exists on the object
+	 * 检查对象上是否存在属性
      *
      * @param string $name
      *
@@ -704,6 +712,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set a part of the Carbon object
+	 * 设置Carbon对象的一部分
      *
      * @param string                  $name
      * @param string|int|DateTimeZone $value
@@ -747,6 +756,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Add given units or interval to the current instance.
+	 * 向当前实例添加给定的单位或间隔
      *
      * @example $date->add('hour', 3)
      * @example $date->add(15, 'days')
@@ -774,6 +784,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Add given units to the current instance.
+	 * 将给定的单元添加到当前实例
      *
      * @param string    $unit
      * @param int       $value
@@ -785,6 +796,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Add any unit to a new value without overflowing current other unit given.
+	 * 添加任何单位到一个新的值没有溢出电流的其他单位给定
      *
      * @param string $valueUnit    unit name to modify
      * @param int    $value        amount to add to the input unit
@@ -836,6 +848,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Clone the current instance if it's mutable.
+	 * 如果当前实例是可变的，克隆它。
      *
      * This method is convenient to ensure you don't mutate the initial object
      * but avoid to make a useless copy of it if it's already immutable.
@@ -846,6 +859,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is between two others.
+	 * 确定实例是否位于其他两个实例之间。
      *
      * The third argument allow you to specify if bounds are included or not (true by default)
      * but for when you including/excluding bounds may produce different results in your application,
@@ -869,6 +883,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is between two others, bounds excluded.
+	 * 确定实例是否在其他两个实例之间，排除边界。
      *
      * @example
      * ```
@@ -886,6 +901,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is between two others, bounds included.
+	 * 确定实例是否在其他两个实例之间，包括边界。
      *
      * @example
      * ```
@@ -943,6 +959,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Cast the current instance into the given class.
+	 * 将当前实例强制转换为给定的类
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -952,6 +969,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Ceil the current instance second with given precision if specified.
+	 * 如果指定了当前实例，则以给定的精度第二次调用当前实例。
      *
      * @param float|int|string|\DateInterval|null $precision
      *
@@ -961,6 +979,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Ceil the current instance at the given unit with given precision if specified.
+	 * 如果指定，则以给定的精度在给定单元上捕获当前实例。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -971,6 +990,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Ceil the current instance week.
+	 * 指定当前实例周
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *
@@ -980,6 +1000,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Similar to native modify() method of DateTime but can handle more grammars.
+	 * 类似于DateTime的本地modify（）方法，但可以处理更多语法。
      *
      * @example
      * ```
@@ -1014,6 +1035,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the closest date from the instance (second-precision).
+	 * 从实例获取最近的日期（秒精度）
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date1
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date2
@@ -1031,6 +1053,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a new Carbon instance from a specific date and time.
+	 * 从特定日期和时间创建一个新的Carbon实例。
      *
      * If any of $year, $month or $day are set to null their now() values will
      * be used.
@@ -1128,6 +1151,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from just a time. The date portion is set to today.
+	 * 从一个时间创建一个Carbon实例。日期部分设置为今天。
      *
      * @param int|null                 $hour
      * @param int|null                 $minute
@@ -1142,6 +1166,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from a time string. The date portion is set to today.
+	 * 从时间字符串创建一个Carbon实例。日期部分设置为今天。
      *
      * @param string                   $time
      * @param DateTimeZone|string|null $tz
@@ -1154,6 +1179,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from a timestamp and set the timezone (use default one if not specified).
+	 * 根据时间戳创建一个Carbon实例并设置时区。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -1167,6 +1193,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from a timestamp in milliseconds.
+	 * 从以毫秒为单位的时间戳创建一个Carbon实例。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -1179,6 +1206,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from a timestamp in milliseconds.
+	 * 从以毫秒为单位的时间戳创建一个Carbon实例。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -1190,6 +1218,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from an timestamp keeping the timezone to UTC.
+	 * 从时间戳创建一个Carbon实例，使时区保持为UTC。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -1201,6 +1230,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from just a date. The time portion is set to midnight.
+	 * 仅从日期创建一个Carbon实例。时间部分设置为午夜。
      *
      * @param int|null                 $year
      * @param int|null                 $month
@@ -1215,6 +1245,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a new safe Carbon instance from a specific date and time.
+	 * 从特定日期和时间创建一个新的安全Carbon实例。
      *
      * If any of $year, $month or $day are set to null their now() values will
      * be used.
@@ -1244,6 +1275,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a new Carbon instance from a specific date and time using strict validation.
+	 * 使用严格的验证从特定日期和时间创建新的Carbon实例。
      *
      * @see create()
      *
@@ -1263,6 +1295,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get/set the day of year.
+	 * 获取/设置一年中的日期。
      *
      * @param int|null $value new value for day of year if using as setter.
      *
@@ -1801,6 +1834,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the difference in days as float (microsecond-precision).
+	 * 以浮点数（微秒精度）获取天数的差值
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1811,6 +1845,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the difference in hours as float (microsecond-precision).
+	 * 以浮点数（微秒精度）获取小时差
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1941,6 +1976,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 如果指定，以给定的精度舍入当前实例秒。
      *
      * @param float|int|string|\DateInterval|null $precision
      *
@@ -1950,6 +1986,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Truncate the current instance at the given unit with given precision if specified.
+	 * 如果指定，以给定精度截断给定单元的当前实例。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -1960,6 +1997,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Truncate the current instance week.
+	 * 截断当前实例周
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *
@@ -2020,6 +2058,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     /**
      * Get the difference in a human readable format in the current locale from current
      * instance to now.
+	 * 获取当前语言环境中人类可读格式与当前语言环境中的差异。
      *
      * @param int|array $syntax  if array passed, parameters will be extracted from it, the array may contains:
      *                           - 'syntax' entry (see below)
@@ -2049,6 +2088,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create an instance from a serialized string.
+	 * 从序列化字符串创建实例
      *
      * @param string $value
      *
@@ -2060,6 +2100,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Register a custom macro.
+	 * 注册自定义宏
      *
      * @param object|callable $macro
      * @param int             $priority marco with higher priority is tried first
@@ -2070,6 +2111,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get a part of the Carbon object
+	 * 获取Carbon对象的一部分
      *
      * @param string $name
      *
@@ -2081,6 +2123,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns the alternative number for a given date property if available in the current locale.
+	 * 如果在当前语言环境中可用，则返回给定日期属性的替代数字。
      *
      * @param string $key date property
      *
@@ -2091,6 +2134,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     /**
      * Returns the list of internally available locales and already loaded custom locales.
      * (It will ignore custom translator dynamic loading.)
+	 * 返回内部可用区域设置和已加载的自定义区域设置的列表。
      *
      * @return array
      */
@@ -2106,6 +2150,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns list of calendar formats for ISO formatting.
+	 * 返回用于ISO格式化的日历格式列表
      *
      * @param string|null $locale current locale used if null
      *
@@ -2115,6 +2160,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the days of the week
+	 * 得到一周中的每一天
      *
      * @return array
      */
@@ -2157,6 +2203,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns list of locale formats for ISO formatting.
+	 * 返回用于ISO格式化的区域设置格式列表
      *
      * @param string|null $locale current locale used if null
      *
@@ -2166,6 +2213,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns list of locale units for ISO formatting.
+	 * 返回用于ISO格式化的区域设置单元列表
      *
      * @return array
      */
@@ -2181,6 +2229,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the raw callable macro registered globally or locally for a given name.
+	 * 获取为给定名称全局或本地注册的原始可调用宏
      *
      * @param string $name
      *
@@ -2190,6 +2239,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the translator of the current instance or the default if none set.
+	 * 获取当前实例的转换器，如果未设置则获取默认值。
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
      */
@@ -2197,6 +2247,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the current translator locale.
+	 * 获取当前的翻译语言环境
      *
      * @return string
      */
@@ -2204,6 +2255,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the raw callable macro registered globally for a given name.
+	 * 获取为给定名称全局注册的原始可调用宏
      *
      * @param string $name
      *
@@ -2264,6 +2316,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns current local settings.
+	 * 返回当前本地设置
      *
      * @return array
      */
@@ -2356,6 +2409,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns raw translation message for a given key.
+	 * 返回给定键的原始翻译消息
      *
      * @param \Symfony\Component\Translation\TranslatorInterface $translator the translator to use
      * @param string                                             $key        key to find
@@ -2368,6 +2422,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the default translator instance in use.
+	 * 获取正在使用的默认转换器实例
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
      */
@@ -2375,6 +2430,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the last day of week
+	 * 得到一周的最后一天
      *
      * @return int
      */
@@ -2382,6 +2438,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get the first day of week
+	 * 得到一周的第一天
      *
      * @return int
      */
@@ -2389,6 +2446,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get weekend days
+	 * 享受周末
      *
      * @return array
      */
@@ -2396,6 +2454,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is greater (after) than another
+	 * 确定实例是否大于（小于）另一个实例
      *
      * @example
      * ```
@@ -2412,6 +2471,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is greater (after) than or equal to another
+	 * 确定实例是否大于或等于另一个实例
      *
      * @example
      * ```
@@ -2428,6 +2488,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is greater (after) than another
+	 * 确定实例是否大于（小于）另一个实例
      *
      * @example
      * ```
@@ -2446,6 +2507,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is greater (after) than or equal to another
+	 * 确定实例是否大于或等于另一个实例
      *
      * @example
      * ```
@@ -2464,6 +2526,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Checks if the (date)time string is in a given format.
+	 * 检查（date）时间字符串是否为给定格式
      *
      * @example
      * ```
@@ -2496,6 +2559,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Checks if macro is registered globally or locally.
+	 * 检查宏是全局注册还是本地注册
      *
      * @param string $name
      *
@@ -2505,6 +2569,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Return true if the current instance has its own translator.
+	 * 如果当前实例有自己的转换器，则返回true。
      *
      * @return bool
      */
@@ -2512,6 +2577,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Checks if macro is registered globally.
+	 * 检查是否全局注册了宏
      *
      * @param string $name
      *
@@ -2521,6 +2587,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determine if a time string will produce a relative date.
+	 * 确定时间字符串是否会产生相对日期
      *
      * @param string $time
      *
@@ -2538,6 +2605,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance from a DateTime one.
+	 * 从DateTime实例创建一个Carbon实例
      *
      * @param DateTimeInterface $date
      *
@@ -2547,6 +2615,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns true if the current date matches the given string.
+	 * 如果当前日期与给定字符串匹配，则返回true。
      *
      * @example
      * ```
@@ -2573,6 +2642,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is greater (after) than another
+	 * 确定实例是否大于（小于）另一个实例
      *
      * @example
      * ```
@@ -2591,6 +2661,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is less (before) than another
+	 * 确定实例是否小于（先于）另一个实例
      *
      * @example
      * ```
@@ -2838,6 +2909,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is in the past, ie. less (before) than now.
+	 * 确定实例是否在过去，即。（以前）比现在少。
      *
      * @example
      * ```
@@ -2851,6 +2923,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Compares the formatted values of the two dates.
+	 * 比较两个日期的格式化值。
      *
      * @example
      * ```
@@ -2867,6 +2940,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Checks if the passed in date is in the same month as the instance´s month.
+	 * 检查传入的日期是否与实例所在的月份在同一个月。
      *
      * @example
      * ```
@@ -2903,6 +2977,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is in the current unit given.
+	 * 确定实例是否在给定的当前单元中
      *
      * @example
      * ```
@@ -2954,6 +3029,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is today.
+	 * 确定实例是否在今天
      *
      * @example
      * ```
@@ -2967,6 +3043,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is tomorrow.
+	 * 确定实例是否在明天
      *
      * @example
      * ```
@@ -2980,6 +3057,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is a weekday.
+	 * 确定实例是否为工作日
      *
      * @example
      * ```
@@ -2993,6 +3071,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is a weekend day.
+	 * 确定实例是否为周末
      *
      * @example
      * ```
@@ -3006,6 +3085,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Determines if the instance is yesterday.
+	 * 确定实例是否在昨天
      *
      * @example
      * ```
@@ -3019,6 +3099,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format in the current language using ISO replacement patterns.
+	 * 使用ISO替换模式在当前语言中格式化
      *
      * @param string      $format
      * @param string|null $originalFormat provide context if a chunk has been passed alone
@@ -3654,6 +3735,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Remove all macros and generic macros.
+	 * 删除所有宏和通用宏
      */
     public static function resetMacros();
 
@@ -3672,6 +3754,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Reset the format used to the default when type juggling a Carbon instance to a string
+	 * 将Carbon实例类型转换为字符串时使用的格式重置为默认格式
      *
      * @return void
      */
@@ -3692,6 +3775,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 如果指定，以给定的精度舍入当前实例秒。
      *
      * @param float|int|string|\DateInterval|null $precision
      * @param string                              $function
@@ -3736,6 +3820,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Return a serialized string of the instance.
+	 * 返回实例的序列化字符串
      *
      * @return string
      */
@@ -3755,6 +3840,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set a part of the Carbon object
+	 * 设置Carbon对象的一部分
      *
      * @param string|array            $name
      * @param string|int|DateTimeZone $value
@@ -3767,6 +3853,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set the date with gregorian year, month and day numbers.
+	 * 用公历年、月、日数字设置日期。
      *
      * @see https://php.net/manual/en/datetime.setdate.php
      *
@@ -3781,6 +3868,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set the year, month, and date for this instance to that of the passed instance.
+	 * 将此实例的年、月和日期设置为传递的实例的年、月和日期。
      *
      * @param Carbon|DateTimeInterface $date now if null
      *
@@ -3805,6 +3893,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set the date and time for this instance to that of the passed instance.
+	 * 将此实例的日期和时间设置为传递的实例的日期和时间
      *
      * @param Carbon|DateTimeInterface $date
      *
@@ -4338,6 +4427,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Subtract given units to the current instance.
+	 * 减去给定的单位到当前实例
      *
      * @param string    $unit
      * @param int       $value
@@ -4349,6 +4439,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Subtract any unit to a new value without overflowing current other unit given.
+	 * 减去任何单位到一个新的值没有溢出电流的其他单位给定
      *
      * @param string $valueUnit    unit name to modify
      * @param int    $value        amount to subtract to the input unit
@@ -4360,6 +4451,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Subtract given units or interval to the current instance.
+	 * 减去给定的单位或间隔到当前实例
      *
      * @see sub()
      *
@@ -4381,6 +4473,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set the instance's timestamp.
+	 * 设置实例的时间戳。
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
@@ -4451,6 +4544,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get default array representation.
+	 * 获取默认数组表示
      *
      * @example
      * ```
@@ -4463,6 +4557,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance as ATOM
+	 * 将实例格式化为ATOM
      *
      * @example
      * ```
@@ -4475,6 +4570,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance as COOKIE
+	 * 将实例格式化为COOKIE
      *
      * @example
      * ```
@@ -4525,6 +4621,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Return native toDateTimeImmutable PHP object matching the current instance.
+	 * 返回与当前实例匹配的原生toDateTimeImmutable PHP对象。
      *
      * @example
      * ```
@@ -4537,6 +4634,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance as date and time T-separated with no timezone
+	 * 将实例格式化为日期和时间t分隔，不带时区。
      *
      * @example
      * ```
@@ -4553,6 +4651,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance as date and time
+	 * 将实例格式化为日期和时间
      *
      * @example
      * ```
@@ -4567,6 +4666,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance with day, date and time
+	 * 用日期、日期和时间格式化实例
      *
      * @example
      * ```
@@ -4579,6 +4679,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance as a readable date
+	 * 将实例格式化为可读日期
      *
      * @example
      * ```
@@ -4591,6 +4692,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance with the day, and a readable date
+	 * 用日期和可读日期格式化实例
      *
      * @example
      * ```
@@ -4619,6 +4721,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Return a immutable copy of the instance.
+	 * 返回实例的不可变副本
      *
      * @return CarbonImmutable
      */
@@ -4664,6 +4767,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Return a mutable copy of the instance.
+	 * 返回实例的可变副本
      *
      * @return Carbon
      */
@@ -4701,6 +4805,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Get default object representation.
+	 * 获取默认对象表示
      *
      * @example
      * ```
@@ -4713,6 +4818,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a iterable CarbonPeriod object from current date to a given end date (and optional interval).
+	 * 创建一个从当前日期到给定结束日期（和可选间隔）的可迭代CarbonPeriod对象。
      *
      * @param \DateTimeInterface|Carbon|CarbonImmutable|int|null $end      period end date or recurrences count if int
      * @param int|\DateInterval|string|null                      $interval period default interval or number of the given $unit
@@ -4823,6 +4929,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns english human readable complete date string.
+	 * 返回英文人类可读的完整日期字符串
      *
      * @example
      * ```
@@ -4835,6 +4942,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Format the instance as time
+	 * 将实例格式化为time
      *
      * @example
      * ```
@@ -4861,6 +4969,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance for today.
+	 * 为今天创建一个Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *
@@ -4870,6 +4979,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance for tomorrow.
+	 * 为明天创建一个Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *
@@ -4892,6 +5002,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Returns the alternative number for a given integer if available in the current locale.
+	 * 如果在当前语言环境中可用，则返回给定整数的替代数字。
      *
      * @param int $number
      *
@@ -4901,6 +5012,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Translate a time string from a locale to an other.
+	 * 将时间字符串从一个地区转换为另一个地区。
      *
      * @param string      $timeString date/time/duration string to translate (may also contain English)
      * @param string|null $from       input locale of the $timeString parameter (`Carbon::getLocale()` by default)
@@ -4929,6 +5041,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Translate using translation string or callback available.
+	 * 使用翻译字符串或可用的回调进行翻译。
      *
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      * @param string                                             $key
@@ -4951,6 +5064,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set the timezone or returns the timezone name if no arguments passed.
+	 * 设置时区，如果没有传递参数，则返回时区名称。
      *
      * @param DateTimeZone|string $value
      *
@@ -5046,6 +5160,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Set the instance's timezone to UTC.
+	 * 将实例的时区设置为UTC。
      *
      * @return static
      */
@@ -5132,6 +5247,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Create a Carbon instance for yesterday.
+	 * 为昨天创建一个Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *

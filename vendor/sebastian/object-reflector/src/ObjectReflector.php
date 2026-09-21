@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，对象反射器，Object Reflector
+ */
+
 /*
  * This file is part of sebastian/object-reflector.
  *

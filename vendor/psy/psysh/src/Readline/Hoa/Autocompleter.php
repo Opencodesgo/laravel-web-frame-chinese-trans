@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Readline，Hoa，自动完成者
+ */
 
 /**
  * Hoa
@@ -46,6 +49,7 @@ interface Autocompleter
     /**
      * Complete a word.
      * Returns null for no word, a full-word or an array of full-words.
+	 * 完成一个单词。
      */
     public function complete(&$prefix);
 

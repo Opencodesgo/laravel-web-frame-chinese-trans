@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，配置路径
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * A Psy Shell configuration path helper.
+ * 一个Psy Shell配置路径帮助器。
  */
 class ConfigPaths
 {
@@ -23,6 +27,7 @@ class ConfigPaths
 
     /**
      * ConfigPaths constructor.
+	 * ConfigPaths构造函数。
      *
      * Optionally provide `configDir`, `dataDir` and `runtimeDir` overrides.
      *
@@ -40,6 +45,7 @@ class ConfigPaths
 
     /**
      * Provide `configDir`, `dataDir` and `runtimeDir` overrides.
+	 * 提供‘ configDir ’， ‘ dataDir ’和‘ runtimeDir ’覆盖。
      *
      * If a key is set but empty, the override will be removed. If it is not set
      * at all, any existing override will persist.
@@ -63,6 +69,7 @@ class ConfigPaths
 
     /**
      * Get the current home directory.
+	 * 获取当前主目录
      */
     public function homeDir(): ?string
     {
@@ -102,6 +109,7 @@ class ConfigPaths
 
     /**
      * Get potential config directory paths.
+	 * 获取可能的配置目录路径。
      *
      * Returns `~/.psysh`, `%APPDATA%/PsySH` (when on Windows), and all
      * XDG Base Directory config directories:
@@ -123,6 +131,7 @@ class ConfigPaths
 
     /**
      * Get the current home config directory.
+	 * 获取当前主配置目录。
      *
      * Returns the highest precedence home config directory which actually
      * exists. If none of them exists, returns the highest precedence home
@@ -150,6 +159,7 @@ class ConfigPaths
 
     /**
      * Find real config files in config directories.
+	 * 在配置目录中查找真正的配置文件。
      *
      * @param string[] $names Config file names
      *
@@ -162,6 +172,7 @@ class ConfigPaths
 
     /**
      * Get potential data directory paths.
+	 * 获取潜在的数据目录路径
      *
      * If a `dataDir` option was explicitly set, returns an array containing
      * just that directory.
@@ -186,6 +197,7 @@ class ConfigPaths
 
     /**
      * Find real data files in config directories.
+	 * 在配置目录中查找真实的数据文件
      *
      * @param string[] $names Config file names
      *
@@ -198,6 +210,7 @@ class ConfigPaths
 
     /**
      * Get a runtime directory.
+	 * 获取运行时目录。
      *
      * Defaults to `/psysh` inside the system's temp dir.
      */
@@ -215,6 +228,7 @@ class ConfigPaths
 
     /**
      * Get a list of directories in PATH.
+	 * 在PATH中获取目录列表。
      *
      * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.
      *
@@ -227,6 +241,7 @@ class ConfigPaths
 
     /**
      * Locate a command (an executable) in $PATH.
+	 * 在$PATH中找到命令（可执行文件）。
      *
      * Behaves like 'command -v COMMAND' or 'which COMMAND'.
      * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.
@@ -251,6 +266,7 @@ class ConfigPaths
 
     /**
      * Get all PsySH directory name candidates given a list of base directories.
+	 * 给定一个基本目录列表，获取所有PsySH候选目录名。
      *
      * This expects that XDG-compatible directory paths will be passed in.
      * `psysh` will be added to each of $baseDirs, and we'll throw in `~/.psysh`
@@ -313,6 +329,7 @@ class ConfigPaths
 
     /**
      * Ensure that $dir exists and is writable.
+	 * 确保$dir存在并且可写。
      *
      * Generates E_USER_NOTICE error if the directory is not writable or creatable.
      *
@@ -338,6 +355,7 @@ class ConfigPaths
 
     /**
      * Ensure that $file exists and is writable, make the parent directory if necessary.
+	 * 确保$file存在并且是可写的，必要时创建父目录。
      *
      * Generates E_USER_NOTICE error if either $file or its directory is not writable.
      *

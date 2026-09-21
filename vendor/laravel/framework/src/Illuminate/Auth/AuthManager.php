@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，认证，授权管理者
- * 服务容器绑定auth
+ * Illuminate，认证，认证管理器
  */
 
 namespace Illuminate\Auth;
@@ -10,6 +9,10 @@ use Closure;
 use Illuminate\Contracts\Auth\Factory as FactoryContract;
 use InvalidArgumentException;
 
+/**
+ * @mixin \Illuminate\Contracts\Auth\Guard
+ * @mixin \Illuminate\Contracts\Auth\StatefulGuard
+ */
 class AuthManager implements FactoryContract
 {
     use CreatesUserProviders;
@@ -24,7 +27,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The registered custom driver creators.
-	 * 注册的自定义驱动程序创建者
+	 * 已注册自定义驱动程序创建者
      *
      * @var array
      */
@@ -43,7 +46,7 @@ class AuthManager implements FactoryContract
 	 * 各种服务共享的用户解析器
      *
      * Determines the default user for Gate, Request, and the Authenticatable contract.
-	 * 确定Gate、Request和Authenticatable契约的默认用户。
+	 * 确定Gate、Request和Authenticatable契约的默认用户
      *
      * @var \Closure
      */
@@ -51,7 +54,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Create a new Auth manager instance.
-	 * 创建新的Auth管理器实例
+	 * 创建一个新的Auth管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -60,14 +63,12 @@ class AuthManager implements FactoryContract
     {
         $this->app = $app;
 
-        $this->userResolver = function ($guard = null) {
-            return $this->guard($guard)->user();
-        };
+        $this->userResolver = fn ($guard = null) => $this->guard($guard)->user();
     }
 
     /**
      * Attempt to get the guard from the local cache.
-	 * 尝试从本地缓存中获取守卫
+	 * 尝试从本地缓存中获取保护
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
@@ -113,7 +114,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动创建者
+	 * 调用自定义驱动程序创建者
      *
      * @param  string  $name
      * @param  array  $config
@@ -136,13 +137,16 @@ class AuthManager implements FactoryContract
     {
         $provider = $this->createUserProvider($config['provider'] ?? null);
 
-        $guard = new SessionGuard($name, $provider, $this->app['session.store']);
+        $guard = new SessionGuard(
+            $name,
+            $provider,
+            $this->app['session.store'],
+        );
 
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
-		// 当使用身份验证服务的记住我功能时，我们将需要设置保护的加密实例，
-		// 这允许为这些cookie生成安全的、加密的cookie值。
+		// 当使用身份验证服务的记忆功能时，我们需要设置守卫的加密实例。
         if (method_exists($guard, 'setCookieJar')) {
             $guard->setCookieJar($this->app['cookie']);
         }
@@ -153,6 +157,10 @@ class AuthManager implements FactoryContract
 
         if (method_exists($guard, 'setRequest')) {
             $guard->setRequest($this->app->refresh('request', $guard, 'setRequest'));
+        }
+
+        if (isset($config['remember'])) {
+            $guard->setRememberDuration($config['remember']);
         }
 
         return $guard;
@@ -171,8 +179,6 @@ class AuthManager implements FactoryContract
         // The token guard implements a basic API token based guard implementation
         // that takes an API token field from the request and matches it to the
         // user in the database or another persistence layer where users are.
-		// 令牌保护实现一个基本的基于API令牌的保护实现从请求中获取一个API令牌字段，
-		// 并将其与数据库中的用户或用户所在的另一个持久层。
         $guard = new TokenGuard(
             $this->createUserProvider($config['provider'] ?? null),
             $this->app['request'],
@@ -222,9 +228,7 @@ class AuthManager implements FactoryContract
 
         $this->setDefaultDriver($name);
 
-        $this->userResolver = function ($name = null) {
-            return $this->guard($name)->user();
-        };
+        $this->userResolver = fn ($name = null) => $this->guard($name)->user();
     }
 
     /**
@@ -271,7 +275,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Set the callback to be used to resolve users.
-	 * 设置回调为解析用户
+	 * 将回调设置为用于解析用户
      *
      * @param  \Closure  $userResolver
      * @return $this
@@ -325,8 +329,35 @@ class AuthManager implements FactoryContract
     }
 
     /**
+     * Forget all of the resolved guard instances.
+	 * 忘记所有已解析的守卫实例
+     *
+     * @return $this
+     */
+    public function forgetGuards()
+    {
+        $this->guards = [];
+
+        return $this;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动实例
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array  $parameters

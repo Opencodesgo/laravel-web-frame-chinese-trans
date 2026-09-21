@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，处理器，Sql Server 处理器
+ * Illuminate，数据库，PDO，处理器，Sql Server 处理器
  */
 
 namespace Illuminate\Database\Query\Processors;
@@ -38,7 +38,7 @@ class SqlServerProcessor extends Processor
 
     /**
      * Process an "insert get ID" query for ODBC.
-	 * 处理"insert get ID"查询ODBC
+	 * 处理ODBC的"insert get ID"查询
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @return int

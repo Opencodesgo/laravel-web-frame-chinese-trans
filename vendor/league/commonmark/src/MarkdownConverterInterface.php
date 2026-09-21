@@ -1,7 +1,9 @@
 <?php
 /**
- * League，CommonMark，Markdown转换接口
+ * League，CommonMark，Markdown 转换接口
  */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -14,23 +16,24 @@
 
 namespace League\CommonMark;
 
+use League\CommonMark\Exception\CommonMarkException;
+use League\CommonMark\Output\RenderedContentInterface;
+
 /**
  * Interface for a service which converts Markdown to HTML.
- * 用于将Markdown转换为HTML的服务的接口
+ * 用于将Markdown转换为HTML的服务的接口。
+ *
+ * @deprecated since 2.2; use {@link ConverterInterface} instead
  */
 interface MarkdownConverterInterface
 {
     /**
      * Converts Markdown to HTML.
-	 * 转换Markdown为HTML
+	 * 将标记转换为HTML。
      *
-     * @param string $markdown
+     * @deprecated since 2.2; use {@link ConverterInterface::convert()} instead
      *
-     * @throws \RuntimeException
-     *
-     * @return string HTML
-     *
-     * @api
+     * @throws CommonMarkException
      */
-    public function convertToHtml(string $markdown): string;
+    public function convertToHtml(string $markdown): RenderedContentInterface;
 }

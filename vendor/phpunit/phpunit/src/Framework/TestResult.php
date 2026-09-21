@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，框架，测试套件
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -108,6 +113,7 @@ final class TestResult implements Countable
 
     /**
      * Code Coverage information.
+	 * 代码覆盖率信息
      *
      * @var CodeCoverage
      */
@@ -955,7 +961,7 @@ final class TestResult implements Countable
                 $test,
                 new OutputError(
                     sprintf(
-                        'This test printed output: %s',
+                        'Test code or tested code printed unexpected output: %s',
                         $test->getActualOutput(),
                     ),
                 ),

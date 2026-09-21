@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，不支持语言环境的异常 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class NotLocaleAwareException extends BaseInvalidArgumentException implements In
 {
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param mixed          $object
      * @param int            $code

@@ -67,7 +67,7 @@ class ApcWrapper
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项的值
+	 * 减少缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value

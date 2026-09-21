@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，表达式，Array
+ */
+
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\ArrayItem;
@@ -15,6 +19,7 @@ class Array_ extends Expr {
 
     /**
      * Constructs an array node.
+	 * 构造一个数组节点
      *
      * @param ArrayItem[] $items Items of the array
      * @param array<string, mixed> $attributes Additional attributes

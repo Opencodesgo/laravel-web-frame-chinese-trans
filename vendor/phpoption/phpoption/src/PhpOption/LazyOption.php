@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpOption，Lazy Option
+ */
 
 /*
  * Copyright 2012 Johannes M. Schmitt <schmittjoh@gmail.com>

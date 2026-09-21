@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理者，抽象处理者
+ * Monolog，处理器，处理器抽象
  */
 
 /*
@@ -21,6 +21,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Base Handler class providing basic level/bubble support
+ * 提供基本级别/气泡支持的基处理程序类
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -59,6 +60,7 @@ abstract class AbstractHandler extends Handler implements ResettableInterface
 
     /**
      * Sets minimum logging level at which this handler will be triggered.
+	 * 设置触发此处理程序的最低日志级别
      *
      * @param  Level|LevelName|LogLevel::* $level Level or level name
      * @return self
@@ -72,6 +74,7 @@ abstract class AbstractHandler extends Handler implements ResettableInterface
 
     /**
      * Gets minimum logging level at which this handler will be triggered.
+	 * 获取将触发此处理程序的最低日志记录级别
      *
      * @return int
      *
@@ -84,6 +87,7 @@ abstract class AbstractHandler extends Handler implements ResettableInterface
 
     /**
      * Sets the bubbling behavior.
+	 * 设置冒泡行为
      *
      * @param  bool $bubble true means that this handler allows bubbling.
      *                      false means that bubbling is not permitted.
@@ -98,6 +102,7 @@ abstract class AbstractHandler extends Handler implements ResettableInterface
 
     /**
      * Gets the bubbling behavior.
+	 * 获取冒泡行为
      *
      * @return bool true means that this handler allows bubbling.
      *              false means that bubbling is not permitted.

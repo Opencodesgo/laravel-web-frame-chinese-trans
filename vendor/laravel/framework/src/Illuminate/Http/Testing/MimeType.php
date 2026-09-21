@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，测试，文档类型
+ * Illuminate，Http，测试，MIME类型
  */
 
 namespace Illuminate\Http\Testing;
@@ -27,7 +27,7 @@ class MimeType
     public static function getMimeTypes()
     {
         if (self::$mime === null) {
-            self::$mime = new MimeTypes();
+            self::$mime = new MimeTypes;
         }
 
         return self::$mime;
@@ -49,7 +49,7 @@ class MimeType
 
     /**
      * Get the MIME type for a given extension or return all mimes.
-	 * 获取给定扩展的MIME类型或返回所有MIME
+	 * 获取给定扩展的MIME类型或返回所有MI
      *
      * @param  string  $extension
      * @return string

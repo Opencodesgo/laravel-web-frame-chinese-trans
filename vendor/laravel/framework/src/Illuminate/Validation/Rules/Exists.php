@@ -5,9 +5,11 @@
 
 namespace Illuminate\Validation\Rules;
 
+use Illuminate\Support\Traits\Conditionable;
+
 class Exists
 {
-    use DatabaseRule;
+    use Conditionable, DatabaseRule;
 
     /**
      * Convert the rule to a validation string.

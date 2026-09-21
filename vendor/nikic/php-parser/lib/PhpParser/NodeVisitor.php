@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问器
+ */
+
 namespace PhpParser;
 
 interface NodeVisitor {
@@ -47,6 +51,7 @@ interface NodeVisitor {
 
     /**
      * Called once before traversal.
+	 * 遍历前调用一次
      *
      * Return value semantics:
      *  * null:      $nodes stays as-is
@@ -111,6 +116,7 @@ interface NodeVisitor {
 
     /**
      * Called once after traversal.
+	 * 遍历后调用一次。
      *
      * Return value semantics:
      *  * null:      $nodes stays as-is

@@ -5,45 +5,19 @@
 
 namespace Illuminate\Database;
 
-use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDriver;
+use Illuminate\Database\PDO\PostgresDriver;
 use Illuminate\Database\Query\Grammars\PostgresGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\PostgresProcessor;
 use Illuminate\Database\Schema\Grammars\PostgresGrammar as SchemaGrammar;
 use Illuminate\Database\Schema\PostgresBuilder;
-use PDO;
+use Illuminate\Database\Schema\PostgresSchemaState;
+use Illuminate\Filesystem\Filesystem;
 
 class PostgresConnection extends Connection
 {
     /**
-     * Bind values to their parameters in the given statement.
-	 * 在给定语句中将值绑定到它们的参数
-     *
-     * @param  \PDOStatement  $statement
-     * @param  array  $bindings
-     * @return void
-     */
-    public function bindValues($statement, $bindings)
-    {
-        foreach ($bindings as $key => $value) {
-            if (is_int($value)) {
-                $pdoParam = PDO::PARAM_INT;
-            } elseif (is_resource($value)) {
-                $pdoParam = PDO::PARAM_LOB;
-            } else {
-                $pdoParam = PDO::PARAM_STR;
-            }
-
-            $statement->bindValue(
-                is_string($key) ? $key : $key + 1,
-                $value,
-                $pdoParam
-            );
-        }
-    }
-
-    /**
      * Get the default query grammar instance.
-	 * 得到默认的查询语法实例
+	 * 获取默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\PostgresGrammar
      */
@@ -54,7 +28,7 @@ class PostgresConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 获取连接的模式生成器实例
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\PostgresBuilder
      */
@@ -69,7 +43,7 @@ class PostgresConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 获取默认的模式语法实例
+	 * 获取默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\PostgresGrammar
      */
@@ -79,8 +53,21 @@ class PostgresConnection extends Connection
     }
 
     /**
+     * Get the schema state for the connection.
+	 * 获取连接的模式状态
+     *
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
+     * @param  callable|null  $processFactory
+     * @return \Illuminate\Database\Schema\PostgresSchemaState
+     */
+    public function getSchemaState(Filesystem $files = null, callable $processFactory = null)
+    {
+        return new PostgresSchemaState($this, $files, $processFactory);
+    }
+
+    /**
      * Get the default post processor instance.
-	 * 获取默认的post处理器实例
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\PostgresProcessor
      */
@@ -93,10 +80,10 @@ class PostgresConnection extends Connection
      * Get the Doctrine DBAL driver.
 	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOPgSql\Driver
+     * @return \Illuminate\Database\PDO\PostgresDriver
      */
     protected function getDoctrineDriver()
     {
-        return new DoctrineDriver;
+        return new PostgresDriver;
     }
 }

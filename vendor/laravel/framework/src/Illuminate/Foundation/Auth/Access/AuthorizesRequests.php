@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，进入，授权请求特征
+ * Illuminate, 基础，认证, 访问, 授权请求
  */
 
 namespace Illuminate\Foundation\Auth\Access;
@@ -55,7 +55,7 @@ trait AuthorizesRequests
      */
     protected function parseAbilityAndArguments($ability, $arguments)
     {
-        if (is_string($ability) && strpos($ability, '\\') === false) {
+        if (is_string($ability) && ! str_contains($ability, '\\')) {
             return [$ability, $arguments];
         }
 
@@ -82,14 +82,18 @@ trait AuthorizesRequests
      * Authorize a resource action based on the incoming request.
 	 * 根据传入请求授权资源操作
      *
-     * @param  string  $model
-     * @param  string|null  $parameter
+     * @param  string|array  $model
+     * @param  string|array|null  $parameter
      * @param  array  $options
      * @param  \Illuminate\Http\Request|null  $request
      * @return void
      */
     public function authorizeResource($model, $parameter = null, array $options = [], $request = null)
     {
+        $model = is_array($model) ? implode(',', $model) : $model;
+
+        $parameter = is_array($parameter) ? implode(',', $parameter) : $parameter;
+
         $parameter = $parameter ?: Str::snake(class_basename($model));
 
         $middleware = [];

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，列表命令，常数枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Constant Enumerator class.
+ * 常量枚举器类。
  */
 class ConstantEnumerator extends Enumerator
 {
@@ -114,6 +118,7 @@ class ConstantEnumerator extends Enumerator
 
     /**
      * Get defined constants.
+	 * 获取已定义的常量。
      *
      * Optionally restrict constants to a given category, e.g. "date". If the
      * category is "internal", include all non-user-defined constants.
@@ -147,6 +152,7 @@ class ConstantEnumerator extends Enumerator
 
     /**
      * Prepare formatted constant array.
+	 * 准备格式化的常量数组
      *
      * @param array $constants
      *

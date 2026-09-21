@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，发现者，Glob
+ * Symfony，Component，Finder，Glob
  */
 
 /*
@@ -17,6 +16,7 @@ namespace Symfony\Component\Finder;
 
 /**
  * Glob matches globbing patterns against text.
+ * Glob根据文本匹配Glob模式。
  *
  *     if match_glob("foo.*", "foo.bar") echo "matched\n";
  *
@@ -41,10 +41,9 @@ class Glob
 {
     /**
      * Returns a regexp which is the equivalent of the glob pattern.
-     *
-     * @return string
+	 * 返回一个相当于glob模式的regexp。
      */
-    public static function toRegex(string $glob, bool $strictLeadingDot = true, bool $strictWildcardSlash = true, string $delimiter = '#')
+    public static function toRegex(string $glob, bool $strictLeadingDot = true, bool $strictWildcardSlash = true, string $delimiter = '#'): string
     {
         $firstByte = true;
         $escaping = false;

@@ -16,15 +16,13 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 /**
  * Implements the ESI rendering strategy.
+ * 实现ESI呈现策略
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class EsiFragmentRenderer extends AbstractSurrogateFragmentRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'esi';
     }

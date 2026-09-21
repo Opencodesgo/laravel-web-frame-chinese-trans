@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，系统日志处理器 
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Utils;
 
 /**
  * Logs to syslog service.
+ * 日志到syslog服务
  *
  * usage example:
  *

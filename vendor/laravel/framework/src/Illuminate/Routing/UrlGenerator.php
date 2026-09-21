@@ -5,6 +5,7 @@
 
 namespace Illuminate\Routing;
 
+use BackedEnum;
 use Closure;
 use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
 use Illuminate\Contracts\Routing\UrlRoutable;
@@ -127,7 +128,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Create a new URL Generator instance.
-	 * 创建新的URL生成器实例
+	 * 创建一个新的URL生成器实例
      *
      * @param  \Illuminate\Routing\RouteCollectionInterface  $routes
      * @param  \Illuminate\Http\Request  $request
@@ -187,8 +188,22 @@ class UrlGenerator implements UrlGeneratorContract
     }
 
     /**
+     * Get the previous path info for the request.
+	 * 获取请求的前一个路径信息
+     *
+     * @param  mixed  $fallback
+     * @return string
+     */
+    public function previousPath($fallback = false)
+    {
+        $previousPath = str_replace($this->to('/'), '', rtrim(preg_replace('/\?.*/', '', $this->previous($fallback)), '/'));
+
+        return $previousPath === '' ? '/' : $previousPath;
+    }
+
+    /**
      * Get the previous URL from the session if possible.
-	 * 如果可能的话，从会话中获取前一个URL
+	 * 如果可能的话，从会话中获取前一个URL。
      *
      * @return string|null
      */
@@ -225,7 +240,7 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we have the scheme we will compile the "tail" by collapsing the values
         // into a single string delimited by slashes. This just makes it convenient
         // for passing the array of parameters to this URL as a list of segments.
-		// 一旦我们有了这个方案,我们就会通过崩溃的值来编译"尾巴"
+		// 一旦我们有了方案，我们将通过折叠值来编译"尾部"。
         $root = $this->formatRoot($this->formatScheme($secure));
 
         [$path, $query] = $this->extractQueryString($path);
@@ -265,10 +280,8 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-		// 一旦我们获得根URL，我们将检查它是否包含index.php
-        $root = $this->assetRoot
-                    ? $this->assetRoot
-                    : $this->formatRoot($this->formatScheme($secure));
+		// 一旦我们获得根URL，我们将检查它是否包含index.php。
+        $root = $this->assetRoot ?: $this->formatRoot($this->formatScheme($secure));
 
         return $this->removeIndex($root).'/'.trim($path, '/');
     }
@@ -287,7 +300,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Generate the URL to an asset from a custom root domain such as CDN, etc.
-	 * 从自定义根域（如CDN等）生成到资产的URL。
+	 * 从自定义根域（如CDN等）生成到资产的URL
      *
      * @param  string  $root
      * @param  string  $path
@@ -299,7 +312,7 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-		// 一旦我们获得根URL，我们将检查它是否包含index.php
+		// 一旦我们获得根URL，我们将检查它是否包含index.php。
         $root = $this->formatRoot($this->formatScheme($secure), $root);
 
         return $this->removeIndex($root).'/'.trim($path, '/');
@@ -316,7 +329,7 @@ class UrlGenerator implements UrlGeneratorContract
     {
         $i = 'index.php';
 
-        return Str::contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
+        return str_contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
     }
 
     /**
@@ -353,13 +366,9 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function signedRoute($name, $parameters = [], $expiration = null, $absolute = true)
     {
-        $parameters = Arr::wrap($parameters);
-
-        if (array_key_exists('signature', $parameters)) {
-            throw new InvalidArgumentException(
-                '"Signature" is a reserved parameter when generating signed routes. Please rename your route parameter.'
-            );
-        }
+        $this->ensureSignedRouteParametersAreNotReserved(
+            $parameters = Arr::wrap($parameters)
+        );
 
         if ($expiration) {
             $parameters = $parameters + ['expires' => $this->availableAt($expiration)];
@@ -372,6 +381,28 @@ class UrlGenerator implements UrlGeneratorContract
         return $this->route($name, $parameters + [
             'signature' => hash_hmac('sha256', $this->route($name, $parameters, $absolute), $key),
         ], $absolute);
+    }
+
+    /**
+     * Ensure the given signed route parameters are not reserved.
+	 * 确保给定的签名路由参数不被保留
+     *
+     * @param  mixed  $parameters
+     * @return void
+     */
+    protected function ensureSignedRouteParametersAreNotReserved($parameters)
+    {
+        if (array_key_exists('signature', $parameters)) {
+            throw new InvalidArgumentException(
+                '"Signature" is a reserved parameter when generating signed routes. Please rename your route parameter.'
+            );
+        }
+
+        if (array_key_exists('expires', $parameters)) {
+            throw new InvalidArgumentException(
+                '"Expires" is a reserved parameter when generating signed routes. Please rename your route parameter.'
+            );
+        }
     }
 
     /**
@@ -395,12 +426,26 @@ class UrlGenerator implements UrlGeneratorContract
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  bool  $absolute
+     * @param  array  $ignoreQuery
      * @return bool
      */
-    public function hasValidSignature(Request $request, $absolute = true)
+    public function hasValidSignature(Request $request, $absolute = true, array $ignoreQuery = [])
     {
-        return $this->hasCorrectSignature($request, $absolute)
+        return $this->hasCorrectSignature($request, $absolute, $ignoreQuery)
             && $this->signatureHasNotExpired($request);
+    }
+
+    /**
+     * Determine if the given request has a valid signature for a relative URL.
+	 * 确定给定请求是否具有相对URL的有效签名
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $ignoreQuery
+     * @return bool
+     */
+    public function hasValidRelativeSignature(Request $request, array $ignoreQuery = [])
+    {
+        return $this->hasValidSignature($request, false, $ignoreQuery);
     }
 
     /**
@@ -409,15 +454,20 @@ class UrlGenerator implements UrlGeneratorContract
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  bool  $absolute
+     * @param  array  $ignoreQuery
      * @return bool
      */
-    public function hasCorrectSignature(Request $request, $absolute = true)
+    public function hasCorrectSignature(Request $request, $absolute = true, array $ignoreQuery = [])
     {
+        $ignoreQuery[] = 'signature';
+
         $url = $absolute ? $request->url() : '/'.$request->path();
 
-        $original = rtrim($url.'?'.Arr::query(
-            Arr::except($request->query(), 'signature')
-        ), '?');
+        $queryString = collect(explode('&', (string) $request->server->get('QUERY_STRING')))
+            ->reject(fn ($parameter) => in_array(Str::before($parameter, '='), $ignoreQuery))
+            ->join('&');
+
+        $original = rtrim($url.'?'.$queryString, '?');
 
         $signature = hash_hmac('sha256', $original, call_user_func($this->keyResolver));
 
@@ -472,9 +522,13 @@ class UrlGenerator implements UrlGeneratorContract
     public function toRoute($route, $parameters, $absolute)
     {
         $parameters = collect(Arr::wrap($parameters))->map(function ($value, $key) use ($route) {
-            return $value instanceof UrlRoutable && $route->bindingFieldFor($key)
+            $value = $value instanceof UrlRoutable && $route->bindingFieldFor($key)
                     ? $value->{$route->bindingFieldFor($key)}
                     : $value;
+
+            return function_exists('enum_exists') && $value instanceof BackedEnum
+                ? $value->value
+                : $value;
         })->all();
 
         return $this->routeUrl()->to(
@@ -515,7 +569,7 @@ class UrlGenerator implements UrlGeneratorContract
             $action = '\\'.implode('@', $action);
         }
 
-        if ($this->rootNamespace && strpos($action, '\\') !== 0) {
+        if ($this->rootNamespace && ! str_starts_with($action, '\\')) {
             return $this->rootNamespace.'\\'.$action;
         } else {
             return trim($action, '\\');
@@ -579,7 +633,7 @@ class UrlGenerator implements UrlGeneratorContract
             $root = $this->cachedRoot;
         }
 
-        $start = Str::startsWith($root, 'http://') ? 'http://' : 'https://';
+        $start = str_starts_with($root, 'http://') ? 'http://' : 'https://';
 
         return preg_replace('~'.$start.'~', $scheme, $root, 1);
     }
@@ -767,7 +821,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Set the route collection.
-	 * 设置路由集合
+	 * 设置路由收集
      *
      * @param  \Illuminate\Routing\RouteCollectionInterface  $routes
      * @return $this
@@ -818,6 +872,29 @@ class UrlGenerator implements UrlGeneratorContract
         $this->keyResolver = $keyResolver;
 
         return $this;
+    }
+
+    /**
+     * Clone a new instance of the URL generator with a different encryption key resolver.
+	 * 使用不同的加密密钥解析器克隆URL生成器的新实例
+     *
+     * @param  callable  $keyResolver
+     * @return \Illuminate\Routing\UrlGenerator
+     */
+    public function withKeyResolver(callable $keyResolver)
+    {
+        return (clone $this)->setKeyResolver($keyResolver);
+    }
+
+    /**
+     * Get the root controller namespace.
+	 * 获取根控制器命名空间
+     *
+     * @return string
+     */
+    public function getRootControllerNamespace()
+    {
+        return $this->rootNamespace;
     }
 
     /**

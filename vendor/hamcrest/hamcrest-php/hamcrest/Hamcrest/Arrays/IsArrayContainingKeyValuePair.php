@@ -1,8 +1,13 @@
 <?php
+/**
+ * Hamcrest，数组，是否包含关键值对的数组
+ */
+
 namespace Hamcrest\Arrays;
 
 /**
  * Tests for the presence of both a key and value inside an array.
+ * 测试在数组中存在一个键和值。
  */
 use Hamcrest\Description;
 use Hamcrest\Matcher;
@@ -67,6 +72,7 @@ class IsArrayContainingKeyValuePair extends TypeSafeMatcher
 
     /**
      * Test if an array has both an key and value in parity with each other.
+	 * 测试如果一个数组有一个键和值,则是对等的。
      *
      * @factory hasEntry
      */

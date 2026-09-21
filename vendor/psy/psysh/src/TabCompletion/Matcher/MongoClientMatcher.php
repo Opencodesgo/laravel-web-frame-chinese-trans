@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，Mongo 客户端匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * A MongoDB Client tab completion Matcher.
+ * MongoDB Client选项卡完成匹配器。
  *
  * This matcher provides completion for MongoClient database names.
  *

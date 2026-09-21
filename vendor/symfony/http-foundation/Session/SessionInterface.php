@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，会话接口
+ * Symfony，Component，HttpFoundation，会话，会话接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 
 /**
  * Interface for the session.
- * 会话接口
+ * 会话接口。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -28,41 +28,41 @@ interface SessionInterface
      * Starts the session storage.
 	 * 启动会话存储
      *
-     * @return bool
-     *
      * @throws \RuntimeException if session fails to start
      */
-    public function start();
+    public function start(): bool;
 
     /**
      * Returns the session ID.
 	 * 返回会话ID
-     *
-     * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Sets the session ID.
+	 * 设置会话ID
+     *
+     * @return void
      */
     public function setId(string $id);
 
     /**
      * Returns the session name.
 	 * 返回会话名称
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Sets the session name.
+	 * 设置会话名称
+     *
+     * @return void
      */
     public function setName(string $name);
 
     /**
      * Invalidates the current session.
-	 * 使当前会话无效
+	 * 使当前会话无效。
      *
      * Clears all session attributes and flashes and regenerates the
      * session and deletes the old session from persistence.
@@ -71,10 +71,8 @@ interface SessionInterface
      *                           will leave the system settings unchanged, 0 sets the cookie
      *                           to expire with browser session. Time is in seconds, and is
      *                           not a Unix timestamp.
-     *
-     * @return bool
      */
-    public function invalidate(?int $lifetime = null);
+    public function invalidate(?int $lifetime = null): bool;
 
     /**
      * Migrates the current session to a new session id while maintaining all
@@ -85,93 +83,94 @@ interface SessionInterface
      *                           will leave the system settings unchanged, 0 sets the cookie
      *                           to expire with browser session. Time is in seconds, and is
      *                           not a Unix timestamp.
-     *
-     * @return bool
      */
-    public function migrate(bool $destroy = false, ?int $lifetime = null);
+    public function migrate(bool $destroy = false, ?int $lifetime = null): bool;
 
     /**
      * Force the session to be saved and closed.
+	 * 强制保存并关闭会话。
      *
      * This method is generally not required for real sessions as
      * the session will be automatically saved at the end of
      * code execution.
+     *
+     * @return void
      */
     public function save();
 
     /**
      * Checks if an attribute is defined.
-     *
-     * @return bool
+	 * 检查是否定义了属性
      */
-    public function has(string $name);
+    public function has(string $name): bool;
 
     /**
      * Returns an attribute.
-     *
-     * @param mixed $default The default value if not found
-     *
-     * @return mixed
+	 * 返回一个属性
      */
-    public function get(string $name, $default = null);
+    public function get(string $name, mixed $default = null): mixed;
 
     /**
      * Sets an attribute.
+	 * 设置属性
      *
-     * @param mixed $value
+     * @return void
      */
-    public function set(string $name, $value);
+    public function set(string $name, mixed $value);
 
     /**
      * Returns attributes.
-     *
-     * @return array
+	 * 返回属性
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Sets attributes.
+	 * 设置属性
+     *
+     * @return void
      */
     public function replace(array $attributes);
 
     /**
      * Removes an attribute.
+	 * 移除属性
      *
      * @return mixed The removed value or null when it does not exist
      */
-    public function remove(string $name);
+    public function remove(string $name): mixed;
 
     /**
      * Clears all attributes.
+	 * 清除所有属性
+     *
+     * @return void
      */
     public function clear();
 
     /**
      * Checks if the session was started.
 	 * 检查会话是否已启动
-     *
-     * @return bool
      */
-    public function isStarted();
+    public function isStarted(): bool;
 
     /**
      * Registers a SessionBagInterface with the session.
+	 * 向会话注册一个SessionBagInterface
+     *
+     * @return void
      */
     public function registerBag(SessionBagInterface $bag);
 
     /**
      * Gets a bag instance by name.
 	 * 按名称获取包实例
-     *
-     * @return SessionBagInterface
      */
-    public function getBag(string $name);
+    public function getBag(string $name): SessionBagInterface;
 
     /**
      * Gets session meta.
 	 * 获取会话元数据
-     *
-     * @return MetadataBag
      */
-    public function getMetadataBag();
+    public function getMetadataBag(): MetadataBag;
 }

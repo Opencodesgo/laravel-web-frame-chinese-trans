@@ -1,0 +1,26 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，根据需要实际修改
+ */
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+
+class {{ class }} implements Scope
+{
+    /**
+     * Apply the scope to a given Eloquent query builder.
+	 * 将范围应用于给定的Eloquent查询生成器
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+    public function apply(Builder $builder, Model $model)
+    {
+        //
+    }
+}

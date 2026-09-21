@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，逐行读取，Libedit
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\Util\Str;
 
 /**
  * A Libedit-based Readline implementation.
+ * 一个基于libedit的Readline实现。
  *
  * This is largely the same as the Readline implementation, but it emulates
  * support for `readline_list_history` since PHP decided it was a good idea to
@@ -29,6 +33,7 @@ class Libedit extends GNUReadline
 
     /**
      * Let's emulate GNU Readline by manually reading and parsing the history file!
+	 * 让我们通过手动读取和解析历史文件来模拟GNU Readline ！
      */
     public static function isSupported(): bool
     {

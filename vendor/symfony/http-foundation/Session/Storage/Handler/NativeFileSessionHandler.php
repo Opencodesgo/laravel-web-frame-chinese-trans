@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，本机文件会话处理程序
+ * Symfony，Component，HttpFoundation，会话，存储，处理器，本机文件会话处理程序
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Native session handler using PHP's built in file storage.
- * 使用PHP内置文件存储的本机会话处理程序
+ * 使用PHP内置文件存储的本机会话处理程序。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -34,15 +34,11 @@ class NativeFileSessionHandler extends \SessionHandler
      */
     public function __construct(?string $savePath = null)
     {
-        if (null === $savePath) {
-            $savePath = \ini_get('session.save_path');
-        }
-
-        $baseDir = $savePath;
+        $baseDir = $savePath ??= \ini_get('session.save_path');
 
         if ($count = substr_count($savePath, ';')) {
             if ($count > 2) {
-                throw new \InvalidArgumentException(sprintf('Invalid argument $savePath \'%s\'.', $savePath));
+                throw new \InvalidArgumentException(\sprintf('Invalid argument $savePath \'%s\'.', $savePath));
             }
 
             // characters after last ';' are the path
@@ -50,7 +46,7 @@ class NativeFileSessionHandler extends \SessionHandler
         }
 
         if ($baseDir && !is_dir($baseDir) && !@mkdir($baseDir, 0777, true) && !is_dir($baseDir)) {
-            throw new \RuntimeException(sprintf('Session Storage was not able to create directory "%s".', $baseDir));
+            throw new \RuntimeException(\sprintf('Session Storage was not able to create directory "%s".', $baseDir));
         }
 
         if ($savePath !== \ini_get('session.save_path')) {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，自动完成者
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\TabCompletion\Matcher\AbstractMatcher;
 
 /**
  * A readline tab completion service.
+ * readline 制表符补全服务。
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
@@ -25,6 +29,7 @@ class AutoCompleter
 
     /**
      * Register a tab completion Matcher.
+	 * 注册一个选项卡完成匹配器
      *
      * @param AbstractMatcher $matcher
      */
@@ -35,6 +40,7 @@ class AutoCompleter
 
     /**
      * Activate readline tab completion.
+	 * 激活readline制表符补全
      */
     public function activate()
     {
@@ -43,6 +49,7 @@ class AutoCompleter
 
     /**
      * Handle readline completion.
+	 * 处理readline补全
      *
      * @param string $input Readline current word
      * @param int    $index Current word index
@@ -85,6 +92,7 @@ class AutoCompleter
 
     /**
      * The readline_completion_function callback handler.
+	 * readline_completion_function回调处理程序
      *
      * @see processCallback
      *
@@ -100,6 +108,7 @@ class AutoCompleter
 
     /**
      * Remove readline callback handler on destruct.
+	 * 在destruct上删除readline回调处理程序
      */
     public function __destruct()
     {

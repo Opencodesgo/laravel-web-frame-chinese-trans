@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，文件内容过滤迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,23 +14,24 @@
 
 namespace Symfony\Component\Finder\Iterator;
 
+use Symfony\Component\Finder\SplFileInfo;
+
 /**
  * FilecontentFilterIterator filters files by their contents using patterns (regexps or strings).
+ * FilecontentFilterIterator使用模式（regexp或字符串）根据文件的内容过滤文件。
  *
  * @author Fabien Potencier  <fabien@symfony.com>
  * @author Włodzimierz Gajda <gajdaw@gajdaw.pl>
  *
- * @extends MultiplePcreFilterIterator<string, \SplFileInfo>
+ * @extends MultiplePcreFilterIterator<string, SplFileInfo>
  */
 class FilecontentFilterIterator extends MultiplePcreFilterIterator
 {
     /**
      * Filters the iterator values.
-     *
-     * @return bool
+	 * 过滤迭代器值
      */
-    #[\ReturnTypeWillChange]
-    public function accept()
+    public function accept(): bool
     {
         if (!$this->matchRegexps && !$this->noMatchRegexps) {
             return true;
@@ -49,12 +53,11 @@ class FilecontentFilterIterator extends MultiplePcreFilterIterator
 
     /**
      * Converts string to regexp if necessary.
+	 * 必要时将字符串转换为regexp
      *
      * @param string $str Pattern: string or regexp
-     *
-     * @return string
      */
-    protected function toRegex(string $str)
+    protected function toRegex(string $str): string
     {
         return $this->isRegex($str) ? $str : '/'.preg_quote($str, '/').'/';
     }

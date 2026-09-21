@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，表格样式
- *
+ * Symfony，Component，Console，助手，表格样式
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Defines the styles for a Table.
- * 定义表的样式
+ * 定义表的样式。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
@@ -27,37 +27,38 @@ use Symfony\Component\Console\Exception\LogicException;
  */
 class TableStyle
 {
-    private $paddingChar = ' ';
-    private $horizontalOutsideBorderChar = '-';
-    private $horizontalInsideBorderChar = '-';
-    private $verticalOutsideBorderChar = '|';
-    private $verticalInsideBorderChar = '|';
-    private $crossingChar = '+';
-    private $crossingTopRightChar = '+';
-    private $crossingTopMidChar = '+';
-    private $crossingTopLeftChar = '+';
-    private $crossingMidRightChar = '+';
-    private $crossingBottomRightChar = '+';
-    private $crossingBottomMidChar = '+';
-    private $crossingBottomLeftChar = '+';
-    private $crossingMidLeftChar = '+';
-    private $crossingTopLeftBottomChar = '+';
-    private $crossingTopMidBottomChar = '+';
-    private $crossingTopRightBottomChar = '+';
-    private $headerTitleFormat = '<fg=black;bg=white;options=bold> %s </>';
-    private $footerTitleFormat = '<fg=black;bg=white;options=bold> %s </>';
-    private $cellHeaderFormat = '<info>%s</info>';
-    private $cellRowFormat = '%s';
-    private $cellRowContentFormat = ' %s ';
-    private $borderFormat = '%s';
-    private $padType = \STR_PAD_RIGHT;
+    private string $paddingChar = ' ';
+    private string $horizontalOutsideBorderChar = '-';
+    private string $horizontalInsideBorderChar = '-';
+    private string $verticalOutsideBorderChar = '|';
+    private string $verticalInsideBorderChar = '|';
+    private string $crossingChar = '+';
+    private string $crossingTopRightChar = '+';
+    private string $crossingTopMidChar = '+';
+    private string $crossingTopLeftChar = '+';
+    private string $crossingMidRightChar = '+';
+    private string $crossingBottomRightChar = '+';
+    private string $crossingBottomMidChar = '+';
+    private string $crossingBottomLeftChar = '+';
+    private string $crossingMidLeftChar = '+';
+    private string $crossingTopLeftBottomChar = '+';
+    private string $crossingTopMidBottomChar = '+';
+    private string $crossingTopRightBottomChar = '+';
+    private string $headerTitleFormat = '<fg=black;bg=white;options=bold> %s </>';
+    private string $footerTitleFormat = '<fg=black;bg=white;options=bold> %s </>';
+    private string $cellHeaderFormat = '<info>%s</info>';
+    private string $cellRowFormat = '%s';
+    private string $cellRowContentFormat = ' %s ';
+    private string $borderFormat = '%s';
+    private int $padType = \STR_PAD_RIGHT;
 
     /**
      * Sets padding character, used for cell padding.
+	 * 设置填充字符，用于单元格填充。
      *
      * @return $this
      */
-    public function setPaddingChar(string $paddingChar)
+    public function setPaddingChar(string $paddingChar): static
     {
         if (!$paddingChar) {
             throw new LogicException('The padding char must not be empty.');
@@ -70,16 +71,16 @@ class TableStyle
 
     /**
      * Gets padding character, used for cell padding.
-     *
-     * @return string
+	 * 获取填充字符，用于单元格填充。
      */
-    public function getPaddingChar()
+    public function getPaddingChar(): string
     {
         return $this->paddingChar;
     }
 
     /**
      * Sets horizontal border characters.
+	 * 设置水平边框字符。
      *
      * <code>
      * ╔═══════════════╤══════════════════════════╤══════════════════╗
@@ -94,7 +95,7 @@ class TableStyle
      *
      * @return $this
      */
-    public function setHorizontalBorderChars(string $outside, ?string $inside = null): self
+    public function setHorizontalBorderChars(string $outside, ?string $inside = null): static
     {
         $this->horizontalOutsideBorderChar = $outside;
         $this->horizontalInsideBorderChar = $inside ?? $outside;
@@ -104,6 +105,7 @@ class TableStyle
 
     /**
      * Sets vertical border characters.
+	 * 设置垂直边框字符。
      *
      * <code>
      * ╔═══════════════╤══════════════════════════╤══════════════════╗
@@ -119,7 +121,7 @@ class TableStyle
      *
      * @return $this
      */
-    public function setVerticalBorderChars(string $outside, ?string $inside = null): self
+    public function setVerticalBorderChars(string $outside, ?string $inside = null): static
     {
         $this->verticalOutsideBorderChar = $outside;
         $this->verticalInsideBorderChar = $inside ?? $outside;
@@ -129,6 +131,7 @@ class TableStyle
 
     /**
      * Gets border characters.
+	 * 获取边框字符
      *
      * @internal
      */
@@ -144,6 +147,7 @@ class TableStyle
 
     /**
      * Sets crossing characters.
+	 * 设置交叉字符。
      *
      * Example:
      * <code>
@@ -173,7 +177,7 @@ class TableStyle
      *
      * @return $this
      */
-    public function setCrossingChars(string $cross, string $topLeft, string $topMid, string $topRight, string $midRight, string $bottomRight, string $bottomMid, string $bottomLeft, string $midLeft, ?string $topLeftBottom = null, ?string $topMidBottom = null, ?string $topRightBottom = null): self
+    public function setCrossingChars(string $cross, string $topLeft, string $topMid, string $topRight, string $midRight, string $bottomRight, string $bottomMid, string $bottomLeft, string $midLeft, ?string $topLeftBottom = null, ?string $topMidBottom = null, ?string $topRightBottom = null): static
     {
         $this->crossingChar = $cross;
         $this->crossingTopLeftChar = $topLeft;
@@ -193,6 +197,7 @@ class TableStyle
 
     /**
      * Sets default crossing character used for each cross.
+	 * 设置每个十字使用的默认十字字符
      *
      * @see {@link setCrossingChars()} for setting each crossing individually.
      */
@@ -203,16 +208,16 @@ class TableStyle
 
     /**
      * Gets crossing character.
-     *
-     * @return string
+	 * 得到交叉字符
      */
-    public function getCrossingChar()
+    public function getCrossingChar(): string
     {
         return $this->crossingChar;
     }
 
     /**
      * Gets crossing characters.
+	 * 得到交叉字符
      *
      * @internal
      */
@@ -236,10 +241,11 @@ class TableStyle
 
     /**
      * Sets header cell format.
+	 * 设置标题单元格格式
      *
      * @return $this
      */
-    public function setCellHeaderFormat(string $cellHeaderFormat)
+    public function setCellHeaderFormat(string $cellHeaderFormat): static
     {
         $this->cellHeaderFormat = $cellHeaderFormat;
 
@@ -248,20 +254,20 @@ class TableStyle
 
     /**
      * Gets header cell format.
-     *
-     * @return string
+	 * 获取标题单元格格式
      */
-    public function getCellHeaderFormat()
+    public function getCellHeaderFormat(): string
     {
         return $this->cellHeaderFormat;
     }
 
     /**
      * Sets row cell format.
+	 * 设置行单元格格式
      *
      * @return $this
      */
-    public function setCellRowFormat(string $cellRowFormat)
+    public function setCellRowFormat(string $cellRowFormat): static
     {
         $this->cellRowFormat = $cellRowFormat;
 
@@ -270,20 +276,20 @@ class TableStyle
 
     /**
      * Gets row cell format.
-     *
-     * @return string
+	 * 获取行单元格格式
      */
-    public function getCellRowFormat()
+    public function getCellRowFormat(): string
     {
         return $this->cellRowFormat;
     }
 
     /**
      * Sets row cell content format.
+	 * 设置行单元格内容格式
      *
      * @return $this
      */
-    public function setCellRowContentFormat(string $cellRowContentFormat)
+    public function setCellRowContentFormat(string $cellRowContentFormat): static
     {
         $this->cellRowContentFormat = $cellRowContentFormat;
 
@@ -292,20 +298,20 @@ class TableStyle
 
     /**
      * Gets row cell content format.
-     *
-     * @return string
+	 * 获取行单元格内容格式
      */
-    public function getCellRowContentFormat()
+    public function getCellRowContentFormat(): string
     {
         return $this->cellRowContentFormat;
     }
 
     /**
      * Sets table border format.
+	 * 设置表格边框格式
      *
      * @return $this
      */
-    public function setBorderFormat(string $borderFormat)
+    public function setBorderFormat(string $borderFormat): static
     {
         $this->borderFormat = $borderFormat;
 
@@ -314,20 +320,20 @@ class TableStyle
 
     /**
      * Gets table border format.
-     *
-     * @return string
+	 * 获取表边框格式
      */
-    public function getBorderFormat()
+    public function getBorderFormat(): string
     {
         return $this->borderFormat;
     }
 
     /**
      * Sets cell padding type.
+	 * 设置单元格填充类型
      *
      * @return $this
      */
-    public function setPadType(int $padType)
+    public function setPadType(int $padType): static
     {
         if (!\in_array($padType, [\STR_PAD_LEFT, \STR_PAD_RIGHT, \STR_PAD_BOTH], true)) {
             throw new InvalidArgumentException('Invalid padding type. Expected one of (STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH).');
@@ -340,10 +346,9 @@ class TableStyle
 
     /**
      * Gets cell padding type.
-     *
-     * @return int
+	 * 获取单元格填充类型
      */
-    public function getPadType()
+    public function getPadType(): int
     {
         return $this->padType;
     }
@@ -356,7 +361,7 @@ class TableStyle
     /**
      * @return $this
      */
-    public function setHeaderTitleFormat(string $format): self
+    public function setHeaderTitleFormat(string $format): static
     {
         $this->headerTitleFormat = $format;
 
@@ -371,7 +376,7 @@ class TableStyle
     /**
      * @return $this
      */
-    public function setFooterTitleFormat(string $format): self
+    public function setFooterTitleFormat(string $format): static
     {
         $this->footerTitleFormat = $format;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，响应特性
+ * Illuminate, Http, 响应特征
  */
 
 namespace Illuminate\Http;
@@ -13,7 +13,7 @@ trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 响应的原始内容
+	 * 回复的原始内容
      *
      * @var mixed
      */
@@ -36,6 +36,17 @@ trait ResponseTrait
     public function status()
     {
         return $this->getStatusCode();
+    }
+
+    /**
+     * Get the status text for the response.
+	 * 获取响应的状态文本
+     *
+     * @return string
+     */
+    public function statusText()
+    {
+        return $this->statusText;
     }
 
     /**
@@ -129,6 +140,26 @@ trait ResponseTrait
     }
 
     /**
+     * Expire a cookie when sending the response.
+	 * 在发送响应时使cookie过期
+     *
+     * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
+     * @param  string|null  $path
+     * @param  string|null  $domain
+     * @return $this
+     */
+    public function withoutCookie($cookie, $path = null, $domain = null)
+    {
+        if (is_string($cookie) && function_exists('cookie')) {
+            $cookie = cookie($cookie, null, -2628000, $path, $domain);
+        }
+
+        $this->headers->setCookie($cookie);
+
+        return $this;
+    }
+
+    /**
      * Get the callback of the response.
 	 * 获取响应的回调
      *
@@ -155,7 +186,7 @@ trait ResponseTrait
 
     /**
      * Throws the response in a HttpResponseException instance.
-	 * 在 HttpResponseException 实例中抛出响应
+	 * 在HttpResponseException实例中抛出响应
      *
      * @return void
      *

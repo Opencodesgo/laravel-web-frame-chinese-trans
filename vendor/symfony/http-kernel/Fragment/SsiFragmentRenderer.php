@@ -16,15 +16,13 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 /**
  * Implements the SSI rendering strategy.
+ * 实现SSI呈现策略
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
 class SsiFragmentRenderer extends AbstractSurrogateFragmentRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'ssi';
     }

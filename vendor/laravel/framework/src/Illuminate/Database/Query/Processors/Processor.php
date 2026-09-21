@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，处理器，处理器
+ * Illuminate，数据库，PDO，处理器，处理器
  */
 
 namespace Illuminate\Database\Query\Processors;
@@ -11,7 +11,7 @@ class Processor
 {
     /**
      * Process the results of a "select" query.
-	 * 处理"选择"查询的结果
+	 * 处理"select"查询的结果
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $results

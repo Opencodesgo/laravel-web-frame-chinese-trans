@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，支持，提供者，事件服务提供者
+ * Illuminate，基础，支持，提供商，事件服务提供商
  */
 
 namespace Illuminate\Foundation\Support\Providers;
@@ -15,17 +15,25 @@ class EventServiceProvider extends ServiceProvider
      * The event handler mappings for the application.
 	 * 应用程序的事件处理程序映射
      *
-     * @var array
+     * @var array<string, array<int, string>>
      */
     protected $listen = [];
 
     /**
-     * The subscriber classes to register.
-	 * 订阅类注册
+     * The subscribers to register.
+	 * 订阅者注册
      *
      * @var array
      */
     protected $subscribe = [];
+
+    /**
+     * The model observers to register.
+	 * 要注册的模型观察者
+     *
+     * @var array
+     */
+    protected $observers = [];
 
     /**
      * Register the application's event listeners.
@@ -33,19 +41,36 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    public function register()
+    {
+        $this->booting(function () {
+            $events = $this->getEvents();
+
+            foreach ($events as $event => $listeners) {
+                foreach (array_unique($listeners, SORT_REGULAR) as $listener) {
+                    Event::listen($event, $listener);
+                }
+            }
+
+            foreach ($this->subscribe as $subscriber) {
+                Event::subscribe($subscriber);
+            }
+
+            foreach ($this->observers as $model => $observers) {
+                $model::observe($observers);
+            }
+        });
+    }
+
+    /**
+     * Boot any application services.
+	 * 引导任何应用程序服务
+     *
+     * @return void
+     */
     public function boot()
     {
-        $events = $this->getEvents();
-
-        foreach ($events as $event => $listeners) {
-            foreach (array_unique($listeners) as $listener) {
-                Event::listen($event, $listener);
-            }
-        }
-
-        foreach ($this->subscribe as $subscriber) {
-            Event::subscribe($subscriber);
-        }
+        //
     }
 
     /**
@@ -61,7 +86,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Get the discovered events and listeners for the application.
-	 * 为应用程序获取被发现的事件和侦听器
+	 * 获取已发现的应用程序事件和侦听器
      *
      * @return array
      */
@@ -81,7 +106,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Get the discovered events for the application.
-	 * 为应用程序获取被发现的事件
+	 * 获取已发现的应用程序事件
      *
      * @return array
      */
@@ -105,7 +130,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Discover the events and listeners for the application.
-	 * 为应用程序发现事件和侦听器
+	 * 发现应用程序的事件和侦听器
      *
      * @return array
      */
@@ -118,7 +143,7 @@ class EventServiceProvider extends ServiceProvider
                     ->reduce(function ($discovered, $directory) {
                         return array_merge_recursive(
                             $discovered,
-                            DiscoverEvents::within($directory, base_path())
+                            DiscoverEvents::within($directory, $this->eventDiscoveryBasePath())
                         );
                     }, []);
     }
@@ -134,5 +159,16 @@ class EventServiceProvider extends ServiceProvider
         return [
             $this->app->path('Listeners'),
         ];
+    }
+
+    /**
+     * Get the base path to be used during event discovery.
+	 * 获取要在事件发现期间使用的基本路径
+     *
+     * @return string
+     */
+    protected function eventDiscoveryBasePath()
+    {
+        return base_path();
     }
 }

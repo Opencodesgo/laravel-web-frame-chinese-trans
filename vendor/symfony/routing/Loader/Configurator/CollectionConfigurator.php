@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，配置，收集配置器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,10 +26,10 @@ class CollectionConfigurator
     use Traits\HostTrait;
     use Traits\RouteTrait;
 
-    private $parent;
-    private $parentConfigurator;
-    private $parentPrefixes;
-    private $host;
+    private RouteCollection $parent;
+    private ?CollectionConfigurator $parentConfigurator;
+    private ?array $parentPrefixes;
+    private string|array|null $host = null;
 
     public function __construct(RouteCollection $parent, string $name, ?self $parentConfigurator = null, ?array $parentPrefixes = null)
     {
@@ -38,14 +41,14 @@ class CollectionConfigurator
         $this->parentPrefixes = $parentPrefixes;
     }
 
-    /**
-     * @return array
-     */
-    public function __sleep()
+    public function __sleep(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
@@ -65,6 +68,7 @@ class CollectionConfigurator
 
     /**
      * Creates a sub-collection.
+	 * 创建子集合
      */
     final public function collection(string $name = ''): self
     {
@@ -73,22 +77,23 @@ class CollectionConfigurator
 
     /**
      * Sets the prefix to add to the path of all child routes.
+	 * 设置要添加到所有子路由路径的前缀。
      *
      * @param string|array $prefix the prefix, or the localized prefixes
      *
      * @return $this
      */
-    final public function prefix($prefix): self
+    final public function prefix(string|array $prefix): static
     {
         if (\is_array($prefix)) {
             if (null === $this->parentPrefixes) {
                 // no-op
             } elseif ($missing = array_diff_key($this->parentPrefixes, $prefix)) {
-                throw new \LogicException(sprintf('Collection "%s" is missing prefixes for locale(s) "%s".', $this->name, implode('", "', array_keys($missing))));
+                throw new \LogicException(\sprintf('Collection "%s" is missing prefixes for locale(s) "%s".', $this->name, implode('", "', array_keys($missing))));
             } else {
                 foreach ($prefix as $locale => $localePrefix) {
                     if (!isset($this->parentPrefixes[$locale])) {
-                        throw new \LogicException(sprintf('Collection "%s" with locale "%s" is missing a corresponding prefix in its parent collection.', $this->name, $locale));
+                        throw new \LogicException(\sprintf('Collection "%s" with locale "%s" is missing a corresponding prefix in its parent collection.', $this->name, $locale));
                     }
 
                     $prefix[$locale] = $this->parentPrefixes[$locale].$localePrefix;
@@ -106,18 +111,23 @@ class CollectionConfigurator
 
     /**
      * Sets the host to use for all child routes.
+	 * 设置要用于所有子路由的主机。
      *
      * @param string|array $host the host, or the localized hosts
      *
      * @return $this
      */
-    final public function host($host): self
+    final public function host(string|array $host): static
     {
         $this->host = $host;
 
         return $this;
     }
 
+    /**
+     * This method overrides the one from LocalizedRouteTrait.
+	 * 这个方法覆盖了LocalizedRouteTrait中的方法。
+     */
     private function createRoute(string $path): Route
     {
         return (clone $this->route)->setPath($path);

@@ -17,6 +17,7 @@ namespace Symfony\Component\Console\Event;
 /**
  * Allows to do things before the command is executed, like skipping the command or executing code before the command is
  * going to be executed.
+ * 允许在命令执行之前做一些事情，比如跳过命令或在命令执行之前执行代码。
  *
  * Changing the input arguments will have no effect.
  *
@@ -26,16 +27,19 @@ final class ConsoleCommandEvent extends ConsoleEvent
 {
     /**
      * The return code for skipped commands, this will also be passed into the terminate event.
+	 * 跳过命令的返回代码，这也将被传递到terminate事件。
      */
     public const RETURN_CODE_DISABLED = 113;
 
     /**
      * Indicates if the command should be run or skipped.
+	 * 指示该命令是执行还是跳过
      */
-    private $commandShouldRun = true;
+    private bool $commandShouldRun = true;
 
     /**
      * Disables the command, so it won't be run.
+	 * 禁用命令，因此不会运行它。
      */
     public function disableCommand(): bool
     {
@@ -49,6 +53,7 @@ final class ConsoleCommandEvent extends ConsoleEvent
 
     /**
      * Returns true if the command is runnable, false otherwise.
+	 * 如果命令是可运行的返回true，否则返回false。
      */
     public function commandShouldRun(): bool
     {

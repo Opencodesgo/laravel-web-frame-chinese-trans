@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，工厂方法
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org
@@ -6,6 +9,7 @@
 
 /**
  * Represents a single static factory method from a {@link Matcher} class.
+ * 代表一个来自{ @link Matcher }类的静态工厂方法。
  *
  * @todo Search method in file contents for func_get_args() to replace factoryVarArgs.
  */

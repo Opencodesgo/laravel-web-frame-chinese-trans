@@ -9,7 +9,7 @@ interface Engine
 {
     /**
      * Get the evaluated contents of the view.
-	 * 得到视图的求值内容
+	 * 获取视图的求值内容
      *
      * @param  string  $path
      * @param  array  $data

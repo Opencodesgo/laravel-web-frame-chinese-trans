@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图类
+ * Illuminate，视图，视图
  */
 
 namespace Illuminate\View;
@@ -43,7 +43,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The name of the view.
-	 * 视图名
+	 * 视图的名称
      *
      * @var string
      */
@@ -51,7 +51,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The array of view data.
-	 * 视图数据数组
+	 * 视图数据的数组
      *
      * @var array
      */
@@ -67,7 +67,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Create a new view instance.
-	 * 创建一个新的视图实例
+	 * 创建新的视图实例
      *
      * @param  \Illuminate\View\Factory  $factory
      * @param  \Illuminate\Contracts\View\Engine  $engine
@@ -87,11 +87,71 @@ class View implements ArrayAccess, Htmlable, ViewContract
     }
 
     /**
+     * Get the evaluated contents of a given fragment.
+	 * 获取给定片段的求值内容
+     *
+     * @param  string  $fragment
+     * @return string
+     */
+    public function fragment($fragment)
+    {
+        return $this->render(function () use ($fragment) {
+            return $this->factory->getFragment($fragment);
+        });
+    }
+
+    /**
+     * Get the evaluated contents for a given array of fragments.
+	 * 获取给定片段数组的求值内容
+     *
+     * @param  array  $fragments
+     * @return string
+     */
+    public function fragments(array $fragments)
+    {
+        return collect($fragments)->map(fn ($f) => $this->fragment($f))->implode('');
+    }
+
+    /**
+     * Get the evaluated contents of a given fragment if the given condition is true.
+	 * 如果给定条件为真，则获取给定片段的求值内容。
+     *
+     * @param  bool  $boolean
+     * @param  string  $fragment
+     * @return string
+     */
+    public function fragmentIf($boolean, $fragment)
+    {
+        if (value($boolean)) {
+            return $this->fragment($fragment);
+        }
+
+        return $this->render();
+    }
+
+    /**
+     * Get the evaluated contents for a given array of fragments if the given condition is true.
+	 * 如果给定条件为真，则获取给定片段数组的求值内容。
+     *
+     * @param  bool  $boolean
+     * @param  array  $fragments
+     * @return string
+     */
+    public function fragmentsIf($boolean, array $fragments)
+    {
+        if (value($boolean)) {
+            return $this->fragments($fragments);
+        }
+
+        return $this->render();
+    }
+
+    /**
      * Get the string contents of the view.
-	 * 得到视图的字符串内容
+	 * 获取视图的字符串内容
      *
      * @param  callable|null  $callback
-     * @return array|string
+     * @return string
      *
      * @throws \Throwable
      */
@@ -105,7 +165,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
             // Once we have the contents of the view, we will flush the sections if we are
             // done rendering all views so that there is nothing left hanging over when
             // another view gets rendered in the future by the application developer.
-			// 一旦我们有视图的内容，如果我们已经呈现所有视图将会清空。
+			// 一旦我们有了视图的内容，我们将刷新部分。
             $this->factory->flushStateIfDoneRendering();
 
             return ! is_null($response) ? $response : $contents;
@@ -118,16 +178,16 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the contents of the view instance.
-	 * 得到视图实例内容
+	 * 获取视图实例的内容
      *
      * @return string
      */
     protected function renderContents()
     {
-        // We will keep track of the amount of views being rendered so we can flush
+        // We will keep track of the number of views being rendered so we can flush
         // the section after the complete rendering operation is done. This will
         // clear out the sections for any separate views that may be rendered.
-		// 我们将跟踪渲染视图的数量，以便刷新完成渲染操作后的section。
+		// 我们将跟踪渲染视图的数量，所以我们可以刷新完成呈现操作后的部分。
         $this->factory->incrementRender();
 
         $this->factory->callComposer($this);
@@ -135,7 +195,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
         $contents = $this->getContents();
 
         // Once we've finished rendering the view, we'll decrement the render count
-        // so that each sections get flushed out next time a view is created and
+        // so that each section gets flushed out next time a view is created and
         // no old sections are staying around in the memory of an environment.
 		// 一旦我们完成渲染视图，我们将减少渲染计数。
         $this->factory->decrementRender();
@@ -252,7 +312,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the name of the view.
-	 * 得到视图名称
+	 * 获取视图的名称
      *
      * @return string
      */
@@ -263,7 +323,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the name of the view.
-	 * 得到视图名称
+	 * 获取视图的名称
      *
      * @return string
      */
@@ -285,7 +345,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the path to the view file.
-	 * 得到视图文件路径
+	 * 获取视图文件的路径
      *
      * @return string
      */
@@ -296,7 +356,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Set the path to the view.
-	 * 设置视图路径
+	 * 设置视图的路径
      *
      * @param  string  $path
      * @return void
@@ -335,7 +395,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  string  $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return array_key_exists($key, $this->data);
     }
@@ -347,7 +407,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  string  $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->data[$key];
     }
@@ -360,7 +420,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->with($key, $value);
     }
@@ -372,7 +432,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
      * @param  string  $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         unset($this->data[$key]);
     }
@@ -442,7 +502,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
             return $this->macroCall($method, $parameters);
         }
 
-        if (! Str::startsWith($method, 'with')) {
+        if (! str_starts_with($method, 'with')) {
             throw new BadMethodCallException(sprintf(
                 'Method %s::%s does not exist.', static::class, $method
             ));
@@ -453,7 +513,7 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get content as a string of HTML.
-	 * 获取HMTL字符串内容
+	 * 获取HTML字符串形式的内容
      *
      * @return string
      */

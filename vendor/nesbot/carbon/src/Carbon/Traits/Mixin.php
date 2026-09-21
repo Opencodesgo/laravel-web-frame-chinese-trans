@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，混入
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -23,6 +26,7 @@ use Throwable;
 
 /**
  * Trait Mixin.
+ * 混入特征
  *
  * Allows mixing in entire classes with multiple macros.
  */
@@ -30,6 +34,7 @@ trait Mixin
 {
     /**
      * Stack of macro instance contexts.
+	 * 宏实例上下文的堆栈
      *
      * @var array
      */
@@ -37,6 +42,7 @@ trait Mixin
 
     /**
      * Mix another object into the class.
+	 * 将另一个对象混合到类中。
      *
      * @example
      * ```
@@ -185,6 +191,7 @@ trait Mixin
 
     /**
      * Stack a Carbon context from inside calls of self::this() and execute a given action.
+	 * 从self::this（）调用内部堆叠一个Carbon上下文并执行给定的操作。
      *
      * @param static|null $context
      * @param callable    $callable
@@ -216,6 +223,7 @@ trait Mixin
 
     /**
      * Return the current context from inside a macro callee or a new one if static.
+	 * 从宏调用内部返回当前上下文，如果是静态的，则返回新上下文。
      *
      * @return static
      */

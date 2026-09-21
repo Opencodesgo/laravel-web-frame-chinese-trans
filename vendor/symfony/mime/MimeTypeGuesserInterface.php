@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，Mime，Mime Type guess接口
+ * Symfony，Component，Mime，Mime 类型猜测接口
  */
 
 /*
@@ -17,6 +16,7 @@ namespace Symfony\Component\Mime;
 
 /**
  * Guesses the MIME type of a file.
+ * 猜测文件的MIME类型。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

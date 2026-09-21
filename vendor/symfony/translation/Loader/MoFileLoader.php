@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，加载器，Mo 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -38,10 +41,8 @@ class MoFileLoader extends FileLoader
     /**
      * Parses machine object (MO) format, independent of the machine's endian it
      * was created on. Both 32bit and 64bit systems are supported.
-     *
-     * {@inheritdoc}
      */
-    protected function loadResource(string $resource)
+    protected function loadResource(string $resource): array
     {
         $stream = fopen($resource, 'r');
 

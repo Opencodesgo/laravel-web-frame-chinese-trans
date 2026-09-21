@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Gelf 消息格式化器
+ * Monolog，格式化，Gelf 消息格式化程序
  */
 
 /*
@@ -58,6 +58,7 @@ class GelfMessageFormatter extends NormalizerFormatter
 
     /**
      * Translates Monolog log levels to Graylog2 log priorities.
+	 * 将Monolog日志级别转换为Graylog2日志优先级
      *
      * @var array<int, int>
      *

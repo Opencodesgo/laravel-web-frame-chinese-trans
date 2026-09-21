@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，未知单元异常 
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,6 +20,7 @@ class UnknownUnitException extends UnitException
 {
     /**
      * The unit.
+	 * 单元
      *
      * @var string
      */
@@ -24,6 +28,7 @@ class UnknownUnitException extends UnitException
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string         $unit
      * @param int            $code
@@ -38,6 +43,7 @@ class UnknownUnitException extends UnitException
 
     /**
      * Get the unit.
+	 * 得到单元
      *
      * @return string
      */

@@ -13,7 +13,7 @@ class RouteBinding
 {
     /**
      * Create a Route model binding for a given callback.
-	 * 为给定的回调创建一个路由模型绑定
+	 * 为给定的回调创建一个Route模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Closure|string  $binder
@@ -42,7 +42,7 @@ class RouteBinding
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
             // to run multiple bind methods in a single class for convenience.
-			// 如果绑定有@符号，我们将假定它用于分隔来自绑定方法名的类名。
+			// 如果绑定有@符号，我们将假定它用于分隔绑定方法中的类名。
             [$class, $method] = Str::parseCallback($binding, 'bind');
 
             $callable = [$container->make($class), $method];
@@ -53,14 +53,14 @@ class RouteBinding
 
     /**
      * Create a Route model binding for a model.
-	 * 为模型创建一个路由模型绑定
+	 * 为模型创建一个Route模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $class
      * @param  \Closure|null  $callback
      * @return \Closure
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public static function forModel($container, $class, $callback = null)
     {
@@ -72,7 +72,7 @@ class RouteBinding
             // For model binders, we will attempt to retrieve the models using the first
             // method on the model instance. If we cannot retrieve the models we'll
             // throw a not found exception otherwise we will return the instance.
-			// 对于模型绑定器，我们将尝试使用第一个来检索模型实例的方法。
+			// 对于模型绑定器，我们将尝试使用第一个来检索模型。
             $instance = $container->make($class);
 
             if ($model = $instance->resolveRouteBinding($value)) {

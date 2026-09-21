@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * RequestMatcherInterface is an interface for strategies to match a Request.
- * RequestMatcherInterface 是用于匹配请求的策略的接口
+ * RequestMatcherInterface是用于匹配请求的策略的接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,8 +25,6 @@ interface RequestMatcherInterface
     /**
      * Decides whether the rule(s) implemented by the strategy matches the supplied request.
 	 * 决定策略实现的规则是否与提供的请求匹配
-     *
-     * @return bool
      */
-    public function matches(Request $request);
+    public function matches(Request $request): bool;
 }

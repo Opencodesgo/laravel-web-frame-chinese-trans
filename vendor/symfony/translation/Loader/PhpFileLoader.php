@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，加载器，Php 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,19 +16,17 @@ namespace Symfony\Component\Translation\Loader;
 
 /**
  * PhpFileLoader loads translations from PHP files returning an array of translations.
+ * PhpFileLoader从PHP文件中加载翻译，返回一个翻译数组。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class PhpFileLoader extends FileLoader
 {
-    private static $cache = [];
+    private static ?array $cache = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function loadResource(string $resource)
+    protected function loadResource(string $resource): array
     {
-        if ([] === self::$cache && \function_exists('opcache_invalidate') && filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOLEAN) && (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) || filter_var(\ini_get('opcache.enable_cli'), \FILTER_VALIDATE_BOOLEAN))) {
+        if ([] === self::$cache && \function_exists('opcache_invalidate') && filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOL) && (!\in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) || filter_var(\ini_get('opcache.enable_cli'), \FILTER_VALIDATE_BOOL))) {
             self::$cache = null;
         }
 
@@ -33,10 +34,6 @@ class PhpFileLoader extends FileLoader
             return require $resource;
         }
 
-        if (isset(self::$cache[$resource])) {
-            return self::$cache[$resource];
-        }
-
-        return self::$cache[$resource] = require $resource;
+        return self::$cache[$resource] ??= require $resource;
     }
 }

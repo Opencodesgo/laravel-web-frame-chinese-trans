@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，依赖注入组件，Xml 描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * XML descriptor.
+ * Xml 描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -120,50 +124,36 @@ class XmlDescriptor extends Descriptor
         return $dom;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeInputArgument(InputArgument $argument, array $options = [])
+    protected function describeInputArgument(InputArgument $argument, array $options = []): void
     {
         $this->writeDocument($this->getInputArgumentDocument($argument));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeInputOption(InputOption $option, array $options = [])
+    protected function describeInputOption(InputOption $option, array $options = []): void
     {
         $this->writeDocument($this->getInputOptionDocument($option));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeInputDefinition(InputDefinition $definition, array $options = [])
+    protected function describeInputDefinition(InputDefinition $definition, array $options = []): void
     {
         $this->writeDocument($this->getInputDefinitionDocument($definition));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeCommand(Command $command, array $options = [])
+    protected function describeCommand(Command $command, array $options = []): void
     {
         $this->writeDocument($this->getCommandDocument($command, $options['short'] ?? false));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function describeApplication(Application $application, array $options = [])
+    protected function describeApplication(Application $application, array $options = []): void
     {
         $this->writeDocument($this->getApplicationDocument($application, $options['namespace'] ?? null, $options['short'] ?? false));
     }
 
     /**
      * Appends document children to parent node.
+	 * 将文档子节点追加到父节点
      */
-    private function appendDocument(\DOMNode $parentNode, \DOMNode $importedParent)
+    private function appendDocument(\DOMNode $parentNode, \DOMNode $importedParent): void
     {
         foreach ($importedParent->childNodes as $childNode) {
             $parentNode->appendChild($parentNode->ownerDocument->importNode($childNode, true));
@@ -172,8 +162,9 @@ class XmlDescriptor extends Descriptor
 
     /**
      * Writes DOM document.
+	 * 写入DOM文档
      */
-    private function writeDocument(\DOMDocument $dom)
+    private function writeDocument(\DOMDocument $dom): void
     {
         $dom->formatOutput = true;
         $this->write($dom->saveXML());

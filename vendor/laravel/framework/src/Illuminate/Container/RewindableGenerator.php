@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，容器，可倒带生成器
+ * Illuminate，容器，倒回生成器
  */
 
 namespace Illuminate\Container;
 
 use Countable;
 use IteratorAggregate;
+use Traversable;
 
 class RewindableGenerator implements Countable, IteratorAggregate
 {
@@ -20,7 +21,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
 
     /**
      * The number of tagged services.
-	 * 标记服务的数量
+	 * 已标记服务的数量
      *
      * @var callable|int
      */
@@ -28,7 +29,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
 
     /**
      * Create a new generator instance.
-	 * 创建新的生成器实例
+	 * 创建一个新的生成器实例
      *
      * @param  callable  $generator
      * @param  callable|int  $count
@@ -44,9 +45,9 @@ class RewindableGenerator implements Countable, IteratorAggregate
      * Get an iterator from the generator.
 	 * 从生成器获取迭代器
      *
-     * @return mixed
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return ($this->generator)();
     }
@@ -57,7 +58,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if (is_callable($count = $this->count)) {
             $this->count = $count();

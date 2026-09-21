@@ -1,7 +1,6 @@
 <?php
 /**
- * Illuminate，Http，上传文件
- * 从 Symfony\Component\HttpFoundation\File\UploadedFile 继承
+ * Illuminate, Http, 上传文件
  */
 
 namespace Illuminate\Http;
@@ -31,7 +30,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 将上传的文件存储在文件系统磁盘上
+	 * 将上传的文件存储在文件系统磁盘上。
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -79,7 +78,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 将上传的文件存储在文件系统磁盘上
+	 * 将上传的文件存储在文件系统磁盘上。
      *
      * @param  string  $path
      * @param  string  $name
@@ -101,7 +100,7 @@ class UploadedFile extends SymfonyUploadedFile
      * Get the contents of the uploaded file.
 	 * 获取上传文件的内容
      *
-     * @return bool|string
+     * @return false|string
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，视图，视图
+ * Illuminate，契约，视图，视图接口
  */
 
 namespace Illuminate\Contracts\View;
@@ -11,7 +11,7 @@ interface View extends Renderable
 {
     /**
      * Get the name of the view.
-	 * 获取视图的名称
+	 * 得到视图名称
      *
      * @return string
      */

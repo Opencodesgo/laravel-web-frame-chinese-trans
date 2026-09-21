@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，签名格式化器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,11 +21,13 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * An abstract representation of a function, class or property signature.
+ * 函数、类或属性签名的抽象表示。
  */
 class SignatureFormatter implements ReflectorFormatter
 {
     /**
      * Format a signature for the given reflector.
+	 * 为给定的反射器格式化签名。
      *
      * Defers to subclasses to do the actual formatting.
      *
@@ -60,6 +65,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Print the signature name.
+	 * 打印签名名称
      *
      * @param \ReflectionClass|\ReflectionClassConstant|\ReflectionFunctionAbstract $reflector
      *
@@ -72,6 +78,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Print the method, property or class modifiers.
+	 * 打印方法、属性或类修饰符。
      *
      * @param \ReflectionMethod|\ReflectionProperty|\ReflectionClass $reflector
      *
@@ -86,6 +93,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a class signature.
+	 * 格式化类签名
      *
      * @param \ReflectionClass $reflector
      *
@@ -127,6 +135,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a constant signature.
+	 * 格式化常量签名
      *
      * @param \ReflectionClassConstant $reflector
      *
@@ -148,6 +157,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a constant signature.
+	 * 格式化常量签名
      *
      * @param ReflectionConstant $reflector
      *
@@ -169,6 +179,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Helper for getting output style for a given value's type.
+	 * 获取给定值类型的输出样式的帮助器
      *
      * @param mixed $value
      */
@@ -187,6 +198,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a property signature.
+	 * 格式化属性签名
      *
      * @param \ReflectionProperty $reflector
      *
@@ -203,6 +215,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a function signature.
+	 * 格式化函数签名
      *
      * @param \ReflectionFunction $reflector
      *
@@ -221,6 +234,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a function signature's return type (if available).
+	 * 格式化函数签名的返回类型（如果可用）
      *
      * @param \ReflectionFunctionAbstract $reflector
      *
@@ -237,6 +251,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Format a method signature.
+	 * 格式化方法签名
      *
      * @param \ReflectionMethod $reflector
      *
@@ -253,6 +268,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Print the function params.
+	 * 打印函数参数
      *
      * @param \ReflectionFunctionAbstract $reflector
      *
@@ -266,7 +282,7 @@ class SignatureFormatter implements ReflectorFormatter
             try {
                 if (\method_exists($param, 'getType')) {
                     // Only include the inquisitive nullable type iff param default value is not null.
-                    $defaultIsNull = $param->isOptional() && $param->isDefaultValueAvailable() && $param->getDefaultValue() === null;
+                    $defaultIsNull = $param->isOptional() && $param->isDefaultValueAvailable() && @$param->getDefaultValue() === null;
                     $hint = self::formatReflectionType($param->getType(), !$defaultIsNull);
                 } else {
                     if ($param->isArray()) {
@@ -296,7 +312,7 @@ class SignatureFormatter implements ReflectorFormatter
                     $value = 'unknown';
                     $typeStyle = 'urgent';
                 } else {
-                    $value = $param->getDefaultValue();
+                    $value = @$param->getDefaultValue();
                     $typeStyle = self::getTypeStyle($value);
                     $value = \is_array($value) ? '[]' : ($value === null ? 'null' : \var_export($value, true));
                 }
@@ -320,6 +336,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Print function param or return type(s).
+	 * 打印函数参数或返回类型
      *
      * @param \ReflectionType $type
      */
@@ -347,6 +364,7 @@ class SignatureFormatter implements ReflectorFormatter
 
     /**
      * Print a single named type.
+	 * 打印单个命名类型
      */
     private static function formatReflectionNamedType(\ReflectionNamedType $type, bool $indicateNullable): string
     {

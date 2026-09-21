@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，片段，H包含片段渲染器
+ * Symfony，Component，HttpKernel，片段，HInclude 片段渲染器
  */
 
 /*
@@ -16,22 +16,22 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Symfony\Component\HttpKernel\UriSigner;
 use Twig\Environment;
 
 /**
  * Implements the Hinclude rendering strategy.
- * 实现Hinclude呈现策略
+ * 实现Hinclude呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class HIncludeFragmentRenderer extends RoutableFragmentRenderer
 {
-    private $globalDefaultTemplate;
-    private $signer;
-    private $twig;
-    private $charset;
+    private ?string $globalDefaultTemplate;
+    private ?UriSigner $signer;
+    private ?Environment $twig;
+    private string $charset;
 
     /**
      * @param string|null $globalDefaultTemplate The global default content (it can be a template name or the content)
@@ -46,24 +46,22 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
 
     /**
      * Checks if a templating engine has been set.
-     *
-     * @return bool
+	 * 检查是否设置了模板引擎
      */
-    public function hasTemplating()
+    public function hasTemplating(): bool
     {
         return null !== $this->twig;
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Additional available options:
+	 * 其他可用选项：
      *
      *  * default:    The default content (it can be a template name or the content)
      *  * id:         An optional hx:include tag id attribute
      *  * attributes: An optional array of hx:include tag attributes
      */
-    public function render($uri, Request $request, array $options = [])
+    public function render(string|ControllerReference $uri, Request $request, array $options = []): Response
     {
         if ($uri instanceof ControllerReference) {
             $uri = (new FragmentUriGenerator($this->fragmentPath, $this->signer))->generate($uri, $request);
@@ -87,7 +85,7 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
         if (\count($attributes) > 0) {
             $flags = \ENT_QUOTES | \ENT_SUBSTITUTE;
             foreach ($attributes as $attribute => $value) {
-                $renderedAttributes .= sprintf(
+                $renderedAttributes .= \sprintf(
                     ' %s="%s"',
                     htmlspecialchars($attribute, $flags, $this->charset, false),
                     htmlspecialchars($value, $flags, $this->charset, false)
@@ -95,13 +93,10 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
             }
         }
 
-        return new Response(sprintf('<hx:include src="%s"%s>%s</hx:include>', $uri, $renderedAttributes, $content));
+        return new Response(\sprintf('<hx:include src="%s"%s>%s</hx:include>', $uri, $renderedAttributes, $content));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'hinclude';
     }

@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Simulates a browser and makes requests to an HttpKernel instance.
- * 模拟浏览器并向 HttpKernel 实例发出请求
+ * 模拟浏览器并向HttpKernel实例发出请求。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -35,7 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HttpKernelBrowser extends AbstractBrowser
 {
     protected $kernel;
-    private $catchExceptions = true;
+    private bool $catchExceptions = true;
 
     /**
      * @param array $server The server parameters (equivalent of $_SERVER)
@@ -51,6 +51,9 @@ class HttpKernelBrowser extends AbstractBrowser
 
     /**
      * Sets whether to catch exceptions when the kernel is handling a request.
+	 * 设置内核处理请求时是否捕获异常
+     *
+     * @return void
      */
     public function catchExceptions(bool $catchExceptions)
     {
@@ -58,8 +61,6 @@ class HttpKernelBrowser extends AbstractBrowser
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param Request $request
      *
      * @return Response
@@ -76,8 +77,6 @@ class HttpKernelBrowser extends AbstractBrowser
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param Request $request
      *
      * @return string
@@ -91,7 +90,7 @@ class HttpKernelBrowser extends AbstractBrowser
 
         $requires = '';
         foreach (get_declared_classes() as $class) {
-            if (0 === strpos($class, 'ComposerAutoloaderInit')) {
+            if (str_starts_with($class, 'ComposerAutoloaderInit')) {
                 $r = new \ReflectionClass($class);
                 $file = \dirname($r->getFileName(), 2).'/autoload.php';
                 if (file_exists($file)) {
@@ -118,6 +117,9 @@ EOF;
         return $code.$this->getHandleScript();
     }
 
+    /**
+     * @return string
+     */
     protected function getHandleScript()
     {
         return <<<'EOF'
@@ -131,12 +133,7 @@ echo serialize($response);
 EOF;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return Request
-     */
-    protected function filterRequest(DomRequest $request)
+    protected function filterRequest(DomRequest $request): Request
     {
         $httpRequest = Request::create($request->getUri(), $request->getMethod(), $request->getParameters(), $request->getCookies(), $request->getFiles(), $server = $request->getServer(), $request->getContent());
         if (!isset($server['HTTP_ACCEPT'])) {
@@ -152,6 +149,7 @@ EOF;
 
     /**
      * Filters an array of files.
+	 * 过滤文件数组。
      *
      * This method created test instances of UploadedFile so that the move()
      * method can be called on those instances.
@@ -160,10 +158,8 @@ EOF;
      * an invalid UploadedFile is returned with an error set to UPLOAD_ERR_INI_SIZE.
      *
      * @see UploadedFile
-     *
-     * @return array
      */
-    protected function filterFiles(array $files)
+    protected function filterFiles(array $files): array
     {
         $filtered = [];
         foreach ($files as $key => $value) {
@@ -194,13 +190,9 @@ EOF;
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param Response $response
-     *
-     * @return DomResponse
      */
-    protected function filterResponse(object $response)
+    protected function filterResponse(object $response): DomResponse
     {
         // this is needed to support StreamedResponse
         ob_start();

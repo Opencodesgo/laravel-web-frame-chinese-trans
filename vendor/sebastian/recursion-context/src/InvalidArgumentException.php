@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，递归上下文，无效参数异常
+ */
+
 /*
  * This file is part of sebastian/recursion-context.
  *

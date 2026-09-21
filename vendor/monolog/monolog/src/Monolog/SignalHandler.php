@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，信号处理
+ * Monolog，信号处理程序
  */
 
 /*
@@ -21,7 +21,7 @@ use ReflectionExtension;
 
 /**
  * Monolog POSIX signal handler
- * POSIX 信号处理器
+ * POSIX信号处理器
  *
  * @author Robert Gust-Bardon <robert@gust-bardon.org>
  *
@@ -90,6 +90,7 @@ class SignalHandler
         if (!$signals && extension_loaded('pcntl')) {
             $pcntl = new ReflectionExtension('pcntl');
             // HHVM 3.24.2 returns an empty array.
+			// HHVM 3.24.2返回一个空数组。
             foreach ($pcntl->getConstants() ?: get_defined_constants(true)['Core'] as $name => $value) {
                 if (substr($name, 0, 3) === 'SIG' && $name[3] !== '_' && is_int($value)) {
                     $signals[$value] = $name;

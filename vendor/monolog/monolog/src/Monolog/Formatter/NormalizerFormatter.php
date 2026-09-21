@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Normalizer 格式化器
+ * Monolog，格式化，标准化格式化程序
  */
 
 /*
@@ -86,6 +86,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * The maximum number of normalization levels to go through
+	 * 要经过的规范化级别的最大
      */
     public function getMaxNormalizeDepth(): int
     {
@@ -101,6 +102,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * The maximum number of items to normalize per level
+	 * 每个关卡要规范化的最大项目数
      */
     public function getMaxNormalizeItemCount(): int
     {
@@ -116,6 +118,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * Enables `json_encode` pretty print.
+	 * 启用‘ json_encode ’漂亮打印
      */
     public function setJsonPrettyPrint(bool $enable): self
     {
@@ -255,6 +258,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * Return the JSON representation of a value
+	 * 返回值的JSON表示形式
      *
      * @param  mixed             $data
      * @throws \RuntimeException if encoding fails and errors are not ignored

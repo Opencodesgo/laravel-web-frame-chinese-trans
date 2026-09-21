@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpFoundation，Session会话，存储，元数据的包
+ * Symfony，Component，HttpFoundation，会话，存储，元数据包
  */
 
 /*
@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
  * 元数据的容器
  *
  * Adds metadata to the session.
+ * 向会话添加元数据
  *
  * @author Drak <drak@zikula.org>
  */
@@ -30,15 +31,8 @@ class MetadataBag implements SessionBagInterface
     public const UPDATED = 'u';
     public const LIFETIME = 'l';
 
-    /**
-     * @var string
-     */
-    private $name = '__metadata';
-
-    /**
-     * @var string
-     */
-    private $storageKey;
+    private string $name = '__metadata';
+    private string $storageKey;
 
     /**
      * @var array
@@ -47,15 +41,11 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Unix timestamp.
-     *
-     * @var int
+	 * Unix时间戳
      */
-    private $lastUsed;
+    private int $lastUsed;
 
-    /**
-     * @var int
-     */
-    private $updateThreshold;
+    private int $updateThreshold;
 
     /**
      * @param string $storageKey      The key used to store bag in the session
@@ -68,7 +58,7 @@ class MetadataBag implements SessionBagInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function initialize(array &$array)
     {
@@ -89,74 +79,71 @@ class MetadataBag implements SessionBagInterface
     /**
      * Gets the lifetime that the session cookie was set with.
 	 * 获取会话cookie所设置的生存期
-     *
-     * @return int
      */
-    public function getLifetime()
+    public function getLifetime(): int
     {
         return $this->meta[self::LIFETIME];
     }
 
     /**
      * Stamps a new session's metadata.
+	 * 戳记新会话的元数据。
      *
      * @param int|null $lifetime Sets the cookie lifetime for the session cookie. A null value
      *                           will leave the system settings unchanged, 0 sets the cookie
      *                           to expire with browser session. Time is in seconds, and is
      *                           not a Unix timestamp.
+     *
+     * @return void
      */
     public function stampNew(?int $lifetime = null)
     {
         $this->stampCreated($lifetime);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStorageKey()
+    public function getStorageKey(): string
     {
         return $this->storageKey;
     }
 
     /**
      * Gets the created timestamp metadata.
+	 * 获取创建的时间戳元数据
      *
      * @return int Unix timestamp
      */
-    public function getCreated()
+    public function getCreated(): int
     {
         return $this->meta[self::CREATED];
     }
 
     /**
      * Gets the last used metadata.
+	 * 获取最后使用的元数据
      *
      * @return int Unix timestamp
      */
-    public function getLastUsed()
+    public function getLastUsed(): int
     {
         return $this->lastUsed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clear()
+    public function clear(): mixed
     {
         // nothing to do
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Sets name.
+	 * 设置名称
+     *
+     * @return void
      */
     public function setName(string $name)
     {

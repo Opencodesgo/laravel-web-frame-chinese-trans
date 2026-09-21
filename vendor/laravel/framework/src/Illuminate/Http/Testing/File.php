@@ -11,7 +11,7 @@ class File extends UploadedFile
 {
     /**
      * The name of the file.
-	 * 文件名
+	 * 文件名称
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class File extends UploadedFile
 
     /**
      * The "size" to report.
-	 * 报告大小
+	 * 报告的"大小"
      *
      * @var int
      */
@@ -35,7 +35,7 @@ class File extends UploadedFile
 
     /**
      * The MIME type to report.
-	 * 报告的MIME类型
+	 * 要报告的MIME类型
      *
      * @var string|null
      */
@@ -43,7 +43,7 @@ class File extends UploadedFile
 
     /**
      * Create a new file instance.
-	 * 创建新的文件实例
+	 * 创建一个新的文件实例
      *
      * @param  string  $name
      * @param  resource  $tempFile
@@ -62,7 +62,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake file.
-	 * 创建新的假文件
+	 * 创建一个新的假文件
      *
      * @param  string  $name
      * @param  string|int  $kilobytes
@@ -116,11 +116,11 @@ class File extends UploadedFile
 
     /**
      * Get the size of the file.
-	 * 得到文件大小
+	 * 获取文件的大小
      *
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->sizeToReport ?: parent::getSize();
     }
@@ -145,14 +145,14 @@ class File extends UploadedFile
      *
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeTypeToReport ?: MimeType::from($this->name);
     }
 
     /**
      * Get the path to the temporary file.
-	 * 得到临时文件路径
+	 * 获取临时文件的路径
      *
      * @return string
      */

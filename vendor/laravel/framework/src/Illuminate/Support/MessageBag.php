@@ -1,18 +1,17 @@
 <?php
 /**
- * Illuminate，支持，消息包
+ * Illuminate, 支持, 信使包
  */
 
 namespace Illuminate\Support;
 
-use Countable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\MessageBag as MessageBagContract;
 use Illuminate\Contracts\Support\MessageProvider;
 use JsonSerializable;
 
-class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, MessageBagContract, MessageProvider
+class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, MessageProvider
 {
     /**
      * All of the registered messages.
@@ -48,7 +47,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the keys present in the message bag.
-	 * 把钥匙放在留言袋里
+	 * 把密钥放在留言袋里
      *
      * @return array
      */
@@ -153,7 +152,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      * Determine if messages exist for any of the given keys.
 	 * 确定是否存在任何给定键的消息
      *
-     * @param  array|string  $keys
+     * @param  array|string|null  $keys
      * @return bool
      */
     public function hasAny($keys = [])
@@ -203,14 +202,14 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
         // If the message exists in the message bag, we will transform it and return
         // the message. Otherwise, we will check if the key is implicit & collect
         // all the messages that match the given key and output it as an array.
-		// 如果消息包中存在该消息，我们将对其进行转换并返回。
+		// 如果消息包中存在该消息，我们将对其进行转换并返回消息。
         if (array_key_exists($key, $this->messages)) {
             return $this->transform(
                 $this->messages[$key], $this->checkFormat($format), $key
             );
         }
 
-        if (Str::contains($key, '*')) {
+        if (str_contains($key, '*')) {
             return $this->getMessagesForWildcardKey($key, $format);
         }
 
@@ -281,12 +280,16 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      */
     protected function transform($messages, $format, $messageKey)
     {
+        if ($format == ':message') {
+            return (array) $messages;
+        }
+
         return collect((array) $messages)
             ->map(function ($message) use ($format, $messageKey) {
                 // We will simply spin through the given messages and transform each one
                 // replacing the :message place holder with the real message allowing
                 // the messages to be easily formatted to each developer's desires.
-				// 我们将简单地浏览给定的消息并对每个消息进行转换
+				// 我们将简单地浏览给定的消息。
                 return str_replace([':message', ':key'], [$message, $messageKey], $format);
             })->all();
     }
@@ -400,7 +403,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->messages, COUNT_RECURSIVE) - count($this->messages);
     }
@@ -422,7 +425,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

@@ -1,7 +1,7 @@
 <?php
 /**
- * Symfony，Component，Console，帮助，输入感知助手
- *
+ * Symfony，Component，Console，助手，输入感知助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * An implementation of InputAwareInterface for Helpers.
+ * InputAwareInterface for Helpers的实现。
  *
  * @author Wouter J <waldio.webdesign@gmail.com>
  */
@@ -27,7 +28,7 @@ abstract class InputAwareHelper extends Helper implements InputAwareInterface
     protected $input;
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function setInput(InputInterface $input)
     {

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，联合类型
+ */
+
 namespace PhpParser\Node;
 
 class UnionType extends ComplexType {
@@ -8,6 +12,7 @@ class UnionType extends ComplexType {
 
     /**
      * Constructs a union type.
+	 * 构造联合类型
      *
      * @param (Identifier|Name|IntersectionType)[] $types Types
      * @param array<string, mixed> $attributes Additional attributes

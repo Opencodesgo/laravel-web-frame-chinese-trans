@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，工作台，迁移，migrate:rollback 回滚命令
+ * Illuminate，数据库，控制台，回滚指令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -15,7 +15,7 @@ class RollbackCommand extends BaseCommand
 
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * console命令名称
      *
      * @var string
      */
@@ -23,7 +23,7 @@ class RollbackCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令描述
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class RollbackCommand extends BaseCommand
 
     /**
      * The migrator instance.
-	 * 迁移实例
+	 * 迁移器实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */
@@ -53,7 +53,7 @@ class RollbackCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return int
      */

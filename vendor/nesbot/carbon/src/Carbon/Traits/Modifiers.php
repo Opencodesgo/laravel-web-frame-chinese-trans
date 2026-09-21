@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，编辑器
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,6 +19,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Modifiers.
+ * 特征修饰符
  *
  * Returns dates relative to current date using modifier short-hand.
  */
@@ -23,6 +27,7 @@ trait Modifiers
 {
     /**
      * Midday/noon hour.
+	 * 中午中午/小时
      *
      * @var int
      */
@@ -90,6 +95,7 @@ trait Modifiers
 
     /**
      * Go forward or backward to the next week- or weekend-day.
+	 * 向前或向后走到下一周或周末
      *
      * @param bool $weekday
      * @param bool $forward
@@ -111,6 +117,7 @@ trait Modifiers
 
     /**
      * Go forward to the next weekday.
+	 * 进入下一个工作日
      *
      * @return static
      */
@@ -121,6 +128,7 @@ trait Modifiers
 
     /**
      * Go backward to the previous weekday.
+	 * 回到上一个工作日
      *
      * @return static
      */
@@ -318,6 +326,7 @@ trait Modifiers
      * in the current year. If the calculated occurrence is outside the scope
      * of the current year, then return false and no modifications are made.
      * Use the supplied constants to indicate the desired dayOfWeek, ex. static::MONDAY.
+	 * 修改当前一周中给定日期的给定天数。
      *
      * @param int $nth
      * @param int $dayOfWeek
@@ -359,6 +368,7 @@ trait Modifiers
 
     /**
      * Get the farthest date from the instance (second-precision).
+	 * 获取离实例最远的日期（秒精度）
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date1
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date2
@@ -372,6 +382,7 @@ trait Modifiers
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
+	 * 获取给定实例（现在是默认值）和当前实例之间的最小实例
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date
      *
@@ -386,6 +397,7 @@ trait Modifiers
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
+	 * 获取给定实例（现在是默认值）和当前实例之间的最小实例
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date
      *
@@ -400,6 +412,7 @@ trait Modifiers
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
+	 * 获取给定实例（现在是默认的）和当前实例之间的最大实例
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date
      *
@@ -414,6 +427,7 @@ trait Modifiers
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
+	 * 获取给定实例（现在是默认的）和当前实例之间的最大实例
      *
      * @param \Carbon\Carbon|\DateTimeInterface|mixed $date
      *
@@ -441,6 +455,7 @@ trait Modifiers
 
     /**
      * Similar to native modify() method of DateTime but can handle more grammars.
+	 * 类似于DateTime的本地modify（）方法，但可以处理更多语法。
      *
      * @example
      * ```

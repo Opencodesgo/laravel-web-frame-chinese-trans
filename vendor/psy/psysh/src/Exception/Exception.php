@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，异常，异常
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,11 +16,13 @@ namespace Psy\Exception;
 
 /**
  * An interface for Psy Exceptions.
+ * 一个用于Psy异常的接口。
  */
 interface Exception
 {
     /**
      * This is the only thing, really...
+	 * 这是唯一的事情，真的…
      *
      * Return a raw (unformatted) version of the message.
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，待处理广播
+ * Illuminate，广播，等待广播
  */
 
 namespace Illuminate\Broadcasting;
@@ -27,7 +27,7 @@ class PendingBroadcast
 
     /**
      * Create a new pending broadcast instance.
-	 * 创建一个新的挂起广播实例
+	 * 创建新的挂起广播实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @param  mixed  $event
@@ -37,6 +37,22 @@ class PendingBroadcast
     {
         $this->event = $event;
         $this->events = $events;
+    }
+
+    /**
+     * Broadcast the event using a specific broadcaster.
+	 * 使用特定广播器广播事件
+     *
+     * @param  string|null  $connection
+     * @return $this
+     */
+    public function via($connection = null)
+    {
+        if (method_exists($this->event, 'broadcastVia')) {
+            $this->event->broadcastVia($connection);
+        }
+
+        return $this;
     }
 
     /**
@@ -56,7 +72,7 @@ class PendingBroadcast
 
     /**
      * Handle the object's destruction.
-	 * 处理对象销毁
+	 * 处理对象的销毁
      *
      * @return void
      */

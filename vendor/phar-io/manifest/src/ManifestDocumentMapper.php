@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，ManifestDocumentMapper
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

@@ -65,7 +65,7 @@ class ProviderRepository
         // First we will load the service manifest, which contains information on all
         // service providers registered with the application and which services it
         // provides. This is used to know which services are "deferred" loaders.
-		// 首先，我们将加载服务清单，其中包含有关所有服务的信息。
+		// 首先，我们将加载服务清单，其中包含有关所有服务的信息，向应用程序注册的服务提供者以及它提供哪些服务。
         if ($this->shouldRecompile($manifest, $providers)) {
             $manifest = $this->compileManifest($providers);
         }
@@ -81,7 +81,7 @@ class ProviderRepository
         // We will go ahead and register all of the eagerly loaded providers with the
         // application so their services can be registered with the application as
         // a provided service. Then we will set the deferred service list on it.
-		// 我们将继续并将所有急切加载的提供程序注册应用程序，以便将其服务注册。
+		// 我们将继续并将所有急切加载的提供程序注册为应用。
         foreach ($manifest['eager'] as $provider) {
             $this->app->register($provider);
         }
@@ -125,7 +125,7 @@ class ProviderRepository
 
     /**
      * Register the load events for the given provider.
-	 * 为给定的提供者注册负载事件
+	 * 注册给定提供程序的加载事件
      *
      * @param  string  $provider
      * @param  array  $events
@@ -137,9 +137,7 @@ class ProviderRepository
             return;
         }
 
-        $this->app->make('events')->listen($events, function () use ($provider) {
-            $this->app->register($provider);
-        });
+        $this->app->make('events')->listen($events, fn () => $this->app->register($provider));
     }
 
     /**
@@ -163,7 +161,7 @@ class ProviderRepository
             // When recompiling the service manifest, we will spin through each of the
             // providers and check if it's a deferred provider or not. If so we'll
             // add it's provided services to the manifest and note the provider.
-			// 重新编译服务清单时，我们将遍历每个提供者并检查它是否是一个延迟的提供者。
+			// 重新编译服务清单时，我们将遍历每个提供者。
             if ($instance->isDeferred()) {
                 foreach ($instance->provides() as $service) {
                     $manifest['deferred'][$service] = $provider;
@@ -175,7 +173,7 @@ class ProviderRepository
             // If the service providers are not deferred, we will simply add it to an
             // array of eagerly loaded providers that will get registered on every
             // request to this application instead of "lazy" loading every time.
-			// 如果服务提供者没有被延迟，我们将简单地将其添加到主动加载的提供程序数组。
+			// 如果服务提供者没有被延迟，我们将简单地将其添加到数组中。
             else {
                 $manifest['eager'][] = $provider;
             }

@@ -5,7 +5,7 @@
 
 namespace Illuminate\Database\Connectors;
 
-use InvalidArgumentException;
+use Illuminate\Database\SQLiteDatabaseDoesNotExistException;
 
 class SQLiteConnector extends Connector implements ConnectorInterface
 {
@@ -16,7 +16,7 @@ class SQLiteConnector extends Connector implements ConnectorInterface
      * @param  array  $config
      * @return \PDO
      *
-     * @throws \InvalidArgumentException
+     * @throws \Illuminate\Database\SQLiteDatabaseDoesNotExistException
      */
     public function connect(array $config)
     {
@@ -25,7 +25,7 @@ class SQLiteConnector extends Connector implements ConnectorInterface
         // SQLite supports "in-memory" databases that only last as long as the owning
         // connection does. These are useful for tests or for short lifetime store
         // querying. In-memory databases may only have a single open connection.
-		// SQLite支持"内存中"数据库，这种数据库的存续时间与数据库的存续时间相同。
+		// SQLite支持只存在的"内存中"数据库。
         if ($config['database'] === ':memory:') {
             return $this->createConnection('sqlite::memory:', $config, $options);
         }
@@ -37,7 +37,7 @@ class SQLiteConnector extends Connector implements ConnectorInterface
         // SQLite driver will not throw any exception if it does not by default.
 		// 在进一步操作之前，我们将验证SQLite数据库是否存在。
         if ($path === false) {
-            throw new InvalidArgumentException("Database ({$config['database']}) does not exist.");
+            throw new SQLiteDatabaseDoesNotExistException($config['database']);
         }
 
         return $this->createConnection("sqlite:{$path}", $config, $options);

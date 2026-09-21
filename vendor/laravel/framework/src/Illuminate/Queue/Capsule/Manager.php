@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，压缩，管理器
+ * Illuminate，队列，压缩，管理者
  */
 
 namespace Illuminate\Queue\Capsule;
@@ -28,7 +28,7 @@ class Manager
 
     /**
      * Create a new queue capsule manager.
-	 * 创建新的队列压缩管理器
+	 * 创建一个新的队列压缩管理器
      *
      * @param  \Illuminate\Container\Container|null  $container
      * @return void
@@ -37,10 +37,10 @@ class Manager
     {
         $this->setupContainer($container ?: new Container);
 
-        // Once we have the container setup, we will setup the default configuration
-        // options in the container "config" bindings. This just makes this queue
-        // manager behave correctly since all the correct binding are in place.
-		// 容器设置完成后，我们将设置默认配置容器"config"绑定中的选项。
+        // Once we have the container setup, we will set up the default configuration
+        // options in the container "config" bindings. This'll just make the queue
+        // manager behave correctly since all the correct bindings are in place.
+		// 一旦我们设置了容器，我们将设置容器绑定中的选项中的默认配置。
         $this->setupDefaultConfiguration();
 
         $this->setupManager();
@@ -126,8 +126,8 @@ class Manager
     }
 
     /**
-     * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+     * Push a new job onto the queue after (n) seconds.
+	 * 在(n)秒后将一个新作业推送到队列中
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job

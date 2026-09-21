@@ -17,7 +17,7 @@ class EncryptCookies
 {
     /**
      * The encrypter instance.
-	 * 加密实例
+	 * 加密器实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -25,15 +25,15 @@ class EncryptCookies
 
     /**
      * The names of the cookies that should not be encrypted.
-	 * 不应该加密的cookie的名称
+	 * 不应加密的cookie的名称
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $except = [];
 
     /**
      * Indicates if cookies should be serialized.
-	 * 指明是否应该序列化cookie
+	 * 指示是否应该序列化cookie
      *
      * @var bool
      */
@@ -53,7 +53,7 @@ class EncryptCookies
 
     /**
      * Disable encryption for the given cookie name(s).
-	 * 为给定的cookie名称禁用加密
+	 * 禁用给定cookie名称的加密
      *
      * @param  string|array  $name
      * @return void
@@ -93,17 +93,47 @@ class EncryptCookies
             try {
                 $value = $this->decryptCookie($key, $cookie);
 
-                $hasValidPrefix = strpos($value, CookieValuePrefix::create($key, $this->encrypter->getKey())) === 0;
-
-                $request->cookies->set(
-                    $key, $hasValidPrefix ? CookieValuePrefix::remove($value) : null
-                );
+                $request->cookies->set($key, $this->validateValue($key, $value));
             } catch (DecryptException $e) {
                 $request->cookies->set($key, null);
             }
         }
 
         return $request;
+    }
+
+    /**
+     * Validate and remove the cookie value prefix from the value.
+	 * 验证并从值中删除cookie值前缀
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return string|array|null
+     */
+    protected function validateValue(string $key, $value)
+    {
+        return is_array($value)
+                    ? $this->validateArray($key, $value)
+                    : CookieValuePrefix::validate($key, $value, $this->encrypter->getKey());
+    }
+
+    /**
+     * Validate and remove the cookie value prefix from all values of an array.
+	 * 验证并从数组的所有值中删除cookie值前缀
+     *
+     * @param  string  $key
+     * @param  array  $value
+     * @return array
+     */
+    protected function validateArray(string $key, array $value)
+    {
+        $validated = [];
+
+        foreach ($value as $index => $subValue) {
+            $validated[$index] = $this->validateValue("{$key}[{$index}]", $subValue);
+        }
+
+        return $validated;
     }
 
     /**
@@ -123,7 +153,7 @@ class EncryptCookies
 
     /**
      * Decrypt an array based cookie.
-	 * 解密一个基于数组的cookie
+	 * 解密基于数组的cookie
      *
      * @param  array  $cookie
      * @return array
@@ -136,6 +166,10 @@ class EncryptCookies
             if (is_string($value)) {
                 $decrypted[$key] = $this->encrypter->decrypt($value, static::serialized($key));
             }
+
+            if (is_array($value)) {
+                $decrypted[$key] = $this->decryptArray($value);
+            }
         }
 
         return $decrypted;
@@ -143,7 +177,7 @@ class EncryptCookies
 
     /**
      * Encrypt the cookies on an outgoing response.
-	 * 在传出响应时对cookie进行加密
+	 * 对传出响应的cookie进行加密
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return \Symfony\Component\HttpFoundation\Response
@@ -169,7 +203,7 @@ class EncryptCookies
 
     /**
      * Duplicate a cookie with a new value.
-	 * 用一个新的值复制一个cookie
+	 * 用新值复制一个cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Cookie  $cookie
      * @param  mixed  $value
@@ -186,7 +220,7 @@ class EncryptCookies
 
     /**
      * Determine whether encryption has been disabled for the given cookie.
-	 * 确定是否已经禁用了用于给定cookie的加密
+	 * 确定是否对给定的cookie禁用了加密
      *
      * @param  string  $name
      * @return bool

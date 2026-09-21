@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Cookie，中间件，将排队cookie添加到响应中
+ * Illuminate，Cookie，中间件，添加排队cookie到响应中
  */
 
 namespace Illuminate\Cookie\Middleware;

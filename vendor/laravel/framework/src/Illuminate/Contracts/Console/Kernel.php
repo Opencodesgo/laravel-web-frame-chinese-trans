@@ -1,13 +1,20 @@
 <?php
 /**
  * Illuminate，契约，控制台，内核
- * 服务容器绑定artisan
  */
 
 namespace Illuminate\Contracts\Console;
 
 interface Kernel
 {
+    /**
+     * Bootstrap the application for artisan commands.
+	 * 引导应用程序为artisan命令
+     *
+     * @return void
+     */
+    public function bootstrap();
+
     /**
      * Handle an incoming console command.
 	 * 处理传入的控制台命令
@@ -20,7 +27,7 @@ interface Kernel
 
     /**
      * Run an Artisan console command by name.
-	 * 通过名称运行控制台命令
+	 * 按名称运行Artisan控制台命令
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -31,7 +38,6 @@ interface Kernel
 
     /**
      * Queue an Artisan console command by name.
-	 * 按名称将工具控制台命令排队
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -57,7 +63,7 @@ interface Kernel
 
     /**
      * Terminate the application.
-	 * 终止应用
+	 * 按确定终止应用程序
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  int  $status

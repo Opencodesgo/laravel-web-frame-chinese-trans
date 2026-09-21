@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，节点，函数节点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,9 +28,9 @@ use Symfony\Component\CssSelector\Parser\Token;
  */
 class FunctionNode extends AbstractNode
 {
-    private $selector;
-    private $name;
-    private $arguments;
+    private NodeInterface $selector;
+    private string $name;
+    private array $arguments;
 
     /**
      * @param Token[] $arguments
@@ -57,9 +60,6 @@ class FunctionNode extends AbstractNode
         return $this->arguments;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSpecificity(): Specificity
     {
         return $this->selector->getSpecificity()->plus(new Specificity(0, 1, 0));
@@ -67,10 +67,8 @@ class FunctionNode extends AbstractNode
 
     public function __toString(): string
     {
-        $arguments = implode(', ', array_map(function (Token $token) {
-            return "'".$token->getValue()."'";
-        }, $this->arguments));
+        $arguments = implode(', ', array_map(fn (Token $token) => "'".$token->getValue()."'", $this->arguments));
 
-        return sprintf('%s[%s:%s(%s)]', $this->getNodeName(), $this->selector, $this->name, $arguments ? '['.$arguments.']' : '');
+        return \sprintf('%s[%s:%s(%s)]', $this->getNodeName(), $this->selector, $this->name, $arguments ? '['.$arguments.']' : '');
     }
 }

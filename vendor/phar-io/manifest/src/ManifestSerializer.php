@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * PharIo，Manifest，Manifest 序列化器
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

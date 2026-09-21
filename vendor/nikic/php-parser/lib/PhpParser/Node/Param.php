@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，参数
+ */
+
 namespace PhpParser\Node;
 
 use PhpParser\Modifiers;
@@ -26,6 +30,7 @@ class Param extends NodeAbstract {
 
     /**
      * Constructs a parameter node.
+	 * 构造参数节点
      *
      * @param Expr\Variable|Expr\Error $var Parameter variable
      * @param null|Expr $default Default value
@@ -66,6 +71,7 @@ class Param extends NodeAbstract {
 
     /**
      * Whether this parameter uses constructor property promotion.
+	 * 此参数是否使用构造函数属性提升
      */
     public function isPromoted(): bool {
         return $this->flags !== 0 || $this->hooks !== [];
@@ -77,7 +83,7 @@ class Param extends NodeAbstract {
             return true;
         }
 
-        if ($this->hooks === []) {
+        if (!$this->isPromoted()) {
             return false;
         }
 
@@ -98,6 +104,7 @@ class Param extends NodeAbstract {
 
     /**
      * Whether the promoted property has explicit public(set) visibility.
+	 * 提升属性是否具有显式的公共（集）可见性
      */
     public function isPublicSet(): bool {
         return (bool) ($this->flags & Modifiers::PUBLIC_SET);
@@ -105,6 +112,7 @@ class Param extends NodeAbstract {
 
     /**
      * Whether the promoted property has explicit protected(set) visibility.
+	 * 提升属性是否具有显式的受保护（设置）可见性
      */
     public function isProtectedSet(): bool {
         return (bool) ($this->flags & Modifiers::PROTECTED_SET);
@@ -112,6 +120,7 @@ class Param extends NodeAbstract {
 
     /**
      * Whether the promoted property has explicit private(set) visibility.
+	 * 提升属性是否具有显式的私有（设置）可见性
      */
     public function isPrivateSet(): bool {
         return (bool) ($this->flags & Modifiers::PRIVATE_SET);

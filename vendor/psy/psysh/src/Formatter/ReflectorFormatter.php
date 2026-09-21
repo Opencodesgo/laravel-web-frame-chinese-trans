@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，格式化程序，反射格式化器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Formatter;
 
 /**
  * Reflector formatter interface.
+ * 反射器格式化器接口。
  */
 interface ReflectorFormatter
 {

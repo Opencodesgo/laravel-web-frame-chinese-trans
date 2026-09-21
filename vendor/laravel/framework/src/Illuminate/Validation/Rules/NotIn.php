@@ -10,6 +10,8 @@ class NotIn
     /**
      * The name of the rule.
 	 * 规则名称
+     *
+     * @var string
      */
     protected $rule = 'not_in';
 

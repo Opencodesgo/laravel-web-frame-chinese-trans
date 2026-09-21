@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，数组比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -18,6 +23,7 @@ use function trim;
 
 /**
  * Compares arrays for equality.
+ * 比较数组是否相等。
  *
  * Arrays are equal if they contain the same key-value pairs.
  * The order of the keys does not matter.
@@ -27,6 +33,7 @@ class ArrayComparator extends Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器是否可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare
@@ -40,6 +47,7 @@ class ArrayComparator extends Comparator
 
     /**
      * Asserts that two arrays are equal.
+	 * 断言两个数组是否相等
      *
      * @param mixed $expected     First value to compare
      * @param mixed $actual       Second value to compare

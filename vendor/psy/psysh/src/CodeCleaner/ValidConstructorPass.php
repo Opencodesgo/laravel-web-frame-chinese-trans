@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，有效构造函数传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -21,6 +24,7 @@ use Psy\Exception\FatalErrorException;
 /**
  * Validate that the constructor method is not static, and does not have a
  * return type.
+ * 验证构造函数方法不是静态的，并且没有返回类型。
  *
  * Checks both explicit __construct methods as well as old-style constructor
  * methods with the same name as the class (for non-namespaced classes).
@@ -45,6 +49,7 @@ class ValidConstructorPass extends CodeCleanerPass
 
     /**
      * Validate that the constructor is not static and does not have a return type.
+	 * 验证构造函数不是静态的，也没有返回类型。
      *
      * @throws FatalErrorException the constructor function is static
      * @throws FatalErrorException the constructor function has a return type
@@ -69,7 +74,7 @@ class ValidConstructorPass extends CodeCleanerPass
                     }
 
                     // We found a possible old-style constructor (unless there is also a __construct method)
-                    if (empty($this->namespace) && \strtolower($node->name) === \strtolower($stmt->name)) {
+                    if (empty($this->namespace) && $node->name !== null && \strtolower($node->name) === \strtolower($stmt->name)) {
                         $constructor = $stmt;
                     }
                 }
@@ -111,6 +116,7 @@ class ValidConstructorPass extends CodeCleanerPass
 
     /**
      * Backwards compatibility shim for PHP-Parser 4.x.
+	 * PHP-Parser 4.x的向后兼容性。
      *
      * At some point we might want to make $namespace a plain string, to match how Name works?
      */

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，比较器，比较失败
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -15,11 +20,13 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * Thrown when an assertion for string equality failed.
+ * 当字符串相等的断言失败时抛出。
  */
 class ComparisonFailure extends RuntimeException
 {
     /**
      * Expected value of the retrieval which does not match $actual.
+	 * 与$actual不匹配的检索的期望值
      *
      * @var mixed
      */
@@ -27,6 +34,7 @@ class ComparisonFailure extends RuntimeException
 
     /**
      * Actually retrieved value which does not match $expected.
+	 * 实际检索值与$预期值不匹配
      *
      * @var mixed
      */
@@ -34,6 +42,7 @@ class ComparisonFailure extends RuntimeException
 
     /**
      * The string representation of the expected value.
+	 * 期望值的字符串表示形式
      *
      * @var string
      */
@@ -41,6 +50,7 @@ class ComparisonFailure extends RuntimeException
 
     /**
      * The string representation of the actual value.
+	 * 实际值的字符串表示形式
      *
      * @var string
      */

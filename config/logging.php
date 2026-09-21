@@ -11,14 +11,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Log Channel 	默认日志通道
+    | Default Log Channel	默认日志通道
     |--------------------------------------------------------------------------
     |
     | This option defines the default log channel that gets used when writing
     | messages to the logs. The name specified in this option should match
     | one of the channels defined in the "channels" configuration array.
-	| 该选项定义写入时使用的默认日志通道。
-	| 此选项中指定的名称应该匹配在"channels"配置数组中定义的通道之一。
     |
     */
 
@@ -26,14 +24,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Channels 	日志通道
+    | Deprecations Log Channel	日志通道
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the log channel that should be used to log warnings
+    | regarding deprecated PHP and library features. This allows you to get
+    | your application ready for upcoming major versions of dependencies.
+    |
+    */
+
+    'deprecations' => [
+        'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+        'trace' => false,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Channels	日志通道
     |--------------------------------------------------------------------------
     |
     | Here you may configure the log channels for your application. Out of
     | the box, Laravel uses the Monolog PHP logging library. This gives
     | you a variety of powerful log handlers / formatters to utilize.
-	| 在这里，您可以为您的应用程序配置日志通道。Laravel使用了Monolog PHP日志库。
-	| 这给你可以使用各种功能强大的日志处理程序/格式化程序。
     |
     | Available Drivers: "single", "daily", "slack", "syslog",
     |                    "errorlog", "monolog",
@@ -51,13 +63,13 @@ return [
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
+            'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
         ],
 
@@ -66,21 +78,23 @@ return [
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
-            'level' => 'critical',
+            'level' => env('LOG_LEVEL', 'critical'),
         ],
 
         'papertrail' => [
             'driver' => 'monolog',
-            'level' => 'debug',
-            'handler' => SyslogUdpHandler::class,
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
             ],
         ],
 
         'stderr' => [
             'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
             'handler' => StreamHandler::class,
             'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
@@ -90,12 +104,12 @@ return [
 
         'syslog' => [
             'driver' => 'syslog',
-            'level' => 'debug',
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'errorlog' => [
             'driver' => 'errorlog',
-            'level' => 'debug',
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'null' => [

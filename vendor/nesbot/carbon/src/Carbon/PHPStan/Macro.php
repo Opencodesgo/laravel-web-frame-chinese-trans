@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，PHPStan，宏
+ */
 
 declare(strict_types=1);
 

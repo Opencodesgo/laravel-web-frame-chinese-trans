@@ -29,7 +29,7 @@ class OtherDeviceLogout
 
     /**
      * Create a new event instance.
-	 * 创建事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user

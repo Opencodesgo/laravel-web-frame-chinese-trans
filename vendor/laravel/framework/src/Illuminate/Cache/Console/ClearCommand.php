@@ -8,22 +8,37 @@ namespace Illuminate\Cache\Console;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+#[AsCommand(name: 'cache:clear')]
 class ClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称，cache:clear
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $name = 'cache:clear';
 
     /**
+     * The name of the console command.
+	 * 控制台命令名称
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'cache:clear';
+
+    /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令描述 
      *
      * @var string
      */
@@ -31,7 +46,7 @@ class ClearCommand extends Command
 
     /**
      * The cache manager instance.
-	 * 缓存管理实例
+	 * 缓存管理器实例
      *
      * @var \Illuminate\Cache\CacheManager
      */
@@ -47,7 +62,7 @@ class ClearCommand extends Command
 
     /**
      * Create a new cache clear command instance.
-	 * 创建新的缓存清除命令实例
+	 * 创建一个新的缓存清除命令实例
      *
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @param  \Illuminate\Filesystem\Filesystem  $files
@@ -78,14 +93,14 @@ class ClearCommand extends Command
         $this->flushFacades();
 
         if (! $successful) {
-            return $this->error('Failed to clear cache. Make sure you have the appropriate permissions.');
+            return $this->components->error('Failed to clear cache. Make sure you have the appropriate permissions.');
         }
 
         $this->laravel['events']->dispatch(
             'cache:cleared', [$this->argument('store'), $this->tags()]
         );
 
-        $this->info('Application cache cleared!');
+        $this->components->info('Application cache cleared successfully.');
     }
 
     /**
@@ -128,7 +143,7 @@ class ClearCommand extends Command
      */
     protected function tags()
     {
-        return array_filter(explode(',', $this->option('tags')));
+        return array_filter(explode(',', $this->option('tags') ?? ''));
     }
 
     /**

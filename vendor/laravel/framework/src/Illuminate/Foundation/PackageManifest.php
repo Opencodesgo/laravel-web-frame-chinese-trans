@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，基础，包清单
+ * Illuminate，基础，软件包清单
  */
 
 namespace Illuminate\Foundation;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Env;
 
 class PackageManifest
 {
@@ -52,7 +53,7 @@ class PackageManifest
 
     /**
      * Create a new package manifest instance.
-	 * 创建新的包清单实例
+	 * 创建一个新的包清单实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $basePath
@@ -64,7 +65,7 @@ class PackageManifest
         $this->files = $files;
         $this->basePath = $basePath;
         $this->manifestPath = $manifestPath;
-        $this->vendorPath = $basePath.'/vendor';
+        $this->vendorPath = Env::get('COMPOSER_VENDOR_DIR') ?: $basePath.'/vendor';
     }
 
     /**
@@ -115,11 +116,11 @@ class PackageManifest
             return $this->manifest;
         }
 
-        if (! file_exists($this->manifestPath)) {
+        if (! is_file($this->manifestPath)) {
             $this->build();
         }
 
-        return $this->manifest = file_exists($this->manifestPath) ?
+        return $this->manifest = is_file($this->manifestPath) ?
             $this->files->getRequire($this->manifestPath) : [];
     }
 
@@ -170,7 +171,7 @@ class PackageManifest
      */
     protected function packagesToIgnore()
     {
-        if (! file_exists($this->basePath.'/composer.json')) {
+        if (! is_file($this->basePath.'/composer.json')) {
             return [];
         }
 

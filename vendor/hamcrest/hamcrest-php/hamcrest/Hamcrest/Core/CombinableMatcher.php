@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，可组合匹配器
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -43,6 +47,7 @@ class CombinableMatcher extends BaseMatcher
 
     /**
      * This is useful for fluently combining matchers that must both pass.
+	 * 这对于熟练地结合游戏者来说是有用的。
      * For example:
      * <pre>
      *   assertThat($string, both(containsString("a"))->andAlso(containsString("b")));

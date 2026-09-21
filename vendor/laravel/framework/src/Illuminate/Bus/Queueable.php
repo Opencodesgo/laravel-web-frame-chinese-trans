@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，总线，可排队的：指某事物或任务可以被添加到队列中等待处理
+ * Illuminate，总线，可排队的
  */
 
 namespace Illuminate\Bus;
@@ -45,12 +45,28 @@ trait Queueable
     public $chainQueue;
 
     /**
+     * The callbacks to be executed on chain failure.
+	 * 在链失败时执行的回调函数
+     *
+     * @var array|null
+     */
+    public $chainCatchCallbacks;
+
+    /**
      * The number of seconds before the job should be made available.
 	 * 在作业可用之前的秒数
      *
-     * @var \DateTimeInterface|\DateInterval|int|null
+     * @var \DateTimeInterface|\DateInterval|array|int|null
      */
     public $delay;
+
+    /**
+     * Indicates whether the job should be dispatched after all database transactions have committed.
+	 * 指示是否应在所有数据库事务提交后分派作业
+     *
+     * @var bool|null
+     */
+    public $afterCommit;
 
     /**
      * The middleware the job should be dispatched through.
@@ -127,15 +143,41 @@ trait Queueable
     }
 
     /**
-     * Set the desired delay for the job.
-	 * 为作业设置所需的延迟
+     * Set the desired delay in seconds for the job.
+	 * 为作业设置所需的延迟（以秒为单位）
      *
-     * @param  \DateTimeInterface|\DateInterval|int|null  $delay
+     * @param  \DateTimeInterface|\DateInterval|array|int|null  $delay
      * @return $this
      */
     public function delay($delay)
     {
         $this->delay = $delay;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should be dispatched after all database transactions have committed.
+	 * 指示应在所有数据库事务提交后分派作业
+     *
+     * @return $this
+     */
+    public function afterCommit()
+    {
+        $this->afterCommit = true;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the job should not wait until database transactions have been committed before dispatching.
+	 * 指示作业不应等到数据库事务提交后才进行调度
+     *
+     * @return $this
+     */
+    public function beforeCommit()
+    {
+        $this->afterCommit = false;
 
         return $this;
     }
@@ -171,11 +213,41 @@ trait Queueable
     }
 
     /**
+     * Prepend a job to the current chain so that it is run after the currently running job.
+	 * 将作业前置到当前链，以便在当前运行的作业之后运行。
+     *
+     * @param  mixed  $job
+     * @return $this
+     */
+    public function prependToChain($job)
+    {
+        $this->chained = Arr::prepend($this->chained, $this->serializeJob($job));
+
+        return $this;
+    }
+
+    /**
+     * Append a job to the end of the current chain.
+	 * 将作业附加到当前链的末尾
+     *
+     * @param  mixed  $job
+     * @return $this
+     */
+    public function appendToChain($job)
+    {
+        $this->chained = array_merge($this->chained, [$this->serializeJob($job)]);
+
+        return $this;
+    }
+
+    /**
      * Serialize a job for queuing.
 	 * 序列化用于排队的作业
      *
      * @param  mixed  $job
      * @return string
+     *
+     * @throws \RuntimeException
      */
     protected function serializeJob($job)
     {
@@ -209,7 +281,22 @@ trait Queueable
 
                 $next->chainConnection = $this->chainConnection;
                 $next->chainQueue = $this->chainQueue;
+                $next->chainCatchCallbacks = $this->chainCatchCallbacks;
             }));
         }
+    }
+
+    /**
+     * Invoke all of the chain's failed job callbacks.
+	 * 调用链中所有失败的作业回调
+     *
+     * @param  \Throwable  $e
+     * @return void
+     */
+    public function invokeChainCatchCallbacks($e)
+    {
+        collect($this->chainCatchCallbacks)->each(function ($callback) use ($e) {
+            $callback($e);
+        });
     }
 }

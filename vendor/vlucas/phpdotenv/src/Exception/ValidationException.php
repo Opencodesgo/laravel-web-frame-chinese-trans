@@ -1,10 +1,15 @@
 <?php
+/**
+ * Dotenv，异常，验证异常
+ */
+
+declare(strict_types=1);
 
 namespace Dotenv\Exception;
 
 use RuntimeException;
 
-class ValidationException extends RuntimeException implements ExceptionInterface
+final class ValidationException extends RuntimeException implements ExceptionInterface
 {
     //
 }

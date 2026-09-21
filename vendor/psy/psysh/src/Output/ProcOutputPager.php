@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，输出，Proc 输出分页
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 
 /**
  * ProcOutputPager class.
+ * ProcOutputPager类。
  *
  * A ProcOutputPager instance wraps a regular StreamOutput's stream. Rather
  * than writing directly to the stream, it shells out to a pager process and
@@ -33,6 +37,7 @@ class ProcOutputPager extends StreamOutput implements OutputPager
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param StreamOutput $output
      * @param string       $cmd    Pager process command (default: 'less -R -F -X')
@@ -45,6 +50,7 @@ class ProcOutputPager extends StreamOutput implements OutputPager
 
     /**
      * Writes a message to the output.
+	 * 将消息写入输出
      *
      * @param string $message A message to write to the output
      * @param bool   $newline Whether to add a newline or not
@@ -56,9 +62,13 @@ class ProcOutputPager extends StreamOutput implements OutputPager
         $pipe = $this->getPipe();
         if (false === @\fwrite($pipe, $message.($newline ? \PHP_EOL : ''))) {
             // @codeCoverageIgnoreStart
-            // should never happen
+            // When the message is sufficiently long, writing to the pipe fails
+            // if the pager process is closed before the entire message is read.
+            //
+            // This is a normal condition, so we just close the pipe and return.
             $this->close();
-            throw new \RuntimeException('Unable to write output');
+
+            return;
             // @codeCoverageIgnoreEnd
         }
 
@@ -67,6 +77,7 @@ class ProcOutputPager extends StreamOutput implements OutputPager
 
     /**
      * Close the current pager process.
+	 * 关闭当前寻呼机进程
      */
     public function close()
     {
@@ -87,6 +98,7 @@ class ProcOutputPager extends StreamOutput implements OutputPager
 
     /**
      * Get a pipe for paging output.
+	 * 获取分页输出的管道
      *
      * If no active pager process exists, fork one and return its input pipe.
      */

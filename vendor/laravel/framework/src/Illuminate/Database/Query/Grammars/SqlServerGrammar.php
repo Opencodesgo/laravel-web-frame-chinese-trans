@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，Sql Server 语法
+ * Illuminate，数据库，PDO，语法，Sql Server 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -15,7 +15,7 @@ class SqlServerGrammar extends Grammar
      * All of the available clause operators.
 	 * 所有可用的子句操作符
      *
-     * @var array
+     * @var string[]
      */
     protected $operators = [
         '=', '<', '>', '<=', '>=', '!<', '!>', '<>', '!=',
@@ -25,7 +25,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a select query into SQL.
-	 * 将select查询编译为SQL
+	 * 将一个选择查询编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -36,16 +36,22 @@ class SqlServerGrammar extends Grammar
             return parent::compileSelect($query);
         }
 
-        // If an offset is present on the query, we will need to wrap the query in
-        // a big "ANSI" offset syntax block. This is very nasty compared to the
-        // other database systems but is necessary for implementing features.
-		// 如果查询中存在偏移量，则需要将查询封装在。
         if (is_null($query->columns)) {
             $query->columns = ['*'];
         }
 
+        $components = $this->compileComponents($query);
+
+        if (! empty($components['orders'])) {
+            return parent::compileSelect($query)." offset {$query->offset} rows fetch next {$query->limit} rows only";
+        }
+
+        // If an offset is present on the query, we will need to wrap the query in
+        // a big "ANSI" offset syntax block. This is very nasty compared to the
+        // other database systems but is necessary for implementing features.
+		// 如果查询中存在偏移量，我们需要将查询封装在一个大的"ANSI"中。
         return $this->compileAnsiOffset(
-            $query, $this->compileComponents($query)
+            $query, $components
         );
     }
 
@@ -68,9 +74,9 @@ class SqlServerGrammar extends Grammar
         // If there is a limit on the query, but not an offset, we will add the top
         // clause to the query, which serves as a "limit" type clause within the
         // SQL Server system similar to the limit keywords available in MySQL.
-		// 如果查询有一个限制而不是偏移量，我们将添加顶部对查询的子句。
-        if ($query->limit > 0 && $query->offset <= 0) {
-            $select .= 'top '.$query->limit.' ';
+		// 如果查询有限制，
+        if (is_numeric($query->limit) && $query->limit > 0 && $query->offset <= 0) {
+            $select .= 'top '.((int) $query->limit).' ';
         }
 
         return $select.$this->columnize($columns);
@@ -78,7 +84,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the "from" portion of the query.
-	 * 编译查询的"从"部分
+	 * 编译查询的"from"部分
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -100,6 +106,37 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Compile the index hints for the query.
+	 * 为查询编译索引提示
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Query\IndexHint  $indexHint
+     * @return string
+     */
+    protected function compileIndexHint(Builder $query, $indexHint)
+    {
+        return $indexHint->type === 'force'
+                    ? "with (index({$indexHint->index}))"
+                    : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereBitwise(Builder $query, $where)
+    {
+        $value = $this->parameter($where['value']);
+
+        $operator = str_replace('?', '??', $where['operator']);
+
+        return '('.$this->wrap($where['column']).' '.$operator.' '.$value.') != 0';
+    }
+
+    /**
      * Compile a "where date" clause.
 	 * 编译一个"where date"子句
      *
@@ -116,7 +153,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
-	 * 编写一个"where time"子句
+	 * 编译一个"where time"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -131,7 +168,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a "JSON contains" statement into SQL.
-	 * 将"JSON包含"语句编译为SQL
+	 * 将"JSON contains"语句编译成SQL
      *
      * @param  string  $column
      * @param  string  $value
@@ -157,6 +194,32 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON contains key" statement into SQL.
+	 * 将"JSON contains key"语句编译成SQL
+     *
+     * @param  string  $column
+     * @return string
+     */
+    protected function compileJsonContainsKey($column)
+    {
+        $segments = explode('->', $column);
+
+        $lastSegment = array_pop($segments);
+
+        if (preg_match('/\[([0-9]+)\]$/', $lastSegment, $matches)) {
+            $segments[] = Str::beforeLast($lastSegment, $matches[0]);
+
+            $key = $matches[1];
+        } else {
+            $key = "'".str_replace("'", "''", $lastSegment)."'";
+        }
+
+        [$field, $path] = $this->wrapJsonFieldAndPath(implode('->', $segments));
+
+        return $key.' in (select [key] from openjson('.$field.$path.'))';
+    }
+
+    /**
      * Compile a "JSON length" statement into SQL.
 	 * 将"JSON长度"语句编译成SQL
      *
@@ -173,8 +236,52 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON value cast" statement into SQL.
+	 * 将"JSON值转换"语句编译成SQL
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function compileJsonValueCast($value)
+    {
+        return 'json_query('.$value.')';
+    }
+
+    /**
+     * Compile a single having clause.
+	 * 编译单个having子句
+     *
+     * @param  array  $having
+     * @return string
+     */
+    protected function compileHaving(array $having)
+    {
+        if ($having['type'] === 'Bitwise') {
+            return $this->compileHavingBitwise($having);
+        }
+
+        return parent::compileHaving($having);
+    }
+
+    /**
+     * Compile a having clause involving a bitwise operator.
+	 * 编译包含位运算符的having子句
+     *
+     * @param  array  $having
+     * @return string
+     */
+    protected function compileHavingBitwise($having)
+    {
+        $column = $this->wrap($having['column']);
+
+        $parameter = $this->parameter($having['value']);
+
+        return '('.$column.' '.$having['operator'].' '.$parameter.') != 0';
+    }
+
+    /**
      * Create a full ANSI offset clause for the query.
-	 * 为查询创建一个完整的ANSI偏移子
+	 * 为查询创建一个完整的ANSI偏移子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $components
@@ -185,7 +292,7 @@ class SqlServerGrammar extends Grammar
         // An ORDER BY clause is required to make this offset query work, so if one does
         // not exist we'll just create a dummy clause to trick the database and so it
         // does not complain about the queries for not having an "order by" clause.
-		// 要使这个偏移量查询工作，需要一个ORDER BY子句，因此不存在，我们将创建一个虚拟子句来欺骗数据库。
+		// 要使偏移量查询工作，需要一个ORDER BY子句。
         if (empty($components['orders'])) {
             $components['orders'] = 'order by (select 0)';
         }
@@ -198,6 +305,10 @@ class SqlServerGrammar extends Grammar
 
         unset($components['orders']);
 
+        if ($this->queryOrderContainsSubquery($query)) {
+            $query->bindings = $this->sortBindingsForSubqueryOrderBy($query);
+        }
+
         // Next we need to calculate the constraints that should be placed on the query
         // to get the right offset and limit from our query but if there is no limit
         // set we will just handle the offset only since that is all that matters.
@@ -209,7 +320,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the over statement for a table expression.
-	 * 编译表表达式的语句
+	 * 编译表表达式的over语句
      *
      * @param  string  $orderings
      * @return string
@@ -220,8 +331,40 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Determine if the query's order by clauses contain a subquery.
+	 * 确定查询的顺序子句是否包含子查询
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return bool
+     */
+    protected function queryOrderContainsSubquery($query)
+    {
+        if (! is_array($query->orders)) {
+            return false;
+        }
+
+        return Arr::first($query->orders, function ($value) {
+            return $this->isExpression($value['column'] ?? null);
+        }, false) !== false;
+    }
+
+    /**
+     * Move the order bindings to be after the "select" statement to account for an order by subquery.
+	 * 将订单绑定移动到"select"语句之后，以说明按子查询的订单。
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return array
+     */
+    protected function sortBindingsForSubqueryOrderBy($query)
+    {
+        return Arr::sort($query->bindings, function ($bindings, $key) {
+            return array_search($key, ['select', 'order', 'from', 'join', 'where', 'groupBy', 'having', 'union', 'unionOrder']);
+        });
+    }
+
+    /**
      * Compile a common table expression for a query.
-	 * 为查询编译一个常用的表表达式
+	 * 为查询编译公共表表达式
      *
      * @param  string  $sql
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -243,10 +386,10 @@ class SqlServerGrammar extends Grammar
      */
     protected function compileRowConstraint($query)
     {
-        $start = $query->offset + 1;
+        $start = (int) $query->offset + 1;
 
         if ($query->limit > 0) {
-            $finish = $query->offset + $query->limit;
+            $finish = (int) $query->offset + (int) $query->limit;
 
             return "between {$start} and {$finish}";
         }
@@ -276,7 +419,7 @@ class SqlServerGrammar extends Grammar
      * Compile the random statement into SQL.
 	 * 将随机语句编译成SQL
      *
-     * @param  string  $seed
+     * @param  string|int  $seed
      * @return string
      */
     public function compileRandom($seed)
@@ -312,7 +455,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
-	 * 编译锁到SQL
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -337,7 +480,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile an exists statement into SQL.
-	 * 编译存在的语句为SQL
+	 * 将exists语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -353,7 +496,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile an update statement with joins into SQL.
-	 * 编译连接到SQL的更新语句
+	 * 将带有连接的更新语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -368,6 +511,49 @@ class SqlServerGrammar extends Grammar
         $joins = $this->compileJoins($query, $query->joins);
 
         return "update {$alias} set {$columns} from {$table} {$joins} {$where}";
+    }
+
+    /**
+     * Compile an "upsert" statement into SQL.
+	 * 将"upsert"语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @param  array  $uniqueBy
+     * @param  array  $update
+     * @return string
+     */
+    public function compileUpsert(Builder $query, array $values, array $uniqueBy, array $update)
+    {
+        $columns = $this->columnize(array_keys(reset($values)));
+
+        $sql = 'merge '.$this->wrapTable($query->from).' ';
+
+        $parameters = collect($values)->map(function ($record) {
+            return '('.$this->parameterize($record).')';
+        })->implode(', ');
+
+        $sql .= 'using (values '.$parameters.') '.$this->wrapTable('laravel_source').' ('.$columns.') ';
+
+        $on = collect($uniqueBy)->map(function ($column) use ($query) {
+            return $this->wrap('laravel_source.'.$column).' = '.$this->wrap($query->from.'.'.$column);
+        })->implode(' and ');
+
+        $sql .= 'on '.$on.' ';
+
+        if ($update) {
+            $update = collect($update)->map(function ($value, $key) {
+                return is_numeric($key)
+                    ? $this->wrap($value).' = '.$this->wrap('laravel_source.'.$value)
+                    : $this->wrap($key).' = '.$this->parameter($value);
+            })->implode(', ');
+
+            $sql .= 'when matched then update set '.$update.' ';
+        }
+
+        $sql .= 'when not matched then insert ('.$columns.') values ('.$columns.');';
+
+        return $sql;
     }
 
     /**
@@ -389,7 +575,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the SQL statement to define a savepoint.
-	 * 编译SQL语句来定义一个保存点
+	 * 编译SQL语句以定义保存点
      *
      * @param  string  $name
      * @return string
@@ -424,7 +610,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
-	 * 在关键字标识符中包一个字符串
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -462,7 +648,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
-	 * 在关键字标识符中包装表
+	 * 用关键字标识符包装表
      *
      * @param  \Illuminate\Database\Query\Expression|string  $table
      * @return string
@@ -478,7 +664,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
-	 * 所有可用的子句操作符
+	 * 用关键字标识符包装
      *
      * @param  string  $table
      * @return string

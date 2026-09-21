@@ -6,7 +6,6 @@
 namespace Illuminate\Auth\Passwords;
 
 use Illuminate\Contracts\Auth\PasswordBrokerFactory as FactoryContract;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
@@ -24,7 +23,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * The array of created "drivers".
-	 * 已创建的"驱动程序"数组
+	 * 已创建的驱动
      *
      * @var array
      */
@@ -32,7 +31,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Create a new PasswordBroker manager instance.
-	 * 创建新的密码代理管理器实例
+	 * 创建一个新的PasswordBroker管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -44,7 +43,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Attempt to get the broker from the local cache.
-	 * 从本地缓存中尝试得到代理
+	 * 尝试从本地缓存获取代理
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Auth\PasswordBroker
@@ -58,7 +57,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Resolve the given broker.
-	 * 解析给定代理
+	 * 解析给定的代理
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Auth\PasswordBroker
@@ -76,7 +75,7 @@ class PasswordBrokerManager implements FactoryContract
         // The password broker uses a token repository to validate tokens and send user
         // password e-mails, as well as validating that password reset process as an
         // aggregate service of sorts providing a convenient interface for resets.
-		// 密码代理使用令牌存储库来验证令牌并发送用户。
+		// 密码代理使用令牌存储库来验证令牌并发送邮件给用户。
         return new PasswordBroker(
             $this->createTokenRepository($config),
             $this->app['auth']->createUserProvider($config['provider'] ?? null)
@@ -94,7 +93,7 @@ class PasswordBrokerManager implements FactoryContract
     {
         $key = $this->app['config']['app.key'];
 
-        if (Str::startsWith($key, 'base64:')) {
+        if (str_starts_with($key, 'base64:')) {
             $key = base64_decode(substr($key, 7));
         }
 
@@ -147,7 +146,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Dynamically call the default driver instance.
-	 * 动态调取默认驱动实例
+	 * 动态调用默认驱动实例
      *
      * @param  string  $method
      * @param  array  $parameters

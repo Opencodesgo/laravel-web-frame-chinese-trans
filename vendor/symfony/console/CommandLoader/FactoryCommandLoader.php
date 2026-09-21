@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，命令，命令加载器，工厂命令加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,16 +14,18 @@
 
 namespace Symfony\Component\Console\CommandLoader;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * A simple command loader using factories to instantiate commands lazily.
+ * 一个简单的命令加载器，使用工厂惰性地实例化命令。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 class FactoryCommandLoader implements CommandLoaderInterface
 {
-    private $factories;
+    private array $factories;
 
     /**
      * @param callable[] $factories Indexed by command names
@@ -30,21 +35,15 @@ class FactoryCommandLoader implements CommandLoaderInterface
         $this->factories = $factories;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has(string $name)
+    public function has(string $name): bool
     {
         return isset($this->factories[$name]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(string $name)
+    public function get(string $name): Command
     {
         if (!isset($this->factories[$name])) {
-            throw new CommandNotFoundException(sprintf('Command "%s" does not exist.', $name));
+            throw new CommandNotFoundException(\sprintf('Command "%s" does not exist.', $name));
         }
 
         $factory = $this->factories[$name];
@@ -52,10 +51,7 @@ class FactoryCommandLoader implements CommandLoaderInterface
         return $factory();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return array_keys($this->factories);
     }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，Hamcrest
+ */
 
 /*
  Copyright (c) 2009-2010 hamcrest.org

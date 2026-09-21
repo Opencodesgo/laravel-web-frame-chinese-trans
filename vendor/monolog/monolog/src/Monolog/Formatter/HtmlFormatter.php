@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，格式化，Html 格式化
+ * Monolog，格式化，Html 格式化程序
  */
 
 /*
@@ -54,6 +54,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Creates an HTML table row
+	 * 创建一个HTML表行
      *
      * @param string $th       Row header content
      * @param string $td       Row standard cell content
@@ -71,6 +72,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Create a HTML h1 tag
+	 * 创建HTML h1标记
      *
      * @param  string $title Text to be in the h1
      * @param  int    $level Error level
@@ -85,6 +87,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Formats a log record.
+	 * 格式化日志记录
      *
      * @return string The formatted record
      */
@@ -118,6 +121,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Formats a set of log records.
+	 * 格式化一组日志记录
      *
      * @return string The formatted set of records
      */

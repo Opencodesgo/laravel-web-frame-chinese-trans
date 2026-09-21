@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，控制台，cache:table 缓存表命令
+ * Illuminate，缓存，控制台，缓存表命令
  */
 
 namespace Illuminate\Cache\Console;
@@ -8,16 +8,31 @@ namespace Illuminate\Cache\Console;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'cache:table')]
 class CacheTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称，cache:table
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $name = 'cache:table';
+
+    /**
+     * The name of the console command.
+	 * 控制台命令描述
+     *
+     * This name is used to identify the command during lazy loading.
+	 * 此名称用于在惰性加载期间识别命令。
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'cache:table';
 
     /**
      * The console command description.
@@ -25,7 +40,7 @@ class CacheTableCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a migration for the cache database table';		#为缓存数据库表创建迁移
+    protected $description = 'Create a migration for the cache database table';
 
     /**
      * The filesystem instance.
@@ -42,7 +57,7 @@ class CacheTableCommand extends Command
 
     /**
      * Create a new cache table command instance.
-	 * 创建新的缓存表命令实例
+	 * 创建一个新的缓存表命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  \Illuminate\Support\Composer  $composer
@@ -68,7 +83,7 @@ class CacheTableCommand extends Command
 
         $this->files->put($fullPath, $this->files->get(__DIR__.'/stubs/cache.stub'));
 
-        $this->info('Migration created successfully!');
+        $this->components->info('Migration created successfully.');
 
         $this->composer->dumpAutoloads();
     }

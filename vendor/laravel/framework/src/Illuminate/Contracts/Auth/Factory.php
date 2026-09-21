@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Get a guard instance by name.
-	 * 按名称获取守卫实例
+	 * 得到守卫实例通过名称
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard

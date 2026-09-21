@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，问题，管理栈
+ * Illuminate，视图，问题，管理堆栈
  */
 
 namespace Illuminate\View\Concerns;
@@ -11,7 +11,7 @@ trait ManagesStacks
 {
     /**
      * All of the finished, captured push sections.
-	 * 所有完成的，捕获的推。
+	 * 所有完成的，捕获的推段。
      *
      * @var array
      */
@@ -19,7 +19,7 @@ trait ManagesStacks
 
     /**
      * All of the finished, captured prepend sections.
-	 * 所有完成的、捕获的前置部分
+	 * 所有完成的、捕获的前置部分。
      *
      * @var array
      */
@@ -180,7 +180,7 @@ trait ManagesStacks
 
     /**
      * Flush all of the stacks.
-	 * 清空所有的堆栈
+	 * 刷新所有的堆栈
      *
      * @return void
      */

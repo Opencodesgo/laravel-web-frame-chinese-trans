@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，问题，存在事件
+ * Illuminate，数据库，Eloquent，问题，有事件
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
@@ -17,7 +17,6 @@ trait HasEvents
 	 * 模型的事件映射
      *
      * Allows for object-based events for native Eloquent events.
-	 * 允许原生Eloquent事件的基于对象的事件
      *
      * @var array
      */
@@ -28,7 +27,6 @@ trait HasEvents
 	 * 用户公开的可观察事件
      *
      * These are extra user-defined events observers may subscribe to.
-	 * 这些是观察者可以订阅的额外用户定义事件
      *
      * @var array
      */
@@ -68,7 +66,7 @@ trait HasEvents
         // When registering a model observer, we will spin through the possible events
         // and determine if this observer has that method. If it does, we will hook
         // it into the model's event system, making it convenient to watch these.
-		// 在注册模型观察者时,我们将通过可能的事件进行旋转
+		// 在注册模型观察者时，我们将浏览可能发生的事件。
         foreach ($this->getObservableEvents() as $event) {
             if (method_exists($class, $event)) {
                 static::registerModelEvent($event, $className.'@'.$event);
@@ -110,7 +108,7 @@ trait HasEvents
             [
                 'retrieved', 'creating', 'created', 'updating', 'updated',
                 'saving', 'saved', 'restoring', 'restored', 'replicating',
-                'deleting', 'deleted', 'forceDeleted',
+                'deleting', 'deleted', 'forceDeleting', 'forceDeleted',
             ],
             $this->observables
         );
@@ -146,7 +144,7 @@ trait HasEvents
 
     /**
      * Remove an observable event name.
-	 * 删除一个可观察的事件名称
+	 * 移除一个可观察事件名
      *
      * @param  array|mixed  $observables
      * @return void
@@ -160,10 +158,10 @@ trait HasEvents
 
     /**
      * Register a model event with the dispatcher.
-	 * 与调度员注册一个模型事件
+	 * 向调度程序注册一个模型事件
      *
      * @param  string  $event
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     protected static function registerModelEvent($event, $callback)
@@ -192,7 +190,7 @@ trait HasEvents
         // First, we will get the proper method to call on the event dispatcher, and then we
         // will attempt to fire a custom, object based event for the given event. If that
         // returns a result we can return that result, or we'll call the string events.
-		//首先，我们将获得在事件调度程序上调用的适当方法，然后我们将尝试为给定事件触发一个自定义的、基于对象的事件。
+		// 首先，我们将获得在事件调度程序上调用的适当方法。
         $method = $halt ? 'until' : 'dispatch';
 
         $result = $this->filterModelEventResults(
@@ -251,7 +249,7 @@ trait HasEvents
      * Register a retrieved model event with the dispatcher.
 	 * 向调度程序注册检索到的模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function retrieved($callback)
@@ -263,7 +261,7 @@ trait HasEvents
      * Register a saving model event with the dispatcher.
 	 * 向调度程序注册一个保存模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function saving($callback)
@@ -275,7 +273,7 @@ trait HasEvents
      * Register a saved model event with the dispatcher.
 	 * 向调度程序注册已保存的模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function saved($callback)
@@ -287,7 +285,7 @@ trait HasEvents
      * Register an updating model event with the dispatcher.
 	 * 向调度程序注册更新模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function updating($callback)
@@ -299,7 +297,7 @@ trait HasEvents
      * Register an updated model event with the dispatcher.
 	 * 向调度程序注册更新后的模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function updated($callback)
@@ -311,7 +309,7 @@ trait HasEvents
      * Register a creating model event with the dispatcher.
 	 * 向调度程序注册一个创建模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function creating($callback)
@@ -323,7 +321,7 @@ trait HasEvents
      * Register a created model event with the dispatcher.
 	 * 向调度程序注册已创建的模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function created($callback)
@@ -333,9 +331,9 @@ trait HasEvents
 
     /**
      * Register a replicating model event with the dispatcher.
-	 * 用dispatcher注册一个复制模型事件
+	 * 向调度程序注册复制模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function replicating($callback)
@@ -347,7 +345,7 @@ trait HasEvents
      * Register a deleting model event with the dispatcher.
 	 * 向调度程序注册一个删除模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function deleting($callback)
@@ -359,7 +357,7 @@ trait HasEvents
      * Register a deleted model event with the dispatcher.
 	 * 向调度程序注册已删除的模型事件
      *
-     * @param  \Closure|string  $callback
+     * @param  \Illuminate\Events\QueuedClosure|\Closure|string|array  $callback
      * @return void
      */
     public static function deleted($callback)
@@ -368,8 +366,8 @@ trait HasEvents
     }
 
     /**
-     * Remove all of the event listeners for the model.
-	 * 删除模型的所有事件侦听器
+     * Remove all the event listeners for the model.
+	 * 删除模型的所有事件监听器
      *
      * @return void
      */

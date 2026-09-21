@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清理，有效的类名通行证
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,6 +29,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that classes exist.
+ * 验证类是否存在。
  *
  * This pass throws a FatalErrorException rather than letting PHP run
  * headfirst into a real fatal error and die.
@@ -40,6 +44,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Validate class, interface and trait definitions.
+	 * 验证类、接口和trait定义。
      *
      * Validate them upon entering the node, so that we know about their
      * presence and can validate constant fetches and static calls in class or
@@ -93,6 +98,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Validate a class definition statement.
+	 * 验证类定义语句
      *
      * @param Class_ $stmt
      */
@@ -107,6 +113,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Validate an interface definition statement.
+	 * 验证接口定义语句
      *
      * @param Interface_ $stmt
      */
@@ -118,6 +125,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Validate a trait definition statement.
+	 * 验证trait定义语句
      *
      * @param Trait_ $stmt
      */
@@ -128,6 +136,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Ensure that no class, interface or trait name collides with a new definition.
+	 * 确保没有类名、接口名或trait名与新定义冲突。
      *
      * @throws FatalErrorException
      *
@@ -164,6 +173,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Ensure that a referenced class exists.
+	 * 确保存在被引用的类
      *
      * @throws FatalErrorException
      *
@@ -179,6 +189,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Ensure that a referenced class _or interface_ exists.
+	 * 确保被引用的类或接口存在
      *
      * @throws FatalErrorException
      *
@@ -194,6 +205,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Ensure that a referenced class _or trait_ exists.
+	 * 确保被引用的类或特性存在
      *
      * @throws FatalErrorException
      *
@@ -209,6 +221,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Ensure that a statically called method exists.
+	 * 确保存在静态调用的方法
      *
      * @throws FatalErrorException
      *
@@ -242,6 +255,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Ensure that a referenced interface exists.
+	 * 确保存在被引用的接口
      *
      * @throws FatalErrorException
      *
@@ -261,6 +275,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Check whether a class exists, or has been defined in the current code snippet.
+	 * 检查类是否存在，或者在当前代码段中是否定义了类。
      *
      * Gives `self`, `static` and `parent` a free pass.
      *
@@ -280,6 +295,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Check whether an interface exists, or has been defined in the current code snippet.
+	 * 检查接口是否存在，或者是否已在当前代码段中定义。
      *
      * @param string $name
      */
@@ -290,6 +306,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Check whether a trait exists, or has been defined in the current code snippet.
+	 * 检查trait是否存在，或者是否已在当前代码段中定义。
      *
      * @param string $name
      */
@@ -300,6 +317,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Find a symbol in the current code snippet scope.
+	 * 在当前代码段作用域中查找符号
      *
      * @param string $name
      *
@@ -315,6 +333,7 @@ class ValidClassNamePass extends NamespaceAwarePass
 
     /**
      * Error creation factory.
+	 * 错误创建工厂
      *
      * @param string $msg
      * @param Stmt   $stmt

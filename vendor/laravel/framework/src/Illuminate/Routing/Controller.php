@@ -11,7 +11,7 @@ abstract class Controller
 {
     /**
      * The middleware registered on the controller.
-	 * 在控制器上注册中间件
+	 * 在控制器上注册的中间件
      *
      * @var array
      */

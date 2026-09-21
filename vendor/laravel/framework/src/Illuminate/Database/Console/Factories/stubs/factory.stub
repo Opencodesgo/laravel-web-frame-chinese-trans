@@ -1,15 +1,27 @@
 <?php
 /**
- * Illuminate，数据库，工作台，工厂，需要根据实际修改
+ * Illuminate，数据库，控制台，工厂，存根，根据需要实际修改
  */
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace {{ factoryNamespace }};
 
-use Faker\Generator as Faker;
-use {{ namespacedModel }};
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define({{ model }}::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\{{ namespacedModel }}>
+ */
+class {{ factory }}Factory extends Factory
+{
+    /**
+     * Define the model's default state.
+	 * 定义模型的默认状态
+     *
+     * @return array<string, mixed>
+     */
+    public function definition()
+    {
+        return [
+            //
+        ];
+    }
+}

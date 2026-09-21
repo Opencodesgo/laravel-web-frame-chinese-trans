@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，实例化器
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)
@@ -85,6 +88,7 @@ final class Instantiator
 
     /**
      * Builds a {@see Closure} capable of instantiating the given $className without invoking its constructor.
+	 * 构建一个{@see Closure}能够实例化给定的$className而不调用其构造函数。
      */
     private function buildFactory(string $className): Closure
     {
@@ -125,6 +129,7 @@ final class Instantiator
 
     /**
      * Verifies whether the given class is to be considered internal
+	 * 验证是否将给定的类视为内部类
      */
     private function hasInternalAncestors(ReflectionClass $reflectionClass): bool
     {
@@ -139,6 +144,7 @@ final class Instantiator
 
     /**
      * Verifies if the class is instantiable via reflection
+	 * 验证类是否可通过反射实例化
      */
     private function isInstantiableViaReflection(ReflectionClass $reflectionClass): bool
     {

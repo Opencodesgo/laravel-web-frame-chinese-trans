@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问器，发现访客
+ */
+
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\Node;
@@ -12,7 +16,7 @@ use PhpParser\NodeVisitorAbstract;
 class FindingVisitor extends NodeVisitorAbstract {
     /** @var callable Filter callback */
     protected $filterCallback;
-    /** @var Node[] Found nodes */
+    /** @var list<Node> Found nodes */
     protected array $foundNodes;
 
     public function __construct(callable $filterCallback) {
@@ -21,10 +25,11 @@ class FindingVisitor extends NodeVisitorAbstract {
 
     /**
      * Get found nodes satisfying the filter callback.
+	 * 获取满足过滤器回调的已找到节点。
      *
      * Nodes are returned in pre-order.
      *
-     * @return Node[] Found nodes
+     * @return list<Node> Found nodes
      */
     public function getFoundNodes(): array {
         return $this->foundNodes;

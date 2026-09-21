@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，HttpKernel，缓存取暖器，缓存取暖器
+ * Symfony，Component，HttpKernel，缓存Warmer，缓存Warmer
  */
 
 /*
@@ -22,6 +22,9 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
  */
 abstract class CacheWarmer implements CacheWarmerInterface
 {
+    /**
+     * @return void
+     */
     protected function writeCacheFile(string $file, $content)
     {
         $tmpFile = @tempnam(\dirname($file), basename($file));
@@ -31,6 +34,6 @@ abstract class CacheWarmer implements CacheWarmerInterface
             return;
         }
 
-        throw new \RuntimeException(sprintf('Failed to write cache file "%s".', $file));
+        throw new \RuntimeException(\sprintf('Failed to write cache file "%s".', $file));
     }
 }

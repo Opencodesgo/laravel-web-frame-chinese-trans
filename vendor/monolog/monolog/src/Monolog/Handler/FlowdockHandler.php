@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Flowdock 处理器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Sends notifications through the Flowdock push API
+ * 通过Flowdock推送API发送通知
  *
  * This must be configured with a FlowdockFormatter instance via setFormatter()
  *
@@ -81,6 +86,7 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * Gets the default formatter.
+	 * 获取默认格式化程序
      */
     protected function getDefaultFormatter(): FormatterInterface
     {
@@ -109,6 +115,7 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * Builds the body of API call
+	 * 构建API调用的主体
      *
      * @phpstan-param FormattedRecord $record
      */
@@ -119,6 +126,7 @@ class FlowdockHandler extends SocketHandler
 
     /**
      * Builds the header of the API Call
+	 * 构建API调用的头文件
      */
     private function buildHeader(string $content): string
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，函数
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -12,6 +15,7 @@
 if (!function_exists('trigger_deprecation')) {
     /**
      * Triggers a silenced deprecation notice.
+	 * 触发沉默的弃用通知
      *
      * @param string $package The name of the Composer package that is triggering the deprecation
      * @param string $version The version of the package that introduced the deprecation
@@ -20,7 +24,7 @@ if (!function_exists('trigger_deprecation')) {
      *
      * @author Nicolas Grekas <p@tchwork.com>
      */
-    function trigger_deprecation(string $package, string $version, string $message, ...$args): void
+    function trigger_deprecation(string $package, string $version, string $message, mixed ...$args): void
     {
         @trigger_error(($package || $version ? "Since $package $version: " : '').($args ? vsprintf($message, $args) : $message), \E_USER_DEPRECATED);
     }

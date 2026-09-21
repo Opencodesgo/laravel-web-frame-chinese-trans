@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Util，无效数据集异常
+ */
+
 /*
  * This file is part of PHPUnit.
  *

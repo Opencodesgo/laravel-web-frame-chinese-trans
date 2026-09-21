@@ -36,7 +36,7 @@ class CommandFinished
 
     /**
      * The command exit code.
-	 * 命令退出代码
+	 * 命令存在代码
      *
      * @var int
      */

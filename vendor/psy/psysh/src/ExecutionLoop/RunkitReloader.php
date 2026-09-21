@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，循环执行，Runkit 加载机
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Psy\Shell;
 
 /**
  * A runkit-based code reloader, which is pretty much magic.
+ * 一个基于runkit的代码重新加载器，非常神奇。
  *
  * @todo Remove RunkitReloader once we drop support for PHP 7.x :(
  */
@@ -28,6 +32,7 @@ class RunkitReloader extends AbstractListener
 
     /**
      * Only enabled if Runkit is installed.
+	 * 仅在安装Runkit时启用
      */
     public static function isSupported(): bool
     {
@@ -37,6 +42,7 @@ class RunkitReloader extends AbstractListener
 
     /**
      * Construct a Runkit Reloader.
+	 * 构造一个Runkit Reloader
      */
     public function __construct()
     {
@@ -45,6 +51,7 @@ class RunkitReloader extends AbstractListener
 
     /**
      * Reload code on input.
+	 * 输入时重新加载代码
      *
      * @param Shell  $shell
      * @param string $input
@@ -56,6 +63,7 @@ class RunkitReloader extends AbstractListener
 
     /**
      * Look through included files and update anything with a new timestamp.
+	 * 查看包含的文件并使用新的时间戳更新任何内容
      *
      * @param Shell $shell
      */
@@ -121,6 +129,7 @@ class RunkitReloader extends AbstractListener
 
     /**
      * Should this file be re-imported?
+	 * 是否应该重新导入该文件？
      *
      * Use PHP-Parser to ensure that the file is valid PHP.
      *

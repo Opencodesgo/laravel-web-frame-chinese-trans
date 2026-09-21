@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，解析器，编译器，编译器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector tokenizer.
+ * CSS选择器标记器。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -31,7 +35,7 @@ class Tokenizer
     /**
      * @var Handler\HandlerInterface[]
      */
-    private $handlers;
+    private array $handlers;
 
     public function __construct()
     {
@@ -50,6 +54,7 @@ class Tokenizer
 
     /**
      * Tokenize selector source code.
+	 * 标记选择器源代码
      */
     public function tokenize(Reader $reader): TokenStream
     {

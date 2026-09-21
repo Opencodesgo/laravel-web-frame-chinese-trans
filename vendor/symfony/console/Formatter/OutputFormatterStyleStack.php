@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Console，格式化，输出格式化程序样式堆栈
+ * Symfony，Component，Console，格式化程序，输出格式化程序样式堆栈
  */
 
 /*
@@ -25,9 +25,9 @@ class OutputFormatterStyleStack implements ResetInterface
     /**
      * @var OutputFormatterStyleInterface[]
      */
-    private $styles;
+    private array $styles = [];
 
-    private $emptyStyle;
+    private OutputFormatterStyleInterface $emptyStyle;
 
     public function __construct(?OutputFormatterStyleInterface $emptyStyle = null)
     {
@@ -37,6 +37,8 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Resets stack (ie. empty internal arrays).
+     *
+     * @return void
      */
     public function reset()
     {
@@ -45,6 +47,9 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Pushes a style in the stack.
+	 * 将样式推入堆栈
+     *
+     * @return void
      */
     public function push(OutputFormatterStyleInterface $style)
     {
@@ -53,14 +58,13 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Pops a style from the stack.
-     *
-     * @return OutputFormatterStyleInterface
+	 * 从堆栈中弹出一个样式
      *
      * @throws InvalidArgumentException When style tags incorrectly nested
      */
-    public function pop(?OutputFormatterStyleInterface $style = null)
+    public function pop(?OutputFormatterStyleInterface $style = null): OutputFormatterStyleInterface
     {
-        if (empty($this->styles)) {
+        if (!$this->styles) {
             return $this->emptyStyle;
         }
 
@@ -81,12 +85,11 @@ class OutputFormatterStyleStack implements ResetInterface
 
     /**
      * Computes current style with stacks top codes.
-     *
-     * @return OutputFormatterStyle
+	 * 使用堆栈顶部代码计算当前样式
      */
-    public function getCurrent()
+    public function getCurrent(): OutputFormatterStyleInterface
     {
-        if (empty($this->styles)) {
+        if (!$this->styles) {
             return $this->emptyStyle;
         }
 
@@ -96,17 +99,14 @@ class OutputFormatterStyleStack implements ResetInterface
     /**
      * @return $this
      */
-    public function setEmptyStyle(OutputFormatterStyleInterface $emptyStyle)
+    public function setEmptyStyle(OutputFormatterStyleInterface $emptyStyle): static
     {
         $this->emptyStyle = $emptyStyle;
 
         return $this;
     }
 
-    /**
-     * @return OutputFormatterStyleInterface
-     */
-    public function getEmptyStyle()
+    public function getEmptyStyle(): OutputFormatterStyleInterface
     {
         return $this->emptyStyle;
     }

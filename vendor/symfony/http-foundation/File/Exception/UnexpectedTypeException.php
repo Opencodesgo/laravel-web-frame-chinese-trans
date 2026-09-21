@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，文件，异常，意外类型异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,8 +16,8 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 class UnexpectedTypeException extends FileException
 {
-    public function __construct($value, string $expectedType)
+    public function __construct(mixed $value, string $expectedType)
     {
-        parent::__construct(sprintf('Expected argument of type %s, %s given', $expectedType, get_debug_type($value)));
+        parent::__construct(\sprintf('Expected argument of type %s, %s given', $expectedType, get_debug_type($value)));
     }
 }

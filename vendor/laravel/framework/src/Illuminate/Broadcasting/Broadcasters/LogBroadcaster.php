@@ -19,7 +19,7 @@ class LogBroadcaster extends Broadcaster
 
     /**
      * Create a new broadcaster instance.
-	 * 创建新的广播实例
+	 * 创建广播实例
      *
      * @param  \Psr\Log\LoggerInterface  $logger
      * @return void

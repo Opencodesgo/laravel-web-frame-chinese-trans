@@ -6,20 +6,27 @@
 namespace Illuminate\Foundation\Testing;
 
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\Traits\CanConfigureMigrationCommands;
 
 trait RefreshDatabase
 {
+    use CanConfigureMigrationCommands;
+
     /**
      * Define hooks to migrate the database before and after each test.
-	 * 定义钩子在每次测试前后迁移数据库
+	 * 定义钩子，以便在每次测试之前和之后迁移数据库。
      *
      * @return void
      */
     public function refreshDatabase()
     {
+        $this->beforeRefreshingDatabase();
+
         $this->usingInMemoryDatabase()
                         ? $this->refreshInMemoryDatabase()
                         : $this->refreshTestDatabase();
+
+        $this->afterRefreshingDatabase();
     }
 
     /**
@@ -56,7 +63,10 @@ trait RefreshDatabase
      */
     protected function migrateUsing()
     {
-        return [];
+        return [
+            '--seed' => $this->shouldSeed(),
+            '--seeder' => $this->seeder(),
+        ];
     }
 
     /**
@@ -79,22 +89,8 @@ trait RefreshDatabase
     }
 
     /**
-     * The parameters that should be used when running "migrate:fresh".
-	 * 运行"migrate:fresh"时应该使用的参数
-     *
-     * @return array
-     */
-    protected function migrateFreshUsing()
-    {
-        return [
-            '--drop-views' => $this->shouldDropViews(),
-            '--drop-types' => $this->shouldDropTypes(),
-        ];
-    }
-
-    /**
      * Begin a database transaction on the testing database.
-	 * 在测试数据库上启动数据库事务
+	 * 在测试数据库上开始一个数据库事务
      *
      * @return void
      */
@@ -109,6 +105,12 @@ trait RefreshDatabase
             $connection->unsetEventDispatcher();
             $connection->beginTransaction();
             $connection->setEventDispatcher($dispatcher);
+
+            if ($this->app->resolved('db.transactions')) {
+                $this->app->make('db.transactions')->callbacksShouldIgnore(
+                    $this->app->make('db.transactions')->getTransactions()->first()
+                );
+            }
         }
 
         $this->beforeApplicationDestroyed(function () use ($database) {
@@ -117,7 +119,7 @@ trait RefreshDatabase
                 $dispatcher = $connection->getEventDispatcher();
 
                 $connection->unsetEventDispatcher();
-                $connection->rollback();
+                $connection->rollBack();
                 $connection->setEventDispatcher($dispatcher);
                 $connection->disconnect();
             }
@@ -126,7 +128,7 @@ trait RefreshDatabase
 
     /**
      * The database connections that should have transactions.
-	 * 应该有事务的数据库连接
+	 * 应该具有事务的数据库连接
      *
      * @return array
      */
@@ -137,26 +139,24 @@ trait RefreshDatabase
     }
 
     /**
-     * Determine if views should be dropped when refreshing the database.
-	 * 在刷新数据库时,确定是否应该删除视图
+     * Perform any work that should take place before the database has started refreshing.
+	 * 执行在数据库开始刷新之前应该进行的任何工作
      *
-     * @return bool
+     * @return void
      */
-    protected function shouldDropViews()
+    protected function beforeRefreshingDatabase()
     {
-        return property_exists($this, 'dropViews')
-                            ? $this->dropViews : false;
+        // ...
     }
 
     /**
-     * Determine if types should be dropped when refreshing the database.
-	 * 确定在刷新数据库时是否应该删除类型
+     * Perform any work that should take place once the database has finished refreshing.
+	 * 执行应该在数据库完成刷新后发生的任何工作
      *
-     * @return bool
+     * @return void
      */
-    protected function shouldDropTypes()
+    protected function afterRefreshingDatabase()
     {
-        return property_exists($this, 'dropTypes')
-                            ? $this->dropTypes : false;
+        // ...
     }
 }

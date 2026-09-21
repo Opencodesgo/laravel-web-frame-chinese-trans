@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Util
+ */
+
 namespace Hamcrest;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest;
 
 /**
  * Contains utility methods for handling Hamcrest matchers.
+ * 包含处理Hamcrest匹配器的实用方法。
  *
  * @see Hamcrest\Matcher
  */
@@ -19,6 +24,7 @@ class Util
 
     /**
      * Wraps the item with an IsEqual matcher if it isn't a matcher already.
+	 * 如果项目还不是匹配器，则使用IsEqual匹配器包装该项目。
      *
      * @param mixed $item matcher or any value
      * @return \Hamcrest\Matcher
@@ -33,6 +39,7 @@ class Util
 
     /**
      * Throws an exception if any item in $matchers is not a Hamcrest\Matcher.
+	 * 如果任何物品都抛出一个例外,那就不需要一个Hamcrest \ Matcher。
      *
      * @param array $matchers expected to contain only matchers
      * @throws \InvalidArgumentException if any item is not a matcher
@@ -53,6 +60,7 @@ class Util
      * a Hamcrest\Core\IsEqual matcher for the item. If the first and only item
      * is an array, it is used as the $items array to support the old style
      * of passing an array as the sole argument to a matcher.
+	 * 返回一个$项目的副本,每个非matcher项目被一个Hamcrest \Core\ IsEqual matcher替换为该项目。
      *
      * @param array $items contains items and matchers
      * @return array<Matchers> all items are

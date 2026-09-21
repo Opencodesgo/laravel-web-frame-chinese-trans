@@ -49,8 +49,8 @@ class BeanstalkdJob extends Job implements JobContract
     }
 
     /**
-     * Release the job back into the queue.
-	 * 释放作业回队列
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -92,7 +92,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该作业被尝试的次数
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -116,7 +116,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取作业的原始主体字符串
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */
@@ -138,7 +138,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the underlying Pheanstalk job.
-	 * 获取底层的Pheanstalk任务
+	 * 获取底层的Pheanstalk作业
      *
      * @return \Pheanstalk\Job
      */

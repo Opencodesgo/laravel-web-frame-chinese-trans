@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，分页，分页抽象类
+ * Illuminate，分页，分页器抽象类
  */
 
 namespace Illuminate\Pagination;
@@ -9,15 +9,16 @@ use Closure;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Tappable;
+use Traversable;
 
 /**
  * @mixin \Illuminate\Support\Collection
  */
 abstract class AbstractPaginator implements Htmlable
 {
-    use ForwardsCalls;
+    use ForwardsCalls, Tappable;
 
     /**
      * All of the items being paginated.
@@ -45,7 +46,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * The base path to assign to all URLs.
-	 * 分配给所有URL的基本路径
+	 * 分配给所有url的基本路径
      *
      * @var string
      */
@@ -129,7 +130,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @var string
      */
-    public static $defaultView = 'pagination::bootstrap-4';
+    public static $defaultView = 'pagination::tailwind';
 
     /**
      * The default "simple" pagination view.
@@ -137,7 +138,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @var string
      */
-    public static $defaultSimpleView = 'pagination::simple-bootstrap-4';
+    public static $defaultSimpleView = 'pagination::simple-tailwind';
 
     /**
      * Determine if the given value is a valid page number.
@@ -166,7 +167,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Create a range of pagination URLs.
-	 * 创建一系列分页URLs
+	 * 创建一系列分页url
      *
      * @param  int  $start
      * @param  int  $end
@@ -195,8 +196,7 @@ abstract class AbstractPaginator implements Htmlable
         // If we have any extra query string key / value pairs that need to be added
         // onto the URL, we will put them in query string form and then attach it
         // to the URL. This allows for extra information like sortings storage.
-		// 如果我们有任何额外的查询字符串键/值对需要添加URL，
-		// 我们将把它们放在查询字符串形式中，然后附加它到URL。
+		// 如果我们有任何额外的查询字符串键/值对需要添加至URL。
         $parameters = [$this->pageName => $page];
 
         if (count($this->query) > 0) {
@@ -204,7 +204,7 @@ abstract class AbstractPaginator implements Htmlable
         }
 
         return $this->path()
-                        .(Str::contains($this->path(), '?') ? '&' : '?')
+                        .(str_contains($this->path(), '?') ? '&' : '?')
                         .Arr::query($parameters)
                         .$this->buildFragment();
     }
@@ -371,6 +371,20 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
+     * Transform each item in the slice of items using a callback.
+	 * 使用回调转换项片中的每个项
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function through(callable $callback)
+    {
+        $this->items->transform($callback);
+
+        return $this;
+    }
+
+    /**
      * Get the number of items shown per page.
 	 * 获取每页显示的项目数
      *
@@ -383,7 +397,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Determine if there are enough items to split into multiple pages.
-	 * 确定是否有足够的项目可以拆分为多个页面。
+	 * 确定是否有足够的项目可以拆分为多个页面
      *
      * @return bool
      */
@@ -401,6 +415,17 @@ abstract class AbstractPaginator implements Htmlable
     public function onFirstPage()
     {
         return $this->currentPage() <= 1;
+    }
+
+    /**
+     * Determine if the paginator is on the last page.
+	 * 确定分页器是否在最后一页上
+     *
+     * @return bool
+     */
+    public function onLastPage()
+    {
+        return ! $this->hasMorePages();
     }
 
     /**
@@ -548,6 +573,22 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
+     * Resolve the query string or return the default value.
+	 * 解析查询字符串或返回默认值
+     *
+     * @param  string|array|null  $default
+     * @return string
+     */
+    public static function resolveQueryString($default = null)
+    {
+        if (isset(static::$queryStringResolver)) {
+            return (static::$queryStringResolver)();
+        }
+
+        return $default;
+    }
+
+    /**
      * Set with query string resolver callback.
 	 * 设置查询字符串解析器回调
      *
@@ -608,7 +649,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Indicate that Tailwind styling should be used for generated links.
-	 * 指明应该对生成的链接使用顺风样式
+	 * 指示应该对生成的链接使用顺风样式
      *
      * @return void
      */
@@ -616,6 +657,17 @@ abstract class AbstractPaginator implements Htmlable
     {
         static::defaultView('pagination::tailwind');
         static::defaultSimpleView('pagination::simple-tailwind');
+    }
+
+    /**
+     * Indicate that Bootstrap 4 styling should be used for generated links.
+	 * 指示应该为生成的链接使用Bootstrap 4样式
+     *
+     * @return void
+     */
+    public static function useBootstrap()
+    {
+        static::useBootstrapFour();
     }
 
     /**
@@ -631,12 +683,36 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
+     * Indicate that Bootstrap 4 styling should be used for generated links.
+	 * 指示应该为生成的链接使用Bootstrap 4样式
+     *
+     * @return void
+     */
+    public static function useBootstrapFour()
+    {
+        static::defaultView('pagination::bootstrap-4');
+        static::defaultSimpleView('pagination::simple-bootstrap-4');
+    }
+
+    /**
+     * Indicate that Bootstrap 5 styling should be used for generated links.
+	 * 指示应该为生成的链接使用Bootstrap 5样式
+     *
+     * @return void
+     */
+    public static function useBootstrapFive()
+    {
+        static::defaultView('pagination::bootstrap-5');
+        static::defaultSimpleView('pagination::simple-bootstrap-5');
+    }
+
+    /**
      * Get an iterator for the items.
 	 * 获取项的迭代器
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->items->getIterator();
     }
@@ -669,7 +745,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->items->count();
     }
@@ -717,7 +793,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param  mixed  $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return $this->items->has($key);
     }
@@ -729,7 +805,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param  mixed  $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->items->get($key);
     }
@@ -742,7 +818,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->items->put($key, $value);
     }
@@ -754,7 +830,7 @@ abstract class AbstractPaginator implements Htmlable
      * @param  mixed  $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->items->forget($key);
     }
@@ -784,7 +860,7 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
-     * Render the contents of the paginator when casting to string.
+     * Render the contents of the paginator when casting to a string.
 	 * 在转换为字符串时呈现分页器的内容
      *
      * @return string

@@ -1,8 +1,11 @@
 <?php
 /**
- * Illuminate，数据库，播种机，播种机，根据实际修改
+ * Illuminate，数据库，控制台，种子，存根
  */
 
+namespace {{ namespace }};
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class {{ class }} extends Seeder

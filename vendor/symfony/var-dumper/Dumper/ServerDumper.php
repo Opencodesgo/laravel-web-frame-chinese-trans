@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储器，服务转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,13 +20,14 @@ use Symfony\Component\VarDumper\Server\Connection;
 
 /**
  * ServerDumper forwards serialized Data clones to a server.
+ * serverdump将序列化的数据克隆转发到服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
 class ServerDumper implements DataDumperInterface
 {
-    private $connection;
-    private $wrappedDumper;
+    private Connection $connection;
+    private ?DataDumperInterface $wrappedDumper;
 
     /**
      * @param string                     $host             The server host
@@ -42,12 +46,14 @@ class ServerDumper implements DataDumperInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string|null
      */
     public function dump(Data $data)
     {
         if (!$this->connection->write($data) && $this->wrappedDumper) {
-            $this->wrappedDumper->dump($data);
+            return $this->wrappedDumper->dump($data);
         }
+
+        return null;
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，工厂类
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

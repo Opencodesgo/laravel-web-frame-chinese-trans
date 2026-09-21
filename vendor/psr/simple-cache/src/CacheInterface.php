@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，SimpleCache，缓存接口
+ */
 
 namespace Psr\SimpleCache;
 
@@ -6,6 +9,7 @@ interface CacheInterface
 {
     /**
      * Fetches a value from the cache.
+	 * 从缓存中获取一个值。
      *
      * @param string $key     The unique key of this item in the cache.
      * @param mixed  $default Default value to return if the key does not exist.
@@ -15,10 +19,11 @@ interface CacheInterface
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-    public function get($key, $default = null);
+    public function get(string $key, mixed $default = null): mixed;
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
+	 * 将数据保存在缓存中，由具有可选过期TTL时间的键唯一引用。
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store, must be serializable.
@@ -31,10 +36,11 @@ interface CacheInterface
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-    public function set($key, $value, $ttl = null);
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool;
 
     /**
      * Delete an item from the cache by its unique key.
+	 * 根据项的唯一键从缓存中删除项。
      *
      * @param string $key The unique cache key of the item to delete.
      *
@@ -43,31 +49,34 @@ interface CacheInterface
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-    public function delete($key);
+    public function delete(string $key): bool;
 
     /**
      * Wipes clean the entire cache's keys.
+	 * 擦除清除整个缓存的键
      *
      * @return bool True on success and false on failure.
      */
-    public function clear();
+    public function clear(): bool;
 
     /**
      * Obtains multiple cache items by their unique keys.
+	 * 根据其唯一键获取多个缓存项
      *
-     * @param iterable $keys    A list of keys that can obtained in a single operation.
-     * @param mixed    $default Default value to return for keys that do not exist.
+     * @param iterable<string> $keys    A list of keys that can be obtained in a single operation.
+     * @param mixed            $default Default value to return for keys that do not exist.
      *
-     * @return iterable A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
+     * @return iterable<string, mixed> A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if $keys is neither an array nor a Traversable,
      *   or if any of the $keys are not a legal value.
      */
-    public function getMultiple($keys, $default = null);
+    public function getMultiple(iterable $keys, mixed $default = null): iterable;
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
+	 * 在缓存中保留一组key =>值对，并带有可选的TTL。
      *
      * @param iterable               $values A list of key => value pairs for a multiple-set operation.
      * @param null|int|\DateInterval $ttl    Optional. The TTL value of this item. If no value is sent and
@@ -80,12 +89,13 @@ interface CacheInterface
      *   MUST be thrown if $values is neither an array nor a Traversable,
      *   or if any of the $values are not a legal value.
      */
-    public function setMultiple($values, $ttl = null);
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool;
 
     /**
      * Deletes multiple cache items in a single operation.
+	 * 在单个操作中删除多个缓存项
      *
-     * @param iterable $keys A list of string-based keys to be deleted.
+     * @param iterable<string> $keys A list of string-based keys to be deleted.
      *
      * @return bool True if the items were successfully removed. False if there was an error.
      *
@@ -93,10 +103,11 @@ interface CacheInterface
      *   MUST be thrown if $keys is neither an array nor a Traversable,
      *   or if any of the $keys are not a legal value.
      */
-    public function deleteMultiple($keys);
+    public function deleteMultiple(iterable $keys): bool;
 
     /**
      * Determines whether an item is present in the cache.
+	 * 确定项是否存在于缓存中。
      *
      * NOTE: It is recommended that has() is only to be used for cache warming type purposes
      * and not to be used within your live applications operations for get/set, as this method
@@ -110,5 +121,5 @@ interface CacheInterface
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-    public function has($key);
+    public function has(string $key): bool;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Ramsey，Uuid，退化的 Uuid
+ */
 
 /**
  * This file is part of the ramsey/uuid library
@@ -15,10 +18,10 @@ declare(strict_types=1);
 namespace Ramsey\Uuid;
 
 /**
- * @deprecated DegradedUuid is no longer necessary to represent UUIDs on 32-bit
- *     systems. Transition typehints to {@see UuidInterface}.
+ * @deprecated DegradedUuid is no longer necessary to represent UUIDs on 32-bit systems.
+ *     Transition any type declarations using this class to {@see UuidInterface}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class DegradedUuid extends Uuid
 {

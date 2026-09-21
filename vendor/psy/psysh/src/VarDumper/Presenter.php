@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Var Dumper，主持人
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -17,6 +20,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * A Presenter service.
+ * 演示者服务。
  */
 class Presenter
 {
@@ -78,6 +82,7 @@ class Presenter
 
     /**
      * Register casters.
+	 * 注册脚轮
      *
      * @see http://symfony.com/doc/current/components/var_dumper/advanced.html#casters
      *
@@ -90,6 +95,7 @@ class Presenter
 
     /**
      * Present a reference to the value.
+	 * 提供对该值的引用
      *
      * @param mixed $value
      */
@@ -100,6 +106,7 @@ class Presenter
 
     /**
      * Present a full representation of the value.
+	 * 给出值的完整表示。
      *
      * If $depth is 0, the value will be presented as a ref instead.
      *

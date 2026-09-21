@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，解析命令
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -26,6 +29,7 @@ use Symfony\Component\VarDumper\Caster\Caster;
 
 /**
  * Parse PHP code and show the abstract syntax tree.
+ * 解析PHP代码并显示抽象语法树。
  */
 class ParseCommand extends Command implements ContextAware, PresenterAware
 {
@@ -45,6 +49,7 @@ class ParseCommand extends Command implements ContextAware, PresenterAware
 
     /**
      * ContextAware interface.
+	 * ContextAware 接口
      *
      * @param Context $context
      */

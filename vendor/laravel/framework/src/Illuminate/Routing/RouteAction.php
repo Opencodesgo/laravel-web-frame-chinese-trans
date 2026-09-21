@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由动作
+ * Illuminate，路由，路线动作
  */
 
 namespace Illuminate\Routing;
@@ -15,7 +15,7 @@ class RouteAction
 {
     /**
      * Parse the given action into an array.
-	 * 解析给定动作为数组
+	 * 将给定的动作解析为数组
      *
      * @param  string  $uri
      * @param  mixed  $action
@@ -26,8 +26,7 @@ class RouteAction
         // If no action is passed in right away, we assume the user will make use of
         // fluent routing. In that case, we set a default closure, to be executed
         // if the user never explicitly sets an action to handle the given uri.
-		// 如果没有立即传入操作，我们假定用户将使用流利的路由。
-		// 因此，我们设置了要执行的默认闭包。
+		// 如果没有立即传入操作，我们假定用户将使用。
         if (is_null($action)) {
             return static::missingAction($uri);
         }
@@ -46,12 +45,12 @@ class RouteAction
         // If no "uses" property has been set, we will dig through the array to find a
         // Closure instance within this list. We will set the first Closure we come
         // across into the "uses" property that will get fired off by this route.
-		// 如果没有设置"uses"属性，我们将在数组中查找此列表中的闭包实例。
+		// 如果没有设置"uses"属性，我们将在数组中查找。
         elseif (! isset($action['uses'])) {
             $action['uses'] = static::findCallable($action);
         }
 
-        if (is_string($action['uses']) && ! Str::contains($action['uses'], '@')) {
+        if (! static::containsSerializedClosure($action) && is_string($action['uses']) && ! str_contains($action['uses'], '@')) {
             $action['uses'] = static::makeInvokable($action['uses']);
         }
 
@@ -90,7 +89,7 @@ class RouteAction
 
     /**
      * Make an action for an invokable controller.
-	 * 为可调用控制器创建一个动作
+	 * 为可调用控制器创建一个操作
      *
      * @param  string  $action
      * @return string
@@ -104,5 +103,19 @@ class RouteAction
         }
 
         return $action.'@__invoke';
+    }
+
+    /**
+     * Determine if the given array actions contain a serialized Closure.
+	 * 确定给定的数组动作是否包含序列化的闭包
+     *
+     * @param  array  $action
+     * @return bool
+     */
+    public static function containsSerializedClosure(array $action)
+    {
+        return is_string($action['uses']) && Str::startsWith($action['uses'], [
+            'O:47:"Laravel\\SerializableClosure\\SerializableClosure',
+        ]) !== false;
     }
 }

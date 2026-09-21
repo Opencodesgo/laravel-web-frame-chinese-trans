@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，异常，错误的方法调用异常
+ */
 
 /**
  * Mockery (https://docs.mockery.io/)

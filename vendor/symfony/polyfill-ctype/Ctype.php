@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Ctype，Ctype
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Polyfill\Ctype;
 
 /**
  * Ctype implementation through regex.
+ * 通过regex实现Ctype
  *
  * @internal
  *
@@ -22,6 +26,7 @@ final class Ctype
 {
     /**
      * Returns TRUE if every character in text is either a letter or a digit, FALSE otherwise.
+	 * 如果文本中的每个字符都是字母或数字则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-alnum
      *
@@ -38,6 +43,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a letter, FALSE otherwise.
+	 * 如果文本中的每个字符都是字母则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-alpha
      *

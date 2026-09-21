@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，问题，选择题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,22 +18,23 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Represents a choice question.
+ * 代表一个选择题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ChoiceQuestion extends Question
 {
-    private $choices;
-    private $multiselect = false;
-    private $prompt = ' > ';
-    private $errorMessage = 'Value "%s" is invalid';
+    private array $choices;
+    private bool $multiselect = false;
+    private string $prompt = ' > ';
+    private string $errorMessage = 'Value "%s" is invalid';
 
     /**
-     * @param string $question The question to ask to the user
-     * @param array  $choices  The list of available choices
-     * @param mixed  $default  The default answer to return
+     * @param string                     $question The question to ask to the user
+     * @param array                      $choices  The list of available choices
+     * @param string|bool|int|float|null $default  The default answer to return
      */
-    public function __construct(string $question, array $choices, $default = null)
+    public function __construct(string $question, array $choices, string|bool|int|float|null $default = null)
     {
         if (!$choices) {
             throw new \LogicException('Choice question must have at least 1 choice available.');
@@ -45,22 +49,22 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns available choices.
-     *
-     * @return array
+	 * 返回可用的选项
      */
-    public function getChoices()
+    public function getChoices(): array
     {
         return $this->choices;
     }
 
     /**
      * Sets multiselect option.
+	 * 设置多选选项。
      *
      * When multiselect is set to true, multiple choices can be answered.
      *
      * @return $this
      */
-    public function setMultiselect(bool $multiselect)
+    public function setMultiselect(bool $multiselect): static
     {
         $this->multiselect = $multiselect;
         $this->setValidator($this->getDefaultValidator());
@@ -70,30 +74,29 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns whether the choices are multiselect.
-     *
-     * @return bool
+	 * 返回选项是否为多选
      */
-    public function isMultiselect()
+    public function isMultiselect(): bool
     {
         return $this->multiselect;
     }
 
     /**
      * Gets the prompt for choices.
-     *
-     * @return string
+	 * 获取选项的提示
      */
-    public function getPrompt()
+    public function getPrompt(): string
     {
         return $this->prompt;
     }
 
     /**
      * Sets the prompt for choices.
+	 * 设置选项提示符
      *
      * @return $this
      */
-    public function setPrompt(string $prompt)
+    public function setPrompt(string $prompt): static
     {
         $this->prompt = $prompt;
 
@@ -102,12 +105,13 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets the error message for invalid values.
+	 * 为无效值设置错误消息。
      *
      * The error message has a string placeholder (%s) for the invalid value.
      *
      * @return $this
      */
-    public function setErrorMessage(string $errorMessage)
+    public function setErrorMessage(string $errorMessage): static
     {
         $this->errorMessage = $errorMessage;
         $this->setValidator($this->getDefaultValidator());
@@ -126,7 +130,7 @@ class ChoiceQuestion extends Question
             if ($multiselect) {
                 // Check for a separated comma values
                 if (!preg_match('/^[^,]+(?:,[^,]+)*$/', (string) $selected, $matches)) {
-                    throw new InvalidArgumentException(sprintf($errorMessage, $selected));
+                    throw new InvalidArgumentException(\sprintf($errorMessage, $selected));
                 }
 
                 $selectedChoices = explode(',', (string) $selected);
@@ -150,7 +154,7 @@ class ChoiceQuestion extends Question
                 }
 
                 if (\count($results) > 1) {
-                    throw new InvalidArgumentException(sprintf('The provided answer is ambiguous. Value should be one of "%s".', implode('" or "', $results)));
+                    throw new InvalidArgumentException(\sprintf('The provided answer is ambiguous. Value should be one of "%s".', implode('" or "', $results)));
                 }
 
                 $result = array_search($value, $choices);
@@ -166,7 +170,7 @@ class ChoiceQuestion extends Question
                 }
 
                 if (false === $result) {
-                    throw new InvalidArgumentException(sprintf($errorMessage, $value));
+                    throw new InvalidArgumentException(\sprintf($errorMessage, $value));
                 }
 
                 // For associative choices, consistently return the key as string:

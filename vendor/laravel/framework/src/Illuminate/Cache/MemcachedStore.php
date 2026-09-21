@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Memcached 存储
+ * Illuminate，缓存，Memcached存储
  */
 
 namespace Illuminate\Cache;
@@ -73,10 +73,8 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array
@@ -104,7 +102,6 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -120,7 +117,6 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Store multiple items in the cache for a given number of seconds.
-	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int  $seconds
@@ -196,7 +192,7 @@ class MemcachedStore extends TaggableStore implements LockProvider
 
     /**
      * Get a lock instance.
-	 * 获取一个锁实例
+	 * 得到锁实例
      *
      * @param  string  $name
      * @param  int  $seconds

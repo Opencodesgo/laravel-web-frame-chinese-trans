@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通道管理
+ * Illuminate，通知，通道管理系统
  */
 
 namespace Illuminate\Notifications;
@@ -40,7 +40,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
      */
     public function send($notifiables, $notification)
     {
-        return (new NotificationSender(
+        (new NotificationSender(
             $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
         )->send($notifiables, $notification);
     }
@@ -56,14 +56,14 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
      */
     public function sendNow($notifiables, $notification, array $channels = null)
     {
-        return (new NotificationSender(
+        (new NotificationSender(
             $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
         )->sendNow($notifiables, $notification, $channels);
     }
 
     /**
      * Get a channel instance.
-	 * 获取通道实例
+	 * 得到通道实例
      *
      * @param  string|null  $name
      * @return mixed

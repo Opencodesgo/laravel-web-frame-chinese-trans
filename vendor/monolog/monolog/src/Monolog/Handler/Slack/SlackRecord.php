@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理器，Slack，Slack 记录
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -18,6 +22,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Slack record utility helping to log to Slack webhooks or API.
+ * Slack记录工具，帮助登录Slack webhook或API。
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @author Haralan Dobrev <hkdobrev@gmail.com>
@@ -57,18 +62,21 @@ class SlackRecord
 
     /**
      * Whether the message should be added to Slack as attachment (plain text otherwise)
+	 * 是否应该将消息作为附件添加到Slack（否则为纯文本）
      * @var bool
      */
     private $useAttachment;
 
     /**
      * Whether the the context/extra messages added to Slack as attachments are in a short style
+	 * 作为附件添加到Slack的上下文/额外消息是否采用短样式
      * @var bool
      */
     private $useShortAttachment;
 
     /**
      * Whether the attachment should include context and extra data
+	 * 附件是否应该包含上下文和额外的数据
      * @var bool
      */
     private $includeContextAndExtra;
@@ -220,6 +228,7 @@ class SlackRecord
 
     /**
      * Stringifies an array of key/value pairs to be used in attachment fields
+	 * 对要在附件字段中使用的键/值对数组进行字符串化
      *
      * @param mixed[] $fields
      */
@@ -238,6 +247,7 @@ class SlackRecord
 
     /**
      * Channel used by the bot when posting
+	 * 机器人发帖时使用的频道
      *
      * @param ?string $channel
      *
@@ -252,6 +262,7 @@ class SlackRecord
 
     /**
      * Username used by the bot when posting
+	 * 机器人发帖时使用的用户名
      *
      * @param ?string $username
      *
@@ -319,6 +330,7 @@ class SlackRecord
 
     /**
      * Generates attachment field
+	 * 生成附件字段
      *
      * @param string|mixed[] $value
      *
@@ -339,6 +351,7 @@ class SlackRecord
 
     /**
      * Generates a collection of attachment fields from array
+	 * 从数组生成附件字段的集合
      *
      * @param mixed[] $data
      *
@@ -359,6 +372,7 @@ class SlackRecord
 
     /**
      * Get a copy of record with fields excluded according to $this->excludeFields
+	 * 根据$this-> exexdefields获取被排除字段的记录副本
      *
      * @phpstan-param FormattedRecord $record
      *

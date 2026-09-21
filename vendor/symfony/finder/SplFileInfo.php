@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Symfony，Component，发现者，Spl文件信息
+ * Symfony，Component，Finder，Spl 文件信息
  */
 
 /*
@@ -17,13 +16,14 @@ namespace Symfony\Component\Finder;
 
 /**
  * Extends \SplFileInfo to support relative paths.
+ * 扩展\SplFileInfo以支持相对路径。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class SplFileInfo extends \SplFileInfo
 {
-    private $relativePath;
-    private $relativePathname;
+    private string $relativePath;
+    private string $relativePathname;
 
     /**
      * @param string $file             The file name
@@ -39,24 +39,22 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the relative path.
+	 * 返回相对路径
      *
      * This path does not contain the file name.
-     *
-     * @return string
      */
-    public function getRelativePath()
+    public function getRelativePath(): string
     {
         return $this->relativePath;
     }
 
     /**
      * Returns the relative path name.
+	 * 返回相对路径名。
      *
      * This path contains the file name.
-     *
-     * @return string
      */
-    public function getRelativePathname()
+    public function getRelativePathname(): string
     {
         return $this->relativePathname;
     }
@@ -70,12 +68,11 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the contents of the file.
-     *
-     * @return string
+	 * 返回文件的内容
      *
      * @throws \RuntimeException
      */
-    public function getContents()
+    public function getContents(): string
     {
         set_error_handler(function ($type, $msg) use (&$error) { $error = $msg; });
         try {

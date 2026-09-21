@@ -29,7 +29,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
-	 * 创建新的作业实例
+	 * 创建一个新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Illuminate\Queue\DatabaseQueue  $database
@@ -48,19 +48,17 @@ class DatabaseJob extends Job implements JobContract
     }
 
     /**
-     * Release the job back into the queue.
-	 * 将作业释放回队列
+     * Release the job back into the queue after (n) seconds.
+	 * 在(n)秒后将作业释放回队列
      *
      * @param  int  $delay
-     * @return mixed
+     * @return void
      */
     public function release($delay = 0)
     {
         parent::release($delay);
 
-        $this->delete();
-
-        return $this->database->release($this->queue, $this->job, $delay);
+        $this->database->deleteAndRelease($this->queue, $this, $delay);
     }
 
     /**
@@ -78,7 +76,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该作业被尝试的次数
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -89,7 +87,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取工作标识符
      *
      * @return string
      */
@@ -100,12 +98,23 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取作业的原始主体字符串
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */
     public function getRawBody()
     {
         return $this->job->payload;
+    }
+
+    /**
+     * Get the database job record.
+	 * 获取数据库作业记录
+     *
+     * @return \Illuminate\Queue\Jobs\DatabaseJobRecord
+     */
+    public function getJobRecord()
+    {
+        return $this->job;
     }
 }

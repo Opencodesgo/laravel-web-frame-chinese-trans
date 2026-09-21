@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，选项卡完成，匹配程序，关键词匹配器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\TabCompletion\Matcher;
 
 /**
  * A PHP keyword tab completion Matcher.
+ * 一个PHP关键字选项卡补全匹配器。
  *
  * This matcher provides completion for all function-like PHP keywords.
  *
@@ -31,6 +35,7 @@ class KeywordsMatcher extends AbstractMatcher
 
     /**
      * Get all (completable) PHP keywords.
+	 * 获取所有（可完成的）PHP关键字
      *
      * @return string[]
      */
@@ -41,6 +46,7 @@ class KeywordsMatcher extends AbstractMatcher
 
     /**
      * Check whether $keyword is a (completable) PHP keyword.
+	 * 检查$keyword是否为（可完成的）PHP关键字
      *
      * @param string $keyword
      */

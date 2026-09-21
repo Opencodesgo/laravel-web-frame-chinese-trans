@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建者，方法
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -21,6 +25,7 @@ class Method extends FunctionLike {
 
     /**
      * Creates a method builder.
+	 * 创建一个方法构建器
      *
      * @param string $name Name of the method
      */
@@ -30,6 +35,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method public.
+	 * 使方法公开
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -41,6 +47,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method protected.
+	 * 使方法受保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -52,6 +59,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method private.
+	 * 使方法私有
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -63,6 +71,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method static.
+	 * 使方法静态化
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -74,6 +83,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method abstract.
+	 * 使方法抽象
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -90,6 +100,7 @@ class Method extends FunctionLike {
 
     /**
      * Makes the method final.
+	 * 使方法最终确定
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -101,6 +112,7 @@ class Method extends FunctionLike {
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Node|PhpParser\Builder $stmt The statement to add
      *
@@ -118,6 +130,7 @@ class Method extends FunctionLike {
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -131,6 +144,7 @@ class Method extends FunctionLike {
 
     /**
      * Returns the built method node.
+	 * 返回构建的方法节点
      *
      * @return Stmt\ClassMethod The built method node
      */
