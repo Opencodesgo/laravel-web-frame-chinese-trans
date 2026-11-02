@@ -1,9 +1,10 @@
 
 Laravel Version: 9.52.20
 LTS FLAG
-PHP Version: 8.1
+PHP Version: 8.2
+Start Date: 2026-08-19
+Version: v1.3
+
+PHP Version: 8.0-8.2
 Frame Start Date: 2022-02-08
 Frame End Date: 2024-02-06
-
-Version2: v1.0.3
-Start Date: 2025-08-19
